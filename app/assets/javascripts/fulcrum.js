@@ -1,3 +1,5 @@
+var KeycutView = require('views/keycut_view');
+
 $(function() {
   $('#add_story').click(function() {
     window.projectView.newStory();
@@ -18,7 +20,7 @@ $(function() {
             if ($('#keycut-help').length) {
               $('#keycut-help').fadeOut(function(){$('#keycut-help').remove();});
             } else {
-              new Fulcrum.KeycutView().render();
+              new KeycutView().render();
             };
           };
           break;

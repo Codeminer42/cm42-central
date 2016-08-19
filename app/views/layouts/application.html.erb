@@ -4,13 +4,9 @@
   <title><%= "#{@project.name} - " if @project %><%= t('cm-central') %></title>
   <%= csrf_meta_tag %>
   <%= stylesheet_link_tag :application %>
-  <%= javascript_include_tag :application %>
+  <%= javascript_include_tag *webpack_asset_paths('application') %>
   <%= cloudinary_js_config %>
-  <%= javascript_tag do %>
-    I18n.defaultLocale = "<%= I18n.default_locale %>";
-    I18n.locale = "<%= I18n.locale %>";
-  <%- end -%>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%= javascript_include_tag :sprockets %>
 </head>
 <body>
 
