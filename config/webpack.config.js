@@ -10,7 +10,8 @@ var production = process.env.NODE_ENV === 'production';
 
 var config = {
   entry: {
-    'application': './app/assets/javascripts/app.js'
+    application: './app/assets/javascripts/app.js',
+    globals: './app/assets/javascripts/globals.js'
   },
 
   output: {

@@ -1,4 +1,7 @@
-require('./patches');
-require('./jquery-plugins');
-require('./backbone-plugins');
-require('./fulcrum');
+require('./lib/jquery_plugins');
+require('./lib/backbone_plugins');
+require('bootstrap-sass');
+
+var Central = require('./central');
+
+$(Central.start);

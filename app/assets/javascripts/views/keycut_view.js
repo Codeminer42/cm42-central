@@ -1,4 +1,4 @@
-var KeycutView = Backbone.View.extend({
+module.exports = Backbone.View.extend({
   template: JST['templates/keycut_view'],
   tagName: 'div',
   id: 'keycut-help',
@@ -18,5 +18,3 @@ var KeycutView = Backbone.View.extend({
     );
   }
 });
-
-module.exports = KeycutView;
