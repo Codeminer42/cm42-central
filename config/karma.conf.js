@@ -14,7 +14,7 @@ webpackConfig.devtool = 'inline-source-map';
 
 module.exports = function(config) {
   config.set({
-    browsers: ['PhantomJS'],
+    browsers: ['PhantomJS2'],
     port: 9876,
     basePath: '.',
     files: [
@@ -27,7 +27,7 @@ module.exports = function(config) {
       webpack,
       'karma-jasmine',
       'karma-sinon',
-      'karma-phantomjs-launcher',
+      'karma-phantomjs2-launcher',
       'karma-chrome-launcher',
       'karma-spec-reporter',
       'karma-sourcemap-loader'

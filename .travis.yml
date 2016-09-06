@@ -18,6 +18,7 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
   - "bundle exec rake --trace fulcrum:setup db:setup"
   - "rake webpack:compile"
+  - "npm install -g phantomjs-prebuilt"
 rvm:
   - 2.3.1
 script:
