@@ -19,6 +19,7 @@ before_script:
   - "bundle exec rake --trace fulcrum:setup db:setup"
   - "rake webpack:compile"
   - "npm install -g phantomjs-prebuilt"
+  - "phantomjs --version"
 rvm:
   - 2.3.1
 script:
