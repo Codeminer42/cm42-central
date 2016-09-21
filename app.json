@@ -1,0 +1,58 @@
+{
+  "name": "cm42-central",
+  "scripts": {
+  },
+  "env": {
+    "LANG": {
+      "required": true
+    },
+    "MAILER_SENDER": {
+      "required": true
+    },
+    "MAIN_HOST": {
+      "required": true
+    },
+    "RACK_ENV": {
+      "required": true
+    },
+    "RAILS_ENV": {
+      "required": true
+    },
+    "RECAPTCHA_PRIVATE_KEY": {
+      "required": true
+    },
+    "RECAPTCHA_PUBLIC_KEY": {
+      "required": true
+    },
+    "SECRET_KEY_BASE": {
+      "required": true
+    }
+  },
+  "formation": {
+    "worker": {
+      "quantity": 1
+    },
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+    "cloudinary",
+    "logdna",
+    "memcachier",
+    "heroku-postgresql",
+    "heroku-redis",
+    "sendgrid"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/ruby"
+    },
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-nodejs#v83"
+    },
+    {
+      "url": "https://github.com/febeling/webpack-rails-buildpack.git"
+    }
+  ]
+}

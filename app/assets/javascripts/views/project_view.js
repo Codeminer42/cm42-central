@@ -53,9 +53,6 @@ module.exports = Backbone.View.extend({
   },
 
   addIteration: function(iteration) {
-    if (iteration.stories().length == 0) {
-      return;
-    }
     var that = this;
     var column = iteration.get('column');
     var view = new IterationView({model: iteration}).render();

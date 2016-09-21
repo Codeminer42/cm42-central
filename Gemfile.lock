@@ -1,4 +1,15 @@
 GIT
+  remote: git://github.com/Codeminer42/cm42-central-support.git
+  revision: 1e8f9ebe075364ee769a4466d798f1145eedb2c7
+  branch: master
+  specs:
+    central-support (0.9.0)
+      activerecord (>= 3.2)
+      activesupport (>= 3.2)
+      enumerize (~> 2.0)
+      transitions (~> 0.1.9)
+
+GIT
   remote: git://github.com/ericallam/font_assets.git
   revision: eeb6ef435ab064940fdf3cac6283c236c84259c4
   branch: master
@@ -193,7 +204,6 @@ GEM
       addressable (~> 2.3)
     letter_opener (1.4.1)
       launchy (~> 2.2)
-    libv8 (3.16.14.15)
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
     material_icons (2.2.0)
@@ -281,7 +291,6 @@ GEM
     recaptcha (3.3.0)
       json
     redis (3.3.0)
-    ref (2.0.0)
     responders (1.1.2)
       railties (>= 3.2, < 4.2)
     rest-client (2.0.0)
@@ -348,14 +357,11 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
-    therubyracer (0.12.2)
-      libv8 (~> 3.16.14.0)
-      ref
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.5)
     timecop (0.8.1)
-    transitions (0.1.9)
+    transitions (0.1.13)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (3.0.0)
@@ -392,6 +398,7 @@ DEPENDENCIES
   bullet
   capybara
   capybara-screenshot
+  central-support!
   chartkick
   cloudinary
   codeclimate-test-reporter
@@ -404,7 +411,6 @@ DEPENDENCIES
   devise-async
   devise-i18n
   dotenv-rails
-  enumerize
   factory_girl_rails
   font_assets!
   foreigner
@@ -439,9 +445,7 @@ DEPENDENCIES
   sidekiq
   sidekiq_mailer
   sinatra
-  therubyracer
   timecop
-  transitions (= 0.1.9)
   uglifier (>= 2.5.3)
   vcr
   webmock
