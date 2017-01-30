@@ -1,6 +1,6 @@
 <% content_for :title_bar do %>
   <% if policy(Project).new? %>
-    <%= link_to t('projects.new project'), new_project_path, class: 'btn btn-primary btn-sm navbar-btn' %>
+    <%= link_to t('projects.new project'), new_project_path, class: 'btn btn-primary btn-sm navbar-btn step-create-project' %>
   <% end %>
   <% if policy(TagGroup).new? %>
     <%= link_to t('tag_group.tag_groups'), tag_groups_path, class: 'btn btn-success btn-sm navbar-btn' %>
@@ -20,7 +20,7 @@
           </div>
         </div>
       <% else %>
-        <div class="col-md-6">
+        <div class="col-md-6 activity step-activity">
           <% if @activities_group.empty? %>
             <div class="simple-alert">
               <i class="mi alert-icon">error_outline</i>

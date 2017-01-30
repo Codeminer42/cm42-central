@@ -11,6 +11,7 @@
     "babel-loader": "^6.2.10",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.22.0",
+    "axios": "^0.15.3",
     "backbone": "^1.3.3",
     "bootstrap-sass": "^3.3.7",
     "chart.js": "^2.2.2",
@@ -34,6 +35,8 @@
     "rewire": "^2.5.2",
     "rewire-webpack": "^1.0.1",
     "stats-webpack-plugin": "^0.4.2",
+    "tether": "^1.4.0",
+    "tether-shepherd": "^1.8.1",
     "underscore": "^1.8.3",
     "webpack": "^1.9.11",
     "webpack-dev-server": "^1.9.0"

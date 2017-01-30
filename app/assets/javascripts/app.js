@@ -16,3 +16,4 @@ const page = $('body').data('page');
 if(routes[page]) {
   $(routes[page]);
 }
+
