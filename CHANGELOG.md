@@ -3,7 +3,8 @@
 ## [Unreleased]
 ### Added
 - User Endpoint
-- Sidebar option to invert columns order. 
+- Sidebar option to invert columns order.
+- First time interface tour
 
 ### Changed
 - Refactor /admin/users views using a Presenter.

@@ -1,6 +1,6 @@
 <% content_for :title_bar do %>
   <% if policy(Project).new? %>
-    <%= link_to t('projects.new project'), new_project_path, class: 'btn btn-primary btn-sm navbar-btn' %>
+    <%= link_to t('projects.new project'), new_project_path, class: 'btn btn-primary btn-sm navbar-btn step-create-project' %>
   <% end %>
 <% end %>
 
@@ -9,7 +9,7 @@
     <div class="col-md-12">
       <% unless @projects.empty? %>
 
-        <div class="col-md-6">
+        <div class="col-md-6 activity step-activity">
           <% unless @activities_group.empty? %>
             <ul class="timeline">
               <%= render 'activities_group', activities_group: @activities_group %>

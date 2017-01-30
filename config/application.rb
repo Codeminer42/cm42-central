@@ -38,5 +38,7 @@ module Fulcrum
     config.generators do |g|
       g.test_framework :rspec
     end
+
+    config.assets.paths << Rails.root.join('node_modules')
   end
 end
