@@ -6,8 +6,10 @@ class User < ActiveRecord::Base
   include Gravtastic
   gravtastic default: 'identicon'
 
+  before_save :set_tour_steps
+
   # FIXME - DRY up, repeated in Story model
-  JSON_ATTRIBUTES = ["id", "name", "initials", "username", "email"]
+  JSON_ATTRIBUTES = ["id", "name", "initials", "username", "email", "tour", "tour_steps"]
 
   AUTHENTICATION_KEYS = %i(email)
 
@@ -33,6 +35,10 @@ class User < ActiveRecord::Base
     else
       !password.nil? || !password_confirmation.nil?
     end
+  end
+
+  def set_tour_steps
+    self.tour_steps = TOUR_STEPS
   end
 
   def to_s

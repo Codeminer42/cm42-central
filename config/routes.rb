@@ -81,6 +81,8 @@ Rails.application.routes.draw do
   devise_scope :user do
     get 'users/verfiy_two_factor' => 'registrations#verify_two_factor', as: :user_verify_two_factor
     post 'users/disable_two_factor' => 'registrations#disable_two_factor', as: :user_disable_two_factor
+    get 'users/current' => 'sessions#current', as: :current_user
+    put 'users/:id/tour' => 'registrations#tour', as: :users_tour
   end
 
   if Rails.env.development?

@@ -26,6 +26,15 @@ class RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  def tour
+    @user = User.find(params[:id])
+    if @user.update(params.require(:user).permit(:tour, :tour_steps))
+      render json: @user, status: :ok
+    else
+      render json: @user.errors, status: :unprocessable_entity
+    end
+  end
+
   protected
     def after_inactive_sign_up_path_for(resource)
       new_session_path(resource)
@@ -45,6 +54,9 @@ class RegistrationsController < Devise::RegistrationsController
         u.permit( :email, :password, :password_confirmation, :remember_me,
                   :name, :initials, :username, :email_delivery, :email_acceptance,
                   :email_rejection, :locale, :time_zone, :current_password )
+      end
+      devise_parameter_sanitizer.for(:tour) do |u|
+        u.permit( :tour, :tour_steps )
       end
     end
 
