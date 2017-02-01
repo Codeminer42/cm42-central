@@ -33,8 +33,8 @@
         </div>
         <hr />
         <div class="account-options">
-          <% if @user.tour == false %>
-            <%= link_to t('reset_tour'), "/users/#{@user.id}/reset_tour", method: :put, class: 'btn btn-info btn-block' %>
+          <% unless @user.tour %>
+            <%= link_to t('reset_tour'), user_reset_tour_path(@user), method: :put, class: 'btn btn-info btn-block' %>
           <% end %>
           <% if resource.authy_enabled %>
             <%= link_to t('disable_2fa'), user_verify_two_factor_path, class: 'btn btn-warning btn-block' %>

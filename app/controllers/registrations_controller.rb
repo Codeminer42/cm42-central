@@ -28,7 +28,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   def tour
     @user = User.find(params[:id])
-    if @user.update(params.require(:user).permit(:tour, :tour_steps))
+    if @user.update(user_params)
       render json: @user, status: :ok
     else
       render json: @user.errors, status: :unprocessable_entity
@@ -38,13 +38,16 @@ class RegistrationsController < Devise::RegistrationsController
   def reset_tour
     @user = User.find(params[:id])
     if @user.update(tour: true, tour_steps: WelcomeTour::STEPS.to_json)
-      flash[:notice] = t('reset_tour_success')
-      redirect_to(:back)
+      redirect_to :back, flash: {notice: t('reset_tour_success')}
     else
-      flash[:error] = t('reset_tour_fail')
-      redirect_to(:back)
+      redirect_to :back, flash: {error: t('reset_tour_fail')}
     end
   end
+
+  private
+    def user_params
+      params.require(:user).permit(:tour, :tour_steps)
+    end
 
   protected
     def after_inactive_sign_up_path_for(resource)

@@ -1,37 +1,12 @@
-var Tether = require('tether');
-var Shepherd = require('tether-shepherd');
-
-function updateTour(user) {
-  var remainingSteps = user.tour_steps.filter(step => step.done !== true);
-
-  if(remainingSteps.length === 0)
-    user.tour = false;
-
-  var options = {
-    type: 'PUT',
-    dataType: 'json',
-    data: data,
-    url: `/users/${user.id}/tour`
-  };
-
-  var data = {
-    user: {
-      tour: user.tour,
-      tour_steps: JSON.stringify(user.tour_steps)
-    }
-  };
-
-  return $.ajax(options);
-}
+var Tour = require('models/tour');
+var User = require('models/user');
 
 var firstTimeTour = module.exports =  {
   start: function() {
-    var tour = new Shepherd.Tour({
-      defaults: {
-        classes: 'shepherd-theme-arrows',
-        scrollTo: false
-      }
-    });
+    var user = new User();
+    var tour = new Tour();
+
+    var welcomeTour = tour.create();
 
     function generateButtons(index, user) {
       var buttons = [];
@@ -41,8 +16,8 @@ var firstTimeTour = module.exports =  {
           text: I18n.t("skip"),
           action: function() {
             user.tour = false;
-            updateTour(user);
-            tour.complete();
+            tour.update(user);
+            welcomeTour.complete();
           },
           classes: 'btn btn-default pull-left'
         });
@@ -53,19 +28,23 @@ var firstTimeTour = module.exports =  {
         action: function() {
           user.tour_steps[index].done = true;
 
-          updateTour(user);
-          tour.next();
+          tour.update(user);
+          welcomeTour.next();
         }
       });
 
       return buttons;
     }
 
+    function getSelectorFromStepAttach(attach) {
+      return attach.split(" ")[0];
+    }
+
     function setupTour(user, tour) {
-      user.tour_steps.map((step, index) => {
+      user.tour_steps.forEach((step, index) => {
         var tourStep = Object.assign({}, step);
 
-        var selector = step.attachTo.split(" ")[0];
+        var selector = getSelectorFromStepAttach(step.attachTo);
 
         if($(selector).length > 0 && step.done !== true) {
           tourStep.title = I18n.t(step.title);
@@ -73,32 +52,21 @@ var firstTimeTour = module.exports =  {
           tourStep.classes = 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text';
           tourStep.buttons = generateButtons(index, user);
 
-          tour.addStep(tourStep.title.toLowerCase().replace(' ', '_'), tourStep);
+          welcomeTour.addStep(tourStep.title.toLowerCase().replace(' ', '_'), tourStep);
         }
       });
     };
 
     function getCurrentUserSuccess(res) {
-      var user = res.user;
-      user.tour_steps = JSON.parse(user.tour_steps);
+      var currentUser = res.user;
+      currentUser.tour_steps = JSON.parse(currentUser.tour_steps);
 
-      if(user.tour === true) {
-        setupTour(user, tour);
-        tour.start();
+      if(currentUser.tour === true) {
+        setupTour(currentUser, tour);
+        welcomeTour.start();
       }
     }
 
-  function getCurrentUser() {
-    var options = {
-      type: 'GET',
-      dataType: 'json',
-      url: '/users/current',
-      success: getCurrentUserSuccess,
-    };
-
-    return $.ajax(options);
-  }
-
-    getCurrentUser();
+    user.getCurrent(getCurrentUserSuccess);
   }
 }
