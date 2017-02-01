@@ -1,16 +1,18 @@
 var Tether = require('tether');
 var Shepherd = require('tether-shepherd');
-var axios = require('axios');
-
-function getCurrentUser() {
-  return axios.get('/users/current');
-}
 
 function updateTour(user) {
   var remainingSteps = user.tour_steps.filter(step => step.done !== true);
 
   if(remainingSteps.length === 0)
     user.tour = false;
+
+  var options = {
+    type: 'PUT',
+    dataType: 'json',
+    data: data,
+    url: `/users/${user.id}/tour`
+  };
 
   var data = {
     user: {
@@ -19,7 +21,7 @@ function updateTour(user) {
     }
   };
 
-  return axios.put(`/users/${user.id}/tour`, data);
+  return $.ajax(options);
 }
 
 var firstTimeTour = module.exports =  {
@@ -77,7 +79,7 @@ var firstTimeTour = module.exports =  {
     };
 
     function getCurrentUserSuccess(res) {
-      var user = res.data.user;
+      var user = res.user;
       user.tour_steps = JSON.parse(user.tour_steps);
 
       if(user.tour === true) {
@@ -86,7 +88,17 @@ var firstTimeTour = module.exports =  {
       }
     }
 
-    getCurrentUser()
-      .then(getCurrentUserSuccess);
+  function getCurrentUser() {
+    var options = {
+      type: 'GET',
+      dataType: 'json',
+      url: '/users/current',
+      success: getCurrentUserSuccess,
+    };
+
+    return $.ajax(options);
+  }
+
+    getCurrentUser();
   }
 }

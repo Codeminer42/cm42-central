@@ -657,6 +657,10 @@ div#keycut-help {
 .btn-clipboard {
   padding: 4px 12px 5px;
 
+.shepherd-step {
+  z-index: 100;
+}
+
 .shepherd-element .shepherd-content {
   max-width: 250px;
 }
