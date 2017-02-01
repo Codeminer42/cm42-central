@@ -46,6 +46,9 @@ pt-BR:
   add new member: "Adicionar um novo membro"
   all users: "Todos os usuários"
   remove user confirm: "Tem certeza de que deseja remover %{email} deste projeto?"
+  next: "Próximo"
+  finish: "Finalizar"
+  skip: "Pular"
 
   story:
     state:
@@ -322,3 +325,35 @@ pt-BR:
         manager: Gerente
         developer: Desenvolvedor
         guest: Convidado
+
+  welcome_tour:
+    create_team:
+      title: "Criar time"
+      text: "Você precisa criar um novo time para iniciar, você se tornará o administrador da equipe. Times podem ter vários membros e vários projetos e você pode participar de múltiplos times ao mesmo tempo."
+    create_project:
+      title: "Criar projeto"
+      text: "Você pode criar quantos projetos precisar clicando nesse botão."
+    project_activity:
+      title: "Atividades do projeto"
+      text: "Toda vez que você alterar algo no projeto ou em suas histórias elas serão auditadas e os detalhes das mudanças serão visíveis para todos os membros da equipe nessa timeline de atividades. <br/><strong>Dica</strong>: Você não deve alterar uma história depois que o time começar a trabalhar nela, você deve adicionar uma nova história."
+    create_story:
+      title: "Adicionar história"
+      text: "Clique nesse botão para criar novas histórias. Uma história pode ser a descrição de uma nova feature ou um relato de um bug, por exemplo. Novas histórias serão criadas primeiro na coluna Chilly Bin."
+    chilly_bin:
+      title: "Chilly Bin"
+      text: "Todas as novas histórias serão armazenadas nesse Chilly Bin. Você deve descrevê-las esperando que essa descrição e os anexos serão suficientes para a história ser implementada. Os membros do projeto devem estimar essas histórias."
+    backlog:
+      title: "Backlog"
+      text: "O <strong>Backlog</strong> DEVE ter todas as histórias por ordem de PRIORIDADE. As histórias mais valiosas e que estão prontas para serem iniciadas no topo e as histórias opcionais ou incertas devem ficar embaixo."
+    in_progress:
+      title: "Em Progresso"
+      text: "Aqui é onde as histórias que devem ser trabalhadas ficarão. O Central irá automaticamente pegar as principais histórias do Backlog para ajustar a atual velocidade do time."
+    done:
+      title: "Concluído"
+      text: "Depois que uma história é entregue e aprovada, elas devem ser ordenadas na parte inferior dessa coluna. Um história entregue não pode ser modificada e essa coluna está aqui para lhe mostrar tudo que já foi finalizado e aprovado."
+    project_velocity:
+      title: "Velocidade do Projeto"
+      text: "Todas as histórias são estimadas usando \"Pontos\". A média de pontos entregues por um time durante uma iteração é a Velocidade. A data estimada para finalizar o projeto é o valor total de pontos no Backlog dividido pela Velocidade. Aqui você pode simular adicionando um novo membro aumentando levemente a velocidade estimada para ver os efeitos nas próximas datas de iteração."
+    members:
+      title: "Membros"
+      text: "Se você quiser adicionar ou remover pessoas do projeto, clique aqui."
