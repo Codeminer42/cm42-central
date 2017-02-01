@@ -13,14 +13,6 @@ webpackConfig.entry = {
 
 webpackConfig.devtool = 'inline-source-map';
 
-webpackConfig.module.preLoaders = [
-  {
-    test: /\.js$/,
-    exclude: /(node_modules|spec\/javascripts|assets\/javascripts\/libs|vendor)/,
-    loader: 'istanbul-instrumenter'
-  }
-];
-
 module.exports = function(config) {
   config.set({
     browsers: ['PhantomJS'],

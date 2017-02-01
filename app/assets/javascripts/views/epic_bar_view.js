@@ -24,7 +24,7 @@ module.exports = Backbone.View.extend({
   remainingPoints: function(){
     var estimates = _.map(this.remaining(), function(e) { return e.get('estimate') })
 
-    return this.sumPoints(estimates);;
+    return this.sumPoints(estimates);
   },
 
   done: function() {

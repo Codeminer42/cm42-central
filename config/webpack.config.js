@@ -34,14 +34,29 @@ var config = {
       models: path.join(__dirname, '..', 'app/assets/javascripts/models'),
       templates: path.join(__dirname, '..', 'app/assets/javascripts/templates'),
       views: path.join(__dirname, '..', 'app/assets/javascripts/views'),
-      libs: path.join(__dirname, '..', 'app/assets/javascripts/libs')
+      libs: path.join(__dirname, '..', 'app/assets/javascripts/libs'),
+      components: path.join(__dirname, '..', 'app/assets/javascripts/components')
     }
   },
 
   module: {
     loaders: [
-      { test: /\.ejs$/, loader: 'ejs-compiled' }
+      { test: /\.ejs$/, loader: 'ejs-compiled' },
+      {
+        test: /\.js$/,
+        exclude: /\/node_modules\//,
+        loader: 'babel',
+        query: {
+          presets: ['airbnb']
+        }
+      }
     ]
+  },
+  externals: {
+    'cheerio': 'window',
+    'react/addons': true,
+    'react/lib/ExecutionEnvironment': true,
+    'react/lib/ReactContext': true
   },
 
   plugins: [
@@ -91,7 +106,7 @@ if (PRODUCTION) {
   };
   config.output.publicPath = '//localhost:' + devServerPort + '/webpack/';
   // Source maps
-  config.devtool = 'cheap-module-eval-source-map';
+  config.devtool = 'inline-source-map';
 }
 
 module.exports = config;

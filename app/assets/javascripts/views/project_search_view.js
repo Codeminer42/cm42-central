@@ -11,7 +11,6 @@ module.exports = Backbone.View.extend({
   },
 
   addBar: function(column) {
-    var that = this;
     var view = new SearchResultsBarView({model: this.model}).render();
     this.appendViewToColumn(view, column);
   },

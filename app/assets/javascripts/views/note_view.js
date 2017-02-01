@@ -16,8 +16,8 @@ module.exports = Backbone.View.extend({
   },
 
   deleteNote: function() {
-  	this.model.destroy();
-  	this.$el.remove();
-  	return false;
+    this.model.destroy();
+    this.$el.remove();
+    return false;
   }
 });

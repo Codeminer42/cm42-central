@@ -11,9 +11,8 @@ module.exports = FormView.extend({
   },
 
   render: function() {
-    var view = this;
+    var div = this.make('div', { class: 'clearfix' });
 
-    div = this.make('div', { class: 'clearfix' });
     $(div).append(this.textField("name", {class: 'form-control input-sm'}));
 
     var submit = this.make('input', {

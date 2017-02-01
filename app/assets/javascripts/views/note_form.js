@@ -7,25 +7,26 @@ module.exports = FormView.extend({
   className: 'note_form',
 
   initialize: function() {
-	  // Supply the model with a reference to it's own view object, so it can
+    // Supply the model with a reference to it's own view object, so it can
     // remove itself from the page when destroy() gets called.
     this.model.view = this;
 
     if (this.model.id) {
       this.id = this.el.id = this.model.id;
     }
-	},
+  },
 
-	events: {
+  events: {
     "click input": "saveEdit"
-	},
+  },
 
-	saveEdit: function() {
+  saveEdit: function() {
+    var view = this;
+
     this.disableForm();
 
-    var view = this;
     this.model.save(null, {
-      success: function(model, response) {
+      success: function() {
         // force the project to fetch changeset and reload the updated story with the new note
         window.projectView.model.fetch();
       },
@@ -44,7 +45,7 @@ module.exports = FormView.extend({
   render: function() {
     var view = this;
 
-    div = this.make('div', {
+    var div = this.make('div', {
       class: 'clearfix'
     });
 

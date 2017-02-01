@@ -88,6 +88,8 @@ module.exports = Backbone.View.extend({
     }
 
     _.each(select_options, function(option) {
+      var option_name, option_value;
+
       if (option instanceof Array) {
         option_name = option[0];
         option_value = option[1];

@@ -14,13 +14,12 @@ module.exports = FormView.extend({
   },
 
   render: function() {
-    var view = this;
+    var div = this.make('div');
 
-    div = this.make('div');
     $(div).append(this.checkBox("done"));
     $(div).append( this.template({task: this.model}) );
     this.$el.html(div);
-    
+
     return this;
   },
 

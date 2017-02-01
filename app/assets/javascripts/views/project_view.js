@@ -104,7 +104,7 @@ module.exports = Backbone.View.extend({
   addAll: function() {
     var that = this;
 
-    _.each(this.columns, function(column, columnId) {
+    _.each(this.columns, function(column) {
       column.$el.find('.storycolumn').html("");
     });
 
@@ -112,7 +112,6 @@ module.exports = Backbone.View.extend({
 
     // Render each iteration
     _.each(this.model.iterations, function(iteration) {
-      var column = iteration.get('column');
       that.addIteration(iteration);
     });
 
@@ -174,7 +173,7 @@ module.exports = Backbone.View.extend({
     if (window.projectView === undefined)
       return;
 
-    var filtered = _.filter(window.projectView.columns, function(column, columnId) {
+    var filtered = _.filter(window.projectView.columns, function(column) {
       if(!column.hidden())
         return true;
     });
