@@ -61,6 +61,9 @@ pt-BR:
   next: "Próximo"
   finish: "Finalizar"
   skip: "Pular"
+  reset_tour: "Resetar tour"
+  reset_tour_success: "A tour foi resetada com sucesso"
+  reset_tour_fail: "Ocorreu um erro, por favor tente novamente"
 
   story:
     state:

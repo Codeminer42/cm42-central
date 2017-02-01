@@ -36,6 +36,8 @@ var Central = module.exports = {
       window.projectView = view;
     });
 
-    firstTimeTour.start();
+    setTimeout(function() {
+      firstTimeTour.start();
+    }, 200);
   }
 };

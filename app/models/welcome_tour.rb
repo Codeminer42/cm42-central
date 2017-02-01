@@ -62,7 +62,7 @@ class WelcomeTour
     }
   ]
 
-  def set_steps user
-    user.tour_steps = STEPS
+  def set_user_steps user
+    user.tour_steps = STEPS.to_json
   end
 end

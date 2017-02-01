@@ -64,6 +64,9 @@ en:
   next: "Next"
   finish: "Finish"
   skip: "Skip"
+  reset_tour: "Reset tour"
+  reset_tour_success: "Tour was successfully reset"
+  reset_tour_fail: "An error has ocurred, please try again"
 
   story:
     state:

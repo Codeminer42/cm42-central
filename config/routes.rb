@@ -83,6 +83,7 @@ Rails.application.routes.draw do
     post 'users/disable_two_factor' => 'registrations#disable_two_factor', as: :user_disable_two_factor
     get 'users/current' => 'sessions#current', as: :current_user
     put 'users/:id/tour' => 'registrations#tour', as: :users_tour
+    put 'users/:id/reset_tour' => 'registrations#reset_tour'
   end
 
   if Rails.env.development?

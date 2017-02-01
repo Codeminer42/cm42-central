@@ -35,6 +35,17 @@ class RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  def reset_tour
+    @user = User.find(params[:id])
+    if @user.update(tour: true, tour_steps: WelcomeTour::STEPS.to_json)
+      flash[:notice] = t('reset_tour_success')
+      redirect_to(:back)
+    else
+      flash[:error] = t('reset_tour_fail')
+      redirect_to(:back)
+    end
+  end
+
   protected
     def after_inactive_sign_up_path_for(resource)
       new_session_path(resource)
@@ -54,9 +65,6 @@ class RegistrationsController < Devise::RegistrationsController
         u.permit( :email, :password, :password_confirmation, :remember_me,
                   :name, :initials, :username, :email_delivery, :email_acceptance,
                   :email_rejection, :locale, :time_zone, :current_password )
-      end
-      devise_parameter_sanitizer.for(:tour) do |u|
-        u.permit( :tour, :tour_steps )
       end
     end
 

@@ -52,7 +52,7 @@ class User < ActiveRecord::Base
   end
 
   def set_tour_steps
-    self.tour_steps = WelcomeTour::STEPS.to_json
+    WelcomeTour.new.set_user_steps self
   end
 
   def as_json(options = {})
