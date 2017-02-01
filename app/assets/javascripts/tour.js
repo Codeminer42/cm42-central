@@ -34,7 +34,7 @@ const firstTimeTour = module.exports =  {
 
       if(index === 0) {
         buttons.push({
-          text: "Skip",
+          text: I18n.t("skip"),
           action: function() {
             user.tour = false;
             updateTour(user);
@@ -45,7 +45,7 @@ const firstTimeTour = module.exports =  {
       }
 
       buttons.push({
-        text: index == user.tour_steps.length - 1 ? 'Finish' : 'Next',
+        text: I18n.t(index == user.tour_steps.length - 1 ? 'finish' : 'next'),
         action: function() {
           user.tour_steps[index].done = true;
 
@@ -59,13 +59,17 @@ const firstTimeTour = module.exports =  {
 
     function setupTour(user, tour) {
       user.tour_steps.map((step, index) => {
-        let selector = step.attachTo.split(" ")[0];
+        var tourStep = Object.assign({}, step);
+
+        var selector = step.attachTo.split(" ")[0];
 
         if($(selector).length > 0 && step.done !== true) {
-          step.classes = 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text';
-          step.buttons = generateButtons(index, user);
+          tourStep.title = I18n.t(step.title);
+          tourStep.text = I18n.t(step.text);
+          tourStep.classes = 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text';
+          tourStep.buttons = generateButtons(index, user);
 
-          tour.addStep(step.title.toLowerCase().replace(' ', '_'), step);
+          tour.addStep(tourStep.title.toLowerCase().replace(' ', '_'), tourStep);
         }
 
       });

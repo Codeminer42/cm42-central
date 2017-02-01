@@ -57,6 +57,9 @@ es:
   search projects: "Proyectos de búsqueda"
   private: "Privado"
   my teams: "Mis equipos"
+  next: "Próximo"
+  finish: "Finalizar"
+  skip: "Saltar"
 
   story:
     state:
@@ -541,3 +544,35 @@ es:
       update: 'actualizó'
       destroy: 'destruyo'
       create: 'creado'
+
+  welcome_tour:
+    create_team:
+      title: "Crear equipo"
+      text: "Debe crear un equipo nuevo para comenzar, se convertirá en el administrador del equipo. Los equipos pueden tener muchos miembros y muchos proyectos y puedes participar en varios equipos al mismo tiempo"
+    create_project:
+      title: "Creat Projecto"
+      text: "Puede crear tantos proyectos como desee haciendo clic en este botón"
+    project_activity:
+      title: "Actividad del proyecto"
+      text: "Cada vez que cambie algo en el Proyecto o en su Historia, será auditado y los detalles de los cambios serán visibles para cada miembro del equipo en este cuadro de la línea de tiempo de la Actividad. <br> <strong> Pro tip </ strong>: no debes cambiar una historia después de que el equipo empezó a trabajar en ella, debes añadir una nueva historia."
+    create_story:
+      title: "Crear história"
+      text: "Haga clic en este botón para crear nuevas historias. Una historia puede ser la descripción de una nueva función o un informe de error, por ejemplo. Las nuevas historias serán creadas primero en la caja de Chilly Bin."
+    chilly_bin:
+      title: "Chilly Bin"
+      text: "Todas las nuevas historias son tiendas en esta Chilly Bin. Debe describir sus historias esperando que la descripción y los anexos sean suficientes para que la historia se implemente. Los miembros del proyecto deben estimar esas historias."
+    backlog:
+      title: "Backlog"
+      text: "Lo Backlog debe tener todas las historias por orden de PRIORIDAD. Historias más valiosas y listas para empezar en la parte superior e historias opcionales o inciertas en la parte inferior"
+    in_progress:
+      title: "En Progreso"
+      text: "Aquí es donde las historias que se deben trabajar encendido ahora residirán. Central recogerá automáticamente las historias más importantes del Backlog para ajustarse a la velocidad actual del equipo"
+    done:
+      title: "Hecho"
+      text: "Después de que una historia es entregada y aprobada, se clasifica en la parte inferior de esta columna. Una historia entregada no puede ser modificada y esta columna está aquí para mostrarle todo lo que ya ha sido terminado y aprobado"
+    project_velocity:
+      title: "Velocidad del proyecto"
+      text: "Todas las historias son estimadas por \"puntos\". El promedio de puntos entregados por un equipo durante una iteración es la velocidad. La fecha de finalización estimada de un Proyecto es la cantidad total de puntos en el Backlog dividido por la Velocidad. Aquí puede simular la adición de un nuevo miembro aumentando ligeramente la velocidad estimada para ver los efectos en las fechas de Iteración futuras"
+    members:
+      title: "Miembros"
+      text: "Si desea agregar o eliminar personas del equipo del proyecto, haga clic aquí"
