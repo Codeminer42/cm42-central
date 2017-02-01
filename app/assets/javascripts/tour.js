@@ -73,7 +73,6 @@ var firstTimeTour = module.exports =  {
 
           tour.addStep(tourStep.title.toLowerCase().replace(' ', '_'), tourStep);
         }
-
       });
     };
 

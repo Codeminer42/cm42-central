@@ -49,6 +49,9 @@ es:
   next: "Próximo"
   finish: "Finalizar"
   skip: "Saltar"
+  reset_tour: "Resetear excursión"
+  reset_tour_success: "La excursión se restableció correctamente"
+  reset_tour_fail: "Ha ocurrido un error, por favor intente otra vez"
 
   story:
     state:
