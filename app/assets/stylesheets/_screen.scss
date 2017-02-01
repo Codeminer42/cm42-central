@@ -732,8 +732,13 @@ div#keycut-help {
 
 .btn-clipboard {
   padding: 4px 12px 5px;
+}
 
-.shepherd-element .shepherd-content {
+.shepherd-element.shepherd-theme-arrows {
+  z-index: 100;
+}
+
+.shepherd-element.shepherd-theme-arrows {
   max-width: 250px;
 }
 
