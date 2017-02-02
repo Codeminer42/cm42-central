@@ -55,8 +55,8 @@ var firstTimeTour = module.exports =  {
       });
     };
 
-    function getCurrentUserSuccess(res) {
-      var currentUser = res.user;
+    function getCurrentUserSuccess(user) {
+      var currentUser = user.attributes;
       currentUser.tour_steps = JSON.parse(currentUser.tour_steps);
 
       if(currentUser.tour === true) {
@@ -65,6 +65,6 @@ var firstTimeTour = module.exports =  {
       }
     }
 
-    user.getCurrent(getCurrentUserSuccess);
+    User.getCurrent().then(getCurrentUserSuccess);
   }
 }
