@@ -48,4 +48,10 @@ module IntegrationHelpers
   def wait_page_load
     find('.column_header', match: :first).click
   end
+
+  def next_tour_step
+    if page.all('.shepherd-step').size > 0
+      find(:css, '.shepherd-button').click
+    end
+  end
 end
