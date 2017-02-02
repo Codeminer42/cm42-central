@@ -6,8 +6,6 @@ var firstTimeTour = module.exports =  {
     var user = new User();
     var tour = new Tour();
 
-    var welcomeTour = tour.create();
-
     function generateButtons(index, user) {
       var buttons = [];
 
@@ -17,7 +15,7 @@ var firstTimeTour = module.exports =  {
           action: function() {
             user.tour = false;
             tour.update(user);
-            welcomeTour.complete();
+            tour.complete();
           },
           classes: 'btn btn-default pull-left'
         });
@@ -29,7 +27,7 @@ var firstTimeTour = module.exports =  {
           user.tour_steps[index].done = true;
 
           tour.update(user);
-          welcomeTour.next();
+          tour.next();
         }
       });
 
@@ -41,18 +39,18 @@ var firstTimeTour = module.exports =  {
     }
 
     function setupTour(user, tour) {
-      user.tour_steps.forEach((step, index) => {
+      user.tour_steps.forEach(function(step, index) {
         var tourStep = Object.assign({}, step);
 
         var selector = getSelectorFromStepAttach(step.attachTo);
 
-        if($(selector).length > 0 && step.done !== true) {
+        if($(selector).length > 0 && !step.done) {
           tourStep.title = I18n.t(step.title);
           tourStep.text = I18n.t(step.text);
           tourStep.classes = 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text';
           tourStep.buttons = generateButtons(index, user);
 
-          welcomeTour.addStep(tourStep.title.toLowerCase().replace(' ', '_'), tourStep);
+          tour.addStep(tourStep.title.toLowerCase().replace(' ', '_'), tourStep);
         }
       });
     };
@@ -63,7 +61,7 @@ var firstTimeTour = module.exports =  {
 
       if(currentUser.tour === true) {
         setupTour(currentUser, tour);
-        welcomeTour.start();
+        tour.start();
       }
     }
 
