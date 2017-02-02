@@ -42,7 +42,7 @@ module.exports = Backbone.Model.extend({
       type: 'PUT',
       dataType: 'json',
       data: data,
-      url: `/users/${user.id}/tour`
+      url: '/users/' + user.id + '/tour'
     };
 
     return $.ajax(options);

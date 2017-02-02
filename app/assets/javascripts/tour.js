@@ -57,9 +57,8 @@ var firstTimeTour = module.exports =  {
 
     function getCurrentUserSuccess(user) {
       var currentUser = user.attributes;
-      currentUser.tour_steps = JSON.parse(currentUser.tour_steps);
 
-      if(currentUser.tour === true) {
+      if(currentUser.tour) {
         setupTour(currentUser, tour);
         tour.start();
       }

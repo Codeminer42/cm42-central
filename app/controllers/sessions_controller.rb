@@ -1,5 +1,9 @@
 class SessionsController < Devise::SessionsController
   def current
-    render json: current_user
+    if user_signed_in?
+      render json: current_user, status: :ok
+    else
+      render json: {}, status: :unauthorized
+    end
   end
 end
