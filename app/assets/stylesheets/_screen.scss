@@ -637,6 +637,12 @@ div#keycut-help {
   }
 }
 
+
+.unstyled-input {
+  background: none;
+  border: none;
+}
+
 .teams, .projects {
   .card-link, .project-item {
     @for $i from 1 through 12 {

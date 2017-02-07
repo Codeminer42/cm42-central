@@ -10,6 +10,7 @@ en:
   login:   "Log in"
   sign_up:  "Sign up"
   edit:     "Edit"
+  options:  "Options"
   settings: "Settings"
   reports:  "Reports"
   delete:   "Delete"
@@ -40,7 +41,14 @@ en:
   cancel_account: "Cancel my account"
   cancel_account_confirmation_question: "Are you sure that you want to cancel your account?"
   update_profile: "Update profile"
-
+  join: "Join"
+  by_clicking: "By clicking the"
+  archived_at: "Archived at"
+  archived: "Archived"
+  not_archived: "Not Archived"
+  all_projects: "All Projects"
+  no_results_found: "No results found"
+  adjusting_search: "Try adjusting your search to find what you're looking for."
   save: "Save"
   cancel: "Cancel"
   add: "Add"
@@ -49,6 +57,8 @@ en:
   add new member: "Add a new member"
   all users: "All Users"
   remove user confirm: "Are you sure you want to remove %{email} from this project?"
+  search projects: "Search projects"
+  private: "Private"
 
   story:
     state:
@@ -190,6 +200,13 @@ en:
     project_members: "Project Members"
     available_users: "Available Members"
     select: "Select project"
+    join: "Join project"
+    unjoin: "Leave project"
+    mine: "My projects"
+    not_member_of: "Projects I'm not member of"
+    you_are_not_a_member: "You're not a member of these projects, but you can"
+    to_view_more_join: "To view more, join the project"
+    unable_to_join: "You can't join to this project"
     reports:
       n months ago:
         one: "1 month ago"
@@ -284,6 +301,7 @@ en:
     is already a member of this project: "%{email} is already a member of this project"
     was sent an invite to join this project: "%{email} was sent an invite to join this project"
     was added to this project: "%{email} was added to this project"
+    was removed from this project: "%{email} was removed from this project"
     admin_on: Make Administrator
     admin_off: Make just Member
 

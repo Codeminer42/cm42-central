@@ -7,6 +7,7 @@ es:
   login:   "Iniciar sesión"
   sign_up:  "Regístrate"
   edit:     "Editar"
+  options:  "Opciones"
   settings: "Ajustes"
   reports:  "Informes"
   back:     "Atras"
@@ -36,7 +37,14 @@ es:
   cancel_account: "Cancelar mi cuenta"
   cancel_account_confirmation_question: "¿Está seguro de que desea cancelar su cuenta?"
   update_profile: "Actualizar perfil"
-
+  join: "Unirse"
+  by_clicking: "Al hacer clic en"
+  archived_at: "Archivado en"
+  archived: "Archivado"
+  not_archived: "No Archivado"
+  all_projects: "Todos los proyectos"
+  no_results_found: "No se han encontrado resultados"
+  adjusting_search: "Trate de ajustar su búsqueda para encontrar lo que está buscando."
   save: "Guardar"
   delete: "Borrar"
   cancel: "Cancelar"
@@ -46,6 +54,8 @@ es:
   add new member: "Agregar un nuevo miembro"
   all users: "Todos los usuarios"
   remove user confirm: "¿Está seguro que desea eliminar %{email} de este proyecto?"
+  search projects: "Proyectos de búsqueda"
+  private: "Privado"
 
   story:
     state:
@@ -181,6 +191,13 @@ es:
     project_members: "Miembros del Proyecto"
     available_users: "Miembros disponibles"
     select: "Seleccionar proyecto"
+    join: "Unirse al proyecto"
+    unjoin: "Dejar el proyecto"
+    mine: "Mis proyectos"
+    not_member_of: "Proyectos de los que no soy miembro"
+    you_are_not_a_member: "Usted no es miembro de estos proyectos, pero puede"
+    to_view_more_join: "Para ver más, únase al proyecto"
+    unable_to_join: "No puedes unirte a este proyecto"
     reports:
       n months ago:
         one: "Hace 1 mes"
@@ -275,6 +292,7 @@ es:
     is already a member of this project: "%{email} ya es un miembro de este proyecto"
     was sent an invite to join this project: "Se ha enviado una invitación a %{email} para unirse a este proyecto"
     was added to this project: "%{email} se añadió a este proyecto"
+    was removed from this project: "%{email} fue eliminado de este proyecto"
     admin_on: Hacer administrador
     admin_off: Hacer miembro
 

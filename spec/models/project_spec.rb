@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Project do
+describe Project, type: :model do
 
   subject { build :project }
 
@@ -9,6 +9,38 @@ describe Project do
 
     (Project::JSON_ATTRIBUTES + Project::JSON_METHODS).each do |key|
       its(:as_json) { expect(subject.as_json['project']).to have_key(key) }
+    end
+  end
+
+  describe "#joinable" do
+    context "when disallow_join is true" do
+      let(:project) { create :project, disallow_join: true }
+
+      it { expect(Project.joinable).not_to include(project) }
+    end
+
+    context "when disallow_join is false" do
+      let(:project) { create :project, disallow_join: false }
+
+      it { expect(Project.joinable).to include(project) }
+    end
+  end
+
+  describe "#joinable_except" do
+    context  "when disallow_join is true" do
+      let(:project) { create :project, disallow_join: true }
+      let(:another_project) { create :project, disallow_join: true }
+
+      it { expect(Project.joinable_except(project.id)).not_to include(project) }
+      it { expect(Project.joinable_except(project.id)).not_to include(another_project) }
+    end
+
+    context "when disallow_join is false" do
+      let(:project) { create :project, disallow_join: false }
+      let(:another_project) { create :project, disallow_join: false }
+
+      it { expect(Project.joinable_except(project.id)).not_to include(project) }
+      it { expect(Project.joinable_except(project.id)).to include(another_project) }
     end
   end
 

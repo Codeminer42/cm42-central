@@ -7,27 +7,8 @@
 <div id="projects" class="projects-list">
   <div class="row item">
     <div class="col-md-12">
-      <% unless @projects.empty? %>
-
+      <% if @projects[:joined].empty? %>
         <div class="col-md-6">
-          <% unless @activities_group.empty? %>
-            <ul class="timeline">
-              <%= render 'activities_group', activities_group: @activities_group %>
-            </ul>
-          <% else %>
-            <div class="simple-alert">
-              <i class="mi alert-icon">error_outline</i>
-              <h4 class="text-center"><%= t('projects.no_recent_activity') %></h4>
-            </div>
-          <% end %>
-        </div>
-
-        <div class="col-md-6 projects">
-          <%= render @projects %>
-        </div>
-
-      <% else %>
-        <div class="col-md-8 col-md-offset-2">
           <div class="simple-alert">
             <i class="mi alert-icon">error_outline</i>
             <h4 class="text-center">
@@ -35,7 +16,29 @@
             </h4>
           </div>
         </div>
+      <% else %>
+        <div class="col-md-6">
+          <% if @activities_group.empty? %>
+            <div class="simple-alert">
+              <i class="mi alert-icon">error_outline</i>
+              <h4 class="text-center"><%= t('projects.no_recent_activity') %></h4>
+            </div>
+          <% else %>
+            <ul class="timeline">
+              <%= render 'activities_group', activities_group: @activities_group %>
+            </ul>
+          <% end %>
+        </div>
       <% end %>
+      <div
+        id="projects-search"
+        class="col-md-6 projects"
+        data-current_user="<%= current_user.to_json %>"
+        data-admin="<%= policy(User).update? %>"
+        data-projects_joined="<%= @projects[:joined].to_json %>"
+        data-projects_unjoined="<%= @projects[:unjoined].to_json %>"
+      >
+      </div>
     </div>
   </div>
 </div>

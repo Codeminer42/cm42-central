@@ -1,148 +1,200 @@
 require 'feature_helper'
 
 describe "Projects" do
+  context "when logged in" do
 
-  before(:each) do
-    sign_in user
-  end
+    context "as non-admin" do
+      let(:user) { create :user, :with_team }
+      let(:current_team) { user.teams.first }
 
-  let(:user) { create :user, :with_team_and_is_admin, email: 'user@example.com', password: 'password' }
-  let(:team) { user.teams.first }
+      describe "join project" do
+        let(:project) { create :project, disallow_join: false }
 
-  describe "list projects" do
+        before do
+          create :ownership, team: current_team, project: project
+          sign_in user
+        end
 
-    before do
-      p1 = create :project, name: 'Test Project',
-                            users: [user]
-      p2 = create :project, name: 'Archived Project',
+        it "joins a project", js: true do
+          visit projects_path
+
+          within ".project-item" do
+            click_on "Join project"
+          end
+
+          expect(user.projects.count).to eq(1)
+        end
+      end
+
+      describe "unjoin project" do
+        let(:project) { create :project, users: [user] }
+
+        before do
+          create :ownership, team: current_team, project: project
+          sign_in user
+        end
+
+        it "leaves a project", js: true do
+          visit projects_path
+
+          within ".project-item" do
+            click_on 'Leave project'
+          end
+
+          expect(user.projects.count).to eq(0)
+        end
+      end
+    end
+
+    context "as admin" do
+      before(:each) do
+        sign_in user
+      end
+
+      let(:user) { create :user, :with_team_and_is_admin, email: 'user@example.com', password: 'password' }
+      let(:team) { user.teams.first }
+
+      describe "list projects" do
+
+        before do
+          p1 = create :project, name: 'Test Project',
+                                users: [user]
+          p2 = create :project, name: 'Archived Project',
+                                users: [user],
+                                archived_at: Time.current
+          team.ownerships.create(project: p1, is_owner: true)
+          team.ownerships.create(project: p2, is_owner: true)
+        end
+
+        it "shows the project list", js: true do
+          visit projects_path
+
+          expect(page).to have_selector('.navbar', text: 'New Project')
+
+          within('#projects') do
+            click_on 'Test Project'
+          end
+
+          expect(page).not_to have_selector('h1', text: 'Archived Project')
+        end
+
+      end
+
+      describe "create project" do
+
+        it "creates a project", js: true do
+          visit projects_path
+          click_on 'New Project'
+
+          fill_in 'Name', with: 'New Project'
+          click_on 'Create Project'
+
+          expect(current_path).to eq(project_path(Project.find_by_name('New Project')))
+        end
+
+      end
+
+      describe "edit project" do
+
+        let!(:project) {
+          create :project,  name: 'Test Project',
                             users: [user],
-                            archived_at: Time.current
-      team.ownerships.create(project: p1, is_owner: true)
-      team.ownerships.create(project: p2, is_owner: true)
-    end
+                            teams: [user.teams.first]
+        }
 
-    it "shows the project list", js: true do
-      visit projects_path
+        it "edits a project", js: true do
+          visit projects_path
 
-      expect(page).to have_selector('.navbar', text: 'New Project')
+          within('.project-item') do
+            find('a[data-toggle="dropdown"]').click
 
-      within('#projects') do
-        click_on 'Test Project'
+            click_on 'Settings'
+          end
+
+          fill_in 'Name', with: 'New Project Name'
+          click_on 'Update Project'
+
+          expect(current_path).to eq(project_path(project))
+        end
+
+        it "shows form errors", js: true do
+          visit projects_path
+
+          within('.project-item') do
+            find('a[data-toggle="dropdown"]').click
+
+            click_on 'Settings'
+          end
+
+          fill_in 'Name', with: ''
+          click_on 'Update Project'
+
+          expect(page).to have_content("Name can't be blank")
+        end
       end
 
-      expect(page).not_to have_selector('h1', text: 'Archived Project')
-    end
+      describe "delete project" do
 
-  end
+        let!(:project) {
+          create :project, name: 'Test Project',
+                           users: [user]
+        }
 
-  describe "create project" do
+        before do
+          team.ownerships.create(project: project, is_owner: true)
+        end
 
-    it "creates a project", js: true do
-      visit projects_path
-      click_on 'New Project'
+        it "deletes a project" do
+          visit edit_project_path(project)
+          click_on 'Delete'
 
-      fill_in 'Name', with: 'New Project'
-      click_on 'Create Project'
-
-      expect(current_path).to eq(project_path(Project.find_by_name('New Project')))
-    end
-
-  end
-
-  describe "edit project" do
-
-    let!(:project) {
-      create :project,  name: 'Test Project',
-                        users: [user],
-                        teams: [user.teams.first]
-    }
-
-    it "edits a project" do
-      visit projects_path
-      within('#projects') do
-        click_on 'settings'
+          expect(Project.count).to eq(0)
+        end
       end
 
-      fill_in 'Name', with: 'New Project Name'
-      click_on 'Update Project'
+      describe "share/transfer project" do
 
-      expect(current_path).to eq(project_path(project))
-    end
+        let!(:another_admin) { create :user, :with_team_and_is_admin }
+        let!(:another_team) { another_admin.teams.first }
 
-    it "shows form errors" do
-      visit projects_path
-      within('#projects') do
-        click_on 'settings'
+        let!(:project) {
+          create :project, name: 'Test Project',
+                           users: [user]
+        }
+
+        before do
+          team.ownerships.create(project: project, is_owner: true)
+        end
+
+        it "shares and unshares a project" do
+          visit edit_project_path(project)
+
+          within('.share-project') do
+            fill_in "Slug", with: another_team.slug
+            click_on 'Share'
+          end
+
+          another_team_elem = page.find('.share-project table tr:first-child td:first-child')
+          expect(another_team_elem.text).to eq(another_team.name)
+
+          within('.share-project') do
+            click_on "Unshare"
+
+            expect(page).to_not have_selector('.share-project table')
+          end
+        end
+
+        it "transfers a project" do
+          visit edit_project_path(project)
+
+          within('.transfer-project') do
+            fill_in "Slug", with: another_team.slug
+            click_on 'Transfer'
+          end
+
+          expect(page).to have_text(I18n.t('projects.project was successfully transferred'))
+        end
       end
-
-      fill_in 'Name', with: ''
-      click_on 'Update Project'
-
-      expect(page).to have_content("Name can't be blank")
-    end
-  end
-
-  describe "delete project" do
-
-    let!(:project) {
-      create :project, name: 'Test Project',
-                       users: [user]
-    }
-
-    before do
-      team.ownerships.create(project: project, is_owner: true)
-    end
-
-    it "deletes a project" do
-      visit edit_project_path(project)
-      click_on 'Delete'
-
-      expect(Project.count).to eq(0)
-    end
-  end
-
-  describe "share/transfer project" do
-
-    let!(:another_admin) { create :user, :with_team_and_is_admin }
-    let!(:another_team) { another_admin.teams.first }
-
-    let!(:project) {
-      create :project, name: 'Test Project',
-                       users: [user]
-    }
-
-    before do
-      team.ownerships.create(project: project, is_owner: true)
-    end
-
-    it "shares and unshares a project" do
-      visit edit_project_path(project)
-
-      within('.share-project') do
-        fill_in "Slug", with: another_team.slug
-        click_on 'Share'
-      end
-
-      another_team_elem = page.find('.share-project table tr:first-child td:first-child')
-      expect(another_team_elem.text).to eq(another_team.name)
-
-      within('.share-project') do
-        click_on "Unshare"
-
-        expect(page).to_not have_selector('.share-project table')
-      end
-    end
-
-    it "transfers a project" do
-      visit edit_project_path(project)
-
-      within('.transfer-project') do
-        fill_in "Slug", with: another_team.slug
-        click_on 'Transfer'
-      end
-
-      expect(page).to have_text(I18n.t('projects.project was successfully transferred'))
     end
   end
-
 end

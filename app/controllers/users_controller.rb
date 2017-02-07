@@ -46,7 +46,7 @@ class UsersController < ApplicationController
     @user = policy_scope(User).find(params[:id])
     authorize @user
     policy_scope(User).delete(@user)
-    flash[:notice] = "#{@user.email} was removed from this project"
+    flash[:notice] = I18n.t('was removed from this project', scope: 'users', email: @user.email)
 
     respond_to do |format|
       format.js { render :refresh_user_list }

@@ -379,4 +379,6 @@ module.exports = Backbone.Model.extend({
     this.set('current_flow', nextValue);
     Cookies.set('current_flow', nextValue, {expires: 365});
   }
+},{
+  filters: ['not_archived', 'archived', 'all_projects'],
 });

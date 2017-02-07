@@ -11,6 +11,10 @@ class ProjectPolicy < ApplicationPolicy
     is_admin? && is_project_owner?
   end
 
+  def join?
+    !is_project_member?
+  end
+
   alias_method :archived?,      :update?
   alias_method :import_upload?, :import?
   alias_method :archive?,       :import?
