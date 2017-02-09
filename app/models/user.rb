@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  before_create :set_tour_steps
+  before_create :init_tour_steps
 
   include Central::Support::UserConcern::Associations
   include Central::Support::UserConcern::Validations
@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
   attr_accessor :was_created
 
   scope :recently_created, -> (created_at) { where("users.created_at > ?", created_at) if created_at }
-  
+
   def password_required?
     # Password is required if it is being set, but not for new records
     if !persisted?
@@ -51,8 +51,8 @@ class User < ActiveRecord::Base
     raw
   end
 
-  def set_tour_steps
-    WelcomeTour.new.set_user_steps self
+  def init_tour_steps
+    self.tour_steps = WelcomeTour::STEPS.to_json
   end
 
   def as_json(options = {})
