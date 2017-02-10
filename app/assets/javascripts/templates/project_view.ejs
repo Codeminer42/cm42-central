@@ -1,0 +1,13 @@
+<% if (inverse_flow) { %>
+  <td data-column-view="chilly_bin" data-connect="#backlog,#in_progress"></td>
+  <td data-column-view="backlog" data-connect="#chilly_bin,#in_progress"></td>
+  <td data-column-view="in_progress" data-connect="#backlog,#chilly_bin"></td>
+  <td data-column-view="done"></td>
+<% } else { %>
+  <td data-column-view="done"></td>
+  <td data-column-view="in_progress" data-connect="#backlog,#chilly_bin"></td>
+  <td data-column-view="backlog" data-connect="#chilly_bin,#in_progress"></td>
+  <td data-column-view="chilly_bin" data-connect="#backlog,#in_progress"></td>
+<% } %>
+<td style="display: none;" data-column-view="epic" data-hideable="false"></td>
+<td style="display: none;" data-column-view="search_results"></td>

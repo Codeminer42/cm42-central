@@ -105,4 +105,8 @@ module ProjectsHelper
   def formatted_standard_deviation(standard_deviation)
     "%3.2f" % Math.sqrt(standard_deviation)
   end
+
+  def inverse_story_flow
+    'active' unless @column_order.eql?( Fulcrum::Application.config.fulcrum.column_order )
+  end
 end

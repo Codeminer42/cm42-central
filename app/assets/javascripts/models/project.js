@@ -1,3 +1,5 @@
+var Cookies = require('js-cookie');
+
 var StoryCollection = require('collections/story_collection');
 var UserCollection = require('collections/user_collection');
 var Iteration = require('models/iteration');
@@ -26,10 +28,14 @@ module.exports = Backbone.Model.extend({
     this.search.project = this;
 
     this.iterations = [];
+
+    var $el = $('#project_columns');
+    this.defaultFlow = $el.length ? $el.data().defaultFlow : 'progress_to_left';
   },
 
   defaults: {
-    default_velocity: 10
+    default_velocity: 10,
+    inverse_flow: Cookies.get('column_order') != this.defaultFlow
   },
 
   url: function() {
@@ -367,5 +373,13 @@ module.exports = Backbone.Model.extend({
     );
 
     this.iterations.push(iteration);
+  },
+
+  toggleStoryFlow: function () {
+    var isInverse = this.get('inverse_flow');
+    this.set('inverse_flow', !isInverse);
+
+    var newCookieValue = isInverse ? 'progress_to_left' : 'progress_to_right';
+    Cookies.set('column_order', newCookieValue, { expires: 365 });
   }
 });

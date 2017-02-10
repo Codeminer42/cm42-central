@@ -1,3 +1,5 @@
+var Cookies = require('js-cookie');
+
 var Project = require('models/project');
 var Iteration = require('models/iteration');
 
@@ -42,6 +44,10 @@ describe('Project model', function() {
 
     it("should have a default velocity of 10", function() {
       expect(this.project.get('default_velocity')).toEqual(10);
+    });
+
+    it("should have a default story flow", function() {
+      expect(this.project.defaultFlow).toEqual('progress_to_left');
     });
 
   });
@@ -492,6 +498,23 @@ describe('Project model', function() {
       this.project.on('rebuilt-iterations', stub);
       this.project.rebuildIterations();
       expect(stub).toHaveBeenCalled();
+    });
+
+  });
+
+  describe("toggleStoryFlow", function() {
+
+    it("should be able to toggle inverse_flow value", function() {
+      this.project.toggleStoryFlow();
+      expect(this.project.get('inverse_flow')).toBeTruthy();
+
+      this.project.toggleStoryFlow();
+      expect(this.project.get('inverse_flow')).toBeFalsy();
+    });
+
+    it("should be able to save the current story flow on cookies", function() {
+      this.project.toggleStoryFlow();
+      expect(Cookies.get('column_order')).toBe('progress_to_right');
     });
 
   });

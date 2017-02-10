@@ -1,17 +1,23 @@
 var StoryView = require('./story_view');
 var IterationView = require('./iteration_view');
+var ColumnView = require('./column_view');
+var ColumnVisibilityButtonView = require('./column_visibility_button_view');
 
 module.exports = Backbone.View.extend({
+  template: require('templates/project_view.ejs'),
   columns: {},
 
   initialize: function() {
 
-    _.bindAll(this, 'addStory', 'addAll', 'render');
+    _.bindAll(this, 'addStory', 'addAll', 'render', 'prepareColumns');
 
     this.model.stories.on('add', this.addStory);
     this.model.stories.on('reset', this.addAll);
     this.model.stories.on('all', this.render);
     this.model.on('change:userVelocity', this.addAll);
+    this.model.on('change:inverse_flow', this.prepareColumns);
+
+    this.prepareColumns();
 
     var that = this;
     this.model.stories.fetch({
@@ -19,6 +25,51 @@ module.exports = Backbone.View.extend({
         that.addAll();
       }
     });
+  },
+
+  prepareColumns: function() {
+    // reset columns & columns
+    this.columns = {};
+    this.$el.html(this.template({ inverse_flow: this.model.get('inverse_flow') }));
+    $('#column-toggles').html('');
+
+    var that = this;
+    $('[data-column-view]').each(function() {
+      that.addColumnView($(this));
+    });
+
+    // render columns on the screen
+    this.addAll();
+    this.scaleToViewport();
+  },
+
+  addColumnView: function(el) {
+    var data = el.data();
+    el.addClass(data.columnView + '_column');
+
+    var column = new ColumnView({
+      el: el,
+      id: data.columnView,
+      name: I18n.t('projects.show.' + data.columnView),
+      sortable: data.connect !== undefined
+    });
+
+    column.on('visibilityChanged', this.checkColumnViewsVisibility);
+    column.render();
+
+    this.columns[data.columnView] = column;
+
+    if (data.hideable !== false) {
+      $('<li class="sidebar-item"/>')
+        .append(new ColumnVisibilityButtonView({ columnView: column }).render().$el)
+        .appendTo('#column-toggles');
+    }
+
+    if (data.connect) {
+      column.$el
+        .find('.ui-sortable')
+        .sortable('option', 'connectWith', data.connect);
+    }
   },
 
   // Triggered when the 'Add Story' button is clicked
@@ -125,18 +176,6 @@ module.exports = Backbone.View.extend({
 
   notice: function(message) {
     $.gritter.add(message);
-  },
-
-  addColumnView: function(id, view) {
-    this.columns[id] = view;
-  },
-
-  addColumnViews: function(columns) {
-    var that = this;
-    _.each(columns, function(column, columnId) {
-      column.on('visibilityChanged', that.checkColumnViewsVisibility);
-      that.addColumnView(columnId, column);
-    });
   },
 
   // make sure there is at least one column opened

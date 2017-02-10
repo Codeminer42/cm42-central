@@ -21,6 +21,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.xml
   def show
+    @column_order = cookies[:column_order]
     @story = @project.stories.build
 
     respond_to do |format|
