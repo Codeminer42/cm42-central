@@ -18,7 +18,7 @@ class Note < ActiveRecord::Base
     note_string = note
     user_name = user ? user.name : I18n.t('author unknown')
     created_date = I18n.l created_at, format: :note_date
-    note_string = note_string + " (" + user_name + " - " + created_date + ")"
+    note_string + " (" + user_name + " - " + created_date + ")"
   end
 
   def readonly?

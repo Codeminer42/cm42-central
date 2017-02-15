@@ -11,7 +11,7 @@ class ActivityPresenter < SimpleDelegator
     super
   end
 
-  def eql?(targer)
+  def eql?(target)
     target == self || activity.eql?(target)
   end
 

@@ -5,7 +5,7 @@ namespace :fulcrum do
     example_database_config = Rails.root.join('config',"database.yml.#{db}")
     database_config = Rails.root.join('config',"database.yml")
 
-    unless File.exists?(database_config)
+    unless File.exist?(database_config)
       cp example_database_config, database_config
     else
       puts "#{database_config} already exists!"
@@ -13,7 +13,7 @@ namespace :fulcrum do
   end
 
   desc "Create a user. A confirmation email will be sent to the user's address."
-  task :create_user, [:email, :name, :initials, :password] => :environment do |t, args|
+  task :create_user, [:email, :name, :initials, :password] => :environment do |_, args|
     user = User.create!(
       email: args.email, name: args.name, initials: args.initials,
       password: args.password, password_confirmation: args.password
