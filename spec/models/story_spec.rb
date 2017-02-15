@@ -27,7 +27,7 @@ describe Story do
     end
   end
 
-  describe '#readonly?' do
+  describe "#readonly?" do
     subject { create :story, :with_project }
 
     before { subject.update_attribute(:state, 'accepted') }
@@ -69,8 +69,8 @@ describe Story do
     end
   end
 
-  describe '#fix_project_start_date' do
-    let(:project)         { Project.create(name: 'test project', start_date: nil) }
+  describe "#fix_project_start_date" do
+    let(:project)         { create(:project, start_date: nil) }
     let(:story_params)    { { title: 'Test Story', state: 'started', accepted_at: nil } }
     let(:story)           { project.stories.build(story_params) }
 
@@ -79,8 +79,8 @@ describe Story do
     end
   end
 
-  describe '#fix_story_accepted_at' do
-    let(:project)         { Project.create(name: 'test project', start_date: Date.today) }
+  describe "#fix_story_accepted_at" do
+    let(:project)         { create(:project, start_date: Date.today) }
     let(:story_params)    { { title: 'Test Story', state: 'accepted', accepted_at: Date.yesterday } }
     let(:story)           { project.stories.build(story_params) }
 
