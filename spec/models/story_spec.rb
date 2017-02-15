@@ -8,12 +8,10 @@ describe Story do
   }
 
   describe "defaults" do
-
     subject { Story.new }
 
     its(:state)       { should == "unstarted" }
     its(:story_type)  { should == "feature" }
-
   end
 
   describe "#as_json" do
@@ -68,6 +66,26 @@ describe Story do
         subject.reload
         expect(subject.documents.count).to eq(2)
       end
+    end
+  end
+
+  describe '#fix_project_start_date' do
+    let(:project)         { Project.create(name: 'test project', start_date: nil) }
+    let(:story_params)    { { title: 'Test Story', state: 'started', accepted_at: nil } }
+    let(:story)           { project.stories.build(story_params) }
+
+    it "sets the project start_date to current" do
+      expect{story.fix_project_start_date}.to change(story.project, :start_date).from(nil).to(Date.current)
+    end
+  end
+
+  describe '#fix_story_accepted_at' do
+    let(:project)         { Project.create(name: 'test project', start_date: Date.today) }
+    let(:story_params)    { { title: 'Test Story', state: 'accepted', accepted_at: Date.yesterday } }
+    let(:story)           { project.stories.build(story_params) }
+
+    it "sets the project start_date to the same as story.accepted_at" do
+      expect{story.fix_story_accepted_at}.to change(story.project, :start_date).from(Date.today).to(Date.yesterday)
     end
   end
 end

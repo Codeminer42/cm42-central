@@ -61,4 +61,21 @@ class Story < ActiveRecord::Base
   def readonly?
     !accepted_at_changed? && accepted_at.present?
   end
+
+  # Set the project start date to today if the project start date is nil
+  # and the state is changing to any state other than 'unstarted' or 'unscheduled'
+  def fix_project_start_date
+    return unless self.state_changed?
+    if self.project && !self.project.start_date && !['unstarted', 'unscheduled'].include?(self.state)
+      self.project.start_date = Date.current
+    end
+  end
+
+  # If a story's 'accepted at' date is prior to the project start date,
+  # the project start date should be moved back accordingly
+  def fix_story_accepted_at
+    if self.accepted_at_changed? && self.accepted_at && self.accepted_at < self.project.start_date
+      self.project.start_date = self.accepted_at
+    end
+  end
 end
