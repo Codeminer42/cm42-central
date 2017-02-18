@@ -4,6 +4,9 @@
 ### Added
 - User Endpoint
 
+### Changed
+- Refactor /admin/users views using a Presenter.
+
 ## [1.0.0] - 2017-02-15
 ### Added
 - Added a changelog. We will keep tracking from now and on!

@@ -3,7 +3,9 @@ class Admin::UsersController < ApplicationController
 
   # GET /admin/users
   def index
-    @users = policy_scope(User)
+    @users = policy_scope(User).order(:name).map do |user|
+      Admin::UserPresenter.new(user)
+    end
   end
 
   # GET /admin/users/1/edit
