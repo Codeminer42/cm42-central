@@ -1,13 +1,11 @@
 var ColumnVisibilityButtonView = require('views/column_visibility_button_view');
+var ColumnView = require('views/column_view');
 
 describe("ColumnVisibilityButtonView", function() {
 
   beforeEach(function() {
-    this.columnView = {
-      name: sinon.stub().returns('Dummy'),
-      hidden: sinon.stub().returns(false),
-      on: sinon.stub()
-    };
+    this.el = $('<td data-column-view="backlog" data-connect="#chilly_bin,#in_progress"></td>');
+    this.columnView = new ColumnView({el: this.el});
     ColumnVisibilityButtonView.prototype.template = sinon.stub();
     this.view = new ColumnVisibilityButtonView({columnView: this.columnView});
   });
@@ -17,11 +15,11 @@ describe("ColumnVisibilityButtonView", function() {
   });
 
   it("should set its content from the ColumnView title", function() {
-    expect(this.view.render().$el.html()).toEqual(this.columnView.name());
+    expect(this.view.title).toEqual(this.columnView.title);
   });
 
   it("should set its class from the ColumnView id", function() {
-    expect(this.view.render().$el.attr('class')).toEqual('sidebar-link hide_' + this.columnView.id);
+    expect(this.view.$el.attr('class')).toEqual('sidebar-link hide_' + this.columnView.id);
   });
 
   describe('toggle', function() {
@@ -38,6 +36,7 @@ describe("ColumnVisibilityButtonView", function() {
   });
 
   describe('setClassName', function() {
+
     it("sets the pressed class when the column is hidden", function() {
       this.columnView.hidden = sinon.stub().returns(true);
       this.view.setClassName();
@@ -51,9 +50,9 @@ describe("ColumnVisibilityButtonView", function() {
     });
 
     it("is bound to the columnView visibilityChanged event", function() {
-      expect(this.columnView.on).toHaveBeenCalledWith(
-        'visibilityChanged', this.view.setClassName
-      );
+      this.columnView.toggle();
+      expect(this.columnView.hidden()).toBe(true);
     });
+
   });
 });

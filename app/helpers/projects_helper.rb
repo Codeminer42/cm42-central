@@ -107,6 +107,6 @@ module ProjectsHelper
   end
 
   def inverse_story_flow
-    'active' unless @column_order.eql?( Fulcrum::Application.config.fulcrum.column_order )
+    'pressed' if @story_flow[:current].eql?(@story_flow[:default])
   end
 end

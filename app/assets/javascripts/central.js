@@ -10,9 +10,12 @@ require('./global_listeners');
 var Central = module.exports = {
   start: function() {
     $('[data-project]').each(function() {
-      var data     = $(this).data();
+      var data = $(this).data();
+      data.project.current_flow = data.currentFlow;
+      data.project.default_flow = data.defaultFlow;
+
       var project  = new Project(data.project);
-      var view     = new ProjectView({ model: project, el: $('#project_columns') });
+      var view     = new ProjectView({ model: project, el: $('#project-stories') });
       var search   = new ProjectSearchView({ model: project, el: $('#form_search') });
       var velocity = new ProjectVelocityView({ model: project, el: $('#velocity') });
 

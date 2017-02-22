@@ -4,32 +4,12 @@ describe("ColumnView", function() {
 
   beforeEach(function() {
     ColumnView.prototype.template = sinon.stub();
-    this.view = new ColumnView({
-      id: 'dummy_column', name: 'Dummy Column'
-    });
+    this.el = $('<td data-column-view="backlog" data-connect="#chilly_bin,#in_progress"></td>');
+    this.view = new ColumnView({el: this.el});
   });
 
   it("should be a <TD>", function() {
-    expect(this.view.el.nodeName).toEqual('TD');
-  });
-
-  it("sets its name from the name option", function() {
-    expect(this.view.name()).toEqual('Dummy Column');
-  });
-
-  describe("render", function() {
-
-    it("renders the template", function() {
-      this.view.render();
-      expect(this.view.template).toHaveBeenCalledWith({
-        id: 'dummy_column', name: 'Dummy Column'
-      });
-    });
-
-    it("returns self", function() {
-      expect(this.view.render()).toBe(this.view);
-    });
-
+    expect(this.view.$el[0].nodeName).toEqual('TD');
   });
 
   describe("toggle", function() {
@@ -98,7 +78,7 @@ describe("ColumnView", function() {
     beforeEach(function() {
       this.view.$el.is = sinon.stub();
     });
-      
+
     it("returns true if the column is hidden", function() {
       this.view.$el.is.withArgs(':hidden').returns(true);
       expect(this.view.hidden()).toEqual(true);

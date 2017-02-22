@@ -28,14 +28,10 @@ module.exports = Backbone.Model.extend({
     this.search.project = this;
 
     this.iterations = [];
-
-    var $el = $('#project_columns');
-    this.defaultFlow = $el.length ? $el.data().defaultFlow : 'progress_to_left';
   },
 
   defaults: {
-    default_velocity: 10,
-    inverse_flow: Cookies.get('column_order') != this.defaultFlow
+    default_velocity: 10
   },
 
   url: function() {
@@ -376,10 +372,12 @@ module.exports = Backbone.Model.extend({
   },
 
   toggleStoryFlow: function () {
-    var isInverse = this.get('inverse_flow');
-    this.set('inverse_flow', !isInverse);
+    var defaultFlow = this.get('default_flow');
+    var nextValue = (this.get('current_flow') == defaultFlow)
+      ? 'progress_to_right' // alternative story flow
+      : defaultFlow;
 
-    var newCookieValue = isInverse ? 'progress_to_left' : 'progress_to_right';
-    Cookies.set('column_order', newCookieValue, { expires: 365 });
+    this.set('current_flow', nextValue);
+    Cookies.set('current_flow', nextValue, {expires: 365});
   }
 });

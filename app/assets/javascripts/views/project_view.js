@@ -8,14 +8,13 @@ module.exports = Backbone.View.extend({
   columns: {},
 
   initialize: function() {
-
-    _.bindAll(this, 'addStory', 'addAll', 'render', 'prepareColumns');
+    _.bindAll(this, 'addStory', 'addAll', 'render');
 
     this.model.stories.on('add', this.addStory);
     this.model.stories.on('reset', this.addAll);
     this.model.stories.on('all', this.render);
     this.model.on('change:userVelocity', this.addAll);
-    this.model.on('change:inverse_flow', this.prepareColumns);
+    this.listenTo(this.model, 'change:current_flow', this.prepareColumns);
 
     this.prepareColumns();
 
@@ -28,48 +27,37 @@ module.exports = Backbone.View.extend({
   },
 
   prepareColumns: function() {
-    // reset columns & columns
+    // reset columns & columns toggle
     this.columns = {};
-    this.$el.html(this.template({ inverse_flow: this.model.get('inverse_flow') }));
-    $('#column-toggles').html('');
+    this.$el.parent().find('#column-toggles').html('');
+    this.$el.html(this.template({
+      current_flow: this.model.get('current_flow'),
+      default_flow: this.model.get('default_flow')
+    }));
 
-    var that = this;
-    $('[data-column-view]').each(function() {
-      that.addColumnView($(this));
-    });
+    _.each(this.$('[data-column-view]'), function(el) {
+      var columnView = this.createColumnView($(el));
+      this.columns[columnView.id] = columnView;
 
-    // render columns on the screen
+      if (columnView.hideable) {
+        $('<li class="sidebar-item"/>')
+          .append(new ColumnVisibilityButtonView({columnView: columnView}).render().$el)
+          .appendTo('#column-toggles');
+      }
+    }, this);
+
     this.addAll();
     this.scaleToViewport();
   },
 
-  addColumnView: function(el) {
+  createColumnView: function(el) {
     var data = el.data();
-    el.addClass(data.columnView + '_column');
-
-    var column = new ColumnView({
-      el: el,
-      id: data.columnView,
-      name: I18n.t('projects.show.' + data.columnView),
-      sortable: data.connect !== undefined
-    });
+    var column = new ColumnView({el: el});
 
     column.on('visibilityChanged', this.checkColumnViewsVisibility);
     column.render();
 
-    this.columns[data.columnView] = column;
-
-    if (data.hideable !== false) {
-      $('<li class="sidebar-item"/>')
-        .append(new ColumnVisibilityButtonView({ columnView: column }).render().$el)
-        .appendTo('#column-toggles');
-    }
-
-    if (data.connect) {
-      column.$el
-        .find('.ui-sortable')
-        .sortable('option', 'connectWith', data.connect);
-    }
+    return column;
   },
 
   // Triggered when the 'Add Story' button is clicked

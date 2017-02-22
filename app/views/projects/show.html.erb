@@ -32,18 +32,10 @@
   <%= render 'navbar', project: @project %>
 <% end %>
 
-<div class="project-stories">
-  <%= content_tag :table,
-    class: 'stories',
-    width: '100%',
-    data: {
-      project: @project.to_json,
-      users: @project.users.to_json,
-      current_user: current_user.to_json
-    } do %>
-    <tbody>
-      <tr id="project_columns" data-default-flow="<%= Fulcrum::Application.config.fulcrum.column_order %>">
-      </tr>
-    </tbody>
-  <% end %>
+<div class="project-stories" id="project-stories"
+     data-project="<%= @project.to_json %>"
+     data-users="<%= @project.users.to_json %>"
+     data-current-user="<%= current_user.to_json %>"
+     data-current-flow="<%= @story_flow[:current] %>"
+     data-default-flow="<%= @story_flow[:default] %>">
 </div>

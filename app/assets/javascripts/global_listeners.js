@@ -9,9 +9,9 @@ var $sidebarWrapper = $("#sidebar-wrapper");
 $(function() {
   $('[data-toggle="tooltip"]').tooltip();
 
-  $('.js-story-flow-toggle').click(function(e) {
-    e.preventDefault();
+  $('#story-flow-toggle').click(function() {
     window.projectView.model.toggleStoryFlow();
+    $(this).toggleClass('pressed');
   });
 
   $('.toggle-navbar').click(function(e) {
