@@ -16,36 +16,14 @@
       <div class="panel-body">
         <table class="table table-condensed table-striped table-hover admin-users-table">
           <tbody>
-            <% @users.order(:name).each do |user| %>
+            <% @users.each do |user| %>
               <tr>
                 <td><%= user.name %></td>
                 <td><%= user.username %></td>
                 <td><%= user.initials %></td>
                 <td><%= user.role %></td>
                 <td><%= mail_to user.email %></td>
-                <td>
-                  <div class="users_options btn-group pull-right">
-                    <% if policy(user).update? %>
-                      <%= link_to t('edit'), edit_admin_user_path(user),
-                        class: 'btn btn-default btn-sm btn-square' %>
-                      <% if current_team.is_admin?(user) %>
-                        <%= link_to t('users.admin_off'), enrollment_admin_user_path(user, is_admin: false),
-                          data: {confirm: t('.are you sure you want to remove administration rights from this user')},
-                          method: :patch,
-                          class: 'btn btn-warning btn-sm btn-square' %>
-                      <% else %>
-                        <%= link_to t('users.admin_on'), enrollment_admin_user_path(user, is_admin: true),
-                          data: {confirm: t('.are you sure you want to give administration rights to this user')},
-                          method: :patch,
-                          class: 'btn btn-primary btn-sm btn-square' %>
-                      <% end %>
-                      <%= link_to t('delete'), admin_user_path(user),
-                        data: {confirm: t('.are you sure you want to delete this user')},
-                        method: :delete,
-                        class: 'btn btn-danger btn-sm btn-square' %>
-                    <% end %>
-                  </div>
-                </td>
+                <td><%= render 'actions', user: user %></td>
               </tr>
             <% end %>
           </tbody>
