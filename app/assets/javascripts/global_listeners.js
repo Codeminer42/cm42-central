@@ -9,6 +9,11 @@ var $sidebarWrapper = $("#sidebar-wrapper");
 $(function() {
   $('[data-toggle="tooltip"]').tooltip();
 
+  $('#story-flow-toggle').click(function() {
+    window.projectView.model.toggleStoryFlow();
+    $(this).toggleClass('pressed');
+  });
+
   $('.toggle-navbar').click(function(e) {
     e.preventDefault();
 

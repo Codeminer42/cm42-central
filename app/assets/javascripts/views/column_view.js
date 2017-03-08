@@ -9,20 +9,29 @@ module.exports = Backbone.View.extend({
     'click a.toggle-column': 'toggle'
   },
 
-  name: function() {
-    return this.options.name;
+  initialize: function() {
+    var data = this.$el.data();
+    this.id  = data.columnView;
+    this.name = I18n.t('projects.show.' + data.columnView);
+    this.sortable = data.connect !== undefined
+    this.$el.addClass(data.columnView + '_column');
+    this.hideable = data.hideable == undefined ? true : data.hideable;
+
+    if (data.connect) {
+      this.$el
+        .find('.ui-sortable')
+        .sortable('option', 'connectWith', data.connect);
+    }
   },
 
   render: function() {
-    this.$el.html(this.template({id: this.id, name: this.name()}));
-    if (this.options.sortable) {
-      this.setSortable();
-    }
+    this.$el.html(this.template({id: this.id, name: this.name}));
+    if (this.sortable) this.setSortable();
     return this;
   },
 
   toggleAll: function() {
-    var stories = this.$el.children('.storycolumn').children('.story');
+    var stories = this.$('.story');
     _.each(stories, function(item) {
       $(item).toggle();
     });

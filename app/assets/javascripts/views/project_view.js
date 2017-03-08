@@ -1,17 +1,22 @@
 var StoryView = require('./story_view');
 var IterationView = require('./iteration_view');
+var ColumnView = require('./column_view');
+var ColumnVisibilityButtonView = require('./column_visibility_button_view');
 
 module.exports = Backbone.View.extend({
+  template: require('templates/project_view.ejs'),
   columns: {},
 
   initialize: function() {
-
     _.bindAll(this, 'addStory', 'addAll', 'render');
 
     this.model.stories.on('add', this.addStory);
     this.model.stories.on('reset', this.addAll);
     this.model.stories.on('all', this.render);
     this.model.on('change:userVelocity', this.addAll);
+    this.listenTo(this.model, 'change:current_flow', this.prepareColumns);
+
+    this.prepareColumns();
 
     var that = this;
     this.model.stories.fetch({
@@ -19,6 +24,40 @@ module.exports = Backbone.View.extend({
         that.addAll();
       }
     });
+  },
+
+  prepareColumns: function() {
+    // reset columns & columns toggle
+    this.columns = {};
+    this.$el.parent().find('#column-toggles').html('');
+    this.$el.html(this.template({
+      current_flow: this.model.get('current_flow'),
+      default_flow: this.model.get('default_flow')
+    }));
+
+    _.each(this.$('[data-column-view]'), function(el) {
+      var columnView = this.createColumnView($(el));
+      this.columns[columnView.id] = columnView;
+
+      if (columnView.hideable) {
+        $('<li class="sidebar-item"/>')
+          .append(new ColumnVisibilityButtonView({columnView: columnView}).render().$el)
+          .appendTo('#column-toggles');
+      }
+    }, this);
+
+    this.addAll();
+    this.scaleToViewport();
+  },
+
+  createColumnView: function(el) {
+    var data = el.data();
+    var column = new ColumnView({el: el});
+
+    column.on('visibilityChanged', this.checkColumnViewsVisibility);
+    column.render();
+
+    return column;
   },
 
   // Triggered when the 'Add Story' button is clicked
@@ -125,18 +164,6 @@ module.exports = Backbone.View.extend({
 
   notice: function(message) {
     $.gritter.add(message);
-  },
-
-  addColumnView: function(id, view) {
-    this.columns[id] = view;
-  },
-
-  addColumnViews: function(columns) {
-    var that = this;
-    _.each(columns, function(column, columnId) {
-      column.on('visibilityChanged', that.checkColumnViewsVisibility);
-      that.addColumnView(columnId, column);
-    });
   },
 
   // make sure there is at least one column opened

@@ -1,9 +1,13 @@
+var Cookies = require('js-cookie');
+
 var Project = require('models/project');
 var Iteration = require('models/iteration');
 
 describe('Project model', function() {
 
   beforeEach(function() {
+    Cookies.set('current_flow', 'progress_to_left', {expires: 365});
+
     var Story = Backbone.Model.extend({
       name: 'story',
       fetch: function() {},
@@ -14,7 +18,9 @@ describe('Project model', function() {
 
     this.project = new Project({
       id: 999, title: 'Test project', point_values: [0, 1, 2, 3],
-      last_changeset_id: null, iteration_start_day: 1, iteration_length: 1
+      last_changeset_id: null, iteration_start_day: 1, iteration_length: 1,
+      default_flow: Cookies.get('current_flow'),
+      current_flow: Cookies.get('current_flow')
     });
     this.project.stories.add(this.story);
   });
@@ -42,6 +48,10 @@ describe('Project model', function() {
 
     it("should have a default velocity of 10", function() {
       expect(this.project.get('default_velocity')).toEqual(10);
+    });
+
+    it("should have a default story flow", function() {
+      expect(this.project.get('default_flow')).toEqual('progress_to_left');
     });
 
   });
@@ -492,6 +502,23 @@ describe('Project model', function() {
       this.project.on('rebuilt-iterations', stub);
       this.project.rebuildIterations();
       expect(stub).toHaveBeenCalled();
+    });
+
+  });
+
+  describe("toggleStoryFlow", function() {
+
+    it("should be able to toggle current_flow value", function() {
+      this.project.toggleStoryFlow();
+      expect(this.project.get('current_flow')).toBe('progress_to_right');
+
+      this.project.toggleStoryFlow();
+      expect(this.project.get('current_flow')).toBe('progress_to_left');
+    });
+
+    it("should be able to save the current story flow on cookies", function() {
+      this.project.toggleStoryFlow();
+      expect(Cookies.get('current_flow')).toBe('progress_to_right');
     });
 
   });

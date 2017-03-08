@@ -197,6 +197,7 @@ describe "Stories" do
     it 'show epic by label', js: true, driver: :poltergeist do
       visit project_path(project)
       wait_spinner
+      wait_page_load
 
       expect(page).not_to have_css('.epic_column')
       expect(page).to have_content 'Task 1'

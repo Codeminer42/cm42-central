@@ -105,4 +105,8 @@ module ProjectsHelper
   def formatted_standard_deviation(standard_deviation)
     "%3.2f" % Math.sqrt(standard_deviation)
   end
+
+  def inverse_story_flow
+    'pressed' if @story_flow[:current].eql?(@story_flow[:default])
+  end
 end

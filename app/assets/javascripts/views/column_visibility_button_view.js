@@ -35,7 +35,7 @@ module.exports = Backbone.View.extend({
       icon = '<i class="mi md-18 sidebar-icon">search</i> ';
       break;
     }
-    this.$el.html(icon + this.options.columnView.name());
+    this.$el.html(icon + this.options.columnView.name);
     this.setClassName();
     return this;
   },

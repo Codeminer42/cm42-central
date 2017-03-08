@@ -2,6 +2,7 @@ class ProjectsController < ApplicationController
   before_action :set_project, except: %i[new create index archived]
   before_action :prepare_session, only: %i[import import_upload]
   before_action -> { set_sidebar :project_settings }, only: %i[import edit]
+  before_action :set_story_flow, only: %i[show]
   before_action :fluid_layout, only: %i[show edit import]
 
   Project::MAX_MEMBERS_PER_CARD = 4;
@@ -207,6 +208,13 @@ class ProjectsController < ApplicationController
         format.xml  { render xml: @project.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def set_story_flow
+    @story_flow = {
+      current: cookies[:current_flow],
+      default: Fulcrum::Application.config.fulcrum.column_order
+    }
   end
 
   def allowed_params

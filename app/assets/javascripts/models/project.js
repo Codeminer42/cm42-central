@@ -1,3 +1,5 @@
+var Cookies = require('js-cookie');
+
 var StoryCollection = require('collections/story_collection');
 var UserCollection = require('collections/user_collection');
 var Iteration = require('models/iteration');
@@ -367,5 +369,15 @@ module.exports = Backbone.Model.extend({
     );
 
     this.iterations.push(iteration);
+  },
+
+  toggleStoryFlow: function () {
+    var defaultFlow = this.get('default_flow');
+    var nextValue = (this.get('current_flow') == defaultFlow)
+      ? 'progress_to_right' // alternative story flow
+      : defaultFlow;
+
+    this.set('current_flow', nextValue);
+    Cookies.set('current_flow', nextValue, {expires: 365});
   }
 });
