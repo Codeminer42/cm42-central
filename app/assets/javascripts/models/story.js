@@ -1,3 +1,4 @@
+var ActivityCollection = require('collections/activity_collection');
 var NoteCollection = require('collections/note_collection');
 var TaskCollection = require('collections/task_collection');
 var SharedModelMethods = require('mixins/shared_model_methods');
@@ -24,6 +25,7 @@ var Story = module.exports = Backbone.Model.extend({
     // FIXME Call super()?
     this.maybeUnwrap(args);
 
+    this.initHistory();
     this.initNotes();
     this.initTasks();
     this.setColumn();
@@ -320,6 +322,15 @@ var Story = module.exports = Backbone.Model.extend({
       }
     }
     Backbone.sync(method, model, options);
+  },
+
+  initHistory: function() {
+    this.history = new ActivityCollection();
+    this.history.story = this;
+  },
+
+  showHistory: function() {
+    window.projectView.historyView.setStory(this);
   }
 });
 

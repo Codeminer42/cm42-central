@@ -256,6 +256,7 @@ en:
       chilly_bin: "Chilly Bin"
       search_results: "Search Results"
       epic: 'Epic'
+      history: 'History Of'
       search: 'Search'
 
     uploads:
@@ -322,3 +323,9 @@ en:
         manager: Manager
         developer: Developer
         guest: Guest
+
+  activity:
+    actions:
+      update: 'updated'
+      destroy: 'destroyed'
+      create: 'created'

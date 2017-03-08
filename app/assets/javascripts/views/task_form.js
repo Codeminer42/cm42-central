@@ -14,7 +14,7 @@ module.exports = FormView.extend({
     var view = this;
 
     div = this.make('div', { class: 'clearfix' });
-    $(div).append(this.textField("name"));
+    $(div).append(this.textField("name", {class: 'form-control input-sm'}));
 
     var submit = this.make('input', {
       id: 'task_submit', type: 'button',
@@ -64,4 +64,3 @@ module.exports = FormView.extend({
   }
 
 });
-

@@ -258,6 +258,7 @@ pt-BR:
       chilly_bin: "Chilly Bin"
       search_results: "Resultados da Busca"
       epic: 'Épico'
+      history: 'História de'
       search: 'Buscar'
 
     uploads:
@@ -322,3 +323,9 @@ pt-BR:
         manager: Gerente
         developer: Desenvolvedor
         guest: Convidado
+
+  activity:
+    actions:
+      update: 'atualizou'
+      destroy: 'apagou'
+      create: 'criou'

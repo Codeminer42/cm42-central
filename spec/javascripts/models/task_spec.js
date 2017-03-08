@@ -48,6 +48,10 @@ describe("Task", function() {
       I18n.t.withArgs('foo_bar').returns('Foo bar');
     });
 
+    afterEach(function() {
+      sinon.restore(I18n);
+    });
+
     it("returns the translated attribute name", function() {
       expect(this.task.humanAttributeName('foo_bar')).toEqual('Foo bar');
     });

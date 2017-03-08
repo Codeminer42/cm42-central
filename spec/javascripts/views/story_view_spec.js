@@ -677,7 +677,7 @@ describe('StoryView', function() {
       it('update uploadInProgress variable', function() {
         this.view.model.isNew = sinon.stub().returns(true);
         this.view.uploadInProgress = true;
-        
+
         this.view.attachmentDone();
 
         expect(this.view.uploadInProgress).toBeFalsy();

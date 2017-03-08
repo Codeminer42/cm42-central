@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Option on stories to show their activity history.
 
 ## [1.1.1] - 2017-03-14
 ### Changed
