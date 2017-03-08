@@ -8,12 +8,10 @@ describe Story do
   }
 
   describe "defaults" do
-
     subject { Story.new }
 
     its(:state)       { should == "unstarted" }
     its(:story_type)  { should == "feature" }
-
   end
 
   describe "#as_json" do
@@ -29,7 +27,7 @@ describe Story do
     end
   end
 
-  describe '#readonly?' do
+  describe "#readonly?" do
     subject { create :story, :with_project }
 
     before { subject.update_attribute(:state, 'accepted') }
@@ -67,6 +65,77 @@ describe Story do
 
         subject.reload
         expect(subject.documents.count).to eq(2)
+      end
+    end
+  end
+
+  describe "#fix_project_start_date" do
+    let(:project)         { create(:project, start_date: nil) }
+    let(:story_params)    { { title: 'Test Story', state: 'started', accepted_at: nil } }
+    let(:story)           { project.stories.build(story_params) }
+
+    it "sets the project start_date to current" do
+      expect{story.fix_project_start_date}.to change(story.project, :start_date).from(nil).to(Date.current)
+    end
+
+    context "when the state has not changed" do
+      let(:story_params)    { { title: 'Test Story', accepted_at: nil } }
+
+      it "does not set the project start_date to current" do
+        expect{story.fix_project_start_date}.not_to change(story.project, :start_date)
+      end
+    end
+
+    context "when a project is inexistent" do
+      let(:project) { nil }
+      let(:story) { build(:story, story_params) }
+
+      it "does not set the project start_date to current" do
+        expect(story.fix_project_start_date).to be_falsey
+      end
+    end
+
+    context "when a project has a start_date" do
+      let(:project) { create(:project, start_date: Date.today) }
+
+      it "does not set the project start_date to current" do
+        expect{story.fix_project_start_date}.not_to change(story.project, :start_date)
+      end
+    end
+
+    context "when the state is unstarted or unscheduled" do
+      %w(unstarted unscheduled).each do |state|
+        let(:story_params)    { { state: state } }
+
+        it "does not set the project start_date to current" do
+          expect{story.fix_project_start_date}.not_to change(story.project, :start_date)
+        end
+      end
+    end
+  end
+
+  describe "#fix_story_accepted_at" do
+    let(:project)         { create(:project, start_date: Date.today) }
+    let(:story_params)    { { title: 'Test Story', state: 'accepted', accepted_at: Date.yesterday } }
+    let(:story)           { project.stories.build(story_params) }
+
+    it "sets the project start_date to the same as story.accepted_at" do
+      expect{story.fix_story_accepted_at}.to change(story.project, :start_date).from(Date.today).to(Date.yesterday)
+    end
+
+    context "when accepted_at is inexistent" do
+      let(:story_params)    { { title: 'Test Story', state: 'accepted' } }
+
+      it "does not set the project start_date to the same as story.accepted_at" do
+        expect{story.fix_story_accepted_at}.not_to change(story.project, :start_date)
+      end
+    end
+
+    context "when accepted_at is later than project start_date" do
+      let(:story_params)    { { title: 'Test Story', state: 'accepted', accepted_at: Date.tomorrow } }
+
+      it "does not set the project start_date to the same as story.accepted_at" do
+        expect{story.fix_story_accepted_at}.not_to change(story.project, :start_date)
       end
     end
   end

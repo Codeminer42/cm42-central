@@ -53,8 +53,6 @@ class User < ActiveRecord::Base
     super(only: JSON_ATTRIBUTES)
   end
 
-  private
-
   def self.find_first_by_auth_conditions(warden_conditions)
     if warden_conditions[:reset_password_token]
       where(reset_password_token: warden_conditions[:reset_password_token]).first
