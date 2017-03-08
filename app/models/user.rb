@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  before_create :init_tour_steps
+
   include Central::Support::UserConcern::Associations
   include Central::Support::UserConcern::Validations
   include Central::Support::UserConcern::Callbacks
@@ -7,7 +9,7 @@ class User < ActiveRecord::Base
   gravtastic default: 'identicon'
 
   # FIXME - DRY up, repeated in Story model
-  JSON_ATTRIBUTES = ["id", "name", "initials", "username", "email"]
+  JSON_ATTRIBUTES = ["id", "name", "initials", "username", "email", "tour", "tour_steps"]
 
   AUTHENTICATION_KEYS = %i(email)
 
@@ -25,7 +27,7 @@ class User < ActiveRecord::Base
   attr_accessor :was_created
 
   scope :recently_created, -> (created_at) { where("users.created_at > ?", created_at) if created_at }
-  
+
   def password_required?
     # Password is required if it is being set, but not for new records
     if !persisted?
@@ -47,6 +49,10 @@ class User < ActiveRecord::Base
     self.reset_password_sent_at = Time.current.utc
     self.save(validate: false)
     raw
+  end
+
+  def init_tour_steps
+    self.tour_steps = WelcomeTour::STEPS.to_json
   end
 
   def as_json(options = {})

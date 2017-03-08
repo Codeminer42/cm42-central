@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161208003524) do
+ActiveRecord::Schema.define(version: 20170130133949) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -248,6 +248,8 @@ ActiveRecord::Schema.define(version: 20161208003524) do
     t.string   "authy_id"
     t.datetime "last_sign_in_with_authy"
     t.boolean  "authy_enabled",                       default: false
+    t.boolean  "tour",                                default: true
+    t.text     "tour_steps"
   end
 
   add_index "users", ["authy_id"], name: "index_users_on_authy_id", using: :btree

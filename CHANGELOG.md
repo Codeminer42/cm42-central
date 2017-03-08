@@ -3,7 +3,8 @@
 ## [Unreleased]
 ### Added
 - User Endpoint
-- Sidebar option to invert columns order. 
+- Sidebar option to invert columns order.
+- First time interface tour
 
 ### Changed
 - Refactor /admin/users views using a Presenter.
@@ -12,6 +13,7 @@
 ### Added
 - Added a changelog. We will keep tracking from now and on!
 - Added translations on reports description.
+- Added First time tour.
 
 ### Changed
 - Redesign project reports and edit password pages.

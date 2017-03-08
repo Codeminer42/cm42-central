@@ -19,7 +19,7 @@ describe User do
 
     specify {
       expect(subject.as_json['user'].keys.sort).to eq(
-        %w[email id initials name username]
+        %w[email id initials name tour tour_steps username]
       )
     }
 

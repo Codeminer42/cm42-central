@@ -7,6 +7,9 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+// node_modules imports
+@import "tether-shepherd/dist/css/shepherd-theme-arrows";
+
 @import "variables";
 @import "layout";
 @import "overrides";
