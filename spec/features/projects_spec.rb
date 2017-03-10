@@ -19,7 +19,7 @@ describe "Projects" do
           visit projects_path
 
           within ".project-item" do
-            click_on "Join project"
+            click_on 'Join project'
           end
 
           expect(user.projects.count).to eq(1)
@@ -38,6 +38,8 @@ describe "Projects" do
           visit projects_path
 
           within ".project-item" do
+            find('a[data-toggle="dropdown"]').click
+
             click_on 'Leave project'
           end
 
