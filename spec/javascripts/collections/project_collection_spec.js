@@ -1,4 +1,4 @@
-var ProjectCollection = require('collections/project_collection');
+import ProjectCollection from 'collections/project_collection';
 
 describe('ProjectCollection', function() {
   describe('#archived', function() {
