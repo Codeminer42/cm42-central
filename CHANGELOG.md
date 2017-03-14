@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [1.1.1] - 2017-03-14
+### Changed
+- Stories drag and drop bug fixed
+
 ## [1.1.0] - 2017-03-09
 ### Added
 - User Endpoint
