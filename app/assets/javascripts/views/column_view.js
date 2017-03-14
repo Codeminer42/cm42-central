@@ -10,18 +10,15 @@ module.exports = Backbone.View.extend({
   },
 
   initialize: function() {
-    var data = this.$el.data();
-    this.id  = data.columnView;
-    this.name = I18n.t('projects.show.' + data.columnView);
-    this.sortable = data.connect !== undefined
-    this.$el.addClass(data.columnView + '_column');
-    this.hideable = data.hideable == undefined ? true : data.hideable;
+    var $el = this.$el;
 
-    if (data.connect) {
-      this.$el
-        .find('.ui-sortable')
-        .sortable('option', 'connectWith', data.connect);
-    }
+    this.data = $el.data();
+    this.id  = this.data.columnView;
+    this.name = I18n.t('projects.show.' + this.data.columnView);
+    this.hideable = this.data.hideable == undefined ? true : this.data.hideable;
+    this.sortable = this.data.connect !== undefined;
+
+    $el.addClass(this.data.columnView + '_column');
   },
 
   render: function() {
@@ -56,6 +53,7 @@ module.exports = Backbone.View.extend({
   setSortable: function() {
     this.storyColumn().sortable({
       handle: '.story-title', opacity: 0.6, items: ".story:not(.accepted)",
+      connectWith: this.data.connect,
       update: function(ev, ui) {
         ui.item.trigger("sortupdate", ev, ui);
       }
