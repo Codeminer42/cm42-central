@@ -1,24 +1,20 @@
 # PostgreSQL
-development:
+base: &base
+  host: <%= ENV['DB_HOST'] %>
   adapter: postgresql
   encoding: unicode
-  database: fulcrum_development
   pool: 5
-  username:
-  password:
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+
+development:
+  <<: *base
+  database: fulcrum_development
 
 test:
-  adapter: postgresql
-  encoding: unicode
+  <<: *base
   database: fulcrum_test
-  pool: 5
-  username:
-  password:
 
 production:
-  adapter: postgresql
-  encoding: unicode
+  <<: *base
   database: fulcrum_production
-  pool: 5
-  username:
-  password:
