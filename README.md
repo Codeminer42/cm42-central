@@ -121,9 +121,9 @@ Or using docker:
 
     # Prepare container
     $ docker-compose build
-    $ docker-compose run rake db:create
-    $ docker-compose run rake db:migrate
-    $ docker-compose run rake db:seeds
+    $ docker-compose run --rm web bundle exec rake db:create
+    $ docker-compose run --rm web bundle exec rake db:migrate
+    $ docker-compose run --rm web bundle exec rake db:seeds
 
     # Up container
     $ docker-compose up
