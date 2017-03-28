@@ -4,6 +4,9 @@
 ### Added
 - Option on stories to show their activity history.
 
+### Changed
+- Fix docker setup for development mode.
+
 ## [1.1.1] - 2017-03-14
 ### Changed
 - Stories drag and drop bug fixed
