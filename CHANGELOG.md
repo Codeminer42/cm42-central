@@ -6,6 +6,7 @@
 
 ### Changed
 - Fix docker setup for development mode.
+- Fix bug keeping .story-controls disabled after a failed upload.
 
 ## [1.1.1] - 2017-03-14
 ### Changed

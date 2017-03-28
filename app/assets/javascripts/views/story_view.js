@@ -25,7 +25,7 @@ module.exports = FormView.extend({
       "renderNotesCollection", "addEmptyNote", "hoverBox",
       "renderTasks", "renderTasksCollection", "addEmptyTask",
       "clickSave", "attachmentDone", "attachmentStart",
-      "disableControlButtons");
+      "attachmentFail", "disableControlButtons");
 
     // Rerender on any relevant change to the views story
     this.model.on("change", this.render);
@@ -87,7 +87,8 @@ module.exports = FormView.extend({
     "click .toggle-history": "history",
     "sortupdate": "sortUpdate",
     "fileuploaddone": "attachmentDone",
-    "fileuploadstart": "attachmentStart"
+    "fileuploadstart": "attachmentStart",
+    "fileuploadfail": "attachmentFail"
   },
 
   // Triggered whenever a story is dropped to a new position
@@ -746,6 +747,11 @@ module.exports = FormView.extend({
 
   attachmentStart: function() {
     this.uploadInProgress = true;
+    this.disableControlButtons();
+  },
+
+  attachmentFail: function() {
+    this.uploadInProgress = false;
     this.disableControlButtons();
   },
 

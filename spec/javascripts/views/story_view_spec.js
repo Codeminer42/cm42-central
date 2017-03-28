@@ -711,6 +711,21 @@ describe('StoryView', function() {
     });
   });
 
+  describe('attachmentFail', function() {
+    describe('when the attachment has failed to upload', function() {
+      it('update the uploadInProgress variable', function() {
+        this.view.attachmentFail();
+        expect(this.view.uploadInProgress).toBeFalsy;
+      });
+
+      it('call disableControlButtons', function() {
+        spyOn(this.view, 'disableControlButtons')
+        this.view.attachmentFail();
+        expect(this.view.disableControlButtons).toHaveBeenCalled();
+      });
+    });
+  });
+
   describe('disableControlButtons', function() {
     var $storyControls;
 
