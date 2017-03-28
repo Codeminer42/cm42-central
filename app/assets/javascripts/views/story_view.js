@@ -12,12 +12,11 @@ var TaskView = require('./task_view');
 module.exports = FormView.extend({
 
   template: require('templates/story.ejs'),
+  alert: require('templates/alert.ejs'),
 
   tagName: 'div',
 
   initialize: function(options) {
-    this.uploadInProgress = false;
-
     _.extend(this, _.pick(options, "isSearchResult"));
 
     _.bindAll(this, "render", "highlight", "moveColumn", "setClassName",
@@ -25,7 +24,7 @@ module.exports = FormView.extend({
       "renderNotesCollection", "addEmptyNote", "hoverBox",
       "renderTasks", "renderTasksCollection", "addEmptyTask",
       "clickSave", "attachmentDone", "attachmentStart",
-      "attachmentFail", "disableControlButtons");
+      "attachmentFail", "toggleControlButtons");
 
     // Rerender on any relevant change to the views story
     this.model.on("change", this.render);
@@ -303,7 +302,7 @@ module.exports = FormView.extend({
       success: function(model, response) {
         that.enableForm();
         that.model.set({ editing: editMode });
-        that.uploadInProgress = false;
+        that.toggleControlButtons(false);
       },
       error: function(model, response) {
         var json = $.parseJSON(response.responseText);
@@ -354,7 +353,6 @@ module.exports = FormView.extend({
             }
           }
           $(div).append(this.cancel());
-          this.disableControlButtons();
         })
       );
 
@@ -734,11 +732,10 @@ module.exports = FormView.extend({
 
   attachmentDone: function(event) {
     if (this.model.isNew()) {
-      this.uploadInProgress = false;
-    }else{
+      this.toggleControlButtons(false);
+    } else {
       this.saveEdit(event, true);
     }
-    this.disableControlButtons();
   },
 
   clickSave: function(event) {
@@ -746,18 +743,21 @@ module.exports = FormView.extend({
   },
 
   attachmentStart: function() {
-    this.uploadInProgress = true;
-    this.disableControlButtons();
+    this.toggleControlButtons(true);
   },
 
   attachmentFail: function() {
-    this.uploadInProgress = false;
-    this.disableControlButtons();
+    this.toggleControlButtons(false);
+
+    this.$('.uploads').prepend(this.alert({
+      className: 'story-alert alert-danger',
+      message: I18n.t('story.errors.failed_upload')
+    }));
   },
 
-  disableControlButtons: function() {
+  toggleControlButtons: function(isDisabled) {
     var $storyControls = this.$el.find('.story-controls');
-    $storyControls.find('.submit, .destroy, .cancel').prop('disabled', this.uploadInProgress);
+    $storyControls.find('.submit, .destroy, .cancel').prop('disabled', isDisabled);
   },
 
   getLocation: function() {

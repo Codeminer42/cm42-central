@@ -72,6 +72,8 @@ es:
     tasks: "Tareas"
     notes: "Notas"
     attachments: "Adjuntos"
+    errors:
+      failed_upload: "Error de subida. Vuelva a intentarlo."
 
     definitive_sure: "¿Seguro que deseas %{action} esta historia? Esta acción es irrreversible."
 

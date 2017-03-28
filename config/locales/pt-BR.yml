@@ -72,6 +72,8 @@ pt-BR:
     tasks: "Tarefas"
     notes: "Notas"
     attachments: "Anexos"
+    errors:
+      failed_upload: "O upload falhou. Por favor, tente novamente."
 
     definitive_sure: "Tem certeza que deseja %{action} essa história? Essa ações é irreversível."
 

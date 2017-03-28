@@ -304,26 +304,6 @@ describe('StoryView', function() {
       expect(this.story.setAcceptedAt).toHaveBeenCalledOnce();
     });
 
-    describe("when an attachment is done", function() {
-      beforeEach(function() {
-        this.view.attachmentStart();
-      });
-
-      it("change the uploadInProgress to false", function() {
-        this.server.respondWith(
-          "PUT", "/path/to/story", [
-            200, {"Content-Type": "application/json"},
-            '{"story":{"estimate":"1"}}'
-          ]
-        );
-
-        this.view.saveEdit(this.e);
-
-        this.server.respond();
-
-        expect(this.view.uploadInProgress).toBeFalsy;
-      });
-    });
   });
 
   describe("expand collapse controls", function() {
@@ -673,15 +653,6 @@ describe('StoryView', function() {
 
         expect(this.view.saveEdit).not.toHaveBeenCalled();
       });
-
-      it('update uploadInProgress variable', function() {
-        this.view.model.isNew = sinon.stub().returns(true);
-        this.view.uploadInProgress = true;
-
-        this.view.attachmentDone();
-
-        expect(this.view.uploadInProgress).toBeFalsy();
-      });
     });
 
     describe('when the story is not new', function() {
@@ -698,90 +669,79 @@ describe('StoryView', function() {
 
   describe('attachmentStart', function() {
     describe('while the attachment is happening', function() {
-      it('update the uploadInProgress variable', function() {
+      it('call toggleControlButtons', function() {
+        spyOn(this.view, 'toggleControlButtons')
         this.view.attachmentStart();
-        expect(this.view.uploadInProgress).toBeTruthy;
-      });
-
-      it('call disableControlButtons', function() {
-        spyOn(this.view, 'disableControlButtons')
-        this.view.attachmentStart();
-        expect(this.view.disableControlButtons).toHaveBeenCalled();
+        expect(this.view.toggleControlButtons).toHaveBeenCalled();
       });
     });
   });
 
   describe('attachmentFail', function() {
     describe('when the attachment has failed to upload', function() {
-      it('update the uploadInProgress variable', function() {
+      it('call toggleControlButtons', function() {
+        spyOn(this.view, 'toggleControlButtons')
         this.view.attachmentFail();
-        expect(this.view.uploadInProgress).toBeFalsy;
-      });
-
-      it('call disableControlButtons', function() {
-        spyOn(this.view, 'disableControlButtons')
-        this.view.attachmentFail();
-        expect(this.view.disableControlButtons).toHaveBeenCalled();
+        expect(this.view.toggleControlButtons).toHaveBeenCalled();
       });
     });
   });
 
-  describe('disableControlButtons', function() {
+  describe('toggleControlButtons', function() {
     var $storyControls;
 
     beforeEach(function() {
+      this.view.canEdit = sinon.stub().returns(true);
       this.view.render();
     });
 
     describe('it render a enabled', function() {
       beforeEach(function() {
-        this.view.uploadInProgress = false;
+        this.view.toggleControlButtons(false);
         $storyControls = this.view.$el.find('.story-controls');
       });
 
       it('submit button', function() {
         var submit = $storyControls.find('.submit');
 
-        expect(submit.disabled).toBeFalsy;
+        expect(submit.disabled).toBeFalsy();
       });
 
       it('cancel button', function() {
         var cancel = $storyControls.find('.cancel');
 
-        expect(cancel.disabled).toBeFalsy;
+        expect(cancel.disabled).toBeFalsy();
       });
 
       it('destroy button', function() {
         var destroy = $storyControls.find('.submit');
 
-        expect(destroy.disabled).toBeFalsy;
+        expect(destroy.disabled).toBeFalsy();
       });
     });
 
     describe('it render a disabled', function() {
-      var $storyControls;
-
       beforeEach(function() {
-        this.view.uploadInProgress = true;
+        this.view.toggleControlButtons(true);
         $storyControls = this.view.$el.find('.story-controls');
       });
 
       it('submit button', function() {
         var submit = $storyControls.find('.submit');
 
-        expect(submit.disabled).toBeTruthy;
+        expect(submit.prop('disabled')).toBeTruthy();
       });
 
       it('cancel button', function() {
         var cancel = $storyControls.find('.cancel');
 
-        expect(cancel.disabled).toBeTruthy;
+        expect(cancel.prop('disabled')).toBeTruthy();
       });
 
       it('destroy button', function() {
         var destroy = $storyControls.find('.submit');
 
-        expect(destroy.disabled).toBeTruthy;
+        expect(destroy.prop('disabled')).toBeTruthy();
       });
     });
   });
