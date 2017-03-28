@@ -647,6 +647,11 @@ div#keycut-help {
   }
 }
 
+.projects {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .btn-clipboard {
   padding: 4px 12px 5px;
 }
