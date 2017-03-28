@@ -1,19 +1,63 @@
-postgres:
-  image: postgres
-  volumes:
-    - ~/.docker-volumes/CM-Fulcrum/db:/var/lib/postgresql/data
-  expose:
-    - '5432'
+version: '2'
 
-web:
-  build: .
-  environment:
-    DB_USERNAME: 'postgres'
-    DB_PASSWORD: ''
-  volumes:
-    - .:/app
-  ports:
-    - '3000:3000'
-  links:
-    - postgres
+services:
+  postgres:
+    image: postgres
+    volumes:
+      - db:/var/lib/postgresql/data
+    expose:
+      - '5432'
 
+  redis:
+    image: redis
+    expose:
+      - "6379"
+    volumes:
+      - redis:/data
+
+  web:
+    build: .
+    environment:
+      WEBPACK_HOST: "0.0.0.0"
+      WEBPACK_MANIFEST_HOST: "webpack"
+      WEBPACK_MANIFEST_PORT: "3808"
+      WEBPACK_PORT: "3808"
+      DB_USERNAME: 'postgres'
+      DB_PASSWORD: ''
+      DB_HOST: 'postgres'
+      REDISCLOUD_URL: 'redis://redis:6379'
+    volumes:
+      - .:/app
+    ports:
+      - '3000:3000'
+    links:
+      - postgres
+      - redis
+      - webpack
+    command: bundle exec rails s -b 0.0.0.0
+
+  worker:
+    build: .
+    environment:
+      DB_USERNAME: 'postgres'
+      DB_PASSWORD: ''
+      DB_HOST: 'postgres'
+      REDISCLOUD_URL: 'redis://redis:6379/0'
+    volumes:
+      - .:/app
+    links:
+      - postgres
+      - redis
+    command: sidekiq
+
+  webpack:
+    image: jmfirth/webpack
+    ports:
+      - "3808:3808"
+    volumes:
+      - .:/app
+    command: webpack-dev-server --hot --inline --progress --host 0.0.0.0 --config config/webpack.config.js
+
+volumes:
+  db:
+  redis:
