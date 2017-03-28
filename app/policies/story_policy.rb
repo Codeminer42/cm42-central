@@ -27,6 +27,8 @@ class StoryPolicy < ApplicationPolicy
     update?
   end
 
+  alias_method :story?, :show?
+
   class Scope < Scope
     def resolve
       if is_admin?
@@ -41,4 +43,3 @@ class StoryPolicy < ApplicationPolicy
     end
   end
 end
-

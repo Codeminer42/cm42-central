@@ -1,3 +1,7 @@
 module.exports = Backbone.Model.extend({
-  name: 'user'
+  name: 'user',
+
+  url: function() {
+    return '/users/' + this.id;
+  }
 });

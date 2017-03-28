@@ -1,8 +1,5 @@
 module.exports = Backbone.View.extend({
-
   template: require('templates/column.ejs'),
-
-  tagName: 'td',
 
   events: {
     'click a.toggle-title': 'toggleAll',

@@ -2,6 +2,7 @@ var StoryView = require('./story_view');
 var IterationView = require('./iteration_view');
 var ColumnView = require('./column_view');
 var ColumnVisibilityButtonView = require('./column_visibility_button_view');
+var HistoryView = require('./history_view');
 
 module.exports = Backbone.View.extend({
   template: require('templates/project_view.ejs'),
@@ -10,6 +11,9 @@ module.exports = Backbone.View.extend({
   initialize: function() {
     _.bindAll(this, 'addStory', 'addAll', 'render');
 
+    this.$loadingSpin = $('.loading-spin');
+    this.$columnToggles = this.$el.parent().find('#column-toggles');
+
     this.model.stories.on('add', this.addStory);
     this.model.stories.on('reset', this.addAll);
     this.model.stories.on('all', this.render);
@@ -17,19 +21,14 @@ module.exports = Backbone.View.extend({
     this.listenTo(this.model, 'change:current_flow', this.prepareColumns);
 
     this.prepareColumns();
-
-    var that = this;
-    this.model.stories.fetch({
-      success: function() {
-        that.addAll();
-      }
-    });
+    this.$loadingSpin.show();
+    this.model.stories.fetch({success: this.addAll});
   },
 
   prepareColumns: function() {
     // reset columns & columns toggle
     this.columns = {};
-    this.$el.parent().find('#column-toggles').html('');
+    this.$columnToggles.html('');
     this.$el.html(this.template({
       current_flow: this.model.get('current_flow'),
       default_flow: this.model.get('default_flow')
@@ -40,9 +39,10 @@ module.exports = Backbone.View.extend({
       this.columns[columnView.id] = columnView;
 
       if (columnView.hideable) {
-        $('<li class="sidebar-item"/>')
-          .append(new ColumnVisibilityButtonView({columnView: columnView}).render().$el)
-          .appendTo('#column-toggles');
+        this.$columnToggles.append(
+          $('<li class="sidebar-item"/>')
+            .append(new ColumnVisibilityButtonView({columnView: columnView}).render().$el)
+        );
       }
     }, this);
 
@@ -102,7 +102,6 @@ module.exports = Backbone.View.extend({
   },
 
   addAll: function() {
-    $('.loading-spin').addClass('show');
     var that = this;
 
     _.each(this.columns, function(column, columnId) {
@@ -122,7 +121,11 @@ module.exports = Backbone.View.extend({
     _.each(this.model.stories.column('#chilly_bin'), function(story) {
       that.addStory(story);
     });
-    $('.loading-spin').removeClass('show');
+
+    this.historyView = new HistoryView({el: this.$('#history'), users: this.model.users});
+    this.listenTo(this.historyView, 'change:currentStory', this.setHistoryTitle);
+
+    this.$loadingSpin.hide();
     this.scrollToStory(window.location.hash || '');
   },
 
@@ -187,4 +190,13 @@ module.exports = Backbone.View.extend({
       .sort();
   },
 
+  setHistoryTitle: function(story) {
+    var $column = this.$('.history_column');
+    var $header = $column.find('.toggle-title');
+    var title   = story.title;
+
+    if (title.length > 32) title = title.substring(0, 32) + '...';
+    $header.text(I18n.t('projects.show.history') + " '" + title + "'");
+    $column.show();
+  }
 });

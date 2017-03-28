@@ -247,6 +247,7 @@ es:
       chilly_bin: "Icebox"
       search_results: "Resultados de la búsqueda"
       epic: 'Epic'
+      history: 'Historia de'
       search: 'Buscar'
 
     uploads:
@@ -513,3 +514,9 @@ es:
         manager: Gerente
         developer: Desarrollador
         guest: Invitado
+
+  activity:
+    actions:
+      update: 'actualizó'
+      destroy: 'destruyo'
+      create: 'creado'

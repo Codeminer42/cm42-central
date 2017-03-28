@@ -66,4 +66,4 @@ _.extend(Backbone.Model.prototype, Backbone.RailsJSON, {
   initialize : function(args) {
     this.maybeUnwrap(args);
   }
-}); 
+});

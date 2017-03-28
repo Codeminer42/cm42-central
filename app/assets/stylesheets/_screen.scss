@@ -150,6 +150,10 @@ div.story {
   &:not(.editing):not(.unestimated) {
     min-height: 37px;
   }
+
+  .input-group {
+    border-collapse: collapse;
+  }
 }
 
 div.story:hover {
@@ -168,20 +172,9 @@ div.story.chore.accepted{
   background-color: adjust-lightness($chameleon-1, 40);
 }
 
-div.story input[type=text],
-div.story textarea {
-  width: 99%;
-}
-
 div.story textarea {
   height: 50px;
   resize: none;
-}
-
-div.story {
-  .story_link {
-    width: 260px;
-  }
 }
 
 .story-icons {
@@ -656,4 +649,47 @@ div#keycut-help {
 
 .btn-clipboard {
   padding: 4px 12px 5px;
+}
+
+.activity {
+  background-color: $lightgrey-11;
+  border-bottom: 1px solid $lightgrey-13;
+  border-top: 1px solid $white;
+  min-height: 37px;
+  padding: 7px 8px;
+
+  &-date {
+    float: right;
+    font-size: 10px;
+    font-weight: bold;
+  }
+
+  &-info {
+    margin: .5em 0;
+    margin-left: 5%;
+    width: 94%;
+  }
+
+  &-changes {
+    background: $white;
+    padding: .4em;
+
+    &:not(:first-child) {
+      border-top: 1px solid $lightgrey-11;
+    }
+  }
+
+  &-change-history,
+  &-change-attribute {
+    width: auto;
+  }
+
+  &-change-history {
+    font-style: italic;
+    overflow-x: auto;
+  }
+
+  &-change-attribute {
+    white-space: nowrap;
+  }
 }

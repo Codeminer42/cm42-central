@@ -84,6 +84,7 @@ module.exports = FormView.extend({
     "click .destroy": "clear",
     "click .description": "editDescription",
     "click .edit-description": "editDescription",
+    "click .toggle-history": "history",
     "sortupdate": "sortUpdate",
     "fileuploaddone": "attachmentDone",
     "fileuploadstart": "attachmentStart"
@@ -357,12 +358,35 @@ module.exports = FormView.extend({
       );
 
       if (this.id != undefined) {
-        this.$el.append(
-          this.makeFormControl(function(div) {
-            $(div).append('<input id="story-link-' + this.id + '" value="' + this.getLocation() + '#story-' + this.id + '" class="story_link" readonly/>');
-            $(div).append('<button class="btn-clipboard" data-clipboard-target="#story-link-' + this.id + '"><img src="/clippy.svg" alt="Copy to clipboard" width="10px"></button>');
-          })
-        );
+        var $wrapper = $(this.make('div', {class: 'col-xs-12 form-group input-group input-group-sm', id: inputId}));
+        var inputId = 'story-link-' + this.id;
+
+        $wrapper.append(this.make('input', {
+          id: inputId,
+          class: 'form-control input-sm',
+          value: this.getLocation() + '#story-' + this.id,
+          readonly: true,
+        }));
+
+        var $btnWrapper = $(this.make('span', {class: 'input-group-btn'}));
+
+        // Story's copy to clipboard button
+        var btn = this.make('button', {
+          class: 'btn btn-default btn-clipboard',
+          'data-clipboard-target': '#'+inputId,
+          type: 'button'
+        });
+        $(btn).html('<img src="/clippy.svg" alt="Copy to clipboard" width="14px">');
+        $btnWrapper.append(btn);
+
+        // Story history button
+        btn = this.make('button', {class: 'btn btn-default toggle-history'})
+        $(btn).html('<i class="mi md-18">history</i>');
+        $btnWrapper.append(btn);
+
+        $wrapper.append($btnWrapper[0]);
+        this.$el.append($wrapper[0]);
+
         // activate the clipboard link
         new Clipboard('.btn-clipboard');
       }
@@ -735,5 +759,9 @@ module.exports = FormView.extend({
     var hashIndex = location.indexOf('#');
     var endIndex = hashIndex > 0 ? hashIndex : location.length;
     return location.substring(0, endIndex);
+  },
+
+  history: function(e) {
+    this.model.showHistory();
   }
 });
