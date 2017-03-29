@@ -653,9 +653,9 @@ div#keycut-help {
   }
 }
 
-.projects {
-  display: flex;
-  flex-wrap: wrap;
+.project-title {
+  display: block;
+  line-height: 1;
 }
 
 .btn-clipboard {

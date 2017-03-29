@@ -31,15 +31,35 @@
     }
   }
 
+  &.project-item {
+    display: flex;
+    flex-direction: column;
+  }
+
   .panel-heading {
     background-color: inherit;
     font-weight: bold;
     color: $darkgrey-2;
     border-bottom: 1px solid $lightgrey-11;
 
+    &.card-heading {
+      align-items: center;
+      justify-content: space-between;
+      display: flex;
+      flex-basis: 53px;
+    }
+
     .card-title {
       color: $darkgrey-3;
       text-decoration: none;
+    }
+
+    .card-tag {
+      padding: 0 5px;
+      font-size: 9px;
+      border-radius: 5px;
+      color: $white;
+      text-transform: uppercase;
     }
 
     .heading-icon {

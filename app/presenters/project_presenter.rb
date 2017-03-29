@@ -9,6 +9,11 @@ class ProjectPresenter < SimpleDelegator
     truncate(name, length: 18)
   end
 
+  def tag_fore_color
+    bg_color = tag_group&.bg_color
+    bg_color && RGBUtils::SimpleContrastColorResolver.for(bg_color)
+  end
+
   def velocity
     iteration_service(since: 1.month.ago).velocity
   end
