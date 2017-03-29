@@ -75,6 +75,8 @@ en:
     tasks: "Tasks"
     notes: "Notes"
     attachments: "Attachments"
+    errors:
+      failed_upload: "Your upload has failed. Please try again."
 
     definitive_sure: "Are you sure you want to %{action} this story? This action is irreversible."
 
