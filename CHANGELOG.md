@@ -46,8 +46,9 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.1.2...HEAD
+[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.1.3...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
 [1.1.2]: https://github.com/Codeminer42/cm42-central/tree/v1.1.2
+[1.1.3]: https://github.com/Codeminer42/cm42-central/tree/v1.1.3
