@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [1.1.3] - 2017-03-30
+### Changed
+- Central-Support gem version updated to fix volatility issues
+
 ## [1.1.2] - 2017-03-30
 ### Added
 - Option on stories to show their activity history.
