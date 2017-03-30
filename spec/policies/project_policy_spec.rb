@@ -41,7 +41,7 @@ describe ProjectPolicy do
         it { should permit(action) }
       end
 
-      %i[import import_upload archive unarchive destroy share unshare transfer ownership].each do |action|
+      %i[import import_upload archive unarchive destroy share unshare transfer ownership join].each do |action|
         it { should_not permit(action) }
       end
 
@@ -61,12 +61,12 @@ describe ProjectPolicy do
         it { should_not permit(action) }
       end
 
-      %i[import import_upload archive unarchive destroy share unshare transfer ownership].each do |action|
+      %i[import import_upload archive unarchive destroy share unshare transfer ownership join].each do |action|
         it { should_not permit(action) }
       end
 
       it 'lists all projects' do
-        expect(policy_scope).to eq([project])
+        expect(policy_scope).to match_array([project])
       end
     end
   end
@@ -77,7 +77,7 @@ describe ProjectPolicy do
     context "for an admin" do
       let(:current_user) { create :user, :with_team_and_is_admin }
 
-      %i[index show create new update edit reports].each do |action|
+      %i[index show create new update edit reports join].each do |action|
         it { should permit(action) }
       end
 
@@ -92,6 +92,8 @@ describe ProjectPolicy do
 
     context "for a user" do
       let(:current_user) { create :user, :with_team }
+
+      it { should permit(:join) }
 
       %i[index create new update edit reports].each do |action|
         it { should_not permit(action) }

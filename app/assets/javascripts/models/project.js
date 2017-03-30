@@ -8,7 +8,6 @@ module.exports = Backbone.Model.extend({
   name: 'project',
 
   initialize: function(args) {
-
     this.maybeUnwrap(args);
 
     _.bindAll(this, 'updateChangesets');
@@ -80,7 +79,7 @@ module.exports = Backbone.Model.extend({
     var options = {
       type: 'GET',
       dataType: 'json',
-      success: function(resp, status, xhr) {
+      success: function(resp) {
         model.handleChangesets(resp);
       },
       data: {from: from, to: to},
@@ -380,4 +379,6 @@ module.exports = Backbone.Model.extend({
     this.set('current_flow', nextValue);
     Cookies.set('current_flow', nextValue, {expires: 365});
   }
+},{
+  filters: ['not_archived', 'archived', 'all_projects'],
 });

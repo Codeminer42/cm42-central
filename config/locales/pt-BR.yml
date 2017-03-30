@@ -7,6 +7,7 @@ pt-BR:
   login:   "Entrar"
   sign_up:  "Inscreva-se"
   edit:     "Editar"
+  options:  "Opções"
   settings: "Configurações"
   reports:  "Relatórios"
   back:     "Voltar"
@@ -36,7 +37,14 @@ pt-BR:
   cancel_account: "Cancelar minha conta"
   cancel_account_confirmation_question: "Tem certeza que desejar cancelar sua conta?"
   update_profile: "Atualizar perfil"
-
+  join: "Juntar-se"
+  by_clicking: "Clicando em"
+  archived_at: "Arquivado em"
+  archived: "Arquivados"
+  not_archived: "Não Arquivados"
+  all_projects: "Todos os Projetos"
+  no_results_found: "Nenhum resultado encontrado"
+  adjusting_search: "Tente ajustar sua pesquisa para encontrar o que você está procurando."
   save: "Salvar"
   delete: "Apagar"
   cancel: "Cancelar"
@@ -46,6 +54,8 @@ pt-BR:
   add new member: "Adicionar um novo membro"
   all users: "Todos os usuários"
   remove user confirm: "Tem certeza de que deseja remover %{email} deste projeto?"
+  search projects: "Procurar projetos"
+  private: "Privado"
 
   story:
     state:
@@ -192,6 +202,13 @@ pt-BR:
     project_members: "Membros do projeto"
     available_users: "Membros disponíveis"
     select: "Selecionar projeto"
+    join: "Juntar-se ao projeto"
+    unjoin: "Sair do projeto"
+    mine: "Meus projetos"
+    not_member_of: "Projetos de que não sou membro"
+    you_are_not_a_member: "Você não é membro destes projetos, mas você pode"
+    to_view_more_join: "Para ver mais, junte-se ao projeto"
+    unable_to_join: "Você não pode se juntar a esse projeto"
     reports:
       n months ago:
         one: "1 mês atrás"
@@ -285,7 +302,8 @@ pt-BR:
     You are not authorized to perform this action: "Você não está autorizado para executar esta ação."
     is already a member of this project: "%{email} já é um membro deste projeto"
     was sent an invite to join this project: "%{email} foi enviado um convite para participar deste projeto"
-    was added to this project: "%{email} foi adicionada a este projecto"
+    was added to this project: "%{email} foi adicionada a este projeto"
+    was removed from this project: "%{email} foi removido deste projeto"
     admin_on: Torne Administrator
     admin_off: Torne apenas Membro
 

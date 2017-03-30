@@ -146,17 +146,12 @@ describe "Stories" do
         end
         expect(page).to have_css(selector)
 
-        # close the sidebar
-        find('#sidebar-toggle').trigger 'click'
-
         # Hide the column with the 'close' button in the column header
         within("#{selector} .column_header") do
           click_link 'Close'
         end
-        expect(page).not_to have_css(selector)
 
-        # open sidebar again
-        find('#sidebar-toggle').trigger 'click'
+        expect(page).not_to have_css(selector)
       end
     end
 

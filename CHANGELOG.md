@@ -7,6 +7,8 @@
 ### Changed
 - Fix docker setup for development mode.
 - Fix bug keeping .story-controls disabled after a failed upload.
+- Added ES2015 support
+- Improve project list
 
 ## [1.1.1] - 2017-03-14
 ### Changed

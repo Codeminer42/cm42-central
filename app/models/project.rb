@@ -8,8 +8,10 @@ class Project < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: :slugged
 
+  MAX_MEMBERS_PER_CARD = 4
+
   JSON_ATTRIBUTES = [
-    "id", "iteration_length", "iteration_start_day", "start_date",
+    "id", "name" ,"iteration_length", "iteration_start_day", "start_date",
     "default_velocity"
   ].freeze
 
@@ -18,6 +20,10 @@ class Project < ActiveRecord::Base
   has_many :changesets, dependent: :destroy
 
   has_attachment :import, accept: [:raw]
+
+  scope :joinable, -> { where(disallow_join: false) }
+
+  scope :joinable_except, -> (project_ids) { joinable.where.not(id: project_ids) }
 
   def last_changeset_id
     changesets.last && changesets.last.id

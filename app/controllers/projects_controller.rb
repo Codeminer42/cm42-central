@@ -1,22 +1,25 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, except: %i[new create index archived]
+  before_action :set_project, only: %i[show edit update destroy import import_upload
+                                       reports ownership archive unarchive
+                                       change_archived projects_unjoined]
   before_action :prepare_session, only: %i[import import_upload]
   before_action -> { set_sidebar :project_settings }, only: %i[import edit]
   before_action :set_story_flow, only: %i[show]
   before_action :fluid_layout, only: %i[show edit import]
 
-  Project::MAX_MEMBERS_PER_CARD = 4;
-
   # GET /projects
   # GET /projects.xml
   def index
-    @projects = policy_scope(Project).not_archived
-    @activities_group = Activity.grouped_activities(@projects, 1.week.ago)
+    @projects = Hash.new
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render xml: @projects }
-    end
+    projects_joined = policy_scope(Project)
+
+    @projects = {
+      joined: serialize_from_collection(projects_joined),
+      unjoined: serialize_from_collection(projects_unjoined.order(:updated_at))
+    }
+
+    @activities_group = Activity.grouped_activities(projects_joined, 1.week.ago)
   end
 
   # GET /projects/1
@@ -90,6 +93,18 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(projects_url) }
       format.xml  { head :ok }
+    end
+  end
+
+  def join
+    project = projects_unjoined.find_by_slug!(params[:id])
+    authorize project
+
+    project.users << current_user
+
+    respond_to do |format|
+      format.html { redirect_to(project, notice: I18n.t('was added to this project', scope: 'users', email: current_user.email)) }
+      format.xml  { render xml: project, status: :created, location: project }
     end
   end
 
@@ -218,7 +233,7 @@ class ProjectsController < ApplicationController
   end
 
   def allowed_params
-    params.fetch(:project,{}).permit(:name, :point_scale, :default_velocity, :start_date, :iteration_start_day, :iteration_length, :import, :archived)
+    params.fetch(:project,{}).permit(:name, :point_scale, :default_velocity, :start_date, :iteration_start_day, :iteration_length, :import, :archived, :disallow_join)
   end
 
   def fluid_layout
@@ -232,5 +247,15 @@ class ProjectsController < ApplicationController
 
   def prepare_session
     session[:import_job] = (session[:import_job] || {}).with_indifferent_access
+  end
+
+  private
+
+  def projects_unjoined
+    current_team.projects.not_archived.joinable_except(policy_scope(Project))
+  end
+
+  def serialize_from_collection(collection)
+    ProjectSerializer::from_collection(ProjectPresenter::from_collection(collection))
   end
 end

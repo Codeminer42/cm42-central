@@ -183,7 +183,7 @@ describe UsersController do
 
   context "when logged in as non-admin user" do
 
-    let(:user)  { create(:user, :with_team) }
+    let(:user)  { create(:user, :with_team, email: 'foobar@example.com') }
     let!(:ownership)  { create(:ownership, team: user.teams.first, project: project) }
 
     before do
@@ -233,11 +233,13 @@ describe UsersController do
       describe "#destroy" do
 
         context 'himself' do
-          before { request.env['HTTP_REFERER'] = root_url }
-          specify do
+          before do
+            request.env['HTTP_REFERER'] = root_url
             delete :destroy, project_id: project.id, id: user.id
-            expect(response).to redirect_to(:back)
           end
+
+          it { expect(response).to redirect_to(:back) }
+          it { expect(flash[:notice]).to eq('foobar@example.com was removed from this project') }
         end
 
         context 'another user' do

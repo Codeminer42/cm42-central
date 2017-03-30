@@ -34,6 +34,7 @@ Rails.application.routes.draw do
 
   resources :projects do
     member do
+      get :join
       get :import
       patch :import_upload
       patch :archive

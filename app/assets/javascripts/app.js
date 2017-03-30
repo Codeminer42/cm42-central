@@ -1,5 +1,14 @@
-require('libs');
+import './libs';
+import ProjectsIndexController from './controllers/projects/IndexController';
+import { start as ProjectsShowController } from './central'
 
-var Central = require('./central');
+const routes = {
+  'projects.index': ProjectsIndexController,
+  'projects.show': ProjectsShowController
+};
 
-$(Central.start);
+const page = $('body').data('page');
+
+if(routes[page]) {
+  $(routes[page]);
+}

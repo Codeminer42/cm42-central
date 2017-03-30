@@ -9,9 +9,9 @@
   <%= stylesheet_link_tag "https://www.authy.com/form.authy.min.css" %>
   <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Noto+Sans:400,700" %>
 </head>
-<body class="<%= "board" if @layout_settings[:fluid] %>">
+<body class='<%= "board" if @layout_settings[:fluid] %>' data-page='<%= "#{params[:controller]}.#{params[:action]}" %>'>
 
-  <div class="click-overlay"></div>
+<div class="click-overlay"></div>
 <div class="content-wrapper">
 
   <nav class="navbar navbar-default">
@@ -104,16 +104,20 @@
   </div>
 </div>
 
-  <div class="loading-spin">
-    <div class="spinner">
-      <span class="icons-spinner"></span>
-    </div>
+<div class="loading-spin">
+  <div class="spinner">
+    <span class="icons-spinner"></span>
   </div>
+</div>
 
-  <%= javascript_include_tag *webpack_asset_paths('application') %>
-  <%= javascript_include_tag 'i18n/translations' %>
-  <%= javascript_include_tag :attachinary %>
-  <%= yield :charts_data %>
-  <%= cloudinary_js_config %>
+<%= javascript_include_tag *webpack_asset_paths('application') %>
+<%= javascript_include_tag 'i18n/translations' %>
+<%= javascript_include_tag :attachinary %>
+<%= yield :charts_data %>
+<%= cloudinary_js_config %>
+
+<script type="text/javascript">
+  I18n.locale = "<%= I18n.locale %>";
+</script>
 </body>
 </html>
