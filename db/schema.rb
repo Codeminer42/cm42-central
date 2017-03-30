@@ -168,6 +168,7 @@ ActiveRecord::Schema.define(version: 20170407114148) do
     t.integer  "memberships_count",               default: 0
     t.datetime "archived_at"
     t.boolean  "disallow_join",                   default: true,        null: false
+    t.integer  "tag_group_id"
   end
 
   add_index "projects", ["slug"], name: "index_projects_on_slug", unique: true, using: :btree
@@ -192,6 +193,17 @@ ActiveRecord::Schema.define(version: 20170407114148) do
     t.datetime "started_at"
     t.float    "cycle_time",                                              default: 0.0
   end
+
+  create_table "tag_groups", force: :cascade do |t|
+    t.integer  "team_id"
+    t.string   "name",        limit: 15
+    t.text     "description"
+    t.string   "bg_color",               default: "#2075F3"
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+  end
+
+  add_index "tag_groups", ["team_id"], name: "index_tag_groups_on_team_id", using: :btree
 
   create_table "tasks", force: :cascade do |t|
     t.integer  "story_id"

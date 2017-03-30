@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- the option to each project has its own tag group
 
 ## [1.2.0] - 2017-04-7
 ### Changed
@@ -30,7 +32,7 @@
 ### Added
 - User Endpoint
 - Integrations in Project Endpoint
-- Sidebar option to invert columns order. 
+- Sidebar option to invert columns order.
 
 ### Changed
 - Refactor /admin/users views using a Presenter.
