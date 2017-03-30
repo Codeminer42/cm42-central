@@ -484,7 +484,7 @@ describe('StoryView', function() {
       this.view.canEdit = sinon.stub().returns(true)
       this.view.render();
       expect(this.view.$('textarea[name="description"]').length).toEqual(1);
-      expect(this.view.$('div.description').length).toEqual(0);
+      expect(this.view.$('div.description-wrapper').length).toEqual(0);
       expect(this.view.$('input.edit-description').length).toEqual(0);
     });
 
@@ -492,13 +492,14 @@ describe('StoryView', function() {
       this.view.model.isNew = sinon.stub().returns(false);
       this.view.render();
       expect(this.view.$('textarea[name="description"]').length).toEqual(0);
-      expect(this.view.$('div.description').length).toEqual(1);
-      expect(this.view.$('input.edit-description').length).toEqual(1);
+      expect(this.view.$('div.description-wrapper').length).toEqual(1);
+      expect(this.view.$('.edit-description').length).toEqual(1);
     });
 
     it('is a text area after .edit-description is clicked', function() {
+      const ev = {target: this.view.$('div.description-wrapper')[0]}
       this.view.model.isNew = sinon.stub().returns(false);
-      this.view.editDescription();
+      this.view.editDescription(ev);
       expect(this.view.model.get('editingDescription')).toBeTruthy();
     });
 
