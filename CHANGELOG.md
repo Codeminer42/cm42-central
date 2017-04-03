@@ -4,6 +4,9 @@
 ### Added
 - tag group form
 
+### Changed
+- Story id, location and history input-form-group into a react component 
+
 ### Fixed
 - Remove the API module used in `using` params into Project Entity
 - Clean up DatabaseCleaner config
