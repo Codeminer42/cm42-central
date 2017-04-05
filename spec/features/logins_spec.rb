@@ -33,16 +33,32 @@ describe "Logins" do
   end
 
   describe "successful login" do
-    it "logs in the user", js: true do
-      visit root_path
-      fill_in "Email",    with: 'user@example.com'
-      fill_in "Password", with: 'password'
-      click_button 'Sign in'
+    context "when user has one team" do
+      it "logs in the user", js: true do
+        visit root_path
+        fill_in "Email",    with: 'user@example.com'
+        fill_in "Password", with: 'password'
+        click_button 'Sign in'
 
-      expect(page).to have_selector('span', text: I18n.t('teams.switch'))
-      expect(page).to have_selector('.user-dropdown', text: 'Test User')
+        expect(page).to have_selector('.user-dropdown', text: 'Test User')
+      end
     end
 
+    context "when user has multiples teams" do
+      let(:another_team) { create :team }
+
+      before { user.teams << another_team }
+
+      it "logs in the user" do
+        visit root_path
+        fill_in "Email",    with: 'user@example.com'
+        fill_in "Password", with: 'password'
+        click_button 'Sign in'
+
+        expect(page).to have_selector('span', text: I18n.t('teams.switch'))
+        expect(page).to have_selector('.user-dropdown', text: 'Test User')
+      end
+    end
 
     describe '2 Factor Auth' do
       context "when account wasn't enabled yet" do
