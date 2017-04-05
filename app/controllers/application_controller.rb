@@ -73,9 +73,9 @@ class ApplicationController < ActionController::Base
   end
 
   def set_current_team_if_single
-    user_teams = current_user&.teams.not_archived
+    user_teams = current_user.teams.not_archived
 
-    if user_teams&.size == 1
+    if user_teams.size == 1
       session[:current_team_slug] = user_teams.first.slug
     end
   end

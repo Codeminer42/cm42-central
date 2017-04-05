@@ -34,7 +34,7 @@ describe "Logins" do
 
   describe "successful login" do
     context "when user has one team" do
-      it "logs in the user", js: true do
+      it "logs in the user" do
         visit root_path
         fill_in "Email",    with: 'user@example.com'
         fill_in "Password", with: 'password'
@@ -55,8 +55,24 @@ describe "Logins" do
         fill_in "Password", with: 'password'
         click_button 'Sign in'
 
-        expect(page).to have_selector('span', text: I18n.t('teams.switch'))
-        expect(page).to have_selector('.user-dropdown', text: 'Test User')
+        expect(page).to have_selector('span', text: I18n.t('teams.switch')) &
+                        have_selector('.user-dropdown', text: 'Test User')
+      end
+    end
+
+    context "when user hasn't any teams" do
+      before { user.teams.destroy(user.teams.first.id) }
+
+      it "logs in the user" do
+        visit root_path
+        fill_in "Email", with: 'user@example.com'
+        fill_in "Password", with: 'password'
+
+        click_button 'Sign in'
+
+        expect(page).to have_selector('span', text: I18n.t('teams.switch')) &
+                        have_selector('.user-dropdown', text: 'Test User') &
+                        have_selector('.simple-alert', text: "Oops! You're not enrolled to a team yet.")
       end
     end
 
