@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [1.2.0] - 2017-04-7
 ### Changed
 - Redirect automatically to project#index after the user authentication, when there is only one team on enrollments
 - **Increase decimal precision from Stories position**
@@ -50,9 +52,10 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.1.3...HEAD
+[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.2.0...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
 [1.1.2]: https://github.com/Codeminer42/cm42-central/tree/v1.1.2
 [1.1.3]: https://github.com/Codeminer42/cm42-central/tree/v1.1.3
+[1.2.0]: https://github.com/Codeminer42/cm42-central/tree/v1.2.0
