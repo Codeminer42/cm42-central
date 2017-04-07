@@ -3,7 +3,8 @@
 ## [Unreleased]
 ### Changed
 - Redirect automatically to project#index after the user authentication, when there is only one team on enrollments
-- Increase decimal precision from Stories position
+- **Increase decimal precision from Stories position**
+- Change story controls to react component
 
 ## [1.1.3] - 2017-03-30
 ### Changed

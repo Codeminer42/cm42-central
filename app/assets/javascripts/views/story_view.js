@@ -1,3 +1,7 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import StoryControls from 'components/story/StoryControls';
+
 var Clipboard = require('clipboard');
 
 var executeAttachinary = require('libs/execute_attachinary');
@@ -338,23 +342,19 @@ module.exports = FormView.extend({
   },
 
   render: function() {
+    const storyControlsContainer = this.$('[data-story-controls]').get(0);
+
+    if (storyControlsContainer) {
+      ReactDOM.unmountComponentAtNode(storyControlsContainer);
+    }
+
     if(this.canEdit()) {
 
       this.$el.empty();
       this.$el.addClass('editing');
 
-      this.$el.append(
-        this.makeFormControl(function(div) {
-          $(div).addClass('story-controls');
-          if(!this.isReadonly()) {
-            $(div).append(this.submit());
-            if (!this.model.isNew()) {
-              $(div).append(this.destroy());
-            }
-          }
-          $(div).append(this.cancel());
-        })
-      );
+      const $storyControls = $('<div data-story-controls></div>');
+      this.$el.append($storyControls);
 
       if (this.id != undefined) {
         var $wrapper = $(this.make('div', {class: 'col-xs-12 form-group input-group input-group-sm', id: inputId}));
@@ -546,12 +546,24 @@ module.exports = FormView.extend({
 
       this.renderNotes();
 
+      this.renderReactComponents();
     } else {
       this.$el.removeClass('editing');
       this.$el.html(this.template({story: this.model, view: this}));
     }
     this.hoverBox();
     return this;
+  },
+
+  renderReactComponents: function() {
+    ReactDOM.render(
+      <StoryControls
+        onClickSave={this.clickSave}
+        onClickDelete={this.clear}
+        onClickCancel={this.cancelEdit}
+      />,
+      this.$('[data-story-controls]').get(0)
+    );
   },
 
   setClassName: function() {
