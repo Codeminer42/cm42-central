@@ -59,6 +59,7 @@ en:
   remove user confirm: "Are you sure you want to remove %{email} from this project?"
   search projects: "Search projects"
   private: "Private"
+  my teams: "My teams"
 
   story:
     state:
