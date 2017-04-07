@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170119174958) do
+ActiveRecord::Schema.define(version: 20170407114148) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -167,7 +167,7 @@ ActiveRecord::Schema.define(version: 20170119174958) do
     t.integer  "stories_count",                   default: 0
     t.integer  "memberships_count",               default: 0
     t.datetime "archived_at"
-    t.boolean  "disallow_join",                   default: true,       null: false
+    t.boolean  "disallow_join",                   default: true,        null: false
   end
 
   add_index "projects", ["slug"], name: "index_projects_on_slug", unique: true, using: :btree
@@ -176,21 +176,21 @@ ActiveRecord::Schema.define(version: 20170119174958) do
     t.string   "title",             limit: 255
     t.text     "description"
     t.integer  "estimate"
-    t.string   "story_type",        limit: 255, default: "feature"
-    t.string   "state",             limit: 255, default: "unstarted"
+    t.string   "story_type",        limit: 255,                           default: "feature"
+    t.string   "state",             limit: 255,                           default: "unstarted"
     t.datetime "accepted_at"
     t.integer  "requested_by_id"
     t.integer  "owned_by_id"
     t.integer  "project_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "position"
+    t.decimal  "position",                      precision: 25, scale: 20
     t.string   "labels",            limit: 255
     t.string   "requested_by_name", limit: 255
     t.string   "owned_by_name",     limit: 255
     t.string   "owned_by_initials", limit: 255
     t.datetime "started_at"
-    t.float    "cycle_time",                    default: 0.0
+    t.float    "cycle_time",                                              default: 0.0
   end
 
   create_table "tasks", force: :cascade do |t|
