@@ -1,14 +1,32 @@
 import React from 'react';
 
 export default class ProjectCard extends React.Component {
+
+  renderTag(project) {
+    if (!project.get('tag_name')) { return; }
+
+    let style = {
+      backgroundColor: project.get('tag_bg_color'),
+      color: project.get('tag_fore_color')
+    };
+
+    return (
+      <small className="card-tag" style={style}>
+        { project.get('tag_name') }
+      </small>
+    );
+  }
+
   panelHeading() {
     const { project, joined } = this.props;
 
     if (joined) {
       return(
-        <div className="panel-heading">
-          <a href={ project.get('path_to').project } className="card-title">{ project.get('name') }</a>
-
+        <div className="panel-heading card-heading">
+          <div>
+            <a href={ project.get('path_to').project } className="card-title project-title">{ project.get('name') }</a>
+            { this.renderTag(project) }
+          </div>
           <div className="icons pull-right">
             <a href={ project.get('path_to').projectReports }
               className="unstyled-link"
@@ -139,8 +157,8 @@ export default class ProjectCard extends React.Component {
 
   render() {
     return (
-      <div className="col-md-6 project-item">
-        <div className="panel panel-default card animated scale-in">
+      <div className="col-md-6">
+        <div className="panel panel-default card project-item animated scale-in">
           { this.panelHeading() }
           { this.panelBody() }
           { this.cardLink() }

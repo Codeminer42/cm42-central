@@ -30,6 +30,13 @@ FactoryGirl.define do
   factory :project do |p|
     p.name 'Test Project'
     p.start_date { Time.current }
+    p.association :tag_group
+  end
+
+  factory :tag_group do |t|
+    t.name 'my-tag'
+    t.description 'awesome tag'
+    t.bg_color '#FFFFFF'
   end
 
   factory :story do |s|

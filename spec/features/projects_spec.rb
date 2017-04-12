@@ -55,22 +55,24 @@ describe "Projects" do
 
       let(:user) { create :user, :with_team_and_is_admin, email: 'user@example.com', password: 'password' }
       let(:team) { user.teams.first }
+      let(:tag_group) {create :tag_group }
 
       describe "list projects" do
 
         before do
           p1 = create :project, name: 'Test Project',
-                                users: [user]
+                                users: [user],
+                                tag_group: tag_group
           p2 = create :project, name: 'Archived Project',
                                 users: [user],
                                 archived_at: Time.current
           team.ownerships.create(project: p1, is_owner: true)
           team.ownerships.create(project: p2, is_owner: true)
+
+          visit projects_path
         end
 
         it "shows the project list", js: true do
-          visit projects_path
-
           expect(page).to have_selector('.navbar', text: 'New Project')
 
           within('#projects') do
@@ -80,6 +82,9 @@ describe "Projects" do
           expect(page).not_to have_selector('h1', text: 'Archived Project')
         end
 
+        it "shows the tag name of each project if it has", js: true do
+           expect(page).to have_selector('small', text: 'MY-TAG')
+        end
       end
 
       describe "create project" do

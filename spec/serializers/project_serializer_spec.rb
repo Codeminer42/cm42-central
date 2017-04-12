@@ -13,7 +13,7 @@ describe ProjectSerializer do
   end
 
   it 'should have a velocity that matches' do
-    expect(project.velocity).to eq(serialized_project.velocity.first)
+    expect(project.velocity).to eq(serialized_project.velocity)
   end
 
   it 'should have a volatility that matches' do

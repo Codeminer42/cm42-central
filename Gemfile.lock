@@ -379,6 +379,9 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+    rgb_utils (0.1.1)
+      activesupport (>= 3.2)
+      virtus (~> 1.0)
     rollbar (2.13.3)
       multi_json
     rspec-activemodel-mocks (1.0.3)
@@ -537,6 +540,7 @@ DEPENDENCIES
   rails-i18n
   rails_12factor
   recaptcha
+  rgb_utils
   rollbar
   rspec-activemodel-mocks
   rspec-its
@@ -557,4 +561,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.13.7
+   1.14.6

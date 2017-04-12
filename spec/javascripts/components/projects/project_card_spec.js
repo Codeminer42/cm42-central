@@ -8,8 +8,8 @@ import Project from 'models/project';
 
 const user = new User({'user': { 'id': 1 }});
 
-const defaultProps = {
-  project: new Project({
+function projectFactory(tag_name){
+  const defaultObj = {
     'name': 'Foobar',
     'slug': 'foobar',
     'path_to': {
@@ -23,8 +23,23 @@ const defaultProps = {
     'archived_at': null,
     'velocity': '10',
     'volatility': "0%",
+    'tag_name' : tag_name,
+    'tag_bg_color' :  "#2075F3",
+    'tag_fore_color' : "#FFFFFF",
     'users_avatar': ["https://secure.gravatar.com/avatar/foobar.png"]
-  }),
+  }
+  return new Project(defaultObj)
+}
+
+const defaultProps = {
+  project: projectFactory(),
+  user: user,
+  joined: true,
+  key: 1
+};
+
+const propsWithTag = {
+  project: projectFactory('tag-foo'),
   user: user,
   joined: true,
   key: 1
@@ -78,6 +93,25 @@ describe('<ProjectCard />', () => {
               <i className="mi md-20 heading-icon">settings</i>
             </a>
           )).toBe(true);
+        });
+      });
+
+      describe('.card-tag', () => {
+        describe('When there is a tag', () => {
+          const wrapper = mount(<ProjectCard {...propsWithTag} />);
+          it('has the tag name', () => {
+            expect(wrapper.find('.card-tag')).toHaveText(defaultProps.project.get("tag_name"));
+          });
+          it('has the background and foreground defined', () => {
+            const card_style = wrapper.find('.card-tag').getNode();
+            expect(card_style).toHaveCss({'background-color': "rgb(32, 117, 243)", 'color': "rgb(255, 255, 255)"});
+          });
+        });
+        it('does not have the tag', () => {
+          const wrapper = shallow(<ProjectCard {...defaultProps} />);
+          expect(wrapper.contains(
+            <small className='card-tag'>{ defaultProps.project.get("tag_name") }</small>
+          )).toBe(false);
         });
       });
 
