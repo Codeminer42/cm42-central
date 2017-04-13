@@ -30,6 +30,7 @@
     "memoizee": "^0.4.4",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-color": "^2.11",
     "rewire": "^2.5.2",
     "rewire-webpack": "^1.0.1",
     "stats-webpack-plugin": "^0.4.2",
