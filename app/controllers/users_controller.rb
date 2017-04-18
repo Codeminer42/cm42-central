@@ -5,11 +5,12 @@ class UsersController < ApplicationController
 
   def index
     @user = User.new
-    @current_team_users = current_team.users.where.not(id: @project.users).order(:name)
+    @current_team_users = current_team_users
     respond_with(@project.users)
   end
 
   def create
+    @current_team_users = current_team_users
     @user = User.find_or_create_by(email: allowed_params[:email]) do |u|
       # Set to true if the user was not found
       u.was_created = true
@@ -45,6 +46,7 @@ class UsersController < ApplicationController
   def destroy
     @user = policy_scope(User).find(params[:id])
     authorize @user
+    @current_team_users = current_team_users
     policy_scope(User).delete(@user)
     flash[:notice] = I18n.t('was removed from this project', scope: 'users', email: @user.email)
 
@@ -55,6 +57,10 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def current_team_users
+    current_team.users.where.not(id: @project.users).order(:name)
+  end
 
   def allowed_params
     params.require(:user).permit(:email, :name, :initials, :username, :locale, :time_zone, :role)

@@ -1,4 +1,4 @@
-$('#user_list').html("<%= escape_javascript(render 'user_list') %>");
+$('#user_list').html("<%= escape_javascript(render('user_list', project: @project, current_team_users: @current_team_users)) %>");
 
 $('.flash-message').replaceWith("<%= escape_javascript(render 'flash') %>");
 <% flash.clear %>
