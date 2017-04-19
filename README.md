@@ -121,9 +121,10 @@ Or using docker:
 
     # Prepare container
     $ docker-compose build
+    $ docker-compose run --rm web npm install
     $ docker-compose run --rm web bundle exec rake db:create
     $ docker-compose run --rm web bundle exec rake db:migrate
-    $ docker-compose run --rm web bundle exec rake db:seeds
+    $ docker-compose run --rm web bundle exec rake db:seed
 
     # Up container
     $ docker-compose up
