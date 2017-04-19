@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - the option to each project has its own tag group
+- Fix user list refreshing when adding or removing team members
 
 ## [1.2.0] - 2017-04-7
 ### Changed
