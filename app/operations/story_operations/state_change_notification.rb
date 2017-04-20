@@ -1,9 +1,9 @@
 module StoryOperations
   module StateChangeNotification
     def notify_state_changed
-      return unless can_notify_state_changed?
+      # return unless can_notify_state_changed?
 
-      Notifications.story_changed(model, model.acting_user).deliver_later
+      # Notifications.story_changed(model, model.acting_user).deliver_later
       IntegrationWorker.perform_async(model.project.id, integration_message)
     end
 
