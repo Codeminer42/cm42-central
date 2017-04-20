@@ -5,6 +5,9 @@
 - the option to each project has its own tag group
 - Fix user list refreshing when adding or removing team members
 
+### Fixed
+- Fix docker setup for development env.
+
 ## [1.2.0] - 2017-04-7
 ### Changed
 - Redirect automatically to project#index after the user authentication, when there is only one team on enrollments
