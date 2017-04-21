@@ -32,17 +32,28 @@ module StoryOperations
 
     def integration_message
       story_link = "#{model.base_uri}#story-#{model.id}"
-
-      case model.state
-      when 'started'
-        "[#{model.project.name}] The story ['#{model.title}'](#{story_link}) has been started."
-      when 'delivered'
-        "[#{model.project.name}] The story ['#{model.title}'](#{story_link}) has been delivered for acceptance."
-      when 'accepted'
-        "[#{model.project.name}] #{model.acting_user.name} ACCEPTED your story ['#{model.title}'](#{story_link})."
-      when 'rejected'
-        "[#{model.project.name}] #{model.acting_user.name} REJECTED your story ['#{model.title}'](#{story_link})."
-      end
-    end
+        payload = [
+        {
+            fallback: "Required plain-text summary of the attachment.",
+            color: "#36a64f",
+            title: "#{model.project.name}",
+            title_link: "#{story_link}",
+            text: "The story '#{model.title}' has been #{model.state}.",
+            fields: [
+                {
+                    title: "Assigned to",
+                    value: "#{model.acting_user.name}",
+                    short: true
+                },
+				        {
+					          title: "Points",
+                    value: "#{model.estimate}",
+                    short: true
+				        }
+            ],
+            footer: "Disruptive Angels",
+            footer_icon: "https://disruptive-blogs.s3.amazonaws.com/2015/Dec/DS_icono-1450215555732.png"
+        }
+        ].to_json
   end
 end
