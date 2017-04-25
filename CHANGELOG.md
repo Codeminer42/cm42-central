@@ -1,19 +1,21 @@
 # Changelog
 
 ## [Unreleased]
+
+## [1.3.0] - 2017-04-25
 ### Added
-- the option to each project has its own tag group
-- Fix user list refreshing when adding or removing team members
+- The option to each project has its own tag group
+- Links to stories within the same project can be added to a story description.
 
 ### Fixed
-- Fix docker setup for development env.
+- Docker setup for development env.
+- User list refreshing when adding or removing team members
 
 ## [1.2.0] - 2017-04-7
 ### Changed
 - Redirect automatically to project#index after the user authentication, when there is only one team on enrollments
 - **Increase decimal precision from Stories position**
 - Change story controls to react component
-- Links to stories within the same project can be added to a story description.
 
 ## [1.1.3] - 2017-03-30
 ### Changed
@@ -59,10 +61,11 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.3.0...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
 [1.1.2]: https://github.com/Codeminer42/cm42-central/tree/v1.1.2
 [1.1.3]: https://github.com/Codeminer42/cm42-central/tree/v1.1.3
 [1.2.0]: https://github.com/Codeminer42/cm42-central/tree/v1.2.0
+[1.3.0]: https://github.com/Codeminer42/cm42-central/tree/v1.3.0
