@@ -47,6 +47,45 @@ describe "Stories" do
 
   end
 
+  describe "story links" do
+
+    let!(:story) { create(:story, title: "Story", project: project, requested_by: user)}
+    let!(:target_story) { create(:story, state: 'unscheduled', project: project, requested_by: user)}
+
+    before do
+      story.description = "Story ##{target_story.id}"
+      story.save!
+    end
+
+    it "unscheduled story link", js: true do
+      visit project_path(project)
+      wait_spinner
+      wait_page_load
+
+      find("#story-#{story.id}").click
+      expect(find("#story-#{story.id}").find("#story-link-#{target_story.id}"))
+        .to have_content("##{target_story.id}")
+    end
+
+    ['unstarted', 'started', 'finished', 'delivered', 'accepted', 'rejected'].each do |state|
+      it "#{state} story link", js: true do
+        visit project_path(project)
+        wait_spinner
+        wait_page_load
+
+        find("#story-#{target_story.id}").click
+        within("#story-#{target_story.id}") do
+          find('select[name="state"]').find("option[value='#{state}']").select_option
+          click_on 'Save'
+        end
+
+        find("#story-#{story.id}").click
+        expect(page).to have_css(".story-link-icon.#{state}")
+      end
+    end
+
+  end
+
   describe "delete a story" do
 
     let(:story) {

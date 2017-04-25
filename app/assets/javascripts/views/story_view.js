@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import StoryControls from 'components/story/StoryControls';
+import StoryDescription from 'components/story/StoryDescription';
 
 var Clipboard = require('clipboard');
 
@@ -13,12 +14,15 @@ var NoteView = require('./note_view');
 var TaskForm = require('./task_form');
 var TaskView = require('./task_view');
 
+const LOCAL_STORY_REGEXP = /(?!\s|\b)(#\d+)(?!\w)/g;
+
 module.exports = FormView.extend({
 
   template: require('templates/story.ejs'),
   alert: require('templates/alert.ejs'),
 
   tagName: 'div',
+  linkedStories: {},
 
   initialize: function(options) {
     _.extend(this, _.pick(options, "isSearchResult"));
@@ -326,7 +330,11 @@ module.exports = FormView.extend({
       this.model.clear();
   },
 
-  editDescription: function() {
+  editDescription: function(ev) {
+    const $target = $(ev.target);
+    if ($target.hasClass('story-link') || $target.hasClass('story-link-icon'))
+      return;
+
     this.model.set({editingDescription: true});
     this.render();
   },
@@ -358,7 +366,7 @@ module.exports = FormView.extend({
 
       if (this.id != undefined) {
         var $wrapper = $(this.make('div', {class: 'col-xs-12 form-group input-group input-group-sm', id: inputId}));
-        var inputId = 'story-link-' + this.id;
+        var inputId = 'story-uri-' + this.id;
 
         $wrapper.append(this.make('input', {
           id: inputId,
@@ -376,6 +384,13 @@ module.exports = FormView.extend({
           type: 'button'
         });
         $(btn).html('<img src="/clippy.svg" alt="Copy to clipboard" width="14px">');
+        $btnWrapper.append(btn);
+
+        btn = this.make('button', {
+          class: 'btn btn-default btn-clipboard-id btn-clipboard',
+          'data-clipboard-text': '#'+this.id,
+          type: 'button'
+        }, 'ID');
         $btnWrapper.append(btn);
 
         // Story history button
@@ -490,7 +505,7 @@ module.exports = FormView.extend({
       this.$el.append(
         this.makeFormControl(function(div) {
           $(div).append(this.label("description", I18n.t('activerecord.attributes.story.description')));
-          $(div).append('<br/>');
+
           if(this.model.isNew() || this.model.get('editingDescription')) {
             var textarea = this.textArea("description");
             $(textarea).atwho({
@@ -499,21 +514,8 @@ module.exports = FormView.extend({
             });
             $(div).append(textarea);
           } else {
-            var description = this.make('div');
-            $(description).addClass('description');
-            $(description).html(
-              window.md.makeHtml(this.model.escape('description'))
-            );
-            $(div).append(description);
-            if (!this.model.get('description') || 0 === this.model.get('description').length) {
-              $(description).after(
-                this.make('input', {
-                  class: this.isReadonly() ? '' : 'edit-description',
-                  type: 'button',
-                  value: I18n.t('edit')
-                })
-              );
-            }
+            var $description = $('<div class="description-wrapper"><div>');
+            $(div).append($description);
           }
         })
       );
@@ -564,6 +566,28 @@ module.exports = FormView.extend({
       />,
       this.$('[data-story-controls]').get(0)
     );
+
+    const descriptionContainer = this.$('.description-wrapper')[0];
+    if (descriptionContainer) {
+      ReactDOM.render(
+        <StoryDescription
+          linkedStories={this.linkedStories}
+          isReadonly={this.isReadonly()}
+          description={this.parseDescription()} />,
+          descriptionContainer
+        );
+    }
+  },
+
+  parseDescription: function() {
+    const description = window.md.makeHtml(this.model.escape('description')) || '';
+    var id, story;
+    return description.replace(LOCAL_STORY_REGEXP, story_id => {
+      id = story_id.substring(1);
+      story = this.model.collection.get(id);
+      this.linkedStories[id] = story;
+      return (story) ? `<a data-story-id='${id}'></a>` : story_id;
+    });
   },
 
   setClassName: function() {
@@ -697,22 +721,18 @@ module.exports = FormView.extend({
 
   // FIXME Move to separate view
   hoverBox: function() {
-    var view = this;
-    this.$el.find('.popover-activate').popover({
-      title: function() {
-        return view.model.get("title");
-      },
-      content: function() {
-        return require('templates/story_hover.ejs')({
-          story: view.model,
+    if (!this.model.isNew()) {
+      this.$el.find('.popover-activate').popover({
+        delay: 200, // A small delay to stop the popovers triggering whenever the mouse is moving around
+        html: true,
+        trigger: 'hover',
+        title: () => this.model.get("title"),
+        content: () => require('templates/story_hover.ejs')({
+          story: this.model,
           noteTemplate: require('templates/note.ejs')
-        });
-      },
-      // A small delay to stop the popovers triggering whenever the mouse is moving around
-      delay: 200,
-      html: true,
-      trigger: 'hover'
-    });
+        })
+      });
+    }
   },
 
   removeHoverbox: function() {

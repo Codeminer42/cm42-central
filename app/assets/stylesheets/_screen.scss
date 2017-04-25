@@ -177,6 +177,17 @@ div.story textarea {
   resize: none;
 }
 
+.form-control.description-textarea {
+  min-height: 100px;
+  max-height: 250px;
+  resize: vertical;
+}
+
+.note-textarea {
+  max-height: 100px;
+  overflow-y: auto;
+}
+
 .story-icons {
   float: left;
 
@@ -219,6 +230,10 @@ div.story-title abbr.initials {
   font-weight: bold;
   margin-left: 0.2em;
   border: none;
+}
+
+.input-group-btn .btn-clipboard-id {
+  padding-top: 6px;
 }
 
 #in_progress div.story,
@@ -271,17 +286,6 @@ div.story-title abbr.initials {
   }
 }
 
-/* Story action buttons */
-.state-actions {
-  float: right;
-  margin-left: 0.2em;
-}
-
-.state-actions form div,
-.state-actions form {
-  display: inline;
-}
-
 /* Iteration markers */
 .iteration {
   padding: 5px 10px;
@@ -294,6 +298,17 @@ div.story-title abbr.initials {
 
 .iteration .points {
   float: right;
+}
+
+/* Story action buttons */
+.state-actions {
+  float: right;
+  margin-left: .2em;
+}
+
+.state-actions form div,
+.state-actions form {
+  display: inline;
 }
 
 .state-actions input {
@@ -359,6 +374,63 @@ a.button {
   color: $sky-blue-3;
   font-size: 84%;
   margin: 0;
+}
+
+.story-link {
+  background: $lightgrey-11;
+  border: 1px solid $lightgrey-13;
+  border-radius: 2px;
+  color: $darkgrey-3;
+  display: inline-block;
+  padding: 1px 3px;
+
+  &:hover, &:focus {
+    background: $lightgrey-2;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  &.accepted {
+    border-color: $chameleon-3;
+  }
+
+  &.rejected {
+    border-color: $darkred;
+  }
+}
+
+.story-link-icon {
+  font-size: 10px;
+  height: 11px;
+  width: 11px;
+  text-align: center;
+  vertical-align: middle;
+  margin-left: 2px;
+
+  &.unstarted {
+    color: $darkgrey-5;
+  }
+
+  &.started  {
+    color: $blue-4;
+    color: $chameleon-3;
+  }
+
+  &.finished {
+    color: $chameleon-3;
+  }
+
+  &.delivered {
+    color: $blue-4;
+  }
+
+  &.accepted {
+    color: $chameleon-3;
+  }
+
+  &.rejected {
+    color: $darkred;
+  }
 }
 
 // Popover Overrides

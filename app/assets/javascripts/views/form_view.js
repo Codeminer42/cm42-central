@@ -21,8 +21,8 @@ module.exports = Backbone.View.extend({
   },
 
   textArea: function(name) {
-    var el = this.make('textarea', {name: name, class: 'form-control' }, this.model.get(name));
-    $(el).attr('style', 'height:100px;overflow-y:hidden;');
+    var el = this.make('textarea', {name: name, class: `form-control ${name}-textarea` }, this.model.get(name));
+    $(el).attr('style', 'min-height:100px;');
     $(el).on('input', function () {
       this.style.height = 'auto';
       this.style.height = (this.scrollHeight) + 'px';
@@ -113,21 +113,6 @@ module.exports = Backbone.View.extend({
     }
     var el = this.make('input', attr);
     this.bindElementToAttribute(el, name);
-    return el;
-  },
-
-  submit: function() {
-    var el = this.make('input', {class: "submit", type: "button", value: I18n.t('save')});
-    return el;
-  },
-
-  destroy: function() {
-    var el = this.make('input', {class: "destroy", type: "button", value: I18n.t('delete')});
-    return el;
-  },
-
-  cancel: function() {
-    var el = this.make('input', {class: "cancel", type: "button", value: I18n.t('cancel')});
     return el;
   },
 
