@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Fixed
+- Remove the API module used in `using` params into Project Entity
 
 ## [1.3.0] - 2017-04-25
 ### Added
