@@ -8,8 +8,8 @@ class Entities::Project < Entities::BaseEntity
   expose :default_velocity
   expose :velocity, if: { type: :full }
   expose :volatility, if: { type: :full }
-  expose :teams, using: API::Entities::Team
-  expose :integrations, using: API::Entities::Integration, if: { type: :full } 
+  expose :teams, using: Entities::Team
+  expose :integrations, using: Entities::Integration, if: { type: :full }
 
   with_options(format_with: :iso_timestamp) do
     expose :created_at, if: lambda { |project, _| project.created_at.present? }
