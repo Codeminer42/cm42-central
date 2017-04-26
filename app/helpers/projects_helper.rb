@@ -15,6 +15,12 @@ module ProjectsHelper
     end
   end
 
+  # Returns an array of all tag groups available for use in
+  # a select helper.
+  def tag_group_options
+    current_team.tag_groups.pluck(:name, :id)
+  end
+
   # Returns an array of day name options suitable for use in
   # a select helper.  The values are 0 to 6, with 0 being Sunday.
   def day_name_options

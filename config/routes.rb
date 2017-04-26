@@ -58,6 +58,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :tag_groups
+
   namespace :admin do
     resources :users do
       member do

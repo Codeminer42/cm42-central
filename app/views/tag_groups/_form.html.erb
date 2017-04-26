@@ -1,0 +1,23 @@
+<%= form_for(tag_group, remote: remote, html: { role: :form, data: { model: 'tag_group' } }) do |f| %>
+  <%= render 'form_errors', object: tag_group if tag_group.errors.any? %>
+
+  <div class="form-group">
+    <%= f.label t('tag_group.name'), class: 'control-label' %>
+    <%= f.text_field :name, class: 'form-control auth-form-control' %>
+    <div class="help-block"></div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label t('tag_group.description'), class: 'control-label' %>
+    <%= f.text_area :description, class: 'form-control auth-form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label t('tag_group.bg_color'), class: 'control-label' %>
+    <div id="tag_group_color"></div>
+  </div>
+
+  <div class="btn-group actions pull-right clearfix">
+    <%= f.submit nil, class: 'btn btn-primary btn-form' %>
+  </div>
+<% end %>

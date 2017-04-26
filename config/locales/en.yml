@@ -60,6 +60,7 @@ en:
   search projects: "Search projects"
   private: "Private"
   my teams: "My teams"
+  confirm: "Are you sure you want to remove?"
 
   story:
     state:
@@ -296,6 +297,14 @@ en:
         bottom_line: "Note: You can also use a file exported from Pivotal Tracker."
     no_projects_found: "Oops! It seems like this team doesn't have any project."
     no_recent_activity: "Oops! This team doesn't have recent activity."
+
+  tag_group:
+    color: "Color"
+    name: "Name"
+    description: "Description"
+    actions: "Actions"
+    bg_color: "Background Color"
+    tag_groups: "Tag Groups"
 
   users:
     You are not authorized to perform this action: "You are not authorized to perform this action."

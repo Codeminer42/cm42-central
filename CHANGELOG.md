@@ -5,6 +5,9 @@
 - Remove the API module used in `using` params into Project Entity
 - Clean up DatabaseCleaner config
 
+### Added
+- tag group form
+
 ## [1.3.0] - 2017-04-25
 ### Added
 - The option to each project has its own tag group

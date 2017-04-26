@@ -1,0 +1,45 @@
+<% content_for :title_bar do %>
+  <% if policy(TagGroup).new? %>
+    <%= link_to t('tag_group.new tag_group'), new_tag_group_path, class: 'btn btn-primary btn-sm navbar-btn' %>
+  <% end %>
+  <%= link_to t('back'), root_path, class: "btn btn-primary btn-sm navbar-btn" %>
+<% end %>
+
+<div id="projects" class="projects-list">
+  <div class="row item">
+    <div class="col-md-12">
+        <section>
+          <h1><%= t('tag_group.tag_groups') %></h1>
+
+          <table class="table tag-groups">
+            <thead>
+              <tr>
+                <th><%= t('tag_group.color') %></th>
+                <th><%= t('tag_group.name') %></th>
+                <th><%= t('tag_group.description') %></th>
+                <th><%= t('tag_group.actions') %></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @tag_groups.each do |tag_group| -%>
+                <tr>
+                  <td>
+                    <div class="color_container">
+                      <div class="color" style="background-color: <%= tag_group.bg_color %>;">
+                      </div>
+                    </div>
+                  </td>
+                  <td><%= tag_group.name %></td>
+                  <td><%= tag_group.description %></td>
+                  <td>
+                    <%= link_to t('edit'), edit_tag_group_path(tag_group) %>
+                    <%= link_to t('delete'), tag_group, method: :delete, class: 'danger', data: {confirm: t('confirm')} %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+      <section>
+    </div>
+  </div>
+</div>
