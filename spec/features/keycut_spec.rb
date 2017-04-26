@@ -1,12 +1,8 @@
 require 'feature_helper'
 
 describe "Keycuts" do
-
-  self.use_transactional_fixtures = false
-
   before(:each) do
     ActionController::Base.allow_forgery_protection = false
-    DatabaseCleaner.clean
     sign_in user
   end
 
