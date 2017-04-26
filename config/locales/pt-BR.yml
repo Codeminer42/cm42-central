@@ -57,6 +57,7 @@ pt-BR:
   search projects: "Procurar projetos"
   private: "Privado"
   my teams: "Minhas equipes"
+  confirm: "Tem certeza que deseja remover?"
 
   story:
     state:
@@ -298,6 +299,15 @@ pt-BR:
         bottom_line: "Nota: Você também pode usar um arquivo exportado de outro sistema (Pivotal Tracker)."
     no_projects_found: "Oops! Parece que esta equipe não tem nenhum projeto."
     no_recent_activity: "Oops! Essa equipe não possui atividade recent."
+
+  tag_group:
+    new tag_group: "Novo Grupo"
+    color: "Cor"
+    name: "Nome"
+    description: "Descrição"
+    actions: "Ações"
+    bg_color: "Cor de fundo"
+    tag_groups: "Grupos de rótulos"
 
   users:
     You are not authorized to perform this action: "Você não está autorizado para executar esta ação."

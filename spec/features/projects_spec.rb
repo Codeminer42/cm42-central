@@ -68,12 +68,14 @@ describe "Projects" do
                                 archived_at: Time.current
           team.ownerships.create(project: p1, is_owner: true)
           team.ownerships.create(project: p2, is_owner: true)
+          team.tag_groups << tag_group
 
           visit projects_path
         end
 
         it "shows the project list", js: true do
           expect(page).to have_selector('.navbar', text: 'New Project')
+          expect(page).to have_selector('.navbar', text: 'Tag Groups')
 
           within('#projects') do
             click_on 'Test Project'
@@ -109,6 +111,10 @@ describe "Projects" do
                             teams: [user.teams.first]
         }
 
+        before do
+          team.tag_groups << tag_group
+        end
+
         it "edits a project", js: true do
           visit projects_path
 
@@ -119,6 +125,7 @@ describe "Projects" do
           end
 
           fill_in 'Name', with: 'New Project Name'
+          select tag_group.name, :from => "project_tag_group_id"
           click_on 'Update Project'
 
           expect(current_path).to eq(project_path(project))
@@ -137,6 +144,44 @@ describe "Projects" do
           click_on 'Update Project'
 
           expect(page).to have_content("Name can't be blank")
+        end
+
+        describe "modal" do
+          it "creates a new tag group", js: true do
+            visit projects_path
+
+            within('.project-item') do
+              find('a[data-toggle="dropdown"]').click
+
+              click_on 'Settings'
+            end
+
+            fill_in 'Name', with: 'New Project Name'
+            select tag_group.name, :from => "project_tag_group_id"
+
+            find('#submit_tag_group').click()
+            fill_in 'tag_group[name]', with: 'foo_tag_name'
+            click_on 'Create Tag group'
+
+            expect(current_path).to eq(edit_project_path(project))
+            expect(page).to have_select("project_tag_group_id", with_options: [tag_group.name, 'foo_tag_name'])
+          end
+
+          it "shows form errors", js: true do
+            visit projects_path
+
+            within('.project-item') do
+              find('a[data-toggle="dropdown"]').click
+
+              click_on 'Settings'
+            end
+
+            fill_in 'Name', with: ''
+
+            find('#submit_tag_group').click()
+            click_on 'Create Tag group'
+            expect(page).to have_content("can't be blank")
+          end
         end
       end
 

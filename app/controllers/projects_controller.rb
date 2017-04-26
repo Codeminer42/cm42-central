@@ -233,7 +233,10 @@ class ProjectsController < ApplicationController
   end
 
   def allowed_params
-    params.fetch(:project,{}).permit(:name, :point_scale, :default_velocity, :start_date, :iteration_start_day, :iteration_length, :import, :archived, :disallow_join)
+    params
+      .fetch(:project)
+      .permit(:name, :point_scale, :default_velocity, :tag_group_id, :start_date,
+              :iteration_start_day, :iteration_length, :import, :archived, :disallow_join)
   end
 
   def fluid_layout

@@ -1,0 +1,29 @@
+.tag-groups {
+  margin: 20px 0;
+
+  .color_container {
+    padding: 2px;
+    background-color: $white;
+    border-radius: 1px;
+    box-shadow: rgba($black, 0.0980392) 0 0 0 1px;
+    display: inline-block;
+
+    .color {
+      width: 36px;
+      height: 14px;
+      border-radius: 2px;
+    }
+  }
+
+  .danger {
+    color: $red;
+  }
+}
+
+.tag-group-select {
+  display: flex;
+
+  .add_button {
+    flex: 1 5%;
+  }
+}

@@ -32,6 +32,18 @@
   </div>
 
   <div class="form-group">
+    <%= f.label :tag_group, class: 'control-label' %>
+    <div class="tag-group-select">
+      <%= f.select :tag_group_id, tag_group_options, {include_blank: true}, { class: 'form-control auth-form-control' } %>
+      <span class="input-group-btn add_button">
+          <button id="submit_tag_group" type="button" class="btn btn-success btn-number" data-type="plus" data-toggle="modal" data-target="#tag-group-modal">
+            <span class="glyphicon glyphicon-plus"></span>
+          </button>
+      </span>
+    </div>
+  </div>
+
+  <div class="form-group">
     <%= f.label t('private'), class: 'control-label' %>
     <%= f.check_box :disallow_join %>
   </div>
@@ -54,3 +66,21 @@
     <% end %>
   </div>
 <% end %>
+
+<!-- Modal -->
+<div class="modal fade" id="tag-group-modal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><%= t('tag_group.new tag_group') %></h4>
+      </div>
+      <div class="modal-body">
+        <%= render 'tag_groups/form', remote: true, tag_group: current_team.tag_groups.new %>
+        <div class="clearfix">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+</div>
