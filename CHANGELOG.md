@@ -4,9 +4,10 @@
 ### Added
 - tag group form
 - Added First time tour.
+- Slack Support
 
 ### Changed
-- Story id, location and history input-form-group into a react component 
+- Story id, location and history input-form-group into a react component
 - Story estimate select into a react component
 
 ### Fixed
