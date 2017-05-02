@@ -1,0 +1,11 @@
+<ul class="nav navbar-nav">
+  <li>
+    <%= link_to @project.name, @project, { class: "project-tag" } %>
+    <% if @project.tag_group.present? %>
+      <small class="card-tag card-tag-aligned"
+      style="background-color: <%= @project.tag_group.bg_color %>; color: <%= @project.tag_group.foreground_color %>">
+      <%= @project.tag_group.name %>
+      </small>
+    <% end %>
+  </li>
+</ul>

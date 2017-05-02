@@ -1,7 +1,13 @@
 <% content_for :title_bar do %>
 <ul class="nav navbar-nav">
   <li>
-    <%= link_to @project.name, @project %>
+     <%= link_to @project.name, @project, { class: "project-tag" } %>
+      <% unless @project.tag_group.blank? %>
+        <small class="card-tag card-tag-aligned"
+        style="background-color: <%= @project.tag_group.bg_color %>; color: <%= @project.tag_group.foreground_color %>">
+        <%= @project.tag_group.name %>
+        </small>
+      <% end %>
   </li>
 </ul>
 <% end %>
