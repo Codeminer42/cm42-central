@@ -5,8 +5,9 @@ var ProjectView = require('views/project_view');
 var ProjectSearchView = require('views/project_search_view');
 var ProjectVelocityView = require('views/project_velocity_view');
 
+import TourController from 'controllers/tour/TourController';
+
 require('./global_listeners');
-var firstTimeTour = require('./tour');
 
 var Central = module.exports = {
   start: function() {
@@ -36,6 +37,6 @@ var Central = module.exports = {
       window.projectView = view;
     });
 
-    setTimeout(firstTimeTour.start, 200);
+    setTimeout(() => new TourController(), 200);
   }
 };

@@ -1,6 +1,4 @@
 class User < ActiveRecord::Base
-  before_create :init_tour_steps
-
   include Central::Support::UserConcern::Associations
   include Central::Support::UserConcern::Validations
   include Central::Support::UserConcern::Callbacks
@@ -9,7 +7,7 @@ class User < ActiveRecord::Base
   gravtastic default: 'identicon'
 
   # FIXME - DRY up, repeated in Story model
-  JSON_ATTRIBUTES = ["id", "name", "initials", "username", "email", "tour", "tour_steps"]
+  JSON_ATTRIBUTES = ["id", "name", "initials", "username", "email", "finished_tour"]
 
   AUTHENTICATION_KEYS = %i(email)
 
@@ -51,12 +49,12 @@ class User < ActiveRecord::Base
     raw
   end
 
-  def init_tour_steps
-    self.tour_steps = WelcomeTour::STEPS.to_json
+  def tour_steps
+    WelcomeTour::STEPS.to_json
   end
 
   def as_json(options = {})
-    super(only: JSON_ATTRIBUTES)
+    super(only: JSON_ATTRIBUTES, methods: :tour_steps)
   end
 
   def self.find_first_by_auth_conditions(warden_conditions)

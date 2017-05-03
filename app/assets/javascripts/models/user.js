@@ -1,11 +1,12 @@
-var User = module.exports = Backbone.Model.extend({
+const User = module.exports = Backbone.Model.extend({
   name: 'user',
+
   url: function() {
-    return '/users/' + this.id;
+    return `/users/${this.id}`;
   }
 }, {
   getCurrent: function(callback) {
-    var options = {
+    const options = {
       type: 'GET',
       dataType: 'json',
       url: '/users/current'
@@ -13,9 +14,8 @@ var User = module.exports = Backbone.Model.extend({
 
     return $.ajax(options)
       .then(function(data) {
-        return new User(data.user);
-      })
-      .then(function(user) {
+        const user = new User(data);
+
         user.attributes.tour_steps = JSON.parse(user.attributes.tour_steps);
         return user;
       });

@@ -69,4 +69,5 @@ class UsersController < ApplicationController
   def set_project
     @project = policy_scope(Project).friendly.find(params[:project_id])
   end
+
 end

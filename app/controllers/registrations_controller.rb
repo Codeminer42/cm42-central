@@ -37,7 +37,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   def reset_tour
     @user = User.find(params[:id])
-    if @user.update(tour: true, tour_steps: WelcomeTour::STEPS.to_json)
+    if @user.update(user_params)
       redirect_to :back, flash: {notice: t('reset_tour_success')}
     else
       redirect_to :back, flash: {error: t('reset_tour_fail')}
@@ -46,7 +46,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   private
     def user_params
-      params.require(:user).permit(:tour, :tour_steps)
+      params.require(:user).permit(:finished_tour)
     end
 
   protected

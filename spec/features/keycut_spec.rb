@@ -35,7 +35,6 @@ describe "Keycuts" do
     before do
       visit project_path(project)
       wait_spinner
-      next_tour_step
     end
 
     it 'adds story (a)', js: true do
