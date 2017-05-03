@@ -31,15 +31,9 @@ class StoryPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if is_admin?
-        current_project.stories
-      else
-        if is_project_member?
-          current_project.stories
-        else
-          Story.none
-        end
-      end
+      return Story.none unless is_admin? ||  is_project_member?
+
+      current_project.stories
     end
   end
 end

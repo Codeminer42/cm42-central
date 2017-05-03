@@ -29,6 +29,7 @@ gem 'rails-i18n'
 gem 'rack-cors', require: 'rack/cors'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'rgb_utils'
+gem 'active_record_union'
 
 gem 'central-support', github: 'Codeminer42/cm42-central-support', branch: 'master', require: 'central/support'
 

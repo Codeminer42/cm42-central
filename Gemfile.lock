@@ -42,6 +42,8 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
+    active_record_union (1.2.0)
+      activerecord (>= 4.0)
     activeadmin (1.0.0.pre4)
       arbre (~> 1.0, >= 1.0.2)
       bourbon
@@ -182,7 +184,7 @@ GEM
     dotenv-rails (2.1.1)
       dotenv (= 2.1.1)
       railties (>= 4.0, < 5.1)
-    enumerize (2.0.1)
+    enumerize (2.1.1)
       activesupport (>= 3.2)
     equalizer (0.0.11)
     erubis (2.7.0)
@@ -481,6 +483,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_record_union
   activeadmin (~> 1.0.0.pre4)
   api-pagination
   attachinary

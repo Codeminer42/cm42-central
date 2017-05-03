@@ -286,6 +286,17 @@ div.story-title abbr.initials {
   }
 }
 
+.story.related {
+  background-color: $lightyellow-3;
+  border-top-color: $blue-5;
+  border-bottom-color: $blue-3;
+  border-left: 3px solid;
+
+  &:hover {
+    background-color: $lightyellow-4;
+  }
+}
+
 /* Iteration markers */
 .iteration {
   padding: 5px 10px;

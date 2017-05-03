@@ -15,7 +15,7 @@ class Project < ActiveRecord::Base
     "default_velocity"
   ].freeze
 
-  JSON_METHODS = ["last_changeset_id", "point_values"].freeze
+  JSON_METHODS = ["last_changeset_id", "point_values", "tag_group_attributes"].freeze
 
   belongs_to :tag_group
 
@@ -26,6 +26,12 @@ class Project < ActiveRecord::Base
   scope :joinable, -> { where(disallow_join: false) }
 
   scope :joinable_except, -> (project_ids) { joinable.where.not(id: project_ids) }
+
+  scope :related_projects, -> (project) { where(tag_group: project.tag_group).where.not(id: project.id) }
+
+  def tag_group_attributes
+    tag_group&.attributes
+  end
 
   def last_changeset_id
     changesets.last && changesets.last.id
