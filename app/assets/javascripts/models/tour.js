@@ -1,41 +1,41 @@
 import Tether from 'tether';
 import Shepherd from 'tether-shepherd';
 
-module.exports = Backbone.Model.extend({
-  name: 'tour',
+export default class Tour {
+  constructor(user) {
+    this.user = user;
 
-  initialize: function() {
     this.shepherd = new Shepherd.Tour({
       defaults: {
         classes: 'shepherd-theme-arrows',
         scrollTo: false
       }
     });
-  },
+  }
 
-  start: function() {
+  start() {
     this.shepherd.start();
-  },
+  }
 
-  next: function() {
+  next() {
     this.shepherd.next();
-  },
+  }
 
-  complete: function(user) {
-    this.finishTour(user);
+  complete() {
+    this.finishTour(this.user);
     this.shepherd.complete();
-  },
+  }
 
-  addStep: function(id, options) {
+  addStep(id, options) {
     this.shepherd.addStep(id, options);
-  },
+  }
 
-  finishTour: function(user) {
-    user.set('finished_tour', true);
+  finishTour() {
+    this.user.set('finished_tour', true);
 
     const data = {
       user: {
-        finished_tour: user.get('finished_tour')
+        finished_tour: this.user.get('finished_tour')
       }
     };
 
@@ -43,9 +43,9 @@ module.exports = Backbone.Model.extend({
       type: 'PUT',
       dataType: 'json',
       data: data,
-      url: `/users/${user.get('id')}/tour`
+      url: `/users/${this.user.get('id')}/tour`
     };
 
     return $.ajax(options);
   }
-});
+}

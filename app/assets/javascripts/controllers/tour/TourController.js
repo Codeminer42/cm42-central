@@ -2,17 +2,14 @@ import Tour from 'models/tour';
 import User from 'models/user';
 
 export default class TourController {
-  constructor() {
-    this.tour = new Tour();
-
-    User.getCurrent().then(
-      (currentUser) => {
-        if(!currentUser.get('finished_tour')) {
-          this.setupTour(currentUser);
-          this.tour.start();
-        }
+  initialize() {
+    User.getCurrent().then((currentUser) => {
+      if(!currentUser.get('finished_tour')) {
+        this.tour = new Tour(currentUser);
+        this.setupTour(currentUser);
+        this.tour.start();
       }
-    );
+    });
   }
 
   generateButtons(index, user) {
@@ -43,7 +40,7 @@ export default class TourController {
     return buttons;
   }
 
-  setupTour(user, tour) {
+  setupTour(user) {
     user.get('tour_steps').forEach(function(step, index) {
       const selector = this.getSelectorFromStepAttach(step.attachTo);
 

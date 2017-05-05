@@ -37,6 +37,9 @@ var Central = module.exports = {
       window.projectView = view;
     });
 
-    setTimeout(() => new TourController(), 200);
+    setTimeout(() => {
+      const tourController = new TourController();
+      tourController.initialize();
+    }, 200);
   }
 };

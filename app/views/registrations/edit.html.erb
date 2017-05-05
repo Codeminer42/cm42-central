@@ -33,7 +33,7 @@
         </div>
         <hr />
         <div class="account-options">
-          <% if @user.finished_tour %>
+          <% if @user.finished_tour? %>
             <%= link_to t('reset_tour'), user_reset_tour_path(@user), method: :put, class: 'btn btn-info btn-block' %>
           <% end %>
           <% if resource.authy_enabled %>
