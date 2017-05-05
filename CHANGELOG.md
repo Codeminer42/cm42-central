@@ -4,6 +4,7 @@
 ### Fixed
 - Remove the API module used in `using` params into Project Entity
 - Clean up DatabaseCleaner config
+- Display of throbber animated gif when adding a note or a task
 
 ### Added
 - tag group form
