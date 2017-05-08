@@ -234,6 +234,13 @@ to check the translation database is complete for your language.  You can do
 this by running the `rake i18n:missing_keys` task.  If you find any missing
 keys for your language please add them.
 
+Disabling registration
+-----------
+
+To disable public registration you can set the enviroment variable `DISABLE_REGISTRATION`
+to true. If set to true, users will need to be invited to a project rather than being
+able to self sign-up.
+
 Development
 -----------
 

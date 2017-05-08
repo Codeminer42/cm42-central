@@ -4,6 +4,7 @@
 ### Fixed
 - Remove the API module used in `using` params into Project Entity
 - Clean up DatabaseCleaner config
+- Disable registration using enviroment variable `DISABLE_REGISTRATION`
 
 ### Added
 - tag group form
