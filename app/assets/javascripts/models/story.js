@@ -144,7 +144,7 @@ var Story = module.exports = Backbone.Model.extend({
 
   notEstimable: function () {
     var storyType = this.get('story_type');
-    return (storyType !== 'feature' && storyType !== 'release');
+    return (storyType !== 'feature');
   },
 
   point_values: function() {

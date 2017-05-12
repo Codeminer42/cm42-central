@@ -8,6 +8,7 @@ gem 'activeadmin', '~> 1.0.0.pre4'
 gem 'api-pagination'
 gem 'attachinary'
 gem 'chartkick'
+gem 'chronic'
 gem 'cloudinary'
 gem 'configuration'
 gem 'devise', '~> 3.5.4'
@@ -29,7 +30,6 @@ gem 'rails-i18n'
 gem 'rack-cors', require: 'rack/cors'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'rgb_utils'
-
 gem 'central-support', github: 'Codeminer42/cm42-central-support', branch: 'master', require: 'central/support'
 
 gem 'pg'

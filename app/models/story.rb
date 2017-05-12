@@ -45,7 +45,7 @@ class Story < ActiveRecord::Base
     ranked_by: ":trigram"
 
   JSON_ATTRIBUTES = [
-    "title", "accepted_at", "created_at", "updated_at", "description",
+    "title", "release_date", "accepted_at", "created_at", "updated_at", "description",
     "project_id", "story_type", "owned_by_id", "requested_by_id",
     "owned_by_name", "owned_by_initials",  "requested_by_name", "estimate",
     "state", "position", "id", "labels"
@@ -75,5 +75,12 @@ class Story < ActiveRecord::Base
   def fix_story_accepted_at
     return unless accepted_at_changed? && accepted_at && accepted_at < project.start_date
     project.start_date = accepted_at
+  end
+
+  def release_date=(val)
+    return unless val.present?
+
+    date = Chronic.parse(val)
+    write_attribute(:release_date, date)
   end
 end

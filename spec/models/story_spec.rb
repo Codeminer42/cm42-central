@@ -19,7 +19,7 @@ describe Story do
 
     specify do
       expect(subject.as_json['story'].keys.sort).to eq([
-        "title", "accepted_at", "created_at", "updated_at", "description",
+        "title", "accepted_at", "created_at","release_date", "updated_at", "description",
         "project_id", "story_type", "owned_by_id", "requested_by_id",
         "requested_by_name", "owned_by_name", "owned_by_initials", "estimate",
         "state", "position", "id", "errors", "labels", "notes", "tasks", "documents"
@@ -136,6 +136,34 @@ describe Story do
 
       it "does not set the project start_date to the same as story.accepted_at" do
         expect{story.fix_story_accepted_at}.not_to change(story.project, :start_date)
+      end
+    end
+  end
+  describe "#release_date" do
+    context "Date in the format MM-DD-YYYY" do
+      let(:story_params)    { { title: 'Test Story', release_date: "12/22/2017" } }
+      let(:story) { build(:story, story_params) }
+
+      it "parses date to correct format" do
+        correct_date = Date.parse("22/12/2017")
+        expect(story.release_date).to eq(correct_date)
+      end
+    end
+    context "Date in the format DD-MM-YYYY" do
+      let(:story_params)    { { title: 'Test Story', release_date: "22/12/2017" } }
+      let(:story) { build(:story, story_params) }
+
+      it "parses date to correct format" do
+        correct_date = Date.parse("22/12/2017")
+        expect(story.release_date).to eq(correct_date)
+      end
+    end
+    context "Date in invalid format" do
+      let(:story_params)    { { title: 'Test Story', release_date: "bad_string" } }
+      let(:story) { build(:story, story_params) }
+
+      it "return nill" do
+        expect(story.release_date).to eq(nil)
       end
     end
   end

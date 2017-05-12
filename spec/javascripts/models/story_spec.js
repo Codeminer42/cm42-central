@@ -57,6 +57,11 @@ describe('Story', function() {
         .toEqual([]);
     });
 
+    it('does not have a default release date setted', function() {
+      expect(this.story.get('release_date'))
+        .toBeUndefined()
+    });
+
   });
 
   describe('state transitions', function() {
@@ -160,6 +165,13 @@ describe('Story', function() {
       });
     });
 
+    describe("when story is not a feature", function() {
+      it('should not be estimable', function() {
+        this.story.set({story_type: 'release'});
+        expect(this.story.estimable()).toBeFalsy();
+      });
+    });
+
   });
 
   describe('estimated', function() {
@@ -190,11 +202,18 @@ describe('Story', function() {
       expect(this.story.notEstimable()).toBeTruthy();
     });
 
-    it('should be estimable when story type is feature or release', function () {
+    it('should not be estimable when story type is release', function () {
+      this.story.set({story_type: 'release'});
+
+      expect(this.story.notEstimable()).toBeTruthy();
+    });
+
+    it('should be estimable when story type is feature', function () {
       this.story.set({story_type: 'feature'});
 
       expect(this.story.notEstimable()).toBeFalsy();
     });
+    
   });
 
   describe('point_values', function() {

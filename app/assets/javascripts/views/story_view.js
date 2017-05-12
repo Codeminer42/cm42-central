@@ -4,6 +4,7 @@ import StoryControls from 'components/story/StoryControls';
 import StoryDescription from 'components/story/StoryDescription';
 import StoryHistoryLocation from 'components/story/StoryHistoryLocation';
 import StorySelect from 'components/story/StorySelect';
+import StoryDatePicker from 'components/story/StoryDatePicker';
 
 var Clipboard = require('clipboard');
 
@@ -89,7 +90,7 @@ module.exports = FormView.extend({
     "click .cancel": "cancelEdit",
     "click .transition": "transition",
     "click .state-actions .estimate": "estimate",
-    "change select.story_type": "disableEstimate",
+    "change select.story_type": "render", 
     "click .destroy": "clear",
     "click .description": "editDescription",
     "click .edit-description": "editDescription",
@@ -215,17 +216,6 @@ module.exports = FormView.extend({
         that.render();
       }
     });
-  },
-
-  disableEstimate: function () {
-    var $storyEstimate = this.$el.find('.story_estimate');
-
-    if (this.model.notEstimable()) {
-      this.model.set({estimate: null});
-      $storyEstimate.attr('disabled', 'disabled');
-    } else {
-      $storyEstimate.removeAttr('disabled');
-    }
   },
 
   canEdit: function() {
@@ -372,14 +362,7 @@ module.exports = FormView.extend({
       }
 
       this.$el.append(
-        this.makeFormControl(function(div) {
-          $(div).append(this.textField("title", {
-            'class' : 'title form-control input-sm',
-            'placeholder': I18n.t('story title'),
-            'maxlength': 255,
-            'disabled': this.isReadonly()
-          }));
-        })
+        this.makeFormControl(this.makeTitle())
       );
 
       this.$el.append(
@@ -389,21 +372,8 @@ module.exports = FormView.extend({
           const $storyEstimate = $('<div data-story-estimate></div>');
           $(div).append($storyEstimate);
 
-          var story_type_options = [];
-          _.each(["feature", "chore", "bug", "release"], function(option) {
-            story_type_options.push([I18n.t('story.type.' + option), option])
-          });
-          $(div).append(this.makeFormControl({
-            name: "story_type",
-            label: true,
-            disabled: true,
-            control: this.select("story_type", story_type_options, {
-              attrs: {
-                class: ['story_type'],
-                disabled: this.isReadonly()
-              }
-            })
-          }));
+          this.makeStoryTypeSelect(div);
+
           var story_state_options = [];
           _.each(["unscheduled", "unstarted", "started", "finished", "delivered", "accepted", "rejected"], function(option) {
             story_state_options.push([ I18n.t('story.state.' + option), option ])
@@ -462,21 +432,7 @@ module.exports = FormView.extend({
       );
 
       this.$el.append(
-        this.makeFormControl(function(div) {
-          $(div).append(this.label("description", I18n.t('activerecord.attributes.story.description')));
-
-          if(this.model.isNew() || this.model.get('editingDescription')) {
-            var textarea = this.textArea("description");
-            $(textarea).atwho({
-              at: "@",
-              data: window.projectView.usernames(),
-            });
-            $(div).append(textarea);
-          } else {
-            var $description = $('<div class="description-wrapper"><div>');
-            $(div).append($description);
-          }
-        })
+        this.makeFormControl(this.makeDescription())
       );
 
       this.renderTasks();
@@ -506,8 +462,14 @@ module.exports = FormView.extend({
       this.initTags();
 
       this.renderNotes();
-
+      
+      if(this.model.get('story_type') === 'release') {
+        this.$el.empty();
+        this.$el.append($storyControls);
+        this.renderReleaseStory();
+      }
       this.renderReactComponents();
+  
     } else {
       this.$el.removeClass('editing');
       this.$el.html(this.template({story: this.model, view: this}));
@@ -525,7 +487,7 @@ module.exports = FormView.extend({
       />,
       this.$('[data-story-controls]').get(0)
     );
-
+    
     const historyLocationContainer = this.$('[data-story-history-location]').get(0);
     if (historyLocationContainer) {
       ReactDOM.render(
@@ -564,6 +526,86 @@ module.exports = FormView.extend({
 
       this.bindElementToAttribute($storyEstimate.find('select[name="estimate"]'), 'estimate');
     }
+  },
+
+  makeStoryTypeSelect: function(div) {
+    var storyTypeOptions = _.map(["feature", "chore", "bug", "release"], function(option) {
+      return [I18n.t('story.type.' + option), option]
+    });
+
+    $(div).append(this.makeFormControl({
+      name: "story_type",
+      label: true,
+      disabled: true,
+      control: this.select("story_type", storyTypeOptions, {
+        attrs: {
+          class: ['story_type'],
+          disabled: this.isReadonly()
+        }
+      })
+    }));
+  },
+
+  makeDescription: function() {
+    return function(div) {
+      $(div).append(this.label("description", I18n.t('activerecord.attributes.story.description')));
+
+      if(this.model.isNew() || this.model.get('editingDescription')) {
+        var textarea = this.textArea("description");
+        $(textarea).atwho({
+          at: "@",
+          data: window.projectView.usernames(),
+        });
+        $(div).append(textarea);
+      } else {
+        var $description = $('<div class="description-wrapper"><div>');
+        $(div).append($description);
+      }
+    }
+  },
+
+  makeTitle: function() {
+    return function(div) {
+      $(div).append(this.label("title", I18n.t('activerecord.attributes.story.title')));
+      $(div).append(this.textField("title", {
+        'class' : 'title form-control input-sm',
+        'placeholder': I18n.t('story title'),
+        'maxlength': 255,
+        'disabled': this.isReadonly()
+      }));
+    }
+  },
+
+  renderReleaseStory: function() {
+    this.$el.append(
+      this.makeFormControl(this.makeTitle())
+    );
+
+    if(this.model.get('editing')) {
+      this.$el.append(
+        this.makeFormControl(function(div) {
+          this.makeStoryTypeSelect(div);
+        }));
+    }
+
+    const $storyDate = $('<div class="form-group" data-story-datepicker></div>');
+    this.$el.append($storyDate);
+    
+    ReactDOM.render(
+      <StoryDatePicker
+        releaseDate={this.model.get('release_date')}
+        onChangeCallback={function(){$('input[name=release_date]').trigger('change')}}
+      />,
+      $storyDate.get(0)
+    );
+    
+
+    const dateInput = this.$('input[name=release_date]');
+    this.bindElementToAttribute(dateInput, 'release_date');
+
+    this.$el.append(
+      this.makeFormControl(this.makeDescription()));
+      
   },
 
   parseDescription: function() {

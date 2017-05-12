@@ -44,6 +44,7 @@ module Fulcrum
     config.webpack.dev_server.manifest_host = ENV["WEBPACK_MANIFEST_HOST"]
     config.webpack.dev_server.manifest_port = ENV["WEBPACK_MANIFEST_PORT"]
     config.webpack.dev_server.port = ENV["WEBPACK_PORT"]
+
     config.assets.paths << Rails.root.join('node_modules')
   end
 end
