@@ -7,6 +7,7 @@
 
 ### Added
 - tag group form
+- Project now uses yarn 
 
 ### Fixed
 - Admin assignment
