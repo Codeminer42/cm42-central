@@ -177,6 +177,7 @@ en:
         requested_by:         'Requested by'
         owned_by:             'Owned by'
         documents:            'Attachments'
+        release_date:         'Release Date'
       user:
         name:                 'Full Name'
         username:             'Username'
