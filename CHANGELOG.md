@@ -8,6 +8,9 @@
 ### Added
 - tag group form
 
+### Fixed
+- Admin assignment
+
 ## [1.3.0] - 2017-04-25
 ### Added
 - The option to each project has its own tag group
