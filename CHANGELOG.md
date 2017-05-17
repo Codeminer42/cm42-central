@@ -1,15 +1,14 @@
 # Changelog
 
 ## [Unreleased]
-### Fixed
-- Remove the API module used in `using` params into Project Entity
-- Clean up DatabaseCleaner config
-
 ### Added
 - tag group form
 
 ### Fixed
+- Remove the API module used in `using` params into Project Entity
+- Clean up DatabaseCleaner config
 - Admin assignment
+- 'Velocity per member' report title translation
 
 ## [1.3.0] - 2017-04-25
 ### Added
