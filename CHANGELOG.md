@@ -7,6 +7,7 @@
 
 ### Changed
 - Story id, location and history input-form-group into a react component 
+- Story estimate select into a react component
 
 ### Fixed
 - Remove the API module used in `using` params into Project Entity
