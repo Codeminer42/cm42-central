@@ -11,6 +11,7 @@
 - Admin assignment
 - 'Velocity per member' report title translation
 - Disable registration using enviroment variable `DISABLE_REGISTRATION`
+- Display of throbber animated gif when adding a note or a task
 
 ## [1.3.0] - 2017-04-25
 ### Added
