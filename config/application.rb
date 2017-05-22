@@ -22,6 +22,7 @@ module Fulcrum
     config.i18n.enforce_available_locales = true
 
     config.i18n.available_locales = ['en', 'es', 'pt-BR']
+    config.middleware.use I18n::JS::Middleware
 
     config.time_zone = 'Brasilia' # default timezone
 
@@ -43,5 +44,6 @@ module Fulcrum
     config.webpack.dev_server.manifest_host = ENV["WEBPACK_MANIFEST_HOST"]
     config.webpack.dev_server.manifest_port = ENV["WEBPACK_MANIFEST_PORT"]
     config.webpack.dev_server.port = ENV["WEBPACK_PORT"]
+    config.assets.paths << Rails.root.join('node_modules')
   end
 end

@@ -21,6 +21,7 @@ describe "Stories" do
 
       wait_page_load
       click_on 'Add story'
+
       within('#chilly_bin') do
         fill_in 'title', with: 'New story'
         click_on 'Save'

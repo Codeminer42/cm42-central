@@ -34,6 +34,8 @@
     "rewire": "^2.5.2",
     "rewire-webpack": "^1.0.1",
     "stats-webpack-plugin": "^0.4.2",
+    "tether": "^1.4.0",
+    "tether-shepherd": "^1.8.1",
     "underscore": "^1.8.3",
     "webpack": "^1.9.11",
     "webpack-dev-server": "^1.9.0"

@@ -734,6 +734,14 @@ div#keycut-help {
   padding: 4px 12px 5px;
 }
 
+.shepherd-element.shepherd-theme-arrows {
+  z-index: 100;
+}
+
+.shepherd-element.shepherd-theme-arrows {
+  max-width: 250px;
+}
+
 .activity {
   background-color: $lightgrey-11;
   border-bottom: 1px solid $lightgrey-13;
