@@ -7,7 +7,7 @@ describe TagGroup, type: :model do
     context "with valid json" do
       let(:valid_json) { { r: 241, g: 112, b: 19, a: 1 }.to_json }
 
-      subject { described_class.new(bg_color: valid_json) }
+      subject { described_class.create(name: 'tag_group', bg_color: valid_json) }
 
       it "calls the bg_color= method" do
         expect_any_instance_of(TagGroup)
@@ -18,6 +18,8 @@ describe TagGroup, type: :model do
       end
 
       it { expect(subject.bg_color).to eq "#f17013" }
+
+      it { expect(subject.foreground_color).to eq RGBUtils::SimpleContrastColorResolver.for(subject.bg_color) }
     end
 
     context "with invalid json" do

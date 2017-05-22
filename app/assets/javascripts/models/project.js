@@ -315,6 +315,9 @@ module.exports = Backbone.Model.extend({
 
 
     _.each(this.stories.column('#backlog'), function(story) {
+      // Here is selected the stories from the next iteration and if this story
+      // fit in the current iteration it will be added.
+
 
       // The in progress iteration usually needs to be filled with the first
       // few stories from the backlog, unless the points total of the stories
@@ -331,7 +334,6 @@ module.exports = Backbone.Model.extend({
       }
 
       if (!backlogIteration.canTakeStory(story)) {
-
         // Iterations sometimes 'overflow', i.e. an iteration may contain a
         // 5 point story but the project velocity is 1.  In this case, the
         // next iteration that can have a story added is the current + 4.

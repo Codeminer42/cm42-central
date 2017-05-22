@@ -1,9 +1,5 @@
 <% content_for :title_bar do %>
-  <ul class="nav navbar-nav">
-    <li>
-      <%= link_to @project.name, @project %>
-    </li>
-  </ul>
+  <%= render partial: "project_header" %>
 <% end %>
 
 <% content_for :navbar do %>

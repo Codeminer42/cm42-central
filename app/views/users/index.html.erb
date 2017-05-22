@@ -3,11 +3,7 @@
 <% end %>
 
 <% content_for :title_bar do %>
-  <ul class="nav navbar-nav">
-    <li>
-      <%= link_to @project.name, @project %>
-    </li>
-  </ul>
+  <%= render partial: "projects/project_header" %>
 <% end %>
 
 <div class="row">

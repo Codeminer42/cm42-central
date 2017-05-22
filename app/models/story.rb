@@ -62,6 +62,8 @@ class Story < ActiveRecord::Base
     !accepted_at_changed? && accepted_at.present?
   end
 
+  scope :with_dependencies, -> { includes(:notes, :tasks, :document_files) }
+
   # Set the project start date to today if the project start date is nil
   # and the state is changing to any state other than 'unstarted' or 'unscheduled'
   def fix_project_start_date

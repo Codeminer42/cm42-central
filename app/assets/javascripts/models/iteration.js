@@ -64,6 +64,10 @@ module.exports = Backbone.Model.extend({
       return false;
     }
 
+    if (story.get('story_type') === 'related') {
+      return false;
+    }
+
     if (this.points() === 0) {
       return true;
     }

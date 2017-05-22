@@ -34,8 +34,11 @@ var Story = module.exports = Backbone.Model.extend({
   },
 
   setReadonly: function() {
-    if(this.get('state') === 'accepted' && this.get('accepted_at') !== undefined)
+    if(this.get('state') === 'accepted' &&
+      this.get('accepted_at') !== undefined ||
+      this.get('story_type') === 'related'){
       this.isReadonly = true;
+    }
   },
 
   changeState: function(model, new_value) {
@@ -118,7 +121,6 @@ var Story = module.exports = Backbone.Model.extend({
         }
         break;
     }
-
     this.column = column;
   },
 
@@ -153,20 +155,22 @@ var Story = module.exports = Backbone.Model.extend({
 
   // List available state transitions for this story
   events: function() {
-    switch (this.get('state')) {
-      case 'started':
-        return ["finish"];
-      case 'finished':
-        return ["deliver"];
-      case 'delivered':
-        return ["accept", "reject"];
-      case 'rejected':
-        return ["restart"];
-      case 'accepted':
-        return [];
-      default:
-        return ["start"];
-    }
+      switch (this.get('state')) {
+        case 'started':
+          return ["finish"];
+        case 'finished':
+          return ["deliver"];
+        case 'delivered':
+          return ["accept", "reject"];
+        case 'rejected':
+          return ["restart"];
+        case 'accepted':
+          return [];
+        case 'related':
+          return [];
+        default:
+          return ["start"];
+      }
   },
 
   // State machine transitions

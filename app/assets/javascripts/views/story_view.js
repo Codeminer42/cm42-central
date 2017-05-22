@@ -232,6 +232,7 @@ module.exports = FormView.extend({
     var isEditable              = this.model.get('editing');
     var isSearchResultContainer = this.$el.hasClass('searchResult');
     var clickFromSearchResult   = this.model.get('clickFromSearchResult');
+
     if (_.isUndefined(isEditable))
       isEditable = false;
     if (_.isUndefined(clickFromSearchResult))
@@ -517,11 +518,14 @@ module.exports = FormView.extend({
   },
 
   renderReactComponents: function() {
+    var storyType = this.model.get('story_type');
+
     ReactDOM.render(
       <StoryControls
         onClickSave={this.clickSave}
         onClickDelete={this.clear}
         onClickCancel={this.cancelEdit}
+        related={storyType==='related'}
       />,
       this.$('[data-story-controls]').get(0)
     );
@@ -578,8 +582,10 @@ module.exports = FormView.extend({
   },
 
   setClassName: function() {
+    var story_type = this.model.get('story_type');
+
     var className = [
-      'story', this.model.get('story_type'), this.model.get('state')
+      'story', story_type, this.model.get('state')
     ].join(' ');
     if (this.model.estimable() && !this.model.estimated()) {
       className += ' unestimated';
@@ -587,7 +593,14 @@ module.exports = FormView.extend({
     if (this.isSearchResult) {
       className += ' searchResult';
     }
+
     this.className = this.el.className = className;
+    if(story_type === 'related')
+    {
+      let bg_color = this.model.collection.project.attributes.tag_group_attributes.bg_color;
+      this.$el.css("border-left-color", bg_color);
+    }
+
     return this;
   },
 

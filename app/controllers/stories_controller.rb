@@ -6,11 +6,11 @@ class StoriesController < ApplicationController
 
   def index
     @stories = if params[:q]
-                 StorySearch.query(policy_scope(Story), params[:q])
+                 StorySearch.query(project_with_related_stories, params[:q])
                elsif params[:label]
-                 StorySearch.labels(policy_scope(Story), params[:label])
+                 StorySearch.labels(project_with_related_stories, params[:label])
                else
-                 policy_scope(Story).with_dependencies.order('updated_at DESC').tap do |relation|
+                 project_with_related_stories.tap do |relation|
                    relation = relation.limit(ENV['STORIES_CEILING']) if ENV['STORIES_CEILING']
                  end
                end
@@ -97,4 +97,10 @@ class StoriesController < ApplicationController
     @project = policy_scope(Project).friendly.find(params[:project_id])
   end
 
+  def project_with_related_stories
+    @project_with_related_stories ||= ProjectWithRelatedStoriesQuery.call(
+      @project,
+      policy_scope(Story)
+    )
+  end
 end

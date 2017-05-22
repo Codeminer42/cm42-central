@@ -27,3 +27,19 @@
     flex: 1 5%;
   }
 }
+
+.card-tag {
+  padding: 0 5px;
+  font-size: 9px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-weight: bold;
+
+  &-aligned {
+    vertical-align: super;
+  }
+}
+
+.project-tag {
+  padding: 15px 10px 0 0 !important;
+}
