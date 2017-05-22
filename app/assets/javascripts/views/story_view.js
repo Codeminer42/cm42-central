@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import StoryControls from 'components/story/StoryControls';
 import StoryDescription from 'components/story/StoryDescription';
 import StoryHistoryLocation from 'components/story/StoryHistoryLocation';
+import StorySelect from 'components/story/StorySelect';
 
 var Clipboard = require('clipboard');
 
@@ -384,17 +385,10 @@ module.exports = FormView.extend({
       this.$el.append(
         this.makeFormControl(function(div) {
           $(div).addClass('form-inline');
-          $(div).append(this.makeFormControl({
-            name: 'estimate',
-            label: true,
-            control: this.select("estimate", this.model.point_values(), {
-              blank: I18n.t('story.no_estimate'),
-              attrs: {
-                class: ['story_estimate'],
-                disabled: this.model.notEstimable() || this.isReadonly()
-              }
-            })
-          }));
+
+          const $storyEstimate = $('<div data-story-estimate></div>');
+          $(div).append($storyEstimate);
+
           var story_type_options = [];
           _.each(["feature", "chore", "bug", "release"], function(option) {
             story_type_options.push([I18n.t('story.type.' + option), option])
@@ -553,6 +547,22 @@ module.exports = FormView.extend({
           description={this.parseDescription()} />,
           descriptionContainer
         );
+    }
+
+    const $storyEstimate = this.$('[data-story-estimate]');
+    if ($storyEstimate.length) {
+      ReactDOM.render(
+        <StorySelect
+          name='estimate'
+          blank={I18n.t('story.no_estimate')}
+          options={this.model.point_values()}
+          selected={this.model.get('estimate')}
+          disabled={this.model.notEstimable() || this.isReadonly()}
+        />,
+        $storyEstimate.get(0)
+      );
+
+      this.bindElementToAttribute($storyEstimate.find('select[name="estimate"]'), 'estimate');
     }
   },
 
