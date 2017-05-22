@@ -10,6 +10,7 @@
 - Clean up DatabaseCleaner config
 - Admin assignment
 - 'Velocity per member' report title translation
+- Disable registration using enviroment variable `DISABLE_REGISTRATION`
 
 ## [1.3.0] - 2017-04-25
 ### Added

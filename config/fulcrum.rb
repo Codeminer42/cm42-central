@@ -9,7 +9,7 @@ Configuration.for('fulcrum') do
   # Disable registration pages.  If set to true, users will need to be invited
   # to a project rather than being able to self sign-up.
   # Env var DISABLE_REGISTRATION
-  disable_registration false
+  disable_registration ENV['DISABLE_REGISTRATION'] || false
 
   # Project column order:
   # progress_to_right: chilly bin, backlog, in progress, done
