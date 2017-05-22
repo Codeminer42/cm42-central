@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import StoryControls from 'components/story/StoryControls';
 import StoryDescription from 'components/story/StoryDescription';
+import StoryHistoryLocation from 'components/story/StoryHistoryLocation';
 
 var Clipboard = require('clipboard');
 
@@ -365,44 +366,8 @@ module.exports = FormView.extend({
       this.$el.append($storyControls);
 
       if (this.id != undefined) {
-        var $wrapper = $(this.make('div', {class: 'col-xs-12 form-group input-group input-group-sm', id: inputId}));
-        var inputId = 'story-uri-' + this.id;
-
-        $wrapper.append(this.make('input', {
-          id: inputId,
-          class: 'form-control input-sm',
-          value: this.getLocation() + '#story-' + this.id,
-          readonly: true,
-        }));
-
-        var $btnWrapper = $(this.make('span', {class: 'input-group-btn'}));
-
-        // Story's copy to clipboard button
-        var btn = this.make('button', {
-          class: 'btn btn-default btn-clipboard',
-          'data-clipboard-target': '#'+inputId,
-          type: 'button'
-        });
-        $(btn).html('<img src="/clippy.svg" alt="Copy to clipboard" width="14px">');
-        $btnWrapper.append(btn);
-
-        btn = this.make('button', {
-          class: 'btn btn-default btn-clipboard-id btn-clipboard',
-          'data-clipboard-text': '#'+this.id,
-          type: 'button'
-        }, 'ID');
-        $btnWrapper.append(btn);
-
-        // Story history button
-        btn = this.make('button', {class: 'btn btn-default toggle-history'})
-        $(btn).html('<i class="mi md-18">history</i>');
-        $btnWrapper.append(btn);
-
-        $wrapper.append($btnWrapper[0]);
-        this.$el.append($wrapper[0]);
-
-        // activate the clipboard link
-        new Clipboard('.btn-clipboard');
+        const $storyHistoryLocation = $('<div data-story-history-location></div>');
+        this.$el.append($storyHistoryLocation);
       }
 
       this.$el.append(
@@ -566,6 +531,18 @@ module.exports = FormView.extend({
       />,
       this.$('[data-story-controls]').get(0)
     );
+
+    const historyLocationContainer = this.$('[data-story-history-location]').get(0);
+    if (historyLocationContainer) {
+      ReactDOM.render(
+        <StoryHistoryLocation
+          id={this.id}
+          url={`${this.getLocation()}#story-${this.id}`}
+        />,
+        historyLocationContainer
+      );
+      new Clipboard('.btn-clipboard');
+    }
 
     const descriptionContainer = this.$('.description-wrapper')[0];
     if (descriptionContainer) {
