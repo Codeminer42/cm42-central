@@ -1,13 +1,16 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- tag group form
+- Added First time tour.
+- Admin assignment
+- 'Velocity per member' report title translation
+
 ### Fixed
 - Remove the API module used in `using` params into Project Entity
 - Clean up DatabaseCleaner config
 - Disable registration using enviroment variable `DISABLE_REGISTRATION`
-
-### Added
-- tag group form
 
 ## [1.3.0] - 2017-04-25
 ### Added

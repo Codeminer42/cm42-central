@@ -7,7 +7,7 @@
     <div class="page-header">
       <h4 class="page-header-title">
         <i class="mi md-20">dashboard</i> <%= t('teams.select') %>
-        <%= link_to t('teams.create'), new_team_path, class: "btn btn-link pull-right unstyled-link" %>
+      <%= link_to t('teams.create'), new_team_path, class: "btn btn-link pull-right unstyled-link", data: {step: "create-team"} %>
       </h4>
     </div>
 

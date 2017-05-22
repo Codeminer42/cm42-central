@@ -19,7 +19,7 @@ class Admin::UserPresenter < SimpleDelegator
     html_button({
       btn_text: t('users.admin_off'),
       btn_class: 'btn-warning',
-      is_admin: true,
+      is_admin: false,
       confirm_message: t('are you sure you want to remove administration rights from this user', scope: TRANSLATION_SCOPE)
     })
   end
@@ -28,7 +28,7 @@ class Admin::UserPresenter < SimpleDelegator
     html_button({
       btn_text: t('users.admin_on'),
       btn_class: 'btn-primary',
-      is_admin: false,
+      is_admin: true,
       confirm_message: t('are you sure you want to give administration rights to this user', scope: TRANSLATION_SCOPE)
     })
   end
