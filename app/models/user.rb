@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   gravtastic default: 'identicon'
 
   # FIXME - DRY up, repeated in Story model
-  JSON_ATTRIBUTES = ["id", "name", "initials", "username", "email"]
+  JSON_ATTRIBUTES = ["id", "name", "initials", "username", "email", "finished_tour"]
 
   AUTHENTICATION_KEYS = %i(email)
 
@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   attr_accessor :was_created
 
   scope :recently_created, -> (created_at) { where("users.created_at > ?", created_at) if created_at }
-  
+
   def password_required?
     # Password is required if it is being set, but not for new records
     if !persisted?
@@ -49,8 +49,12 @@ class User < ActiveRecord::Base
     raw
   end
 
+  def tour_steps
+    WelcomeTour::STEPS.to_json
+  end
+
   def as_json(options = {})
-    super(only: JSON_ATTRIBUTES)
+    super(only: JSON_ATTRIBUTES, methods: :tour_steps)
   end
 
   def self.find_first_by_auth_conditions(warden_conditions)

@@ -61,6 +61,12 @@ en:
   private: "Private"
   my teams: "My teams"
   confirm: "Are you sure you want to remove?"
+  next: "Next"
+  finish: "Finish"
+  skip: "Skip"
+  reset_tour: "Reset tour"
+  reset_tour_success: "Tour was successfully reset"
+  reset_tour_fail: "An error has ocurred, please try again"
 
   story:
     state:
@@ -359,3 +365,35 @@ en:
       update: 'updated'
       destroy: 'destroyed'
       create: 'created'
+
+  welcome_tour:
+    create_team:
+      title: "Create Team"
+      text: "You must create a new Team to start, you will become the administrator of the Team. Teams can have many members and many projects and you can participate in multiple teams at the same time"
+    create_project:
+      title: "Create Project"
+      text: "You can create as many projects as you want clicking this button"
+    project_activity:
+      title: "Project Activity"
+      text: "Every time you change something in the Project or its Story they will be audited and the details of the changes will be visible to every team member from this Activity timeline box. <br> <strong>Pro tip</strong>: you shouldn\'t change a Story after the team started working on it, you must add a new Story."
+    create_story:
+      title: "Create Story"
+      text: "Click this button to create new Stories. A Story can be the description of a new feature or a bug report, for example. New stories will be created first at the Chilly Bin box."
+    chilly_bin:
+      title: "Chilly Bin"
+      text: "All new stories are stores in this Chilly Bin. You should describe your stories expecting that the description and attachments will suffice for the story to be implemented. Project members should estimate those stories."
+    backlog:
+      title: "Backlog"
+      text: "The backlog MUST have all stories by order of PRIORITY. Most valuable and ready-to-start stories at the top and optional or uncertain stories at the very bottom"
+    in_progress:
+      title: "In Progress"
+      text: "This is where stories that must be worked on right now will reside. Central will automatically pick up the top stories from the Backlog to fit the team's current Velocity"
+    done:
+      title: "Done"
+      text: "After a story is delivered and approved, it is sorted out at the bottom of this column. A delivered story can\'t be modified and this column is here to show you everything that has already been finished and approved"
+    project_velocity:
+      title: "Project Velocity"
+      text: "All stories are estimated by \"points\". The average of points delivered by a team during an Iteration is the Velocity. The estimated end date of a Project is the total amount of points in the Backlog divided by the Velocity. Here you can simulate adding a new member by slightly increasing the estimated Velocity to see the effects on the future Iteration dates"
+    members:
+      title: "Members"
+      text: "If you want to add or remove people from the Project team, click here"

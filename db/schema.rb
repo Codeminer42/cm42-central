@@ -261,6 +261,7 @@ ActiveRecord::Schema.define(version: 20170407114148) do
     t.string   "authy_id"
     t.datetime "last_sign_in_with_authy"
     t.boolean  "authy_enabled",                       default: false
+    t.boolean  "finished_tour",                       default: false
   end
 
   add_index "users", ["authy_id"], name: "index_users_on_authy_id", using: :btree

@@ -21,6 +21,7 @@ describe "Stories" do
 
       wait_page_load
       click_on 'Add story'
+
       within('#chilly_bin') do
         fill_in 'title', with: 'New story'
         click_on 'Save'
@@ -45,6 +46,28 @@ describe "Stories" do
 
     end
 
+  end
+
+  describe "story history" do
+
+    before do
+      create(:story, title: 'Test Story', project: project, requested_by: user)
+      visit project_path(project)
+      wait_spinner
+      wait_page_load
+
+      find('.story-title').click
+      find('.toggle-history').click
+    end
+
+    it "turns history visible", js: true do
+      expect(page).to have_css('#history')
+    end
+
+    it "updates history column title", js: true do
+      title = find('.history_column > .column_header > .toggle-title')
+      expect(title).to have_text("History Of 'Test Story'")
+    end
   end
 
   describe "story links" do

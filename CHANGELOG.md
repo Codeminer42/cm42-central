@@ -3,12 +3,19 @@
 ## [Unreleased]
 ### Added
 - tag group form
+- Added First time tour.
+
+### Changed
+- Story id, location and history input-form-group into a react component 
+- Story estimate select into a react component
 
 ### Fixed
 - Remove the API module used in `using` params into Project Entity
 - Clean up DatabaseCleaner config
 - Admin assignment
 - 'Velocity per member' report title translation
+- Disable registration using enviroment variable `DISABLE_REGISTRATION`
+- Display of throbber animated gif when adding a note or a task
 
 ## [1.3.0] - 2017-04-25
 ### Added
