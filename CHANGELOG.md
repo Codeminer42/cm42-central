@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - tag group form
+- Added First time tour.
 
 ### Fixed
 - Remove the API module used in `using` params into Project Entity

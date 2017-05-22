@@ -9,6 +9,7 @@ FactoryGirl.define do
     u.password_confirmation 'password'
     u.locale 'en'
     u.time_zone 'Brasilia'
+    u.finished_tour true
     u.after(:build) {|user| user.confirm }
 
     trait :with_team do
