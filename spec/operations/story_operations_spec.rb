@@ -117,25 +117,109 @@ describe StoryOperations do
       it "sends 'started' email notification" do
         allow(story).to receive_messages(:state => 'started')
         expect(Notifications).to receive(:story_changed).with(story, acting_user) { notifier }
-        expect(IntegrationWorker).to receive(:perform_async).with(project.id, "[Test Project] The story ['Test Story'](http://foo.com/projects/123#story-#{story.id}) has been started.")
+        expect(IntegrationWorker).to receive(:perform_async).with(project.id, {slack: [
+            {
+                fallback: "The story 'Test Story' has been started.",
+                color: '#36a64f',
+                title: "Test Project",
+                title_link: "http://foo.com/projects/123#story-#{story.id}",
+                text: "The story 'Test Story' has been started.",
+                fields: [
+                    {
+                        title: 'Assigned to',
+                        value: "",
+                        short: true
+                    },
+    				        {
+   					          title: 'Points',
+                       value: "",
+                       short: true
+   				        }
+               ]
+           }
+         ],
+         mattermost:"[Test Project] The story ['Test Story'](http://foo.com/projects/123#story-#{story.id}) has been started."})
         subject.call
       end
       it "sends 'delivered' email notification" do
         allow(story).to receive_messages(:state => 'delivered')
         expect(Notifications).to receive(:story_changed).with(story, acting_user) { notifier }
-        expect(IntegrationWorker).to receive(:perform_async).with(project.id, "[Test Project] The story ['Test Story'](http://foo.com/projects/123#story-#{story.id}) has been delivered for acceptance.")
+        expect(IntegrationWorker).to receive(:perform_async).with(project.id, {slack: [
+            {
+                fallback: "The story 'Test Story' has been delivered.",
+                color: '#36a64f',
+                title: "Test Project",
+                title_link: "http://foo.com/projects/123#story-#{story.id}",
+                text: "The story 'Test Story' has been delivered.",
+                fields: [
+                    {
+                        title: 'Assigned to',
+                        value: "",
+                        short: true
+                    },
+    				        {
+   					          title: 'Points',
+                       value: "",
+                       short: true
+   				        }
+               ]
+           }
+         ],
+         mattermost:"[Test Project] The story ['Test Story'](http://foo.com/projects/123#story-#{story.id}) has been delivered."})
         subject.call
       end
       it "sends 'accepted' email notification" do
         allow(story).to receive_messages(:state => 'accepted')
         expect(Notifications).to receive(:story_changed).with(story, acting_user) { notifier }
-        expect(IntegrationWorker).to receive(:perform_async).with(project.id, "[Test Project]  ACCEPTED your story ['Test Story'](http://foo.com/projects/123#story-#{story.id}).")
+        expect(IntegrationWorker).to receive(:perform_async).with(project.id, {slack: [
+            {
+                fallback: "The story 'Test Story' has been accepted.",
+                color: '#36a64f',
+                title: "Test Project",
+                title_link: "http://foo.com/projects/123#story-#{story.id}",
+                text: "The story 'Test Story' has been accepted.",
+                fields: [
+                    {
+                        title: 'Assigned to',
+                        value: "",
+                        short: true
+                    },
+    				        {
+   					          title: 'Points',
+                       value: "",
+                       short: true
+   				        }
+               ]
+           }
+         ],
+         mattermost:"[Test Project] The story ['Test Story'](http://foo.com/projects/123#story-#{story.id}) has been accepted."})
         subject.call
       end
       it "sends 'rejected' email notification" do
         allow(story).to receive_messages(:state => 'rejected')
         expect(Notifications).to receive(:story_changed).with(story, acting_user) { notifier }
-        expect(IntegrationWorker).to receive(:perform_async).with(project.id, "[Test Project]  REJECTED your story ['Test Story'](http://foo.com/projects/123#story-#{story.id}).")
+        expect(IntegrationWorker).to receive(:perform_async).with(project.id, {slack: [
+            {
+                fallback: "The story 'Test Story' has been rejected.",
+                color: '#36a64f',
+                title: "Test Project",
+                title_link: "http://foo.com/projects/123#story-#{story.id}",
+                text: "The story 'Test Story' has been rejected.",
+                fields: [
+                    {
+                        title: 'Assigned to',
+                        value: "",
+                        short: true
+                    },
+    				        {
+   					          title: 'Points',
+                       value: "",
+                       short: true
+   				        }
+               ]
+           }
+         ],
+         mattermost:"[Test Project] The story ['Test Story'](http://foo.com/projects/123#story-#{story.id}) has been rejected."})
         subject.call
       end
     end

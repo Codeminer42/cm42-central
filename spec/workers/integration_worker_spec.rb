@@ -9,7 +9,7 @@ describe IntegrationWorker do
       integration.data['channel'],
       integration.data['bot_username'],
       "Hello World")
-    IntegrationWorker.new.perform(integration.project_id, "Hello World")
+    IntegrationWorker.new.perform(integration.project_id, {"mattermost"=>"Hello World"})
   end
 
   it "should read URI from ENV" do
@@ -19,6 +19,6 @@ describe IntegrationWorker do
       integration.data['channel'],
       integration.data['bot_username'],
       "Hello World")
-    IntegrationWorker.new.perform(integration.project_id, "Hello World")
+    IntegrationWorker.new.perform(integration.project_id, {"mattermost"=>"Hello World"})
   end
 end

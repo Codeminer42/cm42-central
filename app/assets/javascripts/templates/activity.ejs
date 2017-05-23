@@ -1,16 +1,16 @@
-<div class="activity">
+<div class="story-activity">
   <div>
     <%= user %> <strong><%= action %></strong>
-    <span class="activity-date"><%= date %></span>
+    <span class="story-activity-date"><%= date %></span>
   </div>
-  <div class="activity-info">
+  <div class="story-activity-info">
     <% _.each(changes, function(change) { %>
-      <div class="activity-changes">
-        <div class="activity-change-attribute">
+      <div class="story-activity-changes">
+        <div class="story-activity-change-attribute">
           <strong><%= change.attribute %></strong>
         </div>
 
-        <div class="activity-change-history">
+        <div class="story-activity-change-history">
           <%= change.oldValue || '---' %>
           <i class="mi md-18">arrow_forward</i>
           <%= change.newValue || '---' %>

@@ -36,7 +36,7 @@ describe IntegrationsController do
             get :index, project_id: project.id
             expect(response).to be_success
             expect(assigns[:project]).to eq(project)
-            expect(assigns[:integrations]).to eq([integration])
+            expect(assigns[:integrations][0]).to eq(integration)
           end
         end
 
@@ -45,7 +45,7 @@ describe IntegrationsController do
             get :index, project_id: project.id
             expect(response).to be_success
             expect(assigns[:project]).to eq(project)
-            expect(assigns[:integrations].count).to eq(1)
+            expect(assigns[:integrations].count).to eq(2)
             expect(assigns[:integrations].first.kind).to eq('mattermost')
           end
         end
@@ -143,4 +143,3 @@ describe IntegrationsController do
 
   end
 end
-

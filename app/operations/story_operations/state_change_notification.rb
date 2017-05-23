@@ -33,16 +33,29 @@ module StoryOperations
     def integration_message
       story_link = "#{model.base_uri}#story-#{model.id}"
 
-      case model.state
-      when 'started'
-        "[#{model.project.name}] The story ['#{model.title}'](#{story_link}) has been started."
-      when 'delivered'
-        "[#{model.project.name}] The story ['#{model.title}'](#{story_link}) has been delivered for acceptance."
-      when 'accepted'
-        "[#{model.project.name}] #{model.acting_user.name} ACCEPTED your story ['#{model.title}'](#{story_link})."
-      when 'rejected'
-        "[#{model.project.name}] #{model.acting_user.name} REJECTED your story ['#{model.title}'](#{story_link})."
-      end
+      {slack: [
+          {
+              fallback: "The story '#{model.title}' has been #{model.state}.",
+              color: '#36a64f',
+              title: "#{model.project.name}",
+              title_link: "#{story_link}",
+              text: "The story '#{model.title}' has been #{model.state}.",
+              fields: [
+                  {
+                      title: 'Assigned to',
+                      value: "#{model.owned_by_name}",
+                      short: true
+                  },
+  				        {
+ 					          title: 'Points',
+                     value: "#{model.estimate}",
+                     short: true
+ 				        }
+             ]
+         }
+       ],
+       mattermost: "[#{model.project.name}] The story ['#{model.title}'](#{story_link}) has been #{model.state}."
+     }
     end
   end
 end
