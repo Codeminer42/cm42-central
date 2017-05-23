@@ -6,10 +6,12 @@
 - Added First time tour.
 - Basic style for Labels
 - Slack Support
+- Release date to Story
 
 ### Changed
 - Story id, location and history input-form-group into a react component
 - Story estimate select into a react component
+- The attributes of a release story when creating or editing
 
 ### Fixed
 - Remove the API module used in `using` params into Project Entity

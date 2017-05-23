@@ -85,7 +85,7 @@ pt-BR:
       feature: "recurso"
       chore: "chore"
       bug: "bug"
-      release: "liberar"
+      release: "lançamento"
     no_estimate: "sem estimativa"
     tasks: "Tarefas"
     notes: "Notas"
@@ -175,6 +175,7 @@ pt-BR:
         owned_by:             'Pertence à'
         documents:            'Anexos'
         tasks:                'Tarefas'
+        release_date:         'Data de Lançamento'
       task:
         name:                 'Nome'
       user:

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170407114148) do
+ActiveRecord::Schema.define(version: 20170509183608) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -192,15 +192,17 @@ ActiveRecord::Schema.define(version: 20170407114148) do
     t.string   "owned_by_initials", limit: 255
     t.datetime "started_at"
     t.float    "cycle_time",                                              default: 0.0
+    t.date     "release_date"
   end
 
   create_table "tag_groups", force: :cascade do |t|
     t.integer  "team_id"
-    t.string   "name",        limit: 15
+    t.string   "name",             limit: 15
     t.text     "description"
-    t.string   "bg_color",               default: "#2075F3"
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
+    t.string   "bg_color",                    default: "#2075F3"
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+    t.string   "foreground_color"
   end
 
   add_index "tag_groups", ["team_id"], name: "index_tag_groups_on_team_id", using: :btree

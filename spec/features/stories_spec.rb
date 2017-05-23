@@ -70,6 +70,47 @@ describe "Stories" do
     end
   end
 
+  describe "release story" do
+
+    context "when creating a release story" do
+      it "renders only the fields related to a story of type release", js: true do
+        visit project_path(project)
+        wait_spinner
+
+        wait_page_load
+        click_on 'Add story'
+        within('#chilly_bin') do
+          select 'release', from: "story_type"
+
+          expect(page).not_to have_selector("estimate") 
+          expect(page).not_to have_selector("state") 
+          expect(page).not_to have_selector("requested_by_id") 
+          expect(page).not_to have_selector("owned_by_id") 
+          expect(page).not_to have_content("Labels")
+          expect(page).not_to have_css(".attachinary-input") 
+          expect(page).to have_css(".release_date")
+        end
+      end
+    end
+
+    context "when editing a release story" do
+      let(:formated_date) { Date.today.strftime("%m/%d/%Y") }
+      let!(:story) { create(:story, title: "Release Story", story_type: 'release', project: project, 
+                      release_date: formated_date, requested_by: user)}
+      
+      it "shows only the fields related to a story of type release", js: true do
+        visit project_path(project)
+        wait_spinner
+
+        wait_page_load
+        find("#story-#{story.id}").click
+        expect(page).to have_field('title', with: story.title)
+        expect(page).to have_select('story_type', selected: "release")
+        expect(page).to have_field('release_date', with: formated_date)
+      end
+    end
+  end
+  
   describe "story links" do
 
     let!(:story) { create(:story, title: "Story", project: project, requested_by: user)}

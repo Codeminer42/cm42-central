@@ -1,0 +1,37 @@
+.react-datepicker {
+  font-size: 1em;
+
+  &__header {
+    padding-top: .8em;
+  }
+
+  &__month {
+    margin: .4em 1em;
+  }
+
+  &__day-name, &__day {
+    width: 1.9em;
+    line-height: 1.9em;
+    margin: .166em;
+  }
+
+  &__current-month {
+    font-size: 1em;
+  }
+
+  &__navigation {
+    top: 1em;
+    line-height: 1.7em;
+    border: .45em solid transparent;
+  }
+
+  &__navigation--previous {
+    border-right-color: $lightgrey-9;
+    left: 1em;
+  }
+
+  &__navigation--next {
+    border-left-color: $lightgrey-9;
+    right: 1em;
+  }
+}
