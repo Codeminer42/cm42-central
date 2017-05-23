@@ -38,9 +38,9 @@ var Story = module.exports = Backbone.Model.extend({
       this.isReadonly = true;
   },
 
-  changeState: function(model, new_value) {
-    if (new_value == "started" && !this.get('owned_by_id')) {
-      model.set({owned_by_id: model.collection.project.current_user.id}, true);
+  changeState: function(model, newValue) {
+    if (newValue === 'started') {
+      model.set({ owned_by_id: model.collection.project.current_user.id }, true);
     }
 
     model.setAcceptedAt();

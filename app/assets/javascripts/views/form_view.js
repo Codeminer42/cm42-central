@@ -102,7 +102,7 @@ module.exports = Backbone.View.extend({
       }
       $(select).append(view.make('option', attr, option_name));
     });
-    this.bindElementToAttribute(select, name);
+    this.bindElementToAttribute(select, name, 'change', options);
     return select;
   },
 
@@ -116,13 +116,13 @@ module.exports = Backbone.View.extend({
     return el;
   },
 
-  bindElementToAttribute: function(el, name, eventType) {
+  bindElementToAttribute: function(el, name, eventType, { silent = true } = {}) {
     var that = this;
-    eventType = typeof(eventType) != 'undefined' ? eventType : "change";
+    eventType = typeof(eventType) !== 'undefined' ? eventType : 'change';
     $(el).on(eventType, function() {
       var obj = {};
       obj[name] = $(el).val();
-      that.model.set(obj, {silent: true});
+      that.model.set(obj, { silent });
       return true;
     });
   },

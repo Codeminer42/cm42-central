@@ -377,7 +377,6 @@ module.exports = FormView.extend({
 
           const $storyState = $('<div class="form-group" data-story-state></div>');
           $(div).append($storyState);
-
         })
       );
 
