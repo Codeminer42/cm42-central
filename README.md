@@ -54,6 +54,7 @@ Some of the improvements we added since the end of 2015:
   - [x] UI tweaking to make it prettier even without a total redesign
 - [x] Done stories can't be edited, so adding validations and disabling form UIs
 - [x] Added Mattermost basic integration to send story changes to project chat channel
+- [x] Added Slack integration to send story changes to project chat channel
 - [ ] Add APIs for chat slash commands to be able to query projects (ex. /centralstatus project-x)
 - [x] Added basic reports
   - [x] Basic Current Iteration status

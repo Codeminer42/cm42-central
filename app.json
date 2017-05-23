@@ -16,6 +16,10 @@
       "description": "A Mattermost Hook URL in the format https://yourmattermost.com/hooks/abcdxyz",
       "required": false
     },
+    "INTEGRATION_URI_SLACK": {
+      "description": "A Slack Hook URL in the format https://hooks.slack.com/services/xxxx/xxxx/xxxxxxx",
+      "required": false
+    },
     "LANG": {
       "value": "en_US.UTF-8",
       "required": true
