@@ -7,6 +7,7 @@
 - Basic style for Labels
 - Slack Support
 - Release date to Story
+- Project now uses yarn 
 
 ### Changed
 - Story id, location and history input-form-group into a react component
