@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [1.4.2] - 2017-05-24
+### Removed
+- YARN temporarily
+
 ## [1.4.1] - 2017-05-24
 ### Fixed
 - Move "babel-preset-airbnb" outside devDependencies in package.json
@@ -88,7 +92,7 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.4.1...HEAD
+[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.4.2...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
@@ -98,3 +102,4 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [1.3.0]: https://github.com/Codeminer42/cm42-central/tree/v1.3.0
 [1.4.0]: https://github.com/Codeminer42/cm42-central/tree/v1.4.0
 [1.4.1]: https://github.com/Codeminer42/cm42-central/tree/v1.4.1
+[1.4.2]: https://github.com/Codeminer42/cm42-central/tree/v1.4.2
