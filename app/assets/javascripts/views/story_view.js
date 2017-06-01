@@ -514,9 +514,7 @@ module.exports = FormView.extend({
 
     const $storyEstimate = this.$('[data-story-estimate]');
     if ($storyEstimate.length) {
-      var storyEstimateOptions = this.model.point_values().map((option) => {
-        return [option, option]
-      });
+      var storyEstimateOptions = this.model.point_values().map(this.createStoryEstimateOptions);
       ReactDOM.render(
         <StorySelect
           name='estimate'
@@ -531,6 +529,10 @@ module.exports = FormView.extend({
 
       this.bindElementToAttribute($storyEstimate.find('select[name="estimate"]'), 'estimate');
     }
+  },
+
+  createStoryEstimateOptions: function(option) {
+    return [option, option];
   },
 
   makeStoryTypeSelect: function(div) {

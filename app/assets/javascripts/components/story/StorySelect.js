@@ -1,10 +1,10 @@
 import React from 'react';
 
+const renderOption = (option, i) => <option value={option[1]} key={i} label={option[0]} />;
+
 const renderOptions = (options, blank) => ([
-  blank ? <option value='' key={options.length}> { blank } </option> : null,
-  options.map((option, i) =>
-    <option value={option[1]} key={i} label={option[0]} />
-  )
+  blank && <option value='' key={options.length}> { blank } </option>,
+  options.map(renderOption)
 ]);
 
 const StorySelect = ({ name, options, selected, disabled = false, blank, className }) =>
