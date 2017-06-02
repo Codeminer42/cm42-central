@@ -9,7 +9,7 @@ module.exports = Backbone.View.extend({
   columns: {},
 
   initialize: function() {
-    _.bindAll(this, 'addStory', 'addAll', 'render');
+    _.bindAll(this, 'addStory', 'addAll', 'render', 'noticeSaveError');
 
     this.$loadingSpin = $('.loading-spin');
     this.$columnToggles = this.$el.parent().find('#column-toggles');
@@ -186,5 +186,12 @@ module.exports = Backbone.View.extend({
     return this.model.users
       .map(function(user) { return user.get('username'); })
       .sort();
+  },
+
+  noticeSaveError: function(model) {
+    this.notice({
+      title: I18n.t("save error", {defaultValue: "Save error"}),
+      text: model.errorMessages()
+    });
   }
 });

@@ -5,6 +5,7 @@ import StoryDescription from 'components/story/StoryDescription';
 import StoryHistoryLocation from 'components/story/StoryHistoryLocation';
 import StorySelect from 'components/story/StorySelect';
 import StoryDatePicker from 'components/story/StoryDatePicker';
+import StoryNotes from 'components/story/StoryNotes';
 
 var Clipboard = require('clipboard');
 
@@ -12,8 +13,6 @@ var executeAttachinary = require('libs/execute_attachinary');
 
 var FormView = require('./form_view');
 var EpicView = require('./epic_view');
-var NoteForm = require('./note_form');
-var NoteView = require('./note_view');
 var TaskForm = require('./task_form');
 var TaskView = require('./task_view');
 
@@ -32,8 +31,8 @@ module.exports = FormView.extend({
 
     _.bindAll(this, "render", "highlight", "moveColumn", "setClassName",
       "transition", "estimate", "disableForm", "renderNotes",
-      "renderNotesCollection", "addEmptyNote", "hoverBox",
-      "renderTasks", "renderTasksCollection", "addEmptyTask",
+      "hoverBox", "renderTasks", "handleNoteDelete",
+      "renderTasksCollection", "addEmptyTask",
       "clickSave", "attachmentDone", "attachmentStart",
       "attachmentFail", "toggleControlButtons");
 
@@ -53,9 +52,6 @@ module.exports = FormView.extend({
     this.model.on("change:estimate", this.setClassName);
     this.model.on("change:state", this.setClassName);
 
-    this.model.on("change:notes", this.addEmptyNote);
-    this.model.on("change:notes", this.renderNotesCollection);
-
     this.model.on("change:tasks", this.addEmptyTask);
     this.model.on("change:tasks", this.renderTasksCollection);
 
@@ -73,8 +69,6 @@ module.exports = FormView.extend({
     // Set up CSS classes for the view
     this.setClassName();
 
-    // Add an empty note to the collection
-    this.addEmptyNote();
     // Add an empty task to the collection
     this.addEmptyTask();
   },
@@ -443,7 +437,8 @@ module.exports = FormView.extend({
 
       this.initTags();
 
-      this.renderNotes();
+      const $storyNotes = $('<div data-story-notes></div>');
+      this.$el.append($storyNotes);
 
       if(this.model.get('story_type') === 'release') {
         this.$el.empty();
@@ -569,6 +564,34 @@ module.exports = FormView.extend({
 
       this.bindElementToAttribute($storyRequestedBySelect.find('select[name="requested_by"]'), 'requested_by_id');
     }
+
+    this.renderNotes();
+  },
+
+  renderNotes: function() {
+    const $storyNotes = this.$('[data-story-notes]');
+    if ($storyNotes.length) {
+      ReactDOM.render(
+        <StoryNotes
+          notes={this.model.notes}
+          disabled={this.isReadonly()}
+          handleDelete={this.handleNoteDelete}
+          isNew={this.model.isNew()}
+        />,
+        $storyNotes.get(0)
+      );
+
+      const $noteForm = $storyNotes.find('textarea[name="note"]');
+      $noteForm.atwho({
+        at: "@",
+        data: window.projectView.usernames()
+      });
+    }
+  },
+
+  handleNoteDelete: function(note) {
+    note.destroy();
+    this.renderNotes();
   },
 
   createStoryEstimateOptions: function(option) {
@@ -716,15 +739,6 @@ module.exports = FormView.extend({
     });
   },
 
-  renderNotes: function() {
-    if (this.model.notes.length > 0) {
-      var el = this.$el;
-      el.append(this.label('notes', I18n.t('story.notes')));
-      el.append('<div class="notelist"/>');
-      this.renderNotesCollection();
-    }
-  },
-
   renderTasks: function() {
     if (this.model.tasks.length > 0) {
       var el = this.$el;
@@ -732,24 +746,6 @@ module.exports = FormView.extend({
       el.append('<div class="tasklist"/>');
       this.renderTasksCollection();
     }
-  },
-
-  renderNotesCollection: function() {
-    var notelist = this.$('div.notelist');
-    notelist.html('');
-    if(!this.isReadonly())
-      this.addEmptyNote();
-    var that = this;
-    this.model.notes.each(function(note) {
-      var view;
-      if (!that.isReadonly() && note.isNew()) {
-        view = new NoteForm({model: note});
-      } else {
-        if (that.isReadonly()) note.isReadonly = true;
-        view = new NoteView({model: note});
-      }
-      notelist.append(view.render().el);
-    });
   },
 
   renderTasksCollection: function() {
@@ -781,26 +777,6 @@ module.exports = FormView.extend({
     }
 
     this.model.tasks.add({});
-  },
-
-  addEmptyNote: function() {
-
-    // Don't add an empty note if the story is unsaved.
-    if (this.model.isNew()) {
-      return;
-    }
-
-    // Don't add an empty note if the notes collection already has a trailing
-    // new Note.
-    var last = this.model.notes.last();
-    if (last && last.isNew()) {
-      return;
-    }
-
-    // Add a new unsaved note to the collection.  This will be rendered
-    // as a form which will allow the user to add a new note to the story.
-    this.model.notes.add({});
-    this.$el.find('a.collapse,a.expand').removeClass(/icons-/).addClass('icons-throbber');
   },
 
   // FIXME Move to separate view
