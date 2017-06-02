@@ -120,6 +120,10 @@ Or using docker:
     $ git clone git://github.com/Codeminer42/cm42-central.git
     $ cd cm42-central
 
+    # copy and edit the configuration
+    $ cp .env.sample .env
+    $ cp config/database.yml.example config/database.yml
+
     # Prepare container
     $ docker-compose build
     $ docker-compose run --rm web npm install
