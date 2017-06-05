@@ -372,7 +372,8 @@ module.exports = FormView.extend({
           const $storyEstimate = $('<div class="form-group" data-story-estimate></div>');
           $(div).append($storyEstimate);
 
-          this.makeStoryTypeSelect(div);
+          const $storyType = $('<div class="form-group" data-story-type></div>');
+          $(div).append($storyType);
 
           var story_state_options = [];
           _.each(["unscheduled", "unstarted", "started", "finished", "delivered", "accepted", "rejected"], function(option) {
@@ -529,10 +530,31 @@ module.exports = FormView.extend({
 
       this.bindElementToAttribute($storyEstimate.find('select[name="estimate"]'), 'estimate');
     }
+
+    const $storyTypeSelect = this.$('[data-story-type]');
+    if ($storyTypeSelect.length) {
+      var storyTypeOptions = _.map(["feature", "chore", "bug", "release"], this.createStoryTypeOptions);
+      ReactDOM.render(
+        <StorySelect
+          name='story_type'
+          className='story_type'
+          options={storyTypeOptions}
+          selected={this.model.get('story_type')}
+          disabled={this.isReadonly()}
+        />,
+        $storyTypeSelect.get(0)
+      );
+
+      this.bindElementToAttribute($storyTypeSelect.find('select[name="story_type"]'), 'story_type');
+    }
   },
 
   createStoryEstimateOptions: function(option) {
     return [option, option];
+  },
+
+  createStoryTypeOptions: function(option) {
+    return [I18n.t('story.type.' + option), option];
   },
 
   makeStoryTypeSelect: function(div) {
