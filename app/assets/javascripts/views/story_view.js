@@ -90,7 +90,7 @@ module.exports = FormView.extend({
     "click .cancel": "cancelEdit",
     "click .transition": "transition",
     "click .state-actions .estimate": "estimate",
-    "change select.story_type": "render", 
+    "change select.story_type": "render",
     "click .destroy": "clear",
     "click .description": "editDescription",
     "click .edit-description": "editDescription",
@@ -369,7 +369,7 @@ module.exports = FormView.extend({
         this.makeFormControl(function(div) {
           $(div).addClass('form-inline');
 
-          const $storyEstimate = $('<div data-story-estimate></div>');
+          const $storyEstimate = $('<div class="form-group" data-story-estimate></div>');
           $(div).append($storyEstimate);
 
           this.makeStoryTypeSelect(div);
@@ -462,14 +462,14 @@ module.exports = FormView.extend({
       this.initTags();
 
       this.renderNotes();
-      
+
       if(this.model.get('story_type') === 'release') {
         this.$el.empty();
         this.$el.append($storyControls);
         this.renderReleaseStory();
       }
       this.renderReactComponents();
-  
+
     } else {
       this.$el.removeClass('editing');
       this.$el.html(this.template({story: this.model, view: this}));
@@ -479,6 +479,7 @@ module.exports = FormView.extend({
   },
 
   renderReactComponents: function() {
+
     ReactDOM.render(
       <StoryControls
         onClickSave={this.clickSave}
@@ -487,7 +488,7 @@ module.exports = FormView.extend({
       />,
       this.$('[data-story-controls]').get(0)
     );
-    
+
     const historyLocationContainer = this.$('[data-story-history-location]').get(0);
     if (historyLocationContainer) {
       ReactDOM.render(
@@ -513,11 +514,13 @@ module.exports = FormView.extend({
 
     const $storyEstimate = this.$('[data-story-estimate]');
     if ($storyEstimate.length) {
+      var storyEstimateOptions = this.model.point_values().map(this.createStoryEstimateOptions);
       ReactDOM.render(
         <StorySelect
           name='estimate'
+          className='story_estimate'
           blank={I18n.t('story.no_estimate')}
-          options={this.model.point_values()}
+          options={storyEstimateOptions}
           selected={this.model.get('estimate')}
           disabled={this.model.notEstimable() || this.isReadonly()}
         />,
@@ -526,6 +529,10 @@ module.exports = FormView.extend({
 
       this.bindElementToAttribute($storyEstimate.find('select[name="estimate"]'), 'estimate');
     }
+  },
+
+  createStoryEstimateOptions: function(option) {
+    return [option, option];
   },
 
   makeStoryTypeSelect: function(div) {
@@ -590,7 +597,7 @@ module.exports = FormView.extend({
 
     const $storyDate = $('<div class="form-group" data-story-datepicker></div>');
     this.$el.append($storyDate);
-    
+
     ReactDOM.render(
       <StoryDatePicker
         releaseDate={this.model.get('release_date')}
@@ -598,14 +605,14 @@ module.exports = FormView.extend({
       />,
       $storyDate.get(0)
     );
-    
+
 
     const dateInput = this.$('input[name=release_date]');
     this.bindElementToAttribute(dateInput, 'release_date');
 
     this.$el.append(
       this.makeFormControl(this.makeDescription()));
-      
+
   },
 
   parseDescription: function() {
