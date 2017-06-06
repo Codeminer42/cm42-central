@@ -1,26 +1,20 @@
 import React from 'react';
 
 class Note extends React.Component {
-  constructor() {
-    super();
-
-    this.renderDelete = this.renderDelete.bind(this);
+  constructor(props) {
+    super(props);
     this._handleDelete = this._handleDelete.bind(this);
   }
 
-  render() {
-    const { note, disabled } = this.props;
+  _handleDelete() {
+    const { note, handleDelete } = this.props;
+    handleDelete(note);
+  }
 
-    return (
-      <div className="note">
-        <div dangerouslySetInnerHTML={this.parseNote(note)}></div>
-        <div className="note_meta">
-          <span className="user"> { note.get('user_name') } </span> -
-          <span className="created_at"> { note.get('created_at') } </span>
-          { !disabled && this.renderDelete() }
-        </div>
-      </div>
-    );
+  parseNote(note) {
+    return ({
+      __html: window.md.makeHtml(note.escape('note'))
+    });
   }
 
   renderDelete() {
@@ -38,15 +32,18 @@ class Note extends React.Component {
     );
   }
 
-  parseNote(note) {
-    return ({
-      __html: window.md.makeHtml(note.escape('note'))
-    });
-  }
-
-  _handleDelete() {
-    const { note, handleDelete } = this.props;
-    handleDelete(note);
+  render() {
+    const { note, disabled } = this.props;
+    return (
+      <div className="note">
+        <div dangerouslySetInnerHTML={this.parseNote(note)}></div>
+        <div className="note_meta">
+          <span className="user"> { note.get('user_name') } </span> -
+          <span className="created_at"> { note.get('created_at') } </span>
+          { !disabled && this.renderDelete() }
+        </div>
+      </div>
+    );
   }
 }
 

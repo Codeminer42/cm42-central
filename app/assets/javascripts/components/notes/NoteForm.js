@@ -1,57 +1,43 @@
 import React from 'react';
 
 class NoteForm extends React.Component {
-  constructor() {
-    super();
-    this.state = { value: '', disabled: false };
+  constructor(props) {
+    super(props);
+    this.state = { loading: false };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSave = this.handleSave.bind(this);
+    this._handleSubmit = this._handleSubmit.bind(this);
+  }
+
+  _handleSubmit(event) {
+    event.preventDefault();
+    this.setState({ loading: true });
+    this.props.onSubmit({
+      note: this.props.note,
+      newValue: this.input.value
+    }).catch(() =>
+      this.setState({ loading: false })
+    );
   }
 
   render() {
-    const { loading, disabled } = this.state;
-
+    const { loading } = this.state;
     return (
-      <div className="note_form clearfix">
+      <div className='note_form clearfix'>
         <textarea
-          name="note"
-          disabled={this.disabled}
-          className="form-control note-textarea"
-          onChange={this.handleChange}
+          name='note'
+          disabled={loading}
+          className='form-control note-textarea'
+          ref={(input) => { this.input = input }}
         />
         <input
-          type="button"
+          type='submit'
           className={`add-note btn btn-default btn-xs ${loading ? 'icons-throbber saving' : ''}`}
-          onClick={this.handleSave}
+          disabled={loading}
+          onClick={this._handleSubmit}
           value={ I18n.t('add note') }
         />
       </div>
     );
-  }
-
-  handleChange(ev) {
-    const newValue = ev.target.value;
-    this.props.note.set({ note: newValue });
-    this.setState({ value: ev.target.value });
-  }
-
-  handleSave() {
-    this.setState({ loading: true, disabled: true });
-    this.props.note.save(null, {
-      success: () => {
-        this.setState({ loading: false, disabled: false });
-        window.projectView.model.fetch();
-      },
-      error: this.handleSaveError
-    });
-  }
-
-  handleSaveError(model, response) {
-    const json = JSON.parse(response.responseText);
-    this.setState({ disabled: false, loading: false });
-    model.set({errors: json.note.errors});
-    window.projectView.noticeSaveError(model);
   }
 }
 

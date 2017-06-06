@@ -1,16 +1,16 @@
 import jasmineEnzyme from 'jasmine-enzyme';
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import NoteForm from 'components/notes/NoteForm';
 import Note from 'models/note.js';
 
-const note = new Note({note: ''});
-
 describe('<NoteForm />', function() {
+  let note;
 
   beforeEach(function() {
     jasmineEnzyme();
+    note = new Note({note: ''});
     sinon.stub(I18n, 't');
     sinon.stub(window.md, 'makeHtml');
     sinon.stub(note, 'save');
@@ -22,23 +22,16 @@ describe('<NoteForm />', function() {
     note.save.restore();
   });
 
-  it("should be able to save a note", function() {
-    const wrapper = shallow(
-      <NoteForm note={note} />
+  it("should have an onSubmit callback", function() {
+    const onSubmit = sinon.stub().returns($.Deferred());
+    const wrapper = mount(
+      <NoteForm
+        note={note}
+        onSubmit={onSubmit}
+      />
     );
     wrapper.find('.add-note').simulate('click');
-    expect(note.save).toHaveBeenCalled();
-  });
-
-  it("should update its own value", function() {
-    const wrapper = shallow( <NoteForm note={note} /> );
-    wrapper.find('textarea').simulate('change', {
-        target: {
-            name: 'note',
-            value: 'expectedNote',
-        }
-    });
-    expect(wrapper).toHaveState('value', 'expectedNote');
+    expect(onSubmit).toHaveBeenCalled();
   });
 
 });

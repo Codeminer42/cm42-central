@@ -6,14 +6,14 @@ import NoteComponent from 'components/notes/Note';
 import NoteForm from 'components/notes/NoteForm';
 import Note from 'models/note.js';
 
-const note = new Note({note: 'Test Note #1'});
-
 describe('<Note />', function() {
+  let note;
 
   beforeEach(function() {
     jasmineEnzyme();
     sinon.stub(I18n, 't');
     sinon.stub(window.md, 'makeHtml');
+    note = new Note({note: 'Test Note'});
   });
 
   afterEach(function() {
@@ -23,7 +23,8 @@ describe('<Note />', function() {
 
   it("should have its content parsed", function() {
     const wrapper = shallow(<NoteComponent note={note} />);
-    expect(window.md.makeHtml).toHaveBeenCalled();
+    const expectedNote = 'Test Note';
+    expect(window.md.makeHtml).toHaveBeenCalledWith(expectedNote);
   });
 
   it("should be able to call handleDelete", function() {

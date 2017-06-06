@@ -6,6 +6,7 @@ import StoryHistoryLocation from 'components/story/StoryHistoryLocation';
 import StorySelect from 'components/story/StorySelect';
 import StoryDatePicker from 'components/story/StoryDatePicker';
 import StoryNotes from 'components/story/StoryNotes';
+import NoteForm from 'components/notes/NoteForm';
 
 var Clipboard = require('clipboard');
 
@@ -31,8 +32,8 @@ module.exports = FormView.extend({
 
     _.bindAll(this, "render", "highlight", "moveColumn", "setClassName",
       "transition", "estimate", "disableForm", "renderNotes",
-      "hoverBox", "renderTasks", "handleNoteDelete",
-      "renderTasksCollection", "addEmptyTask",
+      "hoverBox", "renderTasks", "handleNoteDelete", "handleSaveError",
+      "renderTasksCollection", "addEmptyTask", "handleNoteSubmit",
       "clickSave", "attachmentDone", "attachmentStart",
       "attachmentFail", "toggleControlButtons");
 
@@ -437,8 +438,8 @@ module.exports = FormView.extend({
 
       this.initTags();
 
-      const $storyNotes = $('<div data-story-notes></div>');
-      this.$el.append($storyNotes);
+      this.$el.append($('<div data-story-notes></div>'));
+      this.$el.append($('<div data-story-note-form></div>'));
 
       if(this.model.get('story_type') === 'release') {
         this.$el.empty();
@@ -570,20 +571,40 @@ module.exports = FormView.extend({
 
   renderNotes: function() {
     const $storyNotes = this.$('[data-story-notes]');
-    if ($storyNotes.length) {
+    if ($storyNotes.length && !this.model.isNew()) {
+      const isReadonly = this.isReadonly();
+      const notes = this.model.notes;
+
       ReactDOM.render(
         <StoryNotes
-          notes={this.model.notes}
-          disabled={this.isReadonly()}
+          notes={isReadonly ? notes : notes.slice(0,-1)}
+          disabled={isReadonly}
           handleDelete={this.handleNoteDelete}
-          isNew={this.model.isNew()}
         />,
         $storyNotes.get(0)
       );
 
-      const $noteForm = $storyNotes.find('textarea[name="note"]');
-      $noteForm.atwho({
-        at: "@",
+      if (!isReadonly) {
+        this.renderNoteForm();
+      }
+    }
+  },
+
+  renderNoteForm: function() {
+    const $noteForm = this.$('[data-story-note-form]');
+    if ($noteForm.length) {
+      this.addEmptyNote();
+
+      ReactDOM.render(
+        <NoteForm
+          note={this.model.notes.last()}
+          onSubmit={this.handleNoteSubmit}
+        />,
+        $noteForm.get(0)
+      );
+
+      $noteForm.find('textarea').atwho({
+        at: '@',
         data: window.projectView.usernames()
       });
     }
@@ -592,6 +613,20 @@ module.exports = FormView.extend({
   handleNoteDelete: function(note) {
     note.destroy();
     this.renderNotes();
+  },
+
+  handleNoteSubmit: function({ note, newValue }) {
+    note.set({note: newValue});
+    return note.save(null, {
+      success: () => window.projectView.model.fetch(),
+      error: this.handleSaveError
+    });
+  },
+
+  handleSaveError: function(model, response) {
+    const json = JSON.parse(response.responseText);
+    model.set({errors: json[model.name].errors});
+    window.projectView.noticeSaveError(model);
   },
 
   createStoryEstimateOptions: function(option) {
@@ -777,6 +812,26 @@ module.exports = FormView.extend({
     }
 
     this.model.tasks.add({});
+  },
+
+  addEmptyNote: function() {
+
+    // Don't add an empty note if the story is unsaved.
+    if (this.model.isNew()) {
+      return;
+    }
+
+    // Don't add an empty note if the notes collection already has a trailing
+    // new Note.
+    var last = this.model.notes.last();
+    if (last && last.isNew()) {
+      return;
+    }
+
+    // Add a new unsaved note to the collection.  This will be rendered
+    // as a form which will allow the user to add a new note to the story.
+    this.model.notes.add({});
+    this.$el.find('a.collapse,a.expand').removeClass(/icons-/).addClass('icons-throbber');
   },
 
   // FIXME Move to separate view
