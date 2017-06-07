@@ -1,6 +1,6 @@
 import React from 'react';
 
-const renderOption = (option, i) => <option value={option[1]} key={i} label={option[0]} />;
+const renderOption = (option, i) => <option value={option[1]} key={i}> {option[0]} </option>;
 
 const renderOptions = (options, blank) => ([
   blank && <option value='' key={options.length}> { blank } </option>,
