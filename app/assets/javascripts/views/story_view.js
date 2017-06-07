@@ -522,7 +522,8 @@ module.exports = FormView.extend({
 
     const $storyTypeSelect = this.$('[data-story-type]');
     if ($storyTypeSelect.length) {
-      const storyTypeOptions = _.map(["feature", "chore", "bug", "release"], this.createStoryTypeOptions);
+      const typeOptions = ["feature", "chore", "bug", "release"];
+      const storyTypeOptions = typeOptions.map(this.createStoryTypeOptions);
       ReactDOM.render(
         <StorySelect
           name='story_type'
@@ -539,7 +540,8 @@ module.exports = FormView.extend({
 
     const $storyStateSelect = this.$('[data-story-state]');
     if ($storyStateSelect.length) {
-      var storyStateOptions = _.map(["unscheduled", "unstarted", "started", "finished", "delivered", "accepted", "rejected"], this.createStoryStateOptions);
+      const stateOptions = ["unscheduled", "unstarted", "started", "finished", "delivered", "accepted", "rejected"];
+      const storyStateOptions = stateOptions.map(this.createStoryStateOptions);
       ReactDOM.render(
         <StorySelect
           name='state'
