@@ -11,8 +11,12 @@ class UserPolicy < ApplicationPolicy
     is_admin? || is_himself?
   end
 
+  def update?
+    is_himself?
+  end
+
   def is_himself?
-    current_user == record
+    record == current_user
   end
 
   def enrollment?

@@ -19,7 +19,7 @@ describe UserPolicy do
     context "for an admin" do
       let(:current_user) { create :user, :with_team_and_is_admin }
 
-      %i[index show create new update edit destroy].each do |action|
+      %i[index show create new destroy].each do |action|
         it { should permit(action) }
       end
 
@@ -34,7 +34,7 @@ describe UserPolicy do
       it { should permit(:index) }
       it { should permit(:show) }
 
-      %i[create new update edit destroy].each do |action|
+      %i[create new edit destroy].each do |action|
         it { should_not permit(action) }
       end
 
@@ -60,7 +60,7 @@ describe UserPolicy do
     context "for an admin" do
       let(:current_user) { create :user, :with_team_and_is_admin }
 
-      %i[index show create new update edit destroy].each do |action|
+      %i[index show create new destroy].each do |action|
         it { should permit(action) }
       end
 
