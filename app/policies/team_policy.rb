@@ -19,6 +19,18 @@ class TeamPolicy < ApplicationPolicy
     is_admin?
   end
 
+  def manage_users?
+    is_admin?
+  end
+
+  def find_user_by_email?
+    is_admin?
+  end
+
+  def associate_user?
+    is_admin?
+  end
+
   class Scope < Scope
     def resolve
       if is_root?
