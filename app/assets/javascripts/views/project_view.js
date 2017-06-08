@@ -34,6 +34,8 @@ module.exports = Backbone.View.extend({
       default_flow: this.model.get('default_flow')
     }));
 
+    this.historyView = new HistoryView({el: this.$('[data-history-view]'), users: this.model.users});
+
     _.each(this.$('[data-column-view]'), function(el) {
       var columnView = this.createColumnView($(el));
       this.columns[columnView.id] = columnView;
@@ -105,7 +107,7 @@ module.exports = Backbone.View.extend({
     var that = this;
 
     _.each(this.columns, function(column) {
-      column.$el.find('.storycolumn').html("");
+      column.$el.find('.story_column').html("");
     });
 
     this.model.rebuildIterations();
@@ -120,9 +122,6 @@ module.exports = Backbone.View.extend({
     _.each(this.model.stories.column('#chilly_bin'), function(story) {
       that.addStory(story);
     });
-
-    this.historyView = new HistoryView({el: this.$('#history'), users: this.model.users});
-    this.listenTo(this.historyView, 'change:currentStory', this.setHistoryTitle);
 
     this.$loadingSpin.hide();
     this.scrollToStory(window.location.hash || '');
@@ -150,7 +149,7 @@ module.exports = Backbone.View.extend({
 
     var height = viewSize - columnHeaderSize;
 
-    $('.storycolumn').css('height', height + 'px');
+    $('.story_column, .activity_column').css('height', height + 'px');
 
     if ($(window).width() <= 992) {
       _.each(this.columns, function(column, columnId) {
@@ -187,15 +186,5 @@ module.exports = Backbone.View.extend({
     return this.model.users
       .map(function(user) { return user.get('username'); })
       .sort();
-  },
-
-  setHistoryTitle: function(story) {
-    var $column = this.$('.history_column');
-    var $header = $column.find('.toggle-title');
-    var title   = story.title;
-
-    if (title.length > 32) title = title.substring(0, 32) + '...';
-    $header.text(I18n.t('projects.show.history') + " '" + title + "'");
-    $column.show();
   }
 });

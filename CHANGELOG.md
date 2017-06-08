@@ -1,11 +1,17 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Story History is now able to listen for changes on the story
+
 ### Changed
 - story type select to react component
 - Story state select into react component
 - Story requested_by select to react component
 - Move select components to renderSelects function
+
+### Fixed
+- Story History bug when story actions where triggered
 
 ## [1.4.2] - 2017-05-24
 ### Removed
