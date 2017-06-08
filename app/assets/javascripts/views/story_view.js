@@ -526,9 +526,9 @@ module.exports = FormView.extend({
       const storyTypeOptions = typeOptions.map(this.createStoryTypeOptions);
       ReactDOM.render(
         <StorySelect
-          name='story_type'
           className='story_type'
           options={storyTypeOptions}
+          name='story_type'
           selected={this.model.get('story_type')}
           disabled={this.isReadonly()}
         />,
