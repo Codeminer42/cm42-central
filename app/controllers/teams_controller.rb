@@ -23,8 +23,7 @@ class TeamsController < ApplicationController
   end
 
   def find_user_by_email
-    @team = current_team
-    authorize @team
+    authorize current_team
   end
 
   def associate_user

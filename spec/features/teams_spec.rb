@@ -35,4 +35,53 @@ describe "Teams" do
       end
     end
   end
+
+  context 'when current user is a team admin or root' do
+    describe 'try add a user existing and he is not have this team' do
+      let!(:user)  { create :user, :with_team_and_is_admin }
+      let!(:user_to_be_added) { create :user, email: "user@example.com"}
+
+      it 'should update the team with this user' do
+        visit team_users_path(user.teams.first.slug)
+        click_link 'Add'
+
+        fill_in "user_email", with: "user@example.com"
+        click_button 'Add'
+
+        expect(current_path).to eq(team_find_user_by_email_path(user.teams.first.slug))
+        expect(page).to have_text(I18n.t('teams.team_was_successfully_updated'))
+      end
+    end
+
+    describe 'try add a user not existing' do
+      let!(:user)  { create :user, :with_team_and_is_admin }
+
+      it 'when user was not found' do
+        visit team_users_path(user.teams.first.slug)
+        click_link 'Add'
+
+        fill_in "user_email", with: "user@example.com"
+        click_button 'Add'
+
+        expect(current_path).to eq(team_find_user_by_email_path(user.teams.first.slug))
+        expect(page).to have_text(I18n.t('teams.user_no_was_found'))
+      end
+    end
+
+    describe 'try add a user does have this team' do
+      let!(:user)  { create :user, :with_team_and_is_admin }
+      let!(:user_to_be_added) { create :user, teams: [user.teams.first], email: "user@example.com"}
+
+      it 'when user does have this team' do
+        visit team_users_path(user.teams.first.slug)
+        click_link 'Add'
+
+        fill_in "user_email", with: "user@example.com"
+        click_button 'Add'
+
+        expect(current_path).to eq(team_find_user_by_email_path(user.teams.first.slug))
+        expect(page).to have_text(I18n.t('teams.user_is_already_in_this_team'))
+      end
+    end
+  end
 end

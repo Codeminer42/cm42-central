@@ -64,6 +64,56 @@ describe TeamsController, type: :controller do
         end
       end
 
+      describe "#manage_users" do
+        let(:user1) { create :user, :with_team_and_is_admin }
+        let(:user2) { create :user, :with_team_and_is_admin }
+        it "list users this team to manage" do
+          get :manage_users, team_id: team.slug
+          expect(response).to be_success
+          expect(assigns[:users]).to eq([user])
+        end
+      end
+
+      describe "#associate_user" do
+        before { sign_in user }
+        context "with valid parameters" do
+          let(:values) do
+            {
+              email: 'sample@example.com',
+            }
+          end
+
+          context "when user find no have team" do
+            let!(:normal_user_without_team) { create :user, email: "sample@example.com" }
+            it "should return successfully associate in current team" do
+              post :associate_user, team_id: team.slug, user: values
+
+              expect(response).to redirect_to(team_find_user_by_email_path)
+              expect(flash[:notice]).to eq(I18n.t('teams.team_was_successfully_updated'))
+            end
+          end
+
+          context "when user already in this team" do
+            let(:normal_user_with_team) { create :user, teams: [team], email: "sample@example.com" }
+            it "should return that user is already in this team " do
+              post :associate_user, team_id: normal_user_with_team.teams.first.slug, user: values
+
+              expect(response).to redirect_to(team_find_user_by_email_path)
+              expect(flash[:notice]).to eq(I18n.t('teams.user_is_already_in_this_team'))
+            end
+          end
+
+          context "when user not existing" do
+            it "should not found user to associate" do
+              post :associate_user, team_id: team.slug, user: values
+
+              expect(response).to redirect_to(team_find_user_by_email_path)
+              expect(flash[:notice]).to eq(I18n.t('teams.user_no_was_found'))
+            end
+          end
+        end
+      end
+
       describe "#edit" do
 
         specify do

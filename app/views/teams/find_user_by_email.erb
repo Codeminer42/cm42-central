@@ -1,5 +1,5 @@
 <% content_for :title_bar do %>
-  <%= link_to t('back'), edit_team_path(@team), class: "btn btn-primary btn-sm navbar-btn" %>
+  <%= link_to t('back'), edit_team_path(current_team), class: "btn btn-primary btn-sm navbar-btn" %>
 <% end %>
 
 <div class="row">
@@ -15,7 +15,7 @@
   <div class="add-member panel panel-default card">
     <div class="panel-body">
       <%= form_for :user,
-        url: team_associate_user_path(@team.slug) do |f| %>
+        url: team_associate_user_path(current_team.slug) do |f| %>
 
         <div class="form-group">
           <%= f.label :email, class: 'control-label' %>
