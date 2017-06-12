@@ -23,12 +23,12 @@ class TeamPolicy < ApplicationPolicy
     is_admin?
   end
 
-  def find_user_by_email?
-    is_admin?
+  def new_enrollment?
+    manage_users?
   end
 
-  def associate_user?
-    is_admin?
+  def create_enrollment?
+    manage_users?
   end
 
   class Scope < Scope

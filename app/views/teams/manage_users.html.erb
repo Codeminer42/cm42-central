@@ -7,7 +7,7 @@
     <div class="page-header">
       <h4 class="page-header-title">
         <i class="mi md-20">group</i> <%= t('all users') %>
-        <%= link_to t('add'), team_find_user_by_email_path, class: 'btn btn-link btn-sm btn-square pull-right' if policy(current_user).create? %>
+        <%= link_to t('add'), team_new_enrollment_path, class: 'btn btn-link btn-sm btn-square pull-right' if policy(current_user).create? %>
       </h4>
     </div>
   </div>

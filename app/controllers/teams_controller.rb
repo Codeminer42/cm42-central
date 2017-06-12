@@ -22,13 +22,13 @@ class TeamsController < ApplicationController
     end
   end
 
-  def find_user_by_email
+  def new_enrollment
     authorize current_team
   end
 
-  def associate_user
+  def create_enrollment
     user = User.find_by_email params[:user][:email]
-    if user.present?
+    if user
       authorize user
       if user.teams.include?(current_team)
         flash[:notice] = t('teams.user_is_already_in_this_team')
@@ -39,9 +39,9 @@ class TeamsController < ApplicationController
       end
     else
       authorize current_team
-      flash[:notice] = t('teams.user_no_was_found')
+      flash[:notice] = t('teams.user_no_found')
     end
-    redirect_to team_find_user_by_email_path
+    redirect_to team_new_enrollment_path
   end
 
   # GET /teams/new

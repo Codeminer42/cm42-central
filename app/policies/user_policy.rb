@@ -19,7 +19,7 @@ class UserPolicy < ApplicationPolicy
     update?
   end
 
-  def associate_user?
+  def create_enrollment?
     is_admin?
   end
 
