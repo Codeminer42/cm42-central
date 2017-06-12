@@ -10,6 +10,7 @@
 - Story state select into react component
 - Story requested_by select to react component
 - Move select components to renderSelects function
+- Story owned_by select to react component
 - Alter route button Manage Members Team and associate user in team
 - Story notes into react components
 
