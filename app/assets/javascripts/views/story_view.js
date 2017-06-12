@@ -375,20 +375,9 @@ module.exports = FormView.extend({
           const $storyType = $('<div class="form-group" data-story-type></div>');
           $(div).append($storyType);
 
-          var story_state_options = [];
-          _.each(["unscheduled", "unstarted", "started", "finished", "delivered", "accepted", "rejected"], function(option) {
-            story_state_options.push([ I18n.t('story.state.' + option), option ])
-          });
-          $(div).append(this.makeFormControl({
-            name: "state",
-            label: true,
-            control: this.select("state", story_state_options, {
-              attrs: {
-                class: [],
-                disabled: this.isReadonly()
-              }
-            })
-          }));
+          const $storyState = $('<div class="form-group" data-story-state></div>');
+          $(div).append($storyState);
+
         })
       );
 
@@ -533,12 +522,13 @@ module.exports = FormView.extend({
 
     const $storyTypeSelect = this.$('[data-story-type]');
     if ($storyTypeSelect.length) {
-      const storyTypeOptions = _.map(["feature", "chore", "bug", "release"], this.createStoryTypeOptions);
+      const typeOptions = ["feature", "chore", "bug", "release"];
+      const storyTypeOptions = typeOptions.map(this.createStoryTypeOptions);
       ReactDOM.render(
         <StorySelect
-          name='story_type'
           className='story_type'
           options={storyTypeOptions}
+          name='story_type'
           selected={this.model.get('story_type')}
           disabled={this.isReadonly()}
         />,
@@ -546,6 +536,24 @@ module.exports = FormView.extend({
       );
 
       this.bindElementToAttribute($storyTypeSelect.find('select[name="story_type"]'), 'story_type');
+    }
+
+    const $storyStateSelect = this.$('[data-story-state]');
+    if ($storyStateSelect.length) {
+      const stateOptions = ["unscheduled", "unstarted", "started", "finished", "delivered", "accepted", "rejected"];
+      const storyStateOptions = stateOptions.map(this.createStoryStateOptions);
+      ReactDOM.render(
+        <StorySelect
+          name='state'
+          className='story_state'
+          options={storyStateOptions}
+          selected={this.model.get('state')}
+          disabled={this.isReadonly()}
+        />,
+        $storyStateSelect.get(0)
+      );
+
+      this.bindElementToAttribute($storyStateSelect.find('select[name="state"]'), 'state');
     }
   },
 
@@ -555,6 +563,10 @@ module.exports = FormView.extend({
 
   createStoryTypeOptions: function(option) {
     return [I18n.t('story.type.' + option), option];
+  },
+
+  createStoryStateOptions: function(option) {
+    return [I18n.t('story.state.' + option), option];
   },
 
   makeStoryTypeSelect: function(div) {
