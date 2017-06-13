@@ -550,7 +550,7 @@ module.exports = FormView.extend({
 
     const $storyRequestedBySelect = this.$('[data-requested-by]');
     if ($storyRequestedBySelect.length) {
-      const storyRequestedByOptions = this.model.collection.project.users.forSelect().map(this.createRequestedByOptions);
+      const storyRequestedByOptions = this.model.collection.project.users.forSelect();
       ReactDOM.render(
         <StorySelect
           name='requested_by'
@@ -577,10 +577,6 @@ module.exports = FormView.extend({
 
   createStoryStateOptions: function(option) {
     return [I18n.t('story.state.' + option), option];
-  },
-
-  createRequestedByOptions: function(option) {
-    return [option[0], option[1]];
   },
 
   makeStoryTypeSelect: function(div) {
