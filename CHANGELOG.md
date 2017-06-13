@@ -5,6 +5,7 @@
 - story type select to react component
 - Story state select into react component
 - Story requested_by select to react component
+- Move select components to renderSelects function
 
 ## [1.4.2] - 2017-05-24
 ### Removed
