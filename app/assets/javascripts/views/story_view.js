@@ -384,18 +384,10 @@ module.exports = FormView.extend({
       this.$el.append(
         this.makeFormControl(function(div) {
           $(div).addClass('form-inline');
-          $(div).append(this.makeFormControl({
-            name: "requested_by_id",
-            label: true,
-            control: this.select("requested_by_id",
-              this.model.collection.project.users.forSelect(), {
-                blank: '---',
-                attrs: {
-                  class: [],
-                  disabled: this.isReadonly()
-                }
-            })
-          }));
+
+          const $storyRequestedBy = $('<div class="form-group" data-requested-by></div>');
+          $(div).append($storyRequestedBy);
+
           $(div).append(this.makeFormControl({
             name: "owned_by_id",
             label: true,
@@ -554,6 +546,24 @@ module.exports = FormView.extend({
       );
 
       this.bindElementToAttribute($storyStateSelect.find('select[name="state"]'), 'state');
+    }
+
+    const $storyRequestedBySelect = this.$('[data-requested-by]');
+    if ($storyRequestedBySelect.length) {
+      const storyRequestedByOptions = this.model.collection.project.users.forSelect();
+      ReactDOM.render(
+        <StorySelect
+          name='requested_by'
+          blank='---'
+          className='requested_by_id'
+          options={storyRequestedByOptions}
+          selected={this.model.get('requested_by_id')}
+          disabled={this.isReadonly()}
+        />,
+        $storyRequestedBySelect.get(0)
+      );
+
+      this.bindElementToAttribute($storyRequestedBySelect.find('select[name="requested_by"]'), 'requested_by_id');
     }
   },
 

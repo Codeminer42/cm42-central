@@ -4,6 +4,7 @@
 ### Changed
 - story type select to react component
 - Story state select into react component
+- Story requested_by select to react component
 
 ## [1.4.2] - 2017-05-24
 ### Removed
