@@ -437,7 +437,7 @@ module.exports = FormView.extend({
           // FIXME: refactor to a separated AttachmentView or similar
           // must run the plugin after the element is available in the DOM, not before, hence, the setTimeout
           clearTimeout(window.executeAttachinaryTimeout);
-          window.executeAttachinaryTimeout = setTimeout(executeAttachinary, 500);
+          window.executeAttachinaryTimeout = setTimeout(executeAttachinary, 1000);
         })
       );
 
@@ -494,8 +494,12 @@ module.exports = FormView.extend({
         );
     }
 
-    const $storyEstimate = this.$('[data-story-estimate]');
-    if ($storyEstimate.length) {
+    this.renderSelects();
+  },
+
+  renderSelects: function() {
+    const $storyEstimateSelect = this.$('[data-story-estimate]');
+    if ($storyEstimateSelect.length) {
       const storyEstimateOptions = this.model.point_values().map(this.createStoryEstimateOptions);
       ReactDOM.render(
         <StorySelect
@@ -506,10 +510,10 @@ module.exports = FormView.extend({
           selected={this.model.get('estimate')}
           disabled={this.model.notEstimable() || this.isReadonly()}
         />,
-        $storyEstimate.get(0)
+        $storyEstimateSelect.get(0)
       );
 
-      this.bindElementToAttribute($storyEstimate.find('select[name="estimate"]'), 'estimate');
+      this.bindElementToAttribute($storyEstimateSelect.find('select[name="estimate"]'), 'estimate');
     }
 
     const $storyTypeSelect = this.$('[data-story-type]');
