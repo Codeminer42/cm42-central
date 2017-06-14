@@ -437,7 +437,7 @@ module.exports = FormView.extend({
           // FIXME: refactor to a separated AttachmentView or similar
           // must run the plugin after the element is available in the DOM, not before, hence, the setTimeout
           clearTimeout(window.executeAttachinaryTimeout);
-          window.executeAttachinaryTimeout = setTimeout(executeAttachinary, 500);
+          window.executeAttachinaryTimeout = setTimeout(executeAttachinary, 1000);
         })
       );
 
