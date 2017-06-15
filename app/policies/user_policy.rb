@@ -20,7 +20,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def enrollment?
-    update?
+    create?
   end
 
   def create_enrollment?
