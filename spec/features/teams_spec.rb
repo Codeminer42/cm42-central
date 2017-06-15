@@ -37,7 +37,7 @@ describe "Teams" do
   end
 
   context 'when current user is the current team admin or the root' do
-    describe 'try add a user existing and he is not have this team' do
+    describe 'trying to add a existing user that is not in the current team' do
       let!(:user)  { create :user, :with_team_and_is_admin }
       let!(:user_to_be_added) { create :user, email: "user@example.com"}
 
