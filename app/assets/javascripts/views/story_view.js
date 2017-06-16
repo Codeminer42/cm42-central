@@ -94,7 +94,7 @@ module.exports = FormView.extend({
     "click .destroy": "clear",
     "click .description": "editDescription",
     "click .edit-description": "editDescription",
-    "click .toggle-history": "history",
+    "click .toggle-history": "showHistory",
     "sortupdate": "sortUpdate",
     "fileuploaddone": "attachmentDone",
     "fileuploadstart": "attachmentStart",
@@ -883,7 +883,7 @@ module.exports = FormView.extend({
     return location.substring(0, endIndex);
   },
 
-  history: function(e) {
+  showHistory: function() {
     this.model.showHistory();
   }
 });

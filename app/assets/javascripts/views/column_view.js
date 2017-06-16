@@ -38,7 +38,7 @@ module.exports = Backbone.View.extend({
 
   // Returns the child div containing the story and iteration elements.
   storyColumn: function() {
-    return this.$('.storycolumn');
+    return this.$('.story_column');
   },
 
   // Append a Backbone.View to this column

@@ -96,7 +96,7 @@ table.stories td {
   @include border-radius(5px 5px 0 0);
 }
 
-div.storycolumn {
+div.column_content {
   overflow: auto;
   padding-bottom: 80px;
   border-right: 1px solid $black;

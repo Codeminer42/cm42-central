@@ -36,7 +36,7 @@ describe("ColumnView", function() {
     beforeEach(function() {
       this.storyColumn = {};
       sinon.stub(this.view, '$');
-      this.view.$.withArgs('.storycolumn').returns(this.storyColumn);
+      this.view.$.withArgs('.story_column').returns(this.storyColumn);
     });
 
     it("returns the story column", function() {
