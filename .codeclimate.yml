@@ -1,0 +1,11 @@
+engines:
+  flog:
+    enabled: true
+  flay:
+    enabled: true
+  eslint:
+    enabled: true
+exclude_paths:
+- "Gemfile.lock"
+- "db/schema.rb"
+- "db/migrate/*.rb"
