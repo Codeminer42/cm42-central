@@ -29,6 +29,9 @@ Rails.application.routes.draw do
 
   resources :teams, except: :show do
     get :switch, on: :collection
+    get 'users' => 'teams#manage_users'
+    get 'new_enrollment' => 'teams#new_enrollment'
+    post 'create_enrollment' => 'teams#create_enrollment'
     resources :api_tokens, only: [:create, :destroy]
   end
 

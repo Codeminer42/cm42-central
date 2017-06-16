@@ -53,6 +53,7 @@ pt-BR:
   add user: "Adicionar usuário"
   add new member: "Adicionar um novo membro"
   all users: "Todos os usuários"
+  search user: "Procurar usuário"
   remove user confirm: "Tem certeza de que deseja remover %{email} deste projeto?"
   search projects: "Procurar projetos"
   private: "Privado"
@@ -331,7 +332,9 @@ pt-BR:
     switch: 'Mudar para outra Equipe'
     select: "Selecionar Equipe"
     team was successfully created: 'Equipe foi criado com sucesso'
-    team was successfully updated: 'Equipe foi atualizado com sucesso'
+    team_was_successfully_updated: 'Equipe foi atualizada com sucesso'
+    user_no_found: 'Usuário não encontrado'
+    user_is_already_in_this_team: 'O usuário já esta nessa equipe.'
     no_teams_found: "Oops! Você ainda não está inscrito em uma equipe."
     members: "Gerenciar Membros da Equipe"
 

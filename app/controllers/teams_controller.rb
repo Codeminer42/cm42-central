@@ -14,6 +14,36 @@ class TeamsController < ApplicationController
     redirect_to root_path
   end
 
+  def manage_users
+    team = current_user.teams.friendly.find params[:team_id]
+    authorize team
+    @users = team.users.order(:name).map do |user|
+      Admin::UserPresenter.new(user)
+    end
+  end
+
+  def new_enrollment
+    authorize current_team
+  end
+
+  def create_enrollment
+    user = User.find_by_email params[:user][:email]
+    if user
+      authorize user
+      if user.teams.include?(current_team)
+        flash[:notice] = t('teams.user_is_already_in_this_team')
+      else
+        user.teams << current_team
+        user.save
+        flash[:notice] = t('teams.team_was_successfully_updated')
+      end
+    else
+      authorize current_team
+      flash[:notice] = t('teams.user_no_found')
+    end
+    redirect_to team_new_enrollment_path
+  end
+
   # GET /teams/new
   # GET /teams/new.xml
   def new
@@ -64,7 +94,7 @@ class TeamsController < ApplicationController
         @team.reload
 
         format.html do
-          flash[:notice] = t('teams.team was successfully updated')
+          flash[:notice] = t('teams.team_was_successfully_updated')
           render action: "edit"
         end
         format.xml  { head :ok }

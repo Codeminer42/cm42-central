@@ -9,6 +9,7 @@
 - Story state select into react component
 - Story requested_by select to react component
 - Move select components to renderSelects function
+- Alter route button Manage Members Team and associate user in team
 
 ### Fixed
 - Story History bug when story actions where triggered

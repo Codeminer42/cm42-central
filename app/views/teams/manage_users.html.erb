@@ -1,0 +1,35 @@
+<% content_for :title_bar do %>
+  <%= link_to t('back'), edit_team_path(current_team), class: "btn btn-primary btn-sm navbar-btn" %>
+<% end %>
+
+<div class="row">
+  <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+    <div class="page-header">
+      <h4 class="page-header-title">
+        <i class="mi md-20">group</i> <%= t('all users') %>
+        <%= link_to t('add'), team_new_enrollment_path, class: 'btn btn-link btn-sm btn-square pull-right' if policy(current_user).create? %>
+      </h4>
+    </div>
+  </div>
+
+  <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+    <div class="panel card">
+      <div class="panel-body">
+        <table class="table table-condensed table-striped table-hover admin-users-table">
+          <tbody>
+            <% @users.each do |user| %>
+              <tr>
+                <td><%= user.name %></td>
+                <td><%= user.username %></td>
+                <td><%= user.initials %></td>
+                <td><%= user.role %></td>
+                <td><%= mail_to user.email %></td>
+                <td><%= render 'admin/users/actions', user: user %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

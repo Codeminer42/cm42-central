@@ -64,6 +64,52 @@ describe TeamsController, type: :controller do
         end
       end
 
+      describe "#manage_users" do
+        before { create_list :user, 2, teams: [team]}
+
+        it "only list users this team to manage" do
+          get :manage_users, team_id: team.slug
+          expect(response).to be_success
+          expect(assigns[:users].count).to eq(3)
+        end
+      end
+
+      describe "#create_enrollment" do
+        before { sign_in user }
+        context "with valid parameters" do
+          let(:values) { { email: 'sample@example.com' } }
+
+          context "when the user is not in the current team" do
+            let!(:normal_user_without_team) { create :user, email: "sample@example.com" }
+            it "should return successfully associate in current team" do
+              post :create_enrollment, team_id: team.slug, user: values
+
+              expect(response).to redirect_to(team_new_enrollment_path)
+              expect(flash[:notice]).to eq(I18n.t('teams.team_was_successfully_updated'))
+            end
+          end
+
+          context "when the user is in the current team" do
+            let(:normal_user_with_team) { create :user, teams: [team], email: "sample@example.com" }
+            it "should return that user is already in this team " do
+              post :create_enrollment, team_id: normal_user_with_team.teams.first.slug, user: values
+
+              expect(response).to redirect_to(team_new_enrollment_path)
+              expect(flash[:notice]).to eq(I18n.t('teams.user_is_already_in_this_team'))
+            end
+          end
+
+          context "when the user does not exist" do
+            it "should not find a user to associate" do
+              post :create_enrollment, team_id: team.slug, user: values
+
+              expect(response).to redirect_to(team_new_enrollment_path)
+              expect(flash[:notice]).to eq(I18n.t('teams.user_no_found'))
+            end
+          end
+        end
+      end
+
       describe "#edit" do
 
         specify do

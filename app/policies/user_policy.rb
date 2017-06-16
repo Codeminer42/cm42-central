@@ -19,6 +19,10 @@ class UserPolicy < ApplicationPolicy
     update?
   end
 
+  def create_enrollment?
+    is_admin?
+  end
+
   class Scope < Scope
     def resolve
       if is_root?
