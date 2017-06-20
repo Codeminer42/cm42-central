@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_project
+  before_action :set_project, except: :create
 
   respond_to :html, :json
 
@@ -10,44 +10,23 @@ class UsersController < ApplicationController
   end
 
   def create
-    @current_team_users = current_team_users
-    @user = User.find_or_create_by(email: allowed_params[:email]) do |u|
-      # Set to true if the user was not found
-      u.was_created = true
-      u.name        = allowed_params[:name]
-      u.initials    = allowed_params[:initials]
-      u.username    = allowed_params[:username]
-    end
+    @user = User.new(
+      email: allowed_params[:email],
+      name: allowed_params[:name],
+      initials: allowed_params[:initials],
+      username: allowed_params[:username])
     authorize @user
 
-    if @user.new_record? && !@user.save
-      render 'index'
-      return
-    end
-
-    if policy_scope(User).include?(@user)
-      flash[:alert] = I18n.t(
-        'is already a member of this project',
-        scope: 'users',
-        email: @user.email
-      )
-    else
-      policy_scope(User) << @user
+    if @user.save
       @user.teams << current_team unless @user.teams.include?(current_team)
-      if @user.was_created
-        flash[:notice] = I18n.t(
-          'was sent an invite to join this project',
-          scope: 'users',
-          email: @user.email
-        )
-      else
-        flash[:notice] = I18n.t('was added to this project', scope: 'users', email: @user.email)
-      end
+      flash[:notice] = I18n.t('was added to the team', scope: 'users', email: @user.email)
+    else
+      flash[:alert] = I18n.t('was not created', scope: 'users', email: @user.email)
     end
 
     respond_to do |format|
       format.js { render :refresh_user_list }
-      format.html { redirect_to project_users_url(@project) }
+      format.html { redirect_to :back }
     end
   end
 

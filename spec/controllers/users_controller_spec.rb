@@ -39,110 +39,61 @@ describe UsersController do
   let(:another_user) { create :user }
 
   context 'when logged in as admin' do
-    let(:user)        { create(:user, :with_team_and_is_admin) }
-    let!(:ownership)  { create(:ownership, team: user.teams.first, project: project) }
+    let(:user)         { create(:user, :with_team_and_is_admin) }
+    let!(:ownership)   { create(:ownership, team: user.teams.first, project: project) }
+    let(:current_team) { user.teams.first }
 
     before do
       create(:enrollment, team: user.teams.first, user: another_user)
       create(:membership, user: user, project: project)
       create(:membership, user: another_user, project: project)
       sign_in user
-      allow(subject).to receive_messages(current_user: user, current_team: user.teams.first)
+      allow(subject).to receive_messages(current_user: user, current_team: current_team)
     end
 
     describe 'collection actions' do
       it_should_behave_like '#index'
 
       describe '#create' do
-        let(:user_params) do
+        let(:invalid_params) do
           {
-            'email' => 'user@example.com',
-            'name'      => 'Test User',
-            'initials'  => 'TU',
-            'username'  => 'test_user'
+            name: 'name',
+            username: 'foo.bar'
           }
         end
 
-        specify do
-          post :create, project_id: project.id, user: user_params
-          expect(assigns[:project]).to eq(project)
-          expect(response).to redirect_to(project_users_url(project))
+        let(:valid_params) do
+          {
+            email: 'foo@bar.com',
+            name: 'name',
+            initials: 'fb',
+            username: 'foo.bar'
+          }
         end
 
-        context 'when user does not exist' do
-          specify do
-            post :create, project_id: project.id, user: user_params
-            expect(assigns[:user].name).to eq(user_params['name'])
-            expect(assigns[:user].initials).to eq(user_params['initials'])
-            expect(assigns[:user].was_created).to be true
-            expect(assigns[:user].teams).to include(user.teams.first)
-            expect(response).to redirect_to(project_users_url(project))
-          end
+        before { request.env['HTTP_REFERER'] = root_url }
 
-          context 'when save fails' do
-            before do
-              user_params['email'] = nil
-            end
+        context 'when there are valid params' do
+          let(:created_user) { User.find_by(email: 'foo@bar.com') }
 
-            specify do
-              post :create, project_id: project.id, user: user_params
-              expect(response).to render_template('index')
-            end
-          end
-        end
-
-        context 'when user exists' do
           before do
-            create(:user, user_params)
+            post :create, project_id: project.id, user: valid_params
           end
 
-          specify do
-            post :create, project_id: project.id, user: user_params
-            expect(assigns[:user].was_created).to be_falsey
+          it 'displays a successful message' do
+            expect(flash[:notice]).to eq 'foo@bar.com was added to the team'
           end
-        end
 
-        context 'when user exists in the team' do
-          specify do
-            new_user = create(:user, user_params.merge(teams: user.teams))
-
-            post :create, project_id: project.id, user: user_params
-
-            expect(response).to redirect_to(project_users_url(project))
-            expect(project.users).to include(new_user)
+          it 'enrolls the created user to the current team' do
+            expect(created_user.teams).to include current_team
           end
         end
 
-        context 'when user is already a project member' do
-          before do
-            project.users << create(:user, user_params)
-          end
+        context 'when there are invalid params' do
+          it 'displays a message that the user was not created' do
+            post :create, project_id: project.id, user: invalid_params
 
-          specify do
-            post :create, project_id: project.id, user: user_params
-            expect(flash[:alert])
-              .to eq("#{assigns[:user].email} is already a member of this project")
-          end
-        end
-
-        context 'when user is not already a project member' do
-          context "and user didn't exist already and was created" do
-            specify do
-              post :create, project_id: project.id, user: user_params
-              expect(flash[:notice])
-                .to eq("#{assigns[:user].email} was sent an invite to join this project")
-            end
-          end
-
-          context 'and user already existed' do
-            before do
-              create(:user, user_params)
-            end
-
-            specify do
-              post :create, project_id: project.id, user: user_params
-              expect(flash[:notice]).to eq("#{assigns[:user].email} was added to this project")
-            end
+            expect(flash[:alert]).to eq 'User was not created'
           end
         end
       end
