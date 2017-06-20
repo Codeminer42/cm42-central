@@ -64,7 +64,7 @@ describe 'Teams' do
         click_button 'Add'
 
         expect(current_path).to eq(team_new_enrollment_path(user.teams.first.slug))
-        expect(page).to have_text(I18n.t('teams.user_no_found'))
+        expect(page).to have_text(I18n.t('teams.user_not_found'))
       end
     end
 

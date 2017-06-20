@@ -330,7 +330,7 @@ en:
     select: "Select Team"
     team was successfully created: 'Team was successfully created'
     team_was_successfully_updated: 'Team was successfully updated'
-    user_no_found: 'User not found'
+    user_not_found: 'User not found'
     user_is_already_in_this_team: 'The user is already in this team.'
     new_instruction: |
       <p>If you don't have a registered account, you can sign up first.</p>
