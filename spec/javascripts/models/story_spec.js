@@ -213,7 +213,7 @@ describe('Story', function() {
 
       expect(this.story.notEstimable()).toBeFalsy();
     });
-    
+
   });
 
   describe('point_values', function() {
@@ -474,4 +474,20 @@ describe('Story', function() {
     });
   });
 
+  describe('changeState', function() {
+    describe('when story is started', function() {
+      it('sets the owner to the current user', function() {
+        this.story.set({ onwed_by_id: 123 });
+        this.story.changeState(this.story, 'started');
+        expect(this.story.get('owned_by_id')).toBe(999);
+      });
+    });
+
+    describe('when story is not started', function() {
+      it('does not change the owner', function() {
+        this.story.changeState(this.story, 'finished');
+        expect(this.story.get('owned_by_id')).toBe(undefined);
+      });
+    });
+  });
 });

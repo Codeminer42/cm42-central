@@ -10,10 +10,11 @@
 - Story requested_by select to react component
 - Move select components to renderSelects function
 - Alter route button Manage Members Team and associate user in team
+- Story notes into react components
 
 ### Fixed
 - Story History bug when story actions where triggered
-- Story notes into react components
+- Ticket not being reassigned to current user when state change to "started"
 
 ## [1.4.2] - 2017-05-24
 ### Removed
