@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - Story History is now able to listen for changes on the story
+- Codeclimate file with engines and removed files from analysis
 
 ### Changed
 - story type select to react component
