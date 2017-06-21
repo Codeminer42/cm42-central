@@ -15,6 +15,10 @@ class UserPolicy < ApplicationPolicy
     is_himself?
   end
 
+  def destroy?
+    is_admin? || is_himself?
+  end
+
   def is_himself?
     record == current_user
   end
