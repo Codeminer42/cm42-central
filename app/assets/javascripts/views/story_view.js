@@ -382,18 +382,8 @@ module.exports = FormView.extend({
           const $storyRequestedBy = $('<div class="form-group" data-requested-by></div>');
           $(div).append($storyRequestedBy);
 
-          $(div).append(this.makeFormControl({
-            name: "owned_by_id",
-            label: true,
-            control: this.select("owned_by_id",
-              this.model.collection.project.users.forSelect(), {
-                blank: '---',
-                attrs: {
-                  class: [],
-                  disabled: this.isReadonly()
-                }
-            })
-          }));
+          const $storyOwnedBy = $('<div class="form-group" data-owned-by></div>');
+          $(div).append($storyOwnedBy);
         })
       );
 
@@ -490,6 +480,7 @@ module.exports = FormView.extend({
     }
 
     this.renderSelects();
+    this.renderNotes();
   },
 
   renderSelects: function() {
@@ -565,7 +556,23 @@ module.exports = FormView.extend({
       this.bindElementToAttribute($storyRequestedBySelect.find('select[name="requested_by"]'), 'requested_by_id');
     }
 
-    this.renderNotes();
+    const $storyOwnedBySelect = this.$('[data-owned-by]');
+    if ($storyOwnedBySelect.length) {
+      const storyOwnedByOptions = this.model.collection.project.users.forSelect();
+      ReactDOM.render(
+        <StorySelect
+          name='owned_by'
+          className='owned_by_id'
+          options={storyOwnedByOptions}
+          blank='---'
+          selected={this.model.get('owned_by_id')}
+          disabled={this.isReadonly()}
+        />,
+        $storyOwnedBySelect.get(0)
+      );
+
+      this.bindElementToAttribute($storyOwnedBySelect.find('select[name="owned_by"]'), 'owned_by_id');
+    }
   },
 
   renderNotes: function() {
