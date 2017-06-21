@@ -13,6 +13,7 @@
 - Story owned_by select to react component
 - Alter route button Manage Members Team and associate user in team
 - Story notes into react components
+- Story labels to react component
 
 ### Fixed
 - Story History bug when story actions where triggered
