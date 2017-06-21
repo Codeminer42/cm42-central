@@ -13,6 +13,7 @@
 
 ### Fixed
 - Story History bug when story actions where triggered
+- Story notes into react components
 
 ## [1.4.2] - 2017-05-24
 ### Removed

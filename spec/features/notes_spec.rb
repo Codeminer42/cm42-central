@@ -55,4 +55,16 @@ describe "Notes" do
 
   end
 
+  describe "on a disabled story" do
+    it "does not render a form", js: true do
+      create :story, state: 'accepted', project: project, requested_by: user
+      visit project_path(project)
+
+      within('#in_progress .story.accepted') do
+        find('.story-title').trigger('click')
+      end
+
+      expect(page).not_to have_css('.note_form ')
+    end
+  end
 end
