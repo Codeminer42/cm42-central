@@ -11,8 +11,6 @@ engines:
       languages:
       - ruby
       - javascript
-  eslint:
-    enabled: true
 exclude_paths:
   - "Gemfile.lock"
   - "db/schema.rb"
@@ -20,3 +18,4 @@ exclude_paths:
   - "spec/"
   - "fixtures/"
   - "doc/"
+  - "vendor/"
