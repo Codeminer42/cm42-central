@@ -16,7 +16,8 @@ describe('StoryView', function() {
         "url":"https://api.cloudinary.com/v1_1/hq5e5afno/auto/upload"} } };
     window.projectView = {
       availableTags: [],
-      notice: sinon.stub()
+      notice: sinon.stub(),
+      noticeSaveError: sinon.stub()
     };
     window.md = { makeHtml: sinon.stub() };
     var Note = Backbone.Model.extend({
@@ -428,18 +429,6 @@ describe('StoryView', function() {
 
   describe("notes", function() {
 
-    it("binds change:notes to renderNotesCollection()", function() {
-      var spy = sinon.spy(this.story, 'on');
-      var view = new StoryView({model: this.story});
-      expect(spy).toHaveBeenCalledWith('change:notes', view.renderNotesCollection);
-    });
-
-    it("binds change:notes to addEmptyNote()", function() {
-      var spy = sinon.spy(this.story, 'on');
-      var view = new StoryView({model: this.story});
-      expect(spy).toHaveBeenCalledWith('change:notes', view.addEmptyNote);
-    });
-
     it("adds a blank note to the end of the notes collection", function() {
       this.view.model.notes.reset();
       expect(this.view.model.notes.length).toEqual(0);
@@ -465,6 +454,18 @@ describe('StoryView', function() {
       var oldLength = this.view.model.notes.length;
       this.view.addEmptyNote();
       expect(this.view.model.notes.length).toEqual(oldLength);
+    });
+
+    it("has a note deletion handler", function() {
+      const note = { destroy: sinon.stub() };
+      this.view.handleNoteDelete(note);
+      expect(note.destroy).toHaveBeenCalled();
+    });
+
+    it("has a <NoteForm /> save handler", function() {
+      const note = { set: sinon.stub(), save: sinon.stub() };
+      this.view.handleNoteSubmit({ note, newValue: 'TestNote' });
+      expect(note.save).toHaveBeenCalled();
     });
 
   });
@@ -746,4 +747,25 @@ describe('StoryView', function() {
       });
     });
   });
+
+  describe('handleSaveError', function() {
+    let model;
+
+    beforeEach(function() {
+      model = { name: 'note', set: sinon.stub() };
+      const responseText = JSON.stringify({ note: { errors: 'Error' }});
+      const response = { responseText };
+      this.view.handleSaveError(model, response);
+    });
+
+    it("shows the errors", function() {
+      expect(window.projectView.noticeSaveError).toHaveBeenCalledWith(model);
+    });
+
+    it("set the model's errors", function() {
+      expect(model.set).toHaveBeenCalledWith({errors: 'Error'});
+    });
+
+  });
+
 });

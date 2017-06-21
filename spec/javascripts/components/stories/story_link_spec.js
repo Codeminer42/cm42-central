@@ -58,7 +58,6 @@ describe('<StoryLink />', function() {
     it("should have a material icon when state is not unscheduled", function() {
       story.get.withArgs('state').returns('accepted');
       const wrapper = shallow( <StoryLink story={story} /> );
-      console.log(wrapper.find('.story-link-icon').text());
       expect(wrapper.find('.story-link-icon')).toHaveText('done');
     });
 
