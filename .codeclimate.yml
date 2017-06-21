@@ -1,11 +1,22 @@
 engines:
+  bundler-audit:
+    enabled: true
   flog:
     enabled: true
   flay:
     enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - ruby
+      - javascript
   eslint:
     enabled: true
 exclude_paths:
-- "Gemfile.lock"
-- "db/schema.rb"
-- "db/migrate/*.rb"
+  - "Gemfile.lock"
+  - "db/schema.rb"
+  - "db/migrate/*.rb"
+  - "spec/"
+  - "fixtures/"
+  - "doc/"
