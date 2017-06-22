@@ -26,7 +26,6 @@ describe 'Confirmations' do
     expect(email.to).to include('test@example.com')
     confirmation_token = get_confirmation_token_from_mail(email)
 
-    user = User.find_by_email('test@example.com')
     visit '/users/confirmation?confirmation_token=' + confirmation_token
     expect(page).to have_content('Your account was successfully confirmed')
 

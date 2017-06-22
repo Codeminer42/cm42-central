@@ -10,7 +10,7 @@ class StoriesController < ApplicationController
                  StorySearch.labels(policy_scope(Story), params[:label])
                else
                  policy_scope(Story).with_dependencies.order('updated_at DESC').tap do |relation|
-                   relation = relation.limit(ENV['STORIES_CEILING']) if ENV['STORIES_CEILING']
+                   relation.limit(ENV['STORIES_CEILING']) if ENV['STORIES_CEILING']
                  end
                end
 

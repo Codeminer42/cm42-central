@@ -3,7 +3,7 @@ require 'rails_helper'
 describe ProjectSerializer do
   let(:user) { create :user, :with_team, email: 'foobar@example.com' }
 
-  before { project = create :project, name: 'Test Project Foobar', users: [user] }
+  before { create :project, name: 'Test Project Foobar', users: [user] }
 
   let(:project) { ProjectPresenter.new(user.projects.first) }
   let(:serialized_project) { ProjectSerializer.new(project) }

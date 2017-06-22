@@ -49,7 +49,7 @@ class V1::Projects < Grape::API
     get '/:slug/analysis' do
       project = Project.not_archived.find_by_slug(params[:slug])
       current_time = params[:current_time] || Time.current
-      since = params[:since].months.ago
+      params[:since].months.ago
 
       if project
         iteration = Central::Support::IterationService.new(project, current_time: current_time)
