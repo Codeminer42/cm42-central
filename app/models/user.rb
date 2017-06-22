@@ -61,9 +61,9 @@ class User < ActiveRecord::Base
 
   def self.find_first_by_auth_conditions(warden_conditions)
     if warden_conditions[:reset_password_token]
-      where(reset_password_token: warden_conditions[:reset_password_token]).first
+      find_by(reset_password_token: warden_conditions[:reset_password_token])
     elsif warden_conditions[:confirmation_token]
-      where(confirmation_token: warden_conditions[:confirmation_token]).first
+      find_by(confirmation_token: warden_conditions[:confirmation_token])
     else
       find_by(email: warden_conditions[:email])
     end
