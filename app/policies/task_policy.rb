@@ -5,9 +5,9 @@ class TaskPolicy < StoryPolicy
 
   class Scope < Scope
     def resolve
-      if is_admin?
+      if admin?
         current_story.tasks
-      elsif is_story_member?
+      elsif story_member?
         current_story.tasks
       else
         Task.none

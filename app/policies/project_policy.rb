@@ -1,18 +1,18 @@
 class ProjectPolicy < ApplicationPolicy
   def show?
-    is_admin? || current_user.projects.find_by_id(record.id)
+    admin? || current_user.projects.find_by_id(record.id)
   end
 
   def reports?
-    is_admin? || is_project_member?
+    admin? || project_member?
   end
 
   def import?
-    is_admin? && is_project_owner?
+    admin? && project_owner?
   end
 
   def join?
-    !is_project_member?
+    !project_member?
   end
 
   alias archived? update?
@@ -27,9 +27,9 @@ class ProjectPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if is_root?
+      if root?
         Project.all
-      elsif is_admin?
+      elsif admin?
         current_team.projects
       else
         return Project.none unless current_team

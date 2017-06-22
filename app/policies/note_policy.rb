@@ -5,9 +5,9 @@ class NotePolicy < StoryPolicy
 
   class Scope < Scope
     def resolve
-      if is_admin?
+      if admin?
         current_story.notes
-      elsif is_story_member?
+      elsif story_member?
         current_story.notes
       else
         Note.none

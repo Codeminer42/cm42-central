@@ -1,18 +1,18 @@
 class StoryPolicy < ApplicationPolicy
   def index?
-    is_admin? || is_project_member?
+    admin? || project_member?
   end
 
   def show?
-    is_admin? || is_project_member? && current_project.stories.find_by_id(record.id)
+    admin? || project_member? && current_project.stories.find_by_id(record.id)
   end
 
   def create?
-    is_admin? || is_project_member?
+    admin? || project_member?
   end
 
   def update?
-    is_admin? || is_project_member?
+    admin? || project_member?
   end
 
   def done?
@@ -31,9 +31,9 @@ class StoryPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if is_admin?
+      if admin?
         current_project.stories
-      elsif is_project_member?
+      elsif project_member?
         current_project.stories
       else
         Story.none
