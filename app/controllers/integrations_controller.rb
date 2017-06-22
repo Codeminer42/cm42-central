@@ -16,13 +16,11 @@ class IntegrationsController < ApplicationController
 
     if @project.integrations.find_by(kind: @integration.kind)
       flash[:alert] = "#{@integration.kind} is already configured for this project"
+    elsif @integration.save
+      flash[:notice] = "#{@integration.kind} was added to this project"
     else
-      if @integration.save
-        flash[:notice] = "#{@integration.kind} was added to this project"
-      else
-        render 'index'
-        return
-      end
+      render 'index'
+      return
     end
 
     redirect_to project_integrations_url(@project)

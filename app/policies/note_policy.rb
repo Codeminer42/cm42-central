@@ -7,12 +7,10 @@ class NotePolicy < StoryPolicy
     def resolve
       if is_admin?
         current_story.notes
+      elsif is_story_member?
+        current_story.notes
       else
-        if is_story_member?
-          current_story.notes
-        else
-          Note.none
-        end
+        Note.none
       end
     end
   end

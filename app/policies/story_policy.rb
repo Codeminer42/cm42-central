@@ -33,12 +33,10 @@ class StoryPolicy < ApplicationPolicy
     def resolve
       if is_admin?
         current_project.stories
+      elsif is_project_member?
+        current_project.stories
       else
-        if is_project_member?
-          current_project.stories
-        else
-          Story.none
-        end
+        Story.none
       end
     end
   end
