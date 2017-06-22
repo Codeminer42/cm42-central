@@ -24,9 +24,9 @@ class User < ActiveRecord::Base
   # Flag used to identify if the user was found or created from find_or_create
   attr_accessor :was_created
 
-  scope :recently_created, -> (created_at) do
+  scope :recently_created, lambda { |created_at|
     where('users.created_at > ?', created_at) if created_at
-  end
+  }
 
   def password_required?
     # Password is required if it is being set, but not for new records

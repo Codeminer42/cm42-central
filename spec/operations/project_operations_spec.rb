@@ -67,13 +67,13 @@ describe ProjectOperations do
       before { project.save! }
 
       subject do
-        -> do
+        lambda {
           ProjectOperations::Update.call(
             project,
             { name: 'Hello World', point_scale: 'linear', iteration_start_day: 4 },
             user
           )
-        end
+        }
       end
 
       it 'must record an activity' do
