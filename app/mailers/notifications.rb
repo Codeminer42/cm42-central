@@ -16,14 +16,14 @@ class Notifications < ActionMailer::Base
     @story = @note.story
 
     mail to: notify_users, from: @note.user.email,
-      subject: "[#{@story.project.name}] New comment on '#{@story.title}'"
+         subject: "[#{@story.project.name}] New comment on '#{@story.title}'"
   end
 
   def story_mention(story, users_to_notify)
     @story = story
 
     mail to: users_to_notify, from: @story.requested_by.email,
-      subject: "[#{@story.project.name}] New mention on '#{@story.title}'"
+         subject: "[#{@story.project.name}] New mention on '#{@story.title}'"
   end
 
   private

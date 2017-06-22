@@ -10,13 +10,13 @@ describe UserPolicy do
 
   before { project.users << other_member }
 
-  context "proper user of a project" do
+  context 'proper user of a project' do
     before do
       project.users << current_user
       current_team.projects << project
     end
 
-    context "for an admin" do
+    context 'for an admin' do
       let(:current_user) { create :user, :with_team_and_is_admin }
 
       %i[index show create new destroy enrollment].each do |action|
@@ -28,7 +28,7 @@ describe UserPolicy do
       end
     end
 
-    context "for a user but not acting on himself" do
+    context 'for a user but not acting on himself' do
       let(:current_user) { create :user, :with_team }
 
       it { should permit(:index) }
@@ -43,7 +43,7 @@ describe UserPolicy do
       end
     end
 
-    context "for a user acting on himself" do
+    context 'for a user acting on himself' do
       let(:current_user) { create :user, :with_team }
       subject { UserPolicy.new(pundit_context, current_user) }
 
@@ -57,8 +57,8 @@ describe UserPolicy do
     end
   end
 
-  context "user not a member of project" do
-    context "for an admin" do
+  context 'user not a member of project' do
+    context 'for an admin' do
       let(:current_user) { create :user, :with_team_and_is_admin }
 
       %i[index show create new destroy enrollment].each do |action|
@@ -70,7 +70,7 @@ describe UserPolicy do
       end
     end
 
-    context "for a user" do
+    context 'for a user' do
       let(:current_user) { create :user, :with_team }
 
       %i[index create new destroy].each do |action|
@@ -83,4 +83,3 @@ describe UserPolicy do
     end
   end
 end
-

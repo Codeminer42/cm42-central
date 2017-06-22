@@ -1,17 +1,17 @@
-desc "Create the first team of the system and move users and projects over"
+desc 'Create the first team of the system and move users and projects over'
 task first_team: :environment do
   unless Team.count.zero?
-    puts "Warning: only run this task once, it will only run if there is not team in the system yet"
+    puts 'Warning: only run this task once, it will only run if there is not team in the system yet'
     exit 1
   end
 
   if ENV['FIRST_TEAM_NAME'].nil?
-    puts "Set the FIRST_TEAM_NAME environment variable for the team name"
+    puts 'Set the FIRST_TEAM_NAME environment variable for the team name'
     exit 1
   end
 
   if ENV['FIRST_TEAM_ADMIN_EMAIL'].nil?
-    puts "Set the FIRST_TEAM_ADMIN_EMAIL environment variable for the first team administrator"
+    puts 'Set the FIRST_TEAM_ADMIN_EMAIL environment variable for the first team administrator'
     exit 1
   end
 

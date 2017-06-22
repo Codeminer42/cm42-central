@@ -1,6 +1,6 @@
 require 'feature_helper'
 
-describe "Registrations" do
+describe 'Registrations' do
   describe 'disable 2FA' do
     let(:user) { create :user, :with_team, authy_enabled: true, authy_id: '12345' }
     let(:token) { '1234567' }

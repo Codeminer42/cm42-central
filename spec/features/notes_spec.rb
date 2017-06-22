@@ -1,16 +1,15 @@
 require 'feature_helper'
 
-describe "Notes" do
-
+describe 'Notes' do
   before(:each) do
-    # FIXME - Having to set this really high for the 'adds a note to a story
+    # FIXME: - Having to set this really high for the 'adds a note to a story
     # spec'.  Need to work on making it more responsive.
     Capybara.default_max_wait_time = 10
     sign_in user
   end
 
   let(:user)        { create :user, :with_team, email: 'user@example.com', password: 'password' }
-  let(:project)     { create(:project, name: 'Test Project', users: [user], teams: [user.teams.first] ) }
+  let(:project)     { create(:project, name: 'Test Project', users: [user], teams: [user.teams.first]) }
 
   let!(:story) do
     create :story,  title: 'Test Story',
@@ -19,9 +18,8 @@ describe "Notes" do
                     requested_by: user
   end
 
-  describe "full story life cycle" do
-
-    it "adds a note to a story", js: true do
+  describe 'full story life cycle' do
+    it 'adds a note to a story', js: true do
       visit project_path(project)
 
       within('#in_progress .story') do
@@ -32,10 +30,9 @@ describe "Notes" do
 
       sleep 0.5
       expect(find('#in_progress .story .notelist .note')).to have_content('Adding a new note')
-
     end
 
-    it "deletes a note from a story", js: true do
+    it 'deletes a note from a story', js: true do
       create :note, user: user,
                     story: story,
                     note: 'Delete me please'
@@ -52,11 +49,10 @@ describe "Notes" do
       sleep 0.5
       expect(find('#in_progress .story .notelist')).not_to have_content('Delete me please')
     end
-
   end
 
-  describe "on a disabled story" do
-    it "does not render a form", js: true do
+  describe 'on a disabled story' do
+    it 'does not render a form', js: true do
       create :story, state: 'accepted', project: project, requested_by: user
       visit project_path(project)
 

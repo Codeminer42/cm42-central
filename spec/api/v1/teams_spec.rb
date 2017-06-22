@@ -30,7 +30,6 @@ RSpec.describe V1::Teams do
       let(:some_team) { create :team }
       let(:api_token) { create :api_token, team: some_team }
 
-
       it 'returns a authorization error' do
         subject
 
@@ -65,7 +64,6 @@ RSpec.describe V1::Teams do
     context 'when api token is linked with a team' do
       let(:some_team) { create :team }
       let(:api_token) { create :api_token, team: some_team }
-
 
       it 'returns a authorization error' do
         subject
@@ -111,7 +109,6 @@ RSpec.describe V1::Teams do
       let(:some_team) { create :team }
       let(:api_token) { create :api_token, team: some_team }
 
-
       it 'returns a authorization error' do
         subject
 
@@ -153,7 +150,6 @@ RSpec.describe V1::Teams do
     context 'when api token is linked with a team' do
       let(:some_team) { create :team }
       let(:api_token) { create :api_token, team: some_team }
-
 
       it 'returns a authorization error' do
         subject

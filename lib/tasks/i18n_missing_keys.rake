@@ -1,20 +1,18 @@
 # Fetched from: http://github.com/koppen/i18n_missing_keys.git
 
 namespace :i18n do
-  desc "Find and list translation keys that do not exist in all locales"
+  desc 'Find and list translation keys that do not exist in all locales'
   task missing_keys: :environment do
     finder = MissingKeysFinder.new(I18n.backend)
     finder.find_missing_keys
   end
 end
 
-
 class MissingKeysFinder
-
   def initialize(backend)
     @backend = backend
-    self.load_config
-    self.load_translations
+    load_config
+    load_translations
   end
 
   # Returns an array with all keys from all locales
@@ -30,12 +28,10 @@ class MissingKeysFinder
 
     missing_keys = {}
     all_keys.each do |key|
-
       I18n.available_locales.each do |locale|
-
         skip = false
         ls = locale.to_s
-        if !@yaml[ls].nil?
+        unless @yaml[ls].nil?
           @yaml[ls].each do |re|
             if key.match(re)
               skip = true
@@ -44,12 +40,11 @@ class MissingKeysFinder
           end
         end
 
-        if !key_exists?(key, locale) && skip == false
-          if missing_keys[key]
-            missing_keys[key] << locale
-          else
-            missing_keys[key] = [locale]
-          end
+        next unless !key_exists?(key, locale) && skip == false
+        if missing_keys[key]
+          missing_keys[key] << locale
+        else
+          missing_keys[key] = [locale]
         end
       end
     end
@@ -110,8 +105,7 @@ class MissingKeysFinder
     begin
       @yaml = YAML.load_file(File.join(Rails.root, 'config', 'ignore_missing_keys.yml'))
     rescue
-      STDERR.puts "No ignore_missing_keys.yml config file."
+      STDERR.puts 'No ignore_missing_keys.yml config file.'
     end
   end
-
 end

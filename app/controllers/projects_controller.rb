@@ -1,16 +1,16 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show edit update destroy import import_upload
+  before_action :set_project, only: %i(show edit update destroy import import_upload
                                        reports ownership archive unarchive
-                                       change_archived projects_unjoined]
-  before_action :prepare_session, only: %i[import import_upload]
-  before_action -> { set_sidebar :project_settings }, only: %i[import edit]
-  before_action :set_story_flow, only: %i[show]
-  before_action :fluid_layout, only: %i[show edit import]
+                                       change_archived projects_unjoined)
+  before_action :prepare_session, only: %i(import import_upload)
+  before_action -> { set_sidebar :project_settings }, only: %i(import edit)
+  before_action :set_story_flow, only: %i(show)
+  before_action :fluid_layout, only: %i(show edit import)
 
   # GET /projects
   # GET /projects.xml
   def index
-    @projects = Hash.new
+    @projects = {}
 
     projects_joined = policy_scope(Project)
 
@@ -60,12 +60,12 @@ class ProjectsController < ApplicationController
     @project.users << current_user
 
     respond_to do |format|
-      if ProjectOperations::Create.(@project, current_user)
+      if ProjectOperations::Create.call(@project, current_user)
         current_team.ownerships.create(project: @project, is_owner: true)
         format.html { redirect_to(@project, notice: t('projects.project was successfully created')) }
         format.xml  { render xml: @project, status: :created, location: @project }
       else
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.xml  { render xml: @project.errors, status: :unprocessable_entity }
       end
     end
@@ -75,11 +75,11 @@ class ProjectsController < ApplicationController
   # PUT /projects/1.xml
   def update
     respond_to do |format|
-      if ProjectOperations::Update.(@project, allowed_params, current_user)
+      if ProjectOperations::Update.call(@project, allowed_params, current_user)
         format.html { redirect_to(@project, notice: t('projects.project was successfully updated')) }
         format.xml  { head :ok }
       else
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.xml  { render xml: @project.errors, status: :unprocessable_entity }
       end
     end
@@ -88,7 +88,7 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1
   # DELETE /projects/1.xml
   def destroy
-    ProjectOperations::Destroy.(@project, current_user)
+    ProjectOperations::Destroy.call(@project, current_user)
 
     respond_to do |format|
       format.html { redirect_to(projects_url) }
@@ -131,9 +131,7 @@ class ProjectsController < ApplicationController
         end
       else
         minutes_ago = (Time.current - @import_job[:created_at].to_datetime) / 1.minute
-        if minutes_ago > 60
-          session[:import_job] = nil
-        end
+        session[:import_job] = nil if minutes_ago > 60
       end
     end
   end
@@ -163,7 +161,7 @@ class ProjectsController < ApplicationController
     team = Team.not_archived.friendly.find(params.dig(:project, :slug))
     if team == current_team
       flash[:notice] = I18n.t('projects.invalid_action')
-      render "edit"
+      render 'edit'
       return
     end
 
@@ -215,11 +213,11 @@ class ProjectsController < ApplicationController
     authorize @project
 
     respond_to do |format|
-      if @project = ProjectOperations::Update.(@project, { archived: archive ? Time.current : "0" }, current_user)
-        format.html { redirect_to(@project, notice: t("projects.project was successfully #{ archive ? 'archived' : 'unarchived' }")) }
+      if @project = ProjectOperations::Update.call(@project, { archived: archive ? Time.current : '0' }, current_user)
+        format.html { redirect_to(@project, notice: t("projects.project was successfully #{archive ? 'archived' : 'unarchived'}")) }
         format.xml  { head :ok }
       else
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.xml  { render xml: @project.errors, status: :unprocessable_entity }
       end
     end
@@ -259,6 +257,6 @@ class ProjectsController < ApplicationController
   end
 
   def serialize_from_collection(collection)
-    ProjectSerializer::from_collection(ProjectPresenter::from_collection(collection))
+    ProjectSerializer.from_collection(ProjectPresenter.from_collection(collection))
   end
 end

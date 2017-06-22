@@ -1,7 +1,6 @@
 require 'base_operations/activity_recording'
 
 module BaseOperations
-
   class Create
     include ActivityRecording
 

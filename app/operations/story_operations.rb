@@ -3,7 +3,6 @@ require 'story_operations/state_change_notification'
 require 'story_operations/legacy_fixes'
 
 module StoryOperations
-
   class Create < BaseOperations::Create
     include MemberNotification
 
@@ -42,5 +41,4 @@ module StoryOperations
 
   class Destroy < BaseOperations::Destroy
   end
-
 end

@@ -27,7 +27,7 @@ class StoryPolicy < ApplicationPolicy
     update?
   end
 
-  alias_method :story?, :show?
+  alias story? show?
 
   class Scope < Scope
     def resolve

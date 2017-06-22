@@ -46,6 +46,6 @@ class ProjectPresenter < SimpleDelegator
   end
 
   def self.from_collection(collection)
-    collection.map { |item| self.new(item) }
+    collection.map { |item| new(item) }
   end
 end

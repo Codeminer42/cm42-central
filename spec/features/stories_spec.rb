@@ -1,21 +1,19 @@
 require 'feature_helper'
 
-describe "Stories" do
-
+describe 'Stories' do
   before(:each) do
     sign_in user
   end
 
   let(:user)     { create :user, :with_team, email: 'user@example.com', password: 'password' }
-  let!(:project) { create(:project, name: 'Test Project', users: [user], teams: [user.teams.first] ) }
+  let!(:project) { create(:project, name: 'Test Project', users: [user], teams: [user.teams.first]) }
 
-  describe "full story life cycle" do
-
+  describe 'full story life cycle' do
     before do
       project
     end
 
-    it "steps through the full story life cycle", js: true do
+    it 'steps through the full story life cycle', js: true do
       visit project_path(project)
       wait_spinner
 
@@ -43,13 +41,10 @@ describe "Stories" do
       end
 
       expect(find('#in_progress .story.accepted .story-title')).to have_content('New story')
-
     end
-
   end
 
-  describe "story history" do
-
+  describe 'story history' do
     before do
       create(:story, title: 'Test Story', project: project, requested_by: user)
       visit project_path(project)
@@ -60,68 +55,68 @@ describe "Stories" do
       find('.toggle-history').click
     end
 
-    it "turns history visible", js: true do
+    it 'turns history visible', js: true do
       expect(page).to have_css('#history')
     end
 
-    it "updates history column title", js: true do
+    it 'updates history column title', js: true do
       title = find('.history_column > .column_header > .toggle-title')
       expect(title).to have_text("History Of 'Test Story'")
     end
   end
 
-  describe "release story" do
-
-    context "when creating a release story" do
-      it "renders only the fields related to a story of type release", js: true do
+  describe 'release story' do
+    context 'when creating a release story' do
+      it 'renders only the fields related to a story of type release', js: true do
         visit project_path(project)
         wait_spinner
 
         wait_page_load
         click_on 'Add story'
         within('#chilly_bin') do
-          select 'release', from: "story_type"
+          select 'release', from: 'story_type'
 
-          expect(page).not_to have_selector("estimate") 
-          expect(page).not_to have_selector("state") 
-          expect(page).not_to have_selector("requested_by_id") 
-          expect(page).not_to have_selector("owned_by_id") 
-          expect(page).not_to have_content("Labels")
-          expect(page).not_to have_css(".attachinary-input") 
-          expect(page).to have_css(".release_date")
+          expect(page).not_to have_selector('estimate')
+          expect(page).not_to have_selector('state')
+          expect(page).not_to have_selector('requested_by_id')
+          expect(page).not_to have_selector('owned_by_id')
+          expect(page).not_to have_content('Labels')
+          expect(page).not_to have_css('.attachinary-input')
+          expect(page).to have_css('.release_date')
         end
       end
     end
 
-    context "when editing a release story" do
-      let(:formated_date) { Date.today.strftime("%m/%d/%Y") }
-      let!(:story) { create(:story, title: "Release Story", story_type: 'release', project: project, 
-                      release_date: formated_date, requested_by: user)}
-      
-      it "shows only the fields related to a story of type release", js: true do
+    context 'when editing a release story' do
+      let(:formated_date) { Date.today.strftime('%m/%d/%Y') }
+      let!(:story) do
+        create(:story, title: 'Release Story', story_type: 'release', project: project,
+                       release_date: formated_date, requested_by: user)
+      end
+
+      it 'shows only the fields related to a story of type release', js: true do
         visit project_path(project)
         wait_spinner
 
         wait_page_load
         find("#story-#{story.id}").click
         expect(page).to have_field('title', with: story.title)
-        expect(page).to have_select('story_type', selected: "release")
+        expect(page).to have_select('story_type', selected: 'release')
         expect(page).to have_field('release_date', with: formated_date)
       end
     end
   end
-  
-  describe "story links" do
 
-    let!(:story) { create(:story, title: "Story", project: project, requested_by: user)}
-    let!(:target_story) { create(:story, state: 'unscheduled', project: project, requested_by: user)}
+  describe 'story links' do
+    let!(:story) { create(:story, title: 'Story', project: project, requested_by: user) }
+    let!(:target_story) { create(:story, state: 'unscheduled', project: project, requested_by: user) }
 
     before do
       story.description = "Story ##{target_story.id}"
       story.save!
     end
 
-    it "unscheduled story link", js: true do
+    it 'unscheduled story link', js: true do
       visit project_path(project)
       wait_spinner
       wait_page_load
@@ -131,7 +126,7 @@ describe "Stories" do
         .to have_content("##{target_story.id}")
     end
 
-    ['unstarted', 'started', 'finished', 'delivered', 'accepted', 'rejected'].each do |state|
+    %w(unstarted started finished delivered accepted rejected).each do |state|
       it "#{state} story link", js: true do
         visit project_path(project)
         wait_spinner
@@ -147,21 +142,19 @@ describe "Stories" do
         expect(page).to have_css(".story-link-icon.#{state}")
       end
     end
-
   end
 
-  describe "delete a story" do
-
-    let(:story) {
+  describe 'delete a story' do
+    let(:story) do
       create(:story, title: 'Delete Me', project: project,
                      requested_by: user)
-    }
+    end
 
     before do
       story
     end
 
-    it "deletes the story", js: true do
+    it 'deletes the story', js: true do
       visit project_path(project)
       wait_spinner
 
@@ -172,14 +165,13 @@ describe "Stories" do
 
       expect(page).not_to have_css(story_selector(story))
     end
-
   end
 
-  describe "search a story" do
-    let(:story) {
+  describe 'search a story' do
+    let(:story) do
       create(:story, title: 'Search for me', project: project,
                      requested_by: user)
-    }
+    end
 
     before do
       story
@@ -212,23 +204,21 @@ describe "Stories" do
     end
   end
 
-  describe "show and hide columns" do
-
+  describe 'show and hide columns' do
     before do
       project
       Capybara.ignore_hidden_elements = true
     end
 
-    it "hides and shows the columns", js: true do
-
+    it 'hides and shows the columns', js: true do
       visit project_path(project)
       wait_spinner
 
       columns = {
-        "done"        => "Done",
-        "in_progress" => "In Progress",
-        "backlog"     => "Backlog",
-        "chilly_bin"  => "Chilly Bin"
+        'done'        => 'Done',
+        'in_progress' => 'In Progress',
+        'backlog'     => 'Backlog',
+        'chilly_bin'  => 'Chilly Bin'
       }
 
       find('#sidebar-toggle').trigger 'click'
@@ -262,14 +252,14 @@ describe "Stories" do
       visit project_path(project)
       wait_spinner
 
-      selector = "table.stories td.search_results_column"
+      selector = 'table.stories td.search_results_column'
       expect(page).not_to have_css(selector)
 
       find('#sidebar-toggle').trigger 'click'
 
       # Show the column
       within('#column-toggles') do
-        click_on "Search Results"
+        click_on 'Search Results'
       end
       expect(page).to have_css(selector)
 
@@ -285,12 +275,18 @@ describe "Stories" do
   end
 
   describe 'filter by label' do
-    let!(:story) { create(:story, title: 'Task 1', project: project,
-      requested_by: user, labels: 'epic1') }
-    let!(:story2) { create(:story, title: 'Task 2', project: project,
-      requested_by: user, labels: 'epic1') }
-    let!(:story3) { create(:story, title: 'Task 3', project: project,
-      requested_by: user, labels: 'epic2') }
+    let!(:story) do
+      create(:story, title: 'Task 1', project: project,
+                     requested_by: user, labels: 'epic1')
+    end
+    let!(:story2) do
+      create(:story, title: 'Task 2', project: project,
+                     requested_by: user, labels: 'epic1')
+    end
+    let!(:story3) do
+      create(:story, title: 'Task 3', project: project,
+                     requested_by: user, labels: 'epic2')
+    end
 
     it 'show epic by label', js: true, driver: :poltergeist do
       visit project_path(project)
@@ -327,5 +323,4 @@ describe "Stories" do
   def story_search_result_selector(story)
     "#story-search-result-#{story.id}"
   end
-
 end

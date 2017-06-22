@@ -2,11 +2,11 @@ require 'rails_helper'
 
 describe ProjectPresenter do
   let(:user) { create :user, :with_team, email: 'foobar@example.com' }
-  let(:tag_group) {create :tag_group }
+  let(:tag_group) { create :tag_group }
 
   before { create :project, name: 'Test Project Foobar', users: [user], tag_group: tag_group }
 
-  let(:projects) { ProjectPresenter::from_collection(Project.all) }
+  let(:projects) { ProjectPresenter.from_collection(Project.all) }
   let(:project) { projects.first }
 
   describe '#truncate_name' do
@@ -14,7 +14,7 @@ describe ProjectPresenter do
   end
 
   describe '#tag_fore_color' do
-    it { expect(project.tag_fore_color).to eq("#000000")}
+    it { expect(project.tag_fore_color).to eq('#000000') }
   end
 
   describe '#velocity' do
@@ -33,7 +33,7 @@ describe ProjectPresenter do
   end
 
   describe '#archived_at' do
-    it "should render a formated date" do
+    it 'should render a formated date' do
       project.archived_at = '2000-01-01 00:00:00 -0300'
       expect(project.archived_date).to eq('Jan 01, 2000')
     end
@@ -41,14 +41,12 @@ describe ProjectPresenter do
 
   describe '#path_to' do
     it 'should return all paths' do
-      expect(project.path_to).to eq({
-        project: "/projects/test-project-foobar",
-        projectReports: "/projects/test-project-foobar/reports",
-        projectUsers: "/projects/test-project-foobar/users",
-        projectSettings: "/projects/test-project-foobar/edit",
-        projectJoin: "/projects/test-project-foobar/join",
-        projectUnjoin: "/projects/test-project-foobar/users/"
-      })
+      expect(project.path_to).to eq(project: '/projects/test-project-foobar',
+                                    projectReports: '/projects/test-project-foobar/reports',
+                                    projectUsers: '/projects/test-project-foobar/users',
+                                    projectSettings: '/projects/test-project-foobar/edit',
+                                    projectJoin: '/projects/test-project-foobar/join',
+                                    projectUnjoin: '/projects/test-project-foobar/users/')
     end
   end
 end

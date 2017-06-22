@@ -120,7 +120,7 @@ describe ActivityPresenter do
       end
 
       it 'describes changing attachments in story' do
-        documents_changes = {'documents_attributes' => [ ['old_file1.jpg', 'old_file2.jpg'], ['old_file2.jpg', 'new_file3.jpg'] ]}
+        documents_changes = { 'documents_attributes' => [['old_file1.jpg', 'old_file2.jpg'], ['old_file2.jpg', 'new_file3.jpg']] }
         expect(story).to receive(:changes).and_return(documents_changes)
         expect(story).to receive(:changed?).and_return(true)
         activity.subject = story

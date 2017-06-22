@@ -12,16 +12,16 @@ describe IntegrationPolicy do
 
   before { project.users << other_member }
 
-  context "proper user of a project" do
+  context 'proper user of a project' do
     before do
       project.users << current_user
       current_team.projects << project
     end
 
-    context "for an admin" do
+    context 'for an admin' do
       let(:current_user) { create :user, :with_team_and_is_admin }
 
-      %i[index show create new update edit destroy].each do |action|
+      %i(index show create new update edit destroy).each do |action|
         it { should permit(action) }
       end
 
@@ -30,10 +30,10 @@ describe IntegrationPolicy do
       end
     end
 
-    context "for a user" do
+    context 'for a user' do
       let(:current_user) { create :user, :with_team }
 
-      %i[index show create new update edit destroy].each do |action|
+      %i(index show create new update edit destroy).each do |action|
         it { should_not permit(action) }
       end
 
@@ -41,14 +41,13 @@ describe IntegrationPolicy do
         expect(policy_scope).to eq([])
       end
     end
-
   end
 
-  context "user not a member of project" do
-    context "for an admin" do
+  context 'user not a member of project' do
+    context 'for an admin' do
       let(:current_user) { create :user, :with_team_and_is_admin }
 
-      %i[index show create new update edit destroy].each do |action|
+      %i(index show create new update edit destroy).each do |action|
         it { should permit(action) }
       end
 
@@ -57,10 +56,10 @@ describe IntegrationPolicy do
       end
     end
 
-    context "for a user" do
+    context 'for a user' do
       let(:current_user) { create :user, :with_team }
 
-      %i[index create new update edit destroy].each do |action|
+      %i(index create new update edit destroy).each do |action|
         it { should_not permit(action) }
       end
 
@@ -70,5 +69,3 @@ describe IntegrationPolicy do
     end
   end
 end
-
-

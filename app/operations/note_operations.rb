@@ -1,5 +1,4 @@
 module NoteOperations
-
   module MemberNotification
     def self.included(base)
       base.class_eval do

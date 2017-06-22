@@ -1,9 +1,9 @@
 class RegistrationsController < Devise::RegistrationsController
   prepend_before_action :check_captcha, only: :create
-  before_filter :set_locale, only: :create
-  before_filter :check_registration_enabled, only: [:new, :create]
-  before_filter :devise_params
-  after_filter :reset_locale, only: :update
+  before_action :set_locale, only: :create
+  before_action :check_registration_enabled, only: [:new, :create]
+  before_action :devise_params
+  after_action :reset_locale, only: :update
 
   def disable_two_factor
     verify_token = Authy::API.verify(id: current_user.authy_id, token: params[:token], force: true)
@@ -38,56 +38,58 @@ class RegistrationsController < Devise::RegistrationsController
   def reset_tour
     @user = User.find(params[:id])
     if @user.update(user_params)
-      redirect_to :back, flash: {notice: t('reset_tour_success')}
+      redirect_to :back, flash: { notice: t('reset_tour_success') }
     else
-      redirect_to :back, flash: {error: t('reset_tour_fail')}
+      redirect_to :back, flash: { error: t('reset_tour_fail') }
     end
   end
 
   private
-    def user_params
-      params.require(:user).permit(:finished_tour)
-    end
+
+  def user_params
+    params.require(:user).permit(:finished_tour)
+  end
 
   protected
-    def after_inactive_sign_up_path_for(resource)
-      new_session_path(resource)
-    end
 
-    def check_registration_enabled
-      if Fulcrum::Application.config.fulcrum.disable_registration
-        render_404 and return
-      end
-    end
+  def after_inactive_sign_up_path_for(resource)
+    new_session_path(resource)
+  end
 
-    def devise_params
-      devise_parameter_sanitizer.for(:sign_up) do |u|
-        u.permit( :email, :name, :initials, :username, :team_slug )
-      end
-      devise_parameter_sanitizer.for(:account_update) do |u|
-        u.permit( :email, :password, :password_confirmation, :remember_me,
-                  :name, :initials, :username, :email_delivery, :email_acceptance,
-                  :email_rejection, :locale, :time_zone, :current_password )
-      end
+  def check_registration_enabled
+    if Fulcrum::Application.config.fulcrum.disable_registration
+      render_404 and return
     end
+  end
 
-    def check_captcha
-      unless verify_recaptcha
-        self.resource = resource_class.new sign_up_params
-        respond_with_navigational(resource) { render :new }
-      end
+  def devise_params
+    devise_parameter_sanitizer.for(:sign_up) do |u|
+      u.permit(:email, :name, :initials, :username, :team_slug)
     end
+    devise_parameter_sanitizer.for(:account_update) do |u|
+      u.permit(:email, :password, :password_confirmation, :remember_me,
+               :name, :initials, :username, :email_delivery, :email_acceptance,
+               :email_rejection, :locale, :time_zone, :current_password)
+    end
+  end
 
-    def set_locale
-      return unless resource
-      if session[:locale]
-        resource.locale = session[:locale]
-      else
-        resource.locale = I18n.locale
-      end
+  def check_captcha
+    unless verify_recaptcha
+      self.resource = resource_class.new sign_up_params
+      respond_with_navigational(resource) { render :new }
     end
+  end
 
-    def reset_locale
-      session[:locale] = nil
-    end
+  def set_locale
+    return unless resource
+    resource.locale = if session[:locale]
+                        session[:locale]
+                      else
+                        I18n.locale
+                      end
+  end
+
+  def reset_locale
+    session[:locale] = nil
+  end
 end

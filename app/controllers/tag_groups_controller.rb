@@ -29,12 +29,12 @@ class TagGroupsController < ApplicationController
     @tag_group = current_team.tag_groups.new(allowed_params)
     authorize @tag_group
 
-   respond_to do |format|
+    respond_to do |format|
       if @tag_group.save
         format.html { redirect_to tag_groups_path }
         format.js   { render action: 'show' }
       else
-        format.html { redirect_to new_tag_group_path, flash: { error:@tag_group.errors.full_messages.to_sentence } }
+        format.html { redirect_to new_tag_group_path, flash: { error: @tag_group.errors.full_messages.to_sentence } }
         format.json { render json: @tag_group.errors, status: :unprocessable_entity }
         format.js { render json: @tag_group.errors, status: :unprocessable_entity, content_type: 'application/json' }
       end

@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe Membership do
-  describe "validations" do
-    it "requires project and user" do
+  describe 'validations' do
+    it 'requires project and user' do
       subject.project = nil
       subject.user = nil
       subject.valid?

@@ -22,7 +22,7 @@ class V1::Projects < Grape::API
       authorize_project!
     end
 
-    desc 'Return all projects', { tags: ['project'] }
+    desc 'Return all projects', tags: ['project']
     params do
       optional :archiveds, type: Boolean, default: false
     end
@@ -34,14 +34,14 @@ class V1::Projects < Grape::API
       present paginate(projects), with: Entities::Project
     end
 
-    desc 'Return the specified project', { tags: ['project'] }
+    desc 'Return the specified project', tags: ['project']
     get '/:slug' do
       project = Project.find_by_slug(params[:slug])
 
       present project, with: Entities::Project, type: :full
     end
 
-    desc 'Return the specified project with analysis', { tags: ['project'] }
+    desc 'Return the specified project with analysis', tags: ['project']
     params do
       requires :since, type: Integer
       optional :current_time, type: DateTime
@@ -56,7 +56,7 @@ class V1::Projects < Grape::API
       present iteration, with: Entities::ProjectAnalysis
     end
 
-    desc 'Return the stories of a specified project', { tags: ['project'] }
+    desc 'Return the stories of a specified project', tags: ['project']
     params do
       optional :state,
                type: Symbol,
@@ -76,7 +76,7 @@ class V1::Projects < Grape::API
       present paginate(stories), with: Entities::Story
     end
 
-    desc 'Return all users of a specified project', { tags: ['project'] }
+    desc 'Return all users of a specified project', tags: ['project']
     paginate
     get '/:slug/users' do
       project = Project.includes(memberships: :user).find_by_slug(params[:slug])

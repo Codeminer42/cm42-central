@@ -23,7 +23,7 @@ class NotesController < ApplicationController
     @note = policy_scope(Note).build(allowed_params)
     authorize @note
     @note.user = current_user
-    if @note = NoteOperations::Create.(@note, current_user)
+    if @note = NoteOperations::Create.call(@note, current_user)
       render json: @note
     else
       render json: @note, status: :unprocessable_entity
@@ -40,5 +40,4 @@ class NotesController < ApplicationController
     @project = policy_scope(Project).find(params[:project_id])
     @story   = policy_scope(Story).find(params[:story_id])
   end
-
 end

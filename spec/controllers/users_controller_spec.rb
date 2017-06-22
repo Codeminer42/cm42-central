@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 shared_examples_for '#index' do
-  context "as html" do
+  context 'as html' do
     specify do
       get :index, project_id: project.id
       expect(response).to be_success
@@ -9,7 +9,7 @@ shared_examples_for '#index' do
     end
   end
 
-  context "as json" do
+  context 'as json' do
     specify do
       xhr :get, :index, project_id: project.id, format: :json
       expect(response).to be_success
@@ -19,17 +19,16 @@ shared_examples_for '#index' do
 end
 
 describe UsersController do
-
   let(:project) { create(:project) }
 
-  context "when logged out" do
-    %w[index create].each do |action|
+  context 'when logged out' do
+    %w(index create).each do |action|
       specify do
         get action, project_id: project.id
         expect(response).to redirect_to(new_user_session_url)
       end
     end
-    %w[destroy].each do |action|
+    %w(destroy).each do |action|
       specify do
         get action, id: 42, project_id: project.id
         expect(response).to redirect_to(new_user_session_url)
@@ -39,8 +38,7 @@ describe UsersController do
 
   let (:another_user) { create :user }
 
-  context "when logged in as admin" do
-
+  context 'when logged in as admin' do
     let(:user)        { create(:user, :with_team_and_is_admin) }
     let!(:ownership)  { create(:ownership, team: user.teams.first, project: project) }
 
@@ -52,18 +50,18 @@ describe UsersController do
       allow(subject).to receive_messages(current_user: user, current_team: user.teams.first)
     end
 
-    describe "collection actions" do
-
+    describe 'collection actions' do
       it_should_behave_like '#index'
 
-      describe "#create" do
-
-        let(:user_params) {{
-          "email"     => "user@example.com",
-          "name"      => "Test User",
-          "initials"  => "TU",
-          "username"  => "test_user"
-        }}
+      describe '#create' do
+        let(:user_params) do
+          {
+            'email' => 'user@example.com',
+            'name'      => 'Test User',
+            'initials'  => 'TU',
+            'username'  => 'test_user'
+          }
+        end
 
         specify do
           post :create, project_id: project.id, user: user_params
@@ -71,19 +69,17 @@ describe UsersController do
           expect(response).to redirect_to(project_users_url(project))
         end
 
-        context "when user does not exist" do
-
+        context 'when user does not exist' do
           specify do
             post :create, project_id: project.id, user: user_params
-            expect(assigns[:user].name).to eq(user_params["name"])
-            expect(assigns[:user].initials).to eq(user_params["initials"])
+            expect(assigns[:user].name).to eq(user_params['name'])
+            expect(assigns[:user].initials).to eq(user_params['initials'])
             expect(assigns[:user].was_created).to be true
             expect(assigns[:user].teams).to include(user.teams.first)
             expect(response).to redirect_to(project_users_url(project))
           end
 
-          context "when save fails" do
-
+          context 'when save fails' do
             before do
               user_params['email'] = nil
             end
@@ -92,12 +88,10 @@ describe UsersController do
               post :create, project_id: project.id, user: user_params
               expect(response).to render_template('index')
             end
-
           end
         end
 
-        context "when user exists" do
-
+        context 'when user exists' do
           before do
             create(:user, user_params)
           end
@@ -119,8 +113,7 @@ describe UsersController do
           end
         end
 
-        context "when user is already a project member" do
-
+        context 'when user is already a project member' do
           before do
             project.users << create(:user, user_params)
           end
@@ -131,18 +124,15 @@ describe UsersController do
           end
         end
 
-        context "when user is not already a project member" do
-
+        context 'when user is not already a project member' do
           context "and user didn't exist already and was created" do
-
             specify do
               post :create, project_id: project.id, user: user_params
               expect(flash[:notice]).to eq("#{assigns[:user].email} was sent an invite to join this project")
             end
           end
 
-          context "and user already existed" do
-
+          context 'and user already existed' do
             before do
               create(:user, user_params)
             end
@@ -156,35 +146,30 @@ describe UsersController do
       end
     end
 
-    describe "member actions" do
-
-      describe "#destroy" do
+    describe 'member actions' do
+      describe '#destroy' do
         before { request.env['HTTP_REFERER'] = root_url }
 
-        context "himself" do
+        context 'himself' do
           specify do
             delete :destroy, project_id: project.id, id: user.id
             expect(response).to redirect_to(:back)
           end
         end
 
-        context "another user" do
+        context 'another user' do
           specify do
             delete :destroy, project_id: project.id, id: another_user.id
             expect(response).to redirect_to(:back)
           end
         end
-
       end
-
     end
-
   end
 
-  context "when logged in as non-admin user" do
-
+  context 'when logged in as non-admin user' do
     let(:user)  { create(:user, :with_team, email: 'foobar@example.com') }
-    let!(:ownership)  { create(:ownership, team: user.teams.first, project: project) }
+    let!(:ownership) { create(:ownership, team: user.teams.first, project: project) }
 
     before do
       create(:enrollment, team: user.teams.first, user: another_user)
@@ -194,18 +179,18 @@ describe UsersController do
       allow(subject).to receive_messages(current_user: user, current_team: user.teams.first)
     end
 
-    describe "collection actions" do
-
+    describe 'collection actions' do
       it_should_behave_like '#index'
 
-      describe "#create" do
-
-        let(:user_params) {{
-          "email"     => "user@example.com",
-          "name"      => "Test User",
-          "initials"  => "TU",
-          "username"  => "test_user"
-        }}
+      describe '#create' do
+        let(:user_params) do
+          {
+            'email' => 'user@example.com',
+            'name'      => 'Test User',
+            'initials'  => 'TU',
+            'username'  => 'test_user'
+          }
+        end
 
         specify do
           post :create, project_id: project.id, user: user_params
@@ -213,8 +198,7 @@ describe UsersController do
           expect(response).to redirect_to(root_path)
         end
 
-        context "when user exists" do
-
+        context 'when user exists' do
           before do
             create(:user, user_params)
           end
@@ -228,10 +212,8 @@ describe UsersController do
       end
     end
 
-    describe "member actions" do
-
-      describe "#destroy" do
-
+    describe 'member actions' do
+      describe '#destroy' do
         context 'himself' do
           before do
             request.env['HTTP_REFERER'] = root_url
@@ -249,10 +231,7 @@ describe UsersController do
             expect(response).to redirect_to(root_path)
           end
         end
-
       end
-
     end
-
   end
 end

@@ -39,7 +39,7 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def predicate
-    return "" unless action == 'update'
+    return '' unless action == 'update'
     changes = subject_changes.keys.reject { |key| IGNORED_FIELDS.include?(key) }.map do |key|
       case key
       when 'documents_attributes' then document_changes subject_changes[key]
@@ -50,15 +50,15 @@ class ActivityPresenter < SimpleDelegator
         if subject_changes[key].first.blank?
           "#{key} to '#{subject_changes[key].last}'"
         else
-          "#{key} from '#{subject_changes[key].first}' to '#{subject_changes[key].last || 'empty' }'"
+          "#{key} from '#{subject_changes[key].first}' to '#{subject_changes[key].last || 'empty'}'"
         end
       end
-    end.join(", ")
-    "changing " + changes
+    end.join(', ')
+    'changing ' + changes
   end
 
   def past_tense(verb)
-    verb + (verb.at(-1) == "e" ? "d" : "ed")
+    verb + (verb.at(-1) == 'e' ? 'd' : 'ed')
   end
 
   def document_changes(changes)
@@ -68,18 +68,18 @@ class ActivityPresenter < SimpleDelegator
     deleted_documents = old_documents - new_documents
 
     tmp_changes = []
-    tmp_changes << "by uploading '#{added_documents.join("', '")}'"  if added_documents.size   > 0
-    tmp_changes << "by deleting '#{deleted_documents.join("', '")}'" if deleted_documents.size > 0
-    "documents " + tmp_changes.join(" and ")
+    tmp_changes << "by uploading '#{added_documents.join("', '")}'"  unless added_documents.empty?
+    tmp_changes << "by deleting '#{deleted_documents.join("', '")}'" unless deleted_documents.empty?
+    'documents ' + tmp_changes.join(' and ')
   end
 
   def position_changes(changes)
     old_position = changes.first || Float::MAX
     new_position = changes.last
     if new_position > old_position
-      "priority decreased"
+      'priority decreased'
     else
-      "priority increased"
+      'priority increased'
     end
   end
 
@@ -94,10 +94,10 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def description_changes(changes)
-    old_description = changes.first || ""
-    new_description = changes.last  || ""
-    if !old_description.empty?
-      new_description = Differ.diff(new_description, old_description, " ").format_as(:html)
+    old_description = changes.first || ''
+    new_description = changes.last  || ''
+    unless old_description.empty?
+      new_description = Differ.diff(new_description, old_description, ' ').format_as(:html)
     end
     "description to '#{new_description}'"
   end

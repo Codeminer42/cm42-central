@@ -10,8 +10,7 @@ describe NoteOperations do
     let(:note) { story.notes.build(note: 'name', user: build(:user)) }
 
     context 'with valid params' do
-
-      subject { ->{NoteOperations::Create.(note, user)} }
+      subject { -> { NoteOperations::Create.call(note, user) } }
 
       it { expect { subject.call }.to change(Note, :count) }
       it { expect { subject.call }.to change(Changeset, :count) }
@@ -37,8 +36,8 @@ describe NoteOperations do
             note.note = 'name @username'
             note.user = build(:user)
 
-            expect(Notifications).to receive(:new_note).
-              with(note.id, [user.email, username_user.email]).and_return(mailer)
+            expect(Notifications).to receive(:new_note)
+              .with(note.id, [user.email, username_user.email]).and_return(mailer)
             expect(mailer).to receive(:deliver)
 
             subject.call
@@ -50,7 +49,7 @@ describe NoteOperations do
     context 'with invalid params' do
       before { note.note = '' }
 
-      subject { ->{NoteOperations::Create.(note, user)} }
+      subject { -> { NoteOperations::Create.call(note, user) } }
 
       it { expect { subject.call }.to_not change(Note, :count) }
       it { expect(subject.call).to be_falsy }

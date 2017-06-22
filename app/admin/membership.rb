@@ -16,7 +16,6 @@ ActiveAdmin.register Membership do
     end
   end
 
-
   permit_params :user_id, :project_id
 
   index do
@@ -44,11 +43,11 @@ ActiveAdmin.register Membership do
   config.filters = false
 
   form do |f|
-    f.inputs "Membership Details" do
+    f.inputs 'Membership Details' do
       f.input :user, as: :select,
-        collection: User.order(:name).all
+                     collection: User.order(:name).all
       f.input :project, as: :select,
-        collection: Project.order(:name).all
+                        collection: Project.order(:name).all
     end
     f.actions
   end

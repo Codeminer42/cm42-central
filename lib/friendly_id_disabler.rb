@@ -7,13 +7,12 @@ module FriendlyId
         !!Thread.current[THREAD_LOCAL_KEY]
       end
 
-      def disable_friendly_id(&block)
-        begin
-          old_value, Thread.current[THREAD_LOCAL_KEY] = Thread.current[THREAD_LOCAL_KEY], true
-          block.call
-        ensure
-          Thread.current[THREAD_LOCAL_KEY] = old_value
-        end
+      def disable_friendly_id
+        old_value = Thread.current[THREAD_LOCAL_KEY]
+        Thread.current[THREAD_LOCAL_KEY] = true
+        yield
+      ensure
+        Thread.current[THREAD_LOCAL_KEY] = old_value
       end
     end
   end

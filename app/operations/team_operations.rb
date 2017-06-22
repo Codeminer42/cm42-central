@@ -1,5 +1,4 @@
 module TeamOperations
-
   class Create < BaseOperations::Create
     def create_activity
       # bypass (no current_user)
@@ -31,5 +30,4 @@ module TeamOperations
       model.update_attributes!(archived_at: Time.current)
     end
   end
-
 end

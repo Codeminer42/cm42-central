@@ -1,19 +1,19 @@
 require 'feature_helper'
 
-describe "Keycuts" do
+describe 'Keycuts' do
   before(:each) do
     ActionController::Base.allow_forgery_protection = false
     sign_in user
   end
 
   let(:user) { create :user, :with_team, email: 'user@example.com', password: 'password' }
-  let(:project) { create :project,  name: 'Test Project', users: [user], teams: [user.teams.first] }
+  let(:project) { create :project, name: 'Test Project', users: [user], teams: [user.teams.first] }
 
-  describe "?" do
+  describe '?' do
     it 'shows help', js: true do
       send_keys '?'
-      expect(page).to have_css("#keycut-help")
-      expect(page).to have_css("#keycut-help a.close")
+      expect(page).to have_css('#keycut-help')
+      expect(page).to have_css('#keycut-help a.close')
     end
 
     it 'can close help', js: true do
@@ -21,13 +21,13 @@ describe "Keycuts" do
       within '#keycut-help' do
         click_on 'close'
       end
-      expect(page).not_to have_css("#keycut-help")
+      expect(page).not_to have_css('#keycut-help')
     end
 
     it 'can close help with ?', js: true do
       send_keys '?'
       send_keys '?'
-      expect(page).not_to have_css("#keycut-help")
+      expect(page).not_to have_css('#keycut-help')
     end
   end
 
@@ -56,24 +56,24 @@ describe "Keycuts" do
     it 'toggles columns (<shift> b|c|d|p)', js: true do
       find('#sidebar-toggle').trigger 'click'
 
-      send_keys "B"
+      send_keys 'B'
       expect(page).to have_css('.hide_backlog.pressed')
-      send_keys "B"
+      send_keys 'B'
       expect(page).not_to have_css('.hide_backlog.pressed')
 
-      send_keys "C"
+      send_keys 'C'
       expect(page).to have_css('.hide_chilly_bin.pressed')
-      send_keys "C"
+      send_keys 'C'
       expect(page).not_to have_css('.hide_chilly_bin.pressed')
 
-      send_keys "D"
+      send_keys 'D'
       expect(page).to have_css('.hide_done.pressed')
-      send_keys "D"
+      send_keys 'D'
       expect(page).not_to have_css('.hide_done.pressed')
 
-      send_keys "P"
+      send_keys 'P'
       expect(page).to have_css('.hide_in_progress.pressed')
-      send_keys "P"
+      send_keys 'P'
       expect(page).not_to have_css('.hide_in_progress.pressed')
     end
   end

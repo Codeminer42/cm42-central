@@ -1,10 +1,10 @@
 class TasksController < ApplicationController
-  before_filter :set_project_and_story
+  before_action :set_project_and_story
 
   def create
     @task = policy_scope(Task).build(allowed_params)
     authorize @task
-    if TaskOperations::Create.(@task, current_user)
+    if TaskOperations::Create.call(@task, current_user)
       render json: @task
     else
       render json: @task, status: :unprocessable_entity
@@ -37,5 +37,4 @@ class TasksController < ApplicationController
     @project = policy_scope(Project).find(params[:project_id])
     @story   = policy_scope(Story).find(params[:story_id])
   end
-
 end
