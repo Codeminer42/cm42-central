@@ -14,7 +14,7 @@ describe ImportWorker do
         @cache.merge!(key => value)
       end
 
-      def get_cache
+      def cache
         @cache
       end
     end
@@ -28,7 +28,7 @@ describe ImportWorker do
       importer.perform('foo', project.id)
       expect(project.stories.count).to eq(48)
       expect(project.start_date).to eq(Date.parse('2009-11-28'))
-      expect(importer.get_cache).to eq('foo' => { invalid_stories: [], errors: nil })
+      expect(importer.cache).to eq('foo' => { invalid_stories: [], errors: nil })
     end
   end
 
@@ -38,7 +38,7 @@ describe ImportWorker do
     it 'must import from CSV and create the proper stories' do
       importer.perform('foo', project.id)
       expect(project.stories.count).to eq(0)
-      expect(importer.get_cache)
+      expect(importer.cache)
         .to eq('foo' => { invalid_stories: [], errors: 'Illegal quoting in line 1.' })
     end
   end
@@ -60,7 +60,7 @@ describe ImportWorker do
       expect(project.stories.first.state).to eq('accepted')
       expect(project.stories.first.story_type).to eq('bug')
       expect(project.stories.first.title).to eq('Valid story')
-      expect(importer.get_cache).to eq(
+      expect(importer.cache).to eq(
         'foo' => {
           invalid_stories: [{
             title: 'This story has an invalid estimate and type',
