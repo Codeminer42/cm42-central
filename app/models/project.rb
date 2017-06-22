@@ -24,7 +24,7 @@ class Project < ActiveRecord::Base
 
   scope :joinable, -> { where(disallow_join: false) }
 
-  scope :joinable_except, -> (project_ids) { joinable.where.not(id: project_ids) }
+  scope :joinable_except, ->(project_ids) { joinable.where.not(id: project_ids) }
 
   def last_changeset_id
     changesets.last && changesets.last.id

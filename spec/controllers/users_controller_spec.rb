@@ -36,7 +36,7 @@ describe UsersController do
     end
   end
 
-  let (:another_user) { create :user }
+  let(:another_user) { create :user }
 
   context 'when logged in as admin' do
     let(:user)        { create(:user, :with_team_and_is_admin) }
