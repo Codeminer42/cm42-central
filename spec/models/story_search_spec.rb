@@ -28,10 +28,38 @@ describe StorySearch do
     before do
       user = create :user
       project.users << user
-      @story1 = create :story, title: 'HELLO', labels: 'foo,bar', project: project, requested_by: user
-      @story2 = create :story, title: 'WORLD', labels: 'foo,bar', project: project, requested_by: user
-      @story3 = create :story, title: 'HELL', labels: 'abc', project: project, requested_by: user
-      @story4 = create :story, title: 'WORD', labels: 'abc,def', project: project, requested_by: user
+
+      @story1 = create(
+        :story,
+        title: 'HELLO',
+        labels: 'foo,bar',
+        project: project,
+        requested_by: user
+      )
+
+      @story2 = create(
+        :story,
+        title: 'WORLD',
+        labels: 'foo,bar',
+        project: project,
+        requested_by: user
+      )
+
+      @story3 = create(
+        :story,
+        title: 'HELL',
+        labels: 'abc',
+        project: project,
+        requested_by: user
+      )
+
+      @story4 = create(
+        :story,
+        title: 'WORD',
+        labels: 'abc,def',
+        project: project,
+        requested_by: user
+      )
     end
 
     it 'returns the HEL stories' do

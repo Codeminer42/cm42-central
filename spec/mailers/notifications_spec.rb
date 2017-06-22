@@ -30,7 +30,10 @@ describe Notifications do
     its(:body)    { should match "Developer has started your story 'Test story'." }
 
     context 'with story without estimation' do
-      its(:body) { should match 'This story is NOT estimated. Ask Developer to add proper estimation before implementation!' }
+      its(:body) do
+        should match 'This story is NOT estimated. Ask Developer to add proper estimation ' \
+          'before implementation!'
+      end
     end
 
     context 'with story with estimation' do
@@ -42,7 +45,10 @@ describe Notifications do
     context 'with a bug story' do
       before { allow(story).to receive_messages(story_type: 'bug') }
 
-      its(:body) { should match 'This is either a bug or a chore There is no estimation. Expect the sprint velocity to decrease.' }
+      its(:body) do
+        should match 'This is either a bug or a chore There is no estimation. ' \
+          'Expect the sprint velocity to decrease.'
+      end
     end
   end
 
@@ -51,7 +57,9 @@ describe Notifications do
     before { allow(story).to receive_messages(state: :delivered) }
     subject  { Notifications.story_changed(story, delivered_by) }
 
-    its(:subject) { should match "[Test Project] Your story 'Test story' has been delivered for acceptance." }
+    its(:subject) do
+      should match "[Test Project] Your story 'Test story' has been delivered for acceptance."
+    end
     its(:to)      { should match [requested_by.email] }
     its(:from)    { should match [delivered_by.email] }
     its(:body)    { should match "Deliverer has delivered your story 'Test story'." }
@@ -97,6 +105,8 @@ describe Notifications do
     its(:to)      { ['foo@example.com'] }
     its(:from)    { [user.email] }
 
-    specify { expect(subject.body.encoded).to match('Note User added the following comment to the story') }
+    specify do
+      expect(subject.body.encoded).to match('Note User added the following comment to the story')
+    end
   end
 end

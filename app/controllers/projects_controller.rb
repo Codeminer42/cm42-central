@@ -62,8 +62,10 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       if ProjectOperations::Create.call(@project, current_user)
         current_team.ownerships.create(project: @project, is_owner: true)
-        format.html { redirect_to(@project, notice: t('projects.project was successfully created')) }
-        format.xml  { render xml: @project, status: :created, location: @project }
+        format.html do
+          redirect_to(@project, notice: t('projects.project was successfully created'))
+        end
+        format.xml { render xml: @project, status: :created, location: @project }
       else
         format.html { render action: 'new' }
         format.xml  { render xml: @project.errors, status: :unprocessable_entity }
@@ -76,8 +78,10 @@ class ProjectsController < ApplicationController
   def update
     respond_to do |format|
       if ProjectOperations::Update.call(@project, allowed_params, current_user)
-        format.html { redirect_to(@project, notice: t('projects.project was successfully updated')) }
-        format.xml  { head :ok }
+        format.html do
+          redirect_to(@project, notice: t('projects.project was successfully updated'))
+        end
+        format.xml { head :ok }
       else
         format.html { render action: 'edit' }
         format.xml  { render xml: @project.errors, status: :unprocessable_entity }
@@ -103,8 +107,13 @@ class ProjectsController < ApplicationController
     project.users << current_user
 
     respond_to do |format|
-      format.html { redirect_to(project, notice: I18n.t('was added to this project', scope: 'users', email: current_user.email)) }
-      format.xml  { render xml: project, status: :created, location: project }
+      format.html do
+        redirect_to(
+          project,
+          notice: I18n.t('was added to this project', scope: 'users', email: current_user.email)
+        )
+      end
+      format.xml { render xml: project, status: :created, location: project }
     end
   end
 
@@ -213,9 +222,20 @@ class ProjectsController < ApplicationController
     authorize @project
 
     respond_to do |format|
-      if @project = ProjectOperations::Update.call(@project, { archived: archive ? Time.current : '0' }, current_user)
-        format.html { redirect_to(@project, notice: t("projects.project was successfully #{archive ? 'archived' : 'unarchived'}")) }
-        format.xml  { head :ok }
+      @project = ProjectOperations::Update.call(
+        @project,
+        { archived: archive ? Time.current : '0' },
+        current_user
+      )
+
+      if @project
+        format.html do
+          redirect_to(
+            @project,
+            notice: t("projects.project was successfully #{archive ? 'archived' : 'unarchived'}")
+          )
+        end
+        format.xml { head :ok }
       else
         format.html { render action: 'edit' }
         format.xml  { render xml: @project.errors, status: :unprocessable_entity }

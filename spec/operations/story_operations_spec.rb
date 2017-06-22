@@ -1,11 +1,14 @@
 require 'rails_helper'
 
 describe StoryOperations do
-  let!(:membership)     { create(:membership) }
-  let(:user)            { User.first }
-  let(:project)         { Project.first }
-  let(:story_params)    { { title: 'Test Story', requested_by: user, state: 'unstarted', accepted_at: nil } }
-  let(:story)           { project.stories.build(story_params) }
+  let(:story_params) do
+    { title: 'Test Story', requested_by: user, state: 'unstarted', accepted_at: nil }
+  end
+
+  let!(:membership) { create(:membership) }
+  let(:user)        { User.first }
+  let(:project)     { Project.first }
+  let(:story)       { project.stories.build(story_params) }
 
   describe '::Create' do
     subject { -> { StoryOperations::Create.call(story, user) } }
@@ -56,21 +59,48 @@ describe StoryOperations do
 
     let(:attachments) do
       [
-        { 'id' => 30, 'public_id' => 'hello.jpg', 'version' => '1471624237', 'format' => 'png', 'resource_type' => 'image' },
-        { 'id' => 31, 'public_id' => 'hello2.jpg', 'version' => '1471624237', 'format' => 'png', 'resource_type' => 'image' }
+        {
+          'id' => 30,
+          'public_id' => 'hello.jpg',
+          'version' => '1471624237',
+          'format' => 'png',
+          'resource_type' => 'image'
+        },
+        {
+          'id' => 31,
+          'public_id' => 'hello2.jpg',
+          'version' => '1471624237',
+          'format' => 'png',
+          'resource_type' => 'image'
+        }
       ]
     end
 
     let(:new_documents) do
       [
-        { 'public_id' => 'hello3.jpg', 'version' => '1471624237', 'format' => 'png', 'resource_type' => 'image' },
-        { 'id' => 31, 'public_id' => 'hello2.jpg', 'version' => '1471624237', 'format' => 'png', 'resource_type' => 'image' }
+        {
+          'public_id' => 'hello3.jpg',
+          'version' => '1471624237',
+          'format' => 'png',
+          'resource_type' => 'image'
+        },
+        {
+          'id' => 31,
+          'public_id' => 'hello2.jpg',
+          'version' => '1471624237',
+          'format' => 'png',
+          'resource_type' => 'image'
+        }
       ]
     end
 
     before do
       attachments.each do |a|
-        Story.connection.execute("insert into attachinary_files (#{a.keys.join(', ')}, scope, attachinariable_id, attachinariable_type) values ('#{a.values.join("', '")}', 'documents', #{story.id}, 'Story')")
+        Story.connection.execute(
+          'insert into attachinary_files ' \
+          "(#{a.keys.join(', ')}, scope, attachinariable_id, attachinariable_type) " \
+          "values ('#{a.values.join("', '")}', 'documents', #{story.id}, 'Story')"
+        )
       end
     end
 
@@ -78,7 +108,8 @@ describe StoryOperations do
       VCR.use_cassette('cloudinary_upload_activity') do
         subject.call
       end
-      expect(Activity.last.subject_changes['documents_attributes']).to eq([['hello2.jpg', 'hello.jpg'], ['hello2.jpg', 'hello3.jpg']])
+      expect(Activity.last.subject_changes['documents_attributes'])
+        .to eq([['hello2.jpg', 'hello.jpg'], ['hello2.jpg', 'hello3.jpg']])
     end
   end
 
@@ -87,7 +118,11 @@ describe StoryOperations do
       story.save!
     end
 
-    subject { -> { StoryOperations::Update.call(story, { state: 'accepted', accepted_at: Date.current }, user) } }
+    subject do
+      -> do
+        StoryOperations::Update.call(story, { state: 'accepted', accepted_at: Date.current }, user)
+      end
+    end
 
     context '::LegacyFixes' do
       it "sets the project start date if it doesn't exist" do
@@ -165,7 +200,8 @@ describe StoryOperations do
               ]
             }
           ],
-          mattermost:"[Test Project] The story ['Test Story'](http://foo.com/projects/123#story-#{story.id}) has been started."
+          mattermost: "[Test Project] The story ['Test Story']" \
+            "(http://foo.com/projects/123#story-#{story.id}) has been started."
         )
 
         subject.call
@@ -215,7 +251,8 @@ describe StoryOperations do
               ]
             }
           ],
-          mattermost:"[Test Project] The story ['Test Story'](http://foo.com/projects/123#story-#{story.id}) has been delivered."
+          mattermost: "[Test Project] The story ['Test Story']" \
+            "(http://foo.com/projects/123#story-#{story.id}) has been delivered."
         )
 
         subject.call
@@ -265,7 +302,8 @@ describe StoryOperations do
               ]
             }
           ],
-          mattermost:"[Test Project] The story ['Test Story'](http://foo.com/projects/123#story-#{story.id}) has been accepted."
+          mattermost: "[Test Project] The story ['Test Story']" \
+            "(http://foo.com/projects/123#story-#{story.id}) has been accepted."
         )
 
         subject.call
@@ -315,7 +353,8 @@ describe StoryOperations do
               ]
             }
           ],
-          mattermost:"[Test Project] The story ['Test Story'](http://foo.com/projects/123#story-#{story.id}) has been rejected."
+          mattermost: "[Test Project] The story ['Test Story']" \
+            "(http://foo.com/projects/123#story-#{story.id}) has been rejected."
         )
 
         subject.call

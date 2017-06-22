@@ -5,7 +5,9 @@ describe NotePolicy do
   let(:note) { create :note, story: story }
   let(:story) { create :story, project: project, requested_by: other_member }
   let(:project) { create :project }
-  let(:pundit_context) { PunditContext.new(current_team, current_user, current_project: project, current_story: story) }
+  let(:pundit_context) do
+    PunditContext.new(current_team, current_user, current_project: project, current_story: story)
+  end
   let(:current_team) { current_user.teams.first }
   let(:policy_scope) { NotePolicy::Scope.new(pundit_context, Note).resolve.all }
 

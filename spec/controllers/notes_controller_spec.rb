@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe NotesController do
-  let(:user)           { create :user, :with_team, email: 'user@example.com', password: 'password' }
-  let(:project)        { create(:project, name: 'Test Project', users: [user], teams: [user.teams.first]) }
-  let(:story)          { create(:story, project: project, requested_by: user) }
+  let(:user)    { create :user, :with_team, email: 'user@example.com', password: 'password' }
+  let(:project) { create(:project, name: 'Test Project', users: [user], teams: [user.teams.first]) }
+  let(:story)   { create(:story, project: project, requested_by: user) }
   let(:request_params) { { project_id: project.id, story_id: story.id } }
 
   context 'when not logged in' do

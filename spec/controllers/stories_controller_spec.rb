@@ -18,8 +18,10 @@ describe StoriesController do
   end
 
   context 'when logged in' do
-    let(:user)     { create :user, :with_team }
-    let!(:project) { create(:project, name: 'Test Project', users: [user], teams: [user.teams.first]) }
+    let(:user) { create :user, :with_team }
+    let!(:project) do
+      create(:project, name: 'Test Project', users: [user], teams: [user.teams.first])
+    end
 
     before do
       sign_in user
@@ -37,8 +39,22 @@ describe StoriesController do
     context 'update without losing documents' do
       let(:attachments) do
         [
-          { 'id' => 30, 'public_id' => 'Screen_Shot_2016-08-19_at_09.30.57_blnr1a', 'version' => '1471624237', 'format' => 'png', 'resource_type' => 'image', 'path' => 'v1471624237/Screen_Shot_2016-08-19_at_09.30.57_blnr1a.png' },
-          { 'id' => 31, 'public_id' => 'Screen_Shot_2016-08-19_at_09.30.57_blnr1a', 'version' => '1471624237', 'format' => 'png', 'resource_type' => 'image', 'path' => 'v1471624237/Screen_Shot_2016-08-19_at_09.30.57_blnr1a.png' }
+          {
+            'id' => 30,
+            'public_id' => 'Screen_Shot_2016-08-19_at_09.30.57_blnr1a',
+            'version' => '1471624237',
+            'format' => 'png',
+            'resource_type' => 'image',
+            'path' => 'v1471624237/Screen_Shot_2016-08-19_at_09.30.57_blnr1a.png'
+          },
+          {
+            'id' => 31,
+            'public_id' => 'Screen_Shot_2016-08-19_at_09.30.57_blnr1a',
+            'version' => '1471624237',
+            'format' => 'png',
+            'resource_type' => 'image',
+            'path' => 'v1471624237/Screen_Shot_2016-08-19_at_09.30.57_blnr1a.png'
+          }
         ]
       end
 
@@ -51,7 +67,11 @@ describe StoriesController do
       before do
         attachments.each do |a|
           a.delete('path')
-          Story.connection.execute("insert into attachinary_files (#{a.keys.join(', ')}, scope, attachinariable_id, attachinariable_type) values ('#{a.values.join("', '")}', 'documents', #{story.id}, 'Story')")
+          Story.connection.execute(
+            'insert into attachinary_files ' \
+            "(#{a.keys.join(', ')}, scope, attachinariable_id, attachinariable_type) " \
+            "values ('#{a.values.join("', '")}', 'documents', #{story.id}, 'Story')"
+          )
         end
       end
 
@@ -73,7 +93,39 @@ describe StoriesController do
     end
 
     context 'simulating bug on new story with attachment' do
-      let(:received_params) { { 'story' => { 'events' => nil, 'documents' => [{ 'public_id' => 'BrunoPassos2_gvwhs5', 'version' => 1_473_786_081, 'signature' => '380e170a8d26bbe1a869bd2e00c912141b1c2a35', 'width' => 1000, 'height' => 1000, 'format' => 'jpg', 'resource_type' => 'image', 'created_at' => '2016-09-13T17:01:21Z', 'tags' => %w(development_env attachinary_tmp), 'bytes' => 690_807, 'type' => 'upload', 'etag' => '88b961d2a64db1857deba31a8fadcae7', 'url' => 'http://res.cloudinary.com/hq5e5afno/image/upload/v1473786081/BrunoPassos2_gvwhs5.jpg', 'secure_url' => 'https://res.cloudinary.com/hq5e5afno/image/upload/v1473786081/BrunoPassos2_gvwhs5.jpg', 'original_filename' => 'BrunoPassos2' }], 'state' => 'unscheduled', 'story_type' => 'feature', 'files' => nil, 'editing' => true, 'title' => 'teste' }, 'project_id' => project.id } }
+      let(:received_params) do
+        {
+          'story' => {
+            'events' => nil,
+            'documents' => [{
+              'public_id' => 'BrunoPassos2_gvwhs5',
+              'version' => 1_473_786_081,
+              'signature' => '380e170a8d26bbe1a869bd2e00c912141b1c2a35',
+              'width' => 1000,
+              'height' => 1000,
+              'format' => 'jpg',
+              'resource_type' => 'image',
+              'created_at' => '2016-09-13T17:01:21Z',
+              'tags' => %w(development_env attachinary_tmp),
+              'bytes' => 690_807,
+              'type' =>
+              'upload',
+              'etag' => '88b961d2a64db1857deba31a8fadcae7',
+              'url' => 'http://res.cloudinary.com/hq5e5afno/image/upload/v1473786081' \
+                        '/BrunoPassos2_gvwhs5.jpg',
+              'secure_url' => 'https://res.cloudinary.com/hq5e5afno/image/upload/v1473786081' \
+                              '/BrunoPassos2_gvwhs5.jpg',
+              'original_filename' => 'BrunoPassos2'
+            }],
+            'state' => 'unscheduled',
+            'story_type' => 'feature',
+            'files' => nil,
+            'editing' => true,
+            'title' => 'teste'
+          },
+          'project_id' => project.id
+        }
+      end
 
       it 'should create the new story and associate the attachments' do
         VCR.use_cassette('cloudinary_upload_new_story') do

@@ -7,7 +7,9 @@ describe ProjectPolicy do
   let(:policy_scope) { ProjectPolicy::Scope.new(pundit_context, Project).resolve.all }
   subject { ProjectPolicy.new(pundit_context, project) }
 
-  let!(:archived_project) { create :project, teams: [current_team], users: [current_user], archived_at: Time.current }
+  let!(:archived_project) do
+    create :project, teams: [current_team], users: [current_user], archived_at: Time.current
+  end
 
   context 'proper user of project and the team owns this project' do
     before do
@@ -22,7 +24,8 @@ describe ProjectPolicy do
         it { should permit(action) }
       end
 
-      %i(import import_upload archive unarchive destroy share unshare transfer ownership).each do |action|
+      %i(import import_upload archive unarchive destroy share unshare
+        transfer ownership).each do |action|
         it { should permit(action) }
       end
     end
@@ -41,7 +44,8 @@ describe ProjectPolicy do
         it { should permit(action) }
       end
 
-      %i(import import_upload archive unarchive destroy share unshare transfer ownership join).each do |action|
+      %i(import import_upload archive unarchive destroy share unshare transfer
+        ownership join).each do |action|
         it { should_not permit(action) }
       end
 
@@ -61,7 +65,8 @@ describe ProjectPolicy do
         it { should_not permit(action) }
       end
 
-      %i(import import_upload archive unarchive destroy share unshare transfer ownership join).each do |action|
+      %i(import import_upload archive unarchive destroy share unshare transfer
+        ownership join).each do |action|
         it { should_not permit(action) }
       end
 
@@ -81,7 +86,8 @@ describe ProjectPolicy do
         it { should permit(action) }
       end
 
-      %i(import import_upload archive unarchive destroy share unshare transfer ownership).each do |action|
+      %i(import import_upload archive unarchive destroy share unshare transfer
+        ownership).each do |action|
         it { should_not permit(action) }
       end
 
@@ -99,7 +105,8 @@ describe ProjectPolicy do
         it { should_not permit(action) }
       end
 
-      %i(import import_upload archive unarchive destroy share unshare transfer ownership).each do |action|
+      %i(import import_upload archive unarchive destroy share unshare transfer
+        ownership).each do |action|
         it { should_not permit(action) }
       end
 

@@ -1,5 +1,6 @@
 ActiveAdmin.register Team do
-  permit_params :name, :disable_registration, :registration_domain_whitelist, :registration_domain_blacklist, :logo, :archived_at
+  permit_params :name, :disable_registration, :registration_domain_whitelist,
+                :registration_domain_blacklist, :logo, :archived_at
 
   index do
     selectable_column

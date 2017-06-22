@@ -22,7 +22,10 @@ class Story < ActiveRecord::Base
   has_many :changesets, dependent: :destroy
   has_many :tasks, dependent: :destroy
 
-  has_attachments :documents, accept: [:raw, :jpg, :png, :psd, :docx, :xlsx, :doc, :xls, :pdf], maximum: 10
+  has_attachments :documents,
+    accept: [:raw, :jpg, :png, :psd, :docx, :xlsx, :doc, :xls, :pdf],
+    maximum: 10
+
   attr_accessor :documents_attributes_was
   prepend ReadOnlyDocuments
 

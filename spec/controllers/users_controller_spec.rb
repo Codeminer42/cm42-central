@@ -120,7 +120,8 @@ describe UsersController do
 
           specify do
             post :create, project_id: project.id, user: user_params
-            expect(flash[:alert]).to eq("#{assigns[:user].email} is already a member of this project")
+            expect(flash[:alert])
+              .to eq("#{assigns[:user].email} is already a member of this project")
           end
         end
 
@@ -128,7 +129,8 @@ describe UsersController do
           context "and user didn't exist already and was created" do
             specify do
               post :create, project_id: project.id, user: user_params
-              expect(flash[:notice]).to eq("#{assigns[:user].email} was sent an invite to join this project")
+              expect(flash[:notice])
+                .to eq("#{assigns[:user].email} was sent an invite to join this project")
             end
           end
 
@@ -205,7 +207,8 @@ describe UsersController do
 
           specify do
             post :create, project_id: project.id, user: user_params
-            expect(flash[:error]).to eq(I18n.t('users.You are not authorized to perform this action'))
+            expect(flash[:error])
+              .to eq(I18n.t('users.You are not authorized to perform this action'))
             expect(response).to redirect_to(root_path)
           end
         end
@@ -227,7 +230,8 @@ describe UsersController do
         context 'another user' do
           specify do
             delete :destroy, project_id: project.id, id: another_user.id
-            expect(flash[:error]).to eq(I18n.t('users.You are not authorized to perform this action'))
+            expect(flash[:error])
+              .to eq(I18n.t('users.You are not authorized to perform this action'))
             expect(response).to redirect_to(root_path)
           end
         end

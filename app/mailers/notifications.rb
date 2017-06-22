@@ -41,7 +41,8 @@ class Notifications < ActionMailer::Base
       {
         to: story.requested_by.email,
         from: actor.email,
-        subject: "[#{story.project.name}] Your story '#{story.title}' has been delivered for acceptance."
+        subject: "[#{story.project.name}] Your story '#{story.title}' " \
+          'has been delivered for acceptance.'
       }
     end
 

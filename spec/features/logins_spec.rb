@@ -69,9 +69,10 @@ describe 'Logins' do
 
         click_button 'Sign in'
 
-        expect(page).to have_selector('span', text: I18n.t('teams.switch')) &
-                        have_selector('.user-dropdown', text: 'Test User') &
-                        have_selector('.simple-alert', text: "Oops! You're not enrolled to a team yet.")
+        expect(page)
+          .to have_selector('span', text: I18n.t('teams.switch')) &
+              have_selector('.user-dropdown', text: 'Test User') &
+              have_selector('.simple-alert', text: "Oops! You're not enrolled to a team yet.")
       end
     end
 
@@ -91,7 +92,9 @@ describe 'Logins' do
       end
 
       context 'when account was already enabled' do
-        before { user.update authy_enabled: true, authy_id: '12345', last_sign_in_with_authy: Time.current }
+        before do
+          user.update authy_enabled: true, authy_id: '12345', last_sign_in_with_authy: Time.current
+        end
 
         it 'redirects to verify token page', js: true do
           visit root_path
@@ -101,7 +104,8 @@ describe 'Logins' do
           fill_in 'Password',  with: 'password'
           click_button 'Sign in'
 
-          expect(page).to have_selector('legend', text: I18n.t('submit_token_title', scope: 'devise'))
+          expect(page)
+            .to have_selector('legend', text: I18n.t('submit_token_title', scope: 'devise'))
         end
       end
     end

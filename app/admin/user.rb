@@ -1,5 +1,6 @@
 ActiveAdmin.register User do
-  permit_params :email, :name, :initials, :username, :locale, :time_zone, :authy_enabled, :password, :password_confirmation
+  permit_params :email, :name, :initials, :username, :locale, :time_zone, :authy_enabled,
+                :password, :password_confirmation
 
   index do
     selectable_column

@@ -52,7 +52,9 @@ describe 'Projects' do
         sign_in user
       end
 
-      let(:user) { create :user, :with_team_and_is_admin, email: 'user@example.com', password: 'password' }
+      let(:user) do
+        create :user, :with_team_and_is_admin, email: 'user@example.com', password: 'password'
+      end
       let(:team) { user.teams.first }
       let(:tag_group) { create :tag_group }
 
@@ -159,7 +161,10 @@ describe 'Projects' do
             click_on 'Create Tag group'
 
             expect(current_path).to eq(edit_project_path(project))
-            expect(page).to have_select('project_tag_group_id', with_options: [tag_group.name, 'foo_tag_name'])
+            expect(page).to have_select(
+              'project_tag_group_id',
+              with_options: [tag_group.name, 'foo_tag_name']
+            )
           end
 
           it 'shows form errors', js: true do

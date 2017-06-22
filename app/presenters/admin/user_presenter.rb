@@ -16,23 +16,36 @@ class Admin::UserPresenter < SimpleDelegator
   end
 
   def admin_button
-    html_button(btn_text: t('users.admin_off'),
-                btn_class: 'btn-warning',
-                is_admin: false,
-                confirm_message: t('are you sure you want to remove administration rights from this user', scope: TRANSLATION_SCOPE))
+    html_button(
+      btn_text: t('users.admin_off'),
+      btn_class: 'btn-warning',
+      is_admin: false,
+      confirm_message: t(
+        'are you sure you want to remove administration rights from this user',
+        scope: TRANSLATION_SCOPE
+      )
+    )
   end
 
   def user_button
-    html_button(btn_text: t('users.admin_on'),
-                btn_class: 'btn-primary',
-                is_admin: true,
-                confirm_message: t('are you sure you want to give administration rights to this user', scope: TRANSLATION_SCOPE))
+    html_button(
+      btn_text: t('users.admin_on'),
+      btn_class: 'btn-primary',
+      is_admin: true,
+      confirm_message: t(
+        'are you sure you want to give administration rights to this user',
+        scope: TRANSLATION_SCOPE
+      )
+    )
   end
 
   def html_button(btn_text:, is_admin:, btn_class:, confirm_message:)
-    link_to btn_text, enrollment_admin_user_path(@user, is_admin: is_admin),
-            class: "btn btn-sm btn-square #{btn_class}",
-            data: { confirm: confirm_message },
-            method: :patch
+    link_to(
+      btn_text,
+      enrollment_admin_user_path(@user, is_admin: is_admin),
+      class: "btn btn-sm btn-square #{btn_class}",
+      data: { confirm: confirm_message },
+      method: :patch
+    )
   end
 end

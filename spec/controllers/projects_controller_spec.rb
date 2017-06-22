@@ -8,7 +8,9 @@ describe ProjectsController do
         expect(response).to redirect_to(new_user_session_url)
       end
     end
-    %w(show edit update destroy reports import import_upload archive unarchive ownership join).each do |action|
+
+    %w(show edit update destroy reports import import_upload archive unarchive
+      ownership join).each do |action|
       specify do
         get action, id: 42
         expect(response).to redirect_to(new_user_session_url)
@@ -278,7 +280,10 @@ describe ProjectsController do
               let(:error) { 'Bad CSV!' }
               before do
                 session[:import_job] = { id: 'foo', created_at: 5.minutes.ago }
-                expect(Rails.cache).to receive(:read).with('foo').and_return(invalid_stories: [], errors: error)
+                expect(Rails.cache)
+                  .to receive(:read)
+                  .with('foo')
+                  .and_return(invalid_stories: [], errors: error)
               end
               specify do
                 get :import, id: project.id
@@ -293,7 +298,10 @@ describe ProjectsController do
               let(:invalid_story) { { title: 'hello', errors: 'bad cookie' } }
               before do
                 session[:import_job] = { id: 'foo', created_at: 5.minutes.ago }
-                expect(Rails.cache).to receive(:read).with('foo').and_return(invalid_stories: [invalid_story], errors: nil)
+                expect(Rails.cache)
+                  .to receive(:read)
+                  .with('foo')
+                  .and_return(invalid_stories: [invalid_story], errors: nil)
               end
 
               specify do
@@ -313,7 +321,8 @@ describe ProjectsController do
             specify do
               put :import_upload, id: project.id, project: { import: '' }
               expect(response).to redirect_to(import_project_path(project))
-              expect(flash[:alert]).to eq('You must select a CSV file to import its stories to the project.')
+              expect(flash[:alert])
+                .to eq('You must select a CSV file to import its stories to the project.')
             end
           end
 
@@ -325,10 +334,19 @@ describe ProjectsController do
             end
 
             specify do
-              expect(Project).to receive_message_chain(:friendly, :find).with(project.id.to_s).and_return(project)
+              expect(Project)
+                .to receive_message_chain(:friendly, :find)
+                .with(project.id.to_s)
+                .and_return(project)
+
               expect(ImportWorker).to receive(:perform_async)
               put :import_upload, id: project.id, project: { import: csv }
-              expect(flash[:notice]).to eq('Your uploaded CSV file is being processed. You can come back here later when the process is finished.')
+
+              expect(flash[:notice]).to eq(
+                'Your uploaded CSV file is being processed. You can come back here ' \
+                'later when the process is finished.'
+              )
+
               expect(response).to redirect_to(import_project_path(project))
             end
           end
@@ -340,12 +358,24 @@ describe ProjectsController do
 
           context 'when sharing/unsharing' do
             specify do
-              patch :ownership, id: project.id, project: { slug: another_team.slug }, ownership_action: 'share'
+              patch(
+                :ownership,
+                id: project.id,
+                project: { slug: another_team.slug },
+                ownership_action: 'share'
+              )
+
               expect(team.ownerships.where(project: project).count).to be(1)
               expect(another_team.ownerships.where(project: project).count).to be(1)
               expect(response).to redirect_to(edit_project_path(assigns[:project]))
 
-              patch :ownership, id: project.id, project: { slug: another_team.slug }, ownership_action: 'unshare'
+              patch(
+                :ownership,
+                id: project.id,
+                project: { slug: another_team.slug },
+                ownership_action: 'unshare'
+              )
+
               expect(team.ownerships.where(project: project).count).to be(1)
               expect(another_team.ownerships.where(project: project).count).to be(0)
               expect(response).to redirect_to(edit_project_path(assigns[:project]))
@@ -354,7 +384,13 @@ describe ProjectsController do
 
           context 'when transfering' do
             specify do
-              patch :ownership, id: project.id, project: { slug: another_team.slug }, ownership_action: 'transfer'
+              patch(
+                :ownership,
+                id: project.id,
+                project: { slug: another_team.slug },
+                ownership_action: 'transfer'
+              )
+
               expect(another_team.owns?(project)).to be_truthy
               expect(team.owns?(project)).to be_falsey
               expect(another_team.users).to eq([another_admin])

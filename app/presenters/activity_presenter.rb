@@ -4,7 +4,15 @@ class ActivityPresenter < SimpleDelegator
   attr_reader :activity
 
   IGNORED_FIELDS = %w(updated_at created_at owned_by_id owned_by_initials requested_by_id).freeze
-  STORY_STATES_ENUM = { 'unscheduled' => 0, 'unstarted' => 1, 'started' => 2, 'finished' => 3, 'delivered' => 4, 'accepted' => 5, 'rejected' => 6 }.freeze
+  STORY_STATES_ENUM = {
+    'unscheduled' => 0,
+    'unstarted' => 1,
+    'started' => 2,
+    'finished' => 3,
+    'delivered' => 4,
+    'accepted' => 5,
+    'rejected' => 6
+  }.freeze
 
   def initialize(activity)
     @activity = activity
@@ -32,9 +40,12 @@ class ActivityPresenter < SimpleDelegator
     when 'Project'
       "#{subject_type} '#{helpers.link_to subject.name, project_path(subject)}'"
     when 'Story'
-      "#{subject_type} ##{subject_id} - '#{helpers.link_to subject.title, project_path(subject.try(:project_id)) + '#story-' + subject_id.to_s}'"
+      path = project_path(subject.try(:project_id)) + '#story-' + subject_id.to_s
+      "#{subject_type} ##{subject_id} - '#{helpers.link_to subject.title, path}'"
     when 'Note', 'Task'
-      "#{subject_type} '#{(subject.try(:note) || subject.try(:name)).truncate(40)}' for Story '#{helpers.link_to subject.story.title, project_path(subject.story.project_id) + '#story-' + subject.story_id.to_s}'"
+      name = (subject.try(:note) || subject.try(:name)).truncate(40)
+      path = project_path(subject.story.project_id) + '#story-' + subject.story_id.to_s
+      "#{subject_type} '#{name}' for Story '#{helpers.link_to subject.story.title, path}'"
     end
   end
 

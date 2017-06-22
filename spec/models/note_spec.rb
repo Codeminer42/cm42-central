@@ -19,9 +19,8 @@ describe Note do
 
   describe '#as_json' do
     it 'returns the right keys' do
-      expect(subject.as_json['note'].keys.sort).to eq(%w(
-                                                        created_at errors id note story_id updated_at user_id user_name
-                                                      ))
+      expect(subject.as_json['note'].keys.sort)
+        .to eq(%w(created_at errors id note story_id updated_at user_id user_name))
     end
   end
 
@@ -49,7 +48,8 @@ describe Note do
     end
 
     it "can't modify a note from a readonly story" do
-      expect { @note.update_attribute(:note, 'new note') }.to raise_error(ActiveRecord::ReadOnlyRecord)
+      expect { @note.update_attribute(:note, 'new note') }
+        .to raise_error(ActiveRecord::ReadOnlyRecord)
     end
 
     it "can't let the note from an accepted story to be destroyed" do
@@ -57,7 +57,8 @@ describe Note do
     end
 
     it "can't add more notes to an accepted story" do
-      expect { @story.notes.create(note: 'test', user: user) }.to raise_error(ActiveRecord::ReadOnlyRecord)
+      expect { @story.notes.create(note: 'test', user: user) }
+        .to raise_error(ActiveRecord::ReadOnlyRecord)
     end
   end
 end

@@ -5,8 +5,10 @@ describe 'Stories' do
     sign_in user
   end
 
-  let(:user)     { create :user, :with_team, email: 'user@example.com', password: 'password' }
-  let!(:project) { create(:project, name: 'Test Project', users: [user], teams: [user.teams.first]) }
+  let(:user) { create :user, :with_team, email: 'user@example.com', password: 'password' }
+  let!(:project) do
+    create(:project, name: 'Test Project', users: [user], teams: [user.teams.first])
+  end
 
   describe 'full story life cycle' do
     before do
@@ -109,7 +111,9 @@ describe 'Stories' do
 
   describe 'story links' do
     let!(:story) { create(:story, title: 'Story', project: project, requested_by: user) }
-    let!(:target_story) { create(:story, state: 'unscheduled', project: project, requested_by: user) }
+    let!(:target_story) do
+      create(:story, state: 'unscheduled', project: project, requested_by: user)
+    end
 
     before do
       story.description = "Story ##{target_story.id}"

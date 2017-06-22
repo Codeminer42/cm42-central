@@ -164,7 +164,8 @@ describe TeamsController, type: :controller do
 
       before do
         sign_in normal_user
-        allow(subject).to receive_messages(current_user: normal_user, current_team: normal_user.teams.first)
+        allow(subject)
+          .to receive_messages(current_user: normal_user, current_team: normal_user.teams.first)
       end
 
       describe '#edit' do

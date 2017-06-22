@@ -49,7 +49,8 @@ module ProjectsHelper
   end
 
   def current_iteration_end_date
-    (@service.date_for_iteration_number(@service.current_iteration_number + 1) - 1.day).to_date.to_s(:short)
+    date = @service.date_for_iteration_number(@service.current_iteration_number + 1)
+    (date - 1.day).to_date.to_s(:short)
   end
 
   def current_iteration
@@ -76,7 +77,8 @@ module ProjectsHelper
     if current_iteration_points == 0
       number_to_percentage(0, precision: 2)
     else
-      number_to_percentage((accepted_points.to_f * 100.0) / current_iteration_points.to_f, precision: 2)
+      rate = (accepted_points.to_f * 100.0) / current_iteration_points.to_f
+      number_to_percentage(rate, precision: 2)
     end
   end
 
@@ -92,7 +94,8 @@ module ProjectsHelper
 
   def calculate_and_render_burn_up!
     service_full = IterationService.new(@project, since: nil)
-    @total_backlog_points = service_full.instance_variable_get('@stories').map(&:estimate).compact.sum
+    @total_backlog_points = service_full
+      .instance_variable_get('@stories').map(&:estimate).compact.sum
 
     @group_by_day = [
       { name: 'today', data: { Date.current => service_full.group_by_day[Date.current] } },

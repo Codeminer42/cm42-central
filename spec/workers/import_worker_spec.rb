@@ -38,7 +38,8 @@ describe ImportWorker do
     it 'must import from CSV and create the proper stories' do
       importer.perform('foo', project.id)
       expect(project.stories.count).to eq(0)
-      expect(importer.get_cache).to eq('foo' => { invalid_stories: [], errors: 'Illegal quoting in line 1.' })
+      expect(importer.get_cache)
+        .to eq('foo' => { invalid_stories: [], errors: 'Illegal quoting in line 1.' })
     end
   end
 
@@ -59,7 +60,16 @@ describe ImportWorker do
       expect(project.stories.first.state).to eq('accepted')
       expect(project.stories.first.story_type).to eq('bug')
       expect(project.stories.first.title).to eq('Valid story')
-      expect(importer.get_cache).to eq('foo' => { invalid_stories: [{ title: 'This story has an invalid estimate and type', errors: "Story type is not included in the list, Estimate is not an allowed value for this project, Estimate Bug or Chore stories can't be estimated" }], errors: nil })
+      expect(importer.get_cache).to eq(
+        'foo' => {
+          invalid_stories: [{
+            title: 'This story has an invalid estimate and type',
+            errors: 'Story type is not included in the list, Estimate is not an allowed value ' \
+              "for this project, Estimate Bug or Chore stories can't be estimated"
+          }],
+          errors: nil
+        }
+      )
     end
   end
 end

@@ -52,7 +52,10 @@ describe 'Confirmations' do
     fill_in 'Email', with: user.email
     click_button 'Resend confirmation instructions'
 
-    expect(page).to have_content('You will receive an email with instructions about how to confirm your account in a few minutes')
+    expect(page).to have_content(
+      'You will receive an email with instructions about how to ' \
+      'confirm your account in a few minutes'
+    )
 
     # There should be 2 deliveries, one from the user creation and one from
     # the resend instructions form.

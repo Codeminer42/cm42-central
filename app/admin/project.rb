@@ -1,5 +1,6 @@
 ActiveAdmin.register Project do
-  permit_params :name, :point_scale, :default_velocity, :start_date, :iteration_start_day, :iteration_length, :archived_at, :user_ids
+  permit_params :name, :point_scale, :default_velocity, :start_date, :iteration_start_day,
+                :iteration_length, :archived_at, :user_ids
 
   index do
     selectable_column

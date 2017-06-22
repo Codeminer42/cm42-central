@@ -36,7 +36,8 @@ describe Story do
     end
 
     it "can't change state back from accepted to anything else" do
-      expect { subject.update_attribute(:state, 'unscheduled') }.to raise_error(ActiveRecord::ReadOnlyRecord)
+      expect { subject.update_attribute(:state, 'unscheduled') }
+        .to raise_error(ActiveRecord::ReadOnlyRecord)
     end
 
     it "can't delete accepted story" do
@@ -46,15 +47,33 @@ describe Story do
     context 'with attachments' do
       let(:attachments) do
         [
-          { 'id' => 30, 'public_id' => 'Screen_Shot_2016-08-19_at_09.30.57_blnr1a', 'version' => '1471624237', 'format' => 'png', 'resource_type' => 'image', 'path' => 'v1471624237/Screen_Shot_2016-08-19_at_09.30.57_blnr1a.png' },
-          { 'id' => 31, 'public_id' => 'Screen_Shot_2016-08-19_at_09.30.57_blnr1a', 'version' => '1471624237', 'format' => 'png', 'resource_type' => 'image', 'path' => 'v1471624237/Screen_Shot_2016-08-19_at_09.30.57_blnr1a.png' }
+          {
+            'id' => 30,
+            'public_id' => 'Screen_Shot_2016-08-19_at_09.30.57_blnr1a',
+            'version' => '1471624237',
+            'format' => 'png',
+            'resource_type' => 'image',
+            'path' => 'v1471624237/Screen_Shot_2016-08-19_at_09.30.57_blnr1a.png'
+          },
+          {
+            'id' => 31,
+            'public_id' => 'Screen_Shot_2016-08-19_at_09.30.57_blnr1a',
+            'version' => '1471624237',
+            'format' => 'png',
+            'resource_type' => 'image',
+            'path' => 'v1471624237/Screen_Shot_2016-08-19_at_09.30.57_blnr1a.png'
+          }
         ]
       end
 
       before do
         attachments.each do |a|
           a.delete('path')
-          Story.connection.execute("insert into attachinary_files (#{a.keys.join(', ')}, scope, attachinariable_id, attachinariable_type) values ('#{a.values.join("', '")}', 'documents', #{subject.id}, 'Story')")
+          Story.connection.execute(
+            'insert into attachinary_files ' \
+            "(#{a.keys.join(', ')}, scope, attachinariable_id, attachinariable_type) " \
+            "values ('#{a.values.join("', '")}', 'documents', #{subject.id}, 'Story')"
+          )
         end
       end
 
@@ -75,7 +94,10 @@ describe Story do
     let(:story)           { project.stories.build(story_params) }
 
     it 'sets the project start_date to current' do
-      expect { story.fix_project_start_date }.to change(story.project, :start_date).from(nil).to(Date.current)
+      expect { story.fix_project_start_date }
+        .to change(story.project, :start_date)
+        .from(nil)
+        .to(Date.current)
     end
 
     context 'when the state has not changed' do
@@ -115,12 +137,15 @@ describe Story do
   end
 
   describe '#fix_story_accepted_at' do
-    let(:project)         { create(:project, start_date: Date.today) }
-    let(:story_params)    { { title: 'Test Story', state: 'accepted', accepted_at: Date.yesterday } }
-    let(:story)           { project.stories.build(story_params) }
+    let(:project)      { create(:project, start_date: Date.today) }
+    let(:story_params) { { title: 'Test Story', state: 'accepted', accepted_at: Date.yesterday } }
+    let(:story)        { project.stories.build(story_params) }
 
     it 'sets the project start_date to the same as story.accepted_at' do
-      expect { story.fix_story_accepted_at }.to change(story.project, :start_date).from(Date.today).to(Date.yesterday)
+      expect { story.fix_story_accepted_at }
+        .to change(story.project, :start_date)
+        .from(Date.today)
+        .to(Date.yesterday)
     end
 
     context 'when accepted_at is inexistent' do

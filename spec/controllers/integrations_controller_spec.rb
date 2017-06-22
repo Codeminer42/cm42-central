@@ -120,7 +120,8 @@ describe IntegrationsController do
             expect do
               post :create, project_id: project.id, integration: integration_params
             end.to change { Integration.count }.by(0)
-            expect(flash[:alert]).to eq("#{integration.kind} is already configured for this project")
+            expect(flash[:alert])
+              .to eq("#{integration.kind} is already configured for this project")
           end
         end
       end

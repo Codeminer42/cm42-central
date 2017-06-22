@@ -55,7 +55,10 @@ describe RegistrationsController do
         end
         specify do
           post :create, user: build(:unconfirmed_user).attributes
-          expect(flash[:notice]).to eq('You have signed up successfully. A confirmation was sent to your e-mail. Please follow the contained instructions to activate your account.')
+          expect(flash[:notice]).to eq(
+            'You have signed up successfully. A confirmation was sent to your e-mail. ' \
+            'Please follow the contained instructions to activate your account.'
+          )
         end
       end
     end
@@ -82,7 +85,10 @@ describe RegistrationsController do
       end
       specify do
         post :create, user: build(:unconfirmed_user).attributes
-        expect(flash[:notice]).to eq('You have signed up successfully. A confirmation was sent to your e-mail. Please follow the contained instructions to activate your account.')
+        expect(flash[:notice]).to eq(
+          'You have signed up successfully. A confirmation was sent to your e-mail. ' \
+          'Please follow the contained instructions to activate your account.'
+        )
       end
     end
   end

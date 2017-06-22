@@ -111,7 +111,13 @@ RSpec.describe V1::Projects do
         'iteration_length' => 1,
         'backlog' => [],
         'backlog_iterations' => [[], []],
-        'current_iteration_details' => { 'started' => 0, 'finished' => 0, 'delivered' => 0, 'accepted' => 0, 'rejected' => 0 },
+        'current_iteration_details' => {
+          'started' => 0,
+          'finished' => 0,
+          'delivered' => 0,
+          'accepted' => 0,
+          'rejected' => 0
+        },
         'backlog_date' => [2, backlog_date.strftime('%Y/%m/%d %H:%M:%S -0200')],
         'worst_backlog_date' => [2, worst_backlog_date.strftime('%Y/%m/%d %H:%M:%S -0200')]
       }

@@ -66,7 +66,15 @@ describe ProjectOperations do
     context 'Update' do
       before { project.save! }
 
-      subject { -> { ProjectOperations::Update.call(project, { name: 'Hello World', point_scale: 'linear', iteration_start_day: 4 }, user) } }
+      subject do
+        -> do
+          ProjectOperations::Update.call(
+            project,
+            { name: 'Hello World', point_scale: 'linear', iteration_start_day: 4 },
+            user
+          )
+        end
+      end
 
       it 'must record an activity' do
         expect { subject.call }.to change { Activity.count }
@@ -74,7 +82,11 @@ describe ProjectOperations do
         expect(activity.action).to eq('update')
         expect(activity.subject).to eq(project)
         activity.subject_changes.delete('updated_at')
-        expect(activity.subject_changes).to eq('name' => ['Foo bar', 'Hello World'], 'point_scale' => %w(fibonacci linear), 'iteration_start_day' => [1, 4])
+        expect(activity.subject_changes).to eq(
+          'name' => ['Foo bar', 'Hello World'],
+          'point_scale' => %w(fibonacci linear),
+          'iteration_start_day' => [1, 4]
+        )
       end
     end
 

@@ -123,6 +123,9 @@ class TeamsController < ApplicationController
   protected
 
   def allowed_params
-    params.require(:team).permit(:name, :disable_registration, :registration_domain_whitelist, :registration_domain_blacklist, :logo)
+    params.require(:team).permit(
+      :name, :disable_registration, :registration_domain_whitelist,
+      :registration_domain_blacklist, :logo
+    )
   end
 end
