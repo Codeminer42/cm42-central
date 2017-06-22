@@ -17,6 +17,7 @@
 ### Fixed
 - Story History bug when story actions where triggered
 - Ticket not being reassigned to current user when state change to "started"
+- Fix permission users to update others users
 
 ## [1.4.2] - 2017-05-24
 ### Removed
