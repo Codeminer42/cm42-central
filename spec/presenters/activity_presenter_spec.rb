@@ -122,7 +122,7 @@ describe ActivityPresenter do
           "'<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>' " \
           "changing estimate from '2' to '4', description to " \
           "'<del class=\"differ\">old</del><ins class=\"differ\">new</ins> description', " \
-          "state moved forward to started"
+          'state moved forward to started'
         )
       end
 
