@@ -94,8 +94,8 @@ module ProjectsHelper
 
   def calculate_and_render_burn_up!
     service_full = IterationService.new(@project, since: nil)
-    @total_backlog_points = service_full
-      .instance_variable_get('@stories').map(&:estimate).compact.sum
+    stories = service_full.instance_variable_get('@stories')
+    @total_backlog_points = stories.map(&:estimate).compact.sum
 
     @group_by_day = [
       { name: 'today', data: { Date.current => service_full.group_by_day[Date.current] } },

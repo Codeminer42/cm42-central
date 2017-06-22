@@ -79,7 +79,7 @@ module StoryOperations
 
         mattermost: "[#{model.project.name}] The story ['#{model.title}'](#{story_link}) " \
           "has been #{model.state}."
-     }
+      }
     end
   end
 end

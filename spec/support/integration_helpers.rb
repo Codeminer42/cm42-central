@@ -24,7 +24,7 @@ module IntegrationHelpers
                 19
               else
                 keys
-    end
+              end
     element = options[:element] ? options.delete(:element) : 'body'
     keypress_script = "var e = jQuery.Event('keypress', { keyCode: #{keycode} }); " \
       "jQuery('#{element}').trigger(e);"
