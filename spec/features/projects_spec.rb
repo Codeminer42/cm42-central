@@ -145,12 +145,11 @@ describe 'Projects' do
         describe "trying to add a user that is already a member in the current project" do
           let!(:user)  { create :user, :with_team_and_is_admin }
           let!(:user_to_be_added) { create :user, teams: [user.teams.first], email: "t@example.com"}
-
-          let!(:project_to_be_associate) {
-          create :project,  name: 'Test Project 2',
-                            users: [user_to_be_added],
-                            teams: [user_to_be_added.teams.first]
-        }
+          let!(:project_to_be_associate) do
+            create :project,  name: 'Test Project 2',
+                              users: [user_to_be_added],
+                              teams: [user_to_be_added.teams.first]
+          end
 
           it "shows a message saying that the user is already on the team" do
             visit project_users_path(project_to_be_associate.slug)
@@ -166,11 +165,12 @@ describe 'Projects' do
         describe 'trying to add an email that is not registered' do
           let!(:user)  { create :user, :with_team_and_is_admin }
 
-          let!(:project_to_be_associate) {
-          create :project,  name: 'Test Project 2',
-                            users: [user],
-                            teams: [user.teams.first]
-          }
+          let!(:project_to_be_associate) do
+            create :project,  name: 'Test Project 2',
+                              users: [user],
+                              teams: [user.teams.first]
+          end
+
           it 'shows an error message' do
             visit project_users_path(project_to_be_associate.slug)
 
