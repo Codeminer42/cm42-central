@@ -121,7 +121,9 @@ class ProjectsController < ApplicationController
   def import
     @import_job = session[:import_job]
     if @import_job.present?
-      if job_result = Rails.cache.read(@import_job[:id])
+      job_result = Rails.cache.read(@import_job[:id])
+
+      if job_result
         session[:import_job] = nil
         if job_result[:errors]
           flash[:alert] = "Unable to import CSV: #{job_result[:errors]}"
@@ -183,7 +185,9 @@ class ProjectsController < ApplicationController
       flash[:notice] = I18n.t('projects.project was successfully unshared')
     when 'transfer'
       Project.transaction do
-        if team_admin = team.enrollments.where(is_admin: true).first.try(:user)
+        team_admin = team.enrollments.where(is_admin: true).first.try(:user)
+
+        if team_admin
           current_team.ownerships.where(project: @project).delete_all
           @project.memberships.delete_all
           @project.users << team_admin
