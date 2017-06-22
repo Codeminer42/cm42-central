@@ -9,8 +9,19 @@ describe ProjectsController do
       end
     end
 
-    %w(show edit update destroy reports import import_upload archive unarchive
-      ownership join).each do |action|
+    %w(
+      show
+      edit
+      update
+      destroy
+      reports
+      import
+      import_upload
+      archive
+      unarchive
+      ownership
+      join
+    ).each do |action|
       specify do
         get action, id: 42
         expect(response).to redirect_to(new_user_session_url)

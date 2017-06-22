@@ -24,8 +24,17 @@ describe ProjectPolicy do
         it { should permit(action) }
       end
 
-      %i(import import_upload archive unarchive destroy share unshare
-        transfer ownership).each do |action|
+      %i(
+        import
+        import_upload
+        archive
+        unarchive
+        destroy
+        share
+        unshare
+        transfer
+        ownership
+      ).each do |action|
         it { should permit(action) }
       end
     end
@@ -44,8 +53,18 @@ describe ProjectPolicy do
         it { should permit(action) }
       end
 
-      %i(import import_upload archive unarchive destroy share unshare transfer
-        ownership join).each do |action|
+      %i(
+        import
+        import_upload
+        archive
+        unarchive
+        destroy
+        share
+        unshare
+        transfer
+        ownership
+        join
+      ).each do |action|
         it { should_not permit(action) }
       end
 
@@ -65,8 +84,18 @@ describe ProjectPolicy do
         it { should_not permit(action) }
       end
 
-      %i(import import_upload archive unarchive destroy share unshare transfer
-        ownership join).each do |action|
+      %i(
+        import
+        import_upload
+        archive
+        unarchive
+        destroy
+        share
+        unshare
+        transfer
+        ownership
+        join
+      ).each do |action|
         it { should_not permit(action) }
       end
 
@@ -86,8 +115,17 @@ describe ProjectPolicy do
         it { should permit(action) }
       end
 
-      %i(import import_upload archive unarchive destroy share unshare transfer
-        ownership).each do |action|
+      %i(
+        import
+        import_upload
+        archive
+        unarchive
+        destroy
+        share
+        unshare
+        transfer
+        ownership
+      ).each do |action|
         it { should_not permit(action) }
       end
 
@@ -105,8 +143,17 @@ describe ProjectPolicy do
         it { should_not permit(action) }
       end
 
-      %i(import import_upload archive unarchive destroy share unshare transfer
-        ownership).each do |action|
+      %i(
+        import
+        import_upload
+        archive
+        unarchive
+        destroy
+        share
+        unshare
+        transfer
+        ownership
+      ).each do |action|
         it { should_not permit(action) }
       end
 
