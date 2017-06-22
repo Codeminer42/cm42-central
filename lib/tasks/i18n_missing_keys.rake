@@ -98,7 +98,7 @@ class MissingKeysFinder
   end
 
   def load_translations
-    # Make sure we’ve loaded the translations
+    # Make sure we've loaded the translations
     I18n.backend.send(:init_translations)
   end
 
