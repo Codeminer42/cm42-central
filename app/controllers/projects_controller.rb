@@ -186,15 +186,12 @@ class ProjectsController < ApplicationController
     when 'transfer'
       Project.transaction do
         team_admin = team.enrollments.where(is_admin: true).first.try(:user)
+        raise ActiveRecord::RecordNotFound, 'Team Administrator not found' unless team_admin
 
-        if team_admin
-          current_team.ownerships.where(project: @project).delete_all
-          @project.memberships.delete_all
-          @project.users << team_admin
-          team.ownerships.create(project: @project, is_owner: true)
-        else
-          raise ActiveRecord::RecordNotFound, 'Team Administrator not found'
-        end
+        current_team.ownerships.where(project: @project).delete_all
+        @project.memberships.delete_all
+        @project.users << team_admin
+        team.ownerships.create(project: @project, is_owner: true)
       end
       flash[:notice] = I18n.t('projects.project was successfully transferred')
       redirect_to root_path
