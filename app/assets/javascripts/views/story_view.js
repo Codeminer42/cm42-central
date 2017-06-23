@@ -7,6 +7,7 @@ import StorySelect from 'components/story/StorySelect';
 import StoryDatePicker from 'components/story/StoryDatePicker';
 import StoryNotes from 'components/story/StoryNotes';
 import NoteForm from 'components/notes/NoteForm';
+import StoryLabels from 'components/story/StoryLabels';
 
 var Clipboard = require('clipboard');
 
@@ -388,12 +389,9 @@ module.exports = FormView.extend({
       );
 
       this.$el.append(
-        this.makeFormControl({
-          name: "labels",
-          label: true,
-          control: this.textField("labels"),
-          class: 'form-control',
-          disabled: this.isReadonly()
+        this.makeFormControl(function(div) {
+          const $storyTags = $('<div class="form-group" data-tags></div>');
+          $(div).append($storyTags);
         })
       );
 
@@ -425,8 +423,6 @@ module.exports = FormView.extend({
         })
       );
 
-      this.initTags();
-
       this.$el.append($('<div data-story-notes></div>'));
       this.$el.append($('<div data-story-note-form></div>'));
 
@@ -446,7 +442,6 @@ module.exports = FormView.extend({
   },
 
   renderReactComponents: function() {
-
     ReactDOM.render(
       <StoryControls
         onClickSave={this.clickSave}
@@ -477,6 +472,21 @@ module.exports = FormView.extend({
           description={this.parseDescription()} />,
           descriptionContainer
         );
+    }
+
+    const tagsInput = this.$('[data-tags]')[0];
+    if (tagsInput) {
+      ReactDOM.render(
+        <StoryLabels
+          name='labels'
+          className='labels'
+          value={this.model.get('labels')}
+          availableLabels={this.model.collection.labels}
+          onChange={ (event) => this.onChangeLabels(event) }
+          disabled={this.isReadonly()}
+        />,
+        tagsInput
+      );
     }
 
     this.renderSelects();
@@ -718,12 +728,12 @@ module.exports = FormView.extend({
       $storyDate.get(0)
     );
 
-
     const dateInput = this.$('input[name=release_date]');
     this.bindElementToAttribute(dateInput, 'release_date');
 
     this.$el.append(
-      this.makeFormControl(this.makeDescription()));
+      this.makeFormControl(this.makeDescription())
+    );
 
   },
 
@@ -763,21 +773,8 @@ module.exports = FormView.extend({
     this.$el.find('a.collapse').removeClass(/icons-/).addClass("icons-collapse");
   },
 
-  initTags: function() {
-    var model = this.model;
-    var $input = this.$el.find("input[name='labels']");
-    $input.tagit({
-      availableTags: model.collection.labels,
-      readOnly: this.isReadonly()
-    });
-
-    // Manually bind labels for now
-    $input.on('change', function(){
-      var that = this;
-      setTimeout(function() {
-        model.set({ labels: $(that).val()});
-      }, 50);
-    });
+  onChangeLabels: function(event){
+    this.model.set({ labels: event.target.value }, {silent: true});
   },
 
   renderTasks: function() {
