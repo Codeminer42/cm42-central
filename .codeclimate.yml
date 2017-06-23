@@ -1,4 +1,6 @@
 engines:
+  rubocop:
+    enabled: true
   bundler-audit:
     enabled: true
   flog:
