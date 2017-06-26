@@ -490,6 +490,15 @@ a.button {
   font-size:0.9em;
 }
 
+// Tasks
+.tasklist {
+  margin-top: 0;
+}
+
+.task {
+  margin-bottom: 3px;
+}
+
 // Notes
 div.note {
   background-color: $white;

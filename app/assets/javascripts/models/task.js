@@ -16,7 +16,7 @@ var Task = module.exports = Backbone.Model.extend({
     if( model.isReadonly ) {
       return true;
     }
-    Backbone.sync(method, model, options);
+    return Backbone.sync(method, model, options);
   }
 
 });

@@ -8,6 +8,8 @@ import StoryDatePicker from 'components/story/StoryDatePicker';
 import StoryNotes from 'components/story/StoryNotes';
 import NoteForm from 'components/notes/NoteForm';
 import StoryLabels from 'components/story/StoryLabels';
+import StoryTasks from 'components/story/StoryTasks';
+import TaskForm from 'components/tasks/TaskForm';
 
 var Clipboard = require('clipboard');
 
@@ -15,8 +17,6 @@ var executeAttachinary = require('libs/execute_attachinary');
 
 var FormView = require('./form_view');
 var EpicView = require('./epic_view');
-var TaskForm = require('./task_form');
-var TaskView = require('./task_view');
 
 const LOCAL_STORY_REGEXP = /(?!\s|\b)(#\d+)(?!\w)/g;
 
@@ -34,9 +34,10 @@ module.exports = FormView.extend({
     _.bindAll(this, "render", "highlight", "moveColumn", "setClassName",
       "transition", "estimate", "disableForm", "renderNotes",
       "hoverBox", "renderTasks", "handleNoteDelete", "handleSaveError",
-      "renderTasksCollection", "addEmptyTask", "handleNoteSubmit",
-      "clickSave", "attachmentDone", "attachmentStart",
-      "attachmentFail", "toggleControlButtons");
+      "addEmptyTask", "handleNoteSubmit", "renderTaskForm", "handleTaskSubmit",
+      "clickSave", "attachmentDone", "attachmentStart", "handleTaskUpdate",
+      "handleTaskSaveSuccess", "handleTaskDelete","attachmentFail",
+      "toggleControlButtons");
 
     // Rerender on any relevant change to the views story
     this.model.on("change", this.render);
@@ -70,9 +71,6 @@ module.exports = FormView.extend({
 
     // Set up CSS classes for the view
     this.setClassName();
-
-    // Add an empty task to the collection
-    this.addEmptyTask();
   },
 
   isReadonly: function() {
@@ -399,7 +397,8 @@ module.exports = FormView.extend({
         this.makeFormControl(this.makeDescription())
       );
 
-      this.renderTasks();
+      this.$el.append($('<div data-story-tasks></div>'));
+      this.$el.append($('<div data-story-task-form></div>'));
 
       this.$el.append(
         this.makeFormControl(function(div) {
@@ -490,6 +489,7 @@ module.exports = FormView.extend({
     }
 
     this.renderSelects();
+    this.renderTasks();
     this.renderNotes();
   },
 
@@ -639,6 +639,71 @@ module.exports = FormView.extend({
     });
   },
 
+  renderTasks: function() {
+    const $storyTasks = this.$('[data-story-tasks]');
+    if ($storyTasks.length && !this.model.isNew()) {
+      const isReadonly = this.isReadonly();
+      const tasks = this.model.tasks;
+
+      ReactDOM.render(
+        <StoryTasks
+          tasks={isReadonly ? tasks : tasks.slice(0, -1)}
+          disabled={isReadonly}
+          handleUpdate={this.handleTaskUpdate}
+          handleDelete={this.handleTaskDelete}
+        />,
+        $storyTasks.get(0)
+      );
+
+      if (!isReadonly) {
+        this.renderTaskForm();
+      }
+    }
+  },
+
+  renderTaskForm: function() {
+    const $taskForm = this.$('[data-story-task-form]');
+    if ($taskForm.length) {
+      this.addEmptyTask();
+
+      ReactDOM.render(
+        <TaskForm
+          onSubmit={this.handleTaskSubmit}
+          task={this.model.tasks.last()}
+        />,
+        $taskForm.get(0)
+      );
+    }
+  },
+
+  handleTaskSubmit: function({task, taskName}) {
+    task.set('name', taskName);
+    return task.save(null, {
+      dataType: 'text',
+      success: this.handleTaskSaveSuccess,
+      error: this.handleSaveError
+    });
+  },
+
+  handleTaskDelete: function(task) {
+    task.destroy();
+    this.renderTasks();
+  },
+
+  handleTaskSaveSuccess: function() {
+    window.projectView.model.fetch();
+    this.renderTasks();
+  },
+
+  handleTaskUpdate: function({task, done}) {
+    task.set('done', done);
+    task.save(null, {
+      dataType: 'text',
+      success: this.handleTaskSaveSuccess,
+      error: this.handleSaveError
+    });
+  },
+
   handleSaveError: function(model, response) {
     const json = JSON.parse(response.responseText);
     model.set({errors: json[model.name].errors});
@@ -775,33 +840,6 @@ module.exports = FormView.extend({
 
   onChangeLabels: function(event){
     this.model.set({ labels: event.target.value }, {silent: true});
-  },
-
-  renderTasks: function() {
-    if (this.model.tasks.length > 0) {
-      var el = this.$el;
-      el.append(this.label('tasks', I18n.t('story.tasks')));
-      el.append('<div class="tasklist"/>');
-      this.renderTasksCollection();
-    }
-  },
-
-  renderTasksCollection: function() {
-    var tasklist = this.$('div.tasklist');
-    tasklist.html('');
-    if(!this.isReadonly())
-      this.addEmptyTask();
-    var that = this;
-    this.model.tasks.each(function(task) {
-      var view;
-      if (!that.isReadonly() && task.isNew()) {
-        view = new TaskForm({model:task});
-      } else {
-        if (that.isReadonly()) task.isReadonly = true;
-        view = new TaskView({model:task});
-      }
-      tasklist.append(view.render().el);
-    });
   },
 
   addEmptyTask: function() {
