@@ -1,42 +1,47 @@
 import React from 'react';
+import AsyncForm from 'components/forms/AsyncForm';
 
 class NoteForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { loading: false };
-
-    this._handleSubmit = this._handleSubmit.bind(this);
+    this._getFormData = this._getFormData.bind(this);
   }
 
-  _handleSubmit(event) {
-    event.preventDefault();
-    this.setState({ loading: true });
-    this.props.onSubmit({
+  _getFormData() {
+    return {
       note: this.props.note,
       newValue: this.input.value
-    }).catch(() =>
-      this.setState({ loading: false })
-    );
+    };
   }
 
   render() {
-    const { loading } = this.state;
     return (
-      <div className='note_form clearfix'>
-        <textarea
-          name='note'
-          disabled={loading}
-          className='form-control note-textarea'
-          ref={(input) => { this.input = input }}
-        />
-        <input
-          type='submit'
-          className={`add-note btn btn-default btn-xs ${loading ? 'icons-throbber saving' : ''}`}
-          disabled={loading}
-          onClick={this._handleSubmit}
-          value={ I18n.t('add note') }
-        />
-      </div>
+      <AsyncForm
+        getFormData={this._getFormData}
+        onSubmit={this.props.onSubmit}
+      >
+        {
+          ({loading, handleSubmit}) => (
+            <div className='note_form clearfix'>
+              <textarea
+                name='note'
+                defaultValue=''
+                disabled={loading}
+                className='form-control note-textarea'
+                ref={(input) => { this.input = input }}
+              />
+              <button
+                type='submit'
+                className={`add-note btn btn-default btn-xs ${loading ? 'icons-throbber saving' : ''}`}
+                disabled={loading}
+                onClick={handleSubmit}
+              >
+                { I18n.t('add note') }
+              </button>
+            </div>
+          )
+        }
+      </AsyncForm>
     );
   }
 }
