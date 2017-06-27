@@ -59,7 +59,7 @@ services:
     volumes:
       - .:/app
       - node_modules:/app/node_modules
-    command: webpack-dev-server --hot --inline --progress --host 0.0.0.0 --config config/webpack.config.js
+    command: webpack-dev-server --hot --inline --progress --host 0.0.0.0 --public webpack --config config/webpack.config.js
 
 volumes:
   db:
