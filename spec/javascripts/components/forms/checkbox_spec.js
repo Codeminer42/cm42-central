@@ -6,9 +6,7 @@ import Checkbox from 'components/forms/Checkbox';
 
 describe('<Checkbox />', function() {
 
-  beforeEach(function() {
-    jasmineEnzyme();
-  });
+  beforeEach(jasmineEnzyme);
 
   it("should accept a label and children elements", function() {
     const wrapper = shallow(

@@ -4,6 +4,7 @@ import AsyncForm from 'components/forms/AsyncForm';
 class TaskForm extends React.Component {
   constructor(props) {
     super(props);
+    this.saveInputRef = input => { this.input = input };
     this._getFormData = this._getFormData.bind(this);
   }
 
@@ -28,7 +29,7 @@ class TaskForm extends React.Component {
                 defaultValue=''
                 disabled={loading}
                 className='form-control input-sm input-task'
-                ref={(input) => { this.input = input }}
+                ref={this.saveInputRef}
               />
               <button
                 type='submit'

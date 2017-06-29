@@ -45,7 +45,7 @@ describe "Notes" do
       within('#in_progress .story') do
         find('.story-title').trigger('click')
         within('.notelist') do
-          click_on 'Delete'
+          find('.delete-btn').trigger('click')
         end
       end
 

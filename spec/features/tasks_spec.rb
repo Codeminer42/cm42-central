@@ -9,15 +9,9 @@ describe "Tasks" do
     sign_in user
   end
 
-  let(:user)        { create :user, :with_team, email: 'user@example.com', password: 'password' }
-  let(:project)     { create(:project, name: 'Test Project', users: [user], teams: [user.teams.first] ) }
-
-  let!(:story) do
-    create :story,  title: 'Test Story',
-                    state: 'started',
-                    project: project,
-                    requested_by: user
-  end
+  let(:user)      { create(:user, :with_team) }
+  let(:project)   { create(:project, users: [user], teams: [user.teams.first]) }
+  let!(:story)    { create(:story, project: project, requested_by: user) }
 
   describe "full story life cycle" do
 
@@ -36,15 +30,14 @@ describe "Tasks" do
     end
 
     it "deletes a task from a story", js: true do
-      create :task, story: story,
-                    name: 'Delete me please'
+      create(:task, story: story, name: 'Delete me please')
 
       visit project_path(project)
 
       within('#in_progress .story') do
         find('.story-title').trigger('click')
         within('.tasklist') do
-          click_on 'Delete'
+          find('.delete-btn').trigger('click')
         end
       end
 
@@ -55,7 +48,8 @@ describe "Tasks" do
 
   describe "on a disabled story" do
     it "does not render a form", js: true do
-      create :story, state: 'accepted', project: project, requested_by: user
+      create(:story, state: 'accepted', project: project, requested_by: user)
+
       visit project_path(project)
 
       within('#in_progress .story.accepted') do

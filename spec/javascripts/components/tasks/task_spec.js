@@ -1,11 +1,12 @@
+
 import React from 'react';
 import jasmineEnzyme from 'jasmine-enzyme';
 import { shallow, mount } from 'enzyme';
 
+import Checkbox from 'components/forms/Checkbox';
 import TaskComponent from 'components/tasks/Task';
 import TaskForm from 'components/tasks/TaskForm';
-import Task from 'models/task.js';
-import Checkbox from 'components/forms/Checkbox';
+import Task from 'models/task';
 
 describe('<Task />', function() {
   let task;

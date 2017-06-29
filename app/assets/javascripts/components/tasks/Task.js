@@ -23,15 +23,14 @@ class Task extends React.Component {
 
   renderDelete() {
     return (
-      <a
-        href='#'
+      <span
         onClick={this._handleDelete}
         title={I18n.t('delete')}
         className='delete-btn'
         key={this.props.task.get('id')}
       >
         { I18n.t('delete') }
-      </a>
+      </span>
     );
   }
 

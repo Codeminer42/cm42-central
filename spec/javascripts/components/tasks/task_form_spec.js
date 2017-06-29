@@ -3,7 +3,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import TaskForm from 'components/tasks/TaskForm';
-import Task from 'models/task.js';
+import Task from 'models/task';
 
 describe('<TaskForm />', function() {
   let task;
