@@ -19,3 +19,5 @@ public/test_assets/
 /public/webpack
 js_coverage/
 coverage
+/public/packs
+/node_modules
