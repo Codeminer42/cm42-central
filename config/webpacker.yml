@@ -10,6 +10,7 @@ default: &default
     - .erb
     - .js
     - .jsx
+    - .ejs
     - .ts
     - .vue
     - .sass
@@ -26,7 +27,7 @@ development:
 
   dev_server:
     host: 0.0.0.0
-    port: 8080
+    port: 3808
     https: false
 
 test:

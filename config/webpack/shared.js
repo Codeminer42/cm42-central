@@ -3,11 +3,13 @@
 /* eslint global-require: 0 */
 /* eslint import/no-dynamic-require: 0 */
 
+const path = require('path')
 const webpack = require('webpack')
 const { basename, dirname, join, relative, resolve } = require('path')
 const { sync } = require('glob')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const ManifestPlugin = require('webpack-manifest-plugin')
+const StatsPlugin = require('stats-webpack-plugin')
 const extname = require('path-complete-extname')
 const { env, settings, output, loadersDir } = require('./configuration.js')
 
@@ -70,26 +72,24 @@ module.exports = {
       $: 'jquery',
       jQuery: 'jquery',
       _: 'underscore'
-    }),
-
-    new RewirePlugin()
+    })
   ],
 
   resolve: {
     extensions: settings.extensions,
     modules: [
-      resolve(settings.source_path),
+      resolve(entryPath),
       'node_modules'
     ],
     alias: {
-      vendor: path.join(__dirname, '..', 'vendor/assets/javascripts'),
-      collections: path.join(__dirname, '..', 'app/assets/javascripts/collections'),
-      mixins: path.join(__dirname, '..', 'app/assets/javascripts/mixins'),
-      models: path.join(__dirname, '..', 'app/assets/javascripts/models'),
-      templates: path.join(__dirname, '..', 'app/assets/javascripts/templates'),
-      views: path.join(__dirname, '..', 'app/assets/javascripts/views'),
-      libs: path.join(__dirname, '..', 'app/assets/javascripts/libs'),
-      components: path.join(__dirname, '..', 'app/assets/javascripts/components')
+      vendor: path.join(__dirname, '../..', 'vendor/assets/javascripts'),
+      collections: path.join(__dirname, '../..', 'app/assets/javascripts/collections'),
+      mixins: path.join(__dirname, '../..', 'app/assets/javascripts/mixins'),
+      models: path.join(__dirname, '../..', 'app/assets/javascripts/models'),
+      templates: path.join(__dirname, '../..', 'app/assets/javascripts/templates'),
+      views: path.join(__dirname, '../..', 'app/assets/javascripts/views'),
+      libs: path.join(__dirname, '../..', 'app/assets/javascripts/libs'),
+      components: path.join(__dirname, '../..', 'app/assets/javascripts/components')
     }
   },
 

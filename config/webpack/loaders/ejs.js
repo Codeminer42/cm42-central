@@ -1,4 +1,4 @@
 module.exports = {
-  est: /\.ejs$/, 
+  test: /\.ejs$/, 
   loader: 'ejs-compiled-loader'
 }
