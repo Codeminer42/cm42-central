@@ -241,7 +241,7 @@ module.exports = FormView.extend({
     }
   },
 
-  openEpic: function(e){
+  openEpic: function(e) {
     e.stopPropagation();
     var label = $(e.target).text();
     new EpicView({model: this.model.collection.project, label: label});
@@ -394,7 +394,10 @@ module.exports = FormView.extend({
       );
 
       this.$el.append(
-        this.makeFormControl(this.makeDescription())
+        this.makeFormControl(function(div) {
+          var $storyDescription = $('<div class="story-description"><div>');
+          $(div).append($storyDescription);
+        })
       );
 
       this.$el.append($('<div data-story-tasks></div>'));
@@ -462,14 +465,22 @@ module.exports = FormView.extend({
       new Clipboard('.btn-clipboard');
     }
 
-    const descriptionContainer = this.$('.description-wrapper')[0];
-    if (descriptionContainer) {
+    const description = this.$('.story-description')[0];
+    if (description) {
       ReactDOM.render(
         <StoryDescription
+          name='description'
           linkedStories={this.linkedStories}
           isReadonly={this.isReadonly()}
-          description={this.parseDescription()} />,
-          descriptionContainer
+          description={this.parseDescription()}
+          usernames={window.projectView.usernames()}
+          isNew={this.model.isNew()}
+          editingDescription={this.model.get('editingDescription')}
+          value={this.model.get("description")}
+          onChange={ (event) => this.onChangeModel(event.target.value, "description") }
+          onClick={this.editDescription}
+        />,
+          description
         );
     }
 
@@ -481,7 +492,7 @@ module.exports = FormView.extend({
           className='labels'
           value={this.model.get('labels')}
           availableLabels={this.model.collection.labels}
-          onChange={ (event) => this.onChangeLabels(event) }
+          onChange={ (event) => this.onChangeModel(event.target.value, "labels") }
           disabled={this.isReadonly()}
         />,
         tagsInput
@@ -740,24 +751,6 @@ module.exports = FormView.extend({
     }));
   },
 
-  makeDescription: function() {
-    return function(div) {
-      $(div).append(this.label("description", I18n.t('activerecord.attributes.story.description')));
-
-      if(this.model.isNew() || this.model.get('editingDescription')) {
-        var textarea = this.textArea("description");
-        $(textarea).atwho({
-          at: "@",
-          data: window.projectView.usernames(),
-        });
-        $(div).append(textarea);
-      } else {
-        var $description = $('<div class="description-wrapper"><div>');
-        $(div).append($description);
-      }
-    }
-  },
-
   makeTitle: function() {
     return function(div) {
       $(div).append(this.label("title", I18n.t('activerecord.attributes.story.title')));
@@ -788,7 +781,7 @@ module.exports = FormView.extend({
     ReactDOM.render(
       <StoryDatePicker
         releaseDate={this.model.get('release_date')}
-        onChangeCallback={function(){$('input[name=release_date]').trigger('change')}}
+        onChangeCallback={function() {$('input[name=release_date]').trigger('change')}}
       />,
       $storyDate.get(0)
     );
@@ -797,19 +790,22 @@ module.exports = FormView.extend({
     this.bindElementToAttribute(dateInput, 'release_date');
 
     this.$el.append(
-      this.makeFormControl(this.makeDescription())
+      this.makeFormControl(this.makeFormControl(function(div) {
+        var $description = $('<div class="story-description"><div>');
+        $(div).append($description);
+      }))
     );
 
   },
 
   parseDescription: function() {
-    const description = window.md.makeHtml(this.model.escape('description')) || '';
+    const description = this.model.get('description') || '';
     var id, story;
     return description.replace(LOCAL_STORY_REGEXP, story_id => {
       id = story_id.substring(1);
       story = this.model.collection.get(id);
       this.linkedStories[id] = story;
-      return (story) ? `<a data-story-id='${id}'></a>` : story_id;
+      return (story) ? `<p data-story-id='${id}'></p>` : story_id;
     });
   },
 
@@ -838,8 +834,8 @@ module.exports = FormView.extend({
     this.$el.find('a.collapse').removeClass(/icons-/).addClass("icons-collapse");
   },
 
-  onChangeLabels: function(event){
-    this.model.set({ labels: event.target.value }, {silent: true});
+  onChangeModel: function(value, element) {
+    this.model.set({ [element]: value }, {silent: true});
   },
 
   addEmptyTask: function() {

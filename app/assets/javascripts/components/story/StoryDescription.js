@@ -1,34 +1,43 @@
 import React from 'react';
-import Parser from 'html-react-parser'
-import memoize from 'memoizee';
+import AtWhoInput from 'components/jquery_wrappers/AtWhoInput';
+import DescriptionContent from 'components/description/DescriptionContent';
 
-import StoryLink from 'components/stories/StoryLink';
+class StoryDescription extends React.Component {
+  editDescription() {
+    const { usernames, name, value, onChange } = this.props;
+    return(
+      <AtWhoInput
+        usernames={usernames}
+        name={name}
+        value={value}
+        onChange={onChange}
+      />
+    );
+  }
 
-const editButton = isReadonly =>
-  <input
-    className={!isReadonly && 'edit-description'}
-    disabled={isReadonly}
-    value={I18n.t('edit')}
-    type="button" />
+  descriptionContent() {
+    const { linkedStories, isReadonly, description, onClick, value } = this.props;
+    return(
+      <DescriptionContent
+        linkedStories={linkedStories}
+        isReadonly={isReadonly}
+        description={description}
+        onClick={onClick}
+        value={value}
+      />
+    );
+  }
 
-const replaceStoryLink = (domNode, linkedStories) => {
-  if (!domNode.attribs || !domNode.attribs['data-story-id']) return;
-  const id = domNode.attribs['data-story-id'];
-  const story = linkedStories[id];
-  return ( <StoryLink story={story} key={id} /> );
-}
-
-const StoryDescription = ({ description, isReadonly, linkedStories }) => {
-  const isEmpty = (!description || !description.length);
-  description = Parser(description, { replace: domNode =>
-    replaceStoryLink(domNode, linkedStories)
-  });
-
-  return (isEmpty)
-    ? editButton(isReadonly)
-    : <div className='description'>
-        { description }
+  render() {
+    const { name, isNew, editingDescription } = this.props;
+    return (
+      <div>
+        <label htmlFor={name}>{ I18n.t('activerecord.attributes.story.description') }</label>
+        <br />
+        { (isNew || editingDescription) ? this.editDescription() : this.descriptionContent() }
       </div>
+    );
+  }
 }
 
-export default memoize(StoryDescription);
+export default StoryDescription;
