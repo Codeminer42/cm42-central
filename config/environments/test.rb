@@ -41,9 +41,6 @@ Rails.application.configure do
   config.assets.digest = true
   config.assets.prefix = "/test_assets"
 
-  # Disable dev server on CI
-  config.webpack.dev_server.enabled = false
-
   # Randomize the order test cases are executed.
   config.active_support.test_order = :random
 

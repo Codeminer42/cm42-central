@@ -1,6 +1,6 @@
 var path = require('path');
 
-var webpackConfig = require('./webpack.config');
+var webpackConfig = require('./webpack/test');
 var webpackSpecsEntryFile = '../spec/javascripts/index.js';
 var jsFiles = '../app/assets/javascripts/**/*.js';
 var karmaPreprocessors = {};
