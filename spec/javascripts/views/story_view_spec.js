@@ -528,25 +528,37 @@ describe('StoryView', function() {
       this.view.canEdit = sinon.stub().returns(true)
       this.view.render();
       expect(this.view.$('textarea[name="description"]').length).toEqual(1);
-      expect(this.view.$('div.description-wrapper').length).toEqual(0);
-      expect(this.view.$('input.edit-description').length).toEqual(0);
+      expect(this.view.$('.description').length).toEqual(0);
     });
 
-    it("isn't text area when story isn't new", function() {
+    it("is text when story isn't new and description isn't empty", function() {
       this.view.model.isNew = sinon.stub().returns(false);
+      const innerText = "foo";
+      this.view.model.set({description: innerText});
       this.view.render();
       expect(this.view.$('textarea[name="description"]').length).toEqual(0);
-      expect(this.view.$('div.description-wrapper').length).toEqual(1);
-      expect(this.view.$('.edit-description').length).toEqual(1);
+      expect(this.view.$('.description')[0].innerText).toEqual(innerText);
+    });
+
+    it("is a button when story isn't new and description is empty", function() {
+      this.view.model.isNew = sinon.stub().returns(false);
+      this.view.model.set({description: ""});
+      this.view.render();
+      expect(this.view.$('input[name="edit-description"][type="button"]').length).toEqual(1);
     });
 
     it('is a text area after .edit-description is clicked', function() {
-      const ev = {target: this.view.$('div.description-wrapper')[0]}
+      const ev = {target: this.view.$('div.story-description')[0]}
       this.view.model.isNew = sinon.stub().returns(false);
       this.view.editDescription(ev);
       expect(this.view.model.get('editingDescription')).toBeTruthy();
     });
 
+    it('When onChange is triggered should properly set description value', function() {
+      const value = "foo";
+      this.view.onChangeModel(value, "description");
+      expect(this.view.model.get("description")).toEqual(value);
+    });
   });
 
   describe("attachinary", function() {

@@ -1,6 +1,11 @@
 import React from 'react';
 
 class TaggedInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.saveInputRef = (input) => { this.input = input };
+  }
+
   componentDidMount() {
     this.loadTagit();
   }
@@ -21,7 +26,7 @@ class TaggedInput extends React.Component {
   render() {
     return (
       <input
-        ref={ input => { this.input = input } }
+        ref={ this.saveInputRef }
         { ...this.props.input }
       />
     );

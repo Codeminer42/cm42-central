@@ -8,6 +8,8 @@
 ### Fixed
 - Fixing compatibility of docker-composer with webpack
 
+### Changed
+- Story description to react component
 
 ## [1.5.0] 2017-06-23
 ### Added
