@@ -8,13 +8,14 @@ var Activity = module.exports = Backbone.Model.extend({
   timestampFormat: 'd mmm yyyy',
 
   initialize: function(args) {
-    var attributes = this.attributes;
     var data = args.activity;
 
     this.i18nScope += data.subject_type.toLowerCase();
-    attributes.date = new Date(data.updated_at).format(this.timestampFormat);
-    attributes.action = this.humanActionName(data.action);
-    attributes.subject_changes = this.parseChanges(data.subject_changes);
+    this.set({
+      date: new Date(data.updated_at).format(this.timestampFormat),
+      action: this.humanActionName(data.action),
+      subject_changes: this.parseChanges(data.subject_changes)
+    });
   },
 
   humanActionName: function(action) {
