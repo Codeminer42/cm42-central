@@ -17,7 +17,7 @@ module.exports = Backbone.View.extend({
     this.model.stories.on('add', this.addStory);
     this.model.stories.on('reset', this.addAll);
     this.model.stories.on('all', this.render);
-    this.model.on('change:userVelocity', this.addAll);
+    this.listenTo(this.model, 'change:userVelocity', this.addAll);
     this.listenTo(this.model, 'change:current_flow', this.prepareColumns);
 
     this.prepareColumns();
