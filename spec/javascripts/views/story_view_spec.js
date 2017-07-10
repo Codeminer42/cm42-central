@@ -470,6 +470,49 @@ describe('StoryView', function() {
 
   });
 
+  describe("tasks", function() {
+
+    it("adds a blank task to the end of the tasks collection", function() {
+      this.view.model.tasks.reset();
+      expect(this.view.model.tasks.length).toEqual(0);
+      this.view.addEmptyTask();
+      expect(this.view.model.tasks.length).toEqual(1);
+      expect(this.view.model.tasks.last().isNew()).toBeTruthy();
+    });
+
+    it("doesn't add a blank task if the story is new", function() {
+      var stub = sinon.stub(this.view.model, 'isNew');
+      stub.returns(true);
+      this.view.model.tasks.reset();
+      expect(this.view.model.tasks.length).toEqual(0);
+      this.view.addEmptyTask();
+      expect(this.view.model.tasks.length).toEqual(0);
+    });
+
+    it("doesn't add a blank task if there is already one", function() {
+      this.view.model.tasks.last = sinon.stub().returns({
+        isNew: sinon.stub().returns(true)
+      });
+      expect(this.view.model.tasks.last().isNew()).toBeTruthy();
+      var oldLength = this.view.model.tasks.length;
+      this.view.addEmptyNote();
+      expect(this.view.model.tasks.length).toEqual(oldLength);
+    });
+
+    it("has a task deletion handler", function() {
+      const task = { destroy: sinon.stub() };
+      this.view.handleTaskDelete(task);
+      expect(task.destroy).toHaveBeenCalled();
+    });
+
+    it("has a <TaskForm /> submit handler", function() {
+      const task = { set: sinon.stub(), save: sinon.stub() };
+      this.view.handleTaskSubmit({ task, taskName: 'TestTask' });
+      expect(task.save).toHaveBeenCalled();
+    });
+
+  });
+
   describe("description", function() {
 
     beforeEach(function() {

@@ -1,3 +1,5 @@
+@import "variables";
+
 .form {
   &-error {
     width: 450px;
@@ -38,4 +40,17 @@
   @extend .btn-square;
   font-size: 14px;
   padding: 7px 20px;
+}
+
+.delete-btn {
+  margin-left: 5px;
+  color: $link-primary;
+  text-decoration: none;
+
+  &:hover, &:focus {
+    color: $link-hover;
+    cursor: pointer;
+    text-decoration: underline;
+    outline: 0;
+  }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import AsyncForm from 'components/forms/AsyncForm';
 
-class NoteForm extends React.Component {
+class TaskForm extends React.Component {
   constructor(props) {
     super(props);
     this.saveInputRef = input => { this.input = input };
@@ -10,8 +10,8 @@ class NoteForm extends React.Component {
 
   _getFormData() {
     return {
-      note: this.props.note,
-      newValue: this.input.value
+      task: this.props.task,
+      taskName: this.input.value
     };
   }
 
@@ -23,21 +23,21 @@ class NoteForm extends React.Component {
       >
         {
           ({loading, handleSubmit}) => (
-            <div className='note_form clearfix'>
-              <textarea
-                name='note'
+            <div className='task_form clearfix'>
+              <input
+                name='task'
                 defaultValue=''
                 disabled={loading}
-                className='form-control note-textarea'
+                className='form-control input-sm input-task'
                 ref={this.saveInputRef}
               />
               <button
                 type='submit'
-                className={`add-note btn btn-default btn-xs ${loading ? 'icons-throbber saving' : ''}`}
+                className={`add-task btn btn-default btn-xs ${loading ? 'icons-throbber saving' : ''}`}
                 disabled={loading}
                 onClick={handleSubmit}
               >
-                { I18n.t('add note') }
+                { I18n.t('add task') }
               </button>
             </div>
           )
@@ -47,4 +47,4 @@ class NoteForm extends React.Component {
   }
 }
 
-export default NoteForm;
+export default TaskForm;

@@ -1,8 +1,13 @@
 # Changelog
 
 ## [Unreleased]
+
+### Changed
+- Story tasks to react components
+
 ### Fixed
 - Fixing compatibility of docker-composer with webpack
+
 
 ## [1.5.0] 2017-06-23
 ### Added

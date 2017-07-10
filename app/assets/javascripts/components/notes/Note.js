@@ -20,14 +20,13 @@ class Note extends React.Component {
   renderDelete() {
     return (
       <span>
-        - <a
-            href="#"
+        - <span
             onClick={this._handleDelete}
             title={I18n.t('delete')}
-            className="delete-note"
+            className='delete-btn delete-note'
           >
           { I18n.t('delete') }
-        </a>
+        </span>
       </span>
     );
   }
