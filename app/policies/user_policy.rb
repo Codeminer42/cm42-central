@@ -8,11 +8,15 @@ class UserPolicy < ApplicationPolicy
   end
 
   def create?
-    is_admin? || is_himself?
+    is_admin?
   end
 
   def update?
     is_himself?
+  end
+
+  def destroy?
+    is_admin? || is_himself?
   end
 
   def is_himself?

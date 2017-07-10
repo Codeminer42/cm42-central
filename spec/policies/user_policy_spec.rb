@@ -47,8 +47,13 @@ describe UserPolicy do
       let(:current_user) { create :user, :with_team }
       subject { UserPolicy.new(pundit_context, current_user) }
 
-      it { should permit(:edit) }
-      it { should permit(:update) }
+      %i[index show edit update destroy].each do |action|
+        it { is_expected.to permit(action) }
+      end
+
+      %i[create new enrollment].each do |action|
+        it { is_expected.not_to permit(action) }
+      end
     end
   end
 
