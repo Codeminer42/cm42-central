@@ -4,7 +4,7 @@ var ProjectVelocityView = rewire('views/project_velocity_view');
 describe('ProjectVelocityView', function() {
 
   beforeEach(function() {
-    this.model = {on: sinon.stub()};
+    this.model = {};
     var overrideView = this.overrideView = {};
     function ProjectVelocityOverrideView() {
       return overrideView;
@@ -17,6 +17,7 @@ describe('ProjectVelocityView', function() {
     });
 
     this.subject = new ProjectVelocityView({model: this.model});
+    this.subject.listenTo = sinon.stub();
   });
 
   afterEach(function() {
@@ -34,14 +35,14 @@ describe('ProjectVelocityView', function() {
     });
 
     it("binds setFakeClass to change:userVelocity on the model", function() {
-      expect(this.model.on).toHaveBeenCalledWith(
-        "change:userVelocity", this.subject.setFakeClass
+      expect(this.subject.listenTo).toHaveBeenCalledWith(
+        this.subject.model, "change:userVelocity", this.subject.setFakeClass
       );
     });
 
     it("binds render to rebuilt-iterations on the model", function() {
-      expect(this.model.on).toHaveBeenCalledWith(
-        "rebuilt-iterations", this.subject.render
+      expect(this.subject.listenTo).toHaveBeenCalledWith(
+        this.subject.model, "rebuilt-iterations", this.subject.render
       );
     });
 
