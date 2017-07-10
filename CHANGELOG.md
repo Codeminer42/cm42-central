@@ -1,8 +1,13 @@
 # Changelog
 
 ## [Unreleased]
+
 ### Changed
 - Story tasks to react components
+
+### Fixed
+- Fixing compatibility of docker-composer with webpack
+
 
 ## [1.5.0] 2017-06-23
 ### Added
@@ -22,6 +27,7 @@
 ### Fixed
 - Story History bug when story actions where triggered
 - Ticket not being reassigned to current user when state change to "started"
+- Fix permission users to update others users
 
 ## [1.4.2] - 2017-05-24
 ### Removed
