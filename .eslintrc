@@ -1,3 +1,10 @@
-{
-  "extends": "react-app"
-}
+env:
+  jquery: true
+extends:
+  - plugin:backbone/recommended
+plugins:
+  - react
+  - backbone
+parser: "babel-eslint"
+rules:
+  backbone/model-defaults: 1
