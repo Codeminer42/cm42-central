@@ -15,9 +15,9 @@ config/deploy.rb
 dump.rdb
 public/javascripts/*
 public/test_assets/
+public/javascripts-test/*
 /node_modules
 /public/webpack
 js_coverage/
 coverage
-/public/packs
 /node_modules

@@ -470,8 +470,6 @@ GEM
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
-    webpack-rails (0.9.9)
-      rails (>= 3.2.0)
     webpacker (2.0)
       activesupport (>= 4.2)
       multi_json (~> 1.2)
@@ -561,7 +559,6 @@ DEPENDENCIES
   uglifier (>= 2.5.3)
   vcr
   webmock
-  webpack-rails
   webpacker
 
 RUBY VERSION
