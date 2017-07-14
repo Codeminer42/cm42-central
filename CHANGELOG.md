@@ -4,6 +4,7 @@
 
 ### Changed
 - Story tasks to react components
+- Story attachments input to react component
 
 ### Fixed
 - Fixing compatibility of docker-composer with webpack

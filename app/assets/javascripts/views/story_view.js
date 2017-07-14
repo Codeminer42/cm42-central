@@ -10,6 +10,7 @@ import NoteForm from 'components/notes/NoteForm';
 import StoryLabels from 'components/story/StoryLabels';
 import StoryTasks from 'components/story/StoryTasks';
 import TaskForm from 'components/tasks/TaskForm';
+import StoryAttachment from 'components/story/StoryAttachment';
 
 var Clipboard = require('clipboard');
 
@@ -405,21 +406,9 @@ module.exports = FormView.extend({
 
       this.$el.append(
         this.makeFormControl(function(div) {
-          var random = (Math.floor(Math.random() * 10000) + 1);
-          var progress_element_id = "documents_progress_" + random;
-          var finished_element_id = "documents_finished_" + random;
-          var attachinary_container_id = "attachinary_container_" + random;
+          const $storyAttachments = $('<div class="story-attachments"></div>');
+          $(div).append($storyAttachments);
 
-          $(div).append(this.label('attachments', I18n.t('story.attachments')));
-          $(div).addClass('uploads');
-          if(!this.isReadonly()) {
-            $(div).append(this.fileField("documents", progress_element_id, finished_element_id, attachinary_container_id));
-            $(div).append("<div id='" + progress_element_id + "' class='attachinary_progress_bar'></div>");
-          }
-          $(div).append('<div id="' + attachinary_container_id + '"></div>');
-
-          // FIXME: refactor to a separated AttachmentView or similar
-          // must run the plugin after the element is available in the DOM, not before, hence, the setTimeout
           clearTimeout(window.executeAttachinaryTimeout);
           window.executeAttachinaryTimeout = setTimeout(executeAttachinary, 1000);
         })
@@ -477,6 +466,7 @@ module.exports = FormView.extend({
           isNew={this.model.isNew()}
           editingDescription={this.model.get('editingDescription')}
           value={this.model.get("description")}
+          fileuploadprogressall={this.uploadProgressBar}
           onChange={ (event) => this.onChangeModel(event.target.value, "description") }
           onClick={this.editDescription}
         />,
@@ -496,6 +486,18 @@ module.exports = FormView.extend({
           disabled={this.isReadonly()}
         />,
         tagsInput
+      );
+    }
+
+    const attachments = this.$('.story-attachments')[0];
+    if(attachments) {
+      ReactDOM.render(
+        <StoryAttachment
+          name='attachments'
+          isReadonly={this.isReadonly()}
+          filesModel={this.model.get('documents')}
+        />,
+        attachments
       );
     }
 
