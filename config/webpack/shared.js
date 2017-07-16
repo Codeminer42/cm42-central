@@ -9,7 +9,6 @@ const { basename, dirname, join, relative, resolve } = require('path')
 const { sync } = require('glob')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const ManifestPlugin = require('webpack-manifest-plugin')
-const StatsPlugin = require('stats-webpack-plugin')
 const extname = require('path-complete-extname')
 const { env, settings, output, loadersDir } = require('./configuration.js')
 
@@ -51,15 +50,6 @@ module.exports = {
     new ManifestPlugin({
       publicPath: output.publicPath,
       writeToFileEmit: true
-    }),
-    
-    new StatsPlugin('manifest.json', {
-      // We only need assetsByChunkName
-      chunkModules: false,
-      source: false,
-      chunks: false,
-      modules: false,
-      assets: true
     }),
 
     new webpack.NormalModuleReplacementPlugin(
