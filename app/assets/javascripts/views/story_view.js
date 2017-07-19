@@ -735,24 +735,6 @@ module.exports = FormView.extend({
     return [I18n.t('story.state.' + option), option];
   },
 
-  makeStoryTypeSelect: function(div) {
-    var storyTypeOptions = _.map(["feature", "chore", "bug", "release"], function(option) {
-      return [I18n.t('story.type.' + option), option]
-    });
-
-    $(div).append(this.makeFormControl({
-      name: "story_type",
-      label: true,
-      disabled: true,
-      control: this.select("story_type", storyTypeOptions, {
-        attrs: {
-          class: ['story_type'],
-          disabled: this.isReadonly()
-        }
-      })
-    }));
-  },
-
   makeTitle: function() {
     return function(div) {
       $(div).append(this.label("title", I18n.t('activerecord.attributes.story.title')));
@@ -773,7 +755,8 @@ module.exports = FormView.extend({
     if(this.model.get('editing')) {
       this.$el.append(
         this.makeFormControl(function(div) {
-          this.makeStoryTypeSelect(div);
+          const $storyType = $('<div class="form-group" data-story-type></div>');
+          $(div).append($storyType);
         }));
     }
 
