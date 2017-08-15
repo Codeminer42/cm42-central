@@ -1,18 +1,18 @@
 class StoryPolicy < ApplicationPolicy
   def index?
-    is_admin? || is_project_member?
+    (is_admin? || is_project_member?) && !is_guest?
   end
 
   def show?
-    is_admin? || is_project_member? && current_project.stories.find_by_id(record.id)
+    is_admin? || is_project_member? && current_project.stories.find_by_id(record.id) && !is_guest?
   end
 
   def create?
-    is_admin? || is_project_member?
+    (is_admin? || is_project_member?) && !is_guest?
   end
 
   def update?
-    is_admin? || is_project_member?
+    (is_admin? || is_project_member?) && !is_guest?
   end
 
   def done?

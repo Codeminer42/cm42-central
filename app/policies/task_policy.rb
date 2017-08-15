@@ -7,12 +7,10 @@ class TaskPolicy < StoryPolicy
     def resolve
       if is_admin?
         current_story.tasks
+      elsif is_story_member?
+        current_story.tasks
       else
-        if is_story_member?
-          current_story.tasks
-        else
-          Task.none
-        end
+        Task.none
       end
     end
   end
