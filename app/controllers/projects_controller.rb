@@ -15,9 +15,9 @@ class ProjectsController < ApplicationController
     projects_joined = policy_scope(Project)
 
     @projects = {
-      joined: serialize_from_collection(projects_joined),
-      unjoined: serialize_from_collection(projects_unjoined.order(:updated_at))
+      joined: serialize_from_collection(projects_joined)
     }
+    @projects[:unjoined] = serialize_from_collection(projects_unjoined.order(:updated_at)) unless current_user.guest?
 
     @activities_group = Activity.grouped_activities(projects_joined, 1.week.ago)
   end

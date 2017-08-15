@@ -37,6 +37,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def guest?
+    role == 'guest'
+  end
+
   def to_s
     "#{name} (#{initials}) <#{email}>"
   end

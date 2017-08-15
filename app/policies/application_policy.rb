@@ -24,6 +24,10 @@ class ApplicationPolicy
       root? || (current_project && current_team.owns?(current_project))
     end
 
+    def is_guest?
+      current_user.guest?
+    end
+
     def project_member?
       root? || (current_project && current_project.users.find_by(id: current_user.id))
     end

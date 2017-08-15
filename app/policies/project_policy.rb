@@ -12,7 +12,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def join?
-    !project_member?
+    !project_member? && !is_guest?
   end
 
   alias archived? update?
