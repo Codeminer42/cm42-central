@@ -20,6 +20,10 @@ class ApplicationPolicy
       is_root? || ( current_team && current_team.is_admin?(current_user) )
     end
 
+    def is_guest?
+      current_user.guest?
+    end
+
     def is_project_owner?
       is_root? || ( current_project && current_team.owns?(current_project) )
     end

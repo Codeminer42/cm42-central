@@ -12,7 +12,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def join?
-    !is_project_member?
+    !is_project_member? && !is_guest?
   end
 
   alias_method :archived?,      :update?
