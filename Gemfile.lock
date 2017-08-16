@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Codeminer42/cm42-central-support.git
-  revision: e20ed621257428ebd7180035ca0622fc3445611a
+  revision: 99dbb27ae2a5f1f53a8d83aae2bbf33592060fdc
   branch: master
   specs:
     central-support (0.9.3)
@@ -270,7 +270,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
     mini_portile2 (2.2.0)
-    minitest (5.10.2)
+    minitest (5.10.3)
     moneta (0.8.1)
     multi_json (1.12.1)
     multi_xml (0.5.5)
