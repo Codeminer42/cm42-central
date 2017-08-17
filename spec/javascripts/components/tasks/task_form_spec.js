@@ -32,7 +32,7 @@ describe('<TaskForm />', function() {
     expect(onSubmit).toHaveBeenCalled();
   });
 
-  it("should stop loading  when save fails", function() {
+  it("should stop loading when save fails", function() {
     const onSubmit = sinon.stub().returns($.Deferred().reject());
     const wrapper = mount(
       <TaskForm
@@ -42,7 +42,7 @@ describe('<TaskForm />', function() {
     );
     wrapper.find('.add-task').simulate('click');
     return $.Deferred().resolve().then(() =>
-      expect(wrapper).toHaveState('loading', false)
+      expect(wrapper.find('.saving')).toHaveLength(0)
     );
   });
 
