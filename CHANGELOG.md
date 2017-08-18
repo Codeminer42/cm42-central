@@ -8,7 +8,6 @@
 
 ### Fixed
 - Fixing compatibility of docker-composer with webpack
-- Fixing 'stop loading when save' javascript spec 
 
 ### Changed
 - Story description to react component
