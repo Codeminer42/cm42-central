@@ -33,28 +33,51 @@ module StoryOperations
     def integration_message
       story_link = "#{model.base_uri}#story-#{model.id}"
 
-      {slack: [
+      {
+        discord: [
           {
-              fallback: "The story '#{model.title}' has been #{model.state}.",
-              color: '#36a64f',
-              title: "#{model.project.name}",
-              title_link: "#{story_link}",
-              text: "The story '#{model.title}' has been #{model.state}.",
-              fields: [
-                  {
-                      title: 'Assigned to',
-                      value: "#{model.owned_by_name}",
-                      short: true
-                  },
-  				        {
- 					          title: 'Points',
-                     value: "#{model.estimate}",
-                     short: true
- 				        }
-             ]
-         }
-       ],
-       mattermost: "[#{model.project.name}] The story ['#{model.title}'](#{story_link}) has been #{model.state}."
+            color: 0x36a64f,
+            title: "#{model.project.name}",
+            url: "#{story_link}",
+            description: "The story '#{model.title}' has been #{model.state}.",
+            fields: [
+              {
+                name: 'Assigned to',
+                value: "#{model.owned_by_name}",
+                inline: true
+              },
+              {
+                name: 'Points',
+                value: "#{model.estimate}",
+                inline: true
+              }
+            ]
+          }
+        ],
+
+        slack: [
+          {
+            fallback: "The story '#{model.title}' has been #{model.state}.",
+            color: '#36a64f',
+            title: "#{model.project.name}",
+            title_link: "#{story_link}",
+            text: "The story '#{model.title}' has been #{model.state}.",
+            fields: [
+              {
+                title: 'Assigned to',
+                value: "#{model.owned_by_name}",
+                short: true
+              },
+              {
+                title: 'Points',
+                value: "#{model.estimate}",
+                short: true
+              }
+            ]
+          }
+        ],
+
+        mattermost: "[#{model.project.name}] The story ['#{model.title}'](#{story_link}) has been #{model.state}."
      }
     end
   end

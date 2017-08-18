@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- Discord integration
+
 ### Changed
 - Story tasks to react components
 - Story attachments input to react component
