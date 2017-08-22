@@ -1,7 +1,6 @@
 require 'feature_helper'
 
 describe "Tasks" do
-
   before(:each) do
     # FIXME - Having to set this really high for the 'adds a task to a story
     # spec'.  Need to work on making it more responsive.
@@ -14,7 +13,6 @@ describe "Tasks" do
   let!(:story)    { create(:story, project: project, requested_by: user) }
 
   describe "full story life cycle" do
-
     it "adds a task to a story", js: true do
       visit project_path(project)
 
@@ -26,7 +24,6 @@ describe "Tasks" do
 
       task_element = find('#in_progress .story .tasklist .task')
       expect(task_element).to have_content('Adding a new task')
-
     end
 
     it "deletes a task from a story", js: true do
@@ -43,7 +40,6 @@ describe "Tasks" do
 
       expect(find('#in_progress .story .tasklist')).not_to have_content('Delete me please')
     end
-
   end
 
   describe "on a disabled story" do
