@@ -19,7 +19,7 @@ Metrics/MethodLength:
   Max: 25
 
 Metrics/AbcSize:
-  Max: 25
+  Enabled: false
 
 Style/Semicolon:
   AllowAsExpressionSeparator: true
@@ -46,4 +46,13 @@ Metrics/ClassLength:
   Enabled: false
 
 Metrics/MethodLength:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/BlockNesting:
   Enabled: false
