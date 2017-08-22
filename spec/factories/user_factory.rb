@@ -9,7 +9,7 @@ FactoryGirl.define do
     u.locale 'en'
     u.time_zone 'Brasilia'
     u.finished_tour true
-    u.after(:build) { |user| user.confirm }
+    u.after(:build, &:confirm)
 
     trait :with_team do
       after(:build) { |object| object.enrollments.create(team: create(:team), is_admin: false) }
