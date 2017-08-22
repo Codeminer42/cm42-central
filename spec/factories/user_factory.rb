@@ -12,11 +12,11 @@ FactoryGirl.define do
     u.after(:build) { |user| user.confirm }
 
     trait :with_team do
-      after(:build) { |object| object.enrollments.create(team: create(:team), is_admin: false ) }
+      after(:build) { |object| object.enrollments.create(team: create(:team), is_admin: false) }
     end
 
     trait :with_team_and_is_admin do
-      after(:build) { |object| object.enrollments.create(team: create(:team), is_admin: true ) }
+      after(:build) { |object| object.enrollments.create(team: create(:team), is_admin: true) }
     end
   end
 
