@@ -26,8 +26,6 @@ class Notifications < ActionMailer::Base
          subject: "[#{@story.project.name}] New mention on '#{@story.title}'"
   end
 
-  private
-
   class MailParams < Struct.new(:story, :actor)
     def started
       {
