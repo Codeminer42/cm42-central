@@ -119,9 +119,9 @@ describe StoryOperations do
     end
 
     subject do
-      lambda {
+      lambda do
         StoryOperations::Update.call(story, { state: 'accepted', accepted_at: Date.current }, user)
-      }
+      end
     end
 
     context '::LegacyFixes' do
