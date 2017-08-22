@@ -112,7 +112,7 @@ module ProjectsHelper
   end
 
   def formatted_standard_deviation(standard_deviation)
-    '%3.2f' % Math.sqrt(standard_deviation)
+    format('%3.2f', Math.sqrt(standard_deviation))
   end
 
   def inverse_story_flow
