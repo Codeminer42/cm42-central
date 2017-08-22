@@ -4,7 +4,7 @@ module FriendlyId
 
     class << self
       def disabled?
-        !!Thread.current[THREAD_LOCAL_KEY]
+        !Thread.current[THREAD_LOCAL_KEY].nil?
       end
 
       def disable_friendly_id
