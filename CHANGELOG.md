@@ -2,20 +2,19 @@
 
 ## [Unreleased]
 
+## [1.6.0] 2017-08-22
 ### Added
 - Discord integration
 
 ### Changed
 - Story tasks to react components
 - Story attachments input to react component
+- Story description to react component
 - Updated central-support gem to enable discord webhook integration support
 
 ### Fixed
 - Fixing compatibility of docker-composer with webpack
 - Fixing 'stop loading when save' javascript spec 
-
-### Changed
-- Story description to react component
 
 ## [1.5.0] 2017-06-23
 ### Added
@@ -128,7 +127,7 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.5.0...HEAD
+[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.6.0...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
@@ -140,3 +139,4 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [1.4.1]: https://github.com/Codeminer42/cm42-central/tree/v1.4.1
 [1.4.2]: https://github.com/Codeminer42/cm42-central/tree/v1.4.2
 [1.5.0]: https://github.com/Codeminer42/cm42-central/tree/v1.5.0
+[1.6.0]: https://github.com/Codeminer42/cm42-central/tree/v1.6.0
