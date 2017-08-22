@@ -42,6 +42,9 @@ Style/EachWithObject:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+Style/StructInheritance:
+  Enabled: false
+
 Metrics/ClassLength:
   Enabled: false
 
