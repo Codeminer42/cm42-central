@@ -117,7 +117,28 @@ describe StoryOperations do
       it "sends 'started' email notification" do
         allow(story).to receive_messages(:state => 'started')
         expect(Notifications).to receive(:story_changed).with(story, acting_user) { notifier }
-        expect(IntegrationWorker).to receive(:perform_async).with(project.id, {slack: [
+        expect(IntegrationWorker).to receive(:perform_async).with(project.id, {
+          discord: [
+            {
+              color: 0x36a64f,
+              title: "Test Project",
+              url: "http://foo.com/projects/123#story-#{story.id}",
+              description: "The story 'Test Story' has been started.",
+              fields: [
+                {
+                  name: 'Assigned to',
+                  value: "",
+                  inline: true
+                },
+                {
+                  name: 'Points',
+                  value: "",
+                  inline: true
+                }
+              ]
+            }
+          ],
+          slack: [
             {
                 fallback: "The story 'Test Story' has been started.",
                 color: '#36a64f',
@@ -144,7 +165,28 @@ describe StoryOperations do
       it "sends 'delivered' email notification" do
         allow(story).to receive_messages(:state => 'delivered')
         expect(Notifications).to receive(:story_changed).with(story, acting_user) { notifier }
-        expect(IntegrationWorker).to receive(:perform_async).with(project.id, {slack: [
+        expect(IntegrationWorker).to receive(:perform_async).with(project.id, {
+          discord: [
+            {
+              color: 0x36a64f,
+              title: "Test Project",
+              url: "http://foo.com/projects/123#story-#{story.id}",
+              description: "The story 'Test Story' has been delivered.",
+              fields: [
+                {
+                  name: 'Assigned to',
+                  value: "",
+                  inline: true
+                },
+                {
+                  name: 'Points',
+                  value: "",
+                  inline: true
+                }
+              ]
+            }
+          ],
+          slack: [
             {
                 fallback: "The story 'Test Story' has been delivered.",
                 color: '#36a64f',
@@ -171,7 +213,28 @@ describe StoryOperations do
       it "sends 'accepted' email notification" do
         allow(story).to receive_messages(:state => 'accepted')
         expect(Notifications).to receive(:story_changed).with(story, acting_user) { notifier }
-        expect(IntegrationWorker).to receive(:perform_async).with(project.id, {slack: [
+        expect(IntegrationWorker).to receive(:perform_async).with(project.id, {
+          discord: [
+            {
+              color: 0x36a64f,
+              title: "Test Project",
+              url: "http://foo.com/projects/123#story-#{story.id}",
+              description: "The story 'Test Story' has been accepted.",
+              fields: [
+                {
+                  name: 'Assigned to',
+                  value: "",
+                  inline: true
+                },
+                {
+                  name: 'Points',
+                  value: "",
+                  inline: true
+                }
+              ]
+            }
+          ],
+          slack: [
             {
                 fallback: "The story 'Test Story' has been accepted.",
                 color: '#36a64f',
@@ -198,7 +261,28 @@ describe StoryOperations do
       it "sends 'rejected' email notification" do
         allow(story).to receive_messages(:state => 'rejected')
         expect(Notifications).to receive(:story_changed).with(story, acting_user) { notifier }
-        expect(IntegrationWorker).to receive(:perform_async).with(project.id, {slack: [
+        expect(IntegrationWorker).to receive(:perform_async).with(project.id, {
+          discord: [
+            {
+              color: 0x36a64f,
+              title: "Test Project",
+              url: "http://foo.com/projects/123#story-#{story.id}",
+              description: "The story 'Test Story' has been rejected.",
+              fields: [
+                {
+                  name: 'Assigned to',
+                  value: "",
+                  inline: true
+                },
+                {
+                  name: 'Points',
+                  value: "",
+                  inline: true
+                }
+              ]
+            }
+          ],
+          slack: [
             {
                 fallback: "The story 'Test Story' has been rejected.",
                 color: '#36a64f',

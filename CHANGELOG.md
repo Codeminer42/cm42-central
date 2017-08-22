@@ -2,9 +2,13 @@
 
 ## [Unreleased]
 
+### Added
+- Discord integration
+
 ### Changed
 - Story tasks to react components
 - Story attachments input to react component
+- Updated central-support gem to enable discord webhook integration support
 
 ### Fixed
 - Fixing compatibility of docker-composer with webpack
