@@ -72,3 +72,6 @@ Metrics/CyclomaticComplexity:
 
 Metrics/BlockNesting:
   Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
