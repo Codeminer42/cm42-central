@@ -1,7 +1,8 @@
 AllCops:
   TargetRubyVersion: 2.3
   Exclude:
-    - 'db/**/*'
+    - 'db/schema.rb'
+    - 'db/migrate/*.rb'
     - 'config/**/*'
     - 'script/**/*'
     - 'bin/**/*'
@@ -42,12 +43,10 @@ Style/StructInheritance:
   Enabled: false
 
 Style/AlignParameters:
-  Exclude:
-    - 'spec/operations/story_operations_spec.rb'
+  Enabled: false
 
 Style/ClosingParenthesisIndentation:
-  Exclude:
-    - 'spec/operations/story_operations_spec.rb'
+  Enabled: false
 
 Metrics/LineLength:
   Max: 100
