@@ -120,30 +120,30 @@ class ProjectsController < ApplicationController
   # CSV import form
   def import
     @import_job = session[:import_job]
-    if @import_job.present?
-      job_result = Rails.cache.read(@import_job[:id])
+    return if @import_job.blank?
 
-      if job_result
-        session[:import_job] = nil
-        if job_result[:errors]
-          flash[:alert] = "Unable to import CSV: #{job_result[:errors]}"
-        else
-          @valid_stories    = @project.stories
-          @invalid_stories  = job_result[:invalid_stories]
-          flash[:notice] = I18n.t(
-            'imported n stories', count: @valid_stories.count
-          )
+    job_result = Rails.cache.read(@import_job[:id])
 
-          unless @invalid_stories.empty?
-            flash[:alert] = I18n.t(
-              'n stories failed to import', count: @invalid_stories.count
-            )
-          end
-        end
+    if job_result
+      session[:import_job] = nil
+      if job_result[:errors]
+        flash[:alert] = "Unable to import CSV: #{job_result[:errors]}"
       else
-        minutes_ago = (Time.current - @import_job[:created_at].to_datetime) / 1.minute
-        session[:import_job] = nil if minutes_ago > 60
+        @valid_stories    = @project.stories
+        @invalid_stories  = job_result[:invalid_stories]
+        flash[:notice] = I18n.t(
+          'imported n stories', count: @valid_stories.count
+        )
+
+        unless @invalid_stories.empty?
+          flash[:alert] = I18n.t(
+            'n stories failed to import', count: @invalid_stories.count
+          )
+        end
       end
+    else
+      minutes_ago = (Time.current - @import_job[:created_at].to_datetime) / 1.minute
+      session[:import_job] = nil if minutes_ago > 60
     end
   end
 

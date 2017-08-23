@@ -12,10 +12,10 @@ module NoteOperations
       users_to_notify = (story.stakeholders_users + users_from_note).uniq
       users_to_notify.delete(user)
 
-      if users_to_notify.any? && !story.suppress_notifications
-        notifier = Notifications.new_note(model.id, users_to_notify.map(&:email))
-        notifier.deliver if notifier
-      end
+      return if users_to_notify.none? || story.suppress_notifications
+
+      notifier = Notifications.new_note(model.id, users_to_notify.map(&:email))
+      notifier.deliver if notifier
     end
 
     def users_from_note
