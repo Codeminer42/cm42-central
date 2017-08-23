@@ -17,21 +17,11 @@ Rails/TimeZone:
 Rails/Date:
   Enabled: false
 
-Metrics/LineLength:
-  Max: 100
-
-Metrics/MethodLength:
-  CountComments: false
-  Max: 25
-
-Metrics/AbcSize:
+Documentation:
   Enabled: false
 
 Style/Semicolon:
   AllowAsExpressionSeparator: true
-
-Documentation:
-  Enabled: false
 
 Style/RedundantReturn:
   Enabled: false
@@ -49,6 +39,24 @@ Style/FrozenStringLiteralComment:
   Enabled: false
 
 Style/StructInheritance:
+  Enabled: false
+
+Style/AlignParameters:
+  Exclude:
+    - 'spec/operations/story_operations_spec.rb'
+
+Style/ClosingParenthesisIndentation:
+  Exclude:
+    - 'spec/operations/story_operations_spec.rb'
+
+Metrics/LineLength:
+  Max: 100
+
+Metrics/MethodLength:
+  CountComments: false
+  Max: 25
+
+Metrics/AbcSize:
   Enabled: false
 
 Metrics/ClassLength:
