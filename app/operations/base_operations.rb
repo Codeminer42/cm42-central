@@ -29,11 +29,9 @@ module BaseOperations
 
     attr_reader :model, :current_user
 
-    def before_save
-    end
+    def before_save; end
 
-    def after_save
-    end
+    def after_save; end
 
     def operate!
       model.save!

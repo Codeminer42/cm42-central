@@ -9,8 +9,7 @@ class Admin::UsersController < ApplicationController
   end
 
   # GET /admin/users/1/edit
-  def edit
-  end
+  def edit; end
 
   # PATCH/PUT /admin/users/1
   def update
