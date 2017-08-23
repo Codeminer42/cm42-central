@@ -4,7 +4,7 @@ namespace :travis do
     ['bundle exec rspec spec', 'npm test', 'npm run coveralls'].each do |cmd|
       puts "Starting to run #{cmd}..."
       system("export DISPLAY=:99.0 && #{cmd}")
-      raise "#{cmd} failed!" unless $CHILD_STATUS.exitstatus == 0
+      raise "#{cmd} failed!" unless $CHILD_STATUS.exitstatus.zero?
     end
   end
 end

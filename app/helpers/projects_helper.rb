@@ -74,7 +74,7 @@ module ProjectsHelper
   end
 
   def accepted_rate
-    if current_iteration_points == 0
+    if current_iteration_points.zero?
       number_to_percentage(0, precision: 2)
     else
       rate = (accepted_points.to_f * 100.0) / current_iteration_points.to_f
