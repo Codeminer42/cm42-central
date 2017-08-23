@@ -11,6 +11,12 @@ AllCops:
 Rails:
   Enabled: true
 
+Rails/TimeZone:
+  Enabled: false
+
+Rails/Date:
+  Enabled: false
+
 Metrics/LineLength:
   Max: 100
 
