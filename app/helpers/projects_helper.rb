@@ -100,7 +100,8 @@ module ProjectsHelper
     @group_by_day = [
       { name: 'today', data: { Date.current => service_full.group_by_day[Date.current] } },
       { name: 'real',  data: service_full.group_by_day },
-      { name: 'ideal', data: service_full.group_by_day.dup }]
+      { name: 'ideal', data: service_full.group_by_day.dup }
+    ]
 
     points_per_day = @total_backlog_points.to_f / service_full.group_by_day.keys.size
     initial_points = 0

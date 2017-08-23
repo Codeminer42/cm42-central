@@ -12,7 +12,8 @@ class Project < ActiveRecord::Base
 
   JSON_ATTRIBUTES = %w(
     id name iteration_length iteration_start_day start_date
-    default_velocity).freeze
+    default_velocity
+  ).freeze
 
   JSON_METHODS = %w(last_changeset_id point_values).freeze
 
