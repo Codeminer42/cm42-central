@@ -23,7 +23,7 @@
               </div>
             </div>
 
-            <% if policy(User).manage? %>
+            <% if policy(User).destroy? %>
               <%= link_to t('remove'),
                 project_user_path(project, user),
                 data: { confirm: t('remove user confirm', email: user.email) },
@@ -38,7 +38,7 @@
     </div>
 
     <div class="col-xs-12 col-sm-6">
-      <% if policy(User).manage? %>
+      <% if policy(User).create? %>
         <div class="row">
           <div class="col-md-12">
             <h4><i class="mi md-20">group</i> <%= t('projects.available_users') %></h4>

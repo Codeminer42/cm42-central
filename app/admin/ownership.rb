@@ -42,6 +42,7 @@ ActiveAdmin.register Ownership do
     end
   end
 
+  filter :team
   filter :is_owner
 
   form do |f|
@@ -49,8 +50,8 @@ ActiveAdmin.register Ownership do
       f.input :team, as: :select,
                      collection: Team.order(:name).all
       f.input :project, as: :select,
-                        collection: Project.order(:name).all
-      f.input :is_owner, as: :check_boxes
+                     collection: Project.order(:name).all
+      f.input :is_owner, as: :select
     end
     f.actions
   end

@@ -1,20 +1,19 @@
-class ProjectEnrollerService
+class ProjectMembershipEnrollerService
   include Pundit
   attr_reader :message
 
-  def initialize(user, current_team, project, story)
+  def initialize(user, current_team, project)
     @user = user
     @current_team = current_team
     @project = project
-    @story = story
   end
 
   def enroll
-    return user_not_found unless @user
+    return user_not_found unless user_exists?
     return user_already_member if user_already_member?
 
-    policy_scope(User) << @user
-    @user.teams << @current_team
+    @current_team.users << @user unless @user.teams.include?(@current_team)
+    @project.users << @user
     @message = I18n.t('was added to this project', scope: 'users', email: @user.email)
 
     true
@@ -22,8 +21,12 @@ class ProjectEnrollerService
 
   private
 
+  def user_exists?
+    @user.present?
+  end
+
   def user_already_member?
-    policy_scope(User).include?(@user) || @user.teams.include?(@current_team)
+    policy_scope(User).include?(@user)
   end
 
   def user_not_found
@@ -36,11 +39,7 @@ class ProjectEnrollerService
     false
   end
 
-  def current_user
-    @user
-  end
-
   def pundit_user
-    PunditContext.new(@current_team, @user, current_project: @project, current_story: @story)
+    PunditContext.new(@current_team, @user, current_project: @project)
   end
 end

@@ -1,11 +1,10 @@
 require 'rails_helper'
 
-describe ProjectEnrollerService do
+describe ProjectMembershipEnrollerService do
   let(:user) { create(:user, email: 'foo@bar.com') }
   let(:current_team) { create(:team) }
   let(:project) { create(:project) }
-  let(:story) { create(:story, :with_project) }
-  let(:service) { ProjectEnrollerService.new(user, current_team, project, story) }
+  let(:service) { described_class.new(user, current_team, project) }
 
   subject { service.enroll }
 
