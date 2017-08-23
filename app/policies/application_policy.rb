@@ -25,15 +25,15 @@ class ApplicationPolicy
     end
 
     def project_member?
-      root? || (current_project && current_project.users.find_by_id(current_user.id))
+      root? || (current_project && current_project.users.find_by(id: current_user.id))
     end
 
     def story_member?
-      root? || (current_story && current_story.project.users.find_by_id(current_user.id))
+      root? || (current_story && current_story.project.users.find_by(id: current_user.id))
     end
 
     def team_member?
-      root? || (current_team && current_team.users.find_by_id(current_user.id))
+      root? || (current_team && current_team.users.find_by(id: current_user.id))
     end
   end
   include CheckRoles

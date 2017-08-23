@@ -1,6 +1,6 @@
 class NotePolicy < StoryPolicy
   def show?
-    current_story.notes.find_by_id(record.id)
+    current_story.notes.find_by(id: record.id)
   end
 
   class Scope < Scope

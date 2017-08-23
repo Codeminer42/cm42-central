@@ -4,7 +4,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def show?
-    admin? || (project_member? && current_project.users.find_by_id(record.id))
+    admin? || (project_member? && current_project.users.find_by(id: record.id))
   end
 
   def create?

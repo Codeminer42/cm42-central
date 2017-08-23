@@ -27,7 +27,7 @@ task first_team: :environment do
     Ownership.create(team_id: team.id, project_id: project_id, is_owner: true)
   end
 
-  user = User.find_by_email(ENV['FIRST_TEAM_ADMIN_EMAIL'])
+  user = User.find_by(email: ENV['FIRST_TEAM_ADMIN_EMAIL'])
   user.enrollments.first.update_attributes(is_admin: true)
 
   puts "Team #{team.name} with slug #{team.slug} was successfully created."

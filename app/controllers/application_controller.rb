@@ -51,7 +51,7 @@ class ApplicationController < ActionController::Base
   helper_method :pundit_user
 
   def current_team
-    @current_team ||= Team.not_archived.find_by_slug(session[:current_team_slug])
+    @current_team ||= Team.not_archived.find_by(slug: session[:current_team_slug])
   end
   helper_method :current_team
 

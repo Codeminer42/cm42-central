@@ -27,7 +27,7 @@ class TeamsController < ApplicationController
   end
 
   def create_enrollment
-    user = User.find_by_email params[:user][:email]
+    user = User.find_by(email: params[:user][:email])
     if user
       authorize user
       if user.teams.include?(current_team)

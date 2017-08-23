@@ -4,7 +4,7 @@ class StoryPolicy < ApplicationPolicy
   end
 
   def show?
-    admin? || project_member? && current_project.stories.find_by_id(record.id)
+    admin? || project_member? && current_project.stories.find_by(id: record.id)
   end
 
   def create?

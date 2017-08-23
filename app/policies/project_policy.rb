@@ -1,6 +1,6 @@
 class ProjectPolicy < ApplicationPolicy
   def show?
-    admin? || current_user.projects.find_by_id(record.id)
+    admin? || current_user.projects.find_by(id: record.id)
   end
 
   def reports?

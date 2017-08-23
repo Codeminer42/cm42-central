@@ -1,6 +1,6 @@
 class TaskPolicy < StoryPolicy
   def show?
-    current_story.tasks.find_by_id(record.id)
+    current_story.tasks.find_by(id: record.id)
   end
 
   class Scope < Scope

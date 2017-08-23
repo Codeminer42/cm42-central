@@ -101,7 +101,7 @@ class ProjectsController < ApplicationController
   end
 
   def join
-    project = projects_unjoined.find_by_slug!(params[:id])
+    project = projects_unjoined.find_by!(slug: params[:id])
     authorize project
 
     project.users << current_user

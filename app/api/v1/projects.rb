@@ -36,7 +36,7 @@ class V1::Projects < Grape::API
 
     desc 'Return the specified project', tags: ['project']
     get '/:slug' do
-      project = Project.find_by_slug(params[:slug])
+      project = Project.find_by(slug: params[:slug])
 
       present project, with: Entities::Project, type: :full
     end
@@ -47,7 +47,7 @@ class V1::Projects < Grape::API
       optional :current_time, type: DateTime
     end
     get '/:slug/analysis' do
-      project = Project.not_archived.find_by_slug(params[:slug])
+      project = Project.not_archived.find_by(slug: params[:slug])
       current_time = params[:current_time] || Time.current
       params[:since].months.ago
 
@@ -69,7 +69,7 @@ class V1::Projects < Grape::API
     end
     paginate
     get '/:slug/stories' do
-      project = Project.includes(:stories).find_by_slug(params[:slug])
+      project = Project.includes(:stories).find_by(slug: params[:slug])
 
       stories = project.stories.send(params[:state])
       stories = stories.where('created_at >= ?', params[:created_at]) if params[:created_at]
@@ -81,7 +81,7 @@ class V1::Projects < Grape::API
     desc 'Return all users of a specified project', tags: ['project']
     paginate
     get '/:slug/users' do
-      project = Project.includes(memberships: :user).find_by_slug(params[:slug])
+      project = Project.includes(memberships: :user).find_by(slug: params[:slug])
       users = project.users
 
       present paginate(users), with: Entities::User
