@@ -318,6 +318,8 @@ en:
     You are not authorized to perform this action: "You are not authorized to perform this action."
     is already a member of this project: "%{email} is already a member of this project"
     was sent an invite to join this project: "%{email} was sent an invite to join this project"
+    was added to the team: "%{email} was added to the team"
+    was not created: "User was not created"
     was added to this project: "%{email} was added to this project"
     was removed from this project: "%{email} was removed from this project"
     admin_on: Make Administrator

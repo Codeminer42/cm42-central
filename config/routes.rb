@@ -35,6 +35,8 @@ Rails.application.routes.draw do
     resources :api_tokens, only: [:create, :destroy]
   end
 
+  resources :users, only: [:create]
+
   resources :projects do
     member do
       get :join
@@ -46,7 +48,8 @@ Rails.application.routes.draw do
       get :search
       get :reports
     end
-    resources :users, only: [:index, :create, :destroy]
+    resources :users, only: [:index, :destroy]
+    resources :memberships, only: [:create]
     resources :integrations, only: [:index, :create, :destroy]
     resources :changesets, only: [:index]
     resources :stories, only: [:index, :create, :update, :destroy, :show] do

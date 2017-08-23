@@ -24,6 +24,7 @@ class TeamsController < ApplicationController
 
   def new_enrollment
     authorize current_team
+    @user = User.new
   end
 
   def create_enrollment

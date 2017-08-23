@@ -25,7 +25,7 @@
       <div class="add-member panel panel-default card">
         <div class="panel-body">
           <%= form_for @user,
-            url: project_users_path(@project, @user) do |f| %>
+            url: project_memberships_path(@project.id, @user) do |f| %>
 
             <%= content_tag :div, class: 'alert alert-danger' do %>
               <%= t('errors.template.header', count: @user.errors.count, model: @user.class.name.humanize) %>

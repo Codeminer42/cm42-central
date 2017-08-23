@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_project, except: :create
+  before_filter :set_project, except: :create
 
   respond_to :html, :json
 

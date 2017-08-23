@@ -12,7 +12,7 @@ describe ProjectMembershipEnrollerService do
     context 'when the user is found' do
       context 'when the user is already member of the team' do
         before do
-          allow(user).to receive(:teams).and_return([current_team])
+          project.users << user
         end
 
         it 'returns false' do

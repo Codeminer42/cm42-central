@@ -299,6 +299,8 @@ es:
     You are not authorized to perform this action: "Usted no está autorizado para realizar esta acción."
     is already a member of this project: "%{email} ya es un miembro de este proyecto"
     was sent an invite to join this project: "Se ha enviado una invitación a %{email} para unirse a este proyecto"
+    was added to the team: "%{email} se añadió el equipo"
+    was not created: "Usuario no fue creado"
     was added to this project: "%{email} se añadió a este proyecto"
     was removed from this project: "%{email} fue eliminado de este proyecto"
     admin_on: Hacer administrador

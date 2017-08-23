@@ -321,6 +321,8 @@ pt-BR:
     You are not authorized to perform this action: "Você não está autorizado para executar esta ação."
     is already a member of this project: "%{email} já é um membro deste projeto"
     was sent an invite to join this project: "%{email} foi enviado um convite para participar deste projeto"
+    was added to the team: "%{email} foi adicionado a equipe"
+    was not created: "Usuário não foi criado"
     was added to this project: "%{email} foi adicionada a este projeto"
     was removed from this project: "%{email} foi removido deste projeto"
     admin_on: Torne Administrator
