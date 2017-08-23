@@ -31,12 +31,10 @@ class MissingKeysFinder
       I18n.available_locales.each do |locale|
         skip = false
         ls = locale.to_s
-        unless @yaml[ls].nil?
-          @yaml[ls].each do |re|
-            if key.match(re)
-              skip = true
-              break
-            end
+        @yaml[ls]&.each do |re|
+          if key.match(re)
+            skip = true
+            break
           end
         end
 
