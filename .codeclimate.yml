@@ -13,6 +13,13 @@ engines:
       languages:
       - ruby
       - javascript
+    exclude_paths:
+      - 'app/controllers/stories_controller.rb'
+      - 'app/controllers/teams_controller.rb'
+      - 'app/controllers/projects_controller.rb'
+      - 'app/api/v1/projects.rb'
+      - 'app/api/v1/teams.rb'
+      - 'app/operations/story_operations/state_change_notification.rb'
 exclude_paths:
   - "Gemfile.lock"
   - "db/schema.rb"
