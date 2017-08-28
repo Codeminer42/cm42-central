@@ -1,15 +1,15 @@
 class ProjectSerializer
   attr_accessor :name,
-    :slug,
-    :archived_at,
-    :velocity,
-    :volatility,
-    :users_avatar,
-    :avatar,
-    :path_to,
-    :tag_name,
-    :tag_bg_color,
-    :tag_fore_color
+                :slug,
+                :archived_at,
+                :velocity,
+                :volatility,
+                :users_avatar,
+                :avatar,
+                :path_to,
+                :tag_name,
+                :tag_bg_color,
+                :tag_fore_color
 
   def initialize(attrs = {})
     self.name = attrs.truncate_name
@@ -40,6 +40,6 @@ class ProjectSerializer
   end
 
   def self.from_collection(collection)
-    collection.map { |item| self.new(item).to_json }
+    collection.map { |item| new(item).to_json }
   end
 end

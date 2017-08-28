@@ -1,5 +1,4 @@
 class StoriesController < ApplicationController
-
   include ActionView::Helpers::TextHelper
 
   before_action :set_project
@@ -11,7 +10,7 @@ class StoriesController < ApplicationController
                  StorySearch.labels(policy_scope(Story), params[:label])
                else
                  policy_scope(Story).with_dependencies.order('updated_at DESC').tap do |relation|
-                   relation = relation.limit(ENV['STORIES_CEILING']) if ENV['STORIES_CEILING']
+                   relation.limit(ENV['STORIES_CEILING']) if ENV['STORIES_CEILING']
                  end
                end
 
@@ -35,7 +34,9 @@ class StoriesController < ApplicationController
     @story.acting_user = current_user
     @story.base_uri = project_url(@story.project)
     respond_to do |format|
-      if @story = StoryOperations::Update.(@story, allowed_params, current_user)
+      @story = StoryOperations::Update.call(@story, allowed_params, current_user)
+
+      if @story
         format.html { redirect_to project_url(@project) }
         format.js   { render json: @story }
       else
@@ -48,7 +49,7 @@ class StoriesController < ApplicationController
   def destroy
     @story = policy_scope(Story).find(params[:id])
     authorize @story
-    StoryOperations::Destroy.(@story, current_user)
+    StoryOperations::Destroy.call(@story, current_user)
     head :ok
   end
 
@@ -75,7 +76,9 @@ class StoriesController < ApplicationController
     authorize @story
     @story.requested_by_id = current_user.id unless @story.requested_by_id
     respond_to do |format|
-      if @story = StoryOperations::Create.(@story, current_user)
+      @story = StoryOperations::Create.call(@story, current_user)
+
+      if @story
         format.html { redirect_to project_url(@project) }
         format.js   { render json: @story }
       else
@@ -88,13 +91,18 @@ class StoriesController < ApplicationController
   private
 
   def allowed_params
-    attachinary_params = [ :id, :public_id, :version, :signature, :width, :height, :format, :resource_type, :created_at, :tags, :bytes, :type, :etag, :url, :secure_url, :original_filename ]
-    params.require(:story).permit(:title, :description, :estimate, :story_type, :release_date, :state, :requested_by_id, :owned_by_id, :position, :labels,
-                                  documents: attachinary_params)
+    attachinary_params = [
+      :id, :public_id, :version, :signature, :width, :height, :format, :resource_type,
+      :created_at, :tags, :bytes, :type, :etag, :url, :secure_url, :original_filename
+    ]
+
+    params.require(:story).permit(
+      :title, :description, :estimate, :story_type, :release_date, :state,
+      :requested_by_id, :owned_by_id, :position, :labels, documents: attachinary_params
+    )
   end
 
   def set_project
     @project = policy_scope(Project).friendly.find(params[:project_id])
   end
-
 end

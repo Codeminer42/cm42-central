@@ -31,7 +31,7 @@ class StorySearch
   def parse(query_params)
     query_params.split(' ').each do |token|
       if token =~ /^(.+?)\:(.+?)$/
-        conditions.merge!($1 => $2)
+        conditions.merge!(Regexp.last_match(1) => Regexp.last_match(2))
       else
         parsed_params << token
       end
@@ -40,7 +40,7 @@ class StorySearch
 
   def add_conditions_to(search_method)
     new_relation = relation.with_dependencies.send(search_method, parsed_params.join(' '))
-    new_relation = relation.where(conditions) if conditions.size > 0
+    new_relation = relation.where(conditions) unless conditions.empty?
     new_relation.limit(SEARCH_RESULTS_LIMIT)
   end
 end

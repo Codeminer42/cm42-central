@@ -470,6 +470,49 @@ describe('StoryView', function() {
 
   });
 
+  describe("tasks", function() {
+
+    it("adds a blank task to the end of the tasks collection", function() {
+      this.view.model.tasks.reset();
+      expect(this.view.model.tasks.length).toEqual(0);
+      this.view.addEmptyTask();
+      expect(this.view.model.tasks.length).toEqual(1);
+      expect(this.view.model.tasks.last().isNew()).toBeTruthy();
+    });
+
+    it("doesn't add a blank task if the story is new", function() {
+      var stub = sinon.stub(this.view.model, 'isNew');
+      stub.returns(true);
+      this.view.model.tasks.reset();
+      expect(this.view.model.tasks.length).toEqual(0);
+      this.view.addEmptyTask();
+      expect(this.view.model.tasks.length).toEqual(0);
+    });
+
+    it("doesn't add a blank task if there is already one", function() {
+      this.view.model.tasks.last = sinon.stub().returns({
+        isNew: sinon.stub().returns(true)
+      });
+      expect(this.view.model.tasks.last().isNew()).toBeTruthy();
+      var oldLength = this.view.model.tasks.length;
+      this.view.addEmptyNote();
+      expect(this.view.model.tasks.length).toEqual(oldLength);
+    });
+
+    it("has a task deletion handler", function() {
+      const task = { destroy: sinon.stub() };
+      this.view.handleTaskDelete(task);
+      expect(task.destroy).toHaveBeenCalled();
+    });
+
+    it("has a <TaskForm /> submit handler", function() {
+      const task = { set: sinon.stub(), save: sinon.stub() };
+      this.view.handleTaskSubmit({ task, taskName: 'TestTask' });
+      expect(task.save).toHaveBeenCalled();
+    });
+
+  });
+
   describe("description", function() {
 
     beforeEach(function() {
@@ -485,25 +528,37 @@ describe('StoryView', function() {
       this.view.canEdit = sinon.stub().returns(true)
       this.view.render();
       expect(this.view.$('textarea[name="description"]').length).toEqual(1);
-      expect(this.view.$('div.description-wrapper').length).toEqual(0);
-      expect(this.view.$('input.edit-description').length).toEqual(0);
+      expect(this.view.$('.description').length).toEqual(0);
     });
 
-    it("isn't text area when story isn't new", function() {
+    it("is text when story isn't new and description isn't empty", function() {
       this.view.model.isNew = sinon.stub().returns(false);
+      const innerText = "foo";
+      this.view.model.set({description: innerText});
       this.view.render();
       expect(this.view.$('textarea[name="description"]').length).toEqual(0);
-      expect(this.view.$('div.description-wrapper').length).toEqual(1);
-      expect(this.view.$('.edit-description').length).toEqual(1);
+      expect(this.view.$('.description')[0].innerText).toEqual(innerText);
+    });
+
+    it("is a button when story isn't new and description is empty", function() {
+      this.view.model.isNew = sinon.stub().returns(false);
+      this.view.model.set({description: ""});
+      this.view.render();
+      expect(this.view.$('input[name="edit-description"][type="button"]').length).toEqual(1);
     });
 
     it('is a text area after .edit-description is clicked', function() {
-      const ev = {target: this.view.$('div.description-wrapper')[0]}
+      const ev = {target: this.view.$('div.story-description')[0]}
       this.view.model.isNew = sinon.stub().returns(false);
       this.view.editDescription(ev);
       expect(this.view.model.get('editingDescription')).toBeTruthy();
     });
 
+    it('When onChange is triggered should properly set description value', function() {
+      const value = "foo";
+      this.view.onChangeModel(value, "description");
+      expect(this.view.model.get("description")).toEqual(value);
+    });
   });
 
   describe("attachinary", function() {

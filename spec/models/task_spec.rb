@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Task do
-
   let(:project) { mock_model(Project, suppress_notifications: true) }
   let(:story)   { mock_model(Story, project: project) }
 
@@ -17,13 +16,13 @@ describe Task do
 
   describe '#as_json' do
     it 'returns the right keys' do
-      expect(task.as_json['task'].keys.sort).to eq(%w[
-        created_at done id name story_id updated_at
-      ])
+      expect(task.as_json['task'].keys.sort).to eq(%w(
+                                                     created_at done id name story_id updated_at
+                                                   ))
     end
   end
 
-  describe "#readonly?" do
+  describe '#readonly?' do
     let(:user) { create(:user) }
     let(:project) { create(:project) }
 

@@ -4,16 +4,15 @@ module FriendlyId
 
     class << self
       def disabled?
-        !!Thread.current[THREAD_LOCAL_KEY]
+        !Thread.current[THREAD_LOCAL_KEY].nil?
       end
 
-      def disable_friendly_id(&block)
-        begin
-          old_value, Thread.current[THREAD_LOCAL_KEY] = Thread.current[THREAD_LOCAL_KEY], true
-          block.call
-        ensure
-          Thread.current[THREAD_LOCAL_KEY] = old_value
-        end
+      def disable_friendly_id
+        old_value = Thread.current[THREAD_LOCAL_KEY]
+        Thread.current[THREAD_LOCAL_KEY] = true
+        yield
+      ensure
+        Thread.current[THREAD_LOCAL_KEY] = old_value
       end
     end
   end

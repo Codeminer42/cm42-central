@@ -37,19 +37,27 @@ describe ActivityPresenter do
     it 'describes story created' do
       activity.subject = story
       activity.save
-      expect(subject.description).to eq("#{user_name} created Story ##{story.id} - '<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>'")
+      expect(subject.description).to eq(
+        "#{user_name} created Story ##{story.id} - " \
+        "'<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>'"
+      )
     end
 
     it 'describes project created' do
       activity.subject = project
       activity.save
-      expect(subject.description).to eq("#{user_name} created Project '<a href=\"/projects/test-project\">Test Project</a>'")
+      expect(subject.description).to eq(
+        "#{user_name} created Project '<a href=\"/projects/test-project\">Test Project</a>'"
+      )
     end
 
     it 'describes note created' do
       activity.subject = note
       activity.save
-      expect(subject.description).to eq("#{user_name} created Note 'Test note' for Story '<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>'")
+      expect(subject.description).to eq(
+        "#{user_name} created Note 'Test note' for Story " \
+        "'<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>'"
+      )
     end
   end
 
@@ -62,7 +70,11 @@ describe ActivityPresenter do
         story.description = 'new description'
         activity.subject = story
         activity.save
-        expect(subject.description).to eq("#{user_name} updated Story ##{story.id} - '<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>' changing estimate to '2', description to 'new description'")
+        expect(subject.description).to eq(
+          "#{user_name} updated Story ##{story.id} - " \
+          "'<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>' " \
+          "changing estimate to '2', description to 'new description'"
+        )
       end
 
       it 'describes new values in project' do
@@ -72,7 +84,10 @@ describe ActivityPresenter do
         project.start_date = Date.parse('2016-08-30').in_time_zone
         activity.subject = project
         activity.save
-        expect(subject.description).to eq("#{user_name} updated Project '<a href=\"/projects/test-project\">Test Project</a>' changing start_date to '2016-08-30'")
+        expect(subject.description).to eq(
+          "#{user_name} updated Project '<a href=\"/projects/test-project\">Test Project</a>' " \
+          "changing start_date to '2016-08-30'"
+        )
       end
 
       it 'describes new values in note' do
@@ -82,7 +97,11 @@ describe ActivityPresenter do
         note.note = 'new note'
         activity.subject = note
         activity.save
-        expect(subject.description).to eq("#{user_name} updated Note 'new note' for Story '<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>' changing note from 'Test note' to 'new note'")
+        expect(subject.description).to eq(
+          "#{user_name} updated Note 'new note' for Story " \
+          "'<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>' " \
+          "changing note from 'Test note' to 'new note'"
+        )
       end
     end
 
@@ -98,7 +117,13 @@ describe ActivityPresenter do
         story.state = 'started'
         activity.subject = story
         activity.save
-        expect(subject.description).to eq("#{user_name} updated Story ##{story.id} - '<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>' changing estimate from '2' to '4', description to '<del class=\"differ\">old</del><ins class=\"differ\">new</ins> description', state moved forward to started")
+        expect(subject.description).to eq(
+          "#{user_name} updated Story ##{story.id} - " \
+          "'<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>' " \
+          "changing estimate from '2' to '4', description to " \
+          "'<del class=\"differ\">old</del><ins class=\"differ\">new</ins> description', " \
+          'state moved forward to started'
+        )
       end
 
       it 'describes changes in project' do
@@ -109,23 +134,41 @@ describe ActivityPresenter do
         project.start_date = Date.parse('2016-08-30').in_time_zone
         activity.subject = project
         activity.save
-        expect(subject.description).to eq("#{user_name} updated Project '<a href=\"/projects/test-project\">New Project</a>' changing name from 'Test Project' to 'New Project', start_date from '2016-07-01' to '2016-08-30'")
+        expect(subject.description).to eq(
+          "#{user_name} updated Project '<a href=\"/projects/test-project\">New Project</a>' " \
+          "changing name from 'Test Project' to 'New Project', start_date from '2016-07-01' to " \
+          "'2016-08-30'"
+        )
       end
 
       it 'describes changes in note' do
         note.note = 'new note'
         activity.subject = note
         activity.save
-        expect(subject.description).to eq("#{user_name} updated Note 'new note' for Story '<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>' changing note from 'Test note' to 'new note'")
+        expect(subject.description).to eq(
+          "#{user_name} updated Note 'new note' for Story " \
+          "'<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>' " \
+          "changing note from 'Test note' to 'new note'"
+        )
       end
 
       it 'describes changing attachments in story' do
-        documents_changes = {'documents_attributes' => [ ['old_file1.jpg', 'old_file2.jpg'], ['old_file2.jpg', 'new_file3.jpg'] ]}
+        documents_changes = {
+          'documents_attributes' => [
+            ['old_file1.jpg', 'old_file2.jpg'],
+            ['old_file2.jpg', 'new_file3.jpg']
+          ]
+        }
+
         expect(story).to receive(:changes).and_return(documents_changes)
         expect(story).to receive(:changed?).and_return(true)
         activity.subject = story
         activity.save
-        expect(subject.description).to eq("#{user_name} updated Story ##{story.id} - '<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>' changing documents by uploading 'new_file3.jpg' and by deleting 'old_file1.jpg'")
+        expect(subject.description).to eq(
+          "#{user_name} updated Story ##{story.id} - " \
+          "'<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>' " \
+          "changing documents by uploading 'new_file3.jpg' and by deleting 'old_file1.jpg'"
+        )
       end
     end
   end

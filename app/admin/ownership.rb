@@ -45,11 +45,11 @@ ActiveAdmin.register Ownership do
   filter :is_owner
 
   form do |f|
-    f.inputs "Ownership Details" do
+    f.inputs 'Ownership Details' do
       f.input :team, as: :select,
-        collection: Team.order(:name).all
+                     collection: Team.order(:name).all
       f.input :project, as: :select,
-        collection: Project.order(:name).all
+                        collection: Project.order(:name).all
       f.input :is_owner, as: :check_boxes
     end
     f.actions

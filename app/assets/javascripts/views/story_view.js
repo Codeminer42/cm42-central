@@ -8,6 +8,9 @@ import StoryDatePicker from 'components/story/StoryDatePicker';
 import StoryNotes from 'components/story/StoryNotes';
 import NoteForm from 'components/notes/NoteForm';
 import StoryLabels from 'components/story/StoryLabels';
+import StoryTasks from 'components/story/StoryTasks';
+import TaskForm from 'components/tasks/TaskForm';
+import StoryAttachment from 'components/story/StoryAttachment';
 
 var Clipboard = require('clipboard');
 
@@ -15,8 +18,6 @@ var executeAttachinary = require('libs/execute_attachinary');
 
 var FormView = require('./form_view');
 var EpicView = require('./epic_view');
-var TaskForm = require('./task_form');
-var TaskView = require('./task_view');
 
 const LOCAL_STORY_REGEXP = /(?!\s|\b)(#\d+)(?!\w)/g;
 
@@ -34,9 +35,10 @@ module.exports = FormView.extend({
     _.bindAll(this, "render", "highlight", "moveColumn", "setClassName",
       "transition", "estimate", "disableForm", "renderNotes",
       "hoverBox", "renderTasks", "handleNoteDelete", "handleSaveError",
-      "renderTasksCollection", "addEmptyTask", "handleNoteSubmit",
-      "clickSave", "attachmentDone", "attachmentStart",
-      "attachmentFail", "toggleControlButtons");
+      "addEmptyTask", "handleNoteSubmit", "renderTaskForm", "handleTaskSubmit",
+      "clickSave", "attachmentDone", "attachmentStart", "handleTaskUpdate",
+      "handleTaskSaveSuccess", "handleTaskDelete","attachmentFail",
+      "toggleControlButtons");
 
     // Rerender on any relevant change to the views story
     this.model.on("change", this.render);
@@ -70,9 +72,6 @@ module.exports = FormView.extend({
 
     // Set up CSS classes for the view
     this.setClassName();
-
-    // Add an empty task to the collection
-    this.addEmptyTask();
   },
 
   isReadonly: function() {
@@ -243,7 +242,7 @@ module.exports = FormView.extend({
     }
   },
 
-  openEpic: function(e){
+  openEpic: function(e) {
     e.stopPropagation();
     var label = $(e.target).text();
     new EpicView({model: this.model.collection.project, label: label});
@@ -396,28 +395,20 @@ module.exports = FormView.extend({
       );
 
       this.$el.append(
-        this.makeFormControl(this.makeDescription())
+        this.makeFormControl(function(div) {
+          var $storyDescription = $('<div class="story-description"><div>');
+          $(div).append($storyDescription);
+        })
       );
 
-      this.renderTasks();
+      this.$el.append($('<div data-story-tasks></div>'));
+      this.$el.append($('<div data-story-task-form></div>'));
 
       this.$el.append(
         this.makeFormControl(function(div) {
-          var random = (Math.floor(Math.random() * 10000) + 1);
-          var progress_element_id = "documents_progress_" + random;
-          var finished_element_id = "documents_finished_" + random;
-          var attachinary_container_id = "attachinary_container_" + random;
+          const $storyAttachments = $('<div class="story-attachments"></div>');
+          $(div).append($storyAttachments);
 
-          $(div).append(this.label('attachments', I18n.t('story.attachments')));
-          $(div).addClass('uploads');
-          if(!this.isReadonly()) {
-            $(div).append(this.fileField("documents", progress_element_id, finished_element_id, attachinary_container_id));
-            $(div).append("<div id='" + progress_element_id + "' class='attachinary_progress_bar'></div>");
-          }
-          $(div).append('<div id="' + attachinary_container_id + '"></div>');
-
-          // FIXME: refactor to a separated AttachmentView or similar
-          // must run the plugin after the element is available in the DOM, not before, hence, the setTimeout
           clearTimeout(window.executeAttachinaryTimeout);
           window.executeAttachinaryTimeout = setTimeout(executeAttachinary, 1000);
         })
@@ -463,14 +454,23 @@ module.exports = FormView.extend({
       new Clipboard('.btn-clipboard');
     }
 
-    const descriptionContainer = this.$('.description-wrapper')[0];
-    if (descriptionContainer) {
+    const description = this.$('.story-description')[0];
+    if (description) {
       ReactDOM.render(
         <StoryDescription
+          name='description'
           linkedStories={this.linkedStories}
           isReadonly={this.isReadonly()}
-          description={this.parseDescription()} />,
-          descriptionContainer
+          description={this.parseDescription()}
+          usernames={window.projectView.usernames()}
+          isNew={this.model.isNew()}
+          editingDescription={this.model.get('editingDescription')}
+          value={this.model.get("description")}
+          fileuploadprogressall={this.uploadProgressBar}
+          onChange={ (event) => this.onChangeModel(event.target.value, "description") }
+          onClick={this.editDescription}
+        />,
+          description
         );
     }
 
@@ -482,14 +482,27 @@ module.exports = FormView.extend({
           className='labels'
           value={this.model.get('labels')}
           availableLabels={this.model.collection.labels}
-          onChange={ (event) => this.onChangeLabels(event) }
+          onChange={ (event) => this.onChangeModel(event.target.value, "labels") }
           disabled={this.isReadonly()}
         />,
         tagsInput
       );
     }
 
+    const attachments = this.$('.story-attachments')[0];
+    if(attachments) {
+      ReactDOM.render(
+        <StoryAttachment
+          name='attachments'
+          isReadonly={this.isReadonly()}
+          filesModel={this.model.get('documents')}
+        />,
+        attachments
+      );
+    }
+
     this.renderSelects();
+    this.renderTasks();
     this.renderNotes();
   },
 
@@ -639,6 +652,71 @@ module.exports = FormView.extend({
     });
   },
 
+  renderTasks: function() {
+    const $storyTasks = this.$('[data-story-tasks]');
+    if ($storyTasks.length && !this.model.isNew()) {
+      const isReadonly = this.isReadonly();
+      const tasks = this.model.tasks;
+
+      ReactDOM.render(
+        <StoryTasks
+          tasks={isReadonly ? tasks : tasks.slice(0, -1)}
+          disabled={isReadonly}
+          handleUpdate={this.handleTaskUpdate}
+          handleDelete={this.handleTaskDelete}
+        />,
+        $storyTasks.get(0)
+      );
+
+      if (!isReadonly) {
+        this.renderTaskForm();
+      }
+    }
+  },
+
+  renderTaskForm: function() {
+    const $taskForm = this.$('[data-story-task-form]');
+    if ($taskForm.length) {
+      this.addEmptyTask();
+
+      ReactDOM.render(
+        <TaskForm
+          onSubmit={this.handleTaskSubmit}
+          task={this.model.tasks.last()}
+        />,
+        $taskForm.get(0)
+      );
+    }
+  },
+
+  handleTaskSubmit: function({task, taskName}) {
+    task.set('name', taskName);
+    return task.save(null, {
+      dataType: 'text',
+      success: this.handleTaskSaveSuccess,
+      error: this.handleSaveError
+    });
+  },
+
+  handleTaskDelete: function(task) {
+    task.destroy();
+    this.renderTasks();
+  },
+
+  handleTaskSaveSuccess: function() {
+    window.projectView.model.fetch();
+    this.renderTasks();
+  },
+
+  handleTaskUpdate: function({task, done}) {
+    task.set('done', done);
+    task.save(null, {
+      dataType: 'text',
+      success: this.handleTaskSaveSuccess,
+      error: this.handleSaveError
+    });
+  },
+
   handleSaveError: function(model, response) {
     const json = JSON.parse(response.responseText);
     model.set({errors: json[model.name].errors});
@@ -655,42 +733,6 @@ module.exports = FormView.extend({
 
   createStoryStateOptions: function(option) {
     return [I18n.t('story.state.' + option), option];
-  },
-
-  makeStoryTypeSelect: function(div) {
-    var storyTypeOptions = _.map(["feature", "chore", "bug", "release"], function(option) {
-      return [I18n.t('story.type.' + option), option]
-    });
-
-    $(div).append(this.makeFormControl({
-      name: "story_type",
-      label: true,
-      disabled: true,
-      control: this.select("story_type", storyTypeOptions, {
-        attrs: {
-          class: ['story_type'],
-          disabled: this.isReadonly()
-        }
-      })
-    }));
-  },
-
-  makeDescription: function() {
-    return function(div) {
-      $(div).append(this.label("description", I18n.t('activerecord.attributes.story.description')));
-
-      if(this.model.isNew() || this.model.get('editingDescription')) {
-        var textarea = this.textArea("description");
-        $(textarea).atwho({
-          at: "@",
-          data: window.projectView.usernames(),
-        });
-        $(div).append(textarea);
-      } else {
-        var $description = $('<div class="description-wrapper"><div>');
-        $(div).append($description);
-      }
-    }
   },
 
   makeTitle: function() {
@@ -713,7 +755,8 @@ module.exports = FormView.extend({
     if(this.model.get('editing')) {
       this.$el.append(
         this.makeFormControl(function(div) {
-          this.makeStoryTypeSelect(div);
+          const $storyType = $('<div class="form-group" data-story-type></div>');
+          $(div).append($storyType);
         }));
     }
 
@@ -723,7 +766,7 @@ module.exports = FormView.extend({
     ReactDOM.render(
       <StoryDatePicker
         releaseDate={this.model.get('release_date')}
-        onChangeCallback={function(){$('input[name=release_date]').trigger('change')}}
+        onChangeCallback={function() {$('input[name=release_date]').trigger('change')}}
       />,
       $storyDate.get(0)
     );
@@ -732,19 +775,22 @@ module.exports = FormView.extend({
     this.bindElementToAttribute(dateInput, 'release_date');
 
     this.$el.append(
-      this.makeFormControl(this.makeDescription())
+      this.makeFormControl(this.makeFormControl(function(div) {
+        var $description = $('<div class="story-description"><div>');
+        $(div).append($description);
+      }))
     );
 
   },
 
   parseDescription: function() {
-    const description = window.md.makeHtml(this.model.escape('description')) || '';
+    const description = this.model.get('description') || '';
     var id, story;
     return description.replace(LOCAL_STORY_REGEXP, story_id => {
       id = story_id.substring(1);
       story = this.model.collection.get(id);
       this.linkedStories[id] = story;
-      return (story) ? `<a data-story-id='${id}'></a>` : story_id;
+      return (story) ? `<p data-story-id='${id}'></p>` : story_id;
     });
   },
 
@@ -773,35 +819,8 @@ module.exports = FormView.extend({
     this.$el.find('a.collapse').removeClass(/icons-/).addClass("icons-collapse");
   },
 
-  onChangeLabels: function(event){
-    this.model.set({ labels: event.target.value }, {silent: true});
-  },
-
-  renderTasks: function() {
-    if (this.model.tasks.length > 0) {
-      var el = this.$el;
-      el.append(this.label('tasks', I18n.t('story.tasks')));
-      el.append('<div class="tasklist"/>');
-      this.renderTasksCollection();
-    }
-  },
-
-  renderTasksCollection: function() {
-    var tasklist = this.$('div.tasklist');
-    tasklist.html('');
-    if(!this.isReadonly())
-      this.addEmptyTask();
-    var that = this;
-    this.model.tasks.each(function(task) {
-      var view;
-      if (!that.isReadonly() && task.isNew()) {
-        view = new TaskForm({model:task});
-      } else {
-        if (that.isReadonly()) task.isReadonly = true;
-        view = new TaskView({model:task});
-      }
-      tasklist.append(view.render().el);
-    });
+  onChangeModel: function(value, element) {
+    this.model.set({ [element]: value }, {silent: true});
   },
 
   addEmptyTask: function() {

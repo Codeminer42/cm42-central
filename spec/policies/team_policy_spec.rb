@@ -8,27 +8,27 @@ describe TeamPolicy do
 
   let!(:archived_team) { create :team, archived_at: Time.current }
 
-  context "proper user of a team" do
-    context "for an admin" do
+  context 'proper user of a team' do
+    context 'for an admin' do
       let(:current_user) { create :user, :with_team_and_is_admin }
 
-      %i[index show create new update edit destroy].each do |action|
+      %i(index show create new update edit destroy).each do |action|
         it { should permit(action) }
       end
 
       it 'lists only active teams' do
-        expect(policy_scope).to eq([ current_team ])
+        expect(policy_scope).to eq([current_team])
       end
     end
 
-    context "for a user" do
+    context 'for a user' do
       let(:current_user) { create :user, :with_team }
 
-      %i[index create new].each do |action|
+      %i(index create new).each do |action|
         it { should permit(action) }
       end
 
-      %i[update edit destroy].each do |action|
+      %i(update edit destroy).each do |action|
         it { should_not permit(action) }
       end
 

@@ -1,5 +1,5 @@
 class NoAnimations
-  def initialize(app, options = {})
+  def initialize(app, _options = {})
     @app = app
   end
 
@@ -17,7 +17,7 @@ class NoAnimations
   private
 
   def html?
-    @headers["Content-Type"] =~ /html/
+    @headers['Content-Type'] =~ /html/
   end
 
   def inject(fragment)
@@ -43,6 +43,6 @@ class NoAnimations
         }
       </style>
     EOF
-    fragment.gsub(%r{</head>}, disable_animations + "</head>")
+    fragment.gsub(%r{</head>}, disable_animations + '</head>')
   end
 end

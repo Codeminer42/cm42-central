@@ -1,35 +1,35 @@
 class ProjectPolicy < ApplicationPolicy
   def show?
-    is_admin? || current_user.projects.find_by_id(record.id)
+    admin? || current_user.projects.find_by(id: record.id)
   end
 
   def reports?
-    is_admin? || is_project_member?
+    admin? || project_member?
   end
 
   def import?
-    is_admin? && is_project_owner?
+    admin? && project_owner?
   end
 
   def join?
-    !is_project_member?
+    !project_member?
   end
 
-  alias_method :archived?,      :update?
-  alias_method :import_upload?, :import?
-  alias_method :archive?,       :import?
-  alias_method :unarchive?,     :archive?
-  alias_method :destroy?,       :archive?
-  alias_method :share?,         :archive?
-  alias_method :unshare?,       :share?
-  alias_method :transfer?,      :share?
-  alias_method :ownership?,     :share?
+  alias archived? update?
+  alias import_upload? import?
+  alias archive? import?
+  alias unarchive? archive?
+  alias destroy? archive?
+  alias share? archive?
+  alias unshare? share?
+  alias transfer? share?
+  alias ownership? share?
 
   class Scope < Scope
     def resolve
-      if is_root?
+      if root?
         Project.all
-      elsif is_admin?
+      elsif admin?
         current_team.projects
       else
         return Project.none unless current_team

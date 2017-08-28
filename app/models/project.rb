@@ -10,12 +10,12 @@ class Project < ActiveRecord::Base
 
   MAX_MEMBERS_PER_CARD = 4
 
-  JSON_ATTRIBUTES = [
-    "id", "name" ,"iteration_length", "iteration_start_day", "start_date",
-    "default_velocity"
-  ].freeze
+  JSON_ATTRIBUTES = %w(
+    id name iteration_length iteration_start_day start_date
+    default_velocity
+  ).freeze
 
-  JSON_METHODS = ["last_changeset_id", "point_values"].freeze
+  JSON_METHODS = %w(last_changeset_id point_values).freeze
 
   belongs_to :tag_group
 
@@ -25,13 +25,13 @@ class Project < ActiveRecord::Base
 
   scope :joinable, -> { where(disallow_join: false) }
 
-  scope :joinable_except, -> (project_ids) { joinable.where.not(id: project_ids) }
+  scope :joinable_except, ->(project_ids) { joinable.where.not(id: project_ids) }
 
   def last_changeset_id
     changesets.last && changesets.last.id
   end
 
-  def as_json(options = {})
+  def as_json(_options = {})
     super(only: JSON_ATTRIBUTES, methods: JSON_METHODS)
   end
 

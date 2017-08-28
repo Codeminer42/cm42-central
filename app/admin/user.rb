@@ -1,5 +1,6 @@
 ActiveAdmin.register User do
-  permit_params :email, :name, :initials, :username, :locale, :time_zone, :authy_enabled, :password, :password_confirmation
+  permit_params :email, :name, :initials, :username, :locale, :time_zone, :authy_enabled,
+                :password, :password_confirmation
 
   index do
     selectable_column
@@ -17,7 +18,7 @@ ActiveAdmin.register User do
   filter :username
 
   form do |f|
-    f.inputs "User Details" do
+    f.inputs 'User Details' do
       f.input :email
       f.input :password
       f.input :password_confirmation
@@ -32,10 +33,10 @@ ActiveAdmin.register User do
     f.actions
   end
 
-  sidebar "Team Details", only: [:show, :edit] do
+  sidebar 'Team Details', only: [:show, :edit] do
     ul do
-      li link_to "Memberships", manage_user_memberships_path(resource)
-      li link_to "Enrollments", manage_user_enrollments_path(resource)
+      li link_to 'Memberships', manage_user_memberships_path(resource)
+      li link_to 'Enrollments', manage_user_enrollments_path(resource)
     end
   end
 end

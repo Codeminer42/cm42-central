@@ -35,5 +35,5 @@ class WelcomeTour
       text: 'welcome_tour.members.text',
       attachTo: '[data-step="members"] bottom'
     }
-  ]
+  ].freeze
 end

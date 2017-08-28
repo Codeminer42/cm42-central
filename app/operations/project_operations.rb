@@ -1,5 +1,4 @@
 module ProjectOperations
-
   class Create < BaseOperations::Create
   end
 
@@ -20,5 +19,4 @@ module ProjectOperations
       end
     end
   end
-
 end
