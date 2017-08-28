@@ -11,7 +11,7 @@ class Story < ActiveRecord::Base
     def documents=(attachments)
       raise ActiveRecord::ReadOnlyRecord if readonly?
       # convert from ActionController::Parameters which doesn't have symbolize_keys!
-      super(attachments.map { |hash| hash.to_hash }) if attachments
+      super(attachments.map(&:to_hash)) if attachments
     end
 
     def documents_attributes
@@ -22,39 +22,41 @@ class Story < ActiveRecord::Base
   has_many :changesets, dependent: :destroy
   has_many :tasks, dependent: :destroy
 
-  has_attachments :documents, accept: [:raw, :jpg, :png, :psd, :docx, :xlsx, :doc, :xls, :pdf], maximum: 10
+  has_attachments :documents,
+                  accept: [:raw, :jpg, :png, :psd, :docx, :xlsx, :doc, :xls, :pdf],
+                  maximum: 10
+
   attr_accessor :documents_attributes_was
   prepend ReadOnlyDocuments
 
   include PgSearch
   pg_search_scope :search,
-    against: {
-      title: 'A',
-      description: 'B',
-      labels: 'C'
-    },
-    using: {
-      tsearch: {
-        prefix: true,
-        negation: true
-      }
-    }
+                  against: {
+                    title: 'A',
+                    description: 'B',
+                    labels: 'C'
+                  },
+                  using: {
+                    tsearch: {
+                      prefix: true,
+                      negation: true
+                    }
+                  }
 
   pg_search_scope :search_labels,
-    against: :labels,
-    ranked_by: ":trigram"
+                  against: :labels,
+                  ranked_by: ':trigram'
 
-  JSON_ATTRIBUTES = [
-    "title", "release_date", "accepted_at", "created_at", "updated_at", "description",
-    "project_id", "story_type", "owned_by_id", "requested_by_id",
-    "owned_by_name", "owned_by_initials",  "requested_by_name", "estimate",
-    "state", "position", "id", "labels"
-  ]
-  JSON_METHODS = [
-    "errors", "notes", "documents", "tasks"
-  ]
+  JSON_ATTRIBUTES = %w(
+    title release_date accepted_at created_at updated_at description
+    project_id story_type owned_by_id requested_by_id
+    owned_by_name owned_by_initials requested_by_name estimate
+    state position id labels
+  ).freeze
 
-  def as_json(options = {})
+  JSON_METHODS = %w(errors notes documents tasks).freeze
+
+  def as_json(_options = {})
     super(only: JSON_ATTRIBUTES, methods: JSON_METHODS)
   end
 
@@ -66,7 +68,7 @@ class Story < ActiveRecord::Base
   # and the state is changing to any state other than 'unstarted' or 'unscheduled'
   def fix_project_start_date
     return unless state_changed?
-    return unless project && !project.start_date && !['unstarted', 'unscheduled'].include?(state)
+    return unless project && !project.start_date && !%w(unstarted unscheduled).include?(state)
     project.start_date = Date.current
   end
 
@@ -81,6 +83,6 @@ class Story < ActiveRecord::Base
     return unless val.present?
 
     date = Chronic.parse(val)
-    write_attribute(:release_date, date)
+    self[:release_date] = date
   end
 end

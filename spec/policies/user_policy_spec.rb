@@ -10,16 +10,16 @@ describe UserPolicy do
 
   before { project.users << other_member }
 
-  context "proper user of a project" do
+  context 'proper user of a project' do
     before do
       project.users << current_user
       current_team.projects << project
     end
 
-    context "for an admin" do
+    context 'for an admin' do
       let(:current_user) { create :user, :with_team_and_is_admin }
 
-      %i[index show create new destroy enrollment].each do |action|
+      %i(index show create new destroy enrollment).each do |action|
         it { should permit(action) }
       end
 
@@ -28,13 +28,13 @@ describe UserPolicy do
       end
     end
 
-    context "for a user but not acting on himself" do
+    context 'for a user but not acting on himself' do
       let(:current_user) { create :user, :with_team }
 
       it { should permit(:index) }
       it { should permit(:show) }
 
-      %i[create new edit destroy].each do |action|
+      %i(create new edit destroy).each do |action|
         it { should_not permit(action) }
       end
 
@@ -43,25 +43,25 @@ describe UserPolicy do
       end
     end
 
-    context "for a user acting on himself" do
+    context 'for a user acting on himself' do
       let(:current_user) { create :user, :with_team }
       subject { UserPolicy.new(pundit_context, current_user) }
 
-      %i[index show edit update destroy].each do |action|
+      %i(index show edit update destroy).each do |action|
         it { is_expected.to permit(action) }
       end
 
-      %i[create new enrollment].each do |action|
+      %i(create new enrollment).each do |action|
         it { is_expected.not_to permit(action) }
       end
     end
   end
 
-  context "user not a member of project" do
-    context "for an admin" do
+  context 'user not a member of project' do
+    context 'for an admin' do
       let(:current_user) { create :user, :with_team_and_is_admin }
 
-      %i[index show create new destroy enrollment].each do |action|
+      %i(index show create new destroy enrollment).each do |action|
         it { should permit(action) }
       end
 
@@ -70,10 +70,10 @@ describe UserPolicy do
       end
     end
 
-    context "for a user" do
+    context 'for a user' do
       let(:current_user) { create :user, :with_team }
 
-      %i[index create new destroy].each do |action|
+      %i(index create new destroy).each do |action|
         it { should_not permit(action) }
       end
 
@@ -83,4 +83,3 @@ describe UserPolicy do
     end
   end
 end
-

@@ -3,7 +3,6 @@ require 'story_operations/state_change_notification'
 require 'story_operations/legacy_fixes'
 
 module StoryOperations
-
   class Create < BaseOperations::Create
     include MemberNotification
 
@@ -28,7 +27,8 @@ module StoryOperations
       if new_documents != model.documents_attributes_was
         model.instance_variable_set(
           '@changed_attributes',
-          model.instance_variable_get('@changed_attributes').merge(documents_attributes: model.documents_attributes_was)
+          model.instance_variable_get('@changed_attributes')
+            .merge(documents_attributes: model.documents_attributes_was)
         )
       end
       model.changesets.create!
@@ -42,5 +42,4 @@ module StoryOperations
 
   class Destroy < BaseOperations::Destroy
   end
-
 end

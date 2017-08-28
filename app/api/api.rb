@@ -11,7 +11,9 @@ class API < Grape::API
 
     def api_key
       @api_key ||= begin
-        params[:api_key] ||= token_params_from(headers['Authorization']).shift[1] if headers['Authorization'].present?
+        if headers['Authorization'].present?
+          params[:api_key] ||= token_params_from(headers['Authorization']).shift[1]
+        end
 
         ApiToken.includes(:team).find_by(token: params[:api_key])
       end

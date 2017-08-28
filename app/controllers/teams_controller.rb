@@ -1,6 +1,6 @@
 class TeamsController < ApplicationController
-  skip_before_filter :check_team_presence, only: [:index, :switch, :new, :create]
-  skip_after_filter :verify_policy_scoped, only: :index
+  skip_before_action :check_team_presence, only: [:index, :switch, :new, :create]
+  skip_after_action :verify_policy_scoped, only: :index
 
   def index
     @teams = current_user.teams
@@ -27,7 +27,7 @@ class TeamsController < ApplicationController
   end
 
   def create_enrollment
-    user = User.find_by_email params[:user][:email]
+    user = User.find_by(email: params[:user][:email])
     if user
       authorize user
       if user.teams.include?(current_team)
@@ -69,7 +69,7 @@ class TeamsController < ApplicationController
     @team = Team.new(allowed_params)
     authorize @team
     respond_to do |format|
-      if verify_recaptcha && ( @team = TeamOperations::Create.(@team, current_user) )
+      if verify_recaptcha && (@team = TeamOperations::Create.call(@team, current_user))
         format.html do
           session[:current_team_slug] = @team.slug
           flash[:notice] = t('teams.team was successfully created')
@@ -77,7 +77,7 @@ class TeamsController < ApplicationController
         end
         format.xml  { render xml: @team, status: :created, location: @team }
       else
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.xml  { render xml: @team.errors, status: :unprocessable_entity }
       end
     end
@@ -90,16 +90,16 @@ class TeamsController < ApplicationController
     authorize @team
 
     respond_to do |format|
-      if TeamOperations::Update.(@team, allowed_params, current_user)
+      if TeamOperations::Update.call(@team, allowed_params, current_user)
         @team.reload
 
         format.html do
           flash[:notice] = t('teams.team_was_successfully_updated')
-          render action: "edit"
+          render action: 'edit'
         end
         format.xml  { head :ok }
       else
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.xml  { render xml: @team.errors, status: :unprocessable_entity }
       end
     end
@@ -111,7 +111,7 @@ class TeamsController < ApplicationController
     @team = current_team
     authorize @team
 
-    TeamOperations::Destroy.(@team, current_user)
+    TeamOperations::Destroy.call(@team, current_user)
     session[:current_team_slug] = nil
 
     respond_to do |format|
@@ -123,7 +123,9 @@ class TeamsController < ApplicationController
   protected
 
   def allowed_params
-    params.require(:team).permit(:name, :disable_registration, :registration_domain_whitelist, :registration_domain_blacklist, :logo)
+    params.require(:team).permit(
+      :name, :disable_registration, :registration_domain_whitelist,
+      :registration_domain_blacklist, :logo
+    )
   end
-
 end

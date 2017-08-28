@@ -6,10 +6,10 @@ class User < ActiveRecord::Base
   include Gravtastic
   gravtastic default: 'identicon'
 
-  # FIXME - DRY up, repeated in Story model
-  JSON_ATTRIBUTES = ["id", "name", "initials", "username", "email", "finished_tour"]
+  # FIXME: - DRY up, repeated in Story model
+  JSON_ATTRIBUTES = %w(id name initials username email finished_tour).freeze
 
-  AUTHENTICATION_KEYS = %i(email)
+  AUTHENTICATION_KEYS = %i(email).freeze
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
@@ -19,12 +19,14 @@ class User < ActiveRecord::Base
          strip_whitespace_keys: AUTHENTICATION_KEYS,
          confirmation_keys:     AUTHENTICATION_KEYS,
          reset_password_keys:   AUTHENTICATION_KEYS
-         # unlock_keys: AUTHENTICATION_KEYS
+  # unlock_keys: AUTHENTICATION_KEYS
 
   # Flag used to identify if the user was found or created from find_or_create
   attr_accessor :was_created
 
-  scope :recently_created, -> (created_at) { where("users.created_at > ?", created_at) if created_at }
+  scope :recently_created, lambda { |created_at|
+    where('users.created_at > ?', created_at) if created_at
+  }
 
   def password_required?
     # Password is required if it is being set, but not for new records
@@ -45,7 +47,7 @@ class User < ActiveRecord::Base
     raw, enc = Devise.token_generator.generate(self.class, :reset_password_token)
     self.reset_password_token   = enc
     self.reset_password_sent_at = Time.current.utc
-    self.save(validate: false)
+    save(validate: false)
     raw
   end
 
@@ -53,15 +55,15 @@ class User < ActiveRecord::Base
     WelcomeTour::STEPS.to_json
   end
 
-  def as_json(options = {})
+  def as_json(_options = {})
     super(only: JSON_ATTRIBUTES, methods: :tour_steps)
   end
 
   def self.find_first_by_auth_conditions(warden_conditions)
     if warden_conditions[:reset_password_token]
-      where(reset_password_token: warden_conditions[:reset_password_token]).first
+      find_by(reset_password_token: warden_conditions[:reset_password_token])
     elsif warden_conditions[:confirmation_token]
-      where(confirmation_token: warden_conditions[:confirmation_token]).first
+      find_by(confirmation_token: warden_conditions[:confirmation_token])
     else
       find_by(email: warden_conditions[:email])
     end

@@ -1,5 +1,6 @@
 ActiveAdmin.register Project do
-  permit_params :name, :point_scale, :default_velocity, :start_date, :iteration_start_day, :iteration_length, :archived_at, :user_ids
+  permit_params :name, :point_scale, :default_velocity, :start_date, :iteration_start_day,
+                :iteration_length, :archived_at, :user_ids
 
   index do
     selectable_column
@@ -35,7 +36,7 @@ ActiveAdmin.register Project do
   filter :archived_at
 
   form do |f|
-    f.inputs "Project Details" do
+    f.inputs 'Project Details' do
       f.input :name
       f.input :point_scale
       f.input :default_velocity
@@ -47,11 +48,10 @@ ActiveAdmin.register Project do
     f.actions
   end
 
-  sidebar "Project Details", only: [:show, :edit] do
+  sidebar 'Project Details', only: [:show, :edit] do
     ul do
-      li link_to "Memberships", manage_project_memberships_path(resource)
-      li link_to "Ownerships", manage_project_ownerships_path(resource)
+      li link_to 'Memberships', manage_project_memberships_path(resource)
+      li link_to 'Ownerships', manage_project_ownerships_path(resource)
     end
   end
-
 end

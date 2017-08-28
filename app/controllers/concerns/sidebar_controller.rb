@@ -2,7 +2,7 @@ module SidebarController
   extend ActiveSupport::Concern
 
   included do
-    def set_sidebar(sidebar)
+    def define_sidebar(sidebar)
       @sidebar = sidebar
     end
 

@@ -1,9 +1,8 @@
 require 'feature_helper'
 
-describe "Tasks" do
-
+describe 'Tasks' do
   before(:each) do
-    # FIXME - Having to set this really high for the 'adds a task to a story
+    # FIXME: Having to set this really high for the 'adds a task to a story
     # spec'.  Need to work on making it more responsive.
     Capybara.default_max_wait_time = 10
     sign_in user
@@ -13,9 +12,8 @@ describe "Tasks" do
   let(:project)   { create(:project, users: [user], teams: [user.teams.first]) }
   let!(:story)    { create(:story, project: project, requested_by: user) }
 
-  describe "full story life cycle" do
-
-    it "adds a task to a story", js: true do
+  describe 'full story life cycle' do
+    it 'adds a task to a story', js: true do
       visit project_path(project)
 
       within('#in_progress .story') do
@@ -26,10 +24,9 @@ describe "Tasks" do
 
       task_element = find('#in_progress .story .tasklist .task')
       expect(task_element).to have_content('Adding a new task')
-
     end
 
-    it "deletes a task from a story", js: true do
+    it 'deletes a task from a story', js: true do
       create(:task, story: story, name: 'Delete me please')
 
       visit project_path(project)
@@ -43,11 +40,10 @@ describe "Tasks" do
 
       expect(find('#in_progress .story .tasklist')).not_to have_content('Delete me please')
     end
-
   end
 
-  describe "on a disabled story" do
-    it "does not render a form", js: true do
+  describe 'on a disabled story' do
+    it 'does not render a form', js: true do
       create(:story, state: 'accepted', project: project, requested_by: user)
 
       visit project_path(project)

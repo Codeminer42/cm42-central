@@ -1,6 +1,6 @@
 class IntegrationsController < ApplicationController
   before_action :set_project, :set_integrations
-  before_action -> { set_sidebar :project_settings }, only: %i[index]
+  before_action -> { define_sidebar :project_settings }, only: %i(index)
 
   respond_to :html, :json
 
@@ -16,13 +16,11 @@ class IntegrationsController < ApplicationController
 
     if @project.integrations.find_by(kind: @integration.kind)
       flash[:alert] = "#{@integration.kind} is already configured for this project"
+    elsif @integration.save
+      flash[:notice] = "#{@integration.kind} was added to this project"
     else
-      if @integration.save
-        flash[:notice] = "#{@integration.kind} was added to this project"
-      else
-        render 'index'
-        return
-      end
+      render 'index'
+      return
     end
 
     redirect_to project_integrations_url(@project)

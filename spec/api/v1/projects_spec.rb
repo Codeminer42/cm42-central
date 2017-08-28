@@ -66,7 +66,6 @@ RSpec.describe V1::Projects do
       let(:some_team) { create :team }
       let(:api_token) { create :api_token, team: some_team }
 
-
       it 'returns a authorization error' do
         expect(response.body).to match(/Invalid team/)
       end
@@ -104,17 +103,23 @@ RSpec.describe V1::Projects do
 
     let(:expected) do
       {
-        "velocity" => 10,
-        "volatility" => 0,
-        "current_iteration_number" => 1,
-        "current_iteration_date" => current_iteration_date.strftime("%Y/%m/%d %H:%M:%S -0200"),
-        "next_iteration_date" => next_iteration_date.strftime("%Y/%m/%d %H:%M:%S -0200"),
-        "iteration_length" => 1,
-        "backlog" =>  [],
-        "backlog_iterations" => [[], []],
-        "current_iteration_details" => {"started"=>0, "finished"=>0, "delivered"=>0, "accepted"=>0, "rejected"=>0},
-        "backlog_date" => [2, backlog_date.strftime("%Y/%m/%d %H:%M:%S -0200")],
-        "worst_backlog_date" => [2, worst_backlog_date.strftime("%Y/%m/%d %H:%M:%S -0200")]
+        'velocity' => 10,
+        'volatility' => 0,
+        'current_iteration_number' => 1,
+        'current_iteration_date' => current_iteration_date.strftime('%Y/%m/%d %H:%M:%S -0200'),
+        'next_iteration_date' => next_iteration_date.strftime('%Y/%m/%d %H:%M:%S -0200'),
+        'iteration_length' => 1,
+        'backlog' => [],
+        'backlog_iterations' => [[], []],
+        'current_iteration_details' => {
+          'started' => 0,
+          'finished' => 0,
+          'delivered' => 0,
+          'accepted' => 0,
+          'rejected' => 0
+        },
+        'backlog_date' => [2, backlog_date.strftime('%Y/%m/%d %H:%M:%S -0200')],
+        'worst_backlog_date' => [2, worst_backlog_date.strftime('%Y/%m/%d %H:%M:%S -0200')]
       }
     end
 
@@ -219,9 +224,9 @@ RSpec.describe V1::Projects do
 
     context 'filtering by in progress state' do
       before(:each) do
-       get "/api/v1/projects/#{project.slug}/stories",
-           state: :in_progress,
-           api_key: api_token.token
+        get "/api/v1/projects/#{project.slug}/stories",
+            state: :in_progress,
+            api_key: api_token.token
       end
 
       it 'returns 3 in progress project stories' do
@@ -262,7 +267,7 @@ RSpec.describe V1::Projects do
 
       it 'returns an error' do
         expect(JSON.parse(response.body))
-          .to eq({ 'error' => 'state does not have a valid value' })
+          .to eq('error' => 'state does not have a valid value')
       end
     end
 

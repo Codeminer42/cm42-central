@@ -10,24 +10,22 @@ class Note < ActiveRecord::Base
   delegate :project, to: :story
 
   # Defines the attributes and methods that are included when calling to_json
-  def as_json(options = {})
-    super(methods: ["errors"])
+  def as_json(_options = {})
+    super(methods: ['errors'])
   end
 
   def to_s
     user_name = user ? user.name : I18n.t('author unknown')
     created_date = I18n.l created_at, format: :note_date
-    
+
     "#{note} (#{user_name} - #{created_date})"
   end
 
-  def readonly?
-    story.readonly?
-  end
+  delegate :readonly?, to: :story
 
   private
 
-    def cache_user_name
-      self.user_name = user.name if user.present?
-    end
+  def cache_user_name
+    self.user_name = user.name if user.present?
+  end
 end

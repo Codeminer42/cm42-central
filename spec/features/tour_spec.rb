@@ -1,16 +1,18 @@
 require 'feature_helper'
 
-describe "Tour" do
+describe 'Tour' do
   context "when user hasn't finished the tour", js: true do
     let(:user) { create :user, :with_team, finished_tour: false }
-    let!(:project) { create(:project, name: 'Test Project', users: [user], teams: [user.teams.first] ) }
+    let!(:project) do
+      create(:project, name: 'Test Project', users: [user], teams: [user.teams.first])
+    end
 
     before do
       sign_in user
       visit_project_path
     end
 
-    it "steps through the whole tour cycle" do
+    it 'steps through the whole tour cycle' do
       expect(tour_title).to have_content('Create Story')
       next_button
 
@@ -37,7 +39,7 @@ describe "Tour" do
       expect(page).not_to have_content('Create Story')
     end
 
-    it "skips the tour cycle" do
+    it 'skips the tour cycle' do
       expect(tour_title).to have_content('Create Story')
       skip_button
 
@@ -47,9 +49,11 @@ describe "Tour" do
     end
   end
 
-  context "when user has finished the tour", js: true do
+  context 'when user has finished the tour', js: true do
     let(:user) { create :user, :with_team, finished_tour: false }
-    let!(:project) { create(:project, name: 'Test Project', users: [user], teams: [user.teams.first] ) }
+    let!(:project) do
+      create(:project, name: 'Test Project', users: [user], teams: [user.teams.first])
+    end
 
     before do
       sign_in user

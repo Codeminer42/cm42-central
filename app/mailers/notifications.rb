@@ -16,17 +16,15 @@ class Notifications < ActionMailer::Base
     @story = @note.story
 
     mail to: notify_users, from: @note.user.email,
-      subject: "[#{@story.project.name}] New comment on '#{@story.title}'"
+         subject: "[#{@story.project.name}] New comment on '#{@story.title}'"
   end
 
   def story_mention(story, users_to_notify)
     @story = story
 
     mail to: users_to_notify, from: @story.requested_by.email,
-      subject: "[#{@story.project.name}] New mention on '#{@story.title}'"
+         subject: "[#{@story.project.name}] New mention on '#{@story.title}'"
   end
-
-  private
 
   class MailParams < Struct.new(:story, :actor)
     def started
@@ -41,7 +39,8 @@ class Notifications < ActionMailer::Base
       {
         to: story.requested_by.email,
         from: actor.email,
-        subject: "[#{story.project.name}] Your story '#{story.title}' has been delivered for acceptance."
+        subject: "[#{story.project.name}] Your story '#{story.title}' " \
+          'has been delivered for acceptance.'
       }
     end
 

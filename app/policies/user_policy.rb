@@ -1,25 +1,25 @@
 class UserPolicy < ApplicationPolicy
   def index?
-    is_admin? || is_project_member?
+    admin? || project_member?
   end
 
   def show?
-    is_admin? || (is_project_member? && current_project.users.find_by_id(record.id))
+    admin? || (project_member? && current_project.users.find_by(id: record.id))
   end
 
   def create?
-    is_admin?
+    admin?
   end
 
   def update?
-    is_himself?
+    himself?
   end
 
   def destroy?
-    is_admin? || is_himself?
+    admin? || himself?
   end
 
-  def is_himself?
+  def himself?
     record == current_user
   end
 
@@ -28,21 +28,21 @@ class UserPolicy < ApplicationPolicy
   end
 
   def create_enrollment?
-    is_admin?
+    admin?
   end
 
   class Scope < Scope
     def resolve
-      if is_root?
+      if root?
         User
-      elsif is_admin?
+      elsif admin?
         if current_project
           current_project.users
         else
           # Admin::UsersController
           current_team.users.all
         end
-      elsif is_project_member?
+      elsif project_member?
         current_project.users
       else
         User.none

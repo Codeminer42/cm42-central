@@ -34,7 +34,7 @@ RSpec.describe Entities::ProjectAnalysis do
   it { expect(subject[:iteration_length]).to eq(1) }
   it { expect(subject[:backlog]).to eq([1, 2, 3]) }
   it { expect(subject[:backlog_iterations]).to eq([3, 2, 1]) }
-  it { expect(subject[:current_iteration_details]).to eq({ "started": 8, "finished": 5 }) }
+  it { expect(subject[:current_iteration_details]).to eq("started": 8, "finished": 5) }
   it { expect(subject[:backlog_date]).to eq([59, date]) }
   it { expect(subject[:worst_backlog_date]).to eq([59, date]) }
 end

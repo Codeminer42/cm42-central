@@ -3,14 +3,14 @@ class ImportWorker
   include Sidekiq::Worker
 
   MEMCACHED_POOL = ConnectionPool.new(size: 10, timeout: 3) do
-    if ENV["MEMCACHIER_SERVERS"].present?
-      Dalli::Client.new(ENV["MEMCACHIER_SERVERS"].split(","),
-        username: ENV["MEMCACHIER_USERNAME"],
-        password: ENV["MEMCACHIER_PASSWORD"],
-        failover: true,
-        socket_timeout: 1.5,
-        socket_failure_delay: 0.2,
-        value_max_bytes: 10485760)
+    if ENV['MEMCACHIER_SERVERS'].present?
+      Dalli::Client.new(ENV['MEMCACHIER_SERVERS'].split(','),
+                        username: ENV['MEMCACHIER_USERNAME'],
+                        password: ENV['MEMCACHIER_PASSWORD'],
+                        failover: true,
+                        socket_timeout: 1.5,
+                        socket_failure_delay: 0.2,
+                        value_max_bytes: 10_485_760)
     else
       Dalli::Client.new
     end
@@ -20,18 +20,18 @@ class ImportWorker
     project = setup_project(project_id)
 
     csv_body = open(project.import.fullpath).read
-    csv_body.force_encoding("utf-8")
+    csv_body.force_encoding('utf-8')
     Project.transaction do
       stories = project.stories.from_csv(csv_body)
       invalid_stories = stories.reject(&:valid?).map do |s|
         { title: s.title, errors: s.errors.full_messages.join(', ') }
       end
       project.import = nil # erase the attachinary file
-      set_cache(job_id, { invalid_stories: invalid_stories, errors: nil })
+      set_cache(job_id, invalid_stories: invalid_stories, errors: nil)
       fix_project_start_date(project)
     end
   rescue => e
-    set_cache(job_id, { invalid_stories: [], errors: e.message })
+    set_cache(job_id, invalid_stories: [], errors: e.message)
   end
 
   def setup_project(project_id)
@@ -43,11 +43,8 @@ class ImportWorker
 
   def fix_project_start_date(project)
     oldest_story = project.stories.where.not(accepted_at: nil).order(:accepted_at).first
-    unless oldest_story.nil?
-      if project.start_date > oldest_story.accepted_at
-        project.update_attributes(start_date: oldest_story.accepted_at)
-      end
-    end
+    return if oldest_story.nil? || (project.start_date <= oldest_story.accepted_at)
+    project.update_attributes(start_date: oldest_story.accepted_at)
   end
 
   def self.new_job_id
@@ -55,7 +52,8 @@ class ImportWorker
   end
 
   private
-    def set_cache(key, value)
-      MEMCACHED_POOL.with { |dalli| dalli.set(key, value) }
-    end
+
+  def set_cache(key, value)
+    MEMCACHED_POOL.with { |dalli| dalli.set(key, value) }
+  end
 end

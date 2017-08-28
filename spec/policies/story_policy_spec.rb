@@ -15,15 +15,15 @@ describe StoryPolicy do
     current_team.projects << project
   end
 
-  context "proper user of a project" do
+  context 'proper user of a project' do
     before do
       project.users << current_user
     end
 
-    context "for an admin" do
+    context 'for an admin' do
       let(:current_user) { create :user, :with_team_and_is_admin }
 
-      %i[index show create new update edit destroy].each do |action|
+      %i(index show create new update edit destroy).each do |action|
         it { should permit(action) }
       end
 
@@ -32,12 +32,12 @@ describe StoryPolicy do
       end
     end
 
-    context "for a user" do
+    context 'for a user' do
       let(:current_user) { create :user, :with_team }
 
       it { should permit(:show) }
 
-      %i[index show create new update edit destroy].each do |action|
+      %i(index show create new update edit destroy).each do |action|
         it { should permit(action) }
       end
 
@@ -45,14 +45,13 @@ describe StoryPolicy do
         expect(policy_scope).to eq([story])
       end
     end
-
   end
 
-  context "user not a member of project" do
-    context "for an admin" do
+  context 'user not a member of project' do
+    context 'for an admin' do
       let(:current_user) { create :user, :with_team_and_is_admin }
 
-      %i[index show create new update edit destroy].each do |action|
+      %i(index show create new update edit destroy).each do |action|
         it { should permit(action) }
       end
 
@@ -61,10 +60,10 @@ describe StoryPolicy do
       end
     end
 
-    context "for a user" do
+    context 'for a user' do
       let(:current_user) { create :user, :with_team }
 
-      %i[index create new update edit destroy].each do |action|
+      %i(index create new update edit destroy).each do |action|
         it { should_not permit(action) }
       end
 
@@ -74,4 +73,3 @@ describe StoryPolicy do
     end
   end
 end
-

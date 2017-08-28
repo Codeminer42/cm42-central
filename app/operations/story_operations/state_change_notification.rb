@@ -37,18 +37,18 @@ module StoryOperations
         discord: [
           {
             color: 0x36a64f,
-            title: "#{model.project.name}",
-            url: "#{story_link}",
+            title: model.project.name.to_s,
+            url: story_link.to_s,
             description: "The story '#{model.title}' has been #{model.state}.",
             fields: [
               {
                 name: 'Assigned to',
-                value: "#{model.owned_by_name}",
+                value: model.owned_by_name.to_s,
                 inline: true
               },
               {
                 name: 'Points',
-                value: "#{model.estimate}",
+                value: model.estimate.to_s,
                 inline: true
               }
             ]
@@ -59,26 +59,27 @@ module StoryOperations
           {
             fallback: "The story '#{model.title}' has been #{model.state}.",
             color: '#36a64f',
-            title: "#{model.project.name}",
-            title_link: "#{story_link}",
+            title: model.project.name.to_s,
+            title_link: story_link.to_s,
             text: "The story '#{model.title}' has been #{model.state}.",
             fields: [
               {
                 title: 'Assigned to',
-                value: "#{model.owned_by_name}",
+                value: model.owned_by_name.to_s,
                 short: true
               },
               {
                 title: 'Points',
-                value: "#{model.estimate}",
+                value: model.estimate.to_s,
                 short: true
               }
             ]
           }
         ],
 
-        mattermost: "[#{model.project.name}] The story ['#{model.title}'](#{story_link}) has been #{model.state}."
-     }
+        mattermost: "[#{model.project.name}] The story ['#{model.title}'](#{story_link}) " \
+          "has been #{model.state}."
+      }
     end
   end
 end

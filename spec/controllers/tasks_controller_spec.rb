@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe TasksController do
-
   let(:user)            { create(:user, :with_team_and_is_admin) }
   let(:project)         { create(:project, users: [user], teams: [user.teams.first]) }
   let!(:story)          { create(:story, project: project, requested_by: user) }
@@ -74,7 +73,7 @@ describe TasksController do
       specify do
         task = create(:task, story: story)
 
-        xhr :put, :update, request_params.merge(id: task.id, task: {done: true })
+        xhr :put, :update, request_params.merge(id: task.id, task: { done: true })
         expect(response).to be_success
         expect(assigns[:project]).to eq(project)
         expect(assigns[:story]).to eq(story)
