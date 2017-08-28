@@ -22,12 +22,18 @@ describe UsersController do
   let(:project) { create(:project) }
 
   context 'when logged out' do
-    %w(index create).each do |action|
-      specify do
-        get action, project_id: project.id
-        expect(response).to redirect_to(new_user_session_url)
-      end
+    let(:team) { create(:team) }
+
+    specify do
+      get :index, project_id: project.id
+      expect(response).to redirect_to(new_user_session_url)
     end
+
+    specify do
+      get :create, team_id: team.id
+      expect(response).to redirect_to(new_user_session_url)
+    end
+
     %w(destroy).each do |action|
       specify do
         get action, id: 42, project_id: project.id
@@ -77,7 +83,7 @@ describe UsersController do
           let(:created_user) { User.find_by(email: 'foo@bar.com') }
 
           before do
-            post :create, project_id: project.id, user: valid_params
+            post :create, team_id: current_team.id, user: valid_params
           end
 
           it 'displays a successful message' do
@@ -91,7 +97,7 @@ describe UsersController do
 
         context 'when there are invalid params' do
           it 'displays a message that the user was not created' do
-            post :create, project_id: project.id, user: invalid_params
+            post :create, team_id: current_team.id, user: invalid_params
 
             expect(flash[:alert]).to eq 'User was not created'
           end
@@ -123,13 +129,14 @@ describe UsersController do
   context 'when logged in as non-admin user' do
     let(:user)  { create(:user, :with_team, email: 'foobar@example.com') }
     let!(:ownership) { create(:ownership, team: user.teams.first, project: project) }
+    let(:current_team) { user.teams.first }
 
     before do
       create(:enrollment, team: user.teams.first, user: another_user)
       create(:membership, user: user, project: project)
       create(:membership, user: another_user, project: project)
       sign_in user
-      allow(subject).to receive_messages(current_user: user, current_team: user.teams.first)
+      allow(subject).to receive_messages(current_user: user, current_team: current_team)
     end
 
     describe 'collection actions' do
@@ -146,7 +153,7 @@ describe UsersController do
         end
 
         specify do
-          post :create, project_id: project.id, user: user_params
+          post :create, team_id: current_team.id, user: user_params
           expect(flash[:error]).to eq(I18n.t('users.You are not authorized to perform this action'))
           expect(response).to redirect_to(root_path)
         end
@@ -157,7 +164,7 @@ describe UsersController do
           end
 
           specify do
-            post :create, project_id: project.id, user: user_params
+            post :create, team_id: current_team.id, user: user_params
             expect(flash[:error])
               .to eq(I18n.t('users.You are not authorized to perform this action'))
             expect(response).to redirect_to(root_path)

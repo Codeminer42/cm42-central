@@ -19,7 +19,7 @@
 
           <div class="form-group">
             <%= f.label :email, class: 'control-label' %>
-            <%= f.email_field :email, class: 'form-control auth-form-control', required: true %>
+            <%= f.email_field :email, class: 'form-control auth-form-control', id: 'email_search', required: true %>
           </div>
 
           <div class="actions pull-right">
@@ -44,7 +44,7 @@
 
       <div class="add-member panel panel-default card">
         <div class="panel-body">
-          <%= form_for @user, url: users_path(@user) do |f| %>
+          <%= form_for @user, url: team_users_path(current_team, @user) do |f| %>
 
             <%= content_tag :div, class: 'alert alert-danger' do %>
               <%= t('errors.template.header', count: @user.errors.count, model: @user.class.name.humanize) %>

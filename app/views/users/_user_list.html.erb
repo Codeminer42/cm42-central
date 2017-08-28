@@ -61,7 +61,7 @@
                 </div>
               </div>
 
-              <%= form_tag [project, :users], method: :post, remote: true do %>
+              <%= form_tag project_memberships_path(project.id), method: :post, remote: true do %>
                 <%= hidden_field_tag 'user[email]', user.email %>
                 <%= button_tag t('add'), class: 'btn btn-link unstyled-link card-footer' %>
               <% end %>

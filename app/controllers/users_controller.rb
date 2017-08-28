@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :set_project, except: :create
+  before_action :set_project, except: :create
 
   respond_to :html, :json
 
@@ -14,7 +14,8 @@ class UsersController < ApplicationController
       email: allowed_params[:email],
       name: allowed_params[:name],
       initials: allowed_params[:initials],
-      username: allowed_params[:username])
+      username: allowed_params[:username]
+    )
     authorize @user
 
     if @user.save

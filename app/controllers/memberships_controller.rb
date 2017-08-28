@@ -10,13 +10,15 @@ class MembershipsController < ApplicationController
 
     if project_enroller_service.enroll
       authorize @user
+      @current_team_users = current_team_users
+
       flash[:notice] = project_enroller_service.message
     else
       flash[:alert] = project_enroller_service.message
     end
 
     respond_to do |format|
-      format.js { render :refresh_user_list }
+      format.js { render 'users/refresh_user_list' }
       format.html { redirect_to project_users_url(@project) }
     end
   end
