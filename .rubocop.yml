@@ -18,6 +18,9 @@ Rails/TimeZone:
 Rails/Date:
   Enabled: false
 
+Rails/HttpPositionalArguments:
+  Enabled: false
+
 Documentation:
   Enabled: false
 

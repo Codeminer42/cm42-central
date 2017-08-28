@@ -8,7 +8,8 @@ describe IntegrationWorker do
       integration.data['private_uri'],
       integration.data['channel'],
       integration.data['bot_username'],
-      'Hello World')
+      'Hello World'
+    )
     IntegrationWorker.new.perform(integration.project_id, 'mattermost' => 'Hello World')
   end
 
@@ -18,7 +19,8 @@ describe IntegrationWorker do
       'http://foo.com',
       integration.data['channel'],
       integration.data['bot_username'],
-      'Hello World')
+      'Hello World'
+    )
     IntegrationWorker.new.perform(integration.project_id, 'mattermost' => 'Hello World')
   end
 end
