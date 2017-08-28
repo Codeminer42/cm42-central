@@ -28,7 +28,8 @@ describe ProjectPresenter do
   describe '#users_avatar' do
     it 'should return the right users avatar' do
       expect(project.users_avatar(4)).to eq(
-        ['https://secure.gravatar.com/avatar/0d4907cea9d97688aa7a5e722d742f71.png?d=identicon&r=PG'])
+        ['https://secure.gravatar.com/avatar/0d4907cea9d97688aa7a5e722d742f71.png?d=identicon&r=PG']
+      )
     end
   end
 

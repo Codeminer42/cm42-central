@@ -158,7 +158,8 @@ describe StoryOperations do
       it "sends 'started' email notification" do
         allow(story).to receive_messages(state: 'started')
         expect(Notifications).to receive(:story_changed).with(story, acting_user) { notifier }
-        expect(IntegrationWorker).to receive(:perform_async).with(project.id,
+        expect(IntegrationWorker).to receive(:perform_async).with(
+          project.id,
           discord: [
             {
               color: 0x36a64f,
@@ -209,7 +210,8 @@ describe StoryOperations do
       it "sends 'delivered' email notification" do
         allow(story).to receive_messages(state: 'delivered')
         expect(Notifications).to receive(:story_changed).with(story, acting_user) { notifier }
-        expect(IntegrationWorker).to receive(:perform_async).with(project.id,
+        expect(IntegrationWorker).to receive(:perform_async).with(
+          project.id,
           discord: [
             {
               color: 0x36a64f,
@@ -260,7 +262,8 @@ describe StoryOperations do
       it "sends 'accepted' email notification" do
         allow(story).to receive_messages(state: 'accepted')
         expect(Notifications).to receive(:story_changed).with(story, acting_user) { notifier }
-        expect(IntegrationWorker).to receive(:perform_async).with(project.id,
+        expect(IntegrationWorker).to receive(:perform_async).with(
+          project.id,
           discord: [
             {
               color: 0x36a64f,
@@ -311,7 +314,8 @@ describe StoryOperations do
       it "sends 'rejected' email notification" do
         allow(story).to receive_messages(state: 'rejected')
         expect(Notifications).to receive(:story_changed).with(story, acting_user) { notifier }
-        expect(IntegrationWorker).to receive(:perform_async).with(project.id,
+        expect(IntegrationWorker).to receive(:perform_async).with(
+          project.id,
           discord: [
             {
               color: 0x36a64f,
