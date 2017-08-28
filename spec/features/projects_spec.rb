@@ -97,7 +97,7 @@ describe 'Projects' do
           fill_in 'Name', with: 'New Project'
           click_on 'Create Project'
 
-          expect(current_path).to eq(project_path(Project.find_by_name('New Project')))
+          expect(current_path).to eq(project_path(Project.find_by(name: 'New Project')))
         end
       end
 
