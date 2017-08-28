@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Changed
+- Changing `webpack-rails` gem to new `webpacker` gem
 
 ## [1.6.0] 2017-08-22
 ### Added
