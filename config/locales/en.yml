@@ -166,6 +166,7 @@ en:
         iteration_length:     'Iteration length'
         default_velocity:     'Default velocity'
         archived:             'Archived'
+        mail_reports:         'Send reports via mail'
       story:
         title:                'Title'
         description:          'Description'

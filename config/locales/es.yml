@@ -154,6 +154,7 @@ es:
         iteration_length:     'Longitud de iteración'
         default_velocity:     'La velocidad estándar'
         archived:             'Archivado'
+        mail_reports:         'Enviar informes por correo electrónico'
       story:
         title:                'Título'
         description:          'Descripción'

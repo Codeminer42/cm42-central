@@ -14,6 +14,7 @@ RSpec.describe Entities::Project do
   it { expect(subject[:start_date]).to eq(project.start_date.iso8601) }
   it { expect(subject[:velocity]).to be_nil }
   it { expect(subject[:volatility]).to be_nil }
+  it { expect(subject[:mail_reports]).to be_truthy }
 
   context 'when call it with full type' do
     subject { described_class.represent(project, type: :full).as_json }

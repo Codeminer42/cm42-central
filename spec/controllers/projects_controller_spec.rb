@@ -122,13 +122,14 @@ describe ProjectsController do
         end
 
         describe '#create' do
-          let(:project_params) { { 'name' => 'Test Project' } }
+          let(:project_params) { { 'name' => 'Test Project', 'mail_reports' => '0' } }
 
           specify do
             post :create, project: project_params
             expect(assigns[:project].name).to eq(project_params['name'])
             expect(assigns[:project].users).to include(user)
             expect(assigns[:project].teams).to include(user.teams.first)
+            expect(assigns[:project].mail_reports).to be_falsey
             expect(team.owns?(assigns[:project])).to be_truthy
           end
 
