@@ -171,7 +171,7 @@ class ProjectsController < ApplicationController
   def ownership
     team = Team.not_archived.friendly.find(params.dig(:project, :slug))
     if team == current_team
-      flash[:notice] = I18n.t('projects.invalid_action')
+      flash[:alert] = I18n.t('projects.invalid_action')
       render 'edit'
       return
     end
