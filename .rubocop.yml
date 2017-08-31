@@ -62,7 +62,6 @@ Metrics/AbcSize:
   Enabled: true
   Exclude:
     - 'app/operations/story_operations/state_change_notification.rb'
-    - 'app/operations/note_operations.rb'
     - 'app/serializers/project_serializer.rb'
     - 'app/controllers/users_controller.rb'
     - 'app/controllers/stories_controller.rb'

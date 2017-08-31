@@ -8,17 +8,18 @@ module NoteOperations
 
     def notify_users
       return if user.nil?
-
-      users_to_notify = (story.stakeholders_users + users_from_note).uniq
-      users_to_notify.delete(user)
-
-      return if users_to_notify.none? || story.suppress_notifications
+      return if story.suppress_notifications
+      return if users_to_notify.none?
 
       notifier = Notifications.new_note(model.id, users_to_notify.map(&:email))
       notifier&.deliver
     end
 
-    def users_from_note
+    def users_to_notify
+      @users_to_notify ||= (story.stakeholders_users + note_users).uniq.reject { |u| u == user }
+    end
+
+    def note_users
       usernames = UsernameParser.parse(model.note)
       return [] if usernames.empty?
 
