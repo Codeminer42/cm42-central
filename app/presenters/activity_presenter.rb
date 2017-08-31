@@ -35,6 +35,8 @@ class ActivityPresenter < SimpleDelegator
 
   private
 
+  delegate :helpers, to: ApplicationController
+
   def noun
     case subject_type
     when 'Project'
@@ -111,9 +113,5 @@ class ActivityPresenter < SimpleDelegator
       new_description = Differ.diff(new_description, old_description, ' ').format_as(:html)
     end
     "description to '#{new_description}'"
-  end
-
-  def helpers
-    ApplicationController.helpers
   end
 end

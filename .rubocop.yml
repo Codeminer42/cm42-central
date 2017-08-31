@@ -62,7 +62,10 @@ Metrics/AbcSize:
   Enabled: false
 
 Metrics/ClassLength:
-  Enabled: false
+  Enabled: true
+  Max: 105
+  Exclude:
+   - 'app/controllers/projects_controller.rb'
 
 Metrics/MethodLength:
   Enabled: false
