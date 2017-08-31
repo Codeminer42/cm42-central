@@ -68,7 +68,8 @@ Metrics/ClassLength:
    - 'app/controllers/projects_controller.rb'
 
 Metrics/PerceivedComplexity:
-  Enabled: false
+  Enabled: true
+  Max: 8
 
 Metrics/CyclomaticComplexity:
   Enabled: false
