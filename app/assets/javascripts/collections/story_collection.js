@@ -7,13 +7,13 @@ module.exports = Backbone.Collection.extend({
     _.bindAll(this, 'sort', 'addLabelsFromStory', 'resetLabels');
     var triggerReset = _.bind(this.trigger, this, 'reset');
 
-    this.on('change:position', this.sort);
-    this.on('change:state', this.sort);
-    this.on('change:estimate', this.sort);
-    this.on('change:labels', this.addLabelsFromStory);
-    this.on('add', this.addLabelsFromStory);
-    this.on('reset', this.resetLabels);
-    this.on('sort', triggerReset);
+    this.on('change:position', this.sort, this);
+    this.on('change:state', this.sort, this);
+    this.on('change:estimate', this.sort, this);
+    this.on('change:labels', this.addLabelsFromStory, this);
+    this.on('add', this.addLabelsFromStory, this);
+    this.on('reset', this.resetLabels, this);
+    this.on('sort', triggerReset, this);
 
     this.labels = [];
   },
@@ -44,7 +44,7 @@ module.exports = Backbone.Collection.extend({
   // #backlog or #chilly_bin
   column: function(column) {
     return this.select(function(story) {
-      return story.column == column;
+      return story.column === column;
     });
   },
 

@@ -1,6 +1,10 @@
 var SharedModelMethods = require('mixins/shared_model_methods');
 
 var Note = module.exports = Backbone.Model.extend({
+  defaults: {
+    name: 'note',
+    isReadOnly: false,
+  },
 
   name: 'note',
 

@@ -7,4 +7,9 @@ plugins:
   - backbone
 parser: "babel-eslint"
 rules:
+  eqeqeq: 1
   backbone/model-defaults: 1
+  backbone/initialize-on-top: 0
+  backbone/events-on-top: 0
+  backbone/no-silent: 0
+

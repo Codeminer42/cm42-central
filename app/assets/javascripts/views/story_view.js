@@ -113,7 +113,7 @@ module.exports = FormView.extend({
     var column = target.parent().attr('id');
     if (column === 'backlog' || (column === 'in_progress' && this.model.get('state') === 'unscheduled')) {
       this.model.set({state: 'unstarted'});
-    } else if (column == 'chilly_bin') {
+    } else if (column === 'chilly_bin') {
       this.model.set({state: 'unscheduled'});
     }
 
@@ -128,10 +128,10 @@ module.exports = FormView.extend({
       var previousStory = _.last(this.model.collection.columns(beforeSearchColumns));
       var nextStory = _.first(this.model.collection.columns(afterSearchColumns));
 
-      if (typeof previousStory != 'undefined') {
+      if (typeof previousStory !== 'undefined') {
         previous_story_id = previousStory.id;
       }
-      if (typeof nextStory != 'undefined') {
+      if (typeof nextStory !== 'undefined') {
         next_story_id = nextStory.id;
       }
     }
@@ -145,7 +145,7 @@ module.exports = FormView.extend({
       // is if there is only one story in the collection, so there is no
       // previous or next story.  If this is not the case then something
       // has gone wrong.
-      if (this.model.collection.length != 1) {
+      if (this.model.collection.length !== 1) {
         throw "Unable to determine previous or next story id for dropped story";
       }
     }
@@ -157,7 +157,7 @@ module.exports = FormView.extend({
     // value of the form button that was clicked.
     var transitionEvent = ev.target.value;
     _.each(I18n.t('story.events'), function(value, key) {
-      if( value == transitionEvent )
+      if( value === transitionEvent )
         transitionEvent = key;
     })
 
@@ -351,7 +351,7 @@ module.exports = FormView.extend({
       const $storyControls = $('<div data-story-controls></div>');
       this.$el.append($storyControls);
 
-      if (this.id != undefined) {
+      if (this.id !== undefined) {
         const $storyHistoryLocation = $('<div data-story-history-location></div>');
         this.$el.append($storyHistoryLocation);
       }
@@ -886,9 +886,9 @@ module.exports = FormView.extend({
     var div = this.make('div', {
       class: 'form-group'
     });
-    if (typeof content == 'function') {
+    if (typeof content === 'function') {
       content.call(this, div);
-    } else if (typeof content == 'object') {
+    } else if (typeof content === 'object') {
       var $div = $(div);
       if (content.label) {
         $div.append(this.label(content.name));

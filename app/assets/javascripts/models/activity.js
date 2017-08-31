@@ -1,6 +1,13 @@
 var SharedModelMethods = require('mixins/shared_model_methods');
 
 var Activity = module.exports = Backbone.Model.extend({
+  defaults: {
+    name: 'activity',
+    date: '',
+    action: '',
+    subject_changes: '',
+  },
+
   name: 'activity',
 
   i18nScope: 'activerecord.attributes.',
@@ -24,7 +31,7 @@ var Activity = module.exports = Backbone.Model.extend({
 
   parseChanges: function(changes) {
     return _.map(changes, function(value, key) {
-      if (key == 'documents_attributes') key = 'documents';
+      if (key === 'documents_attributes') key = 'documents';
       return {
         attribute: this.humanAttributeName(key),
         oldValue: value[0],
