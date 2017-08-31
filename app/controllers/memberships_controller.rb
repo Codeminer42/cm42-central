@@ -3,18 +3,12 @@ class MembershipsController < ApplicationController
 
   def create
     authorize current_team_users
-
-    @user = User.find_by(email: allowed_params[:email])
-
-    project_enroller_service = ProjectMembershipEnrollerService.new(@user, current_team, @project)
-
-    if project_enroller_service.enroll
+    if enroll
       authorize @user
       @current_team_users = current_team_users
-
-      flash[:notice] = project_enroller_service.message
+      flash[:notice] = @project_enroller_service.message
     else
-      flash[:alert] = project_enroller_service.message
+      flash[:alert] = @project_enroller_service.message
     end
 
     respond_to do |format|
@@ -35,5 +29,11 @@ class MembershipsController < ApplicationController
 
   def set_project
     @project = policy_scope(Project).friendly.find(params[:project_id])
+  end
+
+  def enroll
+    @user = User.find_by(email: allowed_params[:email])
+    @project_enroller_service = ProjectMembershipEnrollerService.new(@user, current_team, @project)
+    @project_enroller_service.enroll
   end
 end

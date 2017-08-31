@@ -38,14 +38,8 @@ Rails.application.routes.draw do
 
   resources :projects do
     member do
-      get :join
-      get :import
-      patch :import_upload
-      patch :archive
-      patch :unarchive
-      patch :ownership
-      get :search
-      get :reports
+      get :join, :import, :search, :reports
+      patch :import_upload, :archive, :unarchive, :ownership
     end
     resources :users, only: [:index, :destroy]
     resources :memberships, only: [:create]
@@ -56,9 +50,7 @@ Rails.application.routes.draw do
       resources :notes, only: [:index, :create, :show, :destroy]
       resources :tasks, only: [:create, :destroy, :update]
       collection do
-        get :done
-        get :in_progress
-        get :backlog
+        get :done, :in_progress, :backlog
       end
     end
   end
