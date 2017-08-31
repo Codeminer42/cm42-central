@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Changed
+- Enables rubocop Metrics/AbcSize
 
 ## [1.6.0] 2017-08-22
 ### Added
