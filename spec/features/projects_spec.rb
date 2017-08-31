@@ -128,42 +128,48 @@ describe 'Projects' do
           expect(current_path).to eq(project_path(project))
         end
 
-        describe "trying to add a existing user that is not in the current project" do
+        describe 'trying to add a existing user that is not in the current project' do
           let!(:user_to_be_added) { create :user, email: 'x@example.com' }
 
-          it "should update the project with this user" do
+          it 'should update the project with this user' do
             visit project_users_path(project.slug)
 
             fill_in 'Email', with: 'x@example.com'
             click_button 'Add user'
 
             expect(current_path).to eq(project_users_path(project.slug))
-            expect(page).to have_text(I18n.t('users.was added to this project', email: user_to_be_added.email))
+            expect(page).to have_text(
+              I18n.t('users.was added to this project', email: user_to_be_added.email)
+            )
           end
         end
 
-        describe "trying to add a user that is already a member in the current project" do
-          let!(:user)  { create :user, :with_team_and_is_admin }
-          let!(:user_to_be_added) { create :user, teams: [user.teams.first], email: "t@example.com"}
+        describe 'trying to add a user that is already a member in the current project' do
+          let!(:user) { create :user, :with_team_and_is_admin }
+          let!(:user_to_be_added) do
+            create :user, teams: [user.teams.first], email: 't@example.com'
+          end
           let!(:project_to_be_associate) do
             create :project,  name: 'Test Project 2',
                               users: [user_to_be_added],
                               teams: [user_to_be_added.teams.first]
           end
 
-          it "shows a message saying that the user is already on the team" do
+          it 'shows a message saying that the user is already on the team' do
             visit project_users_path(project_to_be_associate.slug)
 
             fill_in 'Email', with: 't@example.com'
             click_button 'Add user'
 
             expect(current_path).to eq(project_users_path(project_to_be_associate.slug))
-            expect(page).to have_text(I18n.t('users.is already a member of this project', email: user_to_be_added.email))
+            expect(page).to have_text(
+              I18n.t('users.is already a member of this project', email: user_to_be_added.email)
+            )
           end
         end
 
         describe 'trying to add an email that is not registered' do
-          let!(:user)  { create :user, :with_team_and_is_admin }
+          let!(:user) { create :user, :with_team_and_is_admin }
 
           let!(:project_to_be_associate) do
             create :project,  name: 'Test Project 2',
@@ -174,7 +180,7 @@ describe 'Projects' do
           it 'shows an error message' do
             visit project_users_path(project_to_be_associate.slug)
 
-            fill_in "Email", with: "x@example.com"
+            fill_in 'Email', with: 'x@example.com'
             click_button 'Add user'
 
             expect(current_path).to eq(project_users_path(project_to_be_associate.slug))
