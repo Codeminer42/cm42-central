@@ -42,10 +42,10 @@ describe 'Teams' do
       let!(:user_to_be_added) { create :user, email: 'user@example.com' }
 
       it 'should update the team with this user' do
-        visit team_users_path(user.teams.first.slug)
+        visit team_manage_users_path(user.teams.first.slug)
         click_link 'Add'
 
-        fill_in 'user_email', with: 'user@example.com'
+        fill_in 'email_search', with: 'user@example.com'
         click_button 'Add'
 
         expect(current_path).to eq(team_new_enrollment_path(user.teams.first.slug))
@@ -57,14 +57,14 @@ describe 'Teams' do
       let!(:user)  { create :user, :with_team_and_is_admin }
 
       it 'shows an error message' do
-        visit team_users_path(user.teams.first.slug)
+        visit team_manage_users_path(user.teams.first.slug)
         click_link 'Add'
 
-        fill_in 'user_email', with: 'user@example.com'
+        fill_in 'email_search', with: 'user@example.com'
         click_button 'Add'
 
         expect(current_path).to eq(team_new_enrollment_path(user.teams.first.slug))
-        expect(page).to have_text(I18n.t('teams.user_no_found'))
+        expect(page).to have_text(I18n.t('teams.user_not_found'))
       end
     end
 
@@ -73,10 +73,10 @@ describe 'Teams' do
       let!(:user_to_be_added) { create :user, teams: [user.teams.first], email: 'user@example.com' }
 
       it 'shows a message saying that the user is already on the team' do
-        visit team_users_path(user.teams.first.slug)
+        visit team_manage_users_path(user.teams.first.slug)
         click_link 'Add'
 
-        fill_in 'user_email', with: 'user@example.com'
+        fill_in 'email_search', with: 'user@example.com'
         click_button 'Add'
 
         expect(current_path).to eq(team_new_enrollment_path(user.teams.first.slug))

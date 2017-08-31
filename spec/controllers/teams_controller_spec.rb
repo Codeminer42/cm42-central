@@ -101,7 +101,7 @@ describe TeamsController, type: :controller do
               post :create_enrollment, team_id: team.slug, user: values
 
               expect(response).to redirect_to(team_new_enrollment_path)
-              expect(flash[:notice]).to eq(I18n.t('teams.user_no_found'))
+              expect(flash[:notice]).to eq(I18n.t('teams.user_not_found'))
             end
           end
         end

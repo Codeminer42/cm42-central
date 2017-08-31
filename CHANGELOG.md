@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Changed
+- Move users/form from projects to teams
+
 ## [1.6.0] 2017-08-22
 ### Added
 - Discord integration
