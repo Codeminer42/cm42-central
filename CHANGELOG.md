@@ -4,6 +4,7 @@
 ### Added
 - Enables rubocop Metrics/AbcSize
 - Enabled PerceivedComplexity rubocop metric
+- Enabled CyclomaticComplexity rubocop metric
 
 ### Changed
 - Move users/form from projects to teams

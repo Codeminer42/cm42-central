@@ -87,7 +87,9 @@ Metrics/PerceivedComplexity:
   Max: 8
 
 Metrics/CyclomaticComplexity:
-  Enabled: false
+  Enabled: true
+  Exclude:
+    - 'spec/support/integration_helpers.rb'
 
 Metrics/BlockNesting:
   Enabled: false
