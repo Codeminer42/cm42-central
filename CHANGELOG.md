@@ -5,6 +5,7 @@
 - Enables rubocop Metrics/AbcSize
 - Enabled PerceivedComplexity rubocop metric
 - Enabled CyclomaticComplexity rubocop metric
+- Added flag to mail reports
 
 ### Changed
 - Move users/form from projects to teams
