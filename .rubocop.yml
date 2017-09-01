@@ -27,9 +27,6 @@ Documentation:
 Style/Semicolon:
   AllowAsExpressionSeparator: true
 
-Style/RedundantReturn:
-  Enabled: false
-
 Style/ClassAndModuleChildren:
   Enabled: false
 

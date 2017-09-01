@@ -8,6 +8,7 @@
 - Added flag to mail reports
 - Enabled AndOr rubocop style
 - Enabled BlockNesting rubocop metric
+- Enabled RedundantReturn rubocop style
 
 ### Changed
 - Move users/form from projects to teams
