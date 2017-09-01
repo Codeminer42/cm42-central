@@ -30,9 +30,6 @@ Style/Semicolon:
 Style/RedundantReturn:
   Enabled: false
 
-Style/AndOr:
-  Enabled: false
-
 Style/ClassAndModuleChildren:
   Enabled: false
 
