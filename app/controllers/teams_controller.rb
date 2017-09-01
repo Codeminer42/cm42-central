@@ -24,6 +24,7 @@ class TeamsController < ApplicationController
 
   def new_enrollment
     authorize current_team
+    @user = User.new
   end
 
   def create_enrollment
@@ -39,7 +40,7 @@ class TeamsController < ApplicationController
       end
     else
       authorize current_team
-      flash[:notice] = t('teams.user_no_found')
+      flash[:notice] = t('teams.user_not_found')
     end
     redirect_to team_new_enrollment_path
   end

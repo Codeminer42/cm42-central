@@ -1,8 +1,12 @@
 # Changelog
 
 ## [Unreleased]
-### Changed
+### Added
 - Enables rubocop Metrics/AbcSize
+- Enabled PerceivedComplexity rubocop metric
+
+### Changed
+- Move users/form from projects to teams
 
 ## [1.6.0] 2017-08-22
 ### Added
@@ -16,7 +20,7 @@
 
 ### Fixed
 - Fixing compatibility of docker-composer with webpack
-- Fixing 'stop loading when save' javascript spec 
+- Fixing 'stop loading when save' javascript spec
 
 ## [1.5.0] 2017-06-23
 ### Added

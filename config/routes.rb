@@ -29,24 +29,20 @@ Rails.application.routes.draw do
 
   resources :teams, except: :show do
     get :switch, on: :collection
-    get 'users' => 'teams#manage_users'
+    get 'manage_users' => 'teams#manage_users'
     get 'new_enrollment' => 'teams#new_enrollment'
     post 'create_enrollment' => 'teams#create_enrollment'
+    resources :users, only: [:create]
     resources :api_tokens, only: [:create, :destroy]
   end
 
   resources :projects do
     member do
-      get :join
-      get :import
-      patch :import_upload
-      patch :archive
-      patch :unarchive
-      patch :ownership
-      get :search
-      get :reports
+      get :join, :import, :search, :reports
+      patch :import_upload, :archive, :unarchive, :ownership
     end
-    resources :users, only: [:index, :create, :destroy]
+    resources :users, only: [:index, :destroy]
+    resources :memberships, only: [:create]
     resources :integrations, only: [:index, :create, :destroy]
     resources :changesets, only: [:index]
     resources :stories, only: [:index, :create, :update, :destroy, :show] do
@@ -54,9 +50,7 @@ Rails.application.routes.draw do
       resources :notes, only: [:index, :create, :show, :destroy]
       resources :tasks, only: [:create, :destroy, :update]
       collection do
-        get :done
-        get :in_progress
-        get :backlog
+        get :done, :in_progress, :backlog
       end
     end
   end
