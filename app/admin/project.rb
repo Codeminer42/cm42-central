@@ -1,6 +1,6 @@
 ActiveAdmin.register Project do
   permit_params :name, :point_scale, :default_velocity, :start_date, :iteration_start_day,
-                :iteration_length, :archived_at, :user_ids
+                :iteration_length, :archived_at, :user_ids, :mail_reports
 
   index do
     selectable_column
@@ -44,6 +44,7 @@ ActiveAdmin.register Project do
       f.input :iteration_start_day
       f.input :iteration_length
       f.input :archived_at
+      f.input :mail_reports
     end
     f.actions
   end

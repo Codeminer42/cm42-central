@@ -233,7 +233,8 @@ class ProjectsController < ApplicationController
     params
       .fetch(:project)
       .permit(:name, :point_scale, :default_velocity, :tag_group_id, :start_date,
-              :iteration_start_day, :iteration_length, :import, :archived, :disallow_join)
+              :iteration_start_day, :iteration_length, :import, :archived,
+              :disallow_join, :mail_reports)
   end
 
   def fluid_layout

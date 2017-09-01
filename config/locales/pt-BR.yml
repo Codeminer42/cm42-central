@@ -163,6 +163,7 @@ pt-BR:
         iteration_length:     'Duração da iteração'
         default_velocity:     'Velocidade padrão'
         archived:             'Arquivado'
+        mail_reports:         'Enviar relatórios por email'
       story:
         title:                'Título'
         description:          'Descrição'

@@ -123,6 +123,7 @@ describe 'Projects' do
 
           fill_in 'Name', with: 'New Project Name'
           select tag_group.name, from: 'project_tag_group_id'
+          expect(page).to have_checked_field 'Send reports via mail'
           click_on 'Update Project'
 
           expect(current_path).to eq(project_path(project))
