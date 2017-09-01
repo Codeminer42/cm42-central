@@ -31,13 +31,7 @@ class TeamsController < ApplicationController
     user = User.find_by(email: params[:user][:email])
     if user
       authorize user
-      if user.teams.include?(current_team)
-        flash[:notice] = t('teams.user_is_already_in_this_team')
-      else
-        user.teams << current_team
-        user.save
-        flash[:notice] = t('teams.team_was_successfully_updated')
-      end
+      add_team_for(user)
     else
       authorize current_team
       flash[:notice] = t('teams.user_not_found')
@@ -70,7 +64,7 @@ class TeamsController < ApplicationController
     @team = Team.new(allowed_params)
     authorize @team
     respond_to do |format|
-      if verify_recaptcha && (@team = TeamOperations::Create.call(@team, current_user))
+      if can_create?
         format.html do
           session[:current_team_slug] = @team.slug
           flash[:notice] = t('teams.team was successfully created')
@@ -128,5 +122,19 @@ class TeamsController < ApplicationController
       :name, :disable_registration, :registration_domain_whitelist,
       :registration_domain_blacklist, :logo
     )
+  end
+
+  def can_create?
+    verify_recaptcha && (@team = TeamOperations::Create.call(@team, current_user))
+  end
+
+  def add_team_for(user)
+    if user.teams.include?(current_team)
+      flash[:notice] = t('teams.user_is_already_in_this_team')
+    else
+      user.teams << current_team
+      user.save
+      flash[:notice] = t('teams.team_was_successfully_updated')
+    end
   end
 end

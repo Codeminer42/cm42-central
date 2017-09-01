@@ -38,17 +38,22 @@ class MissingKeysFinder
           end
         end
 
-        next unless !key_exists?(key, locale) && skip == false
-        if missing_keys[key]
-          missing_keys[key] << locale
-        else
-          missing_keys[key] = [locale]
-        end
+        add_missing_key(missing_keys, key, locale, skip)
       end
     end
 
     output_missing_keys(missing_keys)
     return missing_keys
+  end
+
+  def add_missing_key(missing_keys, key, locale, skip)
+    return unless !key_exists?(key, locale) && skip == false
+
+    if missing_keys[key]
+      missing_keys[key] << locale
+    else
+      missing_keys[key] = [locale]
+    end
   end
 
   def output_available_locales

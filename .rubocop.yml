@@ -60,25 +60,15 @@ Metrics/MethodLength:
 
 Metrics/AbcSize:
   Enabled: true
+  Max: 25
   Exclude:
-    - 'app/operations/story_operations/state_change_notification.rb'
-    - 'app/serializers/project_serializer.rb'
-    - 'app/controllers/users_controller.rb'
     - 'app/controllers/stories_controller.rb'
-    - 'app/controllers/tag_groups_controller.rb'
-    - 'app/controllers/changesets_controller.rb'
-    - 'app/controllers/teams_controller.rb'
-    - 'app/controllers/integrations_controller.rb'
     - 'app/controllers/projects_controller.rb'
-    - 'app/controllers/registrations_controller.rb'
-    - 'app/controllers/confirmations_controller.rb'
-    - 'app/workers/import_worker.rb'
     - 'app/presenters/activity_presenter.rb'
-    - 'lib/tasks/i18n_missing_keys.rake'
 
 Metrics/ClassLength:
   Enabled: true
-  Max: 105
+  Max: 110
   Exclude:
    - 'app/controllers/projects_controller.rb'
 
