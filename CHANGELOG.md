@@ -7,6 +7,7 @@
 - Enabled CyclomaticComplexity rubocop metric
 - Added flag to mail reports
 - Enabled AndOr rubocop style
+- Enabled BlockNesting rubocop metric
 
 ### Changed
 - Move users/form from projects to teams
