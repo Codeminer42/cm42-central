@@ -4,8 +4,6 @@ class MembershipsController < ApplicationController
   def create
     authorize current_team_users
     if enroll
-      authorize @user
-      @current_team_users = current_team_users
       flash[:notice] = @project_enroller_service.message
     else
       flash[:alert] = @project_enroller_service.message
@@ -34,6 +32,12 @@ class MembershipsController < ApplicationController
   def enroll
     @user = User.find_by(email: allowed_params[:email])
     @project_enroller_service = ProjectMembershipEnrollerService.new(@user, current_team, @project)
-    @project_enroller_service.enroll
+    if @project_enroller_service.enroll
+      authorize @user
+      @current_team_users = current_team_users
+      true
+    else
+      false
+    end
   end
 end
