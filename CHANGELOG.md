@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 ### Added
+- Enables rubocop Metrics/AbcSize
 - Enabled PerceivedComplexity rubocop metric
 
 ### Changed
