@@ -4,6 +4,10 @@
 ### Fixed
 - Allowed params to update project via API
 
+### Added
+- Don't show projects to guests that he's not member of
+- Disallow guests to make changes on projects
+
 ## [1.9.0] 2017-09-11
 ### Changed
 - Changing `webpack-rails` gem to new `webpacker` gem
