@@ -6,13 +6,15 @@ class Entities::Team < Entities::BaseEntity
   expose :admins, if: { type: :full }
 
   with_options(format_with: :iso_timestamp) do
-    expose :created_at, if: lambda { |team, _| team.created_at.present? }
-    expose :archived_at, if: lambda { |team, _| team.archived_at.present? }
+    expose :created_at, if: ->(team, _) { team.created_at.present? }
+    expose :archived_at, if: ->(team, _) { team.archived_at.present? }
   end
 
   private
 
   def admins
-    object.enrollments.includes(:user).where(is_admin: true).map(&:user) rescue []
+    object.enrollments.includes(:user).where(is_admin: true).map(&:user)
+  rescue
+    []
   end
 end

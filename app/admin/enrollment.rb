@@ -45,12 +45,12 @@ ActiveAdmin.register Enrollment do
   filter :is_admin
 
   form do |f|
-    f.inputs "Enrollment Details" do
+    f.inputs 'Enrollment Details' do
       f.input :user, as: :select,
-        collection: User.order(:name).all
+                     collection: User.order(:name).all
       f.input :team, as: :select,
-        collection: Team.order(:name).all
-      f.input :is_admin, as: :check_boxes
+                     collection: Team.order(:name).all
+      f.input :is_admin, as: :select
     end
     f.actions
   end

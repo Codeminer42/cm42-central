@@ -5,7 +5,5 @@ class Task < ActiveRecord::Base
 
   before_destroy { |record| raise ActiveRecord::ReadOnlyRecord if record.readonly? }
 
-  def readonly?
-    story.readonly?
-  end
+  delegate :readonly?, to: :story
 end

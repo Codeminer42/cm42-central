@@ -1,15 +1,15 @@
 class ProjectSerializer
   attr_accessor :name,
-    :slug,
-    :archived_at,
-    :velocity,
-    :volatility,
-    :users_avatar,
-    :avatar,
-    :path_to,
-    :tag_name,
-    :tag_bg_color,
-    :tag_fore_color
+                :slug,
+                :archived_at,
+                :velocity,
+                :volatility,
+                :users_avatar,
+                :avatar,
+                :path_to,
+                :tag_name,
+                :tag_bg_color,
+                :tag_fore_color
 
   def initialize(attrs = {})
     self.name = attrs.truncate_name
@@ -19,6 +19,10 @@ class ProjectSerializer
     self.path_to = attrs.path_to
     self.archived_at = attrs.archived_date
     self.users_avatar = attrs.users_avatar(Project::MAX_MEMBERS_PER_CARD)
+    add_tag_info(attrs)
+  end
+
+  def add_tag_info(attrs)
     self.tag_name = attrs.tag_group&.name
     self.tag_bg_color = attrs.tag_group&.bg_color
     self.tag_fore_color = attrs.tag_fore_color
@@ -40,6 +44,6 @@ class ProjectSerializer
   end
 
   def self.from_collection(collection)
-    collection.map { |item| self.new(item).to_json }
+    collection.map { |item| new(item).to_json }
   end
 end

@@ -5,9 +5,8 @@ describe TeamOperations do
   let(:team) { Team.new(team_params) }
 
   describe 'Create' do
-
     context 'with valid params' do
-      subject { ->{TeamOperations::Create.(team, nil)} }
+      subject { -> { TeamOperations::Create.call(team, nil) } }
 
       it { expect { subject.call }.to change { Team.count }.by(1) }
       it { expect(subject.call).to be_eql Team.last }
@@ -16,9 +15,9 @@ describe TeamOperations do
     context 'with invalid params' do
       before { team.name = nil }
 
-      subject { ->{TeamOperations::Create.(team, nil)} }
+      subject { -> { TeamOperations::Create.call(team, nil) } }
 
-      it { is_expected.to_not change {Team.count} }
+      it { is_expected.to_not change { Team.count } }
       it { expect(subject.call).to be_falsy }
     end
   end
@@ -27,16 +26,16 @@ describe TeamOperations do
     before { team.save! }
 
     context 'with valid params' do
-      subject { ->{TeamOperations::Update.(team, { name: 'Hello World' }, nil )} }
+      subject { -> { TeamOperations::Update.call(team, { name: 'Hello World' }, nil) } }
 
-      it { expect { subject.call }.to_not change {Team.count} }
+      it { expect { subject.call }.to_not change { Team.count } }
       it { expect(subject.call.name).to be_eql 'Hello World' }
     end
 
     context 'with invalid params' do
       before { team.name = nil }
 
-      subject { ->{TeamOperations::Update.(team, { name: nil }, nil)} }
+      subject { -> { TeamOperations::Update.call(team, { name: nil }, nil) } }
 
       it { expect(subject.call).to be_falsy }
     end
@@ -45,9 +44,8 @@ describe TeamOperations do
   describe 'Destroy' do
     before { team.save! }
 
-    subject { ->{TeamOperations::Destroy.(team, nil)} }
+    subject { -> { TeamOperations::Destroy.call(team, nil) } }
 
     it { expect(subject.call.archived_at).to_not be_nil }
   end
 end
-

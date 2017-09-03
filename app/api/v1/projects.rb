@@ -22,7 +22,7 @@ class V1::Projects < Grape::API
       authorize_project!
     end
 
-    desc 'Return all projects', { tags: ['project'] }
+    desc 'Return all projects', tags: ['project']
     params do
       optional :archiveds, type: Boolean, default: false
     end
@@ -34,29 +34,31 @@ class V1::Projects < Grape::API
       present paginate(projects), with: Entities::Project
     end
 
-    desc 'Return the specified project', { tags: ['project'] }
+    desc 'Return the specified project', tags: ['project']
     get '/:slug' do
-      project = Project.find_by_slug(params[:slug])
+      project = Project.find_by(slug: params[:slug])
 
       present project, with: Entities::Project, type: :full
     end
 
-    desc 'Return the specified project with analysis', { tags: ['project'] }
+    desc 'Return the specified project with analysis', tags: ['project']
     params do
       requires :since, type: Integer
       optional :current_time, type: DateTime
     end
     get '/:slug/analysis' do
-      project = Project.not_archived.find_by_slug(params[:slug])
+      project = Project.not_archived.find_by(slug: params[:slug])
       current_time = params[:current_time] || Time.current
-      since = params[:since].months.ago
+      params[:since].months.ago
 
-      iteration = Central::Support::IterationService.new(project, current_time: current_time) if project
+      if project
+        iteration = Central::Support::IterationService.new(project, current_time: current_time)
+      end
 
       present iteration, with: Entities::ProjectAnalysis
     end
 
-    desc 'Return the stories of a specified project', { tags: ['project'] }
+    desc 'Return the stories of a specified project', tags: ['project']
     params do
       optional :state,
                type: Symbol,
@@ -67,7 +69,7 @@ class V1::Projects < Grape::API
     end
     paginate
     get '/:slug/stories' do
-      project = Project.includes(:stories).find_by_slug(params[:slug])
+      project = Project.includes(:stories).find_by(slug: params[:slug])
 
       stories = project.stories.send(params[:state])
       stories = stories.where('created_at >= ?', params[:created_at]) if params[:created_at]
@@ -76,10 +78,10 @@ class V1::Projects < Grape::API
       present paginate(stories), with: Entities::Story
     end
 
-    desc 'Return all users of a specified project', { tags: ['project'] }
+    desc 'Return all users of a specified project', tags: ['project']
     paginate
     get '/:slug/users' do
-      project = Project.includes(memberships: :user).find_by_slug(params[:slug])
+      project = Project.includes(memberships: :user).find_by(slug: params[:slug])
       users = project.users
 
       present paginate(users), with: Entities::User

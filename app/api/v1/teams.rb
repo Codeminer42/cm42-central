@@ -14,7 +14,7 @@ class V1::Teams < Grape::API
       authorize_team!
     end
 
-    desc 'Return all teams', { tags: ['team'] }
+    desc 'Return all teams', tags: ['team']
     paginate
     get '/' do
       teams = Team.all
@@ -22,26 +22,26 @@ class V1::Teams < Grape::API
       present paginate(teams), with: Entities::Team
     end
 
-    desc 'Return the specified team', { tags: ['team'] }
+    desc 'Return the specified team', tags: ['team']
     get '/:slug' do
-      team = Team.find_by_slug(params[:slug])
+      team = Team.find_by(slug: params[:slug])
 
       present team, with: Entities::Team, type: :full
     end
 
-    desc 'Return all projects of a specified team', { tags: ['team'] }
+    desc 'Return all projects of a specified team', tags: ['team']
     paginate
     get '/:slug/projects' do
-      team = Team.includes(:projects).find_by_slug(params[:slug])
+      team = Team.includes(:projects).find_by(slug: params[:slug])
       projects = team.projects
 
       present paginate(projects), with: Entities::Project
     end
 
-    desc 'Return all users of a specified team', { tags: ['team'] }
+    desc 'Return all users of a specified team', tags: ['team']
     paginate
     get '/:slug/users' do
-      team = Team.includes(enrollments: [:user]).find_by_slug(params[:slug])
+      team = Team.includes(enrollments: [:user]).find_by(slug: params[:slug])
       users = team.users
 
       present paginate(users), with: Entities::User

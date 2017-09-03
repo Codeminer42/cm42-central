@@ -1,14 +1,14 @@
 namespace :fulcrum do
-  desc "Set up database yaml."
+  desc 'Set up database yaml.'
   task :setup do
     db = ENV['DB'] || 'postgresql'
-    example_database_config = Rails.root.join('config',"database.yml.#{db}")
-    database_config = Rails.root.join('config',"database.yml")
+    example_database_config = Rails.root.join('config', "database.yml.#{db}")
+    database_config = Rails.root.join('config', 'database.yml')
 
-    unless File.exist?(database_config)
-      cp example_database_config, database_config
-    else
+    if File.exist?(database_config)
       puts "#{database_config} already exists!"
+    else
+      cp example_database_config, database_config
     end
   end
 

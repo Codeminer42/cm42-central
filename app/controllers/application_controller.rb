@@ -4,14 +4,14 @@ class ApplicationController < ActionController::Base
   include Pundit
   include SidebarController
 
-  before_filter :authenticate_user!, unless: :devise_controller?
-  before_filter :check_team_presence, unless: :devise_controller?
-  before_filter :set_locale
-  before_filter :set_layout_settings
-  around_filter :user_time_zone, if: :current_user
+  before_action :authenticate_user!, unless: :devise_controller?
+  before_action :check_team_presence, unless: :devise_controller?
+  before_action :set_locale
+  before_action :set_layout_settings
+  around_action :user_time_zone, if: :current_user
 
-  after_filter :verify_authorized, except: [:index], if: :must_pundit?
-  after_filter :verify_policy_scoped, only: [:index], if: :must_pundit?
+  after_action :verify_authorized, except: [:index], if: :must_pundit?
+  after_action :verify_policy_scoped, only: [:index], if: :must_pundit?
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
   rescue_from Pundit::NotAuthorizedError,   with: :user_not_authorized
@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
     respond_to do |format|
       format.html do
         if current_user
-          redirect_to( request.referer || root_path, alert: I18n.t('not_found') )
+          redirect_to(request.referer || root_path, alert: I18n.t('not_found'))
         else
           render file: Rails.root.join('public', '404.html'), status: '404'
         end
@@ -42,16 +42,16 @@ class ApplicationController < ActionController::Base
 
   def user_not_authorized
     flash[:error] = t('users.You are not authorized to perform this action')
-    redirect_to request.headers["Referer"] || root_path
+    redirect_to request.headers['Referer'] || root_path
   end
 
   def pundit_user
-    PunditContext.new(current_team, current_user, { current_project: @project, current_story: @story })
+    PunditContext.new(current_team, current_user, current_project: @project, current_story: @story)
   end
   helper_method :pundit_user
 
   def current_team
-    @current_team ||= Team.not_archived.find_by_slug(session[:current_team_slug])
+    @current_team ||= Team.not_archived.find_by(slug: session[:current_team_slug])
   end
   helper_method :current_team
 
@@ -75,9 +75,7 @@ class ApplicationController < ActionController::Base
   def set_current_team_if_single
     user_teams = current_user.teams.not_archived
 
-    if user_teams.size == 1
-      session[:current_team_slug] = user_teams.first.slug
-    end
+    session[:current_team_slug] = user_teams.first.slug if user_teams.size == 1
   end
 
   def must_pundit?

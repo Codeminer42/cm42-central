@@ -1,5 +1,4 @@
 module NoteOperations
-
   module MemberNotification
     def self.included(base)
       base.class_eval do
@@ -9,17 +8,18 @@ module NoteOperations
 
     def notify_users
       return if user.nil?
+      return if story.suppress_notifications
+      return if users_to_notify.none?
 
-      users_to_notify = (story.stakeholders_users + users_from_note).uniq
-      users_to_notify.delete(user)
-
-      if users_to_notify.any? && !story.suppress_notifications
-        notifier = Notifications.new_note(model.id, users_to_notify.map(&:email))
-        notifier.deliver if notifier
-      end
+      notifier = Notifications.new_note(model.id, users_to_notify.map(&:email))
+      notifier&.deliver
     end
 
-    def users_from_note
+    def users_to_notify
+      @users_to_notify ||= (story.stakeholders_users + note_users).uniq.reject { |u| u == user }
+    end
+
+    def note_users
       usernames = UsernameParser.parse(model.note)
       return [] if usernames.empty?
 

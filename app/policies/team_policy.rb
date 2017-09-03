@@ -12,15 +12,15 @@ class TeamPolicy < ApplicationPolicy
   end
 
   def update?
-    is_admin?
+    admin?
   end
 
   def destroy?
-    is_admin?
+    admin?
   end
 
   def manage_users?
-    is_admin?
+    admin?
   end
 
   def new_enrollment?
@@ -33,9 +33,9 @@ class TeamPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if is_root?
+      if root?
         Team
-      elsif is_admin?
+      elsif admin?
         Team.not_archived.where(id: current_team.id)
       else
         Team.none

@@ -1,20 +1,18 @@
 # Fetched from: http://github.com/koppen/i18n_missing_keys.git
 
 namespace :i18n do
-  desc "Find and list translation keys that do not exist in all locales"
+  desc 'Find and list translation keys that do not exist in all locales'
   task missing_keys: :environment do
     finder = MissingKeysFinder.new(I18n.backend)
     finder.find_missing_keys
   end
 end
 
-
 class MissingKeysFinder
-
   def initialize(backend)
     @backend = backend
-    self.load_config
-    self.load_translations
+    load_config
+    load_translations
   end
 
   # Returns an array with all keys from all locales
@@ -30,27 +28,17 @@ class MissingKeysFinder
 
     missing_keys = {}
     all_keys.each do |key|
-
       I18n.available_locales.each do |locale|
-
         skip = false
         ls = locale.to_s
-        if !@yaml[ls].nil?
-          @yaml[ls].each do |re|
-            if key.match(re)
-              skip = true
-              break
-            end
+        @yaml[ls]&.each do |re|
+          if key.match(re)
+            skip = true
+            break
           end
         end
 
-        if !key_exists?(key, locale) && skip == false
-          if missing_keys[key]
-            missing_keys[key] << locale
-          else
-            missing_keys[key] = [locale]
-          end
-        end
+        add_missing_key(missing_keys, key, locale, skip)
       end
     end
 
@@ -58,12 +46,24 @@ class MissingKeysFinder
     return missing_keys
   end
 
+  def add_missing_key(missing_keys, key, locale, skip)
+    return unless !key_exists?(key, locale) && skip == false
+
+    if missing_keys[key]
+      missing_keys[key] << locale
+    else
+      missing_keys[key] = [locale]
+    end
+  end
+
   def output_available_locales
-    puts "#{I18n.available_locales.size} #{I18n.available_locales.size == 1 ? 'locale' : 'locales'} available: #{I18n.available_locales.join(', ')}"
+    message = I18n.available_locales.size == 1 ? 'locale' : 'locales'
+    puts "#{I18n.available_locales.size} #{message} available: #{I18n.available_locales.join(', ')}"
   end
 
   def output_missing_keys(missing_keys)
-    puts "#{missing_keys.size} #{missing_keys.size == 1 ? 'key is missing' : 'keys are missing'} from one or more locales:"
+    message = missing_keys.size == 1 ? 'key is missing' : 'keys are missing'
+    puts "#{missing_keys.size} #{message} from one or more locales:"
     missing_keys.keys.sort.each do |key|
       puts "'#{key}': Missing from #{missing_keys[key].collect(&:inspect).join(', ')}"
     end
@@ -101,7 +101,7 @@ class MissingKeysFinder
   end
 
   def load_translations
-    # Make sure we’ve loaded the translations
+    # Make sure we've loaded the translations
     I18n.backend.send(:init_translations)
   end
 
@@ -110,8 +110,7 @@ class MissingKeysFinder
     begin
       @yaml = YAML.load_file(File.join(Rails.root, 'config', 'ignore_missing_keys.yml'))
     rescue
-      STDERR.puts "No ignore_missing_keys.yml config file."
+      STDERR.puts 'No ignore_missing_keys.yml config file.'
     end
   end
-
 end

@@ -2,7 +2,7 @@ module ProjectsHelper
   # Returns an array of valid project point scales suitable for
   # use in a select helper.
   def point_scale_options
-    Project::POINT_SCALES.collect do |name,values|
+    Project::POINT_SCALES.collect do |name, values|
       ["#{name.humanize} (#{values.join(',')})", name]
     end
   end
@@ -24,7 +24,7 @@ module ProjectsHelper
   # Returns an array of day name options suitable for use in
   # a select helper.  The values are 0 to 6, with 0 being Sunday.
   def day_name_options
-    I18n.t('date.day_names').each_with_index.collect{|name,i| [name,i]}
+    I18n.t('date.day_names').each_with_index.collect { |name, i| [name, i] }
   end
 
   #
@@ -36,9 +36,9 @@ module ProjectsHelper
 
   def since_options
     if current_month > 6
-      [1,3,6]
+      [1, 3, 6]
     elsif current_month > 3
-      [1,3]
+      [1, 3]
     else
       []
     end
@@ -49,7 +49,8 @@ module ProjectsHelper
   end
 
   def current_iteration_end_date
-    (@service.date_for_iteration_number(@service.current_iteration_number + 1) - 1.day).to_date.to_s(:short)
+    date = @service.date_for_iteration_number(@service.current_iteration_number + 1)
+    (date - 1.day).to_date.to_s(:short)
   end
 
   def current_iteration
@@ -73,10 +74,11 @@ module ProjectsHelper
   end
 
   def accepted_rate
-    if current_iteration_points == 0
+    if current_iteration_points.zero?
       number_to_percentage(0, precision: 2)
     else
-      number_to_percentage(( accepted_points.to_f * 100.0 ) / current_iteration_points.to_f, precision: 2)
+      rate = (accepted_points.to_f * 100.0) / current_iteration_points.to_f
+      number_to_percentage(rate, precision: 2)
     end
   end
 
@@ -91,25 +93,11 @@ module ProjectsHelper
   end
 
   def calculate_and_render_burn_up!
-    service_full         = IterationService.new(@project, since: nil)
-    @total_backlog_points = service_full.instance_variable_get('@stories').map(&:estimate).compact.sum
-
-    @group_by_day   = [
-      { name: 'today', data: { Date.current => service_full.group_by_day[Date.current]} },
-      { name: 'real',  data: service_full.group_by_day },
-      { name: 'ideal', data: service_full.group_by_day.dup } ]
-
-    points_per_day = @total_backlog_points.to_f / service_full.group_by_day.keys.size
-    initial_points = 0
-
-    @group_by_day.last[:data].keys.each do |key|
-      @group_by_day.last[:data][key] = initial_points
-      initial_points += points_per_day
-    end
+    @group_by_day = BurnUpCalculator.call(@project)
   end
 
   def formatted_standard_deviation(standard_deviation)
-    "%3.2f" % Math.sqrt(standard_deviation)
+    format('%3.2f', Math.sqrt(standard_deviation))
   end
 
   def inverse_story_flow

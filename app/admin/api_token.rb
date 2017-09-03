@@ -22,9 +22,9 @@ ActiveAdmin.register ApiToken do
   actions :index, :new, :create, :destroy
 
   form do |f|
-    f.inputs "API Token Details" do
+    f.inputs 'API Token Details' do
       f.input :team, as: :select,
-        collection: Team.order(:name).all
+                     collection: Team.order(:name).all
     end
     f.actions
   end

@@ -12,6 +12,10 @@
       "required": true,
       "generator": "secret"
     },
+    "INTEGRATION_URI_DISCORD": {
+      "description": "A Discord Hook URL in the format https://discordapp.com/api/webhooks/xxxx/xxxx",
+      "required": false
+    },
     "INTEGRATION_URI_MATTERMOST": {
       "description": "A Mattermost Hook URL in the format https://yourmattermost.com/hooks/abcdxyz",
       "required": false

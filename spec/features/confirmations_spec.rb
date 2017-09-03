@@ -1,13 +1,13 @@
 require 'feature_helper'
 
-describe "Confirmations" do
+describe 'Confirmations' do
   let(:team) { create(:team) }
 
   before(:each) do
     ActionMailer::Base.deliveries = []
   end
 
-  it "sends a confirmation token" do
+  it 'sends a confirmation token' do
     visit '/'
     first(:link, 'Sign up').click
     # Sign the user up for an account
@@ -26,7 +26,6 @@ describe "Confirmations" do
     expect(email.to).to include('test@example.com')
     confirmation_token = get_confirmation_token_from_mail(email)
 
-    user = User.find_by_email('test@example.com')
     visit '/users/confirmation?confirmation_token=' + confirmation_token
     expect(page).to have_content('Your account was successfully confirmed')
 
@@ -39,12 +38,12 @@ describe "Confirmations" do
     expect(page).to have_content('Your password was changed successfully')
   end
 
-  it "gracefully handles an invalid confirmation token" do
+  it 'gracefully handles an invalid confirmation token' do
     visit '/users/confirmation?confirmation_token=foo'
     expect(page).to have_content('Invalid confirmation token')
   end
 
-  it "sends new confirmation token" do
+  it 'sends new confirmation token' do
     user = create(:unconfirmed_user, email: 'test@example.com', teams: [team])
     visit '/'
     click_link "Didn't receive confirmation instructions?"
@@ -52,11 +51,13 @@ describe "Confirmations" do
     fill_in 'Email', with: user.email
     click_button 'Resend confirmation instructions'
 
-    expect(page).to have_content('You will receive an email with instructions about how to confirm your account in a few minutes')
+    expect(page).to have_content(
+      'You will receive an email with instructions about how to ' \
+      'confirm your account in a few minutes'
+    )
 
     # There should be 2 deliveries, one from the user creation and one from
     # the resend instructions form.
     expect(ActionMailer::Base.deliveries.length).to eq(2)
   end
-
 end

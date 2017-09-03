@@ -5,41 +5,36 @@ class ApplicationPolicy
     def self.included(base)
       base.class_eval do
         delegate :current_user, :current_team, :current_project, :current_story,
-          to: :context
+                 to: :context
       end
     end
 
     protected
 
-    def is_root?
+    def root?
       # this user can do anothing, it goes in AdminUser instead of User and bypasses everything
       context.active_admin
     end
 
-    def is_admin?
-      is_root? || ( current_team && current_team.is_admin?(current_user) )
+    def admin?
+      root? || (current_team && current_team.is_admin?(current_user))
     end
 
-    def is_guest?
+    def guest?
       current_user.guest?
     end
 
-    def is_project_owner?
-      is_root? || ( current_project && current_team.owns?(current_project) )
+    def project_member?
+      root? || (current_project && current_project.users.find_by(id: current_user.id))
     end
 
-    def is_project_member?
-      is_root? || ( current_project && current_project.users.find_by_id(current_user.id) )
+    def story_member?
+      root? || (current_story && current_story.project.users.find_by(id: current_user.id))
     end
 
-    def is_story_member?
-      is_root? || ( current_story && current_story.project.users.find_by_id(current_user.id) )
+    def team_member?
+      root? || (current_team && current_team.users.find_by(id: current_user.id))
     end
-
-    def is_team_member?
-      is_root? || ( current_team && current_team.users.find_by_id(current_user.id) )
-    end
-
   end
   include CheckRoles
 
@@ -47,9 +42,9 @@ class ApplicationPolicy
 
   def initialize(context, record)
     if context.is_a?(AdminUser)
-      context = PunditContext.new(nil, context, { active_admin: true })
+      context = PunditContext.new(nil, context, active_admin: true)
     end
-    raise Pundit::NotAuthorizedError, "Must be signed in." unless context.current_user
+    raise Pundit::NotAuthorizedError, 'Must be signed in.' unless context.current_user
     @context = context
     @record  = record
   end
@@ -59,7 +54,7 @@ class ApplicationPolicy
   end
 
   def index?
-    is_admin?
+    admin?
   end
 
   def show?
@@ -67,7 +62,7 @@ class ApplicationPolicy
   end
 
   def create?
-    is_admin?
+    admin?
   end
 
   def new?
@@ -96,7 +91,7 @@ class ApplicationPolicy
 
     def initialize(context, scope)
       if context.is_a?(AdminUser)
-        context = PunditContext.new(nil, context, { active_admin: true })
+        context = PunditContext.new(nil, context, active_admin: true)
       end
       @context = context
       @scope   = scope

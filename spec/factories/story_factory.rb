@@ -8,7 +8,9 @@ FactoryGirl.define do
     end
 
     trait :with_activity do
-      after(:create) { |object| create(:activity, subject: object, user: object.requested_by, project: object.project) }
+      after(:create) do |object|
+        create(:activity, subject: object, user: object.requested_by, project: object.project)
+      end
     end
   end
 end
