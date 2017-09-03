@@ -6,6 +6,8 @@
 - Enabled PerceivedComplexity rubocop metric
 - Enabled CyclomaticComplexity rubocop metric
 - Added flag to mail reports
+- Don't show projects to guests that he's not member of
+- Disallow guests to make changes on projects
 
 ### Changed
 - Move users/form from projects to teams
