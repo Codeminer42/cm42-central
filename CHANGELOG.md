@@ -6,6 +6,7 @@
 - Enabled PerceivedComplexity rubocop metric
 - Enabled CyclomaticComplexity rubocop metric
 - Added flag to mail reports
+- Enabled AndOr rubocop style
 
 ### Changed
 - Move users/form from projects to teams
