@@ -1,6 +1,7 @@
 # Changelog
 
 ## [Unreleased]
+- Added action into API to update project
 
 ## [1.7.0] 2017-09-04
 ### Added
