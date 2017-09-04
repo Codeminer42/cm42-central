@@ -16,12 +16,14 @@ describe('ProjectVelocityView', function() {
       ProjectVelocityOverrideView: ProjectVelocityOverrideView
     });
 
+    sinon.stub(ProjectVelocityView.prototype, 'listenTo');
+
     this.subject = new ProjectVelocityView({model: this.model});
-    this.subject.listenTo = sinon.stub();
   });
 
   afterEach(function() {
     this.revertRewire();
+    ProjectVelocityView.prototype.listenTo.restore();
   });
 
   it("should have a top level element", function() {
