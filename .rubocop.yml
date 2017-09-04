@@ -78,8 +78,5 @@ Metrics/CyclomaticComplexity:
   Exclude:
     - 'spec/support/integration_helpers.rb'
 
-Metrics/BlockNesting:
-  Enabled: false
-
 Metrics/BlockLength:
   Enabled: false
