@@ -34,6 +34,10 @@ module.exports = {
     'react/lib/ReactContext': true
   },
 
+  node: {
+    fs: 'empty'
+  },
+
   output: {
     filename: '[name].js',
     path: output.path,
@@ -41,7 +45,14 @@ module.exports = {
   },
 
   module: {
-    rules: sync(join(loadersDir, '*.js')).map(loader => require(loader))
+    rules: sync(join(loadersDir, '*.js')).map(loader => require(loader)),
+    loaders: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel'
+      }
+    ]
   },
 
   plugins: [
@@ -49,7 +60,7 @@ module.exports = {
     new ExtractTextPlugin(env.NODE_ENV === 'production' ? '[name]-[hash].css' : '[name].css'),
     new ManifestPlugin({
       publicPath: output.publicPath,
-      writeToFileEmit: true
+      writeToFileEmit: env.NODE_ENV !== 'test'
     }),
 
     new webpack.NormalModuleReplacementPlugin(
