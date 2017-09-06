@@ -125,7 +125,6 @@ class TeamsController < ApplicationController
   end
 
   def can_create?
-    binding.pry
     check_recaptcha && (@team = TeamOperations::Create.call(@team, current_user))
   end
 
