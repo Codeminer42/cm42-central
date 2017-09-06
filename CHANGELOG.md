@@ -1,6 +1,7 @@
 # Changelog
 
 ## [Unreleased]
+- Created a ENV variable to check if the captcha is enable
 
 ## [1.7.0] 2017-09-04
 ### Added
