@@ -1,5 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController
-  prepend_before_action :check_captcha, only: :create
+  prepend_before_action :check_captcha, only: :create, if: -> { show_recaptcha? }
   before_action :set_locale, only: :create
   before_action :check_registration_enabled, only: [:new, :create]
   before_action :devise_params

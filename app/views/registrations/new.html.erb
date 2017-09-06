@@ -34,9 +34,8 @@
           </div>
 
           <div class="auth-form-group">
-            <%= f.label :captcha, class: 'sr-only' %>
-            <%= recaptcha_tags %>
-          </div>
+            <%= render 'captcha', show_captcha: true, f: f, recaptcha_tags: recaptcha_tags, field_class: 'sr-only' %>
+          </div>          
 
           <div class="clearfix"></div>
 
