@@ -88,7 +88,7 @@ class ApplicationController < ActionController::Base
   end
 
   def show_recaptcha?
-    ENV["ENABLED_RECAPTCHA"] || false
+    ENV["ENABLE_RECAPTCHA"] || false
   end
   helper_method :show_recaptcha?
 end

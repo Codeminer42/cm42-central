@@ -139,6 +139,8 @@ class TeamsController < ApplicationController
   end
 
   def check_recaptcha
-    (show_recaptcha?)? verify_recaptcha : true
+    return true unless show_recaptcha?
+
+    verify_recaptcha
   end
 end

@@ -92,8 +92,4 @@ class RegistrationsController < Devise::RegistrationsController
   def reset_locale
     session[:locale] = nil
   end
-
-  def no_need_check?
-    !show_recaptcha?
-  end
 end
