@@ -15,7 +15,7 @@ module.exports = Backbone.View.extend({
         $(item).toggle();
       }
       item = item.next();
-      if (item.length == 0 || $(item).hasClass('iteration')) {
+      if (item.length === 0 || $(item).hasClass('iteration')) {
         break;
       }
     }

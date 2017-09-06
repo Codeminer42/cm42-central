@@ -15,6 +15,13 @@ class V1::Projects < Grape::API
 
         Project.not_archived
       end
+
+      def allowed_update_params
+        ActionController::Parameters.new(params).permit(
+          :name, :default_velocity, :point_scale,
+          :iteration_start_day, :mail_reports
+        )
+      end
     end
 
     before do
@@ -85,6 +92,15 @@ class V1::Projects < Grape::API
       users = project.users
 
       present paginate(users), with: Entities::User
+    end
+
+    desc 'Update a specified project', tags: ['project']
+    params do
+      requires :slug, type: String
+    end
+    put '/:slug' do
+      project = Project.find_by(slug: params[:slug])
+      project.update_attributes(allowed_update_params)
     end
   end
 end

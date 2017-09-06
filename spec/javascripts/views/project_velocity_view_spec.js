@@ -4,7 +4,7 @@ var ProjectVelocityView = rewire('views/project_velocity_view');
 describe('ProjectVelocityView', function() {
 
   beforeEach(function() {
-    this.model = {on: sinon.stub()};
+    this.model = {};
     var overrideView = this.overrideView = {};
     function ProjectVelocityOverrideView() {
       return overrideView;
@@ -16,11 +16,14 @@ describe('ProjectVelocityView', function() {
       ProjectVelocityOverrideView: ProjectVelocityOverrideView
     });
 
+    sinon.stub(ProjectVelocityView.prototype, 'listenTo');
+
     this.subject = new ProjectVelocityView({model: this.model});
   });
 
   afterEach(function() {
     this.revertRewire();
+    ProjectVelocityView.prototype.listenTo.restore();
   });
 
   it("should have a top level element", function() {
@@ -34,14 +37,14 @@ describe('ProjectVelocityView', function() {
     });
 
     it("binds setFakeClass to change:userVelocity on the model", function() {
-      expect(this.model.on).toHaveBeenCalledWith(
-        "change:userVelocity", this.subject.setFakeClass
+      expect(this.subject.listenTo).toHaveBeenCalledWith(
+        this.subject.model, "change:userVelocity", this.subject.setFakeClass
       );
     });
 
     it("binds render to rebuilt-iterations on the model", function() {
-      expect(this.model.on).toHaveBeenCalledWith(
-        "rebuilt-iterations", this.subject.render
+      expect(this.subject.listenTo).toHaveBeenCalledWith(
+        this.subject.model, "rebuilt-iterations", this.subject.render
       );
     });
 

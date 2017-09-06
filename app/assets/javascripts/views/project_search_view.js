@@ -26,11 +26,11 @@ module.exports = Backbone.View.extend({
   },
 
   addAll: function() {
-    $('.loading-spin').addClass('show');
+    this.$('.loading-spin').addClass('show');
     var that = this;
-
-    $('#search_results').html("");
-    $('.search_results_column').show();
+    that.$ = $;
+    that.$('#search_results').html("");
+    that.$('.search_results_column').show();
 
     this.addBar('#search_results');
 
@@ -46,7 +46,7 @@ module.exports = Backbone.View.extend({
       }
     });
 
-    $('.loading-spin').removeClass('show');
+    this.$('.loading-spin').removeClass('show');
   },
 
   doSearch: function(e) {

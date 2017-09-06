@@ -23,7 +23,7 @@ class StoryAttachment extends React.Component {
         var progress = parseInt(data.loaded / data.total * 100, 10);
         $progress.css('width', progress + "%");
 
-        if (progress == 100) {
+        if (progress === 100) {
           $progress.css('width', "1px");
           $progress.hide();
 

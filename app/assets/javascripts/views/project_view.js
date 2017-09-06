@@ -11,13 +11,13 @@ module.exports = Backbone.View.extend({
   initialize: function() {
     _.bindAll(this, 'addStory', 'addAll', 'render', 'noticeSaveError');
 
-    this.$loadingSpin = $('.loading-spin');
+    this.$loadingSpin = this.$('.loading-spin');
     this.$columnToggles = this.$el.parent().find('#column-toggles');
 
-    this.model.stories.on('add', this.addStory);
-    this.model.stories.on('reset', this.addAll);
-    this.model.stories.on('all', this.render);
-    this.model.on('change:userVelocity', this.addAll);
+    this.model.stories.on('add', this.addStory, this);
+    this.model.stories.on('reset', this.addAll, this);
+    this.model.stories.on('all', this.render, this);
+    this.listenTo(this.model, 'change:userVelocity', this.addAll);
     this.listenTo(this.model, 'change:current_flow', this.prepareColumns);
 
     this.prepareColumns();
@@ -56,7 +56,7 @@ module.exports = Backbone.View.extend({
     var data = el.data();
     var column = new ColumnView({el: el});
 
-    column.on('visibilityChanged', this.checkColumnViewsVisibility);
+    column.on('visibilityChanged', this.checkColumnViewsVisibility, this);
     column.render();
 
     return column;
@@ -66,7 +66,7 @@ module.exports = Backbone.View.extend({
   newStory: function() {
     if ($(window).width() <= 992) {
       _.each(this.columns, function(column, columnId) {
-        if(columnId != 'chilly_bin')
+        if(columnId !== 'chilly_bin')
           if(!column.hidden())
             column.toggle();
       });
@@ -144,22 +144,22 @@ module.exports = Backbone.View.extend({
   },
 
   scaleToViewport: function() {
-    var viewSize = $('.content-wrapper').height();
-    var columnHeaderSize = $('.column_header:first').outerHeight();
+    var viewSize = this.$('.content-wrapper').height();
+    var columnHeaderSize = this.$('.column_header:first').outerHeight();
 
     var height = viewSize - columnHeaderSize;
 
-    $('.story_column, .activity_column').css('height', height + 'px');
+    this.$('.story_column, .activity_column').css('height', height + 'px');
 
     if ($(window).width() <= 992) {
       _.each(this.columns, function(column, columnId) {
-        if(columnId != 'in_progress')
+        if(columnId !== 'in_progress')
           if(!column.hidden())
             column.toggle();
       });
-      $('#form_search').hide();
+      this.$('#form_search').hide();
     } else {
-      $('#form_search').show();
+      this.$('#form_search').show();
     }
   },
 
@@ -177,7 +177,7 @@ module.exports = Backbone.View.extend({
         return true;
     });
 
-    if(filtered.length == 0) {
+    if(filtered.length === 0) {
       window.projectView.columns['in_progress'].toggle();
     }
   },

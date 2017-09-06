@@ -35,7 +35,7 @@ module.exports = Backbone.View.extend({
 
   remaining: function(){
     return _.select(this.model.search.models, function(story) {
-      return (story.get('state') != 'accepted');
+      return (story.get('state') !== 'accepted');
     });
   },
 
