@@ -86,4 +86,9 @@ class ApplicationController < ActionController::Base
     @layout_settings_default = { fluid: false }.freeze
     @layout_settings = @layout_settings_default.dup
   end
+
+  def show_recaptcha?
+    ENV["ENABLED_RECAPTCHA"] || false
+  end
+  helper_method :show_recaptcha?
 end

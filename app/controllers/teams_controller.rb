@@ -125,7 +125,8 @@ class TeamsController < ApplicationController
   end
 
   def can_create?
-    verify_recaptcha && (@team = TeamOperations::Create.call(@team, current_user))
+    binding.pry
+    check_recaptcha && (@team = TeamOperations::Create.call(@team, current_user))
   end
 
   def add_team_for(user)
@@ -136,5 +137,9 @@ class TeamsController < ApplicationController
       user.save
       flash[:notice] = t('teams.team_was_successfully_updated')
     end
+  end
+
+  def check_recaptcha
+    (show_recaptcha?)? verify_recaptcha : true
   end
 end

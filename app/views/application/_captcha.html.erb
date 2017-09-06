@@ -1,0 +1,6 @@
+<% field_class = field_class || '' %>
+
+<% if show_recaptcha? %>
+	<%= f.label :captcha, class: field_class %>
+	<%= recaptcha_tags %>
+<% end %>
