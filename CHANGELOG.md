@@ -1,13 +1,28 @@
 # Changelog
 
 ## [Unreleased]
+
+### Changed
+- Don't show projects to guests that he's not member of
+- Disallow guests to make changes on projects
+
+## [1.8.0] 2017-09-06
+### Added
+- Action into API to update project
+- ENV variable to check if the captcha is enable
+
+### Changed
+- Adjust ESLint config and solve issues
+
+## [1.7.0] 2017-09-04
 ### Added
 - Enables rubocop Metrics/AbcSize
 - Enabled PerceivedComplexity rubocop metric
 - Enabled CyclomaticComplexity rubocop metric
 - Added flag to mail reports
-- Don't show projects to guests that he's not member of
-- Disallow guests to make changes on projects
+- Enabled AndOr rubocop style
+- Enabled BlockNesting rubocop metric
+- Enabled RedundantReturn rubocop style
 
 ### Changed
 - Move users/form from projects to teams
@@ -137,7 +152,7 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.6.0...HEAD
+[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.8.0...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
@@ -150,3 +165,5 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [1.4.2]: https://github.com/Codeminer42/cm42-central/tree/v1.4.2
 [1.5.0]: https://github.com/Codeminer42/cm42-central/tree/v1.5.0
 [1.6.0]: https://github.com/Codeminer42/cm42-central/tree/v1.6.0
+[1.7.0]: https://github.com/Codeminer42/cm42-central/tree/v1.7.0
+[1.8.0]: https://github.com/Codeminer42/cm42-central/tree/v1.8.0

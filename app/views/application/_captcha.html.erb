@@ -1,0 +1,4 @@
+<% if show_recaptcha? %>
+	<%= f.label :captcha, class: local_assigns[:field_class] %>
+	<%= recaptcha_tags %>
+<% end %>

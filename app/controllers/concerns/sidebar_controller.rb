@@ -7,7 +7,7 @@ module SidebarController
     end
 
     def sidebar
-      return @sidebar
+      @sidebar
     end
   end
 end

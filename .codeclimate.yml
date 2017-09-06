@@ -7,6 +7,10 @@ engines:
     enabled: true
   flay:
     enabled: true
+  eslint:
+    enabled: true
+    config:
+      config: .eslintrc
   duplication:
     enabled: true
     config:
@@ -29,3 +33,4 @@ exclude_paths:
   - "fixtures/"
   - "doc/"
   - "vendor/"
+  - "public/javascripts"

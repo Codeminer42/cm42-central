@@ -26,9 +26,9 @@ export default class ProjectSearch extends React.Component {
   filterProjects(projects, searchValue, filterValue) {
     const projectsFiltered = projects.nameContains(searchValue);
 
-    if (filterValue == 'archived') {
+    if (filterValue === 'archived') {
       return projectsFiltered.archived();
-    } else if (filterValue == 'not_archived') {
+    } else if (filterValue === 'not_archived') {
       return projectsFiltered.notArchived();
     }
 

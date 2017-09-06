@@ -4,7 +4,7 @@ module.exports = Backbone.View.extend({
 
   initialize: function(options) {
     this.options = options;
-    $('td.epic_column').css('display', 'table-cell');
+    this.$('td.epic_column').css('display', 'table-cell');
     this.doSearch();
   },
 
@@ -27,9 +27,9 @@ module.exports = Backbone.View.extend({
 
   addAll: function() {
     var that = this;
-
-    $('#epic').html("");
-    $('td.epic_column').show();
+    that.$ = $
+    that.$('#epic').html("");
+    that.$('td.epic_column').show();
     this.addBar('#epic');
 
     var search_results_ids = this.model.search.pluck("id");
@@ -44,11 +44,11 @@ module.exports = Backbone.View.extend({
       }
     });
 
-    $('.loading-spin').removeClass('show');
+    this.$('.loading-spin').removeClass('show');
   },
 
   doSearch: function(e) {
-    $('.loading-spin').addClass('show');
+    this.$('.loading-spin').addClass('show');
     var that = this;
     this.model.search.fetch({
       reset: true,

@@ -4,6 +4,13 @@ var TaskCollection = require('collections/task_collection');
 var SharedModelMethods = require('mixins/shared_model_methods');
 
 var Story = module.exports = Backbone.Model.extend({
+  defaults: {
+    events: [],
+    documents: [],
+    state: "unscheduled",
+    story_type: "feature"
+  },
+
   name: 'story',
 
   i18nScope: 'activerecord.attributes.story',
@@ -18,9 +25,9 @@ var Story = module.exports = Backbone.Model.extend({
     this.views = [];
     this.clickFromSearchResult = false;
 
-    this.on('change:state', this.changeState);
-    this.on('change:notes', this.populateNotes);
-    this.on('change:tasks', this.populateTasks);
+    this.on('change:state', this.changeState, this);
+    this.on('change:notes', this.populateNotes, this);
+    this.on('change:tasks', this.populateTasks, this);
 
     // FIXME Call super()?
     this.maybeUnwrap(args);
@@ -61,7 +68,7 @@ var Story = module.exports = Backbone.Model.extend({
     var before = this.collection.get(beforeId);
     var after = this.collection.next(before);
     var afterPosition;
-    if (typeof after == 'undefined') {
+    if (typeof after === 'undefined') {
       afterPosition = before.position() + 2;
     } else {
       afterPosition = after.position();
@@ -77,7 +84,7 @@ var Story = module.exports = Backbone.Model.extend({
     var after = this.collection.get(afterId);
     var before = this.collection.previous(after);
     var beforePosition;
-    if (typeof before == 'undefined') {
+    if (typeof before === 'undefined') {
       beforePosition = 0.0;
     } else {
       beforePosition = before.position();
@@ -88,13 +95,6 @@ var Story = module.exports = Backbone.Model.extend({
     this.set({position: newPosition});
     this.collection.sort({silent: true});
     return this;
-  },
-
-  defaults: {
-    events: [],
-    documents: [],
-    state: "unscheduled",
-    story_type: "feature"
   },
 
   setColumn: function() {

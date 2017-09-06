@@ -27,12 +27,6 @@ Documentation:
 Style/Semicolon:
   AllowAsExpressionSeparator: true
 
-Style/RedundantReturn:
-  Enabled: false
-
-Style/AndOr:
-  Enabled: false
-
 Style/ClassAndModuleChildren:
   Enabled: false
 
@@ -80,9 +74,6 @@ Metrics/CyclomaticComplexity:
   Enabled: true
   Exclude:
     - 'spec/support/integration_helpers.rb'
-
-Metrics/BlockNesting:
-  Enabled: false
 
 Metrics/BlockLength:
   Enabled: false

@@ -1,4 +1,8 @@
 module.exports = Backbone.Model.extend({
+  defaults: {
+    name: 'iteration',
+    number: 0,
+  },
 
   name: 'iteration',
 
@@ -104,7 +108,7 @@ module.exports = Backbone.Model.extend({
     // A reference to Iteration().
     var that = this;
 
-    if (typeof startIteration == "undefined") {
+    if (typeof startIteration === "undefined") {
       // Create a dummy iteration with number 0
       startIteration = new that({'number': 0, 'column': column});
     }

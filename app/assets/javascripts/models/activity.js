@@ -1,6 +1,13 @@
 var SharedModelMethods = require('mixins/shared_model_methods');
 
 var Activity = module.exports = Backbone.Model.extend({
+  defaults: {
+    name: 'activity',
+    date: '',
+    action: '',
+    subject_changes: '',
+  },
+
   name: 'activity',
 
   i18nScope: 'activerecord.attributes.',
@@ -8,13 +15,14 @@ var Activity = module.exports = Backbone.Model.extend({
   timestampFormat: 'd mmm yyyy',
 
   initialize: function(args) {
-    var attributes = this.attributes;
     var data = args.activity;
 
     this.i18nScope += data.subject_type.toLowerCase();
-    attributes.date = new Date(data.updated_at).format(this.timestampFormat);
-    attributes.action = this.humanActionName(data.action);
-    attributes.subject_changes = this.parseChanges(data.subject_changes);
+    this.set({
+      date: new Date(data.updated_at).format(this.timestampFormat),
+      action: this.humanActionName(data.action),
+      subject_changes: this.parseChanges(data.subject_changes)
+    });
   },
 
   humanActionName: function(action) {
@@ -23,7 +31,7 @@ var Activity = module.exports = Backbone.Model.extend({
 
   parseChanges: function(changes) {
     return _.map(changes, function(value, key) {
-      if (key == 'documents_attributes') key = 'documents';
+      if (key === 'documents_attributes') key = 'documents';
       return {
         attribute: this.humanAttributeName(key),
         oldValue: value[0],

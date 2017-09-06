@@ -43,7 +43,7 @@ class MissingKeysFinder
     end
 
     output_missing_keys(missing_keys)
-    return missing_keys
+    missing_keys
   end
 
   def add_missing_key(missing_keys, key, locale, skip)
@@ -75,18 +75,18 @@ class MissingKeysFinder
   end
 
   def collect_keys(scope, translations)
-    full_keys = []
-    translations.to_a.each do |key, translation|
-      next if translation.nil?
+    [].tap do |full_keys|
+      translations.to_a.each do |key, translation|
+        next if translation.nil?
 
-      new_scope = scope.dup << key
-      if translation.is_a?(Hash)
-        full_keys += collect_keys(new_scope, translation)
-      else
-        full_keys << new_scope.join('.')
+        new_scope = scope.dup << key
+        if translation.is_a?(Hash)
+          full_keys += collect_keys(new_scope, translation)
+        else
+          full_keys << new_scope.join('.')
+        end
       end
     end
-    return full_keys
   end
 
   # Returns true if key exists in the given locale
