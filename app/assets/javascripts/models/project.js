@@ -5,6 +5,10 @@ var UserCollection = require('collections/user_collection');
 var Iteration = require('models/iteration');
 
 module.exports = Backbone.Model.extend({
+  defaults: {
+    default_velocity: 10
+  },
+
   name: 'project',
 
   initialize: function(args) {
@@ -12,7 +16,7 @@ module.exports = Backbone.Model.extend({
 
     _.bindAll(this, 'updateChangesets');
 
-    this.on('change:last_changeset_id', this.updateChangesets);
+    this.on('change:last_changeset_id', this.updateChangesets, this);
 
     this.stories = new StoryCollection();
     this.stories.url = this.url() + '/stories';
@@ -27,10 +31,6 @@ module.exports = Backbone.Model.extend({
     this.search.project = this;
 
     this.iterations = [];
-  },
-
-  defaults: {
-    default_velocity: 10
   },
 
   url: function() {
@@ -372,7 +372,7 @@ module.exports = Backbone.Model.extend({
 
   toggleStoryFlow: function () {
     var defaultFlow = this.get('default_flow');
-    var nextValue = (this.get('current_flow') == defaultFlow)
+    var nextValue = (this.get('current_flow') === defaultFlow)
       ? 'progress_to_right' // alternative story flow
       : defaultFlow;
 

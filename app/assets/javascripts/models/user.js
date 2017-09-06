@@ -1,4 +1,6 @@
 const User = module.exports = Backbone.Model.extend({
+  defaults: {},
+
   name: 'user',
 
   url: function() {

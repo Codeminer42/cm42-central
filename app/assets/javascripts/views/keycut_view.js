@@ -8,7 +8,9 @@ module.exports = Backbone.View.extend({
   },
 
   render: function() {
-    $('#main').append($(this.el).html(this.template));
+    var that = this;
+    that.$ = $;
+    that.$('#main').append($(this.el).html(this.template));
     return this;
   },
 

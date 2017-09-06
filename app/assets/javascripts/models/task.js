@@ -1,14 +1,13 @@
 var SharedModelMethods = require('mixins/shared_model_methods');
 
 var Task = module.exports = Backbone.Model.extend({
+  defaults: {
+    done: false
+  },
 
   name: 'task',
 
   i18nScope: 'activerecord.attributes.task',
-
-  defaults: {
-    done: false
-  },
 
   isReadonly: false,
 
