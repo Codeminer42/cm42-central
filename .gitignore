@@ -21,3 +21,4 @@ public/javascripts-test/*
 js_coverage/
 coverage
 /node_modules
+package-lock.json
