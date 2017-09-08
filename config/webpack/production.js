@@ -18,7 +18,7 @@ module.exports = merge(sharedConfig, {
       'process.env': { NODE_ENV: JSON.stringify('production') }
     }),
     new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       minimize: true,
       sourceMap: true,
