@@ -537,7 +537,7 @@ describe('StoryView', function() {
       this.view.model.set({description: innerText});
       this.view.render();
       expect(this.view.$('textarea[name="description"]').length).toEqual(0);
-      expect(this.view.$('.description')[0].innerText).toEqual(innerText);
+      expect(this.view.$('.description')[0].innerText).toContain(innerText);
     });
 
     it("is a button when story isn't new and description is empty", function() {

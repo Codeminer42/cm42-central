@@ -29,7 +29,7 @@ describe('<StoryDescription />', function() {
         value={""}
       />
     );
-    expect(wrapper.find('.description')).toHaveText('Description');
+    expect(wrapper.find('.description').text()).toContain('Description');
   });
 
   it("should turn a valid id into a StoryLink", function() {
@@ -55,4 +55,22 @@ describe('<StoryDescription />', function() {
     expect(wrapper.find(StoryLink)).toHaveProp('story', linkedStory);
   });
 
+  it("should renders markdown transformed as html", function () {
+    const wrapper = mount(
+      <StoryDescription
+        name='description'
+        linkedStories={{}}
+        isReadonly={false}
+        description={'# Header test'}
+        isNew={false}
+        editingDescription={false}
+        value={""}
+      />
+    );
+
+    console.log('wrapper', wrapper.find('.description').html());
+
+    expect(wrapper.find('h1#headertest')).toBePresent();
+    expect(wrapper.find('h1#headertest').text()).toContain('Header test');
+  })
 });
