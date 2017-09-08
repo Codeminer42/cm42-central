@@ -1,6 +1,7 @@
 import React from 'react';
 import Parser from 'html-react-parser';
 import memoize from 'memoizee';
+import showdown from 'showdown';
 
 import StoryLink from 'components/stories/StoryLink';
 
@@ -24,12 +25,15 @@ const replaceStoryLink = (domNode, linkedStories) => {
 }
 
 const DescriptionContent = ({ description, isReadonly, linkedStories, onClick }) => {
+  const converter = new showdown.Converter();
+  const descriptionHTML = converter.makeHtml(description);
+
   const isEmpty = (!description || !description.length);
-  description = Parser(description, { replace: domNode =>
+  description = Parser(descriptionHTML, { replace: domNode =>
     replaceStoryLink(domNode, linkedStories)
   });
   return(
-    (isEmpty) ? editButton(isReadonly) : <div className='description'>{ description }</div>
+    (isEmpty) ? editButton(isReadonly) : <div className='description'> { description }</div>
   );
 }
 
