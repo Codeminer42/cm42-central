@@ -28,12 +28,12 @@ const DescriptionContent = ({ description, isReadonly, linkedStories, onClick })
   const converter = new showdown.Converter();
   const descriptionHTML = converter.makeHtml(description);
 
-  const isEmpty = (!description || !description.length);
+  const isEmpty = !description || !description.length;
   description = Parser(descriptionHTML, { replace: domNode =>
     replaceStoryLink(domNode, linkedStories)
   });
   return(
-    (isEmpty) ? editButton(isReadonly) : <div className='description'> { description }</div>
+    isEmpty ? editButton(isReadonly) : <div className='description'>{ description }</div>
   );
 }
 
