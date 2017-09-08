@@ -62,7 +62,7 @@
     "tether": "^1.4.0",
     "tether-shepherd": "^1.8.1",
     "underscore": "^1.8.3",
-    "webpack": "^3.0.0",
+    "webpack": "^2.6.1",
     "webpack-dev-server": "^2.5.0",
     "webpack-manifest-plugin": "^1.1.0",
     "webpack-merge": "^4.1.0"
