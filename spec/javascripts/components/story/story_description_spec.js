@@ -55,7 +55,7 @@ describe('<StoryDescription />', function() {
     expect(wrapper.find(StoryLink)).toHaveProp('story', linkedStory);
   });
 
-  it("should renders markdown transformed as html", function () {
+  it("should render markdown transformed as html", function () {
     const wrapper = mount(
       <StoryDescription
         name='description'
