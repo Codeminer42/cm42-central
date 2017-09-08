@@ -436,7 +436,6 @@ module.exports = FormView.extend({
     ReactDOM.render(
       <StoryControls
         onClickSave={this.clickSave}
-        onClickDelete={this.clear}
         onClickCancel={this.cancelEdit}
       />,
       this.$('[data-story-controls]').get(0)
