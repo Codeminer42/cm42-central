@@ -67,9 +67,6 @@ describe('<StoryDescription />', function() {
         value={""}
       />
     );
-
-    console.log('wrapper', wrapper.find('.description').html());
-
     expect(wrapper.find('h1#headertest')).toBePresent();
     expect(wrapper.find('h1#headertest').text()).toContain('Header test');
   })
