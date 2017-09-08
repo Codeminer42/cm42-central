@@ -45,14 +45,7 @@ module.exports = {
   },
 
   module: {
-    rules: sync(join(loadersDir, '*.js')).map(loader => require(loader)),
-    loaders: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel'
-      }
-    ]
+    rules: sync(join(loadersDir, '*.js')).map(loader => require(loader))
   },
 
   plugins: [
