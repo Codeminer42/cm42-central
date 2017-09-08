@@ -50,7 +50,7 @@ ActiveAdmin.register Enrollment do
                      collection: User.order(:name).all
       f.input :team, as: :select,
                      collection: Team.order(:name).all
-      f.input :is_admin, as: :check_boxes
+      f.input :is_admin, as: :select
     end
     f.actions
   end

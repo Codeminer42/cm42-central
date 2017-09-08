@@ -154,6 +154,7 @@ es:
         iteration_length:     'Longitud de iteración'
         default_velocity:     'La velocidad estándar'
         archived:             'Archivado'
+        mail_reports:         'Enviar informes por correo electrónico'
       story:
         title:                'Título'
         description:          'Descripción'
@@ -299,6 +300,8 @@ es:
     You are not authorized to perform this action: "Usted no está autorizado para realizar esta acción."
     is already a member of this project: "%{email} ya es un miembro de este proyecto"
     was sent an invite to join this project: "Se ha enviado una invitación a %{email} para unirse a este proyecto"
+    was added to the team: "%{email} se añadió el equipo"
+    was not created: "Usuario no fue creado"
     was added to this project: "%{email} se añadió a este proyecto"
     was removed from this project: "%{email} fue eliminado de este proyecto"
     admin_on: Hacer administrador
@@ -311,7 +314,7 @@ es:
     select: "Seleccionar Equipo"
     team was successfully created: 'El equipo ha sido creado con éxito'
     team_was_successfully_updated: 'El equipo ha sido actualizado correctamente'
-    user_no_found: 'Usuario no encontrado'
+    user_not_found: 'Usuario no encontrado'
     user_is_already_in_this_team: 'El usuario ya está en este equipo.'
     no_teams_found: "Oops! No está inscrito a un equipo aún."
     new_instruction: |

@@ -12,7 +12,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def update?
-    himself?
+    admin? || himself?
   end
 
   def destroy?

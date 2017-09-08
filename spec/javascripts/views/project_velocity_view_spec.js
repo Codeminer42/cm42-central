@@ -3,7 +3,7 @@ var ProjectVelocityViewInjector = require('inject-loader!views/project_velocity_
 describe('ProjectVelocityView', function() {
 
   beforeEach(function() {
-    this.model = {on: sinon.stub()};
+    this.model = {};
     var overrideView = this.overrideView = {};
 
     function ProjectVelocityOverrideViewStub() {
@@ -15,6 +15,8 @@ describe('ProjectVelocityView', function() {
     var ProjectVelocityView = ProjectVelocityViewInjector({
       './project_velocity_override_view': ProjectVelocityOverrideViewStub
     });
+
+    sinon.stub(ProjectVelocityView.prototype, 'listenTo');
 
     this.subject = new ProjectVelocityView({model: this.model});
   });
@@ -30,14 +32,14 @@ describe('ProjectVelocityView', function() {
     });
 
     it("binds setFakeClass to change:userVelocity on the model", function() {
-      expect(this.model.on).toHaveBeenCalledWith(
-        "change:userVelocity", this.subject.setFakeClass
+      expect(this.subject.listenTo).toHaveBeenCalledWith(
+        this.subject.model, "change:userVelocity", this.subject.setFakeClass
       );
     });
 
     it("binds render to rebuilt-iterations on the model", function() {
-      expect(this.model.on).toHaveBeenCalledWith(
-        "rebuilt-iterations", this.subject.render
+      expect(this.subject.listenTo).toHaveBeenCalledWith(
+        this.subject.model, "rebuilt-iterations", this.subject.render
       );
     });
 

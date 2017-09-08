@@ -12,7 +12,7 @@ module.exports = Backbone.View.extend({
     this.data = $el.data();
     this.id  = this.data.columnView;
     this.name = I18n.t('projects.show.' + this.data.columnView);
-    this.hideable = this.data.hideable == undefined ? true : this.data.hideable;
+    this.hideable = this.data.hideable === undefined ? true : this.data.hideable;
     this.sortable = this.data.connect !== undefined;
 
     $el.addClass(this.data.columnView + '_column');

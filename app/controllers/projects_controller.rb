@@ -170,37 +170,15 @@ class ProjectsController < ApplicationController
 
   def ownership
     team = Team.not_archived.friendly.find(params.dig(:project, :slug))
-    if team == current_team
-      flash[:notice] = I18n.t('projects.invalid_action')
-      render 'edit'
-      return
-    end
+    manager = ProjectOwnership.new(@project, team, current_team, params.dig(:ownership_action))
 
-    case params.dig(:ownership_action)
-    when 'share'
-      team.ownerships.create(project: @project, is_owner: false)
-      flash[:notice] = I18n.t('projects.project was successfully shared')
-    when 'unshare'
-      team.ownerships.where(project: @project).delete_all
-      flash[:notice] = I18n.t('projects.project was successfully unshared')
-    when 'transfer'
-      Project.transaction do
-        team_admin = team.enrollments.where(is_admin: true).first.try(:user)
-        raise ActiveRecord::RecordNotFound, 'Team Administrator not found' unless team_admin
-
-        current_team.ownerships.where(project: @project).delete_all
-        @project.memberships.delete_all
-        @project.users << team_admin
-        team.ownerships.create(project: @project, is_owner: true)
-      end
-      flash[:notice] = I18n.t('projects.project was successfully transferred')
-      redirect_to root_path
-      return
+    if manager.perform
+      flash[:notice] = manager.performed_action_message
+      redirect_to(manager.transfer? ? root_path : edit_project_path(@project))
     else
       flash[:alert] = I18n.t('projects.invalid_action')
+      render 'edit'
     end
-
-    redirect_to edit_project_path(@project)
   end
 
   def archived
@@ -255,7 +233,8 @@ class ProjectsController < ApplicationController
     params
       .fetch(:project)
       .permit(:name, :point_scale, :default_velocity, :tag_group_id, :start_date,
-              :iteration_start_day, :iteration_length, :import, :archived, :disallow_join)
+              :iteration_start_day, :iteration_length, :import, :archived,
+              :disallow_join, :mail_reports)
   end
 
   def fluid_layout

@@ -93,23 +93,7 @@ module ProjectsHelper
   end
 
   def calculate_and_render_burn_up!
-    service_full = IterationService.new(@project, since: nil)
-    stories = service_full.instance_variable_get('@stories')
-    @total_backlog_points = stories.map(&:estimate).compact.sum
-
-    @group_by_day = [
-      { name: 'today', data: { Date.current => service_full.group_by_day[Date.current] } },
-      { name: 'real',  data: service_full.group_by_day },
-      { name: 'ideal', data: service_full.group_by_day.dup }
-    ]
-
-    points_per_day = @total_backlog_points.to_f / service_full.group_by_day.keys.size
-    initial_points = 0
-
-    @group_by_day.last[:data].keys.each do |key|
-      @group_by_day.last[:data][key] = initial_points
-      initial_points += points_per_day
-    end
+    @group_by_day = BurnUpCalculator.call(@project)
   end
 
   def formatted_standard_deviation(standard_deviation)

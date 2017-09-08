@@ -35,6 +35,8 @@ class ActivityPresenter < SimpleDelegator
 
   private
 
+  delegate :helpers, to: ApplicationController
+
   def noun
     case subject_type
     when 'Project'
@@ -58,11 +60,7 @@ class ActivityPresenter < SimpleDelegator
       when 'state'                then state_changes subject_changes[key]
       when 'description'          then description_changes subject_changes[key]
       else
-        if subject_changes[key].first.blank?
-          "#{key} to '#{subject_changes[key].last}'"
-        else
-          "#{key} from '#{subject_changes[key].first}' to '#{subject_changes[key].last || 'empty'}'"
-        end
+        general_changes(key, subject_changes[key])
       end
     end.join(', ')
     'changing ' + changes
@@ -113,7 +111,11 @@ class ActivityPresenter < SimpleDelegator
     "description to '#{new_description}'"
   end
 
-  def helpers
-    ApplicationController.helpers
+  def general_changes(key, changes)
+    if changes.first.blank?
+      "#{key} to '#{changes.last}'"
+    else
+      "#{key} from '#{changes.first}' to '#{changes.last || 'empty'}'"
+    end
   end
 end

@@ -19,6 +19,10 @@ class ProjectSerializer
     self.path_to = attrs.path_to
     self.archived_at = attrs.archived_date
     self.users_avatar = attrs.users_avatar(Project::MAX_MEMBERS_PER_CARD)
+    add_tag_info(attrs)
+  end
+
+  def add_tag_info(attrs)
     self.tag_name = attrs.tag_group&.name
     self.tag_bg_color = attrs.tag_group&.bg_color
     self.tag_fore_color = attrs.tag_fore_color

@@ -12,7 +12,7 @@ module.exports = Backbone.View.extend({
     }));
     this.$el.addClass('history_column');
     this.$column = this.$('#history');
-    this.$loadingSpin = $('.loading-spin');
+    this.$loadingSpin = this.$('.loading-spin');
   },
 
   events: {

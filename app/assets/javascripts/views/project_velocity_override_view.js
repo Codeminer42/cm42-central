@@ -34,23 +34,25 @@ module.exports = Backbone.View.extend({
   },
 
   keyCapture: function(e) {
-    if(e.keyCode == '13') {
+    if(e.keyCode === '13') {
       this.changeVelocity();
     }
   },
 
   clickOverlayOn: function() {
     var that = this;
-    $('#velocity').css('z-index', 2000);
-    $('.click-overlay').on('click', function() {
+    var clickOverlay = this.$('.click-overlay')
+    this.$('#velocity').css('z-index', 2000);
+    clickOverlay.on('click', function() {
       that.clickOverlayOff();
-    });
-    $('.click-overlay').show();
+    }, this);
+    clickOverlay.show();
   },
 
   clickOverlayOff: function() {
-    $('.click-overlay').off('click');
+    var clickOverlay = this.$('.click-overlay')
+    clickOverlay.off('click');
     this.$el.remove();
-    $('.click-overlay').hide();
+    clickOverlay.hide();
   }
 });

@@ -7,6 +7,10 @@ engines:
     enabled: true
   flay:
     enabled: true
+  eslint:
+    enabled: true
+    config:
+      config: .eslintrc
   duplication:
     enabled: true
     config:
@@ -20,6 +24,7 @@ engines:
       - 'app/api/v1/projects.rb'
       - 'app/api/v1/teams.rb'
       - 'app/operations/story_operations/state_change_notification.rb'
+      - 'app/admin/*.rb'
 exclude_paths:
   - "Gemfile.lock"
   - "db/schema.rb"
@@ -28,3 +33,4 @@ exclude_paths:
   - "fixtures/"
   - "doc/"
   - "vendor/"
+  - "public/javascripts"

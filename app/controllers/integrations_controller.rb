@@ -10,9 +10,7 @@ class IntegrationsController < ApplicationController
   end
 
   def create
-    @integration = policy_scope(Integration).build(kind: params[:integration][:kind])
-    authorize @integration
-    @integration.data = params[:integration][:data]
+    build_integration
 
     if @project.integrations.find_by(kind: @integration.kind)
       flash[:alert] = "#{@integration.kind} is already configured for this project"
@@ -37,6 +35,12 @@ class IntegrationsController < ApplicationController
 
   def set_project
     @project = policy_scope(Project).friendly.find(params[:project_id])
+  end
+
+  def build_integration
+    @integration = policy_scope(Integration).build(kind: params[:integration][:kind])
+    authorize @integration
+    @integration.data = params[:integration][:data]
   end
 
   def set_integrations

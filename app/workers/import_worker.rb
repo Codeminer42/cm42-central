@@ -21,15 +21,7 @@ class ImportWorker
 
     csv_body = open(project.import.fullpath).read
     csv_body.force_encoding('utf-8')
-    Project.transaction do
-      stories = project.stories.from_csv(csv_body)
-      invalid_stories = stories.reject(&:valid?).map do |s|
-        { title: s.title, errors: s.errors.full_messages.join(', ') }
-      end
-      project.import = nil # erase the attachinary file
-      set_cache(job_id, invalid_stories: invalid_stories, errors: nil)
-      fix_project_start_date(project)
-    end
+    process(job_id, project, csv_body)
   rescue => e
     set_cache(job_id, invalid_stories: [], errors: e.message)
   end
@@ -55,5 +47,17 @@ class ImportWorker
 
   def set_cache(key, value)
     MEMCACHED_POOL.with { |dalli| dalli.set(key, value) }
+  end
+
+  def process(job_id, project, csv_body)
+    Project.transaction do
+      stories = project.stories.from_csv(csv_body)
+      invalid_stories = stories.reject(&:valid?).map do |s|
+        { title: s.title, errors: s.errors.full_messages.join(', ') }
+      end
+      project.import = nil # erase the attachinary file
+      set_cache(job_id, invalid_stories: invalid_stories, errors: nil)
+      fix_project_start_date(project)
+    end
   end
 end

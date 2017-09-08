@@ -33,7 +33,7 @@ module.exports = Backbone.View.extend({
   },
 
   select: function(name, select_options, options) {
-    if (typeof options == 'undefined') {
+    if (typeof options === 'undefined') {
       options = {};
     }
 
@@ -61,7 +61,7 @@ module.exports = Backbone.View.extend({
         option_name = option_value = option + '';
       }
       var attr = {value: option_value};
-      if (model.get(name) == option_value) {
+      if (model.get(name) === option_value) {
         attr.selected = true;
       }
       $(select).append(view.make('option', attr, option_name));

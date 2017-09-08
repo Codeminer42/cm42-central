@@ -1,5 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController
-  prepend_before_action :check_captcha, only: :create
+  prepend_before_action :check_captcha, only: :create, if: -> { show_recaptcha? }
   before_action :set_locale, only: :create
   before_action :check_registration_enabled, only: [:new, :create]
   before_action :devise_params
@@ -57,7 +57,9 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def check_registration_enabled
-    render_404 and return if Fulcrum::Application.config.fulcrum.disable_registration
+    return unless Fulcrum::Application.config.fulcrum.disable_registration
+
+    render_404
   end
 
   def devise_params
