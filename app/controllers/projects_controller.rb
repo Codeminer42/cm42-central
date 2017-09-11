@@ -17,7 +17,10 @@ class ProjectsController < ApplicationController
     @projects = {
       joined: serialize_from_collection(projects_joined)
     }
-    @projects[:unjoined] = serialize_from_collection(projects_unjoined.order(:updated_at)) unless current_user.guest?
+
+    unless current_user.guest?
+      @projects[:unjoined] = serialize_from_collection(projects_unjoined.order(:updated_at))
+    end
 
     @activities_group = Activity.grouped_activities(projects_joined, 1.week.ago)
   end

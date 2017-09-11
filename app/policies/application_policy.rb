@@ -11,6 +11,8 @@ class ApplicationPolicy
 
     protected
 
+    delegate :guest?, to: :current_user
+
     def root?
       # this user can do anothing, it goes in AdminUser instead of User and bypasses everything
       context.active_admin
@@ -22,10 +24,6 @@ class ApplicationPolicy
 
     def project_owner?
       root? || (current_project && current_team.owns?(current_project))
-    end
-
-    def is_guest?
-      current_user.guest?
     end
 
     def project_member?

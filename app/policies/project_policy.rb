@@ -12,7 +12,8 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def join?
-    !project_member? && !is_guest?
+    return false if project_member? || guest?
+    true
   end
 
   alias archived? update?
