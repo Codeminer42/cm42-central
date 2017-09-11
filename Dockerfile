@@ -11,6 +11,7 @@ run apt-get install -y redis-server
 run gem install bundler
 RUN curl -sSL "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" | tar xfJ - -C /usr/local --strip-components=1 && \
   npm install npm -g
+run npm install --global yarn
 
 workdir /tmp
 copy Gemfile Gemfile

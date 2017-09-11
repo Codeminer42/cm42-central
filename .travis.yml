@@ -11,6 +11,8 @@ before_install:
 install:
   - bundle install
   - npm install
+  - npm install --global yarn
+  - yarn install
 before_script:
   - "cp config/database.yml.example config/database.yml"
   - "cp .env.sample .env"

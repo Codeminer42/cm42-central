@@ -50,7 +50,7 @@ gem 'bootstrap-sass', '~> 3.3.5'
 gem 'i18n-js', '>= 3.0.0.rc8'
 gem 'jquery-ui-rails'
 gem 'dalli'
-gem 'webpack-rails'
+gem 'webpacker'
 
 gem 'jquery-atwho-rails'
 

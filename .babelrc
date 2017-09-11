@@ -1,8 +1,23 @@
 {
-  "presets": ["es2015", "react"],
+  "presets": [
+    "react",
+    ["env", {
+      "modules": false,
+      "targets": {
+        "browsers": "> 1%",
+        "uglify": true
+      },
+      "useBuiltIns": true
+    }]
+  ],
   "env": {
     "test": {
       "plugins": ["istanbul"]
     }
-  }
+  },
+  "plugins": [
+    "syntax-dynamic-import",
+    ["transform-class-properties", { "spec": true }]
+  ]
 }
+
