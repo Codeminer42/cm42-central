@@ -15,6 +15,19 @@ describe 'Stories' do
       project
     end
 
+    context 'when the user is guest' do
+      before do
+        user.update_column(:role, 'guest')
+      end
+
+      it 'cannot see the add story button', js: true do
+        visit project_path(project)
+        wait_spinner
+        wait_page_load
+        expect(page).to_not have_button 'Add story'
+      end
+    end
+
     it 'steps through the full story life cycle', js: true do
       visit project_path(project)
       wait_spinner
