@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
   end
 
   def as_json(_options = {})
-    super(only: JSON_ATTRIBUTES, methods: :tour_steps)
+    super(only: JSON_ATTRIBUTES, methods: [:tour_steps, :guest?])
   end
 
   def self.find_first_by_auth_conditions(warden_conditions)

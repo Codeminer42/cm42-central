@@ -11,20 +11,31 @@ describe 'Stories' do
   end
 
   describe 'full story life cycle' do
-    before do
-      project
-    end
-
     context 'when the user is guest' do
-      before do
-        user.update_column(:role, 'guest')
+      let!(:story) do
+        create(:story, title: 'Test Story', project: project, requested_by: user, estimate: 2)
       end
 
-      it 'cannot see the add story button', js: true do
+      before do
+        user.update_column(:role, 'guest')
         visit project_path(project)
         wait_spinner
         wait_page_load
+      end
+
+      it 'cannot see the add story button', js: true do
         expect(page).to_not have_button 'Add story'
+      end
+
+      it 'attributes are disabled', js: true do
+        expect(page).to have_button('start', disabled: true)
+
+        find('.story-title').click
+        expect(page).to have_field('title', with: story.title, disabled: true)
+        expect(page).to have_select('story_type', selected: 'feature', disabled: true)
+        expect(page).to have_button('Save', disabled: true)
+        expect(page).to have_button('Delete', disabled: true)
+        expect(page).to have_button('Cancel', disabled: false)
       end
     end
 

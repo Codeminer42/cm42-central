@@ -343,6 +343,12 @@ module.exports = FormView.extend({
       ReactDOM.unmountComponentAtNode(storyControlsContainer);
     }
 
+    var isGuest = (
+      this.model.collection !== undefined &&
+      this.model.collection.project.current_user !== undefined &&
+      this.model.collection.project.current_user.get('guest?')
+    );
+
     if(this.canEdit()) {
 
       this.$el.empty();
@@ -424,9 +430,12 @@ module.exports = FormView.extend({
       }
       this.renderReactComponents();
 
+      if (isGuest) { this.toggleControlButtons(true, false) }
+
     } else {
       this.$el.removeClass('editing');
       this.$el.html(this.template({story: this.model, view: this}));
+      if (isGuest) { this.$el.find('.state-actions').find('.transition').prop('disabled', true) }
     }
     this.hoverBox();
     return this;
@@ -923,9 +932,12 @@ module.exports = FormView.extend({
     }));
   },
 
-  toggleControlButtons: function(isDisabled) {
+  toggleControlButtons: function(isDisabled, changeCancel) {
     var $storyControls = this.$el.find('.story-controls');
-    $storyControls.find('.submit, .destroy, .cancel').prop('disabled', isDisabled);
+    $storyControls.find('.submit, .destroy').prop('disabled', isDisabled);
+
+    if (changeCancel === undefined) { changeCancel = true }
+    if (changeCancel) { $storyControls.find('.cancel').prop('disabled', isDisabled); }
   },
 
   getLocation: function() {
