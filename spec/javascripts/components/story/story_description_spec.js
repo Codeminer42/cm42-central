@@ -30,7 +30,7 @@ describe('<StoryDescription />', function() {
         value={""}
       />
     );
-    expect(window.md.makeHtml).toHaveBeenCalledWith(this.story.description);
+    expect(window.md.makeHtml).toHaveBeenCalledWith("Description");
     expect(wrapper.find('.description').text()).toContain('Description');
   });
 
