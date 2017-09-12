@@ -18,6 +18,7 @@ describe('<StoryDescription />', function() {
   });
 
   it("should ignore when there are no valid ids", function() {
+    window.md.makeHtml.returns("<p>Description</p>");
     const wrapper = mount(
       <StoryDescription
         name='description'
@@ -41,6 +42,7 @@ describe('<StoryDescription />', function() {
       escape: sinon.stub(),
       hasNotes: sinon.stub()
     };
+    window.md.makeHtml.returns("<p>Description <a data-story-id='9'></a></p>");
     const wrapper = mount(
       <StoryDescription
         name='description'
@@ -56,6 +58,7 @@ describe('<StoryDescription />', function() {
   });
 
   it("should render markdown transformed as html", function () {
+    window.md.makeHtml.returns("<h1>Header test</h1>");
     const wrapper = mount(
       <StoryDescription
         name='description'
@@ -67,7 +70,7 @@ describe('<StoryDescription />', function() {
         value={""}
       />
     );
-    expect(wrapper.find('h1#headertest')).toBePresent();
-    expect(wrapper.find('h1#headertest').text()).toContain('Header test');
+    expect(wrapper.find('h1')).toBePresent();
+    expect(wrapper.find('h1').text()).toContain('Header test');
   })
 });

@@ -30,6 +30,7 @@ const DescriptionContent = ({ description, isReadonly, linkedStories, onClick })
   description = Parser(descriptionHTML, { replace: domNode =>
     replaceStoryLink(domNode, linkedStories)
   });
+
   return(
     isEmpty ? editButton(isReadonly) : <div className='description'>{ description }</div>
   );
