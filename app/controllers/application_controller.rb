@@ -57,7 +57,9 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     return super if resource.is_a?(AdminUser)
-    return public_send("#{resource_name}_enable_authy_path") if resource.authy_enabled && resource.authy_id.blank?
+    if resource.authy_enabled && resource.authy_id.blank?
+      return public_send("#{resource_name}_enable_authy_path")
+    end
 
     set_current_team_if_single
 
