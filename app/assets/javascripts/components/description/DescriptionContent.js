@@ -24,12 +24,15 @@ const replaceStoryLink = (domNode, linkedStories) => {
 }
 
 const DescriptionContent = ({ description, isReadonly, linkedStories, onClick }) => {
-  const isEmpty = (!description || !description.length);
-  description = Parser(description, { replace: domNode =>
+  const descriptionHTML = window.md.makeHtml(description);
+  const isEmpty = !description || !description.length;
+
+  description = Parser(descriptionHTML, { replace: domNode =>
     replaceStoryLink(domNode, linkedStories)
   });
+
   return(
-    (isEmpty) ? editButton(isReadonly) : <div className='description'>{ description }</div>
+    isEmpty ? editButton(isReadonly) : <div className='description'>{ description }</div>
   );
 }
 

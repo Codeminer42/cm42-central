@@ -177,6 +177,13 @@ div.story textarea {
   resize: none;
 }
 
+.description {
+  background: $white;
+  border-left: 4px solid $lightgrey-17;
+  margin-top: 5px;
+  padding: 10px;
+}
+
 .form-control.description-textarea {
   min-height: 100px;
   max-height: 250px;
@@ -460,6 +467,7 @@ a.button {
     padding: 5px 5px 0 5px;
 
     .description {
+      margin-bottom: 5px;
       padding: 5px;
       font-size: 12px;
     }

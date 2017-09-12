@@ -19,7 +19,7 @@ describe('StoryView', function() {
       notice: sinon.stub(),
       noticeSaveError: sinon.stub()
     };
-    window.md = { makeHtml: sinon.stub() };
+    window.md = { makeHtml: sinon.stub().returns("") };
     var Note = Backbone.Model.extend({
       name: 'note',
       humanAttributeName: sinon.stub()
@@ -532,12 +532,14 @@ describe('StoryView', function() {
     });
 
     it("is text when story isn't new and description isn't empty", function() {
+      window.md.makeHtml.returns("<p>foo</p>");
       this.view.model.isNew = sinon.stub().returns(false);
       const innerText = "foo";
       this.view.model.set({description: innerText});
       this.view.render();
+      expect(window.md.makeHtml).toHaveBeenCalledWith("foo");
       expect(this.view.$('textarea[name="description"]').length).toEqual(0);
-      expect(this.view.$('.description')[0].innerText).toEqual(innerText);
+      expect(this.view.$('.description')[0].innerText).toContain(innerText);
     });
 
     it("is a button when story isn't new and description is empty", function() {
