@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   include SidebarController
 
   before_action :authenticate_user!, unless: :devise_controller?
-  before_action :check_team_presence, unless: :devise_controller?
+  before_action :check_team_presence, if: -> { current_user.present? }
   before_action :set_locale
   before_action :set_layout_settings
   around_action :user_time_zone, if: :current_user
@@ -56,9 +56,8 @@ class ApplicationController < ActionController::Base
   helper_method :current_team
 
   def after_sign_in_path_for(resource)
-    if resource.authy_enabled && resource.authy_id.blank?
-      return send("#{resource_name}_enable_authy_path")
-    end
+    return super if resource.is_a?(AdminUser)
+    return send("#{resource_name}_enable_authy_path") if resource.authy_enabled && resource.authy_id.blank?
 
     set_current_team_if_single
 
@@ -74,8 +73,9 @@ class ApplicationController < ActionController::Base
 
   def set_current_team_if_single
     user_teams = current_user.teams.not_archived
+    return if user_teams.size != 1
 
-    session[:current_team_slug] = user_teams.first.slug if user_teams.size == 1
+    session[:current_team_slug] = user_teams.first.slug
   end
 
   def must_pundit?

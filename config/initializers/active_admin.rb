@@ -34,6 +34,7 @@ ActiveAdmin.setup do |config|
   #
   # Default:
   config.default_namespace = :manage
+  # config.skip_before_filter = :authenticate_user!
   #
   # You can customize the settings for each namespace by using
   # a namespace block. For example, to change the site title
