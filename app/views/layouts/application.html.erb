@@ -114,7 +114,7 @@
   </div>
 </div>
 
-<%= javascript_include_tag *webpack_asset_paths('application') %>
+<%= javascript_pack_tag 'app' %>
 <%= javascript_include_tag 'i18n/translations' %>
 <%= javascript_include_tag :attachinary %>
 <%= yield :charts_data %>

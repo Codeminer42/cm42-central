@@ -53,13 +53,13 @@ services:
     command: sidekiq
 
   webpack:
-    image: jmfirth/webpack
+    build: .
     ports:
       - "3808:3808"
     volumes:
       - .:/app
       - node_modules:/app/node_modules
-    command: yarn run webpack
+    command: ruby ./bin/webpack-dev-server
 
 volumes:
   db:

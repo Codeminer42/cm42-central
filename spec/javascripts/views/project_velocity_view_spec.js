@@ -1,29 +1,24 @@
-var rewire = require('rewire');
-var ProjectVelocityView = rewire('views/project_velocity_view');
+var ProjectVelocityViewInjector = require('inject-loader!views/project_velocity_view');
 
 describe('ProjectVelocityView', function() {
 
   beforeEach(function() {
     this.model = {};
     var overrideView = this.overrideView = {};
-    function ProjectVelocityOverrideView() {
+
+    function ProjectVelocityOverrideViewStub() {
       return overrideView;
     }
 
-    ProjectVelocityOverrideView.prototype.template = sinon.stub();
+    ProjectVelocityOverrideViewStub.prototype.template = sinon.stub();
 
-    this.revertRewire = ProjectVelocityView.__set__({
-      ProjectVelocityOverrideView: ProjectVelocityOverrideView
+    var ProjectVelocityView = ProjectVelocityViewInjector({
+      './project_velocity_override_view': ProjectVelocityOverrideViewStub
     });
 
     sinon.stub(ProjectVelocityView.prototype, 'listenTo');
 
     this.subject = new ProjectVelocityView({model: this.model});
-  });
-
-  afterEach(function() {
-    this.revertRewire();
-    ProjectVelocityView.prototype.listenTo.restore();
   });
 
   it("should have a top level element", function() {

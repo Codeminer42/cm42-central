@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [1.9.0] 2017-09-11
+### Changed
+- Changing `webpack-rails` gem to new `webpacker` gem
+
 ## [1.8.0] 2017-09-06
 ### Added
 - Action into API to update project
@@ -148,7 +152,7 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.8.0...HEAD
+[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.9.0...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
@@ -163,3 +167,4 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [1.6.0]: https://github.com/Codeminer42/cm42-central/tree/v1.6.0
 [1.7.0]: https://github.com/Codeminer42/cm42-central/tree/v1.7.0
 [1.8.0]: https://github.com/Codeminer42/cm42-central/tree/v1.8.0
+[1.9.0]: https://github.com/Codeminer42/cm42-central/tree/v1.9.0
