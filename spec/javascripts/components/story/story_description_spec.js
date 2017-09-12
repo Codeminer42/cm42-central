@@ -30,6 +30,7 @@ describe('<StoryDescription />', function() {
         value={""}
       />
     );
+    expect(window.md.makeHtml).toHaveBeenCalledWith(this.story.description);
     expect(wrapper.find('.description').text()).toContain('Description');
   });
 
@@ -54,6 +55,7 @@ describe('<StoryDescription />', function() {
         value={""}
       />
     );
+    expect(window.md.makeHtml).toHaveBeenCalledWith('Description <a data-story-id="9"></a>');
     expect(wrapper.find(StoryLink)).toHaveProp('story', linkedStory);
   });
 
@@ -70,6 +72,7 @@ describe('<StoryDescription />', function() {
         value={""}
       />
     );
+    expect(window.md.makeHtml).toHaveBeenCalledWith('# Header test');
     expect(wrapper.find('h1')).toBePresent();
     expect(wrapper.find('h1').text()).toContain('Header test');
   })

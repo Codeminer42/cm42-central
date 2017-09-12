@@ -537,6 +537,7 @@ describe('StoryView', function() {
       const innerText = "foo";
       this.view.model.set({description: innerText});
       this.view.render();
+      expect(window.md.makeHtml).toHaveBeenCalledWith("foo");
       expect(this.view.$('textarea[name="description"]').length).toEqual(0);
       expect(this.view.$('.description')[0].innerText).toContain(innerText);
     });
