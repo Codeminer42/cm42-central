@@ -17,7 +17,7 @@ class V1::Projects < Grape::API
       end
 
       def allowed_update_params
-        ActionController::Parameters.new(params).permit(
+        ActionController::Parameters.new(params).require(:project).permit(
           :name, :default_velocity, :point_scale,
           :iteration_start_day, :mail_reports
         )
@@ -101,6 +101,8 @@ class V1::Projects < Grape::API
     put '/:slug' do
       project = Project.find_by(slug: params[:slug])
       project.update_attributes(allowed_update_params)
+
+      present project, with: Entities::Project, type: :full
     end
   end
 end

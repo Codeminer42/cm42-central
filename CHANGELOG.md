@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Fixed
+- Allowed params to update project via API
 
 ## [1.9.0] 2017-09-11
 ### Changed
