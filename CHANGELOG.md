@@ -5,6 +5,7 @@
 ### Fixed
 - Allowed params to update project via API
 - Fix central manage login and logout bugs
+
 ## [1.9.0] 2017-09-11
 ### Changed
 - Changing `webpack-rails` gem to new `webpacker` gem

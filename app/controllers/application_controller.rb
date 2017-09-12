@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   include SidebarController
 
   before_action :authenticate_user!, unless: :devise_controller?
-  before_action :check_team_presence, if: -> { current_user.present? }
+  before_action :check_team_presence, if: :need_check_team?
   before_action :set_locale
   before_action :set_layout_settings
   around_action :user_time_zone, if: :current_user
@@ -57,7 +57,7 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     return super if resource.is_a?(AdminUser)
-    return send("#{resource_name}_enable_authy_path") if resource.authy_enabled && resource.authy_id.blank?
+    return public_send("#{resource_name}_enable_authy_path") if resource.authy_enabled && resource.authy_id.blank?
 
     set_current_team_if_single
 
@@ -85,6 +85,10 @@ class ApplicationController < ActionController::Base
   def set_layout_settings
     @layout_settings_default = { fluid: false }.freeze
     @layout_settings = @layout_settings_default.dup
+  end
+
+  def need_check_team?
+    current_user.present? && !devise_controller?
   end
 
   def show_recaptcha?
