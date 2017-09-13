@@ -13,9 +13,11 @@ config/deploy.rb
 .env.test
 *.dump
 dump.rdb
-public/javascripts/*
 public/test_assets/
+public/javascripts/*
 public/javascripts-test/*
+public/packs/*
+public/packs-test/*
 /node_modules
 /public/webpack
 js_coverage/
