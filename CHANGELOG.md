@@ -8,6 +8,10 @@
 ### Changed
 - Update cm42-central-support version to save delivered_at
 
+### Added 
+- Burn Down chart
+- Highlights the release stories if the release date is compromised.
+
 ## [1.10.0] 2017-09-13
 ### Fixed
 - Allowed params to update project via API

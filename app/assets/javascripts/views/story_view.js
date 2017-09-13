@@ -438,6 +438,7 @@ module.exports = FormView.extend({
       if (isGuest) { this.$el.find('.state-actions').find('.transition').prop('disabled', true) }
     }
     this.hoverBox();
+    this.handleBackLoggedRelease();
     return this;
   },
 
@@ -478,8 +479,8 @@ module.exports = FormView.extend({
           onChange={ (event) => this.onChangeModel(event.target.value, "description") }
           onClick={this.editDescription}
         />,
-          description
-        );
+        description
+      );
     }
 
     const tagsInput = this.$('[data-tags]')[0];
@@ -883,6 +884,33 @@ module.exports = FormView.extend({
     $('.popover').remove();
   },
 
+  backLoggedRelease: function() {
+    var backlogged = false;
+    const {
+      collection,
+      attributes,
+    } = this.model;
+    if(collection.project.iterations) {
+      collection.project.iterations.forEach((iteration) => {
+        iteration.stories().forEach((story) => {
+          if (story.id === attributes.id && attributes.release_date) {
+            var iteration_date = new Date(iteration.startDate());
+            var release_date = new Date(attributes.release_date);
+            backlogged = iteration_date > release_date;
+          }
+        })
+      });
+      return backlogged;
+    }
+  },
+
+  handleBackLoggedRelease: function() {
+    this.$el.toggleClass('backlogged-release', this.backLoggedRelease());
+    if(this.backLoggedRelease()){
+      this.$el.attr('title', I18n.t('story.warnings.backlogged_release'));
+    }
+  },
+
   setFocus: function() {
     if (this.model.get('editing') === true ) {
       this.$('input.title').first().focus();
@@ -948,5 +976,5 @@ module.exports = FormView.extend({
 
   showHistory: function() {
     this.model.showHistory();
-  }
+  },
 });
