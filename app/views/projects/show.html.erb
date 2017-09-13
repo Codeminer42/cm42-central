@@ -14,10 +14,12 @@
 
   <p class="navbar-text velocity" id="velocity" data-step="velocity"></p>
 
-  <button type="button" class="btn btn-primary btn-sm navbar-btn" id="add_story" data-step="add-story">
-    <i class="mi md-light md-18 md-add">add</i>
-    <%= t('add story') %>
-  </button>
+  <% unless current_user.guest? %>
+    <button type="button" class="btn btn-primary btn-sm navbar-btn" id="add_story" data-step="add-story">
+      <i class="mi md-light md-18 md-add">add</i>
+      <%= t('add story') %>
+    </button>
+  <% end %>
 <% end %>
 
 <% content_for :right_menu do %>

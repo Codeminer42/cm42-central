@@ -35,10 +35,20 @@ describe StoryPolicy do
     context 'for a user' do
       let(:current_user) { create :user, :with_team }
 
-      it { should permit(:show) }
-
       %i(index show create new update edit destroy).each do |action|
         it { should permit(action) }
+      end
+
+      it 'lists all stories of the project' do
+        expect(policy_scope).to eq([story])
+      end
+    end
+
+    context 'for a guest' do
+      let(:current_user) { create :user, :with_team, role: 'guest' }
+
+      %i(index show create new update edit destroy).each do |action|
+        it { should_not permit(action) }
       end
 
       it 'lists all stories of the project' do
@@ -62,6 +72,18 @@ describe StoryPolicy do
 
     context 'for a user' do
       let(:current_user) { create :user, :with_team }
+
+      %i(index create new update edit destroy).each do |action|
+        it { should_not permit(action) }
+      end
+
+      it 'hides stories of project that is not member' do
+        expect(policy_scope).to eq([])
+      end
+    end
+
+    context 'for a guest' do
+      let(:current_user) { create :user, :with_team, role: 'guest' }
 
       %i(index create new update edit destroy).each do |action|
         it { should_not permit(action) }

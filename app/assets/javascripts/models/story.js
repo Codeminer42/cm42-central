@@ -40,9 +40,17 @@ var Story = module.exports = Backbone.Model.extend({
     this.setReadonly();
   },
 
-  setReadonly: function() {
-    if(this.get('state') === 'accepted' && this.get('accepted_at') !== undefined)
-      this.isReadonly = true;
+  setReadonly: function () {
+    var accepted = this.get('state') === 'accepted' && this.get('accepted_at') !== undefined;
+    var isGuest = (
+      this.collection !== undefined &&
+      this.collection.project.current_user !== undefined &&
+      this.collection.project.current_user.get('guest?')
+    );
+
+    if (isGuest || accepted) {
+      this.isReadonly = true
+    }
   },
 
   changeState: function(model, newValue) {

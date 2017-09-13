@@ -1,17 +1,21 @@
 class StoryPolicy < ApplicationPolicy
   def index?
+    return false if guest?
     admin? || project_member?
   end
 
   def show?
+    return false if guest?
     admin? || project_member? && current_project.stories.find_by(id: record.id)
   end
 
   def create?
+    return false if guest?
     admin? || project_member?
   end
 
   def update?
+    return false if guest?
     admin? || project_member?
   end
 

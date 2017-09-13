@@ -17,7 +17,7 @@ describe User do
 
     specify do
       expect(subject.as_json['user'].keys.sort).to eq(
-        %w(email finished_tour id initials name tour_steps username)
+        %w(email finished_tour guest? id initials name tour_steps username)
       )
     end
   end

@@ -11,6 +11,8 @@ class ApplicationPolicy
 
     protected
 
+    delegate :guest?, to: :current_user
+
     def root?
       # this user can do anothing, it goes in AdminUser instead of User and bypasses everything
       context.active_admin

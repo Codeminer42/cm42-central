@@ -161,5 +161,32 @@ describe ProjectPolicy do
         expect(policy_scope).to eq([])
       end
     end
+
+    context 'for a guest' do
+      let(:current_user) { create :user, :with_team, role: 'guest' }
+
+      %i(index create new update edit reports).each do |action|
+        it { should_not permit(action) }
+      end
+
+      %i(
+        import
+        import_upload
+        archive
+        unarchive
+        destroy
+        share
+        unshare
+        transfer
+        ownership
+        join
+      ).each do |action|
+        it { should_not permit(action) }
+      end
+
+      it 'hides project' do
+        expect(policy_scope).to eq([])
+      end
+    end
   end
 end

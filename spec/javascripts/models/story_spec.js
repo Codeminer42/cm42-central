@@ -1,4 +1,5 @@
 var Story = require('models/story');
+var User = require('models/user');
 
 describe('Story', function() {
 
@@ -7,7 +8,7 @@ describe('Story', function() {
       name: 'project',
       defaults: {point_values: [0, 1, 2, 3]},
       users: { get: function() {} },
-      current_user: { id: 999 },
+      current_user: new User({ id: 999, 'guest?': false }),
       currentIterationNumber: function() { return 1; },
       getIterationNumberForDate: function() { return 999; }
     });
