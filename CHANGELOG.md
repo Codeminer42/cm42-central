@@ -1,8 +1,10 @@
 # Changelog
 
 ## [Unreleased]
+
 ### Fixed
 - Allowed params to update project via API
+- Fix central manage login and logout bugs
 
 ### Added
 - Don't show projects to guests that he's not member of
