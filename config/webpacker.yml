@@ -1,9 +1,9 @@
 # Note: You must restart bin/webpack-dev-server for changes to take effect
 
 default: &default
-  source_path: app/assets
-  source_entry_path: javascripts
-  public_output_path: javascripts
+  source_path: app/javascript
+  source_entry_path: packs
+  public_output_path: packs
 
   extensions:
     - .coffee
