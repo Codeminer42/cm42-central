@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Fixed
+- Fix webpack entry files
 
 ## [1.10.0] 2017-09-13
 ### Fixed
