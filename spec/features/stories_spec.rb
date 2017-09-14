@@ -109,6 +109,7 @@ describe 'Stories' do
           expect(page).not_to have_content('Labels')
           expect(page).not_to have_css('.attachinary-input')
           expect(page).to have_css('.release_date')
+          expect(page).to have_css('.story-description')
         end
       end
     end
@@ -117,7 +118,8 @@ describe 'Stories' do
       let(:formated_date) { Date.today.strftime('%m/%d/%Y') }
       let!(:story) do
         create(:story, title: 'Release Story', story_type: 'release', project: project,
-                       release_date: formated_date, requested_by: user)
+                       release_date: formated_date, requested_by: user,
+                       description: 'Release description')
       end
 
       it 'shows only the fields related to a story of type release', js: true do
@@ -129,6 +131,7 @@ describe 'Stories' do
         expect(page).to have_field('title', with: story.title)
         expect(page).to have_select('story_type', selected: 'release')
         expect(page).to have_field('release_date', with: formated_date)
+        expect(page).to have_content('Release description')
       end
     end
   end

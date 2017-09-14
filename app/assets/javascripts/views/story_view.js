@@ -783,12 +783,11 @@ module.exports = FormView.extend({
     this.bindElementToAttribute(dateInput, 'release_date');
 
     this.$el.append(
-      this.makeFormControl(this.makeFormControl(function(div) {
+      this.makeFormControl(function(div) {
         var $description = $('<div class="story-description"><div>');
         $(div).append($description);
-      }))
+      })
     );
-
   },
 
   parseDescription: function() {

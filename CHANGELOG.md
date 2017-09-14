@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Fixed
 - Fix webpack entry files
+- Fix component description on when story type is release
 
 ### Changed
 - Update cm42-central-support version to save delivered_at
