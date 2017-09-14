@@ -4,6 +4,9 @@
 ### Fixed
 - Fix webpack entry files
 
+### Changed
+- Update cm42-central-support version to save delivered_at
+
 ## [1.10.0] 2017-09-13
 ### Fixed
 - Allowed params to update project via API
