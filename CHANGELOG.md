@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Fixed
 - Fix webpack entry files
+- Fix component description on when story type is release
 
 ## [1.10.0] 2017-09-13
 ### Fixed
