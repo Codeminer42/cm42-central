@@ -28,6 +28,7 @@ pt-BR:
   nothing uploaded yet: "Nada ainda carregado"
   day:      "Dia"
   accepted_points: "Pontos Aceitos"
+  delivered_points: "Pontos Entregues"
   change team: "Trocar de Equipe"
   team: "Equipe"
   visit: "Visite"
@@ -246,6 +247,8 @@ pt-BR:
         remaining_time: "Na atual velocidade (%{velocity} pontos) o backlog existente deve ser finalizado somente por volta da iteração %{last_iteration_number} (%{last_iteration_start_date})."
         on_track: "Se a velocidade continuar estável, estaremos bem encaminhados para entregar o projeto na data acima."
         realistic_remaining_time: "No entanto, com o desvio padrão de %{standard_deviation}, é mais realista esperar que o projeto seja finalizado por volta da <strong>iteração %{last_iteration_number}</strong> (%{last_iteration_start_date}), se não houver aumento na velocidade ou uma simplificação do backlog."
+      burn_down:
+        title: "Gráfico de Burn Down"
     project properties: "Propriedades do Projeto"
     archived projects:  "Projetos Arquivados"
     archive: "Arquivar"
