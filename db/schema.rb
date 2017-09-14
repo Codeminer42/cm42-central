@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170825181646) do
+ActiveRecord::Schema.define(version: 20170914172941) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -194,6 +194,7 @@ ActiveRecord::Schema.define(version: 20170825181646) do
     t.datetime "started_at"
     t.float    "cycle_time",                                              default: 0.0
     t.date     "release_date"
+    t.datetime "delivered_at"
   end
 
   create_table "tag_groups", force: :cascade do |t|
