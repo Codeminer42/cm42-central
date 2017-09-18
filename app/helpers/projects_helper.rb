@@ -96,6 +96,10 @@ module ProjectsHelper
     @group_by_day = BurnUpCalculator.call(@project)
   end
 
+  def burn_down_data
+    BurnDownCalculator.call(@project)
+  end
+
   def formatted_standard_deviation(standard_deviation)
     format('%3.2f', Math.sqrt(standard_deviation))
   end

@@ -92,6 +92,13 @@
         <p><%= area_chart @group_by_day, max: @total_backlog_points, xtitle: t('day'), ytitle: t('accepted_points') %></p>
       </div>
     </div>
+
+    <div class="panel panel-default card" id="burn-down">
+      <div class="panel-heading"> <%= t('projects.reports.burn_down.title') %> </div>
+      <div class="panel-body">
+        <p><%= area_chart burn_down_data, max: current_iteration_points, xtitle: t('day'), ytitle: t('delivered_points') %></p>
+      </div>
+    </div>
   </div>
 </div>
 
