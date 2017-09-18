@@ -3,6 +3,19 @@ ActiveAdmin.register User do
     :time_zone, :authy_enabled, :password, :password_confirmation,
     :role
 
+  controller do
+    def impersonate
+      user = User.find(params[:id])
+      impersonate_user(user)
+      redirect_to root_path
+    end
+
+    def stop_impersonating
+      stop_impersonating_user
+      redirect_to root_path
+    end
+  end
+
   index do
     selectable_column
     id_column
@@ -12,6 +25,9 @@ ActiveAdmin.register User do
     column :username
     column :role
     column :authy_enabled
+    column do |user|
+      link_to("Sign in as #{user.name}", impersonate_manage_user_path(user), method: :post)
+    end
   end
 
   filter :email
