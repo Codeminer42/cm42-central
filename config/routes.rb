@@ -14,6 +14,8 @@ Rails.application.routes.draw do
       resources :enrollments
     end
     resources :users do
+      post :stop_impersonating, on: :collection
+      post :impersonate, on: :member
       resources :memberships
       resources :enrollments
     end

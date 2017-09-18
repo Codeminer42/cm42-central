@@ -103,6 +103,10 @@
   <div class="main" id="main">
     <div class="container<%= "-fluid board" if @layout_settings[:fluid] %>">
       <%= render 'flash' %>
+      <% if current_user != true_user %>
+        You (<%= true_user.name %>) are signed in as <%= current_user.name %>
+        <%= link_to "Back to admin user", stop_impersonating_manage_users_path, method: :post %>
+      <% end %>
       <%= yield %>
     </div>
   </div>

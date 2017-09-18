@@ -34,6 +34,7 @@ gem 'central-support', git: 'https://github.com/Codeminer42/cm42-central-support
 
 gem 'pg'
 gem 'pg_search'
+gem 'pretender'
 gem 'puma'
 gem 'sidekiq'
 gem 'sidekiq_mailer'
