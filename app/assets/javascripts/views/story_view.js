@@ -81,7 +81,6 @@ module.exports = FormView.extend({
   events: {
     "click": "startEdit",
     "click .epic-link": "openEpic",
-    "click .submit": "clickSave",
     "click .cancel": "cancelEdit",
     "click .transition": "transition",
     "click .state-actions .estimate": "estimate",
@@ -302,10 +301,12 @@ module.exports = FormView.extend({
       error: function(model, response) {
         var json = $.parseJSON(response.responseText);
         model.set({editing: true, errors: json.story.errors});
+
         window.projectView.notice({
-          title: I18n.t("Save error"),
+          title: I18n.t("save error"),
           text: model.errorMessages()
         });
+
         that.enableForm();
       }
     });
@@ -353,6 +354,9 @@ module.exports = FormView.extend({
 
       this.$el.empty();
       this.$el.addClass('editing');
+
+      const $documentsField = $('<input type="hidden" name="documents[]" value="" />');
+      this.$el.append($documentsField);
 
       const $storyControls = $('<div data-story-controls></div>');
       this.$el.append($storyControls);
@@ -824,6 +828,7 @@ module.exports = FormView.extend({
   },
 
   enableForm: function() {
+    this.$el.find('input,select,textarea').removeAttr('disabled');
     this.$el.find('a.collapse').removeClass(/icons-/).addClass("icons-collapse");
   },
 

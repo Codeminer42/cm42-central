@@ -34,9 +34,9 @@ class StoriesController < ApplicationController
     @story.acting_user = current_user
     @story.base_uri = project_url(@story.project)
     respond_to do |format|
-      @story = StoryOperations::Update.call(@story, allowed_params, current_user)
+      @updater = StoryOperations::Update.call(@story, allowed_params, current_user)
 
-      if @story
+      if @updater
         format.html { redirect_to project_url(@project) }
         format.js   { render json: @story }
       else
@@ -76,9 +76,9 @@ class StoriesController < ApplicationController
     authorize @story
     @story.requested_by_id = current_user.id unless @story.requested_by_id
     respond_to do |format|
-      @story = StoryOperations::Create.call(@story, current_user)
+      @updater = StoryOperations::Create.call(@story, current_user)
 
-      if @story
+      if @updater
         format.html { redirect_to project_url(@project) }
         format.js   { render json: @story }
       else

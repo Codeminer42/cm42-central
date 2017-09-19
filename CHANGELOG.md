@@ -5,6 +5,8 @@
 ### Fixed
 - Fix webpack entry files
 - Fix component description on when story type is release
+- Show story errors on save failures
+- Don't duplicate a story if save process fails
 
 ### Changed
 - Update cm42-central-support version to save delivered_at
