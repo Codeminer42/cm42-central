@@ -1,6 +1,7 @@
 # Changelog
 
 ## [Unreleased]
+
 ### Fixed
 - Fix webpack entry files
 - Fix component description on when story type is release
@@ -10,6 +11,7 @@
 
 ### Added 
 - Burn Down chart
+- Highlights the release stories if the release date is compromised.
 
 ## [1.10.0] 2017-09-13
 ### Fixed

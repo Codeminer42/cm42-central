@@ -115,7 +115,7 @@ describe 'Stories' do
     end
 
     context 'when editing a release story' do
-      let(:formated_date) { Date.today.strftime('%m/%d/%Y') }
+      let(:formated_date) { (Date.today - 10.days).strftime('%m/%d/%Y') }
       let!(:story) do
         create(:story, title: 'Release Story', story_type: 'release', project: project,
                        release_date: formated_date, requested_by: user,
@@ -132,6 +132,22 @@ describe 'Stories' do
         expect(page).to have_select('story_type', selected: 'release')
         expect(page).to have_field('release_date', with: formated_date)
         expect(page).to have_content('Release description')
+      end
+
+      it 'highlights the release when the it\'s projected completion is delayed', js: true do
+        visit project_path(project)
+        wait_spinner
+
+        wait_page_load
+        expect(page).to have_css('.backlogged-release')
+      end
+
+      it 'has a title when the release it\'s projected completion is delayed', js: true do
+        visit project_path(project)
+        wait_spinner
+
+        wait_page_load
+        expect(find("#story-#{story.id}")[:title]).to match(I18n.t('story.warnings.backlogged_release'))
       end
     end
   end

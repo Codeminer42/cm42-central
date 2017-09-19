@@ -272,6 +272,12 @@ div.story-title abbr.initials {
   border-bottom: 1px solid $lightyellow-2;
 }
 
+.story.backlogged-release{
+  background-color: rgba($darkred, .5) !important;
+  border-top-color: rgba($darkred, .6) !important;
+  border-bottom-color: rgba($darkred, .1) !important;
+}
+
 .story.release {
   color: $white;
   background-color: $blue-4;

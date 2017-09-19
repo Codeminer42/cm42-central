@@ -92,6 +92,8 @@ pt-BR:
     tasks: "Tarefas"
     notes: "Notas"
     attachments: "Anexos"
+    warnings:
+      backlogged_release: "Esse lançamento está com risco de ser completo depois da data de lançamento definida."
     errors:
       failed_upload: "O upload falhou. Por favor, tente novamente."
 

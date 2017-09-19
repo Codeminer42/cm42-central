@@ -91,6 +91,8 @@ es:
     tasks: "Tareas"
     notes: "Notas"
     attachments: "Adjuntos"
+    warnings:
+      backlogged_release: "Este lanzamiento está en peligro de ser completada después de la fecha de lanzamiento establecida."
     errors:
       failed_upload: "Error de subida. Vuelva a intentarlo."
 

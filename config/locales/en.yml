@@ -95,6 +95,8 @@ en:
     tasks: "Tasks"
     notes: "Notes"
     attachments: "Attachments"
+    warnings:
+      backlogged_release: "This release is in danger of being completed after the set release date."
     errors:
       failed_upload: "Your upload has failed. Please try again."
 
