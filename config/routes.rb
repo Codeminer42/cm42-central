@@ -1,8 +1,9 @@
 require 'sidekiq/web'
 Rails.application.routes.draw do
-
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
+
+  mount UserImpersonate::Engine => "/impersonate", as: "impersonate_engine"
 
   namespace :manage do
     resources :projects do

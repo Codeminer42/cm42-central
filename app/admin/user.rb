@@ -12,6 +12,9 @@ ActiveAdmin.register User do
     column :username
     column :role
     column :authy_enabled
+    column do |user|
+      link_to("Sign in as #{user.name}", impersonate_engine.impersonate_user_path(user))
+    end
   end
 
   filter :email

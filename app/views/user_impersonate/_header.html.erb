@@ -1,0 +1,60 @@
+<style>
+#impersonating {
+  width: 100%;
+  margin: 0;
+  padding: 12px 0;
+  background: #c70000;
+  border-bottom: 1px solid black;
+  line-height: 1.9;
+  font-size: 12px;
+  font-family: "Lucida Sans Unicode","Lucida Grande",Verdana,Arial,Helvetica,sans-serif;
+}
+#impersonating .impersonate-controls {
+  color: white;
+  font-weight: normal;
+  font-size: 15px;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#impersonating .impersonate-controls .impersonate-info {
+  margin-bottom: 6px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid #dd0000;
+}
+#impersonating .impersonate-controls form {
+  display: inline;
+  margin-right: 16px;
+}
+#impersonating .impersonate-controls .revert-form {
+  margin-left: 16px;
+}
+#impersonating .impersonate-controls select {
+  background: white;
+}
+#impersonating .impersonate-controls .admin_name, #impersonating .impersonate-controls .user_name, #impersonating .impersonate-controls .user_id, #impersonating .impersonate-controls .account_id {
+  font-weight: bold;
+}
+#impersonating .impersonate-controls a {
+  text-decoration: underline;
+  color: white;
+}
+</style>
+<div id="impersonating">
+  <div class="impersonate-controls">
+    <div class="impersonate-info">
+      You (
+      <span class="admin_name"><%= current_admin_user.email %></span>
+      ) are impersonating
+      <span class="admin_name"><%= current_user %></span>
+      ( User id: <%= current_user.to_s %> )
+    </div>
+
+    <div class="impersonate-buttons">
+      <%= form_tag impersonate_engine.revert_impersonate_user_url,
+          :method => :delete, :class => 'revert-form' do %>
+        <button type = "submit"> Revert to admin</button>
+      <% end %>
+    </div>
+  </div>
+</div>

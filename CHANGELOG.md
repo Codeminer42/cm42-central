@@ -9,9 +9,10 @@
 ### Changed
 - Update cm42-central-support version to save delivered_at
 
-### Added 
+### Added
 - Burn Down chart
-- Highlights the release stories if the release date is compromised.
+- Highlights the release stories if the release date is compromised
+- User impersonate gem for debugging purposes
 
 ## [1.10.0] 2017-09-13
 ### Fixed

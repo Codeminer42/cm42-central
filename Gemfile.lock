@@ -465,6 +465,8 @@ GEM
     unf_ext (0.0.7.2)
     unicode-display_width (1.3.0)
     uniform_notifier (1.10.0)
+    user_impersonate2 (0.11.0)
+      rails (>= 3.2.0)
     vcr (3.0.3)
     virtus (1.0.5)
       axiom-types (~> 0.1)
@@ -565,6 +567,7 @@ DEPENDENCIES
   sinatra
   timecop
   uglifier (>= 2.5.3)
+  user_impersonate2
   vcr
   webmock
   webpacker
