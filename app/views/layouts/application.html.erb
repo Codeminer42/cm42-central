@@ -103,7 +103,7 @@
   <div class="main" id="main">
     <div class="container<%= "-fluid board" if @layout_settings[:fluid] %>">
       <%= render 'flash' %>
-      <% if current_admin_user %>
+      <% if current_staff_user %>
         <%= render 'user_impersonate/header' %>
       <% end %>
       <%= yield %>

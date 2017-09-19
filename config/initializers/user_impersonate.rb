@@ -37,4 +37,10 @@ module UserImpersonate
     # For Active Admin "AdminUser" model, use 'current_admin_user'
     config.current_staff = 'current_admin_user'
   end
+
+  ImpersonateController.class_eval do
+    # Ignore user authentication and Pundit authorization
+    skip_before_filter :authenticate_user!
+    skip_after_filter :verify_authorized
+  end
 end
