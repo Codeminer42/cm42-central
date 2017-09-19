@@ -1,6 +1,7 @@
 # Changelog
 
 ## [Unreleased]
+
 ### Fixed
 - Fix webpack entry files
 - Fix component description on when story type is release
