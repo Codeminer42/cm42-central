@@ -11,14 +11,14 @@
           <div class="panel panel-default card user-card">
             <div class="panel-body">
               <div class="row">
-                <div class="col-xs-2">
+                <div class="col-xs-3 user-image-container">
                   <% cache "user/#{user.email}/avatar", expires_in: 1.hour do %>
                     <img class="user-image" src="<%= avatar_url(user) %>">
                   <% end %>
                 </div>
-                <div class="col-xs-10 user-description">
+                <div class="col-xs-9 user-description">
                   <%= user.name %> <br>
-                  <span class="user-email"><%= user.email %><span>
+                  <span class="user-email"><%= user.email %></span>
                 </div>
               </div>
             </div>
@@ -49,14 +49,14 @@
             <div class="panel panel-default card user-card">
               <div class="panel-body">
                 <div class="row">
-                  <div class="col-xs-2">
+                  <div class="col-xs-3 user-image-container">
                     <% cache "user/#{user.email}/avatar", expires_in: 1.hour do %>
                       <img class="user-image" src="<%= avatar_url(user) %>">
                     <% end %>
                   </div>
-                  <div class="col-xs-10 user-description">
+                  <div class="col-xs-9 user-description">
                     <%= user.name %> <br>
-                    <span class="user-email"><%= user.email %><span>
+                    <span class="user-email"><%= user.email %></span>
                   </div>
                 </div>
               </div>

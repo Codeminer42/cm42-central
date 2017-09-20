@@ -22,3 +22,13 @@
     }
   }
 }
+
+@media (max-device-width: 500px) and (orientation: portrait) {
+  .nav-pills{
+    li + li {
+      &:last-child{
+        margin-left: 0;
+      }
+    }
+  }
+}
