@@ -2,19 +2,20 @@
 
 ## [Unreleased]
 
-### Fixed
-- Fix webpack entry files
-- Fix component description on when story type is release
-- Show story errors on save failures
-- Don't duplicate a story if save process fails
-
-### Changed
-- Update cm42-central-support version to save delivered_at
-
+## [1.11.0] 2017-09-19
 ### Added
 - Burn Down chart
 - Highlights the release stories if the release date is compromised
 - User impersonate gem for debugging purposes
+
+### Changed
+- Update cm42-central-support version to save delivered_at
+
+### Fixed
+- Fix webpack entry files
+- Bring back description component when story type is release
+- Show story errors on save failures
+- Don't duplicate a story after save process fails once
 
 ## [1.10.0] 2017-09-13
 ### Fixed
@@ -175,7 +176,7 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.10.0...HEAD
+[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.11.0...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
@@ -192,3 +193,4 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [1.8.0]: https://github.com/Codeminer42/cm42-central/tree/v1.8.0
 [1.9.0]: https://github.com/Codeminer42/cm42-central/tree/v1.9.0
 [1.10.0]: https://github.com/Codeminer42/cm42-central/tree/v1.10.0
+[1.11.0]: https://github.com/Codeminer42/cm42-central/tree/v1.11.0
