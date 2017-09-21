@@ -1,6 +1,9 @@
 # Changelog
 
 ## [Unreleased]
+### Changed
+- Updated the favicon with the current logo
+
 ### Fixed
 - Minor UI glitches on smaller screen resolutions
 
