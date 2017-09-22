@@ -10,9 +10,9 @@
 .form-inline > * {
   margin: 5px 3px;
   &:first-child {
-    margin-left: 0px;
+    margin-left: 0;
   }
-  &:lat-child {
-    margin-right: 0px;
+  &:last-child {
+    margin-right: 0;
   }
 }

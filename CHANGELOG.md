@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Fixed
+- Minor UI glitches on smaller screen resolutions
 
 ## [1.11.0] 2017-09-19
 ### Added

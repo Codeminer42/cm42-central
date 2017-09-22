@@ -17,8 +17,13 @@
       border-radius: 50px;
     }
 
+    .user-image-container{
+      padding-right: 0;
+    }
+
     .user-description {
       line-height: 15px;
+      padding-left: 0;
 
       .user-email {
         font-size: 11px;
