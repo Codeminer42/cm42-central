@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+ Changes to the browser tab as a notification of a change
 
 ## [1.12.0] 2017-09-26
 ### Changed
