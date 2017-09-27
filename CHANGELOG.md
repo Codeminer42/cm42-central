@@ -1,6 +1,9 @@
 # Changelog
 
 ## [Unreleased]
+### Fixed
+- On projects index, velocity is not always falling to fallback value anymore
+
 ### Added
  Changes to the browser tab as a notification of a change
 
