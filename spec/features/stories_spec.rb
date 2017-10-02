@@ -222,24 +222,21 @@ describe 'Stories' do
 
     before do
       story
-    end
-
-    it 'finds the story', js: true do
       visit project_path(project)
       wait_spinner
 
-      # should not have any search results by default
-      expect(page).not_to have_css('.searchResult')
-
-      # fill in the search form
       within('#form_search') do
         fill_in 'q', with: 'Search'
       end
-      page.execute_script("$('#form_search').submit()")
+    end
 
+    it 'finds the story', js: true do
+      # should not have any search results by default
+      expect(page).not_to have_css('.searchResult')
+
+      page.execute_script("$('#form_search').submit()")
       # should return at least one story in the result column
       expect(page).to have_css('.searchResult')
-
       within(story_selector(story)) do
         find('.story-title').trigger 'click'
         click_on 'Delete'
@@ -248,6 +245,32 @@ describe 'Stories' do
       # when the story is delete in the results column it should also disappear from other columns
       expect(page).not_to have_css(story_search_result_selector(story))
       expect(page).not_to have_css(story_selector(story))
+    end
+
+    it 'highlights the story on click the locate button', js: true do
+      page.execute_script("$('#form_search').submit()")
+
+      within('#search_results') do
+        find('#locate').trigger 'click'
+      end
+
+      expect(find(story_selector(story))[:style]).to match(/background-color/)
+    end
+
+    it 'drags the story to other columns', js: true do
+      within('#in_progress .story') do
+        find('#estimate-1').trigger 'click'
+        click_on 'start'
+      end
+
+      page.execute_script("$('#form_search').submit()")
+
+      resultStory = find('.searchResult')
+      target = page.first('#chilly_bin')
+      resultStory.drag_to(target)
+
+      expect(page).to_not have_css('.searchResult')
+      expect(find('#chilly_bin')).to have_content('Search for me')
     end
   end
 

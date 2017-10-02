@@ -28,9 +28,13 @@ module.exports = Backbone.View.extend({
   addAll: function() {
     this.$('.loading-spin').addClass('show');
     var that = this;
+    var searchedTerm = this.$el.find('input[type=text]').val();
     that.$ = $;
     that.$('#search_results').html("");
     that.$('.search_results_column').show();
+    that.$('.search_results_column')
+        .find('.toggle-title')
+        .text(`\"${searchedTerm}\"`);
 
     this.addBar('#search_results');
 

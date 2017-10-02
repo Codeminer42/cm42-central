@@ -92,7 +92,8 @@ module.exports = FormView.extend({
     "sortupdate": "sortUpdate",
     "fileuploaddone": "attachmentDone",
     "fileuploadstart": "attachmentStart",
-    "fileuploadfail": "attachmentFail"
+    "fileuploadfail": "attachmentFail",
+    "click #locate": "highlightSearchedStories"
   },
 
   // Triggered whenever a story is dropped to a new position
@@ -257,6 +258,8 @@ module.exports = FormView.extend({
     // Should expand if the click wasn't on one of the buttons.
     if ($(e.target).is('input')) return false
     if ($(e.target).is('.input')) return false
+    if ($(e.target).is('button')) return false
+    if ($(e.target).parent().is('button')) return false
     return true;
   },
 
@@ -335,6 +338,15 @@ module.exports = FormView.extend({
         this.$el.effect("highlight", {}, 3000);
       }
     }
+  },
+
+  highlightSearchedStories: function () {
+    let storyID = `#story-${ this.model.get('id') }`;
+    let storyElement = $(storyID);
+    storyElement.effect("highlight", {}, 3500);
+    storyElement.parent().animate({
+      scrollTop: storyElement.offset().top - 15
+    }, 'slow');
   },
 
   render: function() {
@@ -441,6 +453,7 @@ module.exports = FormView.extend({
       this.$el.html(this.template({story: this.model, view: this}));
       if (isGuest) { this.$el.find('.state-actions').find('.transition').prop('disabled', true) }
     }
+    
     this.hoverBox();
     this.handleBackLoggedRelease();
     return this;

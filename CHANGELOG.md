@@ -5,7 +5,8 @@
 - On projects index, velocity is not always falling to fallback value anymore
 
 ### Added
- Changes to the browser tab as a notification of a change
+- Changes to the browser tab as a notification of a change
+- User is able to drag and drop stories from search column.
 
 ## [1.12.0] 2017-09-26
 ### Changed

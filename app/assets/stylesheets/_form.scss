@@ -54,3 +54,8 @@
     outline: 0;
   }
 }
+
+.locate-btn {
+  @extend input;
+  border-color: #ccc !important;
+}
