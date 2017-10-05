@@ -290,7 +290,7 @@ module.exports = FormView.extend({
 
     var that = this;
     var documents = $(event.currentTarget).closest('.story')
-      .find("[type='hidden'][name='documents[]']");
+      .find("[type='hidden'][name='attachments']");
 
     this.model.save(null, { documents: documents,
       success: function(model, response) {
@@ -354,9 +354,6 @@ module.exports = FormView.extend({
 
       this.$el.empty();
       this.$el.addClass('editing');
-
-      const $documentsField = $('<input type="hidden" name="documents[]" value="" />');
-      this.$el.append($documentsField);
 
       const $storyControls = $('<div data-story-controls></div>');
       this.$el.append($storyControls);
