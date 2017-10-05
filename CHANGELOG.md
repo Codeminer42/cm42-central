@@ -4,6 +4,8 @@
 ### Fixed
 - On projects index, velocity is not always falling to fallback value anymore
 - Story Attachments not being properly uploaded
+- Update central-support gem version which fixes velocity calculations
+- Update velocity calculation on the dashboard
 
 ### Added
  Changes to the browser tab as a notification of a change

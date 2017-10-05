@@ -5,6 +5,8 @@ class ProjectPresenter < SimpleDelegator
   include ActionView::Helpers::TextHelper
   include UsersHelper
 
+  delegate :velocity, to: :iteration_service
+
   def truncate_name
     truncate(name, length: 18)
   end
@@ -12,10 +14,6 @@ class ProjectPresenter < SimpleDelegator
   def tag_fore_color
     bg_color = tag_group&.bg_color
     bg_color && RGBUtils::SimpleContrastColorResolver.for(bg_color)
-  end
-
-  def velocity
-    iteration_service(since: 1.month.ago).velocity
   end
 
   def volatility
