@@ -220,27 +220,17 @@ module.exports = Backbone.Model.extend({
     } else {
       // TODO Make number of iterations configurable
       var numIterations = 3;
-      var iterations = [];
       var doneIterations = this.doneIterations();
-      var lastDoneIndex = doneIterations.length - 1;
-
-      // Take a maximum of numIterations from the end of the array
-      // factor out iterations with 0 points
-      while(numIterations > 0 && lastDoneIndex >= 0) {
-        var iteration = doneIterations[lastDoneIndex];
-        if(iteration.points() > 0) {
-          iterations.push(iteration);
-          numIterations --;
-        }
-        lastDoneIndex --;
-      }
+      var iterations = _.last(doneIterations, numIterations);
 
       var velocity = 1;
       var pointsArray = _.invoke(iterations, 'points');
-      if(pointsArray.length > 0) {
+
+      if (pointsArray.length > 0) {
         var sum = _.reduce(pointsArray, function(memo, points) {
           return memo + points;
         }, 0);
+
         velocity = Math.floor(sum / pointsArray.length);
       }
 
