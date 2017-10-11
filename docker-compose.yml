@@ -29,7 +29,7 @@ services:
       REDISCLOUD_URL: 'redis://redis:6379'
     volumes:
       - .:/app
-      - node_modules:/app/node_modules
+      - ./node_modules:/app/node_modules
     ports:
       - '3000:3000'
     links:
@@ -58,7 +58,7 @@ services:
       - "3808:3808"
     volumes:
       - .:/app
-      - node_modules:/app/node_modules
+      - ./node_modules:/app/node_modules
     command: ruby ./bin/webpack-dev-server
 
 volumes:
