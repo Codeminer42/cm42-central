@@ -6,14 +6,24 @@
         <span class="estimate estimate-<%= value %> input" data-value="<%= value %>" id="estimate-<%= value %>"></span>
       <% } %>
     <% }); %>
+    <% if (view.isSearchResult) { %>
+      <button id="locate" type="button" class="btn btn-default locate-btn">
+        <i class="mi md-gps-fixed md-14">gps_fixed</i>
+      </button>
+    <% } %>
   </form>
 </div>
 <% } else if (story.events().length > 0) { %>
 <div class="state-actions">
   <form>
-    <% _.each(story.events(),  function(value) { %>
+    <% _.each(story.events(), function(value) { %>
       <input type="button" class="transition <%= value %>" value="<%= I18n.t('story.events.' + value) %>"/>
     <% }); %>
+    <% if (view.isSearchResult) { %>
+      <button id="locate" type="button" class="btn btn-default locate-btn locate">
+        <i class="mi md-gps-fixed md-14">gps_fixed</i>
+      </button>
+    <% } %>
   </form>
 </div>
 <% } %>
