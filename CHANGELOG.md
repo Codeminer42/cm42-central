@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Changed
+- Changes on the style of the estimation form, on a story card.
 
 ## [1.13.0] 2017-10-11
 ### Fixed
