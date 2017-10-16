@@ -5,7 +5,8 @@
 - Changes on the style of the estimation form, on a story card.
 
 ### Fixed
-- Show the form to estimate a task without having to open it 
+- Show the form to estimate a task without having to open it
+- Search results column being cleared after dragging a story between columns 
 
 ## [1.13.0] 2017-10-11
 ### Fixed
