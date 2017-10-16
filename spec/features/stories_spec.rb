@@ -77,7 +77,7 @@ describe 'Stories' do
       wait_spinner
       wait_page_load
 
-      find('.story-title').click
+      find('.story-title').trigger('click')
       find('.toggle-history').click
     end
 
@@ -382,6 +382,27 @@ describe 'Stories' do
         expect(page).to_not have_content 'Task 1'
         expect(page).to_not have_content 'Task 2'
         expect(page).to have_content 'Task 3'
+      end
+    end
+  end
+
+  describe "estimate a story" do
+    let!(:story) do
+      create(:story, title: 'Task 1', project: project,
+                     requested_by: user, labels: 'epic1')
+    end
+
+    it "shows the buttons to estimate a story", js: true do
+      visit project_path(project)
+      wait_spinner
+      wait_page_load
+
+      within '.estimates' do
+        expect(page).to have_content '1'
+        expect(page).to have_content '2'
+        expect(page).to have_content '3'
+        expect(page).to have_content '5'
+        expect(page).to have_content '8'
       end
     end
   end

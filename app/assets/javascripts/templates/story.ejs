@@ -3,7 +3,7 @@
   <form>
     <% _.each(story.point_values(), function(value) { %>
       <% if (value > 0) { %>
-        <span class="estimate estimate-<%= value %> input" data-value="<%= value %>" id="estimate-<%= value %>"></span>
+        <span class="estimate estimate-<%= value %> input" data-value="<%= value %>" id="estimate-<%= value %>"><%= value %></span>
       <% } %>
     <% }); %>
     <% if (view.isSearchResult) { %>
