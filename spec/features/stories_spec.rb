@@ -77,7 +77,7 @@ describe 'Stories' do
       wait_spinner
       wait_page_load
 
-      find('.story-title').click
+      find('.story-title').trigger('click')
       find('.toggle-history').click
     end
 
