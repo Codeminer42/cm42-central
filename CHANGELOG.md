@@ -6,7 +6,8 @@
 
 ### Fixed
 - Show the form to estimate a task without having to open it
-- Search results column being cleared after dragging a story between columns 
+- Search results column being cleared after dragging a story between columns
+- Search results wrongly appearing during searches 
 
 ## [1.13.0] 2017-10-11
 ### Fixed

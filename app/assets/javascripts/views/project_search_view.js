@@ -37,7 +37,6 @@ module.exports = Backbone.View.extend({
         .text(`\"${searchedTerm}\"`);
 
     this.addBar('#search_results');
-
     var search_results_ids = this.model.search.pluck("id");
     var stories = this.model.stories;
     _.each(search_results_ids, function(id) {
@@ -60,6 +59,7 @@ module.exports = Backbone.View.extend({
       data: {
         q: this.$el.find('input[type=text]').val()
       },
+      reset: true,
       success: function() {
         that.addAll();
       },
