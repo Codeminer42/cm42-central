@@ -60,6 +60,7 @@ module.exports = Backbone.View.extend({
       data: {
         q: this.$el.find('input[type=text]').val()
       },
+      reset: true,
       success: function() {
         that.addAll();
       },
