@@ -90,6 +90,7 @@ module.exports = Backbone.View.extend({
   },
 
   appendViewToColumn: function(view, columnName) {
+    if (columnName === '#chilly_bin') return $(columnName).prepend(view.el);
     $(columnName).append(view.el);
   },
 
