@@ -115,6 +115,7 @@ module.exports = FormView.extend({
       this.model.set({state: 'unstarted'});
     } else if (column === 'chilly_bin') {
       this.model.set({state: 'unscheduled'});
+      [previous_story_id, next_story_id] = [next_story_id, previous_story_id];
     }
 
     // If both of these are unset, the story has been dropped on an empty

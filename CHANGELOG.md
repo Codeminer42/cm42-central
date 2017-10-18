@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Changed
 - Changes on the style of the estimation form, on a story card.
+- Changes the order which stories appear in the chilly bin column
 
 ### Fixed
 - Show the form to estimate a task without having to open it
