@@ -1,6 +1,13 @@
 version: '2'
 
 services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
   postgres:
     image: postgres
     volumes:
@@ -27,11 +34,13 @@ services:
       DB_PASSWORD: ''
       DB_HOST: 'postgres'
       REDISCLOUD_URL: 'redis://redis:6379'
+      VIRTUAL_HOST: 'cm42-central.localhost'
+      VIRTUAL_PORT: 3000
+    ports:
+      - 3000
     volumes:
       - .:/app
       - ./node_modules:/app/node_modules
-    ports:
-      - '3000:3000'
     links:
       - postgres
       - redis
@@ -60,6 +69,13 @@ services:
       - .:/app
       - ./node_modules:/app/node_modules
     command: ruby ./bin/webpack-dev-server
+
+  adminer:
+    image: adminer
+    links:
+      - postgres
+    environment:
+      - VIRTUAL_HOST=adminer.cm42-central.localhost
 
 volumes:
   db:
