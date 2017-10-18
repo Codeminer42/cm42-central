@@ -134,9 +134,14 @@ Or using docker:
     # Up container
     $ docker-compose up
 
-You should then be able to navigate to `http://localhost:3000/` in a web browser.
+You should then be able to navigate to http://cm42-central.localhost/ in a web browser.
 You can log in with the test username `foo@bar.com`, password `asdfasdf`.
 
+To manage the postgres database, you can access http://adminer.cm42-central.localhost, using the following credentials:
+
+- **server**: postgres
+- **username**: postgres
+- **passowrd**: postgres
 
 Heroku setup
 ------------

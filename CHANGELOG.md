@@ -1,6 +1,10 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Added adminer service to docker-compose.
+- Added nginx proxy to docker-compose, to enable us to use custom domain names on development.
+
 ### Changed
 - Changes on the style of the estimation form, on a story card.
 
