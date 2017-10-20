@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Added the option to clone a story.
 
 ## [1.14.0] 2017-10-18
 ### Added

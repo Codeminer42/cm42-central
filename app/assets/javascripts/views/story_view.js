@@ -82,6 +82,7 @@ module.exports = FormView.extend({
     "click": "startEdit",
     "click .epic-link": "openEpic",
     "click .cancel": "cancelEdit",
+    "click .clone-story": "cloneStory",
     "click .transition": "transition",
     "click .state-actions .estimate": "estimate",
     "change select.story_type": "render",
@@ -339,6 +340,38 @@ module.exports = FormView.extend({
         this.$el.effect("highlight", {}, 3000);
       }
     }
+  },
+
+  cloneStory: function () {
+    this.cancelEdit();
+    const clonedStory = this.model.clone();
+    this.resetAttributes(clonedStory);
+
+    if (clonedStory.isNew()) {
+      this.model.collection.add(clonedStory);
+      clonedStory.save(null, {
+        success: (model, response) => {
+          _.last(clonedStory.views).highlight();
+        },
+        error: (model, response) => {
+          window.projectView.notice({
+            title: I18n.t("save error"),
+            text: model.errorMessages(),
+          });
+        }
+      });
+    }
+  },
+
+  resetAttributes: function (story) {
+    story.set({
+      id: null,
+      created_at: null,
+      updated_at: null,
+      position: null,
+      state: "unscheduled",
+    });
+    return story;
   },
 
   highlightSearchedStories: function () {

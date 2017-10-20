@@ -83,6 +83,7 @@ pt-BR:
       accept: "aceitar"
       reject: "rejeitar"
       restart: "reiniciar"
+      clone: "Clonar história"
     type:
       feature: "recurso"
       chore: "chore"

@@ -191,6 +191,26 @@ describe 'Stories' do
     end
   end
 
+  describe 'clone a story' do
+    let(:story) do
+      create(:story, title: 'Clone Me', project: project,
+                     requested_by: user)
+    end
+
+    before do
+      story
+      visit project_path(project)
+      wait_spinner
+    end
+    
+    it 'clones the story to the chilly bin', js: true do
+      find('.story-title').trigger('click')
+      find('.clone-story').click
+
+      expect(find('#chilly_bin')).to have_content('Clone Me')
+    end
+  end
+
   describe 'delete a story' do
     let(:story) do
       create(:story, title: 'Delete Me', project: project,
