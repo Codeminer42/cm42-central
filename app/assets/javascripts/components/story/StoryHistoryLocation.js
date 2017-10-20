@@ -29,6 +29,10 @@ const StoryHistoryLocation = ({ id, url }) =>
       <button className="btn btn-default toggle-history">
         <i className="mi md-18">history</i>
       </button>
+
+      <button className="btn btn-default clone-story" title={I18n.t('story.events.clone')}>
+        <i className="mi md-18">content_copy</i>
+      </button>
     </span>
   </div>
 

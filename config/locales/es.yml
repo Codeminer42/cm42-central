@@ -82,6 +82,7 @@ es:
       accept: "aceptar"
       reject: "rechazar"
       restart: "reanudar"
+      clone: "Clonar historia"
     type:
       feature: "característica"
       chore: "tarea"

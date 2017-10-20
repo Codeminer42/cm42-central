@@ -86,6 +86,7 @@ en:
       accept: "accept"
       reject: "reject"
       restart: "restart"
+      clone: "Clone story"
     type:
       feature: "feature"
       chore: "chore"
