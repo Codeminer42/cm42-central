@@ -41,6 +41,9 @@
 ### Changed
 - Moved the story action state buttons to a react component.
 
+### Changed
+- Moved the story action state buttons to a react component.
+
 ## [1.14.0] 2017-10-18
 ### Added
 - Added adminer service to docker-compose.
