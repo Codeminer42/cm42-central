@@ -11,6 +11,7 @@ import StoryLabels from 'components/story/StoryLabels';
 import StoryTasks from 'components/story/StoryTasks';
 import TaskForm from 'components/tasks/TaskForm';
 import StoryAttachment from 'components/story/StoryAttachment';
+import StoryStateButtons from 'components/story/StoryStateButtons'
 
 var Clipboard = require('clipboard');
 
@@ -482,9 +483,21 @@ module.exports = FormView.extend({
     } else {
       this.$el.removeClass('editing');
       this.$el.html(this.template({story: this.model, view: this}));
+
+      const stateButtons = this.$('[data-story-state-buttons]').get(0)
+      if(stateButtons) {
+        ReactDOM.render(
+          <StoryStateButtons
+            events={this.model.events()}
+            isSearchResult={this.isSearchResult}
+          />,
+          stateButtons
+        )
+      }
+
       if (isGuest) { this.$el.find('.state-actions').find('.transition').prop('disabled', true) }
     }
-    
+
     this.hoverBox();
     this.handleBackLoggedRelease();
     return this;
