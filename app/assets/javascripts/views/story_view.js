@@ -12,6 +12,7 @@ import StoryTasks from 'components/story/StoryTasks';
 import TaskForm from 'components/tasks/TaskForm';
 import StoryAttachment from 'components/story/StoryAttachment';
 import StoryStateButtons from 'components/story/StoryStateButtons'
+import StoryEstimateButtons from 'components/story/StoryEstimateButtons'
 
 var Clipboard = require('clipboard');
 
@@ -489,9 +490,18 @@ module.exports = FormView.extend({
         ReactDOM.render(
           <StoryStateButtons
             events={this.model.events()}
-            isSearchResult={this.isSearchResult}
           />,
           stateButtons
+        )
+      }
+
+      const estimateButtons = this.$('[data-story-estimate-buttons]').get(0)
+      if(estimateButtons) {
+        ReactDOM.render(
+          <StoryEstimateButtons
+            points={this.model.point_values()}
+          />,
+          estimateButtons
         )
       }
 
