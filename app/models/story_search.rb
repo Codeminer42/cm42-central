@@ -29,18 +29,41 @@ class StorySearch
   private
 
   def parse(query_params)
-    query_params.split(' ').each do |token|
+    query_params.split(',').each do |token|
       if token =~ /^(.+?)\:(.+?)$/
-        conditions.merge!(Regexp.last_match(1) => Regexp.last_match(2))
+        conditions.merge!(Regexp.last_match(1).lstrip => Regexp.last_match(2).lstrip).symbolize_keys
       else
-        parsed_params << token
+        parsed_params << token.lstrip
       end
     end
   end
 
   def add_conditions_to(search_method)
-    new_relation = relation.with_dependencies.send(search_method, parsed_params.join(' '))
-    new_relation = relation.where(conditions) unless conditions.empty?
+    new_relation = relation.with_dependencies.send(search_method, parsed_params.join(','))
+    new_relation = parse_queries(relation) unless conditions.empty?
     new_relation.limit(SEARCH_RESULTS_LIMIT)
+  end
+
+  def parse_queries(table)
+    conditions.each do |key, value|
+      table = table.where(create_queries(table, key, value))
+    end
+    table
+  end
+
+  def create_queries(table, key, value)
+    if date? value
+      { key => value.to_date.beginning_of_day..value.to_date.end_of_day }
+    elsif value.to_i != 0
+      table.arel_table[key].eq(value)
+    else
+      table.arel_table[key].matches("#{value}%")
+    end
+  end
+
+  def date?(value)
+    Date.parse(value) && true
+  rescue
+    false
   end
 end

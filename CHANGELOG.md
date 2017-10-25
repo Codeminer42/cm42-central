@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - Added the option to clone a story.
+- Contextual search using operands.
 
 ### Changed
 - Updated central-support gem version, so Slack can be used in integrations here now.

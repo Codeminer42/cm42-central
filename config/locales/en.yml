@@ -312,6 +312,12 @@ en:
         bottom_line: "Note: You can also use a file exported from Pivotal Tracker."
     no_projects_found: "Oops! It seems like this team doesn't have any project."
     no_recent_activity: "Oops! This team doesn't have recent activity."
+    search_tooltip:
+      title: 'Search operands'
+      syntax: 'SYNTAX: Search terms must be followed by a colon'
+      example: 'Example: title: %{story}, requester: foo bar, created_at: 2017/10/30'
+      properties: 'Properties'
+      people: 'People'
 
   tag_group:
     color: "Color"

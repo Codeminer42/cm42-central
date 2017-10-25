@@ -1,0 +1,21 @@
+.popover { 
+  max-width: 100%;
+}
+
+.tooltip-header { 
+  @extend .small;
+  font-style: italic;
+  border-bottom: 1px solid $lightgrey-9;
+}
+
+.tooltip-content { 
+  @extend .story-title;
+  font-size: 12px;
+  margin-left: 0 !important;
+  padding: 0;
+
+  p {
+    font-weight: bold;
+    color: $darkgrey-8;
+  }
+}
