@@ -43,7 +43,7 @@ class Task extends React.Component {
           disabled={disabled}
           onChange={this._handleChange}
           checked={task.get('done')}
-          label={[task.escape('name'), (!disabled && this.renderDelete())]}
+          label={[task.get('name'), (!disabled && this.renderDelete())]}
         />
       </div>
     );
