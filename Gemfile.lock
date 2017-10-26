@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Codeminer42/cm42-central-support.git
-  revision: 47208e29b55a6d6076dcbd0971e432bff56cf1b5
+  revision: 0cd546ccfaac1ba3d6a1e1fd8957fb2bea88d5a3
   branch: master
   specs:
     central-support (0.9.3)
@@ -577,4 +577,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.15.4
+   1.16.0.pre.3
