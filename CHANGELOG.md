@@ -4,6 +4,9 @@
 ### Added
 - Added the option to clone a story.
 
+### Changed
+- Updated central-support gem version, so Slack can be used in integrations here now.
+
 ## [1.14.0] 2017-10-18
 ### Added
 - Added adminer service to docker-compose.
