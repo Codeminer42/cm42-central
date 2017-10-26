@@ -7,6 +7,9 @@
 ### Changed
 - Updated central-support gem version, so Slack can be used in integrations here now.
 
+### Fixed
+- Tasks labels aren't escaping special characters anymore.
+
 ## [1.14.0] 2017-10-18
 ### Added
 - Added adminer service to docker-compose.
