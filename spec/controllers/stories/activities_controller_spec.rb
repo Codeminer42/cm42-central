@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Stories::ActivitiesController do
   let(:user)  { create(:user, :with_team) }
-  let(:story) { create(:story, :with_project, requested_by: user) }
+  let(:story) { create(:story, :with_project, :with_activity, requested_by: user) }
 
   context 'when logged out' do
     specify do
@@ -13,13 +13,16 @@ describe Stories::ActivitiesController do
 
   context 'when logged in' do
     before do
+      user.teams.first.projects << story.project
+
       sign_in user
+
       allow(subject).to receive_messages(current_user: user, current_team: user.teams.first)
     end
 
     describe '#index' do
       before do
-        xhr :get, :index, project_id: story.project.id, story_id: story.id
+        xhr :get, :index, project_id: story.project.slug, story_id: story.id
       end
 
       it 'returns a successful response' do
@@ -28,6 +31,18 @@ describe Stories::ActivitiesController do
 
       it 'returns all the activities from a Story' do
         expect(response.body).to eq(assigns[:activities].to_json)
+      end
+
+      it 'assigns activities variable' do
+        expect(assigns[:activities]).to match_array(Activity.where(subject: story))
+      end
+
+      it 'assigns project variable' do
+        expect(assigns[:project]).to eq(story.project)
+      end
+
+      it 'assigns story variable' do
+        expect(assigns[:story]).to eq(story)
       end
     end
   end
