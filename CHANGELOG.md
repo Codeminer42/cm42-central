@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [1.15.0] 2017-10-30
 ### Added
 - Added the option to clone a story.
 
@@ -220,7 +222,7 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.14.0...HEAD
+[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.15.0...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
@@ -241,3 +243,4 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [1.12.0]: https://github.com/Codeminer42/cm42-central/tree/v1.12.0
 [1.13.0]: https://github.com/Codeminer42/cm42-central/tree/v1.13.0
 [1.14.0]: https://github.com/Codeminer42/cm42-central/tree/v1.14.0
+[1.15.0]: https://github.com/Codeminer42/cm42-central/tree/v1.15.0
