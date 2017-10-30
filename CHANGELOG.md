@@ -6,6 +6,7 @@
 
 ### Changed
 - Updated central-support gem version, so Slack can be used in integrations here now.
+- Updated central-support gem version, to fix story cache_names bug when it was removed
 
 ### Fixed
 - Tasks labels aren't escaping special characters anymore.

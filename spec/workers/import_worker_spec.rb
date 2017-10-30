@@ -22,12 +22,19 @@ describe ImportWorker do
   end
 
   context 'valid csv' do
+    let(:user) { create :user, name: 'Test User', initials: 'TU' }
     let(:csv) { 'spec/fixtures/csv/stories.csv' }
 
     it 'must import from CSV and create the proper stories' do
+      user.projects << project
       importer.perform('foo', project.id)
       expect(project.stories.count).to eq(48)
       expect(project.start_date).to eq(Date.parse('2009-11-28'))
+      expect(project.stories.first.owned_by).to eq(user)
+      expect(project.stories.first.requested_by).to eq(user)
+      expect(project.stories.first.owned_by_name).to eq('Test User')
+      expect(project.stories.first.owned_by_initials).to eq('TU')
+      expect(project.stories.first.requested_by_name).to eq('Test User')
       expect(importer.cache).to eq('foo' => { invalid_stories: [], errors: nil })
     end
   end
@@ -44,17 +51,23 @@ describe ImportWorker do
   end
 
   context 'invalid csv' do
+    let(:user) { create :user, name: 'Malcolm Locke', initials: 'ML' }
     let(:csv)      { 'spec/fixtures/csv/stories_invalid.csv' }
 
     before { Timecop.freeze(Time.local(2016, 9, 2, 12, 0, 0)) }
     after { Timecop.return }
 
     it 'must import from CSV and create the proper stories' do
+      user.projects << project
+
       importer.perform('foo', project.id)
       expect(project.stories.count).to eq(1)
       expect(project.start_date).to eq(Date.parse('2009-11-28'))
       expect(project.stories.first.accepted_at.to_date).to eq(Date.parse('2009-11-28'))
       expect(project.stories.first.created_at.to_date).to eq(Date.parse('2016-09-02'))
+      expect(project.stories.first.owned_by).to eq(user)
+      expect(project.stories.first.requested_by).to eq(user)
+      expect(project.stories.first.owned_by_name).to eq('Malcolm Locke')
       expect(project.stories.first.owned_by_initials).to eq('ML')
       expect(project.stories.first.requested_by_name).to eq('Malcolm Locke')
       expect(project.stories.first.state).to eq('accepted')
