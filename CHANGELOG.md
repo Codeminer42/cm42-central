@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Fixed
+- Webpack manifest host path set to localhost, so webpack pack file load on Windows is fixed
 
 ## [1.15.0] 2017-10-30
 ### Added
