@@ -5,6 +5,7 @@
 ## [1.15.0] 2017-10-30
 ### Added
 - Added the option to clone a story.
+- Contextual search using operands.
 
 ### Changed
 - Updated central-support gem version, so Slack can be used in integrations here now.

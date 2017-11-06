@@ -143,7 +143,9 @@ es:
     models:
       user: 'Miembro'
       project: "Proyecto"
-      story: 'Articulo'
+      story: 
+        one: 'Articulo'
+        other: 'Articulos'
       team: 'Equipo'
 
     attributes:
@@ -301,7 +303,13 @@ es:
         bottom_line: "Nota: Puede utilizar un archivo exportado útiles desde otro sistema (Pivotal Tracker)."
     no_projects_found: "Oops! Parece que este equipo no tiene ningún proyecto."
     no_recent_activity: "Oops! Este equipo no tiene actividad reciente."
-
+    search_tooltip:
+      title: 'Operandos de búsqueda'
+      syntax: 'Sintaxis: Los términos de búsqueda deben ser seguidos de coma'
+      example: 'Ejemplo: title: %{story}, requester: foo bar, created_at: 2017/10/30'
+      properties: 'Propiedades'
+      people: 'Personas'
+      
   users:
     You are not authorized to perform this action: "Usted no está autorizado para realizar esta acción."
     is already a member of this project: "%{email} ya es un miembro de este proyecto"

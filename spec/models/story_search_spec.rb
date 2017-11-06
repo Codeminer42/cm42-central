@@ -15,11 +15,11 @@ describe StorySearch do
   end
 
   describe 'complex query' do
-    let(:query_params) { 'FOO state:unstarted estimate:3' }
+    let(:query_params) { 'title:FOO, state:unstarted, estimate:3, FOO' }
     subject { StorySearch.new(project.stories, query_params) }
 
     it 'returns a story' do
-      expect(subject.conditions).to eq('state' => 'unstarted', 'estimate' => '3')
+      expect(subject.conditions).to eq('title' => 'FOO', 'state' => 'unstarted', 'estimate' => '3')
       expect(subject.parsed_params).to eq(['FOO'])
     end
   end

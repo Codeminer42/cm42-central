@@ -314,6 +314,12 @@ pt-BR:
         bottom_line: "Nota: Você também pode usar um arquivo exportado de outro sistema (Pivotal Tracker)."
     no_projects_found: "Oops! Parece que esta equipe não tem nenhum projeto."
     no_recent_activity: "Oops! Essa equipe não possui atividade recent."
+    search_tooltip:
+      title: 'Operandos de busca'
+      syntax: 'Sintaxe: Os termos de busca devem ser seguidos de vírgula'
+      example: 'Exemplo: title: %{story}, requester: foo bar, created_at: 2017/10/30'
+      properties: 'Propriedades'
+      people: 'Pessoas'
 
   tag_group:
     new tag_group: "Novo Grupo"

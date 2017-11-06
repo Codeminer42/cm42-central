@@ -15,8 +15,10 @@ engines:
     enabled: true
     config:
       languages:
-      - ruby
-      - javascript
+        ruby:
+          mass_threshold: 20
+        javascript:
+          mass_threshold: 50
     exclude_paths:
       - 'app/controllers/stories_controller.rb'
       - 'app/controllers/teams_controller.rb'

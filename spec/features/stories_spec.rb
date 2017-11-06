@@ -202,7 +202,7 @@ describe 'Stories' do
       visit project_path(project)
       wait_spinner
     end
-    
+
     it 'clones the story to the chilly bin', js: true do
       find('.story-title').trigger('click')
       find('.clone-story').click
@@ -237,7 +237,7 @@ describe 'Stories' do
   describe 'search a story' do
     let(:story) do
       create(:story, title: 'Search for me', project: project,
-                     requested_by: user)
+                     requested_by: user, story_type: 'feature')
     end
 
     before do
@@ -248,6 +248,12 @@ describe 'Stories' do
       within('#form_search') do
         fill_in 'q', with: 'Search'
       end
+    end
+
+    it 'renders the search tooltip', js: true do
+      find('.drop-target').hover
+
+      expect(page).to have_css('.tooltip-content')
     end
 
     it 'finds the story', js: true do
@@ -265,6 +271,18 @@ describe 'Stories' do
       # when the story is delete in the results column it should also disappear from other columns
       expect(page).not_to have_css(story_search_result_selector(story))
       expect(page).not_to have_css(story_selector(story))
+    end
+
+    it 'finds the story using a contextual search query', js: true do
+      page.execute_script("$('#form_search').val('')")
+
+      within('#form_search') do
+        fill_in 'q', with: "title: Search, type: feature"
+      end
+
+      page.execute_script("$('#form_search').submit()")
+
+      expect(page).to have_css('.searchResult')
     end
 
     it 'highlights the story on click the locate button', js: true do
