@@ -24,18 +24,16 @@ function formatPublicPath(host = '', path = '') {
 
 const output = {
   path: resolve('public', settings.public_output_path),
-  publicPath: formatPublicPath(env.ASSET_HOST, settings.public_output_path)
-}
-
-const manifest = {
-  path: resolve('public', settings.public_output_path),
-  publicPath: formatPublicPath(settings.manifest.host, settings.public_output_path)
+  publicPath: formatPublicPath(env.ASSET_HOST, settings.public_output_path),
+  manifest: {
+    path: resolve('public', settings.public_output_path),
+    publicPath: formatPublicPath(settings.manifest.host, settings.public_output_path)
+  }
 }
 
 module.exports = {
   settings,
   env,
   loadersDir,
-  output,
-  manifest
+  output
 }
