@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Fixed
 - Webpack manifest host path set to localhost, so webpack pack file load on Windows is fixed
+- Ability to drag stories from the epic column.
 
 ## [1.15.0] 2017-10-30
 ### Added

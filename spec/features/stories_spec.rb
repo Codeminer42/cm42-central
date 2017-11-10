@@ -422,6 +422,23 @@ describe 'Stories' do
         expect(page).to have_content 'Task 3'
       end
     end
+
+    it 'drags the story to chilly bin', js: true do
+      visit project_path(project)
+      wait_spinner
+      wait_page_load
+
+      sleep 0.5
+      first(:link, 'epic2').click
+
+      resultStory = find(story_search_result_selector(story3))
+      target = page.first('#chilly_bin')
+      resultStory.drag_to(target)
+
+      within '#chilly_bin' do
+        expect(page).to have_content 'Task 3'
+      end
+    end
   end
 
   describe "estimate a story" do
