@@ -4,6 +4,8 @@ default: &default
   source_path: app/javascript
   source_entry_path: packs
   public_output_path: packs
+  manifest: 
+    host: http://127.0.0.1:3808
 
   extensions:
     - .coffee
