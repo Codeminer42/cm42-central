@@ -1,5 +1,5 @@
 class Admin::UsersController < ApplicationController
-  before_action :set_user, only: [:edit, :update, :destroy, :enrollment]
+  before_action :set_user, only: %i[edit update destroy enrollment]
 
   # GET /admin/users
   def index

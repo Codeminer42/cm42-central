@@ -12,7 +12,7 @@ describe TeamPolicy do
     context 'for an admin' do
       let(:current_user) { create :user, :with_team_and_is_admin }
 
-      %i(index show create new update edit destroy).each do |action|
+      %i[index show create new update edit destroy].each do |action|
         it { should permit(action) }
       end
 
@@ -24,11 +24,11 @@ describe TeamPolicy do
     context 'for a user' do
       let(:current_user) { create :user, :with_team }
 
-      %i(index create new).each do |action|
+      %i[index create new].each do |action|
         it { should permit(action) }
       end
 
-      %i(update edit destroy).each do |action|
+      %i[update edit destroy].each do |action|
         it { should_not permit(action) }
       end
 

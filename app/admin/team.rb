@@ -24,7 +24,7 @@ ActiveAdmin.register Team do
     f.actions
   end
 
-  sidebar 'Team Details', only: [:show, :edit] do
+  sidebar 'Team Details', only: %i[show edit] do
     ul do
       li link_to 'Ownerships', manage_team_ownerships_path(resource)
       li link_to 'Enrollments', manage_team_enrollments_path(resource)

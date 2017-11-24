@@ -1,4 +1,4 @@
-class Team < ActiveRecord::Base
+class Team < ApplicationRecord
   include Central::Support::TeamConcern::Associations
   include Central::Support::TeamConcern::Validations
   include Central::Support::TeamConcern::Scopes
@@ -7,7 +7,7 @@ class Team < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: :slugged
 
-  has_attachment :logo, accept: [:jpg, :png, :gif, :bmp]
+  has_attachment :logo, accept: %i[jpg png gif bmp]
 
   has_many :api_tokens
   has_many :tag_groups

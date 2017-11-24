@@ -18,12 +18,12 @@ describe Story do
 
     specify do
       expect(subject.as_json['story'].keys.sort).to eq(
-        %w(
+        %w[
           title accepted_at created_at release_date updated_at description
           project_id story_type owned_by_id requested_by_id
           requested_by_name owned_by_name owned_by_initials estimate
           state position id errors labels notes tasks documents
-        ).sort
+        ].sort
       )
     end
   end
@@ -129,7 +129,7 @@ describe Story do
     end
 
     context 'when the state is unstarted or unscheduled' do
-      %w(unstarted unscheduled).each do |state|
+      %w[unstarted unscheduled].each do |state|
         let(:story_params) { { state: state } }
 
         it 'does not set the project start_date to current' do

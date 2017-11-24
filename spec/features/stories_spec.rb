@@ -147,7 +147,8 @@ describe 'Stories' do
         wait_spinner
 
         wait_page_load
-        expect(find("#story-#{story.id}")[:title]).to match(I18n.t('story.warnings.backlogged_release'))
+        expect(find("#story-#{story.id}")[:title])
+          .to match(I18n.t('story.warnings.backlogged_release'))
       end
     end
   end
@@ -173,7 +174,7 @@ describe 'Stories' do
         .to have_content("##{target_story.id}")
     end
 
-    %w(unstarted started finished delivered accepted rejected).each do |state|
+    %w[unstarted started finished delivered accepted rejected].each do |state|
       it "#{state} story link", js: true do
         visit project_path(project)
         wait_spinner
@@ -202,7 +203,7 @@ describe 'Stories' do
       visit project_path(project)
       wait_spinner
     end
-    
+
     it 'clones the story to the chilly bin', js: true do
       find('.story-title').trigger('click')
       find('.clone-story').click
@@ -285,9 +286,9 @@ describe 'Stories' do
 
       page.execute_script("$('#form_search').submit()")
 
-      resultStory = find('.searchResult')
+      result_story = find('.searchResult')
       target = page.first('#chilly_bin')
-      resultStory.drag_to(target)
+      result_story.drag_to(target)
 
       expect(page).to_not have_css('.searchResult')
       expect(find('#chilly_bin')).to have_content('Search for me')
@@ -406,13 +407,13 @@ describe 'Stories' do
     end
   end
 
-  describe "estimate a story" do
+  describe 'estimate a story' do
     let!(:story) do
       create(:story, title: 'Task 1', project: project,
                      requested_by: user, labels: 'epic1')
     end
 
-    it "shows the buttons to estimate a story", js: true do
+    it 'shows the buttons to estimate a story', js: true do
       visit project_path(project)
       wait_spinner
       wait_page_load

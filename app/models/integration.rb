@@ -1,3 +1,3 @@
-class Integration < ActiveRecord::Base
+class Integration < ApplicationRecord
   include Central::Support::IntegrationConcern
 end

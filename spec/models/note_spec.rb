@@ -20,7 +20,7 @@ describe Note do
   describe '#as_json' do
     it 'returns the right keys' do
       expect(subject.as_json['note'].keys.sort)
-        .to eq(%w(created_at errors id note story_id updated_at user_id user_name))
+        .to eq(%w[created_at errors id note story_id updated_at user_id user_name])
     end
   end
 

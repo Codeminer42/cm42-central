@@ -49,7 +49,7 @@ ActiveAdmin.register Project do
     f.actions
   end
 
-  sidebar 'Project Details', only: [:show, :edit] do
+  sidebar 'Project Details', only: %i[show edit] do
     ul do
       li link_to 'Memberships', manage_project_memberships_path(resource)
       li link_to 'Ownerships', manage_project_ownerships_path(resource)

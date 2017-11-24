@@ -108,7 +108,7 @@ class MissingKeysFinder
   def load_config
     @yaml = {}
     begin
-      @yaml = YAML.load_file(File.join(Rails.root, 'config', 'ignore_missing_keys.yml'))
+      @yaml = YAML.load_file(Rails.root.join('config', 'ignore_missing_keys.yml'))
     rescue
       STDERR.puts 'No ignore_missing_keys.yml config file.'
     end

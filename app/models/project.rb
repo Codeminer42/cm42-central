@@ -1,4 +1,4 @@
-class Project < ActiveRecord::Base
+class Project < ApplicationRecord
   include Central::Support::ProjectConcern::Attributes
   include Central::Support::ProjectConcern::Associations
   include Central::Support::ProjectConcern::Validations
@@ -10,12 +10,12 @@ class Project < ActiveRecord::Base
 
   MAX_MEMBERS_PER_CARD = 4
 
-  JSON_ATTRIBUTES = %w(
+  JSON_ATTRIBUTES = %w[
     id name iteration_length iteration_start_day start_date
     default_velocity
-  ).freeze
+  ].freeze
 
-  JSON_METHODS = %w(last_changeset_id point_values).freeze
+  JSON_METHODS = %w[last_changeset_id point_values].freeze
 
   belongs_to :tag_group
 

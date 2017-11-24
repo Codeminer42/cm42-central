@@ -1,4 +1,4 @@
-class TagGroup < ActiveRecord::Base
+class TagGroup < ApplicationRecord
   has_many :projects
   belongs_to :team
 

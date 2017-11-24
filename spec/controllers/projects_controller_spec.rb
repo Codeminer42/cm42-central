@@ -2,14 +2,14 @@ require 'rails_helper'
 
 describe ProjectsController do
   context 'when logged out' do
-    %w(index new create archived).each do |action|
+    %w[index new create archived].each do |action|
       specify do
         get action
         expect(response).to redirect_to(new_user_session_url)
       end
     end
 
-    %w(
+    %w[
       show
       edit
       update
@@ -21,7 +21,7 @@ describe ProjectsController do
       unarchive
       ownership
       join
-    ).each do |action|
+    ].each do |action|
       specify do
         get action, id: 42
         expect(response).to redirect_to(new_user_session_url)

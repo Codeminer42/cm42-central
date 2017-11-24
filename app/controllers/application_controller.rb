@@ -81,7 +81,7 @@ class ApplicationController < ActionController::Base
   end
 
   def must_pundit?
-    !devise_controller? && !(self.class.parent == Manage)
+    !devise_controller? && self.class.parent != Manage
   end
 
   def set_layout_settings

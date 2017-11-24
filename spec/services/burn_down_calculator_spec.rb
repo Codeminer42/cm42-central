@@ -7,7 +7,7 @@ describe BurnDownCalculator do
   let(:story2)        { double(:story2, estimate: 8, delivered_at: today) }
   let(:stories)       { [story1, story2] }
 
-  let(:backlog_iteration)  do
+  let(:backlog_iteration) do
     double(:backlog_iteration, points: 11, to_a: stories, start_date: tomorrow)
   end
 

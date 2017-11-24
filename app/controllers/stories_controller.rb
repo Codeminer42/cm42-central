@@ -91,9 +91,9 @@ class StoriesController < ApplicationController
   private
 
   def allowed_params
-    attachinary_params = [
-      :id, :public_id, :version, :signature, :width, :height, :format, :resource_type,
-      :created_at, :tags, :bytes, :type, :etag, :url, :secure_url, :original_filename
+    attachinary_params = %i[
+      id public_id version signature width height format resource_type
+      created_at tags bytes type etag url secure_url original_filename
     ]
 
     params.require(:story).permit(

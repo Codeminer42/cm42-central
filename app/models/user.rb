@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   include Central::Support::UserConcern::Associations
   include Central::Support::UserConcern::Validations
   include Central::Support::UserConcern::Callbacks
@@ -7,9 +7,9 @@ class User < ActiveRecord::Base
   gravtastic default: 'identicon'
 
   # FIXME: - DRY up, repeated in Story model
-  JSON_ATTRIBUTES = %w(id name initials username email finished_tour).freeze
+  JSON_ATTRIBUTES = %w[id name initials username email finished_tour].freeze
 
-  AUTHENTICATION_KEYS = %i(email).freeze
+  AUTHENTICATION_KEYS = %i[email].freeze
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
   end
 
   def as_json(_options = {})
-    super(only: JSON_ATTRIBUTES, methods: [:tour_steps, :guest?])
+    super(only: JSON_ATTRIBUTES, methods: %i[tour_steps guest?])
   end
 
   def self.find_first_by_auth_conditions(warden_conditions)
