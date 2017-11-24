@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe ImportWorker do
-  let(:project)  { create :project }
+  let(:project) { create :project }
   let(:importer) { ImportWorker.new }
-  let(:import)   { mock_model(Attachinary::File, fullpath: Rack::Test::UploadedFile.new(csv)) }
+  let(:import) { mock_model(Attachinary::File, fullpath: Rack::Test::UploadedFile.new(csv)) }
 
   before do
     allow(Project).to receive_message_chain(:friendly, :find).with(project.id).and_return(project)
@@ -40,7 +40,7 @@ describe ImportWorker do
   end
 
   context 'illegal csv' do
-    let(:csv)      { 'spec/fixtures/csv/stories_illegal.csv' }
+    let(:csv) { 'spec/fixtures/csv/stories_illegal.csv' }
 
     it 'must import from CSV and create the proper stories' do
       importer.perform('foo', project.id)
@@ -52,7 +52,7 @@ describe ImportWorker do
 
   context 'invalid csv' do
     let(:user) { create :user, name: 'Malcolm Locke', initials: 'ML' }
-    let(:csv)      { 'spec/fixtures/csv/stories_invalid.csv' }
+    let(:csv) { 'spec/fixtures/csv/stories_invalid.csv' }
 
     before { Timecop.freeze(Time.local(2016, 9, 2, 12, 0, 0)) }
     after { Timecop.return }

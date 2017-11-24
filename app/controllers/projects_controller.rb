@@ -1,11 +1,11 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: %i(show edit update destroy import import_upload
+  before_action :set_project, only: %i[show edit update destroy import import_upload
                                        reports ownership archive unarchive
-                                       change_archived projects_unjoined)
-  before_action :prepare_session, only: %i(import import_upload)
-  before_action -> { define_sidebar :project_settings }, only: %i(import edit)
-  before_action :set_story_flow, only: %i(show)
-  before_action :fluid_layout, only: %i(show edit import)
+                                       change_archived projects_unjoined]
+  before_action :prepare_session, only: %i[import import_upload]
+  before_action -> { define_sidebar :project_settings }, only: %i[import edit]
+  before_action :set_story_flow, only: %i[show]
+  before_action :fluid_layout, only: %i[show edit import]
 
   # GET /projects
   # GET /projects.xml

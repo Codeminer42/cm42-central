@@ -21,8 +21,15 @@ Rails/Date:
 Rails/HttpPositionalArguments:
   Enabled: false
 
+Rails/SkipsModelValidations:
+  Enabled: false
+
 Documentation:
   Enabled: false
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - 'spec/**/*.rb'
 
 Style/Semicolon:
   AllowAsExpressionSeparator: true
@@ -39,10 +46,10 @@ Style/FrozenStringLiteralComment:
 Style/StructInheritance:
   Enabled: false
 
-Style/AlignParameters:
+Layout/AlignParameters:
   Enabled: false
 
-Style/ClosingParenthesisIndentation:
+Layout/ClosingParenthesisIndentation:
   Enabled: false
 
 Metrics/LineLength:
@@ -65,6 +72,7 @@ Metrics/ClassLength:
   Max: 110
   Exclude:
    - 'app/controllers/projects_controller.rb'
+   - 'app/controllers/teams_controller.rb'
 
 Metrics/PerceivedComplexity:
   Enabled: true

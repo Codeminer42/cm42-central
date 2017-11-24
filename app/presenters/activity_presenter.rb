@@ -3,7 +3,7 @@ class ActivityPresenter < SimpleDelegator
 
   attr_reader :activity
 
-  IGNORED_FIELDS = %w(updated_at created_at owned_by_id owned_by_initials requested_by_id).freeze
+  IGNORED_FIELDS = %w[updated_at created_at owned_by_id owned_by_initials requested_by_id].freeze
   STORY_STATES_ENUM = {
     'unscheduled' => 0,
     'unstarted' => 1,

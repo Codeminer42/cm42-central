@@ -1,4 +1,4 @@
-class Story < ActiveRecord::Base
+class Story < ApplicationRecord
   include Central::Support::StoryConcern::Attributes
   include Central::Support::StoryConcern::Associations
   include Central::Support::StoryConcern::Validations
@@ -23,7 +23,7 @@ class Story < ActiveRecord::Base
   has_many :tasks, dependent: :destroy
 
   has_attachments :documents,
-                  accept: [:raw, :jpg, :png, :psd, :docx, :xlsx, :doc, :xls, :pdf],
+                  accept: %i[raw jpg png psd docx xlsx doc xls pdf],
                   maximum: 10
 
   attr_accessor :documents_attributes_was
@@ -47,14 +47,14 @@ class Story < ActiveRecord::Base
                   against: :labels,
                   ranked_by: ':trigram'
 
-  JSON_ATTRIBUTES = %w(
+  JSON_ATTRIBUTES = %w[
     title release_date accepted_at created_at updated_at description
     project_id story_type owned_by_id requested_by_id
     owned_by_name owned_by_initials requested_by_name estimate
     state position id labels
-  ).freeze
+  ].freeze
 
-  JSON_METHODS = %w(errors notes documents tasks).freeze
+  JSON_METHODS = %w[errors notes documents tasks].freeze
 
   def as_json(_options = {})
     super(only: JSON_ATTRIBUTES, methods: JSON_METHODS)
@@ -68,7 +68,7 @@ class Story < ActiveRecord::Base
   # and the state is changing to any state other than 'unstarted' or 'unscheduled'
   def fix_project_start_date
     return unless state_changed?
-    return unless project && !project.start_date && !%w(unstarted unscheduled).include?(state)
+    return unless project && !project.start_date && !%w[unstarted unscheduled].include?(state)
     project.start_date = Date.current
   end
 
@@ -80,7 +80,7 @@ class Story < ActiveRecord::Base
   end
 
   def release_date=(val)
-    return unless val.present?
+    return if val.blank?
 
     date = Chronic.parse(val)
     self[:release_date] = date

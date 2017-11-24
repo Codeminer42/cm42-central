@@ -5,14 +5,14 @@ describe TeamsController, type: :controller do
   let!(:team) { user.teams.first }
 
   context 'when logged out' do
-    %w(index switch new).each do |action|
+    %w[index switch new].each do |action|
       specify do
         get action
         expect(response).to redirect_to(new_user_session_url)
       end
     end
 
-    %w(edit update destroy).each do |action|
+    %w[edit update destroy].each do |action|
       specify do
         get action, id: 42
         expect(response).to redirect_to(new_user_session_url)

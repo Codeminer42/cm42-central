@@ -84,7 +84,7 @@ describe ProjectOperations do
         activity.subject_changes.delete('updated_at')
         expect(activity.subject_changes).to eq(
           'name' => ['Foo bar', 'Hello World'],
-          'point_scale' => %w(fibonacci linear),
+          'point_scale' => %w[fibonacci linear],
           'iteration_start_day' => [1, 4]
         )
       end

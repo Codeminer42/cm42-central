@@ -7,7 +7,7 @@ module TeamOperations
     protected
 
     def after_save
-      return unless current_user.present?
+      return if current_user.blank?
       model.enrollments.create user: current_user, is_admin: true
     end
   end

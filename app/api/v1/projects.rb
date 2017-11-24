@@ -69,7 +69,7 @@ class V1::Projects < Grape::API
     params do
       optional :state,
                type: Symbol,
-               values: [:done, :in_progress, :backlog, :chilly_bin],
+               values: %i[done in_progress backlog chilly_bin],
                default: :backlog
       optional :created_at, type: DateTime
       optional :accepted_at, type: DateTime

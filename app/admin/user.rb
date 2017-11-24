@@ -37,7 +37,7 @@ ActiveAdmin.register User do
     f.actions
   end
 
-  sidebar 'Team Details', only: [:show, :edit] do
+  sidebar 'Team Details', only: %i[show edit] do
     ul do
       li link_to 'Memberships', manage_user_memberships_path(resource)
       li link_to 'Enrollments', manage_user_enrollments_path(resource)

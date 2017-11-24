@@ -1,4 +1,4 @@
-class Activity < ActiveRecord::Base
+class Activity < ApplicationRecord
   include Central::Support::ActivityConcern::Associations
   include Central::Support::ActivityConcern::Validations
   include Central::Support::ActivityConcern::Callbacks

@@ -19,7 +19,7 @@ describe TagGroupPolicy do
     context 'for an admin' do
       let(:current_user) { create :user, :with_team_and_is_admin }
 
-      %i(index show create new update edit).each do |action|
+      %i[index show create new update edit].each do |action|
         it { is_expected.to permit(action) }
       end
 
@@ -31,7 +31,7 @@ describe TagGroupPolicy do
     context 'for a user' do
       let(:current_user) { create :user, :with_team }
 
-      %i(index show create new update edit).each do |action|
+      %i[index show create new update edit].each do |action|
         it { is_expected.not_to permit(action) }
       end
 
