@@ -1,8 +1,15 @@
 # Changelog
 
 ## [Unreleased]
+
+## [1.16.0] 2017-11-28
 ### Added
+- Auto collapse done stories.
 - Ability to drag stories from the epic column.
+
+### Changed
+- Updated rails to 4.2.7.1
+- Updated rubocop to 0.49.1
 
 ### Fixed
 - Webpack manifest host path set to localhost, so webpack pack file load on Windows is fixed
@@ -229,7 +236,7 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.15.0...HEAD
+[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.16.0...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
@@ -251,3 +258,4 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [1.13.0]: https://github.com/Codeminer42/cm42-central/tree/v1.13.0
 [1.14.0]: https://github.com/Codeminer42/cm42-central/tree/v1.14.0
 [1.15.0]: https://github.com/Codeminer42/cm42-central/tree/v1.15.0
+[1.16.0]: https://github.com/Codeminer42/cm42-central/tree/v1.16.0
