@@ -2,14 +2,14 @@ require 'rails_helper'
 
 describe StoriesController do
   describe 'when logged out' do
-    %w(index done backlog in_progress create).each do |action|
+    %w[index done backlog in_progress create].each do |action|
       specify do
         get action, project_id: 99
         expect(response).to redirect_to(new_user_session_url)
       end
     end
 
-    %w(show update destroy).each do |action|
+    %w[show update destroy].each do |action|
       specify do
         get action, project_id: 99, id: 42
         expect(response).to redirect_to(new_user_session_url)
@@ -106,7 +106,7 @@ describe StoriesController do
               'format' => 'jpg',
               'resource_type' => 'image',
               'created_at' => '2016-09-13T17:01:21Z',
-              'tags' => %w(development_env attachinary_tmp),
+              'tags' => %w[development_env attachinary_tmp],
               'bytes' => 690_807,
               'type' =>
               'upload',
@@ -173,7 +173,7 @@ describe StoriesController do
         end
       end
 
-      %w(done backlog in_progress).each do |action|
+      %w[done backlog in_progress].each do |action|
         describe action do
           specify do
             xhr :get, action, project_id: project.id, id: story.id

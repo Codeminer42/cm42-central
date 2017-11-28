@@ -87,6 +87,9 @@ module.exports = Backbone.View.extend({
     var view = new StoryView({model: story}).render();
     this.appendViewToColumn(view, column);
     view.setFocus();
+    if (column === '#done') {
+      view.$el.addClass('collapsed-iteration');
+    }
   },
 
   appendViewToColumn: function(view, columnName) {
@@ -128,6 +131,7 @@ module.exports = Backbone.View.extend({
       that.addStory(story);
     });
 
+    this.$('#done div.iteration:last').click();
     this.$loadingSpin.hide();
     this.scrollToStory(window.location.hash || '');
   },

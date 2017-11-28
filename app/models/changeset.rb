@@ -1,4 +1,4 @@
-class Changeset < ActiveRecord::Base
+class Changeset < ApplicationRecord
   belongs_to :project
   belongs_to :story
 

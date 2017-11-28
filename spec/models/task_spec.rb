@@ -16,9 +16,9 @@ describe Task do
 
   describe '#as_json' do
     it 'returns the right keys' do
-      expect(task.as_json['task'].keys.sort).to eq(%w(
+      expect(task.as_json['task'].keys.sort).to eq(%w[
                                                      created_at done id name story_id updated_at
-                                                   ))
+                                                   ])
     end
   end
 

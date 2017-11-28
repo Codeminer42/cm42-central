@@ -1,6 +1,9 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Iteration from 'components/stories/Iteration';
+
 module.exports = Backbone.View.extend({
 
-  template: require('templates/iteration.ejs'),
 
   className: 'iteration',
 
@@ -22,7 +25,15 @@ module.exports = Backbone.View.extend({
   },
 
   render: function() {
-    this.$el.html(this.template({iteration: this.model, view: this}));
+    ReactDOM.render(
+      <Iteration
+        number={this.model.get('number')}
+        startDate={this.model.startDate().toDateString()}
+        points={this.points()}
+      />,
+      this.$el[0]
+    );
+
     return this;
   },
 

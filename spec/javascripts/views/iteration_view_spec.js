@@ -23,20 +23,11 @@ describe('IterationView', function() {
 
   describe("render", function() {
 
-    beforeEach(function() {
-      this.view.template.returns('<p>foo</p>');
-    });
-
-    it("calls the template with the iteration and view as arguments", function() {
-      this.view.render();
-      expect(this.view.template).toHaveBeenCalledWith({
-        iteration: this.iteration, view: this.view
-      });
-    });
-
     it("renders the output of the template into the el", function() {
       this.view.render();
-      expect(this.view.$el.html()).toEqual('<p>foo</p>');
+      expect(this.view.$el.html()).toContain(
+        '<span class="points">999</span>'
+      );
     });
 
   });

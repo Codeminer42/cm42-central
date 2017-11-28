@@ -20,11 +20,11 @@ describe ProjectPolicy do
     context 'for an admin' do
       let(:current_user) { create :user, :with_team_and_is_admin }
 
-      %i(index show create new update edit).each do |action|
+      %i[index show create new update edit].each do |action|
         it { should permit(action) }
       end
 
-      %i(
+      %i[
         import
         import_upload
         archive
@@ -34,7 +34,7 @@ describe ProjectPolicy do
         unshare
         transfer
         ownership
-      ).each do |action|
+      ].each do |action|
         it { should permit(action) }
       end
     end
@@ -49,11 +49,11 @@ describe ProjectPolicy do
     context 'for an admin' do
       let(:current_user) { create :user, :with_team_and_is_admin }
 
-      %i(index show create new update edit reports archived).each do |action|
+      %i[index show create new update edit reports archived].each do |action|
         it { should permit(action) }
       end
 
-      %i(
+      %i[
         import
         import_upload
         archive
@@ -64,7 +64,7 @@ describe ProjectPolicy do
         transfer
         ownership
         join
-      ).each do |action|
+      ].each do |action|
         it { should_not permit(action) }
       end
 
@@ -76,15 +76,15 @@ describe ProjectPolicy do
     context 'for a user' do
       let(:current_user) { create :user, :with_team }
 
-      %i(show reports).each do |action|
+      %i[show reports].each do |action|
         it { should permit(action) }
       end
 
-      %i(index create new update edit).each do |action|
+      %i[index create new update edit].each do |action|
         it { should_not permit(action) }
       end
 
-      %i(
+      %i[
         import
         import_upload
         archive
@@ -95,7 +95,7 @@ describe ProjectPolicy do
         transfer
         ownership
         join
-      ).each do |action|
+      ].each do |action|
         it { should_not permit(action) }
       end
 
@@ -111,11 +111,11 @@ describe ProjectPolicy do
     context 'for an admin' do
       let(:current_user) { create :user, :with_team_and_is_admin }
 
-      %i(index show create new update edit reports join).each do |action|
+      %i[index show create new update edit reports join].each do |action|
         it { should permit(action) }
       end
 
-      %i(
+      %i[
         import
         import_upload
         archive
@@ -125,7 +125,7 @@ describe ProjectPolicy do
         unshare
         transfer
         ownership
-      ).each do |action|
+      ].each do |action|
         it { should_not permit(action) }
       end
 
@@ -139,11 +139,11 @@ describe ProjectPolicy do
 
       it { should permit(:join) }
 
-      %i(index create new update edit reports).each do |action|
+      %i[index create new update edit reports].each do |action|
         it { should_not permit(action) }
       end
 
-      %i(
+      %i[
         import
         import_upload
         archive
@@ -153,7 +153,7 @@ describe ProjectPolicy do
         unshare
         transfer
         ownership
-      ).each do |action|
+      ].each do |action|
         it { should_not permit(action) }
       end
 
@@ -165,11 +165,11 @@ describe ProjectPolicy do
     context 'for a guest' do
       let(:current_user) { create :user, :with_team, role: 'guest' }
 
-      %i(index create new update edit reports).each do |action|
+      %i[index create new update edit reports].each do |action|
         it { should_not permit(action) }
       end
 
-      %i(
+      %i[
         import
         import_upload
         archive
@@ -180,7 +180,7 @@ describe ProjectPolicy do
         transfer
         ownership
         join
-      ).each do |action|
+      ].each do |action|
         it { should_not permit(action) }
       end
 

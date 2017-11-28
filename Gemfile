@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.3.1'
 
-gem 'rails', '4.2.5.1'
+gem 'rails', '4.2.7.1'
 
 gem 'activeadmin', '~> 1.0.0.pre4'
 gem 'api-pagination'
@@ -96,7 +96,7 @@ group :development do
   gem "better_errors"
   gem "binding_of_caller"
   gem "bullet"
-  gem 'rubocop', '0.46.0'
+  gem 'rubocop', '0.49.1'
 end
 
 group :development, :test do

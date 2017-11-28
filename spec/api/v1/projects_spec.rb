@@ -362,10 +362,11 @@ RSpec.describe V1::Projects do
     let(:project) { create(:project, mail_reports: true) }
 
     it 'updates mail_reports into project' do
-      expect { put "/api/v1/projects/#{project.slug}", 
+      expect do
+        put "/api/v1/projects/#{project.slug}",
                project: { mail_reports: false },
                api_key: api_token.token; project.reload
-      }.to change(project, :mail_reports).to(false)
+      end.to change(project, :mail_reports).to(false)
     end
   end
 end

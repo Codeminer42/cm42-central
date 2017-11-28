@@ -34,7 +34,7 @@ describe UsersController do
       expect(response).to redirect_to(new_user_session_url)
     end
 
-    %w(destroy).each do |action|
+    %w[destroy].each do |action|
       specify do
         get action, id: 42, project_id: project.id
         expect(response).to redirect_to(new_user_session_url)

@@ -1,4 +1,4 @@
-class ApiToken < ActiveRecord::Base
+class ApiToken < ApplicationRecord
   before_create :generate_token
 
   belongs_to :team

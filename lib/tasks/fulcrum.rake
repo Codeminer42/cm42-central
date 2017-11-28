@@ -13,7 +13,7 @@ namespace :fulcrum do
   end
 
   desc "Create a user. A confirmation email will be sent to the user's address."
-  task :create_user, [:email, :name, :initials, :password] => :environment do |_, args|
+  task :create_user, %i[email name initials password] => :environment do |_, args|
     user = User.create!(
       email: args.email, name: args.name, initials: args.initials,
       password: args.password, password_confirmation: args.password

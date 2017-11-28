@@ -27,7 +27,7 @@ describe 'Teams' do
         VCR.use_cassette('cloudinary_upload_team_logo') do
           visit edit_team_path(user.teams.last.slug)
 
-          attach_file('Logo', Rails.root.join('spec/fixtures/blank.jpg'))
+          attach_file('Logo', Rails.root.join('spec', 'fixtures', 'blank.jpg'))
           click_button 'Update Team'
 
           expect(user.teams.last.logo).not_to be_nil
