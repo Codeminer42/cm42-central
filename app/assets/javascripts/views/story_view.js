@@ -484,7 +484,7 @@ module.exports = FormView.extend({
       this.$el.html(this.template({story: this.model, view: this}));
       if (isGuest) { this.$el.find('.state-actions').find('.transition').prop('disabled', true) }
     }
-    
+
     this.hoverBox();
     this.handleBackLoggedRelease();
     return this;
