@@ -1,6 +1,9 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Ability to drag stories from the epic column.
+
 ### Fixed
 - Webpack manifest host path set to localhost, so webpack pack file load on Windows is fixed
 - Highlight the searched stories not behaving properly.

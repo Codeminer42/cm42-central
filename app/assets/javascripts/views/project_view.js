@@ -111,7 +111,10 @@ module.exports = Backbone.View.extend({
     var that = this;
 
     _.each(this.columns, function(column) {
-      if(column.$el.hasClass('search_results_column')) return;
+      if (
+         column.$el.hasClass('search_results_column') ||
+         column.$el.hasClass('epic_column')
+         ) return;
       column.$el.find('.story_column').html("");
     });
 
