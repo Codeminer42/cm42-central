@@ -377,10 +377,10 @@ module.exports = FormView.extend({
   highlightSearchedStories: function () {
     let storyID = `#story-${ this.model.get('id') }`;
     let storyElement = $(storyID);
-    storyElement.effect("highlight", {}, 3500);
-    storyElement.parent().animate({
+    $('.content-wrapper').animate({
       scrollTop: storyElement.offset().top - 15
-    }, 'slow');
+    }, 'fast');
+    storyElement.effect("highlight", {color: 'lightgreen'}, 1500);
   },
 
   render: function() {
