@@ -18,6 +18,22 @@ module.exports = Backbone.Collection.extend({
     this.labels = [];
   },
 
+  saveSorting: function(columnName) {
+    var column = this;
+    if(columnName) {
+      column = this.column(columnName);
+    }
+    var orderedIds = column.map(
+      function(model){
+          return model.id;
+    });
+    Backbone.ajax({
+      method: 'PUT',
+      url: this.url+"/reorder",
+      data: { ordered_ids: orderedIds }
+    });
+  },
+
   comparator: function(story) {
     return story.position();
   },
@@ -27,8 +43,24 @@ module.exports = Backbone.Collection.extend({
     if(index >= this.length) {
       return undefined;
     }
-
     return this.at(index);
+  },
+
+  nextOnColumn: function(story, column){
+    var index = this.column(column).indexOf(story) + 1;
+    if(index >= this.length) {
+      return undefined;
+    }
+    
+    return this.column(column)[index];
+  },
+
+  previousOnColumn: function(story, column){
+    var index = this.column(column).indexOf(story) - 1;
+    if(index >= this.length) {
+      return undefined;
+    }
+    return this.column(column)[index];
   },
 
   previous: function(story) {
