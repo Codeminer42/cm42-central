@@ -17,6 +17,29 @@ describe StoriesController do
     end
   end
 
+  context 'when sorting stories' do
+    let(:user) { create :user, :with_team }
+    let(:project) do
+      create(:project, name: 'Test Project', users: [user], teams: [user.teams.first])
+    end
+
+    let!(:story_one) { create :story, project: project, requested_by: user }
+    let!(:story_two) { create :story, project: project, requested_by: user }
+    
+    before do
+      sign_in user
+      allow(subject).to receive_messages(current_user: user, current_team: user.teams.first)
+    end
+
+    describe '#sort' do
+      specify do
+        xhr :put, :sort, project_id: project.id, ordered_ids: [story_two.id, story_one.id]
+        expect(story_two.reload.position).to eq(1)
+        expect(story_one.reload.position).to eq(2)
+      end
+    end
+  end
+
   context 'when logged in' do
     let(:user) { create :user, :with_team }
     let!(:project) do
