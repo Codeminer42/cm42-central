@@ -14,6 +14,7 @@
 ### Fixed
 - Webpack manifest host path set to localhost, so webpack pack file load on Windows is fixed
 - Highlight the searched stories not behaving properly.
+- Stories priority sorting
 
 ## [1.15.0] 2017-10-30
 ### Added

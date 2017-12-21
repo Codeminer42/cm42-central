@@ -46,12 +46,15 @@ Rails.application.routes.draw do
     resources :memberships, only: [:create]
     resources :integrations, only: [:index, :create, :destroy]
     resources :changesets, only: [:index]
-    resources :stories, only: [:index, :create, :update, :destroy, :show] do
+    
+    resources :stories, only: [:index, :create, :destroy, :show]  do
       resources :activities, only: [:index], module: 'stories'
       resources :notes, only: [:index, :create, :show, :destroy]
       resources :tasks, only: [:create, :destroy, :update]
       collection do
         get :done, :in_progress, :backlog
+        put :sort
+        put ':id', action: :update # less priority over :sort  
       end
     end
   end
