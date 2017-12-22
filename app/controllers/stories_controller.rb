@@ -29,8 +29,7 @@ class StoriesController < ApplicationController
   end
 
   def sort
-    ordered_ids = params[:ordered_ids]
-    @stories = SortStories.new(ordered_ids).call do |story|
+    @stories = SortStories.new(params[:ordered_ids]).call do |story|
       authorize story
     end
     render @stories, json: @stories
