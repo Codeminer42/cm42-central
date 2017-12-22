@@ -53,7 +53,7 @@ module.exports = Backbone.Collection.extend({
   },
 
   storyByIndexOnColumn: function(index, column){
-    if(index >= this.length) {
+    if(index >= this.length || index < 0) {
       return undefined;
     }
     return this.column(column)[index];
