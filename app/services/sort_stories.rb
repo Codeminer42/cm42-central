@@ -6,7 +6,7 @@ class SortStories
     @stories = Story.find(@ordered_ids)
   end
 
-  def call()
+  def call
     @stories.each do |story|
       yield(story) if block_given?
       update_position(story)
