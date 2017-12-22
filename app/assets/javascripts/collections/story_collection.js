@@ -38,29 +38,24 @@ module.exports = Backbone.Collection.extend({
     return story.position();
   },
 
-  next: function(story) {
-    var index = this.indexOf(story) + 1;
-    if(index >= this.length) {
-      return undefined;
-    }
-    return this.at(index);
+  indexOfStoryOnColumn: function(story){
+     return this.column(story.column).indexOf(story);
   },
 
-  nextOnColumn: function(story, column){
-    var index = this.column(column).indexOf(story) + 1;
+  nextOnColumn: function(story){
+    var index =  this.indexOfStoryOnColumn(story) + 1;
     if(index >= this.length) {
       return undefined;
     }
-    
-    return this.column(column)[index];
+    return this.column(story.column)[index];
   },
 
-  previousOnColumn: function(story, column){
-    var index = this.column(column).indexOf(story) - 1;
+  previousOnColumn: function(story){
+    var index = this.indexOfStoryOnColumn(story) - 1;
     if(index >= this.length) {
       return undefined;
     }
-    return this.column(column)[index];
+    return this.column(story.column)[index];
   },
 
   previous: function(story) {
@@ -69,6 +64,14 @@ module.exports = Backbone.Collection.extend({
       return undefined;
     }
 
+    return this.at(index);
+  },
+
+  next: function(story) {
+    var index = this.indexOf(story) + 1;
+    if(index >= this.length) {
+      return undefined;
+    }
     return this.at(index);
   },
 

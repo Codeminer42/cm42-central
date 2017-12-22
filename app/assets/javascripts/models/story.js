@@ -74,7 +74,7 @@ var Story = module.exports = Backbone.Model.extend({
 
   moveAfter: function(beforeId) {
     var before = this.collection.get(beforeId);
-    var after = this.collection.nextOnColumn(before, this.column);
+    var after = this.collection.nextOnColumn(before);
     var afterPosition;
     if (typeof after === 'undefined') {
       afterPosition = before.position() + 2;
@@ -90,7 +90,7 @@ var Story = module.exports = Backbone.Model.extend({
 
   moveBefore: function(afterId) {
     var after = this.collection.get(afterId);
-    var before = this.collection.previousOnColumn(after, this.column);
+    var before = this.collection.previousOnColumn(after);
     var beforePosition;
     if (typeof before === 'undefined') {
       beforePosition = 0.0;
