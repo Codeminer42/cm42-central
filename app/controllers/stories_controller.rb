@@ -28,7 +28,15 @@ class StoriesController < ApplicationController
     render json: @story
   end
 
-  def update
+  def sort
+    ordered_ids = params[:ordered_ids]
+    @stories = SortStories.new(ordered_ids).() do |story|
+      authorize story
+    end
+    render @stories, json: @stories 
+  end
+
+  def update    
     @story = policy_scope(Story).find(params[:id])
     authorize @story
     @story.acting_user = current_user
@@ -71,7 +79,7 @@ class StoriesController < ApplicationController
     render json: @stories
   end
 
-  def create
+  def create    
     @story = policy_scope(Story).build(allowed_params)
     authorize @story
     @story.requested_by_id = current_user.id unless @story.requested_by_id
