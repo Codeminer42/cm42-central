@@ -74,7 +74,7 @@ var Story = module.exports = Backbone.Model.extend({
 
   moveAfter: function(beforeId) {
     var before = this.collection.get(beforeId);
-    var after = this.collection.nextOnColumn(before);
+    var after = this.collection.next(before);
     var afterPosition;
     if (typeof after === 'undefined') {
       afterPosition = before.position() + 2;
@@ -83,14 +83,14 @@ var Story = module.exports = Backbone.Model.extend({
     }
     var difference = (afterPosition - before.position()) / 2;
     var newPosition = difference + before.position();
+
     this.set({position: newPosition});
-    this.saveSorting();
     return this;
   },
 
   moveBefore: function(afterId) {
     var after = this.collection.get(afterId);
-    var before = this.collection.previousOnColumn(after);
+    var before = this.collection.previous(after);
     var beforePosition;
     if (typeof before === 'undefined') {
       beforePosition = 0.0;
@@ -102,15 +102,9 @@ var Story = module.exports = Backbone.Model.extend({
 
     this.set({position: newPosition});
     this.collection.sort({silent: true});
-    this.saveSorting();
     return this;
   },
 
-  saveSorting: function() {
-    this.save();
-    this.collection.saveSorting(this.column); 
-  },
-  
   setColumn: function() {
 
     var column = '#in_progress';

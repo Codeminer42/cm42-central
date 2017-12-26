@@ -99,6 +99,7 @@ module.exports = FormView.extend({
 
   // Triggered whenever a story is dropped to a new position
   sortUpdate: function(ev, ui) {
+
     // The target element, i.e. the StoryView.el element
     var target = $(ev.target);
 
@@ -136,7 +137,7 @@ module.exports = FormView.extend({
         next_story_id = nextStory.id;
       }
     }
-    
+
     if (!_.isUndefined(previous_story_id)) {
       this.model.moveAfter(previous_story_id);
     } else if (!_.isUndefined(next_story_id)) {
