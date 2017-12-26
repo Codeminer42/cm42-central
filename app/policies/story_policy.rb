@@ -23,10 +23,6 @@ class StoryPolicy < ApplicationPolicy
     update?
   end
 
-  def sort?
-    update?
-  end
-
   def backlog?
     update?
   end
