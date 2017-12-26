@@ -93,6 +93,27 @@ describe('StoryCollection', function() {
 
   });
 
+  describe("position on columns",function(){
+    story1 = new Story({id: 1, title: "Story 1", position: '10.0', column: '#backlog'});
+    story2 = new Story({id: 2, title: "Story 2", position: '20.0', column: '#backlog'});
+    story3 = new Story({id: 2, title: "Story 2", position: '10.0', column: '#done'});
+    stories = new StoryCollection();
+    stories.add([story1, story2, story3]);
+
+    it('should return the story before a given story in a given column', function() {
+      expect(stories.previousOnColumn(story2)).toBe(story1);
+      // Should return undefined if there is no previous story in the column
+      expect(stories.previousOnColumn(story1)).toBeUndefined();
+    });
+
+    it('should return the story after a given story in a given column', function() {
+      expect(stories.nextOnColumn(story1)).toBe(story2);
+      // Should return undefined if there is no next story in the column
+      expect(stories.nextOnColumn(story2)).toBeUndefined();
+    });
+
+  });
+
   describe("columns", function() {
 
     it("should return all stories in the done column", function() {

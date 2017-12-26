@@ -18,25 +18,61 @@ module.exports = Backbone.Collection.extend({
     this.labels = [];
   },
 
+  saveSorting: function(columnName) {
+    var column = this;
+    if(columnName) {
+      column = this.column(columnName);
+    }
+    var orderedIds = column.map(
+      function(model){
+          return model.id;
+    });
+    Backbone.ajax({
+      method: 'PUT',
+      url: this.url+"/sort",
+      data: { ordered_ids: orderedIds }
+    });
+  },
+
   comparator: function(story) {
     return story.position();
   },
 
-  next: function(story) {
-    var index = this.indexOf(story) + 1;
-    if(index >= this.length) {
+  indexOfStoryOnColumn: function(story){
+     return this.column(story.column).indexOf(story);
+  },
+
+  nextOnColumn: function(story){
+    var index =  this.indexOfStoryOnColumn(story) + 1;
+    return this.storyByIndexOnColumn(index, story.column);
+  },
+
+  previousOnColumn: function(story){
+    var index = this.indexOfStoryOnColumn(story) - 1;
+    return this.storyByIndexOnColumn(index, story.column);
+  },
+
+  storyByIndexOnColumn: function(index, column){
+    if(index >= this.length || index < 0) {
       return undefined;
     }
-
-    return this.at(index);
+    return this.column(column)[index];
   },
 
   previous: function(story) {
     var index = this.indexOf(story) - 1;
-    if(index < 0) {
+    return this.storyByIndex(index);
+  },
+
+  next: function(story) {
+    var index = this.indexOf(story) + 1;
+    return this.storyByIndex(index);
+  },
+
+  storyByIndex: function(index){
+    if(index < 0 || index >= this.length) {
       return undefined;
     }
-
     return this.at(index);
   },
 
