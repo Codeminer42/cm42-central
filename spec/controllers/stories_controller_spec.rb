@@ -17,27 +17,57 @@ describe StoriesController do
     end
   end
 
-  context 'when sorting stories' do
+  describe '#sort' do
     let(:user) { create :user, :with_team }
+    let!(:story1) { create :story, project: project, requested_by: user }
+    let!(:story2) { create :story, project: project, requested_by: user }
     let(:project) do
       create(:project, name: 'Test Project', users: [user], teams: [user.teams.first])
     end
 
-    let!(:story_one) { create :story, project: project, requested_by: user }
-    let!(:story_two) { create :story, project: project, requested_by: user }
-    
-    before do
-      sign_in user
-      allow(subject).to receive_messages(current_user: user, current_team: user.teams.first)
-    end
+    context 'when user has permissions' do
+      before do
+        sign_in user
+        xhr :put, :sort, project_id: project.id, ordered_ids: [story2.id, story1.id]
+      end
 
-    describe '#sort' do
-      specify do
-        xhr :put, :sort, project_id: project.id, ordered_ids: [story_two.id, story_one.id]
-        expect(story_two.reload.position).to eq(1)
-        expect(story_one.reload.position).to eq(2)
+      it 'orders stories in the requested order' do
+        expect(response).to have_http_status :ok
+        expect(story2.reload.position).to eq(1)
+        expect(story1.reload.position).to eq(2)
       end
     end
+
+    context 'when user does not have permissions' do
+      let(:unauthorized_user) { create :user }
+
+      before do
+        sign_in unauthorized_user
+        xhr :put, :sort, project_id: project.id, ordered_ids: [story2.id, story1.id]
+      end
+
+      it 'is unauthorized' do
+        expect(response).to have_http_status :found
+        expect(story2.reload.position).to eq(2)
+        expect(story1.reload.position).to eq(1)
+      end
+    end
+
+    context 'when one story does not belong to the project' do
+      let!(:story3) { create :story, :with_project, requested_by: user }
+
+      before do
+        sign_in user
+        xhr :put, :sort, project_id: project.id, ordered_ids: [story2.id, story1.id, story3.id]
+      end
+
+      it ' is unauthorized' do
+        expect(response).to have_http_status :found
+        expect(story2.reload.position).to eq(2)
+        expect(story1.reload.position).to eq(1)
+      end
+    end
+
   end
 
   context 'when logged in' do
@@ -48,7 +78,6 @@ describe StoriesController do
 
     before do
       sign_in user
-      allow(subject).to receive_messages(current_user: user, current_team: user.teams.first)
     end
 
     describe '#index' do
