@@ -1,16 +1,13 @@
 class SortStories
   POSITION_NORMALIZER = 1
 
-  def initialize(ordered_ids)
+  def initialize(ordered_ids, scope:)
     @ordered_ids = ordered_ids
-    @stories = Story.find(@ordered_ids)
+    @stories = scope.find(@ordered_ids)
   end
 
   def call
-    @stories.map do |story|
-      yield(story) if block_given?
-      update_position(story)
-    end.sort_by(&:position)
+    @stories.map { |story| update_position(story) }.sort_by(&:position)
   end
 
   private
@@ -20,6 +17,6 @@ class SortStories
   end
 
   def position_for(story)
-    (@ordered_ids.index story.id.to_s) + POSITION_NORMALIZER
+    @ordered_ids.index(story.id.to_s) + POSITION_NORMALIZER
   end
 end
