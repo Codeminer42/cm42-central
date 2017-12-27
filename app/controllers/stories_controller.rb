@@ -29,9 +29,9 @@ class StoriesController < ApplicationController
   end
 
   def sort
-    @stories = SortStories.new(params[:ordered_ids]).call do |story|
-      authorize story
-    end
+    authorize Story
+    scope = policy_scope(Story)
+    @stories = SortStories.new(params[:ordered_ids], scope: scope).call
     render @stories, json: @stories
   end
 
