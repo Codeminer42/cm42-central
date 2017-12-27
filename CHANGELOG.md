@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Fixed
+- Add jquery-ui to fit cloudinary-js missing dependency
 
 ## [1.16.0] 2017-11-28
 ### Added
