@@ -136,7 +136,7 @@ module.exports = FormView.extend({
         next_story_id = nextStory.id;
       }
     }
-    
+
     if (!_.isUndefined(previous_story_id)) {
       this.model.moveAfter(previous_story_id);
     } else if (!_.isUndefined(next_story_id)) {
