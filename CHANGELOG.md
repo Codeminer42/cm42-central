@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Fixed
 - Add jquery-ui to fit cloudinary-js missing dependency
+- Preload tag_group in projects query on projects controller
 
 ## [1.16.0] 2017-11-28
 ### Added
