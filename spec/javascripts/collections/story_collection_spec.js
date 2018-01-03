@@ -93,6 +93,32 @@ describe('StoryCollection', function() {
 
   });
 
+  describe('position on columns', function() {
+
+    beforeEach(function() {
+      this.stories.at(0).column = '#backlog';
+      this.stories.at(1).column = '#backlog';
+      this.stories.at(2).column = '#done';
+    });
+    
+    it('should return the story before a given story in a given column', function() {
+      expect(this.stories.previousOnColumn(this.story2)).toBe(this.story1);
+    });
+
+    it('should return the story after a given story in a given column', function() {
+      expect(this.stories.nextOnColumn(this.story1)).toBe(this.story2);
+    });
+
+    it('should return undefined when there is no next or previous story in a given column',
+      function() {
+        expect(this.stories.nextOnColumn(this.story2)).toBeUndefined();
+        expect(this.stories.previousOnColumn(this.story1)).toBeUndefined();
+        expect(this.stories.previousOnColumn(this.story3)).toBeUndefined();
+      }
+    ); 
+
+  });
+
   describe("columns", function() {
 
     it("should return all stories in the done column", function() {

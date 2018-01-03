@@ -28,6 +28,13 @@ class StoriesController < ApplicationController
     render json: @story
   end
 
+  def sort
+    authorize Story
+    scope = policy_scope(Story)
+    @stories = SortStories.new(params[:ordered_ids], scope: scope).call
+    render @stories, json: @stories
+  end
+
   def update
     @story = policy_scope(Story).find(params[:id])
     authorize @story

@@ -99,7 +99,6 @@ module.exports = FormView.extend({
 
   // Triggered whenever a story is dropped to a new position
   sortUpdate: function(ev, ui) {
-
     // The target element, i.e. the StoryView.el element
     var target = $(ev.target);
 
