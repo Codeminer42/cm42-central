@@ -12,7 +12,7 @@ class ProjectsController < ApplicationController
   def index
     @projects = {}
 
-    projects_joined = policy_scope(Project)
+    projects_joined = policy_scope(Project).preload(:tag_group)
 
     @projects = {
       joined: serialize_from_collection(projects_joined)
