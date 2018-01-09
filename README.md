@@ -106,7 +106,7 @@ Once you have these:
     # Install the project dependencies
     $ gem install bundler
     $ bundle install
-    $ npm install
+    $ yarn install
 
     # Set up the development database
     $ bundle exec rake fulcrum:setup db:setup
@@ -126,7 +126,7 @@ Or using docker:
 
     # Prepare container
     $ docker-compose build
-    $ docker-compose run --rm web npm install
+    $ docker-compose run --rm web yarn install
     $ docker-compose run --rm web bundle exec rake db:create
     $ docker-compose run --rm web bundle exec rake db:migrate
     $ docker-compose run --rm web bundle exec rake db:seed
