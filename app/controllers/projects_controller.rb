@@ -1,4 +1,6 @@
 class ProjectsController < ApplicationController
+  include Attachinary::ViewHelpers
+
   before_action :set_project, only: %i[show edit update destroy import import_upload
                                        reports ownership archive unarchive
                                        change_archived projects_unjoined]
@@ -28,6 +30,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.xml
   def show
+    @attachment_signature = attachment_signature
     @story = @project.stories.build
 
     respond_to do |format|
@@ -254,6 +257,10 @@ class ProjectsController < ApplicationController
   end
 
   private
+
+  def attachment_signature
+    attachinary_file_field_options(Story.new, :documents, cloudinary: { use_filename: true })
+  end
 
   def projects_unjoined
     current_team.projects.not_archived.joinable_except(policy_scope(Project))
