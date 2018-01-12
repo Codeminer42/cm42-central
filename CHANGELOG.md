@@ -37,6 +37,10 @@
 - Tasks labels aren't escaping special characters anymore.
 - Activities from a story is now showing correctly to non-admins project members
 
+### Changed
+- Moved the story action state buttons to a react component.
+- Moved the story estimate buttons to a react component.
+
 ## [1.14.0] 2017-10-18
 ### Added
 - Added adminer service to docker-compose.
