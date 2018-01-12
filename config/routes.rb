@@ -36,7 +36,7 @@ Rails.application.routes.draw do
     resources :users, only: [:create]
     resources :api_tokens, only: [:create, :destroy]
   end
-
+  get 'attachments/signature', to: 'attachments#signature'
   resources :projects do
     member do
       get :join, :import, :search, :reports
