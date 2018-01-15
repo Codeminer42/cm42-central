@@ -1,5 +1,4 @@
 class ProjectsController < ApplicationController
-
   before_action :set_project, only: %i[show edit update destroy import import_upload
                                        reports ownership archive unarchive
                                        change_archived projects_unjoined]
@@ -14,7 +13,6 @@ class ProjectsController < ApplicationController
     @projects = {}
 
     projects_joined = policy_scope(Project).preload(:tag_group)
-
 
     @projects = {
       joined: serialize_from_collection(projects_joined)

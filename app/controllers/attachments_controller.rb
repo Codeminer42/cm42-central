@@ -10,5 +10,4 @@ class AttachmentsController < ApplicationController
   def attachment_signature
     attachinary_file_field_options(Story.new, :documents, cloudinary: { use_filename: true })
   end
-
 end
