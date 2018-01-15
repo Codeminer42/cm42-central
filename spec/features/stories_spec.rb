@@ -39,6 +39,73 @@ describe 'Stories' do
       end
     end
 
+    context 'when the user save a story' do
+      let!(:story) { create(:story, title: 'Story', project: project, requested_by: user) }
+
+      before do
+        visit project_path(project)
+        wait_spinner
+        wait_page_load
+      end
+
+      it 'highlights story on click to save', js: true do
+        find(story_selector(story)).trigger('click')
+        expect(find(story_selector(story))).to match_css('.editing')
+        click_on 'Save'
+        expect(page).not_to have_css('.editing')
+        expect(find(story_selector(story))[:style]).to match(/background-color/)
+      end
+    end
+
+    context 'when the user drags a story' do
+      let!(:story) { create(:story, title: 'Story', project: project, requested_by: user) }
+
+      before do
+        visit project_path(project)
+        wait_spinner
+        wait_page_load
+      end
+
+      it 'drags a story to other column with the mouse in card', js: true do
+        source = page.find(story_selector(story))
+        target = page.find('#chilly_bin')
+        source.drag_to(target)
+
+        expect(find('#chilly_bin')).to have_css("div#{story_selector(story)}")
+        expect(find('#in_progress')).not_to have_css("div#{story_selector(story)}")
+      end
+
+
+      it 'drags a story to other column with the mouse in estimates items', js: true do
+        source = find(story_selector(story)).find('.estimates')
+        target = page.find('#chilly_bin')
+        source.drag_to(target)
+
+        expect(find('#chilly_bin')).to have_css("div#{story_selector(story)}")
+        expect(find('#in_progress')).not_to have_css("div#{story_selector(story)}")
+      end
+
+
+      it 'drags a story to other column with the mouse in story icons', js: true do
+        source = find(story_selector(story)).find('.story-icons')
+        target = page.find('#chilly_bin')
+        source.drag_to(target)
+
+        expect(find('#chilly_bin')).to have_css("div#{story_selector(story)}")
+        expect(find('#in_progress')).not_to have_css("div#{story_selector(story)}")
+      end
+
+
+      it 'drags a story to other column with the mouse in story title', js: true do
+        source = find(story_selector(story)).find('.story-title')
+        target = page.find('#chilly_bin')
+        source.drag_to(target)
+
+        expect(find('#chilly_bin')).to have_css("div#{story_selector(story)}")
+        expect(find('#in_progress')).not_to have_css("div#{story_selector(story)}")
+      end
+    end
+
     it 'steps through the full story life cycle', js: true do
       visit project_path(project)
       wait_spinner

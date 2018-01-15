@@ -5,12 +5,13 @@
 ### Fixed
 - Adjusted README to use yarn install instead npm install on project setup
 - Remove auto scroll to bottom when adding a story and highlights it instead
+- Fix a bug in stories movement, now this action doesn't select the stories texts
 
 ## [1.16.1] 2018-01-03
 ### Fixed
 - Add jquery-ui to fit cloudinary-js missing dependency
 - Preload tag_group in projects query on projects controller
-- Sort all stories in backlog to keep intended priority 
+- Sort all stories in backlog to keep intended priority
 
 ## [1.16.0] 2017-11-28
 ### Added
@@ -50,7 +51,7 @@
 ### Fixed
 - Show the form to estimate a task without having to open it
 - Search results column being cleared after dragging a story between columns
-- Search results wrongly appearing during searches 
+- Search results wrongly appearing during searches
 - Updated "central-support" gem to fix the volatility calculation.
 
 ## [1.13.0] 2017-10-11

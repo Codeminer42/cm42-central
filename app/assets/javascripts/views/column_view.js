@@ -49,7 +49,8 @@ module.exports = Backbone.View.extend({
   // Adds the sortable behaviour to the column.
   setSortable: function() {
     this.storyColumn().sortable({
-      handle: '.story-title', opacity: 0.6, items: ".story:not(.accepted)",
+      opacity: 0.6,
+      items: ".story:not(.accepted)",
       connectWith: this.data.connect,
       update: function(ev, ui) {
         ui.item.trigger("sortupdate", ev, ui);
