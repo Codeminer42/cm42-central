@@ -94,7 +94,7 @@ module.exports = FormView.extend({
     "fileuploaddone": "attachmentDone",
     "fileuploadstart": "attachmentStart",
     "fileuploadfail": "attachmentFail",
-    "click #locate": "highlightSearchedStories"
+    "click #locate": "highlightSearchedStory"
   },
 
   // Triggered whenever a story is dropped to a new position
@@ -301,6 +301,7 @@ module.exports = FormView.extend({
         that.enableForm();
         that.model.set({ editing: editMode });
         that.toggleControlButtons(false);
+        that.highlightStory();
       },
       error: function(model, response) {
         var json = $.parseJSON(response.responseText);
@@ -373,13 +374,25 @@ module.exports = FormView.extend({
     return story;
   },
 
-  highlightSearchedStories: function () {
-    let storyID = `#story-${ this.model.get('id') }`;
-    let storyElement = $(storyID);
+  highlightSearchedStory: function () {
+    this.scrollToStory();
+    this.highlightStory();
+  },
+
+  scrollToStory: function () {
+    const storyElement = this.storyElement();
     $('.content-wrapper').animate({
       scrollTop: storyElement.offset().top - 15
     }, 'fast');
-    storyElement.effect("highlight", {color: 'lightgreen'}, 1500);
+  },
+
+  highlightStory: function () {
+    const element = this.storyElement();
+    element.effect("highlight", {color: 'lightgreen'}, 1500);
+  },
+
+  storyElement: function ()  {
+    return $(`#story-${ this.model.get('id') }`);
   },
 
   render: function() {

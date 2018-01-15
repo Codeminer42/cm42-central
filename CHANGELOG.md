@@ -4,6 +4,7 @@
 
 ### Fixed
 - Adjusted README to use yarn install instead npm install on project setup
+- Remove auto scroll to bottom when adding a story and highlights it instead
 
 ## [1.16.1] 2018-01-03
 ### Fixed

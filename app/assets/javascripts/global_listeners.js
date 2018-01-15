@@ -30,7 +30,6 @@ $(function() {
     // Show chilly bin if it's hidden
     $('.hide_chilly_bin.pressed').click();
     var newStoryElement = $('#chilly_bin div.story:last');
-    $('#chilly_bin').scrollTo(newStoryElement, 100);
   });
 
   // keycut listener
