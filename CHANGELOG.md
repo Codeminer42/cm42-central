@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Fixed
+- Adjusted README to use yarn install instead npm install on project setup
+
 ## [1.16.1] 2018-01-03
 ### Fixed
 - Add jquery-ui to fit cloudinary-js missing dependency
