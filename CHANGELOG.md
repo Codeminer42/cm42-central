@@ -7,6 +7,9 @@
 - Remove auto scroll to bottom when adding a story and highlights it instead
 - Fix a bug in stories movement, now this action doesn't select the stories texts
 
+### Added
+- Update attachinary options before it gets invalid.
+
 ### Changed
 - Moved the story estimate buttons to a react component.
 

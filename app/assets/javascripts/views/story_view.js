@@ -13,7 +13,7 @@ import TaskForm from 'components/tasks/TaskForm';
 import StoryAttachment from 'components/story/StoryAttachment';
 import StoryStateButtons from 'components/story/StoryStateButtons';
 import StoryEstimateButtons from 'components/story/StoryEstimateButtons';
-
+import AttachmentOptions from 'models/attachmentOptions'
 var Clipboard = require('clipboard');
 
 var executeAttachinary = require('libs/execute_attachinary');
@@ -74,6 +74,21 @@ module.exports = FormView.extend({
 
     // Set up CSS classes for the view
     this.setClassName();
+
+    this.attachinaryOptions = {}
+    this.fetchAttachinaryOptions();
+  },
+
+  fetchAttachinaryOptions: function() {
+    const attachmentOptions = new AttachmentOptions({
+      refreshCallback: this.setAttachinaryOptions.bind(this)
+    });
+    attachmentOptions.fetch();
+  },
+
+  setAttachinaryOptions: function(options) {
+    this.attachinaryOptions = options;
+    this.render();
   },
 
   isReadonly: function() {
@@ -398,7 +413,6 @@ module.exports = FormView.extend({
 
   render: function() {
     const storyControlsContainer = this.$('[data-story-controls]').get(0);
-
     if (storyControlsContainer) {
       ReactDOM.unmountComponentAtNode(storyControlsContainer);
     }
@@ -550,13 +564,7 @@ module.exports = FormView.extend({
   },
 
   renderReactComponents: function() {
-    ReactDOM.render(
-      <StoryControls
-        onClickSave={this.clickSave}
-        onClickCancel={this.cancelEdit}
-      />,
-      this.$('[data-story-controls]').get(0)
-    );
+    this.renderControls();
     this.renderHistoryLocationContainer();
     this.renderDescription();
     this.renderTagsInput();
@@ -564,6 +572,16 @@ module.exports = FormView.extend({
     this.renderSelects();
     this.renderTasks();
     this.renderNotes();
+  },
+
+  renderControls: function() {
+    ReactDOM.render(
+      <StoryControls
+        onClickSave={this.clickSave}
+        onClickCancel={this.cancelEdit}
+      />,
+      this.$('[data-story-controls]').get(0)
+    );
   },
 
   renderHistoryLocationContainer: function() {
@@ -627,6 +645,7 @@ module.exports = FormView.extend({
           name='attachments'
           isReadonly={this.isReadonly()}
           filesModel={this.model.get('documents')}
+          options={this.attachinaryOptions}
         />,
         attachments
       );
