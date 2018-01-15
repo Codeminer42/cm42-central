@@ -1,4 +1,5 @@
 import React from 'react';
+import { isEmpty } from 'underscore';
 
 class StoryAttachment extends React.Component {
   constructor(props) {
@@ -8,6 +9,9 @@ class StoryAttachment extends React.Component {
     this.progressElementId = "documents_progress_" + this.random;
     this.finishedElementId = "documents_finished_" + this.random;
     this.attachinaryContainerId = "attachinary_container_" + this.random;
+    this.state = {
+      attachinaryOptions: {}
+    }
   }
 
   componentDidMount() {
@@ -34,21 +38,22 @@ class StoryAttachment extends React.Component {
   }
 
   makeAttachinaryProps(name, progress_element_id, finished_element_id, attachinary_container_id, filesModel) {
-    const field_name = name + ( ATTACHINARY_OPTIONS.html.multiple ? '[]' : '' );
+    const field_name = name + ( this.state.attachinaryOptions.html.multiple ? '[]' : '' );
     let files = filesModel;
 
     if(files) {
       files = files.map(function(d) { return d.file });
     }
 
-    const options = $.extend(ATTACHINARY_OPTIONS.attachinary, {
+    const options = $.extend(this.state.attachinaryOptions.attachinary, {
       files_container_selector: '#' + attachinary_container_id,
       'files': files
     });
     const dataAttachinary = JSON.stringify(options);
-    const dataFormData = JSON.stringify(ATTACHINARY_OPTIONS.html.data.form_data);
-    const dataUrl = ATTACHINARY_OPTIONS.html.data.url;
-    const multiple = (ATTACHINARY_OPTIONS.html.multiple) ? 'multiple' : '';
+
+    const dataFormData = JSON.stringify(this.state.attachinaryOptions.html.data.form_data);
+    const dataUrl = this.state.attachinaryOptions.html.data.url;
+    const multiple = (this.state.attachinaryOptions.html.multiple) ? 'multiple' : '';
 
     return {
       dataAttachinary: dataAttachinary,
@@ -58,7 +63,44 @@ class StoryAttachment extends React.Component {
     };
   }
 
+  componentWillMount() {
+    this.getAttachinaryOptions();
+  }
+
+  getAttachinaryOptions() {
+    this.requestUpdatedSignature()
+      .then((response) => {
+        this.setState({
+          attachinaryOptions: response,
+        })
+      })
+  }
+
+  updateSignature() {
+    latestTimestamp = this.state.attachinaryOptions.html.data.form_data.timestamp * 1000;
+    currentTimestamp = new Date().getTime();
+    elapsedTime = currentTimestamp - latestTimestamp;
+    timeToInvalidate = 3600000;
+    if(elapsedTime >= timeToInvalidate){
+      this.getAttachinaryOptions();
+    }
+  }
+
+  requestUpdatedSignature() {
+    const options = {
+      type: 'GET',
+      dataType: 'json',
+      url: '/attachments/signature'
+    }
+
+    return $.ajax(options);
+  }
+
   renderAttachmentInput() {
+    if (isEmpty(this.state.attachinaryOptions)) {
+      return;
+    }
+
     const { name, filesModel } = this.props;
     let attachinary = this.makeAttachinaryProps(
       'documents',
