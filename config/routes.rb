@@ -37,6 +37,7 @@ Rails.application.routes.draw do
     resources :api_tokens, only: [:create, :destroy]
   end
   get 'attachments/signature', to: 'attachments#signature', :defaults => { :format => 'json' }
+
   resources :projects do
     member do
       get :join, :import, :search, :reports

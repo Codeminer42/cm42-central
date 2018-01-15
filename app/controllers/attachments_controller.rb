@@ -1,5 +1,6 @@
 class AttachmentsController < ApplicationController
   include Attachinary::ViewHelpers
+
   skip_after_action :verify_authorized
 
   def signature
