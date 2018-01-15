@@ -64,11 +64,11 @@ class StoryAttachment extends React.Component {
   }
 
   componentWillMount() {
-    this.getAttachinaryOptions();
+    this.setAttachinaryOptions();
   }
 
-  getAttachinaryOptions() {
-    this.requestUpdatedSignature()
+  setAttachinaryOptions() {
+    this.getUpdatedSignature()
       .then((response) => {
         this.setState({
           attachinaryOptions: response,
@@ -82,11 +82,11 @@ class StoryAttachment extends React.Component {
     elapsedTime = currentTimestamp - latestTimestamp;
     timeToInvalidate = 3600000;
     if(elapsedTime >= timeToInvalidate){
-      this.getAttachinaryOptions();
+      this.setAttachinaryOptions();
     }
   }
 
-  requestUpdatedSignature() {
+  getUpdatedSignature() {
     const options = {
       type: 'GET',
       dataType: 'json',
@@ -120,6 +120,8 @@ class StoryAttachment extends React.Component {
         data-attachinary={attachinary.dataAttachinary}
         data-form-data={attachinary.dataFormData}
         data-url={attachinary.dataUrl}
+        onClick={() => { this.updateSignature() }}
+
       />
     );
   }
