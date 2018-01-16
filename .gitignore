@@ -2,7 +2,7 @@ config/database.yml
 config/cloudinary.yml
 .bundle
 db/*.sqlite3
-log/*.log
+*.log
 tmp/
 .rvmrc
 .sass-cache/
