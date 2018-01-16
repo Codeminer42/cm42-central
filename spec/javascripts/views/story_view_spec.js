@@ -1,4 +1,6 @@
-var StoryView = require('views/story_view');
+import StoryView from 'views/story_view';
+import template from 'templates/story.ejs';
+import OriginalStory from 'models/story';
 
 describe('StoryView', function() {
 
@@ -45,6 +47,8 @@ describe('StoryView', function() {
       deliver: function() { this.set({state: "delivered"}); },
       accept: function()  { this.set({state: "accepted"}); },
       reject: function()  { this.set({state: "rejected"}); },
+      hasDetails: function() { return true; },
+      events: OriginalStory.prototype.events,
       humanAttributeName: sinon.stub(),
       setAcceptedAt: sinon.spy(),
       errorMessages: sinon.stub(),
@@ -56,7 +60,6 @@ describe('StoryView', function() {
     this.new_story = new Story({title: 'New Story'});
     this.story.notes = this.new_story.notes = new NotesCollection();
     this.story.tasks = this.new_story.tasks = new TasksCollection();
-    StoryView.prototype.template = sinon.stub();
     this.view = new StoryView({
       model: this.story
     });
@@ -525,7 +528,7 @@ describe('StoryView', function() {
 
     it("is text area when story is new", function() {
       this.view.model.isNew = sinon.stub().returns(true);
-      this.view.canEdit = sinon.stub().returns(true)
+      this.view.canEdit = sinon.stub().returns(true);
       this.view.render();
       expect(this.view.$('textarea[name="description"]').length).toEqual(1);
       expect(this.view.$('.description').length).toEqual(0);
@@ -825,4 +828,27 @@ describe('StoryView', function() {
 
   });
 
+  describe('transition buttons', function() {
+    ['started', 'finished', 'delivered', 'rejected'].forEach(function(state) {
+      describe(`when state is "${state}"`, function() {
+        it('shows transition buttons', function() {
+          this.story.set({ state });
+          this.story.estimable = sinon.stub().returns(false);
+          this.view.render();
+
+          expect(this.view.$el.html()).toContain('data-story-state-buttons');
+        });
+      });
+    });
+
+    describe('when state is "accepted"', function() {
+      it('does not show transition buttons', function() {
+        this.story.set({ state: 'accepted' });
+        this.story.estimable = sinon.stub().returns(false);
+        this.view.render();
+
+        expect(this.view.$el.html()).not.toContain('data-story-state-buttons');
+      });
+    });
+  });
 });

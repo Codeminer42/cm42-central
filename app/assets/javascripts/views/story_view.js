@@ -11,7 +11,7 @@ import StoryLabels from 'components/story/StoryLabels';
 import StoryTasks from 'components/story/StoryTasks';
 import TaskForm from 'components/tasks/TaskForm';
 import StoryAttachment from 'components/story/StoryAttachment';
-import StoryStateButtons from 'components/story/StoryStateButtons'
+import StoryStateButtons from 'components/story/StoryStateButtons';
 
 var Clipboard = require('clipboard');
 
@@ -492,7 +492,7 @@ module.exports = FormView.extend({
             isSearchResult={this.isSearchResult}
           />,
           stateButtons
-        )
+        );
       }
 
       if (isGuest) { this.$el.find('.state-actions').find('.transition').prop('disabled', true) }
