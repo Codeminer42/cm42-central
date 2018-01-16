@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "test": "NODE_ENV=test karma start config/karma.conf.js",
-    "coveralls": "cat ./js_coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./js_coverage"
+    "coveralls": "cat ./js_coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./js_coverage",
+    "lint": "eslint app/assets/javascripts"
   },
   "dependencies": {
     "autoprefixer": "^7.1.1",
