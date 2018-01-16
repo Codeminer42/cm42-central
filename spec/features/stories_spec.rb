@@ -164,6 +164,28 @@ describe 'Stories' do
       story.save!
     end
 
+    it 'injects the state actions buttons into the collapsed story', js: true do
+      unstarted = create(:story, state: 'unstarted', estimate: 1, project: project, requested_by: user)
+      started = create(:story, state: 'started', estimate: 1, project: project, requested_by: user)
+      finished = create(:story, state: 'finished', estimate: 1, project: project, requested_by: user)
+      delivered = create(:story, state: 'delivered', estimate: 1, project: project, requested_by: user)
+      rejected = create(:story, state: 'rejected', estimate: 1, project: project, requested_by: user)
+
+      visit project_path(project)
+      wait_spinner
+      wait_page_load
+
+      within("#story-#{unstarted.id}") do expect(page).to have_css('input.start')  end
+      within("#story-#{started.id}") do expect(page).to have_css('input.finish') end
+      within("#story-#{finished.id}") do expect(page).to have_css('input.deliver') end
+      within("#story-#{delivered.id}") do
+        expect(page).to have_css('input.accept')
+        expect(page).to have_css('input.reject')
+      end
+      within("#story-#{rejected.id}") do expect(page).to have_css('input.restart') end
+
+    end
+
     it 'unscheduled story link', js: true do
       visit project_path(project)
       wait_spinner
@@ -190,6 +212,7 @@ describe 'Stories' do
         expect(page).to have_css(".story-link-icon.#{state}")
       end
     end
+
   end
 
   describe 'clone a story' do
