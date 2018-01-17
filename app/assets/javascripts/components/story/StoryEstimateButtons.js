@@ -1,20 +1,20 @@
-import React from 'react'
+import React from 'react';
 
-const renderButtons = (points) =>
-  points.map((point) =>
-    <span
-      className={`estimate estimate-${point} input`}
-      key={point}
-      data-value={point}
-      id={`estimate-${point}`}
-    >{point}</span>
-  )
+const renderButton = (point) => (
+  <span
+    className={`estimate estimate-${point} input`}
+    key={point}
+    data-value={point}
+    id={`estimate-${point}`}
+  >
+    {point}
+  </span>
+);
 
-const EstimateButtons = (props) =>
+const EstimateButtons = ({ points }) => (
   <div className="estimates">
-    <form>
-    { renderButtons(props.points) }
-    </form>
+    { points.map(renderButton) }
   </div>
+);
 
-export default EstimateButtons
+export default EstimateButtons;
