@@ -502,6 +502,7 @@ module.exports = FormView.extend({
         ReactDOM.render(
           <StoryStateButtons
             events={this.model.events()}
+            isSearchResult={this.isSearchResult}
           />,
           stateButtons
         );
@@ -514,7 +515,7 @@ module.exports = FormView.extend({
             points={this.model.point_values()}
           />,
           estimateButtons
-        )
+        );
       }
 
       if (isGuest) { this.$el.find('.state-actions').find('.transition').prop('disabled', true) }
