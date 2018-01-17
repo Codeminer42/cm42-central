@@ -9,14 +9,9 @@ const renderInputButton = (event) => (
   />
 );
 
-const StateButtons = ({ events, isSearchResult }) => (
+const StateButtons = ({ events }) => (
   <div className="state-actions">
     { events.map(renderInputButton) }
-    { isSearchResult &&
-      <button id="locate" type="button" className="btn btn-default locate-btn">
-        <i className="mi md-gps-fixed md-14">gps_fixed</i>
-      </button>
-    }
   </div>
 );
 

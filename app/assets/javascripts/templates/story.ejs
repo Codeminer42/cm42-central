@@ -5,6 +5,11 @@
     <% } else if (story.events().length > 0) { %>
       <div data-story-state-buttons></div>
     <% } %>
+    <% if (view.isSearchResult) { %>
+      <button id="locate" type="button" class="btn btn-default locate-btn">
+        <i class="mi md-gps-fixed md-14">gps_fixed</i>
+      </button>
+    <% } %>
   </form>
 </div>
 <div class="story-icons">
