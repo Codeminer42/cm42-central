@@ -86,7 +86,6 @@ module.exports = FormView.extend({
     "click .cancel": "cancelEdit",
     "click .clone-story": "cloneStory",
     "click .transition": "transition",
-    "click .state-actions .estimate": "estimate",
     "change select.story_type": "render",
     "click .destroy": "clear",
     "click .description": "editDescription",
@@ -193,10 +192,10 @@ module.exports = FormView.extend({
     });
   },
 
-  estimate: function(ev) {
+  estimate: function(points) {
     this.saveInProgress = true;
     this.render();
-    this.model.set({estimate: ev.target.attributes['data-value'].value});
+    this.model.set({ estimate: points });
 
     var that = this;
     this.model.save(null, {
@@ -502,7 +501,6 @@ module.exports = FormView.extend({
         ReactDOM.render(
           <StoryStateButtons
             events={this.model.events()}
-            isSearchResult={this.isSearchResult}
           />,
           stateButtons
         );
@@ -513,6 +511,7 @@ module.exports = FormView.extend({
         ReactDOM.render(
           <StoryEstimateButtons
             points={this.model.point_values()}
+            onClick={this.estimate}
           />,
           estimateButtons
         );

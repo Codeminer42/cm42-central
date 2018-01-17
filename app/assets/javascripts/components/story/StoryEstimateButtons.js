@@ -1,19 +1,22 @@
 import React from 'react';
 
-const renderButton = (point) => (
+const renderButton = (point, onClick) => (
   <span
     className={`estimate estimate-${point} input`}
     key={point}
     data-value={point}
     id={`estimate-${point}`}
+    onClick={() => onClick(point)}
   >
     {point}
   </span>
 );
 
-const EstimateButtons = ({ points }) => (
+const EstimateButtons = ({ points, onClick }) => (
   <div className="estimates">
-    { points.map(renderButton) }
+    {
+      points.map((point) => renderButton(point, onClick))
+    }
   </div>
 );
 
