@@ -46,7 +46,7 @@ describe 'Keycuts' do
     it 'saves currently open story (<ctl> + s)', js: true do
       wait_page_load
       click_on 'Add story'
-      within('#chilly_bin') do
+      within(chilly_bin_column) do
         fill_in 'title', with: 'New story'
       end
       send_keys :pause # this is equivalent to keycode 19, or ctl+s (at least on my machine)

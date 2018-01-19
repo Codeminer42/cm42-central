@@ -49,11 +49,11 @@ describe 'Stories' do
       end
 
       it 'highlights story on click to save', js: true do
-        find(story_selector(story)).trigger('click')
-        expect(find(story_selector(story))).to match_css('.editing')
+        story_element(story).trigger('click')
+        expect(story_element(story)).to match_css('.editing')
         click_on 'Save'
         expect(page).not_to have_css('.editing')
-        expect(find(story_selector(story))[:style]).to match(/background-color/)
+        expect(story_element(story)[:style]).to match(/background-color/)
       end
     end
 
@@ -67,42 +67,38 @@ describe 'Stories' do
       end
 
       it 'drags a story to other column with the mouse in card', js: true do
-        source = page.find(story_selector(story))
-        target = page.find('#chilly_bin')
-        source.drag_to(target)
+        source = story_element(story)
+        source.drag_to(chilly_bin_column)
 
-        expect(find('#chilly_bin')).to have_css("div#{story_selector(story)}")
-        expect(find('#in_progress')).not_to have_css("div#{story_selector(story)}")
+        expect(chilly_bin_column).to have_css("div#{story_selector(story)}")
+        expect(in_progress_column).not_to have_css("div#{story_selector(story)}")
       end
 
 
       it 'drags a story to other column with the mouse in estimates items', js: true do
-        source = find(story_selector(story)).find('.estimates')
-        target = page.find('#chilly_bin')
-        source.drag_to(target)
+        source = story_element(story).find('.estimates')
+        source.drag_to(chilly_bin_column)
 
-        expect(find('#chilly_bin')).to have_css("div#{story_selector(story)}")
-        expect(find('#in_progress')).not_to have_css("div#{story_selector(story)}")
+        expect(chilly_bin_column).to have_css("div#{story_selector(story)}")
+        expect(in_progress_column).not_to have_css("div#{story_selector(story)}")
       end
 
 
       it 'drags a story to other column with the mouse in story icons', js: true do
-        source = find(story_selector(story)).find('.story-icons')
-        target = page.find('#chilly_bin')
-        source.drag_to(target)
+        source = story_element(story).find('.story-icons')
+        source.drag_to(chilly_bin_column)
 
-        expect(find('#chilly_bin')).to have_css("div#{story_selector(story)}")
-        expect(find('#in_progress')).not_to have_css("div#{story_selector(story)}")
+        expect(chilly_bin_column).to have_css("div#{story_selector(story)}")
+        expect(in_progress_column).not_to have_css("div#{story_selector(story)}")
       end
 
 
       it 'drags a story to other column with the mouse in story title', js: true do
-        source = find(story_selector(story)).find('.story-title')
-        target = page.find('#chilly_bin')
-        source.drag_to(target)
+        source = story_element(story).find('.story-title')
+        source.drag_to(chilly_bin_column)
 
-        expect(find('#chilly_bin')).to have_css("div#{story_selector(story)}")
-        expect(find('#in_progress')).not_to have_css("div#{story_selector(story)}")
+        expect(chilly_bin_column).to have_css("div#{story_selector(story)}")
+        expect(in_progress_column).not_to have_css("div#{story_selector(story)}")
       end
     end
 
@@ -113,13 +109,13 @@ describe 'Stories' do
       wait_page_load
       click_on 'Add story'
 
-      within('#chilly_bin') do
+      within(chilly_bin_column) do
         fill_in 'title', with: 'New story'
         click_on 'Save'
       end
 
       # Estimate the story
-      within('#chilly_bin .story') do
+      within(chilly_bin_column.find('.story')) do
         find('#estimate-1').trigger 'click'
         click_on 'start'
       end
@@ -166,7 +162,7 @@ describe 'Stories' do
 
         wait_page_load
         click_on 'Add story'
-        within('#chilly_bin') do
+        within(chilly_bin_column) do
           select 'release', from: 'story_type'
 
           expect(page).not_to have_selector('estimate')
@@ -194,7 +190,7 @@ describe 'Stories' do
         wait_spinner
 
         wait_page_load
-        find("#story-#{story.id}").click
+        story_element(story).click
         expect(page).to have_field('title', with: story.title)
         expect(page).to have_select('story_type', selected: 'release')
         expect(page).to have_field('release_date', with: formated_date)
@@ -214,7 +210,7 @@ describe 'Stories' do
         wait_spinner
 
         wait_page_load
-        expect(find("#story-#{story.id}")[:title])
+        expect(story_element(story)[:title])
           .to match(I18n.t('story.warnings.backlogged_release'))
       end
     end
@@ -258,8 +254,8 @@ describe 'Stories' do
       wait_spinner
       wait_page_load
 
-      find("#story-#{story.id}").click
-      expect(find("#story-#{story.id}").find("#story-link-#{target_story.id}"))
+      story_element(story).click
+      expect(story_element(story).find("#story-link-#{target_story.id}"))
         .to have_content("##{target_story.id}")
     end
 
@@ -275,7 +271,7 @@ describe 'Stories' do
           click_on 'Save'
         end
 
-        find("#story-#{story.id}").click
+        story_element(story).click
         expect(page).to have_css(".story-link-icon.#{state}")
       end
     end
@@ -298,7 +294,7 @@ describe 'Stories' do
       find('.story-title').trigger('click')
       find('.clone-story').click
 
-      expect(find('#chilly_bin')).to have_content('Clone Me')
+      expect(chilly_bin_column).to have_content('Clone Me')
     end
   end
 
@@ -383,7 +379,7 @@ describe 'Stories' do
         find('#locate').trigger 'click'
       end
 
-      expect(find(story_selector(story))[:style]).to match(/background-color/)
+      expect(story_element(story)[:style]).to match(/background-color/)
     end
 
     it 'drags the story to other columns', js: true do
@@ -395,11 +391,11 @@ describe 'Stories' do
       page.execute_script("$('#form_search').submit()")
 
       result_story = find('.searchResult')
-      target = page.first('#chilly_bin')
+      target = chilly_bin_column
       result_story.drag_to(target)
 
       expect(page).to_not have_css('.searchResult')
-      expect(find('#chilly_bin')).to have_content('Search for me')
+      expect(chilly_bin_column).to have_content('Search for me')
     end
   end
 
@@ -523,10 +519,10 @@ describe 'Stories' do
       first(:link, 'epic2').click
 
       resultStory = find(story_search_result_selector(story3))
-      target = page.first('#chilly_bin')
+      target = chilly_bin_column
       resultStory.drag_to(target)
 
-      within '#chilly_bin' do
+      within(chilly_bin_column) do
         expect(page).to have_content 'Task 3'
       end
     end
@@ -551,13 +547,5 @@ describe 'Stories' do
         expect(page).to have_content '8'
       end
     end
-  end
-
-  def story_selector(story)
-    "#story-#{story.id}"
-  end
-
-  def story_search_result_selector(story)
-    "#story-search-result-#{story.id}"
   end
 end
