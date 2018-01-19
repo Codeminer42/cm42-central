@@ -74,7 +74,6 @@ $(function() {
             window.projectView.newStory();
             $('.hide_chilly_bin.pressed').first().click();
             var newStoryElement = $('#chilly_bin div.story:last');
-            $('#chilly_bin').scrollTo(newStoryElement, 100);
             return false;
           };
           break;
