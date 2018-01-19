@@ -1,11 +1,10 @@
-<% if (story.estimable()) { %>
-<div class="state-actions estimates">
+<div class="state-actions">
   <form>
-    <% _.each(story.point_values(), function(value) { %>
-      <% if (value > 0) { %>
-        <span class="estimate estimate-<%= value %> input" data-value="<%= value %>" id="estimate-<%= value %>"><%= value %></span>
-      <% } %>
-    <% }); %>
+    <% if (story.estimable()) { %>
+      <div data-story-estimate-buttons></div>
+    <% } else if (story.events().length > 0) { %>
+      <div data-story-state-buttons></div>
+    <% } %>
     <% if (view.isSearchResult) { %>
       <button id="locate" type="button" class="btn btn-default locate-btn">
         <i class="mi md-gps-fixed md-14">gps_fixed</i>
@@ -13,9 +12,6 @@
     <% } %>
   </form>
 </div>
-<% } else if (story.events().length > 0) { %>
-  <div data-story-state-buttons></div>
-<% } %>
 <div class="story-icons">
   <% if (view.saveInProgress) { %>
   <a class="icon icons-throbber" title="<%= I18n.t('saving') %>"></a>

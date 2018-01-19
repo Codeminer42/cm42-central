@@ -7,6 +7,9 @@
 - Remove auto scroll to bottom when adding a story and highlights it instead
 - Fix a bug in stories movement, now this action doesn't select the stories texts
 
+### Changed
+- Moved the story estimate buttons to a react component.
+
 ## [1.16.1] 2018-01-03
 ### Fixed
 - Add jquery-ui to fit cloudinary-js missing dependency
