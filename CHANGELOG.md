@@ -6,6 +6,9 @@
 - Adjusted README to use yarn install instead npm install on project setup
 - Remove auto scroll to bottom when adding a story and highlights it instead
 
+### Changed
+- Moved the story estimate buttons to a react component.
+
 ## [1.16.1] 2018-01-03
 ### Fixed
 - Add jquery-ui to fit cloudinary-js missing dependency
@@ -40,10 +43,6 @@
 
 ### Changed
 - Moved the story action state buttons to a react component.
-
-### Changed
-- Moved the story action state buttons to a react component.
-- Moved the story estimate buttons to a react component.
 
 ## [1.14.0] 2017-10-18
 ### Added
