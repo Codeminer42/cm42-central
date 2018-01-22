@@ -410,119 +410,143 @@ module.exports = FormView.extend({
     );
 
     if(this.canEdit()) {
-
-      this.$el.empty();
-      this.$el.addClass('editing');
-
-      const $storyControls = $('<div data-story-controls></div>');
-      this.$el.append($storyControls);
-
-      if (this.id !== undefined) {
-        const $storyHistoryLocation = $('<div data-story-history-location></div>');
-        this.$el.append($storyHistoryLocation);
-      }
-
-      this.$el.append(
-        this.makeFormControl(this.makeTitle())
-      );
-
-      this.$el.append(
-        this.makeFormControl(function(div) {
-          $(div).addClass('form-inline');
-
-          const $storyEstimate = $('<div class="form-group" data-story-estimate></div>');
-          $(div).append($storyEstimate);
-
-          const $storyType = $('<div class="form-group" data-story-type></div>');
-          $(div).append($storyType);
-
-          const $storyState = $('<div class="form-group" data-story-state></div>');
-          $(div).append($storyState);
-        })
-      );
-
-      this.$el.append(
-        this.makeFormControl(function(div) {
-          $(div).addClass('form-inline');
-
-          const $storyRequestedBy = $('<div class="form-group" data-requested-by></div>');
-          $(div).append($storyRequestedBy);
-
-          const $storyOwnedBy = $('<div class="form-group" data-owned-by></div>');
-          $(div).append($storyOwnedBy);
-        })
-      );
-
-      this.$el.append(
-        this.makeFormControl(function(div) {
-          const $storyTags = $('<div class="form-group" data-tags></div>');
-          $(div).append($storyTags);
-        })
-      );
-
-      this.$el.append(
-        this.makeFormControl(function(div) {
-          var $storyDescription = $('<div class="story-description"><div>');
-          $(div).append($storyDescription);
-        })
-      );
-
-      this.$el.append($('<div data-story-tasks></div>'));
-      this.$el.append($('<div data-story-task-form></div>'));
-
-      this.$el.append(
-        this.makeFormControl(function(div) {
-          const $storyAttachments = $('<div class="story-attachments"></div>');
-          $(div).append($storyAttachments);
-
-          clearTimeout(window.executeAttachinaryTimeout);
-          window.executeAttachinaryTimeout = setTimeout(executeAttachinary, 1000);
-        })
-      );
-
-      this.$el.append($('<div data-story-notes></div>'));
-      this.$el.append($('<div data-story-note-form></div>'));
-
-      if(this.model.get('story_type') === 'release') {
-        this.$el.empty();
-        this.$el.append($storyControls);
-        this.renderReleaseStory();
-      }
-      this.renderReactComponents();
-
-      if (isGuest) { this.toggleControlButtons(true, false) }
-
+      this.renderExpanded(isGuest);
     } else {
-      this.$el.removeClass('editing');
-      this.$el.html(this.template({story: this.model, view: this}));
-
-      const stateButtons = this.$('[data-story-state-buttons]').get(0)
-      if(stateButtons) {
-        ReactDOM.render(
-          <StoryStateButtons
-            events={this.model.events()}
-          />,
-          stateButtons
-        );
-      }
-
-      const estimateButtons = this.$('[data-story-estimate-buttons]').get(0)
-      if(estimateButtons) {
-        ReactDOM.render(
-          <StoryEstimateButtons
-            points={this.model.point_values()}
-            onClick={this.estimate}
-          />,
-          estimateButtons
-        );
-      }
-
-      if (isGuest) { this.$el.find('.state-actions').find('.transition').prop('disabled', true) }
+      this.renderCollapsed(isGuest);
     }
 
     this.hoverBox();
     this.handleBackLoggedRelease();
     return this;
+  },
+
+  renderExpanded: function(isGuest) {
+    this.$el.empty();
+    this.$el.addClass('editing');
+
+    const $storyControls = $('<div data-story-controls></div>');
+    this.$el.append($storyControls);
+    this.appendHistoryLocation();
+    this.appendTitle();
+    this.appendEstimateTypeState();
+    this.appendRequestedAndOwnedBy();
+    this.appendTags();
+    this.appendDescription();
+    this.$el.append($('<div data-story-tasks></div>'));
+    this.$el.append($('<div data-story-task-form></div>'));
+    this.appendAttachments();
+    this.$el.append($('<div data-story-notes></div>'));
+    this.$el.append($('<div data-story-note-form></div>'));
+    if(this.model.get('story_type') === 'release') {
+      this.$el.empty();
+      this.$el.append($storyControls);
+      this.renderReleaseStory();
+    }
+    this.renderReactComponents();
+
+    if (isGuest) { this.toggleControlButtons(true, false) }
+  },
+
+  appendHistoryLocation: function() {
+    if (this.id !== undefined) {
+      const $storyHistoryLocation = $('<div data-story-history-location></div>');
+      this.$el.append($storyHistoryLocation);
+    }
+  },
+
+  appendTitle: function() {
+    this.$el.append(
+      this.makeFormControl(this.makeTitle())
+    );
+  },
+
+  appendEstimateTypeState: function() {
+    this.$el.append(
+      this.makeFormControl(function(div) {
+        $(div).addClass('form-inline');
+
+        const $storyEstimate = $('<div class="form-group" data-story-estimate></div>');
+        $(div).append($storyEstimate);
+
+        const $storyType = $('<div class="form-group" data-story-type></div>');
+        $(div).append($storyType);
+
+        const $storyState = $('<div class="form-group" data-story-state></div>');
+        $(div).append($storyState);
+      })
+    );
+  },
+
+  appendRequestedAndOwnedBy: function() {
+    this.$el.append(
+      this.makeFormControl(function(div) {
+        $(div).addClass('form-inline');
+
+        const $storyRequestedBy = $('<div class="form-group" data-requested-by></div>');
+        $(div).append($storyRequestedBy);
+
+        const $storyOwnedBy = $('<div class="form-group" data-owned-by></div>');
+        $(div).append($storyOwnedBy);
+      })
+    );
+  },
+
+  appendTags: function() {
+    this.$el.append(
+      this.makeFormControl(function(div) {
+        const $storyTags = $('<div class="form-group" data-tags></div>');
+        $(div).append($storyTags);
+      })
+    );
+  },
+
+  appendDescription: function() {
+    this.$el.append(
+      this.makeFormControl(function(div) {
+        var $storyDescription = $('<div class="story-description"><div>');
+        $(div).append($storyDescription);
+      })
+    );
+  },
+
+  appendAttachments: function() {
+    this.$el.append(
+      this.makeFormControl(function(div) {
+        const $storyAttachments = $('<div class="story-attachments"></div>');
+        $(div).append($storyAttachments);
+
+        clearTimeout(window.executeAttachinaryTimeout);
+        window.executeAttachinaryTimeout = setTimeout(executeAttachinary, 1000);
+      })
+    );
+  },
+
+  renderCollapsed: function(isGuest) {
+    this.$el.removeClass('editing');
+    this.$el.html(this.template({story: this.model, view: this}));
+
+    const stateButtons = this.$('[data-story-state-buttons]').get(0)
+    if(stateButtons) {
+      ReactDOM.render(
+        <StoryStateButtons
+          events={this.model.events()}
+        />,
+        stateButtons
+      );
+    }
+
+    const estimateButtons = this.$('[data-story-estimate-buttons]').get(0)
+    if(estimateButtons) {
+      ReactDOM.render(
+        <StoryEstimateButtons
+          points={this.model.point_values()}
+          onClick={this.estimate}
+        />,
+        estimateButtons
+      );
+    }
+
+    if (isGuest) { this.$el.find('.state-actions').find('.transition').prop('disabled', true) }
   },
 
   renderReactComponents: function() {
@@ -533,7 +557,16 @@ module.exports = FormView.extend({
       />,
       this.$('[data-story-controls]').get(0)
     );
+    this.renderHistoryLocationContainer();
+    this.renderDescription();
+    this.renderTagsInput();
+    this.renderAttachments();
+    this.renderSelects();
+    this.renderTasks();
+    this.renderNotes();
+  },
 
+  renderHistoryLocationContainer: function() {
     const historyLocationContainer = this.$('[data-story-history-location]').get(0);
     if (historyLocationContainer) {
       ReactDOM.render(
@@ -545,7 +578,9 @@ module.exports = FormView.extend({
       );
       new Clipboard('.btn-clipboard');
     }
+  },
 
+  renderDescription: function() {
     const description = this.$('.story-description')[0];
     if (description) {
       ReactDOM.render(
@@ -565,7 +600,9 @@ module.exports = FormView.extend({
         description
       );
     }
+  },
 
+  renderTagsInput: function() {
     const tagsInput = this.$('[data-tags]')[0];
     if (tagsInput) {
       ReactDOM.render(
@@ -580,7 +617,9 @@ module.exports = FormView.extend({
         tagsInput
       );
     }
+  },
 
+  renderAttachments: function() {
     const attachments = this.$('.story-attachments')[0];
     if(attachments) {
       ReactDOM.render(
@@ -592,10 +631,6 @@ module.exports = FormView.extend({
         attachments
       );
     }
-
-    this.renderSelects();
-    this.renderTasks();
-    this.renderNotes();
   },
 
   renderSelects: function() {
