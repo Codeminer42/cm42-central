@@ -410,9 +410,9 @@ module.exports = FormView.extend({
     );
 
     if(this.canEdit()) {
-      this.renderExpanded();
+      this.renderExpanded(isGuest);
     } else {
-      this.renderCollapsed();
+      this.renderCollapsed(isGuest);
     }
 
     this.hoverBox();
@@ -420,22 +420,47 @@ module.exports = FormView.extend({
     return this;
   },
 
-  renderExpanded: function() {
+  renderExpanded: function(isGuest) {
     this.$el.empty();
     this.$el.addClass('editing');
 
     const $storyControls = $('<div data-story-controls></div>');
     this.$el.append($storyControls);
+    this.appendHistoryLocation();
+    this.appendTitle();
+    this.appendEstimateTypeState();
+    this.appendRequestedAndOwnedBy();
+    this.appendTags();
+    this.appendDescription();
+    this.$el.append($('<div data-story-tasks></div>'));
+    this.$el.append($('<div data-story-task-form></div>'));
+    this.appendAttachments();
+    this.$el.append($('<div data-story-notes></div>'));
+    this.$el.append($('<div data-story-note-form></div>'));
+    if(this.model.get('story_type') === 'release') {
+      this.$el.empty();
+      this.$el.append($storyControls);
+      this.renderReleaseStory();
+    }
+    this.renderReactComponents();
 
+    if (isGuest) { this.toggleControlButtons(true, false) }
+  },
+
+  appendHistoryLocation: function() {
     if (this.id !== undefined) {
       const $storyHistoryLocation = $('<div data-story-history-location></div>');
       this.$el.append($storyHistoryLocation);
     }
+  },
 
+  appendTitle: function() {
     this.$el.append(
       this.makeFormControl(this.makeTitle())
     );
+  },
 
+  appendEstimateTypeState: function() {
     this.$el.append(
       this.makeFormControl(function(div) {
         $(div).addClass('form-inline');
@@ -450,7 +475,9 @@ module.exports = FormView.extend({
         $(div).append($storyState);
       })
     );
+  },
 
+  appendRequestedAndOwnedBy: function() {
     this.$el.append(
       this.makeFormControl(function(div) {
         $(div).addClass('form-inline');
@@ -462,24 +489,27 @@ module.exports = FormView.extend({
         $(div).append($storyOwnedBy);
       })
     );
+  },
 
+  appendTags: function() {
     this.$el.append(
       this.makeFormControl(function(div) {
         const $storyTags = $('<div class="form-group" data-tags></div>');
         $(div).append($storyTags);
       })
     );
+  },
 
+  appendDescription: function() {
     this.$el.append(
       this.makeFormControl(function(div) {
         var $storyDescription = $('<div class="story-description"><div>');
         $(div).append($storyDescription);
       })
     );
+  },
 
-    this.$el.append($('<div data-story-tasks></div>'));
-    this.$el.append($('<div data-story-task-form></div>'));
-
+  appendAttachments: function() {
     this.$el.append(
       this.makeFormControl(function(div) {
         const $storyAttachments = $('<div class="story-attachments"></div>');
@@ -489,21 +519,9 @@ module.exports = FormView.extend({
         window.executeAttachinaryTimeout = setTimeout(executeAttachinary, 1000);
       })
     );
-
-    this.$el.append($('<div data-story-notes></div>'));
-    this.$el.append($('<div data-story-note-form></div>'));
-
-    if(this.model.get('story_type') === 'release') {
-      this.$el.empty();
-      this.$el.append($storyControls);
-      this.renderReleaseStory();
-    }
-    this.renderReactComponents();
-
-    if (isGuest) { this.toggleControlButtons(true, false) }
   },
 
-  renderCollapsed: function() {
+  renderCollapsed: function(isGuest) {
     this.$el.removeClass('editing');
     this.$el.html(this.template({story: this.model, view: this}));
 
