@@ -533,7 +533,16 @@ module.exports = FormView.extend({
       />,
       this.$('[data-story-controls]').get(0)
     );
+    this.renderHistoryLocationContainer();
+    this.renderDescription();
+    this.renderTagsInput();
+    this.renderAttachments();
+    this.renderSelects();
+    this.renderTasks();
+    this.renderNotes();
+  },
 
+  renderHistoryLocationContainer: function() {
     const historyLocationContainer = this.$('[data-story-history-location]').get(0);
     if (historyLocationContainer) {
       ReactDOM.render(
@@ -545,7 +554,9 @@ module.exports = FormView.extend({
       );
       new Clipboard('.btn-clipboard');
     }
+  },
 
+  renderDescription: function() {
     const description = this.$('.story-description')[0];
     if (description) {
       ReactDOM.render(
@@ -565,7 +576,9 @@ module.exports = FormView.extend({
         description
       );
     }
+  },
 
+  renderTagsInput: function() {
     const tagsInput = this.$('[data-tags]')[0];
     if (tagsInput) {
       ReactDOM.render(
@@ -580,7 +593,9 @@ module.exports = FormView.extend({
         tagsInput
       );
     }
+  },
 
+  renderAttachments: function() {
     const attachments = this.$('.story-attachments')[0];
     if(attachments) {
       ReactDOM.render(
@@ -592,10 +607,6 @@ module.exports = FormView.extend({
         attachments
       );
     }
-
-    this.renderSelects();
-    this.renderTasks();
-    this.renderNotes();
   },
 
   renderSelects: function() {
