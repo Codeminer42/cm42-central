@@ -410,119 +410,125 @@ module.exports = FormView.extend({
     );
 
     if(this.canEdit()) {
-
-      this.$el.empty();
-      this.$el.addClass('editing');
-
-      const $storyControls = $('<div data-story-controls></div>');
-      this.$el.append($storyControls);
-
-      if (this.id !== undefined) {
-        const $storyHistoryLocation = $('<div data-story-history-location></div>');
-        this.$el.append($storyHistoryLocation);
-      }
-
-      this.$el.append(
-        this.makeFormControl(this.makeTitle())
-      );
-
-      this.$el.append(
-        this.makeFormControl(function(div) {
-          $(div).addClass('form-inline');
-
-          const $storyEstimate = $('<div class="form-group" data-story-estimate></div>');
-          $(div).append($storyEstimate);
-
-          const $storyType = $('<div class="form-group" data-story-type></div>');
-          $(div).append($storyType);
-
-          const $storyState = $('<div class="form-group" data-story-state></div>');
-          $(div).append($storyState);
-        })
-      );
-
-      this.$el.append(
-        this.makeFormControl(function(div) {
-          $(div).addClass('form-inline');
-
-          const $storyRequestedBy = $('<div class="form-group" data-requested-by></div>');
-          $(div).append($storyRequestedBy);
-
-          const $storyOwnedBy = $('<div class="form-group" data-owned-by></div>');
-          $(div).append($storyOwnedBy);
-        })
-      );
-
-      this.$el.append(
-        this.makeFormControl(function(div) {
-          const $storyTags = $('<div class="form-group" data-tags></div>');
-          $(div).append($storyTags);
-        })
-      );
-
-      this.$el.append(
-        this.makeFormControl(function(div) {
-          var $storyDescription = $('<div class="story-description"><div>');
-          $(div).append($storyDescription);
-        })
-      );
-
-      this.$el.append($('<div data-story-tasks></div>'));
-      this.$el.append($('<div data-story-task-form></div>'));
-
-      this.$el.append(
-        this.makeFormControl(function(div) {
-          const $storyAttachments = $('<div class="story-attachments"></div>');
-          $(div).append($storyAttachments);
-
-          clearTimeout(window.executeAttachinaryTimeout);
-          window.executeAttachinaryTimeout = setTimeout(executeAttachinary, 1000);
-        })
-      );
-
-      this.$el.append($('<div data-story-notes></div>'));
-      this.$el.append($('<div data-story-note-form></div>'));
-
-      if(this.model.get('story_type') === 'release') {
-        this.$el.empty();
-        this.$el.append($storyControls);
-        this.renderReleaseStory();
-      }
-      this.renderReactComponents();
-
-      if (isGuest) { this.toggleControlButtons(true, false) }
-
+      this.renderExpanded();
     } else {
-      this.$el.removeClass('editing');
-      this.$el.html(this.template({story: this.model, view: this}));
-
-      const stateButtons = this.$('[data-story-state-buttons]').get(0)
-      if(stateButtons) {
-        ReactDOM.render(
-          <StoryStateButtons
-            events={this.model.events()}
-          />,
-          stateButtons
-        );
-      }
-
-      const estimateButtons = this.$('[data-story-estimate-buttons]').get(0)
-      if(estimateButtons) {
-        ReactDOM.render(
-          <StoryEstimateButtons
-            points={this.model.point_values()}
-            onClick={this.estimate}
-          />,
-          estimateButtons
-        );
-      }
-
-      if (isGuest) { this.$el.find('.state-actions').find('.transition').prop('disabled', true) }
+      this.renderCollapsed();
     }
 
     this.hoverBox();
     this.handleBackLoggedRelease();
     return this;
+  },
+
+  renderExpanded: function() {
+    this.$el.empty();
+    this.$el.addClass('editing');
+
+    const $storyControls = $('<div data-story-controls></div>');
+    this.$el.append($storyControls);
+
+    if (this.id !== undefined) {
+      const $storyHistoryLocation = $('<div data-story-history-location></div>');
+      this.$el.append($storyHistoryLocation);
+    }
+
+    this.$el.append(
+      this.makeFormControl(this.makeTitle())
+    );
+
+    this.$el.append(
+      this.makeFormControl(function(div) {
+        $(div).addClass('form-inline');
+
+        const $storyEstimate = $('<div class="form-group" data-story-estimate></div>');
+        $(div).append($storyEstimate);
+
+        const $storyType = $('<div class="form-group" data-story-type></div>');
+        $(div).append($storyType);
+
+        const $storyState = $('<div class="form-group" data-story-state></div>');
+        $(div).append($storyState);
+      })
+    );
+
+    this.$el.append(
+      this.makeFormControl(function(div) {
+        $(div).addClass('form-inline');
+
+        const $storyRequestedBy = $('<div class="form-group" data-requested-by></div>');
+        $(div).append($storyRequestedBy);
+
+        const $storyOwnedBy = $('<div class="form-group" data-owned-by></div>');
+        $(div).append($storyOwnedBy);
+      })
+    );
+
+    this.$el.append(
+      this.makeFormControl(function(div) {
+        const $storyTags = $('<div class="form-group" data-tags></div>');
+        $(div).append($storyTags);
+      })
+    );
+
+    this.$el.append(
+      this.makeFormControl(function(div) {
+        var $storyDescription = $('<div class="story-description"><div>');
+        $(div).append($storyDescription);
+      })
+    );
+
+    this.$el.append($('<div data-story-tasks></div>'));
+    this.$el.append($('<div data-story-task-form></div>'));
+
+    this.$el.append(
+      this.makeFormControl(function(div) {
+        const $storyAttachments = $('<div class="story-attachments"></div>');
+        $(div).append($storyAttachments);
+
+        clearTimeout(window.executeAttachinaryTimeout);
+        window.executeAttachinaryTimeout = setTimeout(executeAttachinary, 1000);
+      })
+    );
+
+    this.$el.append($('<div data-story-notes></div>'));
+    this.$el.append($('<div data-story-note-form></div>'));
+
+    if(this.model.get('story_type') === 'release') {
+      this.$el.empty();
+      this.$el.append($storyControls);
+      this.renderReleaseStory();
+    }
+    this.renderReactComponents();
+
+    if (isGuest) { this.toggleControlButtons(true, false) }
+  },
+
+  renderCollapsed: function() {
+    this.$el.removeClass('editing');
+    this.$el.html(this.template({story: this.model, view: this}));
+
+    const stateButtons = this.$('[data-story-state-buttons]').get(0)
+    if(stateButtons) {
+      ReactDOM.render(
+        <StoryStateButtons
+          events={this.model.events()}
+        />,
+        stateButtons
+      );
+    }
+
+    const estimateButtons = this.$('[data-story-estimate-buttons]').get(0)
+    if(estimateButtons) {
+      ReactDOM.render(
+        <StoryEstimateButtons
+          points={this.model.point_values()}
+          onClick={this.estimate}
+        />,
+        estimateButtons
+      );
+    }
+
+    if (isGuest) { this.$el.find('.state-actions').find('.transition').prop('disabled', true) }
   },
 
   renderReactComponents: function() {
