@@ -1,4 +1,5 @@
 import React from 'react';
+import { isEmpty } from 'underscore';
 
 class StoryAttachment extends React.Component {
   constructor(props) {
@@ -33,23 +34,25 @@ class StoryAttachment extends React.Component {
     })(this, this.progressElementId, this.finishedElementId));
   }
 
-  makeAttachinaryProps(name, progress_element_id, finished_element_id, attachinary_container_id, filesModel) {
-    const field_name = name + ( ATTACHINARY_OPTIONS.html.multiple ? '[]' : '' );
+  buildProps(args) {
+    const {
+      name, progressElementId,
+      finishedElementId, attachinaryContainerId,
+      filesModel, options
+    } = args;
     let files = filesModel;
 
     if(files) {
       files = files.map(function(d) { return d.file });
     }
-
-    const options = $.extend(ATTACHINARY_OPTIONS.attachinary, {
-      files_container_selector: '#' + attachinary_container_id,
+    const extendedOptions = $.extend(options.attachinary, {
+      files_container_selector: '#' + attachinaryContainerId,
       'files': files
     });
-    const dataAttachinary = JSON.stringify(options);
-    const dataFormData = JSON.stringify(ATTACHINARY_OPTIONS.html.data.form_data);
-    const dataUrl = ATTACHINARY_OPTIONS.html.data.url;
-    const multiple = (ATTACHINARY_OPTIONS.html.multiple) ? 'multiple' : '';
-
+    const dataAttachinary = JSON.stringify(extendedOptions);
+    const dataFormData = JSON.stringify(options.html.data.form_data);
+    const dataUrl = options.html.data.url;
+    const multiple = (options.html.multiple) ? 'multiple' : '';
     return {
       dataAttachinary: dataAttachinary,
       dataFormData: dataFormData,
@@ -59,14 +62,19 @@ class StoryAttachment extends React.Component {
   }
 
   renderAttachmentInput() {
-    const { name, filesModel } = this.props;
-    let attachinary = this.makeAttachinaryProps(
-      'documents',
-      this.progressElementId,
-      this.finishedElementId,
-      this.attachinaryContainerId,
-      filesModel
-    );
+    const { name, filesModel, options } = this.props;
+
+    if(isEmpty(options)){
+      return;
+    }
+    let inputProps = this.buildProps({
+      name: 'documents',
+      progressElementId: this.progressElementId,
+      finishedElementId: this.finishedElementId,
+      attachinaryContainerId: this.attachinaryContainerId,
+      filesModel: filesModel,
+      options: options,
+    });
 
     return(
       <input
@@ -74,10 +82,10 @@ class StoryAttachment extends React.Component {
         name={name}
         className='attachinary-input'
         ref={this.saveInput}
-        multiple={attachinary.multiple}
-        data-attachinary={attachinary.dataAttachinary}
-        data-form-data={attachinary.dataFormData}
-        data-url={attachinary.dataUrl}
+        multiple={inputProps.multiple}
+        data-attachinary={inputProps.dataAttachinary}
+        data-form-data={inputProps.dataFormData}
+        data-url={inputProps.dataUrl}
       />
     );
   }
