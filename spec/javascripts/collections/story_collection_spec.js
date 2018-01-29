@@ -22,15 +22,6 @@ describe('StoryCollection', function() {
       expect(this.stories.at(2)).toBe(this.story3);
     });
 
-    it('should move between 2 other stories', function() {
-
-      expect(this.stories.at(2)).toBe(this.story3);
-
-      this.story3.moveBetween(1,2);
-      expect(this.story3.position()).toEqual(15.0);
-      expect(this.stories.at(1).id).toEqual(this.story3.id);
-    });
-
     it('should move after another story', function() {
 
       expect(this.stories.at(2)).toBe(this.story3);
@@ -100,7 +91,7 @@ describe('StoryCollection', function() {
       this.stories.at(1).column = '#backlog';
       this.stories.at(2).column = '#done';
     });
-    
+
     it('should return the story before a given story in a given column', function() {
       expect(this.stories.previousOnColumn(this.story2)).toBe(this.story1);
     });
@@ -115,7 +106,7 @@ describe('StoryCollection', function() {
         expect(this.stories.previousOnColumn(this.story1)).toBeUndefined();
         expect(this.stories.previousOnColumn(this.story3)).toBeUndefined();
       }
-    ); 
+    );
 
   });
 
