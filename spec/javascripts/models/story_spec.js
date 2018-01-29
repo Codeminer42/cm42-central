@@ -14,7 +14,9 @@ describe('Story', function() {
     });
     var collection = {
       project: new Project({}), url: '/foo', remove: function() {},
-      get: function() {}
+      get: function() {},
+      calculateNewPosition: sinon.stub(),
+      normalizePositions: sinon.spy(),
     };
     var view = new Backbone.View();
     this.story = new Story({
@@ -244,6 +246,39 @@ describe('Story', function() {
 
     it('should get position as a float', function() {
       expect(this.story.position()).toEqual(2.45);
+    });
+
+  });
+
+  describe('position changes', function() {
+    describe('when the new position is valid', function(){
+      beforeEach(function() {
+        this.new_story.set({position: 1});
+        this.ro_story.set({position: 2});
+        this.story.collection.calculateNewPosition.returns(1.5);
+        this.story.move(this.new_story.id, this.ro_story.id);
+      });
+
+      it('should change story position', function() {
+        expect(this.story.position()).toEqual(1.5);
+      });
+
+      it('should make a call to normalize story column positions', function(){
+        expect(this.story.collection.normalizePositions).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('when the new position has too many decimal places', function(){
+      beforeEach(function() {
+        this.new_story.set({position: 1});
+        this.ro_story.set({position: 2.23728372373});
+        this.story.collection.calculateNewPosition.returns(1.61864186186416);
+        this.story.move(this.new_story.id, this.ro_story.id);
+      });
+
+      it('should make a call to normalize the whole column positions', function() {
+        expect(this.story.collection.normalizePositions).toHaveBeenCalled();
+      });
     });
 
   });

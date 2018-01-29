@@ -154,20 +154,7 @@ module.exports = FormView.extend({
         next_story_id = nextStory.id;
       }
     }
-
-    if (!_.isUndefined(previous_story_id)) {
-      this.model.moveAfter(previous_story_id);
-    } else if (!_.isUndefined(next_story_id)) {
-      this.model.moveBefore(next_story_id);
-    } else {
-      // The only possible scenario that we should reach this point under
-      // is if there is only one story in the collection, so there is no
-      // previous or next story.  If this is not the case then something
-      // has gone wrong.
-      if (this.model.collection.length !== 1) {
-        throw "Unable to determine previous or next story id for dropped story";
-      }
-    }
+    this.model.move(previous_story_id, next_story_id);
     this.model.save();
   },
 

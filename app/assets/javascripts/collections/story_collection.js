@@ -18,7 +18,49 @@ module.exports = Backbone.Collection.extend({
     this.labels = [];
   },
 
-  saveSorting: function(columnName) {
+  calculateNewPosition: function(previous_story_id, next_story_id) {
+    var newPosition;
+    if (!_.isUndefined(previous_story_id)) {
+      newPosition = this.calculatePositionAfter(previous_story_id);
+    } else if (!_.isUndefined(next_story_id)) {
+      newPosition = this.calculatePositionBefore(next_story_id);
+    } else {
+      if (this.length !== 1) {
+        throw "Unable to determine previous or next story id for dropped story";
+      }
+    }
+    return newPosition;
+  },
+
+  calculatePositionAfter: function(beforeId) {
+    var before = this.get(beforeId);
+    var after = this.nextOnColumn(before);
+    var afterPosition;
+    if (typeof after === 'undefined') {
+      afterPosition = before.position() + 2;
+    } else {
+      afterPosition = after.position();
+    }
+    var difference = (afterPosition - before.position()) / 2;
+    var newPosition = difference + before.position();
+    return newPosition;
+  },
+
+  calculatePositionBefore: function(afterId) {
+    var after = this.get(afterId);
+    var before = this.previousOnColumn(after);
+    var beforePosition;
+    if (typeof before === 'undefined') {
+      beforePosition = 0.0;
+    } else {
+      beforePosition = before.position();
+    }
+    var difference = (after.position() - beforePosition) / 2;
+    var newPosition = difference + beforePosition;
+    return newPosition;
+  },
+
+  normalizePositions: function(columnName) {
     var column = this;
     if(columnName) {
       column = this.column(columnName);

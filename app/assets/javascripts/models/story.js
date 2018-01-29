@@ -62,43 +62,29 @@ var Story = module.exports = Backbone.Model.extend({
     model.setColumn();
   },
 
-  moveAfter: function(beforeId) {
-    var before = this.collection.get(beforeId);
-    var after = this.collection.nextOnColumn(before);
-    var afterPosition;
-    if (typeof after === 'undefined') {
-      afterPosition = before.position() + 2;
-    } else {
-      afterPosition = after.position();
-    }
-    var difference = (afterPosition - before.position()) / 2;
-    var newPosition = difference + before.position();
-    this.set({position: newPosition});
-    this.saveSorting();
+  move: function(previous_story_id, next_story_id) {
+    var newPosition = this.collection.calculateNewPosition(previous_story_id, next_story_id)
+    this.setPosition(newPosition);
     return this;
   },
 
-  moveBefore: function(afterId) {
-    var after = this.collection.get(afterId);
-    var before = this.collection.previousOnColumn(after);
-    var beforePosition;
-    if (typeof before === 'undefined') {
-      beforePosition = 0.0;
-    } else {
-      beforePosition = before.position();
+  setPosition: function(position) {
+    this.set({position: position});
+    if(this.positionDecimalPlacesOverflow()){
+      this.collection.normalizePositions(this.column);
     }
-    var difference = (after.position() - beforePosition) / 2;
-    var newPosition = difference + beforePosition;
-
-    this.set({position: newPosition});
-    this.collection.sort({silent: true});
-    this.saveSorting();
-    return this;
   },
 
-  saveSorting: function() {
-    this.save();
-    this.collection.saveSorting(this.column);
+  positionDecimalPlacesOverflow: function() {
+    const DECIMAL_PLACES_LIMIT = 10;
+    function getPrecision(number) {
+      var n = number.toString().split(".");
+      return n.length > 1 ? n[1].length : 0;
+    }
+    var positionPrecision = getPrecision(this.position());
+    if(positionPrecision > DECIMAL_PLACES_LIMIT){
+      return true;
+    }
   },
 
   setColumn: function() {
