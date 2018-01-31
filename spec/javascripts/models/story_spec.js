@@ -250,7 +250,76 @@ describe('Story', function() {
 
   });
 
-  describe('position changes', function() {
+  describe('column', function() {
+    it('should return the right column', function() {
+      this.story.set({state: 'unscheduled'});
+      expect(this.story.column).toEqual('#chilly_bin');
+      this.story.set({state: 'unstarted'});
+      expect(this.story.column).toEqual('#backlog');
+      this.story.set({state: 'started'});
+      expect(this.story.column).toEqual('#in_progress');
+      this.story.set({state: 'delivered'});
+      expect(this.story.column).toEqual('#in_progress');
+      this.story.set({state: 'rejected'});
+      expect(this.story.column).toEqual('#in_progress');
+
+      describe('when the story is accepted', function(){
+        sinon.stub(this.story, 'iterationNumber').returns(1);
+
+        describe("but it's accepted_at date is within the current iteration", function() {
+          it('it should be in the in_progress column', function() {
+            this.story.collection.project.currentIterationNumber.returns(1);
+            this.story.setColumn();
+            expect(this.story.column).toEqual('#in_progress');
+          });
+        });
+
+        describe('otherwise ', function() {
+          it('it should be in the #done column', function(){
+            this.story.collection.project.currentIterationNumber = sinon.stub().returns(2);
+            this.story.set({state: 'accepted'});
+            expect(this.story.column).toEqual('#done');
+          })
+        });
+      });
+    });
+  });
+
+  describe('sort update', function() {
+
+    describe('drop to column', function() {
+      it('should set the right state', function(){
+        this.story.dropToColumn('backlog');
+        expect(this.story.get('state')).toEqual('unstarted');
+        this.story.dropToColumn('chilly_bin');
+        expect(this.story.get('state')).toEqual('unscheduled');
+        this.story.dropToColumn('in_progress');
+        expect(this.story.get('state')).toEqual('unstarted');
+      });
+
+      it("should not change state if not unscheduled and dropped on the" +
+         " in_progress column", function() {
+          this.story.set({'state':'finished'});
+          this.story.dropToColumn('in_progress');
+          expect(this.story.get('state')).toEqual('finished');
+        }
+      );
+    });
+
+
+    describe('when the new position has too many decimal places', function(){
+      beforeEach(function() {
+        this.new_story.set({position: 1});
+        this.ro_story.set({position: 2.23728372373});
+        this.story.collection.calculateNewPosition.returns(1.61864186186416);
+        this.story.move(this.new_story.id, this.ro_story.id);
+      });
+
+      it('should make a call to normalize the whole column positions', function() {
+        expect(this.story.collection.normalizePositions).toHaveBeenCalledWith(this.story.column);
+      });
+    });
+
     describe('when the new position is valid', function(){
       beforeEach(function() {
         this.new_story.set({position: 1});
@@ -266,46 +335,6 @@ describe('Story', function() {
       it('should make a call to normalize story column positions', function(){
         expect(this.story.collection.normalizePositions).not.toHaveBeenCalled();
       });
-    });
-
-    describe('when the new position has too many decimal places', function(){
-      beforeEach(function() {
-        this.new_story.set({position: 1});
-        this.ro_story.set({position: 2.23728372373});
-        this.story.collection.calculateNewPosition.returns(1.61864186186416);
-        this.story.move(this.new_story.id, this.ro_story.id);
-      });
-
-      it('should make a call to normalize the whole column positions', function() {
-        expect(this.story.collection.normalizePositions).toHaveBeenCalledWith(this.story.column);
-      });
-    });
-
-  });
-
-  describe('column', function() {
-    it('should return the right column', function() {
-      this.story.set({state: 'unscheduled'});
-      expect(this.story.column).toEqual('#chilly_bin');
-      this.story.set({state: 'unstarted'});
-      expect(this.story.column).toEqual('#backlog');
-      this.story.set({state: 'started'});
-      expect(this.story.column).toEqual('#in_progress');
-      this.story.set({state: 'delivered'});
-      expect(this.story.column).toEqual('#in_progress');
-      this.story.set({state: 'rejected'});
-      expect(this.story.column).toEqual('#in_progress');
-
-      // If the story is accepted, but it's accepted_at date is within the
-      // current iteration, it should be in the in_progress column, otherwise
-      // it should be in the #done column
-      sinon.stub(this.story, 'iterationNumber').returns(1);
-      this.story.collection.project.currentIterationNumber = sinon.stub().returns(2);
-      this.story.set({state: 'accepted'});
-      expect(this.story.column).toEqual('#done');
-      this.story.collection.project.currentIterationNumber.returns(1);
-      this.story.setColumn();
-      expect(this.story.column).toEqual('#in_progress');
     });
   });
 
