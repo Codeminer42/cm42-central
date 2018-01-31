@@ -308,6 +308,7 @@ describe('Story', function() {
       );
     });
 
+
     describe('when the new position has too many decimal places', function(){
       beforeEach(function() {
         this.new_story.set({position: 1});
@@ -339,14 +340,22 @@ describe('Story', function() {
         this.new_story.set({position: 1});
         this.ro_story.set({position: 2});
         this.story.collection.calculateNewPosition.returns(1.5);
+<<<<<<< 9567edc2bb1e72d989028a7e799d20c245a55a1c
         this.story.sortUpdate(this.story.column, this.new_story.id, this.ro_story.id);
+=======
+        this.story.move(this.new_story.id, this.ro_story.id);
+>>>>>>> Refactor sortUpdate
       });
 
       it('should change story position', function() {
         expect(this.story.position()).toEqual(1.5);
       });
 
+<<<<<<< 9567edc2bb1e72d989028a7e799d20c245a55a1c
       it('should not make a call to normalize story column positions', function(){
+=======
+      it('should make a call to normalize story column positions', function(){
+>>>>>>> Refactor sortUpdate
         expect(this.story.collection.normalizePositions).not.toHaveBeenCalled();
       });
     });

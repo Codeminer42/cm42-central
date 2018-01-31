@@ -63,15 +63,27 @@ var Story = module.exports = Backbone.Model.extend({
     model.setColumn();
   },
 
+<<<<<<< 9567edc2bb1e72d989028a7e799d20c245a55a1c
   sortUpdate: function(column, previousStoryId, nextStoryId) {
     this.dropToColumn(column);
     if(column === 'chilly_bin'){
       [previousStoryId, nextStoryId] = [nextStoryId, previousStoryId];
+=======
+  sortUpdate: function(column, previous_story_id, next_story_id) {
+    this.dropToColumn(column);
+    if(column === 'chilly_bin'){
+      [previous_story_id, next_story_id] = [next_story_id, previous_story_id];
+>>>>>>> Refactor sortUpdate
     }
     // If both of these are unset, the story has been dropped on an empty
     // column, which will be either the backlog or the chilly bin as these
     // are the only columns that can receive drops from other columns.
+<<<<<<< 9567edc2bb1e72d989028a7e799d20c245a55a1c
     if (_.isUndefined(previousStoryId) && _.isUndefined(nextStoryId)) {
+=======
+    if (_.isUndefined(previous_story_id) && _.isUndefined(next_story_id)) {
+
+>>>>>>> Refactor sortUpdate
       const beforeSearchColumns = this.collection.project.columnsBefore('#' + column);
       const afterSearchColumns  = this.collection.project.columnsAfter('#' + column);
 
@@ -79,6 +91,7 @@ var Story = module.exports = Backbone.Model.extend({
       var nextStory = _.first(this.collection.columns(afterSearchColumns));
 
       if (typeof previousStory !== 'undefined') {
+<<<<<<< 9567edc2bb1e72d989028a7e799d20c245a55a1c
         previousStoryId = previousStory.id;
       }
       if (typeof nextStory !== 'undefined') {
@@ -89,6 +102,17 @@ var Story = module.exports = Backbone.Model.extend({
     this.move(previousStoryId, nextStoryId);
     this.save();
     this.checkPosition();
+=======
+        previous_story_id = previousStory.id;
+      }
+      if (typeof nextStory !== 'undefined') {
+        next_story_id = nextStory.id;
+      }
+    }
+
+    this.move(previous_story_id, next_story_id);
+    this.save();
+>>>>>>> Refactor sortUpdate
   },
 
   dropToColumn: function(column) {
@@ -97,9 +121,16 @@ var Story = module.exports = Backbone.Model.extend({
     } else if (column === 'chilly_bin') {
       this.set({state: 'unscheduled'});
     }
+<<<<<<< 9567edc2bb1e72d989028a7e799d20c245a55a1c
   },
 
   move: function(previousStoryId, nextStoryId) {
+=======
+    return this;
+  },
+
+  move: function(previous_story_id, next_story_id) {
+>>>>>>> Refactor sortUpdate
     if (this.collection) {
       newPosition = this.collection.calculateNewPosition(previousStoryId, nextStoryId);
       this.set({ position: newPosition });
