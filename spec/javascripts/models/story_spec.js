@@ -277,7 +277,7 @@ describe('Story', function() {
       });
 
       it('should make a call to normalize the whole column positions', function() {
-        expect(this.story.collection.normalizePositions).toHaveBeenCalled();
+        expect(this.story.collection.normalizePositions).toHaveBeenCalledWith(this.story.column);
       });
     });
 

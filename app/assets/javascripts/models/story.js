@@ -2,7 +2,7 @@ var ActivityCollection = require('collections/activity_collection');
 var NoteCollection = require('collections/note_collection');
 var TaskCollection = require('collections/task_collection');
 var SharedModelMethods = require('mixins/shared_model_methods');
-
+const POSITION_DECIMAL_PLACES_LIMIT = 10;
 var Story = module.exports = Backbone.Model.extend({
   defaults: {
     events: [],
@@ -63,28 +63,30 @@ var Story = module.exports = Backbone.Model.extend({
   },
 
   move: function(previous_story_id, next_story_id) {
-    var newPosition = this.collection.calculateNewPosition(previous_story_id, next_story_id)
-    this.setPosition(newPosition);
+    if (this.collection) {
+      const newPosition = this.collection.calculateNewPosition(previous_story_id, next_story_id);
+      this.setPosition(newPosition);
+    }
     return this;
   },
 
   setPosition: function(position) {
-    this.set({position: position});
-    if(this.positionDecimalPlacesOverflow()){
+    this.set({ position });
+    if (this.positionDecimalPlacesOverflow()){
       this.collection.normalizePositions(this.column);
     }
   },
 
   positionDecimalPlacesOverflow: function() {
-    const DECIMAL_PLACES_LIMIT = 10;
-    function getPrecision(number) {
-      var n = number.toString().split(".");
-      return n.length > 1 ? n[1].length : 0;
-    }
-    var positionPrecision = getPrecision(this.position());
-    if(positionPrecision > DECIMAL_PLACES_LIMIT){
+    var positionDecimalPlaces = this.getPrecision(this.position());
+    if (positionDecimalPlaces > POSITION_DECIMAL_PLACES_LIMIT){
       return true;
     }
+  },
+
+  getPrecision: function (number) {
+    const n = number.toString().split(".");
+    return n.length > 1 ? n[1].length : 0;
   },
 
   setColumn: function() {

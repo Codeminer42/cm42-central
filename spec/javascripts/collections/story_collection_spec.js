@@ -1,6 +1,5 @@
 var Story = require('models/story');
 var StoryCollection = require('collections/story_collection');
-require('jasmine-ajax');
 describe('StoryCollection', function() {
 
   beforeEach(function() {
@@ -144,9 +143,9 @@ describe('StoryCollection', function() {
         this.story3.move(this.story1.id, this.story2.id);
       });
 
-      it("should make a request sort the whole column", function() {
+      it("should make a request sort the entire column", function() {
         expect(this.story3.position()).toEqual(1.763273323975);
-        let request = jasmine.Ajax.requests.mostRecent();
+        const request = jasmine.Ajax.requests.mostRecent();
         expect(request.url).toBe('/foo/sort');
         expect(request.method).toBe('PUT');
       });
@@ -157,8 +156,8 @@ describe('StoryCollection', function() {
         this.story3.move(this.story1.id, this.story2.id);
       });
 
-      it("should not sort the whole column", function() {
-        let request = jasmine.Ajax.requests.mostRecent();
+      it("should not sort the entire column", function() {
+        const request = jasmine.Ajax.requests.mostRecent();
         expect(this.story3.position()).toEqual(15.0);
         expect(request).toBe(undefined);
       });

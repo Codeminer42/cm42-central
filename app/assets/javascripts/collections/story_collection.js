@@ -19,50 +19,48 @@ module.exports = Backbone.Collection.extend({
   },
 
   calculateNewPosition: function(previous_story_id, next_story_id) {
-    var newPosition;
     if (!_.isUndefined(previous_story_id)) {
-      newPosition = this.calculatePositionAfter(previous_story_id);
-    } else if (!_.isUndefined(next_story_id)) {
-      newPosition = this.calculatePositionBefore(next_story_id);
-    } else {
-      if (this.length !== 1) {
-        throw "Unable to determine previous or next story id for dropped story";
-      }
+      return this.calculatePositionAfter(previous_story_id);
     }
-    return newPosition;
+    if (!_.isUndefined(next_story_id)) {
+      return this.calculatePositionBefore(next_story_id);
+    }
+    if (this.length !== 1) {
+      throw new Error("Unable to determine previous or next story id for dropped story");
+    }
   },
 
   calculatePositionAfter: function(beforeId) {
-    var before = this.get(beforeId);
-    var after = this.nextOnColumn(before);
+    const before = this.get(beforeId);
+    const after = this.nextOnColumn(before);
     var afterPosition;
     if (typeof after === 'undefined') {
       afterPosition = before.position() + 2;
     } else {
       afterPosition = after.position();
     }
-    var difference = (afterPosition - before.position()) / 2;
-    var newPosition = difference + before.position();
+    const difference = (afterPosition - before.position()) / 2;
+    const newPosition = difference + before.position();
     return newPosition;
   },
 
   calculatePositionBefore: function(afterId) {
-    var after = this.get(afterId);
-    var before = this.previousOnColumn(after);
+    const after = this.get(afterId);
+    const before = this.previousOnColumn(after);
     var beforePosition;
     if (typeof before === 'undefined') {
       beforePosition = 0.0;
     } else {
       beforePosition = before.position();
     }
-    var difference = (after.position() - beforePosition) / 2;
-    var newPosition = difference + beforePosition;
+    const difference = (after.position() - beforePosition) / 2;
+    const newPosition = difference + beforePosition;
     return newPosition;
   },
 
   normalizePositions: function(columnName) {
     var column = this;
-    if(columnName) {
+    if (columnName) {
       column = this.column(columnName);
     }
     var orderedIds = column.map(
