@@ -71,7 +71,6 @@ var Story = module.exports = Backbone.Model.extend({
     // column, which will be either the backlog or the chilly bin as these
     // are the only columns that can receive drops from other columns.
     if (_.isUndefined(previous_story_id) && _.isUndefined(next_story_id)) {
-
       const beforeSearchColumns = this.collection.project.columnsBefore('#' + column);
       const afterSearchColumns  = this.collection.project.columnsAfter('#' + column);
 
@@ -88,6 +87,7 @@ var Story = module.exports = Backbone.Model.extend({
 
     this.move(previous_story_id, next_story_id);
     this.save();
+    this.checkPosition();
   },
 
   dropToColumn: function(column) {
@@ -96,33 +96,29 @@ var Story = module.exports = Backbone.Model.extend({
     } else if (column === 'chilly_bin') {
       this.set({state: 'unscheduled'});
     }
-    return this;
   },
 
   move: function(previous_story_id, next_story_id) {
     if (this.collection) {
       const newPosition = this.collection.calculateNewPosition(previous_story_id, next_story_id);
-      this.setPosition(newPosition);
+      this.set({ position: newPosition });
     }
-    return this;
   },
 
-  setPosition: function(position) {
-    this.set({ position });
+  checkPosition: function() {
     if (this.positionDecimalPlacesOverflow()){
       this.collection.normalizePositions(this.column);
     }
   },
 
   positionDecimalPlacesOverflow: function() {
-    var positionDecimalPlaces = this.getPrecision(this.position());
-    if (positionDecimalPlaces > POSITION_DECIMAL_PLACES_LIMIT){
+    if (this.positionDecimalPlaces() > POSITION_DECIMAL_PLACES_LIMIT){
       return true;
     }
   },
 
-  getPrecision: function (number) {
-    const n = number.toString().split(".");
+  positionDecimalPlaces: function (number) {
+    const n = this.position().toString().split(".");
     return n.length > 1 ? n[1].length : 0;
   },
 

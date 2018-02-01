@@ -312,7 +312,7 @@ describe('Story', function() {
         this.new_story.set({position: 1});
         this.ro_story.set({position: 2.23728372373});
         this.story.collection.calculateNewPosition.returns(1.61864186186416);
-        this.story.move(this.new_story.id, this.ro_story.id);
+        this.story.sortUpdate(this.story.column, this.new_story.id, this.ro_story.id);
       });
 
       it('should make a call to normalize the whole column positions', function() {
@@ -325,14 +325,14 @@ describe('Story', function() {
         this.new_story.set({position: 1});
         this.ro_story.set({position: 2});
         this.story.collection.calculateNewPosition.returns(1.5);
-        this.story.move(this.new_story.id, this.ro_story.id);
+        this.story.sortUpdate(this.story.column, this.new_story.id, this.ro_story.id);
       });
 
       it('should change story position', function() {
         expect(this.story.position()).toEqual(1.5);
       });
 
-      it('should make a call to normalize story column positions', function(){
+      it('should not make a call to normalize story column positions', function(){
         expect(this.story.collection.normalizePositions).not.toHaveBeenCalled();
       });
     });

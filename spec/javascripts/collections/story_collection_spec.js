@@ -140,26 +140,26 @@ describe('StoryCollection', function() {
       beforeEach(function() {
         this.story1.set({position: 1});
         this.story2.set({position: 2.52654664795});
-        this.story3.move(this.story1.id, this.story2.id);
+        this.story3.sortUpdate(this.story3.column, this.story1.id, this.story2.id);
       });
 
       it("should make a request sort the entire column", function() {
-        expect(this.story3.position()).toEqual(1.763273323975);
         const request = jasmine.Ajax.requests.mostRecent();
         expect(request.url).toBe('/foo/sort');
         expect(request.method).toBe('PUT');
+        expect(request.data()).toMatch(/[this.story1.id, this.story3.id, this.story2.id]/);
       });
-    });
+    });;
 
     describe("when the new position is valid", function() {
       beforeEach(function() {
-        this.story3.move(this.story1.id, this.story2.id);
+        this.story3.sortUpdate(this.story3.column, this.story1.id, this.story2.id);
       });
 
-      it("should not sort the entire column", function() {
-        const request = jasmine.Ajax.requests.mostRecent();
+      it("should not make a request to sort the entire column", function() {
         expect(this.story3.position()).toEqual(15.0);
-        expect(request).toBe(undefined);
+        const request = jasmine.Ajax.requests.mostRecent();
+        expect(request.url).not.toBe('foo/sort');
       });
     });
   });
