@@ -152,7 +152,7 @@ class ProjectsController < ApplicationController
 
   # CSV import
   def import_upload
-    if params[:project][:import].blank?
+    if params[:project].blank?
       flash[:alert] = I18n.t('projects.uploads.select_file')
     else
       session[:import_job] = { id: ImportWorker.new_job_id, created_at: Time.current }
