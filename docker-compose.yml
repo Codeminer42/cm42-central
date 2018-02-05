@@ -36,6 +36,7 @@ services:
       REDISCLOUD_URL: 'redis://redis:6379'
       VIRTUAL_HOST: 'cm42-central.localhost'
       VIRTUAL_PORT: 3000
+      MEMCACHIER_SERVERS: memcached:11211
     ports:
       - 3000
     volumes:
@@ -45,6 +46,7 @@ services:
       - postgres
       - redis
       - webpack
+      - memcached
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
 
   worker:
@@ -54,6 +56,7 @@ services:
       DB_PASSWORD: ''
       DB_HOST: 'postgres'
       REDISCLOUD_URL: 'redis://redis:6379/0'
+      MEMCACHIER_SERVERS: memcached:11211
     volumes:
       - .:/app
     links:
@@ -78,12 +81,7 @@ services:
       - VIRTUAL_HOST=adminer.cm42-central.localhost
   
   memcached:
-    image: memcached        
-
-networks:
-  default:
-    external:
-      name: nginx-proxy
+    image: memcached
 
 volumes:
   db:
