@@ -44,7 +44,7 @@
 
           <%= form_for [:import_upload, @project], html: { class: "form-horizontal import-stories-form" } do |f| %>
             <div class="field select">
-              <%= f.attachinary_file_field :import %>
+              <%= f.file_field :import %>
             </div>
             <div class="field submit">
               <%= f.submit t('import'), class: 'btn btn-default btn-primary btn-form' %>

@@ -108,6 +108,18 @@ Once you have these:
     $ bundle install
     $ yarn install
 
+    # If you want working with import option, have to activated the option memcached
+    $ CentOS 6.4
+     - sudo yum install memcached
+    $ Debian/Ubuntu
+     - sudo apt-get install memcached
+    $ MacOS
+     - brew install memcached
+    $ Option memcached 
+     - sudo /etc/init.d/memcached start
+     - sudo /etc/init.d/memcached stop
+     - sudo /etc/init.d/memcached restart
+    
     # Set up the development database
     $ bundle exec rake fulcrum:setup db:setup
 
