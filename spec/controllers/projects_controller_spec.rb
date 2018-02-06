@@ -331,7 +331,7 @@ describe ProjectsController do
         describe '#import_upload' do
           context 'when csv file is missing' do
             specify do
-              put :import_upload, id: project.id, project: {}
+              put :import_upload, id: project.id
               expect(response).to redirect_to(import_project_path(project))
               expect(flash[:alert])
                 .to eq('You must select a CSV file to import its stories to the project.')

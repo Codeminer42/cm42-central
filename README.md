@@ -113,6 +113,8 @@ Once you have these:
      - sudo yum install memcached
     $ Debian/Ubuntu
      - sudo apt-get install memcached
+    $ MacOS
+     - brew install memcached
     $ Option memcached 
      - sudo /etc/init.d/memcached start
      - sudo /etc/init.d/memcached stop
