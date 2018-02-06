@@ -10,6 +10,7 @@
 
 ### Added
 - Update attachinary options before it gets invalid.
+- Added memcached service to docker-compose, now action import work well
 
 ### Changed
 - Moved the story estimate buttons to a react component.
