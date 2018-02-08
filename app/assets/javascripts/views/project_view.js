@@ -1,9 +1,10 @@
+import AttachmentOptions from 'models/attachmentOptions'
+import StoryAttachment from 'components/story/StoryAttachment';
 var StoryView = require('./story_view');
 var IterationView = require('./iteration_view');
 var ColumnView = require('./column_view');
 var ColumnVisibilityButtonView = require('./column_visibility_button_view');
 var HistoryView = require('./history_view');
-
 module.exports = Backbone.View.extend({
   template: require('templates/project_view.ejs'),
   columns: {},
@@ -23,6 +24,8 @@ module.exports = Backbone.View.extend({
     this.prepareColumns();
     this.$loadingSpin.show();
     this.model.stories.fetch({success: this.addAll});
+    const attachmentOptions = new AttachmentOptions();
+    attachmentOptions.fetch();
   },
 
   prepareColumns: function() {

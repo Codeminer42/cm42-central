@@ -2,13 +2,10 @@ const REFRESH_TIME = 3500000;
 
 export default class AttachmentOptions {
 
-  constructor({ refreshCallback }) {
-    this.refreshCallback = refreshCallback;
-  }
 
   fetch() {
     return this.fetchOptions().then((response) => {
-      this.refreshCallback(response);
+      window.attachinarySignature = response;
       this.timestampVerifierId = this.initExpirationVerifier();
     })
   }

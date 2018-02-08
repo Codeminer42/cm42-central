@@ -75,20 +75,7 @@ module.exports = FormView.extend({
     // Set up CSS classes for the view
     this.setClassName();
 
-    this.attachinaryOptions = {}
-    this.fetchAttachinaryOptions();
-  },
-
-  fetchAttachinaryOptions: function() {
-    const attachmentOptions = new AttachmentOptions({
-      refreshCallback: this.setAttachinaryOptions.bind(this)
-    });
-    attachmentOptions.fetch();
-  },
-
-  setAttachinaryOptions: function(options) {
-    this.attachinaryOptions = options;
-    this.render();
+    this.attachinaryOptions = window.attachinarySignature
   },
 
   isReadonly: function() {
