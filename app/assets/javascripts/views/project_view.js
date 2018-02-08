@@ -5,6 +5,7 @@ var IterationView = require('./iteration_view');
 var ColumnView = require('./column_view');
 var ColumnVisibilityButtonView = require('./column_visibility_button_view');
 var HistoryView = require('./history_view');
+
 module.exports = Backbone.View.extend({
   template: require('templates/project_view.ejs'),
   columns: {},

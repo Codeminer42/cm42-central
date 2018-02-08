@@ -7,8 +7,6 @@ module.exports = Backbone.Collection.extend({
     _.bindAll(this, 'sort', 'addLabelsFromStory', 'resetLabels');
     var triggerReset = _.bind(this.trigger, this, 'reset');
 
-    var triggerReset = _.bind(this.trigger, this, 'reset');
-
     this.on('change:position', this.sort, this);
     this.on('change:state', this.sort, this);
     this.on('change:estimate', this.sort, this);
