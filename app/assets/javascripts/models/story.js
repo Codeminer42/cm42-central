@@ -108,9 +108,9 @@ var Story = module.exports = Backbone.Model.extend({
 
   saveSorting: function() {
     this.save();
-    this.collection.saveSorting(this.column); 
+    this.collection.saveSorting(this.column);
   },
-  
+
   setColumn: function() {
 
     var column = '#in_progress';
@@ -323,7 +323,7 @@ var Story = module.exports = Backbone.Model.extend({
       if(documents && documents.length > 0 && documents.val()) {
         model.set('documents', JSON.parse(documents.val()));
       } else {
-        model.set('documents', [{}]);
+        model.set('documents', []);
       }
     } else {
       documents = model.get('documents');

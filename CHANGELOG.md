@@ -147,6 +147,7 @@
 ### Fixed
 - Fixing compatibility of docker-composer with webpack
 - Fixing 'stop loading when save' javascript spec
+- Fixing freeze from screen when create a new story
 
 ## [1.5.0] 2017-06-23
 ### Added
