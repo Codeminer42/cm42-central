@@ -42,9 +42,8 @@ class StoryAttachment extends React.Component {
     } = args;
     let files = filesModel;
 
-    if(files) {
-      files = files.map(function(d) { return d.file });
-    }
+    files = _.reject(filesModel, _.isEmpty).map(function(d) { return d.file });
+
     const extendedOptions = $.extend(options.attachinary, {
       files_container_selector: '#' + attachinaryContainerId,
       'files': files
