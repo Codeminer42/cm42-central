@@ -1,4 +1,4 @@
-const REFRESH_TIME = 3500000;
+const REFRESH_TIME = 3600001;
 
 export default class AttachmentOptions {
 
