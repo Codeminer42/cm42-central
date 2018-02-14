@@ -323,7 +323,7 @@ var Story = module.exports = Backbone.Model.extend({
       if(documents && documents.length > 0 && documents.val()) {
         model.set('documents', JSON.parse(documents.val()));
       } else {
-        model.set('documents', []);
+        model.set('documents', [{}]);
       }
     } else {
       documents = model.get('documents');
