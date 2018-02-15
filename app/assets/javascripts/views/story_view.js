@@ -75,7 +75,14 @@ module.exports = FormView.extend({
     // Set up CSS classes for the view
     this.setClassName();
 
-    this.attachinaryOptions = window.attachinarySignature
+    this.on('attachmentOptions', (options) => {
+      this.attachmentOptions = options;
+      if(this.canEdit()) {
+        this.renderAttachments();
+      }
+    });
+
+    this.attachmentOptions = options.attachmentOptions;
   },
 
   isReadonly: function() {
@@ -632,7 +639,7 @@ module.exports = FormView.extend({
           name='attachments'
           isReadonly={this.isReadonly()}
           filesModel={this.model.get('documents')}
-          options={window.attachinarySignature}
+          options={this.attachmentOptions}
         />,
         attachments
       );
