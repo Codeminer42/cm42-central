@@ -9,6 +9,7 @@ export default class AttachmentOptions {
     return this.fetchOptions().then((response) => {
       this.refreshCallback(response);
       this.timestampVerifierId = this.initExpirationVerifier();
+      return response;
     })
   }
 
