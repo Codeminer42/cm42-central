@@ -57,7 +57,7 @@ class Story < ApplicationRecord
   JSON_METHODS = %w[errors notes documents tasks].freeze
 
   def as_json(_options = {})
-    super(only: JSON_ATTRIBUTES, methods: JSON_METHODS)
+    super(**_options, only: JSON_ATTRIBUTES, methods: JSON_METHODS)
   end
 
   def readonly?

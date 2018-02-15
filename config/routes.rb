@@ -57,6 +57,11 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :beta do
+    resources :projects, only: :show
+    resources :project_boards, only: :show
+  end
+
   resources :tag_groups
 
   namespace :admin do

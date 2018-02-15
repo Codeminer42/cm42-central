@@ -32,7 +32,7 @@ class Project < ApplicationRecord
   end
 
   def as_json(_options = {})
-    super(only: JSON_ATTRIBUTES, methods: JSON_METHODS)
+    super(**_options, only: JSON_ATTRIBUTES, methods: JSON_METHODS)
   end
 
   def to_param
