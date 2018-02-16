@@ -78,6 +78,14 @@ module.exports = FormView.extend({
     this.on('attachmentOptions', (options) => {
       this.attachmentOptions = options;
       if(this.canEdit()) {
+        // attachinary won't re-create the instance with the new
+        // signature if the instance for the element is already created
+        if(this.$('.attachinary-input').data('attachinary-bond')) {
+          this.$('.attachinary-input')
+            .fileupload('destroy')
+            .data('attachinary-bond').initFileUpload();
+        }
+
         this.renderAttachments();
       }
     });
