@@ -62,7 +62,7 @@
     },
     "SIDEKIQ_CONCURRENCY": {
       "description": "Sidekiq is used mostly for email notifications, so it's quite fast and can be highly parallelized",
-      "value": "20",
+      "value": "2",
       "required": false
     },
     "WEB_CONCURRENCY": {

@@ -1,3 +1,5 @@
+import AttachmentOptions from 'models/attachmentOptions'
+import StoryAttachment from 'components/story/StoryAttachment';
 var StoryView = require('./story_view');
 var IterationView = require('./iteration_view');
 var ColumnView = require('./column_view');
@@ -23,6 +25,15 @@ module.exports = Backbone.View.extend({
     this.prepareColumns();
     this.$loadingSpin.show();
     this.model.stories.fetch({success: this.addAll});
+
+    const attachmentOptions = new AttachmentOptions({
+      refreshCallback: (options) => {
+        this.attachmentOptions = options;
+        this.trigger('attachmentOptions', options);
+      }
+    });
+
+    attachmentOptions.fetch();
   },
 
   prepareColumns: function() {
@@ -84,7 +95,15 @@ module.exports = Backbone.View.extend({
     if (_.isUndefined(column) || !_.isString(column)) {
       column = story.column;
     }
-    var view = new StoryView({model: story}).render();
+    var view = new StoryView({
+      model: story,
+      attachmentOptions: this.attachmentOptions
+    }).render();
+
+    view.listenTo(this, 'attachmentOptions', (options) => {
+      view.trigger('attachmentOptions', options);
+    });
+
     this.appendViewToColumn(view, column);
     view.setFocus();
     if (column === '#done') {

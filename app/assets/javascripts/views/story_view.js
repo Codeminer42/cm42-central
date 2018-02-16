@@ -75,20 +75,22 @@ module.exports = FormView.extend({
     // Set up CSS classes for the view
     this.setClassName();
 
-    this.attachinaryOptions = {}
-    this.fetchAttachinaryOptions();
-  },
+    this.on('attachmentOptions', (options) => {
+      this.attachmentOptions = options;
+      if(this.canEdit()) {
+        // attachinary won't re-create the instance with the new
+        // signature if the instance for the element is already created
+        if(this.$('.attachinary-input').data('attachinary-bond')) {
+          this.$('.attachinary-input')
+            .fileupload('destroy')
+            .data('attachinary-bond').initFileUpload();
+        }
 
-  fetchAttachinaryOptions: function() {
-    const attachmentOptions = new AttachmentOptions({
-      refreshCallback: this.setAttachinaryOptions.bind(this)
+        this.renderAttachments();
+      }
     });
-    attachmentOptions.fetch();
-  },
 
-  setAttachinaryOptions: function(options) {
-    this.attachinaryOptions = options;
-    this.render();
+    this.attachmentOptions = options.attachmentOptions;
   },
 
   isReadonly: function() {
@@ -645,7 +647,7 @@ module.exports = FormView.extend({
           name='attachments'
           isReadonly={this.isReadonly()}
           filesModel={this.model.get('documents')}
-          options={this.attachinaryOptions}
+          options={this.attachmentOptions}
         />,
         attachments
       );

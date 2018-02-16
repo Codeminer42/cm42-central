@@ -1,7 +1,6 @@
-const REFRESH_TIME = 3500000;
+const REFRESH_TIME = 3600001;
 
 export default class AttachmentOptions {
-
   constructor({ refreshCallback }) {
     this.refreshCallback = refreshCallback;
   }
@@ -10,6 +9,7 @@ export default class AttachmentOptions {
     return this.fetchOptions().then((response) => {
       this.refreshCallback(response);
       this.timestampVerifierId = this.initExpirationVerifier();
+      return response;
     })
   }
 
@@ -27,7 +27,7 @@ export default class AttachmentOptions {
   }
 
   initExpirationVerifier() {
-    setTimeout(() => {
+    return setTimeout(() => {
       this.fetch();
     }, REFRESH_TIME);
   }
