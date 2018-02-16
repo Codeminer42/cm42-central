@@ -2,21 +2,24 @@
 
 ## [Unreleased]
 
+## [1.18.0] 2018-02-16
+### Added
+- Update attachinary options before it gets invalid.
+- Added memcached service to docker-compose, now action import work well
+
+### Changed
+- Change in import project, switch button attachinary_file_field to file_field
+- Change the verification to refuse if const files is null, otherwise return the value files
+- Request signature for file uploads once and all stories get this from a global place
+
 ## [1.17.0] 2018-01-23
 ### Fixed
 - Adjusted README to use yarn install instead npm install on project setup
 - Remove auto scroll to bottom when adding a story and highlights it instead
 - Fix a bug in stories movement, now this action doesn't select the stories texts
 
-### Added
-- Update attachinary options before it gets invalid.
-- Added memcached service to docker-compose, now action import work well
-
 ### Changed
 - Moved the story estimate buttons to a react component.
-- Change in import project, switch button attachinary_file_field to file_field
-- Change the verification to refuse if const files is null, otherwise return the value files
-- Request signature for file uploads once and all stories get this from a global place
 
 ## [1.16.1] 2018-01-03
 ### Fixed
@@ -262,7 +265,7 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.17.0...HEAD
+[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.18.0...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
@@ -287,3 +290,4 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [1.16.0]: https://github.com/Codeminer42/cm42-central/tree/v1.16.0
 [1.16.1]: https://github.com/Codeminer42/cm42-central/tree/v1.16.1
 [1.17.0]: https://github.com/Codeminer42/cm42-central/tree/v1.17.0
+[1.18.0]: https://github.com/Codeminer42/cm42-central/tree/v1.18.0
