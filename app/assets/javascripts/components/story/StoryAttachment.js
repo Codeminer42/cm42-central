@@ -13,6 +13,10 @@ class StoryAttachment extends React.Component {
 
   componentDidMount() {
     const $filesInput = $(this.filesInput);
+    $('.story-attachments').append($.cloudinary.unsigned_upload_tag(process.env.PRESET_CLOUD, 
+      {cloud_name: process.env.CLOUD_NAME, tags: 'browser_uploads'},
+      {multiple: true})
+    );
     $filesInput.off('fileuploadprogressall');
     $filesInput.on('fileuploadprogressall', (function(_this, _progressElementId, _finishedElementId) {
       return function(e, data) {

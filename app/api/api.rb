@@ -5,7 +5,6 @@ class API < Grape::API
   helpers do
     include ActionController::HttpAuthentication::Token
 
-
     def authenticate!
       error!('Unauthorized. Invalid token.', 401) unless api_key
     end
