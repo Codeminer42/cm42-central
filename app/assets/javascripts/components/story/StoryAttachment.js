@@ -14,9 +14,8 @@ class StoryAttachment extends React.Component {
   componentDidMount() {
     const $filesInput = $(this.filesInput);
 
-    $filesInput.unsigned_cloudinary_upload(
-      process.env.PRESET_CLOUD,
-      { cloud_name: process.env.CLOUD_NAME, tags: 'browser_uploads' },
+    $filesInput.unsigned_cloudinary_upload(process.env.PRESET_CLOUD,
+      { tags: 'browser_uploads' },
       { multiple: true }
     );
 
@@ -51,11 +50,6 @@ class StoryAttachment extends React.Component {
 
     files = _.reject(filesModel, _.isEmpty).map(function(d) { return d.file });
 
-    const extendedOptions = $.extend(options.attachinary, {
-      files_container_selector: '#' + attachinaryContainerId,
-      files: files
-    });
-
     const extendedOptions = {
       files_container_selector: '#' + attachinaryContainerId,
       files: files
@@ -75,16 +69,15 @@ class StoryAttachment extends React.Component {
 
   renderAttachmentInput() {
     const { name, filesModel, options } = this.props;
-
     let inputProps = this.buildProps({
       name: 'documents',
       progressElementId: this.progressElementId,
       finishedElementId: this.finishedElementId,
       attachinaryContainerId: this.attachinaryContainerId,
       filesModel: filesModel,
-      options: window.attachinaryOptions || throw Error('fix that Cecatto'), // << create this thing
+      options: window.attachinaryOptions
     });
-
+   
     return(
       <input
         type='file'

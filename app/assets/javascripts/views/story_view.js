@@ -629,7 +629,6 @@ module.exports = FormView.extend({
           name='attachments'
           isReadonly={this.isReadonly()}
           filesModel={this.model.get('documents')}
-          //options={this.attachmentOptions}
         />,
         attachments
       );
