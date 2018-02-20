@@ -46,6 +46,7 @@ var Central = module.exports = {
       }, 10 * 1000); // every 10 seconds
 
       window.projectView = view;
+      window.attachinaryOptions = data.attachinaryOptions; // <<< it's been done here
     });
 
     setTimeout(() => {

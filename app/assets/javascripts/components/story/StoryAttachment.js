@@ -13,10 +13,13 @@ class StoryAttachment extends React.Component {
 
   componentDidMount() {
     const $filesInput = $(this.filesInput);
-    $('.story-attachments').append($.cloudinary.unsigned_upload_tag(process.env.PRESET_CLOUD, 
-      {cloud_name: process.env.CLOUD_NAME, tags: 'browser_uploads'},
-      {multiple: true})
+
+    $filesInput.unsigned_cloudinary_upload(
+      process.env.PRESET_CLOUD,
+      { cloud_name: process.env.CLOUD_NAME, tags: 'browser_uploads' },
+      { multiple: true }
     );
+
     $filesInput.off('fileuploadprogressall');
     $filesInput.on('fileuploadprogressall', (function(_this, _progressElementId, _finishedElementId) {
       return function(e, data) {
@@ -50,15 +53,21 @@ class StoryAttachment extends React.Component {
 
     const extendedOptions = $.extend(options.attachinary, {
       files_container_selector: '#' + attachinaryContainerId,
-      'files': files
+      files: files
     });
+
+    const extendedOptions = {
+      files_container_selector: '#' + attachinaryContainerId,
+      files: files
+    };
+
     const dataAttachinary = JSON.stringify(extendedOptions);
     const dataFormData = JSON.stringify(options.html.data.form_data);
     const dataUrl = options.html.data.url;
     const multiple = (options.html.multiple) ? 'multiple' : '';
     return {
       dataAttachinary: dataAttachinary,
-      dataFormData: dataFormData,
+      dataFormData: dataFormData, // <<< check that
       dataUrl: dataUrl,
       multiple: multiple
     };
@@ -67,26 +76,22 @@ class StoryAttachment extends React.Component {
   renderAttachmentInput() {
     const { name, filesModel, options } = this.props;
 
-    if(isEmpty(options)){
-      return;
-    }
     let inputProps = this.buildProps({
       name: 'documents',
       progressElementId: this.progressElementId,
       finishedElementId: this.finishedElementId,
       attachinaryContainerId: this.attachinaryContainerId,
       filesModel: filesModel,
-      options: options,
+      options: window.attachinaryOptions || throw Error('fix that Cecatto'), // << create this thing
     });
 
     return(
       <input
         type='file'
-        name={name}
+        name='file'
         className='attachinary-input'
         ref={this.saveInput}
         multiple={inputProps.multiple}
-        data-attachinary={inputProps.dataAttachinary}
         data-form-data={inputProps.dataFormData}
         data-url={inputProps.dataUrl}
       />

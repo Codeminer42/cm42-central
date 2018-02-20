@@ -56,6 +56,14 @@ module.exports = {
       writeToFileEmit: env.NODE_ENV !== 'test'
     }),
 
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(env.NODE_ENV),
+        PRESET_CLOUD: JSON.stringify(env.PRESET_CLOUD),
+        CLOUD_NAME: JSON.stringify(env.CLOUD_NAME)
+      }
+    }),
+
     new webpack.NormalModuleReplacementPlugin(
       /jquery\.ui\.widget/,
       require.resolve('cloudinary_js/js/jquery.ui.widget')
