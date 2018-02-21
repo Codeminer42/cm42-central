@@ -1,11 +1,11 @@
 class StoriesBulkDestroyController < ApplicationController
   def create
     authorize stories
-    stories.map do |story|
+    stories.each do |story|
       StoryOperations::Destroy.call(story, current_user)
     end
 
-    redirect_to project, notice: "Stories was successfully destroyed."
+    redirect_to project, notice: 'Stories was successfully destroyed.'
   end
 
   private

@@ -13,7 +13,7 @@ describe StoriesBulkDestroyController do
         sign_in user
 
         post :create, project_id: project.id, story_ids: [story_1.id, story_2.id]
-        
+
         expect(project.stories).to eq([story_3])
       end
     end
