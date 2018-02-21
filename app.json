@@ -5,7 +5,7 @@
   "website": "https://central.cm42.io",
   "repository": "https://github.com/Codeminer42/cm42-central",
   "scripts": {
-    "postdeploy": "rake db:schema:load db:seed"
+    "postdeploy": "rake db:schema:load db:seed cloudinary_preset:create"
   },
   "env": {
     "DEVISE_SECRET_KEY": {

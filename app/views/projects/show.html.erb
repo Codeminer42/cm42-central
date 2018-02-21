@@ -39,5 +39,6 @@
      data-users="<%= @project.users.to_json %>"
      data-current-user="<%= current_user.to_json %>"
      data-current-flow="<%= @story_flow[:current] %>"
-     data-default-flow="<%= @story_flow[:default] %>">
+     data-default-flow="<%= @story_flow[:default] %>"
+     data-attachinary-options="<%= attachinary_field_options %>"
 </div>

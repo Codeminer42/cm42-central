@@ -25,7 +25,6 @@ Rails.application.routes.draw do
   get 'story/new'
   get 'projects/archived' => 'projects#archived'
   put 'locales' => 'locales#update', as: :locales
-  get 'attachments/signature', to: 'attachments#signature'
   get 't/:id' => 'teams#switch', as: :teams_switch
 
   resources :teams, except: :show do

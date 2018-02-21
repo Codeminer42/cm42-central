@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+  helper AttachinaryOptions
   before_action :set_project, only: %i[show edit update destroy import import_upload
                                        reports ownership archive unarchive
                                        change_archived projects_unjoined]

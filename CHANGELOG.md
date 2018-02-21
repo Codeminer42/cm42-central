@@ -11,6 +11,7 @@
 - Change in import project, switch button attachinary_file_field to file_field
 - Change the verification to refuse if const files is null, otherwise return the value files
 - Request signature for file uploads once and all stories get this from a global place
+- Now in each story utilize unsigned upload, this way is not necessary signature
 
 ## [1.17.0] 2018-01-23
 ### Fixed

@@ -13,25 +13,34 @@ class StoryAttachment extends React.Component {
 
   componentDidMount() {
     const $filesInput = $(this.filesInput);
-    $filesInput.off('fileuploadprogressall');
-    $filesInput.on('fileuploadprogressall', (function(_this, _progressElementId, _finishedElementId) {
-      return function(e, data) {
-        var $progress = $('#' + _progressElementId);
-        if ( $progress.is(":hidden") ) {
-          $progress.show();
-        }
-
-        var progress = parseInt(data.loaded / data.total * 100, 10);
-        $progress.css('width', progress + "%");
-
-        if (progress === 100) {
-          $progress.css('width', "1px");
-          $progress.hide();
-
-          $('#' + _finishedElementId).show();
-        }
-      };
-    })(this, this.progressElementId, this.finishedElementId));
+    return $filesInput.unsigned_cloudinary_upload(
+      process.env.PRESET_CLOUD,
+      { tags: 'browser_uploads'},
+      { 
+        multiple: true,
+        acceptFileTypes: /(\.|\/)(gif|jpe?g|png|bmp|ico|pdf|csv)$/i,
+        maxFileSize: 5000000 // 5MB
+      })
+    //TODO
+    //NESTE MOMENTO O RANDOM É CHAMADO TRES VEZES FAZENDO QUE PEGUE O PROGRESSELEMENTID ERRADO
+    //CORRIGIR ISSO, EM PRODUÇÃO JA ESTA COM ESTE PROBLEMA
+    //$filesInput.off('fileuploadprogressall');
+    //$filesInput.on('fileuploadprogressall', (function(_this, _progressElementId, _finishedElementId) {
+    //  return function(e, data) {
+    //    var $progress = $('#' + _progressElementId);
+    //    if ( $progress.is(":hidden") ) {
+    //      $progress.show();
+    //    }
+    //    var progress = parseInt(data.loaded / data.total * 100, 10);
+    //    $progress.css('width', progress + "%");
+    //    
+    //    if (progress === 100) {
+    //      $progress.css('width', "1px");
+    //      $progress.hide();
+    //      $('#' + _finishedElementId).show();
+    //    }
+    //  };
+    //})(this, this.progressElementId, this.finishedElementId));
   }
 
   buildProps(args) {
@@ -44,10 +53,11 @@ class StoryAttachment extends React.Component {
 
     files = _.reject(filesModel, _.isEmpty).map(function(d) { return d.file });
 
-    const extendedOptions = $.extend(options.attachinary, {
+    const extendedOptions = {
       files_container_selector: '#' + attachinaryContainerId,
       'files': files
-    });
+    };
+
     const dataAttachinary = JSON.stringify(extendedOptions);
     const dataFormData = JSON.stringify(options.html.data.form_data);
     const dataUrl = options.html.data.url;
@@ -62,27 +72,22 @@ class StoryAttachment extends React.Component {
 
   renderAttachmentInput() {
     const { name, filesModel, options } = this.props;
-
-    if(isEmpty(options)){
-      return;
-    }
     let inputProps = this.buildProps({
       name: 'documents',
       progressElementId: this.progressElementId,
       finishedElementId: this.finishedElementId,
       attachinaryContainerId: this.attachinaryContainerId,
       filesModel: filesModel,
-      options: options,
+      options: window.attachinaryOptions
     });
-
+   
     return(
       <input
         type='file'
-        name={name}
+        name='file'
         className='attachinary-input'
         ref={this.saveInput}
         multiple={inputProps.multiple}
-        data-attachinary={inputProps.dataAttachinary}
         data-form-data={inputProps.dataFormData}
         data-url={inputProps.dataUrl}
       />

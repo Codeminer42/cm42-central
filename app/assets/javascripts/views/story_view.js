@@ -12,8 +12,7 @@ import StoryTasks from 'components/story/StoryTasks';
 import TaskForm from 'components/tasks/TaskForm';
 import StoryAttachment from 'components/story/StoryAttachment';
 import StoryStateButtons from 'components/story/StoryStateButtons';
-import StoryEstimateButtons from 'components/story/StoryEstimateButtons';
-import AttachmentOptions from 'models/attachmentOptions'
+import StoryEstimateButtons from 'components/story/StoryEstimateButtons'
 var Clipboard = require('clipboard');
 
 var executeAttachinary = require('libs/execute_attachinary');
@@ -74,23 +73,6 @@ module.exports = FormView.extend({
 
     // Set up CSS classes for the view
     this.setClassName();
-
-    this.on('attachmentOptions', (options) => {
-      this.attachmentOptions = options;
-      if(this.canEdit()) {
-        // attachinary won't re-create the instance with the new
-        // signature if the instance for the element is already created
-        if(this.$('.attachinary-input').data('attachinary-bond')) {
-          this.$('.attachinary-input')
-            .fileupload('destroy')
-            .data('attachinary-bond').initFileUpload();
-        }
-
-        this.renderAttachments();
-      }
-    });
-
-    this.attachmentOptions = options.attachmentOptions;
   },
 
   isReadonly: function() {
@@ -647,7 +629,6 @@ module.exports = FormView.extend({
           name='attachments'
           isReadonly={this.isReadonly()}
           filesModel={this.model.get('documents')}
-          options={this.attachmentOptions}
         />,
         attachments
       );
