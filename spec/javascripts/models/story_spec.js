@@ -321,6 +321,19 @@ describe('Story', function() {
       }); 
     });
 
+    describe('when the new position has 5 decimals and check the previous colliding story', function(){
+      beforeEach(function() {
+        this.ro_story.set({ position: 5.55555 });
+        this.story.set({ position: 5.55554 });
+        this.new_story.collection.calculateNewPosition.returns(5.555554);
+        this.new_story.sortUpdate(this.new_story.column, this.ro_story, undefined);
+      });
+
+      it ('should make a call for the function round when its above 5 decimals', function() {
+        expect(this.new_story.collection.roundPosition).toHaveBeenCalled();
+      });
+    });
+
     describe('when the new position is valid', function(){
       beforeEach(function() {
         this.new_story.set({position: 1});

@@ -38,10 +38,10 @@ module.exports = Backbone.Collection.extend({
 
     thisStory = this.get(this_id);
     previousStory = this.get(previous_story_id);
-    
+
     thisStoryPosition = this.round(thisStory.position(), precision);
     thisStory.set({ position: thisStoryPosition });
-    
+  
     if (previousStory !== undefined && previous_story_id !== undefined) {
       previousStoryPosition = this.round(previousStory.position(), precision);   
       if (thisStoryPosition <= previousStoryPosition) {
@@ -94,18 +94,6 @@ module.exports = Backbone.Collection.extend({
     const newPosition = difference + beforePosition;
     return newPosition;
   },
-
-/*  checkTheOrder: function(columnName) {
-    var column = this;
-    if (columnName) {
-      column = this.column(columnName);
-    }
-    var orderedIds = column.map(
-      function(model) {
-        console.log("A posição é: " + model.position() +  " e o ID é: " + model.id);
-      }
-    );
-  },*/
 
   normalizePositions: function(columnName, thisStoryId) {
     

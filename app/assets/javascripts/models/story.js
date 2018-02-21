@@ -112,7 +112,6 @@ var Story = module.exports = Backbone.Model.extend({
   },
 
   checkPosition: function() {
-    // this.collection.checkTheOrder(this.column);
     if (this.positionDecimalPlacesOverflow()){
       this.collection.normalizePositions(this.column, this.id);      
     }
