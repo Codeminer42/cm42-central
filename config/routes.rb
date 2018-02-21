@@ -55,6 +55,7 @@ Rails.application.routes.draw do
         get :done, :in_progress, :backlog
       end
     end
+    resources :stories_bulk_destroy, only: [:create]
   end
 
   resources :tag_groups
