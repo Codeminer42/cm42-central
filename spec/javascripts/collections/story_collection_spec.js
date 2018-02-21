@@ -11,6 +11,7 @@ describe('StoryCollection', function() {
     this.stories = new StoryCollection();
     this.stories.url = '/foo';
     this.stories.add([this.story3, this.story2, this.story1]);
+
   });
 
   describe('position', function() {
@@ -22,7 +23,6 @@ describe('StoryCollection', function() {
     });
 
     it('should move after another story', function() {
-
       expect(this.stories.at(2)).toBe(this.story3);
 
       this.story3.move(1);
@@ -141,6 +141,7 @@ describe('StoryCollection', function() {
         this.story1.set({position: 1});
         this.story2.set({position: 2.52654664795});
         this.story3.sortUpdate(this.story3.column, this.story1.id, this.story2.id);
+        this.story3.checkPosition();
       });
 
       it("should make a request sort the entire column", function() {
@@ -149,7 +150,40 @@ describe('StoryCollection', function() {
         expect(request.method).toBe('PUT');
         expect(request.data()).toMatch(/[this.story1.id, this.story3.id, this.story2.id]/);
       });
-    });;
+
+    });
+
+    describe("when the positions has more than 5 decimal places", function() {
+      beforeEach(function() {
+        this.story1.set({position: 5.555554});
+        this.story2.set({position: 5.55555});
+        this.story3.set({position: 5.55554});
+        this.stories.roundPosition(this.story1.id, this.story2.id);
+        this.stories.roundPosition(this.story2.id, this.story3.id);
+      });
+
+      it("should correct the position one by one if collides", function() {
+        expect(this.story1.position()).toEqual(5.55555);
+        expect(this.story2.position()).toEqual(5.55545);
+        expect(this.story3.position()).toEqual(5.55535);
+      });
+    });
+
+    describe("when the positions has more than 5 decimal places", function() {
+      beforeEach(function() {
+        this.story1.set({position: 5.555554});
+        this.story2.set({position: 5.55555});
+        this.story3.set({position: 5.55544});
+        this.stories.roundPosition(this.story1.id, this.story2.id);
+        this.stories.roundPosition(this.story2.id, this.story3.id);
+      });
+
+      it("should correct the next positions only if needed", function() {
+        expect(this.story1.position()).toEqual(5.55555);
+        expect(this.story2.position()).toEqual(5.55545);
+        expect(this.story3.position()).toEqual(5.55544);
+      });
+    });
 
     describe("when the new position is valid", function() {
       beforeEach(function() {

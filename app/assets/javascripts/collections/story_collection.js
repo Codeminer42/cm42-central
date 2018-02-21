@@ -18,6 +18,43 @@ module.exports = Backbone.Collection.extend({
     this.labels = [];
   },
 
+  round: function(value, precision) {
+    var multiplier = Math.pow(10, precision || 0);
+    return Math.round(value * multiplier) / multiplier;
+  },
+
+  getCorrectionFactor: function(this_id, previous_story_id) {
+    var precision = 5;
+    thisStoryPosition = this.round(this.get(this_id).position(), precision);
+    previousStoryPosition = this.round(this.get(previous_story_id).position(), precision);
+
+    correctionFactor = 0.0001;
+    difference = Math.abs(previousStoryPosition - thisStoryPosition);
+    return difference + correctionFactor;
+  }, 
+
+  roundPosition: function(this_id, previous_story_id) {
+    var precision = 5;
+
+    thisStory = this.get(this_id);
+    previousStory = this.get(previous_story_id);
+    
+    thisStoryPosition = this.round(thisStory.position(), precision);
+    thisStory.set({ position: thisStoryPosition });
+    
+    if (previousStory !== undefined && previous_story_id !== undefined) {
+      previousStoryPosition = this.round(previousStory.position(), precision);   
+      if (thisStoryPosition <= previousStoryPosition) {
+        previousStoryPosition = this.round(previousStoryPosition - this.getCorrectionFactor(this_id, previous_story_id), precision);
+        previousStory.set({ position: previousStoryPosition });
+        beforePreviousStory = this.previousOnColumn(previousStory);
+        if (beforePreviousStory !== undefined) {
+          this.roundPosition(previous_story_id, this.previousOnColumn(previousStory).id);
+        }
+      } 
+    }
+  },
+
   calculateNewPosition: function(previous_story_id, next_story_id) {
     if (!_.isUndefined(previous_story_id)) {
       return this.calculatePositionAfter(previous_story_id);
@@ -58,7 +95,20 @@ module.exports = Backbone.Collection.extend({
     return newPosition;
   },
 
-  normalizePositions: function(columnName) {
+/*  checkTheOrder: function(columnName) {
+    var column = this;
+    if (columnName) {
+      column = this.column(columnName);
+    }
+    var orderedIds = column.map(
+      function(model) {
+        console.log("A posição é: " + model.position() +  " e o ID é: " + model.id);
+      }
+    );
+  },*/
+
+  normalizePositions: function(columnName, thisStoryId) {
+    
     var column = this;
     if (columnName) {
       column = this.column(columnName);
@@ -66,12 +116,13 @@ module.exports = Backbone.Collection.extend({
     var orderedIds = column.map(
       function(model) {
         return model.id;
+
       }
     );
     Backbone.ajax({
       method: 'PUT',
       url: this.url + '/sort',
-      data: { ordered_ids: orderedIds }
+      data: { ordered_ids: orderedIds, this_story_position: thisStoryId  }
     });
   },
 

@@ -100,14 +100,21 @@ var Story = module.exports = Backbone.Model.extend({
 
   move: function(previous_story_id, next_story_id) {
     if (this.collection) {
-      const newPosition = this.collection.calculateNewPosition(previous_story_id, next_story_id);
+      newPosition = this.collection.calculateNewPosition(previous_story_id, next_story_id);
       this.set({ position: newPosition });
+      
+      this_id = this.id;
+      factor = this.positionDecimalPlaces();
+      if (factor > 5) {
+        this.collection.roundPosition(this_id, previous_story_id);
+      }
     }
   },
 
   checkPosition: function() {
+    // this.collection.checkTheOrder(this.column);
     if (this.positionDecimalPlacesOverflow()){
-      this.collection.normalizePositions(this.column);
+      this.collection.normalizePositions(this.column, this.id);      
     }
   },
 
@@ -221,6 +228,10 @@ var Story = module.exports = Backbone.Model.extend({
 
   position: function() {
     return parseFloat(this.get('position'));
+  },
+
+  title: function() {
+    return this.get('title');
   },
 
   className: function() {

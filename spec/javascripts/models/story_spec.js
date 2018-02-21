@@ -17,6 +17,7 @@ describe('Story', function() {
       get: function() {},
       calculateNewPosition: sinon.stub(),
       normalizePositions: sinon.spy(),
+      roundPosition: sinon.spy(),
     };
     var view = new Backbone.View();
     this.story = new Story({
@@ -28,9 +29,10 @@ describe('Story', function() {
     this.ro_story = new Story({
       id: 998, title: 'Readonly story', position: '2.55'
     });
+
     this.story.collection = this.new_story.collection = this.ro_story.collection = collection;
     this.story.view       = this.new_story.view       = this.ro_story.view       = view;
-
+    
     // the readonly flag is called in the initialize, but the state change depends on the collection, which in this spec is set after the instance, so has to set manually here
     this.ro_story.set({state: 'accepted', accepted_at: new Date()});
     this.ro_story.setReadonly();
@@ -306,7 +308,6 @@ describe('Story', function() {
       );
     });
 
-
     describe('when the new position has too many decimal places', function(){
       beforeEach(function() {
         this.new_story.set({position: 1});
@@ -315,9 +316,9 @@ describe('Story', function() {
         this.story.sortUpdate(this.story.column, this.new_story.id, this.ro_story.id);
       });
 
-      it('should make a call to normalize the whole column positions', function() {
+       it('should make a call to normalize the whole column positions', function() {
         expect(this.story.collection.normalizePositions).toHaveBeenCalledWith(this.story.column);
-      });
+      }); 
     });
 
     describe('when the new position is valid', function(){
@@ -433,9 +434,7 @@ describe('Story', function() {
     it("should return true the story has a description", function() {
 
       expect(this.story.hasDetails()).toBeFalsy();
-
       this.story.set({description: "Test description"});
-
       expect(this.story.hasDetails()).toBeTruthy();
 
     });
