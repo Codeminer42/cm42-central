@@ -1,11 +1,16 @@
 class StoriesBulkDestroyController < ApplicationController
   def create
     authorize stories
-    stories.each do |story|
-      StoryOperations::Destroy.call(story, current_user)
-    end
+    destroyed_stories = StoryOperations::DestroyAll.call(stories, current_user)
 
-    redirect_to project, notice: 'Stories was successfully destroyed.'
+    if destroyed_stories
+      render json: { message: 'Stories were successfully destroyed.' }, status: :ok
+    else
+      render(
+        json: { errors: 'Stories were not successfully destroyed.' },
+        status: :unprocessable_entity
+      )
+    end
   end
 
   private

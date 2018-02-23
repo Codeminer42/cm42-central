@@ -51,4 +51,7 @@ module StoryOperations
 
   class Destroy < BaseOperations::Destroy
   end
+
+  class DestroyAll < BaseOperations::DestroyAll
+  end
 end

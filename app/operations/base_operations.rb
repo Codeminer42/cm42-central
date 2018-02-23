@@ -63,4 +63,12 @@ module BaseOperations
       model.destroy!
     end
   end
+
+  class DestroyAll < BaseOperations::Create
+    protected
+
+    def operate!
+      model.destroy_all
+    end
+  end
 end

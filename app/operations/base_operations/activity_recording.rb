@@ -1,23 +1,25 @@
 module BaseOperations
   module ActivityRecording
-    def fetch_project
-      case model
+    def fetch_project(record)
+      case record
       when Project
-        model
+        record
       when Story
-        model.project
+        record.project
       when Note, Task
-        model.story.project
+        record.story.project
       end
     end
 
     def create_activity
-      Activity.create(
-        project: fetch_project,
-        user: current_user,
-        action: self.class.name.split('::').last.downcase,
-        subject: model
-      )
+      Array(model).map do |record|
+        Activity.create(
+          project: fetch_project(record),
+          user: current_user,
+          action: self.class.name.split('::').last.downcase,
+          subject: record
+        )
+      end
     end
   end
 end
