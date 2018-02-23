@@ -21,7 +21,7 @@ class Project < ApplicationRecord
 
   has_many :changesets, dependent: :destroy
 
-  has_attachment :import, accept: [:raw]
+  attachment :import
 
   scope :joinable, -> { where(disallow_join: false) }
 
