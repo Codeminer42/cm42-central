@@ -4,12 +4,13 @@ ruby '2.3.1'
 
 gem 'rails', '4.2.7.1'
 
+gem 'refile', require: ["refile/rails"]
+gem 'refile-cloudinary', :git => 'git://github.com/pusewicz/refile-cloudinary.git'
 gem 'activeadmin', '~> 1.0.0.pre4'
 gem 'api-pagination'
-gem 'attachinary'
 gem 'chartkick'
 gem 'chronic'
-gem 'cloudinary'
+gem 'cloudinary', '~> 1.8.3'
 gem 'configuration'
 gem 'devise', '~> 3.5.4'
 gem 'devise-i18n'

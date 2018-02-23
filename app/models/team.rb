@@ -7,7 +7,7 @@ class Team < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
 
-  has_attachment :logo, accept: %i[jpg png gif bmp]
+  attachment :logo
 
   has_many :api_tokens
   has_many :tag_groups

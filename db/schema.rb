@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170914172941) do
+ActiveRecord::Schema.define(version: 20180223135135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -170,31 +170,39 @@ ActiveRecord::Schema.define(version: 20170914172941) do
     t.boolean  "disallow_join",                   default: true,        null: false
     t.integer  "tag_group_id"
     t.boolean  "mail_reports",                    default: true
+    t.string   "import_id"
+    t.string   "import_filename"
+    t.string   "import_size"
+    t.string   "import_content_type"
   end
 
   add_index "projects", ["slug"], name: "index_projects_on_slug", unique: true, using: :btree
 
   create_table "stories", force: :cascade do |t|
-    t.string   "title",             limit: 255
+    t.string   "title",                  limit: 255
     t.text     "description"
     t.integer  "estimate"
-    t.string   "story_type",        limit: 255,                           default: "feature"
-    t.string   "state",             limit: 255,                           default: "unstarted"
+    t.string   "story_type",             limit: 255,                           default: "feature"
+    t.string   "state",                  limit: 255,                           default: "unstarted"
     t.datetime "accepted_at"
     t.integer  "requested_by_id"
     t.integer  "owned_by_id"
     t.integer  "project_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "position",                      precision: 25, scale: 20
-    t.string   "labels",            limit: 255
-    t.string   "requested_by_name", limit: 255
-    t.string   "owned_by_name",     limit: 255
-    t.string   "owned_by_initials", limit: 255
+    t.decimal  "position",                           precision: 25, scale: 20
+    t.string   "labels",                 limit: 255
+    t.string   "requested_by_name",      limit: 255
+    t.string   "owned_by_name",          limit: 255
+    t.string   "owned_by_initials",      limit: 255
     t.datetime "started_at"
-    t.float    "cycle_time",                                              default: 0.0
+    t.float    "cycle_time",                                                   default: 0.0
     t.date     "release_date"
     t.datetime "delivered_at"
+    t.string   "documents_id"
+    t.string   "documents_filename"
+    t.string   "documents_size"
+    t.string   "documents_content_type"
   end
 
   create_table "tag_groups", force: :cascade do |t|
@@ -229,6 +237,10 @@ ActiveRecord::Schema.define(version: 20170914172941) do
     t.boolean  "disable_registration",                      default: false, null: false
     t.string   "registration_domain_whitelist", limit: 255
     t.string   "registration_domain_blacklist", limit: 255
+    t.string   "logo_id"
+    t.string   "logo_filename"
+    t.string   "logo_size"
+    t.string   "logo_content_type"
   end
 
   add_index "teams", ["name"], name: "index_teams_on_name", unique: true, using: :btree
