@@ -19,48 +19,43 @@ module.exports = Backbone.Collection.extend({
   },
 
   round: function(value, precision) {
-    var multiplier = Math.pow(10, precision || 0);
+    const multiplier = Math.pow(10, precision || 0);
     return Math.round(value * multiplier) / multiplier;
   },
 
-  getCorrectionFactor: function(this_id, previous_story_id) {
-    var precision = 5;
-    thisStoryPosition = this.round(this.get(this_id).position(), precision);
-    previousStoryPosition = this.round(this.get(previous_story_id).position(), precision);
-
-    correctionFactor = 0.0001;
-    difference = Math.abs(previousStoryPosition - thisStoryPosition);
+  getCorrectionFactor: function(thisStoryPosition, previousStoryPosition) {
+    var correctionFactor = 0.0001;
+    var difference = Math.abs(previousStoryPosition - thisStoryPosition);
     return difference + correctionFactor;
   }, 
 
-  roundPosition: function(this_id, previous_story_id) {
-    var precision = 5;
+  roundPosition: function(thisId, previousStoryId) {
+    const precision = 5;
 
-    thisStory = this.get(this_id);
-    previousStory = this.get(previous_story_id);
+    var thisStory = this.get(thisId);
+    var previousStory = this.get(previousStoryId);
 
-    thisStoryPosition = this.round(thisStory.position(), precision);
+    var thisStoryPosition = this.round(thisStory.position(), precision);
     thisStory.set({ position: thisStoryPosition });
   
-    if (previousStory !== undefined && previous_story_id !== undefined) {
-      previousStoryPosition = this.round(previousStory.position(), precision);   
+    if (previousStory !== undefined && previousStoryId !== undefined) {
+      var previousStoryPosition = this.round(previousStory.position(), precision);   
       if (thisStoryPosition <= previousStoryPosition) {
-        previousStoryPosition = this.round(previousStoryPosition - this.getCorrectionFactor(this_id, previous_story_id), precision);
-        previousStory.set({ position: previousStoryPosition });
-        beforePreviousStory = this.previousOnColumn(previousStory);
+        previousStory.set({ position: this.round(previousStoryPosition - this.getCorrectionFactor(thisStoryPosition, previousStoryPosition), precision) });
+        var beforePreviousStory = this.previousOnColumn(previousStory);
         if (beforePreviousStory !== undefined) {
-          this.roundPosition(previous_story_id, this.previousOnColumn(previousStory).id);
+          return this.roundPosition(previousStoryId, beforePreviousStory.id);
         }
       } 
     }
   },
 
-  calculateNewPosition: function(previous_story_id, next_story_id) {
-    if (!_.isUndefined(previous_story_id)) {
-      return this.calculatePositionAfter(previous_story_id);
+  calculateNewPosition: function(previousStoryId, nextStoryId) {
+    if (!_.isUndefined(previousStoryId)) {
+      return this.calculatePositionAfter(previousStoryId);
     }
-    if (!_.isUndefined(next_story_id)) {
-      return this.calculatePositionBefore(next_story_id);
+    if (!_.isUndefined(nextStoryId)) {
+      return this.calculatePositionBefore(nextStoryId);
     }
     if (this.length !== 1) {
       throw new Error("Unable to determine previous or next story id for dropped story");
@@ -95,7 +90,7 @@ module.exports = Backbone.Collection.extend({
     return newPosition;
   },
 
-  normalizePositions: function(columnName, thisStoryId) {
+  normalizePositions: function(columnName) {
     
     var column = this;
     if (columnName) {
@@ -110,7 +105,7 @@ module.exports = Backbone.Collection.extend({
     Backbone.ajax({
       method: 'PUT',
       url: this.url + '/sort',
-      data: { ordered_ids: orderedIds, this_story_position: thisStoryId  }
+      data: { ordered_ids: orderedIds }
     });
   },
 

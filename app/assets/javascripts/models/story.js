@@ -105,7 +105,8 @@ var Story = module.exports = Backbone.Model.extend({
       
       this_id = this.id;
       factor = this.positionDecimalPlaces();
-      if (factor > 5) {
+
+      if (factor => 5) {
         this.collection.roundPosition(this_id, previous_story_id);
       }
     }

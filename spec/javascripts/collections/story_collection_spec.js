@@ -153,8 +153,27 @@ describe('StoryCollection', function() {
 
     });
 
-    describe("when the positions has more than 5 decimal places", function() {
+    describe("when the position has more than 5 decimal places in chilly_bin", function() {
       beforeEach(function() {
+        this.story1.set({position: 5.55555});
+        this.story2.set({position: 5.55555 });
+        this.story3.set({position: 5.55555 });
+        this.story1.column = this.story2.column = this.story3.column = '#chilly_bin';
+        this.stories.roundPosition(this.story1.id, this.story2.id);
+        this.stories.roundPosition(this.story2.id, this.story3.id);
+
+      });
+
+      it("should correct the position one by one if collides", function() {
+        expect(this.story1.position()).toEqual(5.55555);
+        expect(this.story2.position()).toEqual(5.55545);
+        expect(this.story3.position()).toEqual(5.55525);
+      });
+    });
+
+    describe("when the positions has more than 5 decimal places in chilly_bin", function() {
+      beforeEach(function() {
+        this.story1.column = this.story2.column = this.story3.column = '#chilly_bin';
         this.story1.set({position: 5.555554});
         this.story2.set({position: 5.55555});
         this.story3.set({position: 5.55554});
@@ -165,14 +184,15 @@ describe('StoryCollection', function() {
       it("should correct the position one by one if collides", function() {
         expect(this.story1.position()).toEqual(5.55555);
         expect(this.story2.position()).toEqual(5.55545);
-        expect(this.story3.position()).toEqual(5.55535);
+        expect(this.story3.position()).toEqual(5.55526);
       });
     });
 
-    describe("when the positions has more than 5 decimal places", function() {
+    describe("when the positions has more than 5 decimal places in chilly_bin", function() {
       beforeEach(function() {
+        this.story1.column = this.story2.column = this.story3.column = '#chilly_bin';
         this.story1.set({position: 5.555554});
-        this.story2.set({position: 5.55555});
+        this.story2.set({position: 5.55545});
         this.story3.set({position: 5.55544});
         this.stories.roundPosition(this.story1.id, this.story2.id);
         this.stories.roundPosition(this.story2.id, this.story3.id);
