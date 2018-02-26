@@ -65,6 +65,10 @@ module BaseOperations
   end
 
   class DestroyAll < BaseOperations::Create
+    def self.name
+      'destroy'
+    end
+
     protected
 
     def operate!
