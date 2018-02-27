@@ -4,10 +4,10 @@ class StoriesBulkDestroyController < ApplicationController
     destroyed_stories = StoryOperations::DestroyAll.call(stories, current_user)
 
     if destroyed_stories
-      render json: { message: 'Stories were successfully destroyed.' }, status: :ok
+      render json: { message: t(:stories_destroy_success) }, status: :ok
     else
       render(
-        json: { errors: 'Stories were not successfully destroyed.' },
+        json: { errors: t(:stories_destroy_fail) },
         status: :unprocessable_entity
       )
     end

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe StoriesBulkDestroyController do
   describe '#create' do
-    before(:each) do
+    before do
       sign_in user
     end
 
@@ -17,12 +17,12 @@ describe StoriesBulkDestroyController do
     let(:story_3) { create(:story, project: project, requested_by: user) }
 
     context 'when receive an array of story ids' do
-      before(:each) do
+      before do
         post :create, project_id: project.id, story_ids: [story_1.id, story_2.id]
       end
 
       it 'destroys stories' do
-        expect(project.stories).to eq([story_3])
+        expect(project.stories).to contain_exactly(story_3)
       end
 
       it 'responds with 200' do
@@ -30,12 +30,14 @@ describe StoriesBulkDestroyController do
       end
 
       it 'returns a successfully message' do
-        expect(response_json('message')).to eql('Stories were successfully destroyed.')
+        successfully_message = "Stories were successfully destroyed"
+
+        expect(response_json('message')).to eql(successfully_message)
       end
     end
 
     context 'when bulk destroy fails' do
-      before(:each) do
+      before do
         allow(StoryOperations::DestroyAll).to receive(:call).and_return(false)
         post :create, project_id: project.id, story_ids: [story_1.id, story_2.id]
       end
@@ -45,7 +47,9 @@ describe StoriesBulkDestroyController do
       end
 
       it 'returns an error message' do
-        expect(response_json('errors')).to eql('Stories were not successfully destroyed.')
+        error_message = "Stories couldn't be destroyed due some validation errors"
+
+        expect(response_json('errors')).to eql(error_message)
       end
     end
   end

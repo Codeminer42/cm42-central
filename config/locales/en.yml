@@ -69,6 +69,8 @@ en:
   reset_tour: "Reset tour"
   reset_tour_success: "Tour was successfully reset"
   reset_tour_fail: "An error has ocurred, please try again"
+  stories_destroy_success: "Stories were successfully destroyed"
+  stories_destroy_fail: "Stories couldn't be destroyed due some validation errors"
 
   story:
     state:

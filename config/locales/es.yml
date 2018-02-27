@@ -65,6 +65,8 @@ es:
   reset_tour: "Resetear excursión"
   reset_tour_success: "La excursión se restableció correctamente"
   reset_tour_fail: "Ha ocurrido un error, por favor intente otra vez"
+  stories_destroy_success: "Las historias fueron destruidas con éxito"
+  stories_destroy_fail: "Las historias no se pudieron destruir debido a algunos errores de validación"
 
   story:
     state:
@@ -143,7 +145,7 @@ es:
     models:
       user: 'Miembro'
       project: "Proyecto"
-      story: 
+      story:
         one: 'Articulo'
         other: 'Articulos'
       team: 'Equipo'
@@ -309,7 +311,7 @@ es:
       example: 'Ejemplo: title: %{story}, requester: foo bar, created_at: 2017/10/30'
       properties: 'Propiedades'
       people: 'Personas'
-      
+
   users:
     You are not authorized to perform this action: "Usted no está autorizado para realizar esta acción."
     is already a member of this project: "%{email} ya es un miembro de este proyecto"
