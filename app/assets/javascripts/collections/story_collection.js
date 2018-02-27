@@ -23,14 +23,9 @@ module.exports = Backbone.Collection.extend({
     return Math.round(value * multiplier) / multiplier;
   },
 
-  getCorrectionFactor: function(thisStoryPosition, previousStoryPosition) {
-    var correctionFactor = 0.0001;
-    var difference = Math.abs(previousStoryPosition - thisStoryPosition);
-    return difference + correctionFactor;
-  }, 
-
   roundPosition: function(thisId, previousStoryId) {
     const precision = 5;
+    const correctionFactor = 0.0001;
 
     var thisStory = this.get(thisId);
     var previousStory = this.get(previousStoryId);
@@ -38,15 +33,16 @@ module.exports = Backbone.Collection.extend({
     var thisStoryPosition = this.round(thisStory.position(), precision);
     thisStory.set({ position: thisStoryPosition });
   
-    if (typeof previousStory !== undefined) {
-      var previousStoryPosition = this.round(previousStory.position(), precision);   
+    if (typeof previousStory !== 'undefined') {
+      var previousStoryPosition = this.round(previousStory.position(), precision);
       if (thisStoryPosition <= previousStoryPosition) {
-        previousStory.set({ position: this.round(previousStoryPosition - this.getCorrectionFactor(thisStoryPosition, previousStoryPosition), precision) });
-        var beforePreviousStory = this.previousOnColumn(previousStory);
-        if (typeof beforePreviousStory !== undefined) {
-          return this.roundPosition(previousStoryId, beforePreviousStory.id);
-        }
+        const difference = Math.abs(previousStoryPosition - thisStoryPosition) + correctionFactor;
+        previousStory.set({ position: this.round(previousStoryPosition - difference, precision) });
       } 
+      var beforePreviousStory = this.previousOnColumn(previousStory);
+    }
+    if (typeof beforePreviousStory !== 'undefined') {
+      this.roundPosition(previousStoryId, beforePreviousStory.id);
     }
   },
 
@@ -91,7 +87,6 @@ module.exports = Backbone.Collection.extend({
   },
 
   normalizePositions: function(columnName) {
-    
     var column = this;
     if (columnName) {
       column = this.column(columnName);
@@ -99,7 +94,6 @@ module.exports = Backbone.Collection.extend({
     var orderedIds = column.map(
       function(model) {
         return model.id;
-
       }
     );
     Backbone.ajax({

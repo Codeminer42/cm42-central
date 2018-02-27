@@ -165,7 +165,7 @@ describe('StoryCollection', function() {
       it("should correct the position one by one if collides", function() {
         expect(this.story1.position()).toEqual(5.55555);
         expect(this.story2.position()).toEqual(5.55545);
-        expect(this.story3.position()).toEqual(5.55525);
+        expect(this.story3.position()).toEqual(5.55535);
       });
     });
 
@@ -182,7 +182,7 @@ describe('StoryCollection', function() {
       it("should correct the position one by one if collides", function() {
         expect(this.story1.position()).toEqual(5.55555);
         expect(this.story2.position()).toEqual(5.55545);
-        expect(this.story3.position()).toEqual(5.55526);
+        expect(this.story3.position()).toEqual(5.55535);
       });
     });
 
