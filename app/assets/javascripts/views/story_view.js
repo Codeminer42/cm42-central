@@ -120,11 +120,11 @@ module.exports = FormView.extend({
     // The target element, i.e. the StoryView.el element
     const target = $(ev.target);
 
-    const previous_story_id = target.prev('.story').data('story-id');
-    const next_story_id = target.next('.story').data('story-id');
+    const previousStoryId = target.prev('.story').data('story-id');
+    const nextStoryId = target.next('.story').data('story-id');
     const column = target.parent().attr('id');
 
-    this.model.sortUpdate(column, previous_story_id, next_story_id);
+    this.model.sortUpdate(column, previousStoryId, nextStoryId);
   },
 
   transition: function(ev) {

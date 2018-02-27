@@ -62,15 +62,15 @@ var Story = module.exports = Backbone.Model.extend({
     model.setColumn();
   },
 
-  sortUpdate: function(column, previous_story_id, next_story_id) {
+  sortUpdate: function(column, previousStoryId, nextStoryId) {
     this.dropToColumn(column);
     if(column === 'chilly_bin'){
-      [previous_story_id, next_story_id] = [next_story_id, previous_story_id];
+      [previousStoryId, nextStoryId] = [nextStoryId, previousStoryId];
     }
     // If both of these are unset, the story has been dropped on an empty
     // column, which will be either the backlog or the chilly bin as these
     // are the only columns that can receive drops from other columns.
-    if (_.isUndefined(previous_story_id) && _.isUndefined(next_story_id)) {
+    if (_.isUndefined(previousStoryId) && _.isUndefined(nextStoryId)) {
       const beforeSearchColumns = this.collection.project.columnsBefore('#' + column);
       const afterSearchColumns  = this.collection.project.columnsAfter('#' + column);
 
@@ -78,14 +78,14 @@ var Story = module.exports = Backbone.Model.extend({
       var nextStory = _.first(this.collection.columns(afterSearchColumns));
 
       if (typeof previousStory !== 'undefined') {
-        previous_story_id = previousStory.id;
+        previousStoryId = previousStory.id;
       }
       if (typeof nextStory !== 'undefined') {
-        next_story_id = nextStory.id;
+        nextStoryId = nextStory.id;
       }
     }
 
-    this.move(previous_story_id, next_story_id);
+    this.move(previousStoryId, nextStoryId);
     this.save();
     this.checkPosition();
   },
@@ -98,16 +98,16 @@ var Story = module.exports = Backbone.Model.extend({
     }
   },
 
-  move: function(previous_story_id, next_story_id) {
+  move: function(previousStoryId, nextStoryId) {
     if (this.collection) {
-      newPosition = this.collection.calculateNewPosition(previous_story_id, next_story_id);
+      newPosition = this.collection.calculateNewPosition(previousStoryId, nextStoryId);
       this.set({ position: newPosition });
       
-      this_id = this.id;
+      thisId = this.id;
       factor = this.positionDecimalPlaces();
 
       if (factor => 5) {
-        this.collection.roundPosition(this_id, previous_story_id);
+        this.collection.roundPosition(thisId, previousStoryId);
       }
     }
   },

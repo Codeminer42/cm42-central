@@ -38,12 +38,12 @@ module.exports = Backbone.Collection.extend({
     var thisStoryPosition = this.round(thisStory.position(), precision);
     thisStory.set({ position: thisStoryPosition });
   
-    if (previousStory !== undefined && previousStoryId !== undefined) {
+    if (typeof previousStory !== undefined) {
       var previousStoryPosition = this.round(previousStory.position(), precision);   
       if (thisStoryPosition <= previousStoryPosition) {
         previousStory.set({ position: this.round(previousStoryPosition - this.getCorrectionFactor(thisStoryPosition, previousStoryPosition), precision) });
         var beforePreviousStory = this.previousOnColumn(previousStory);
-        if (beforePreviousStory !== undefined) {
+        if (typeof beforePreviousStory !== undefined) {
           return this.roundPosition(previousStoryId, beforePreviousStory.id);
         }
       } 

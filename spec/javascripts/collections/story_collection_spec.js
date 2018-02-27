@@ -104,9 +104,7 @@ describe('StoryCollection', function() {
         expect(this.stories.nextOnColumn(this.story2)).toBeUndefined();
         expect(this.stories.previousOnColumn(this.story1)).toBeUndefined();
         expect(this.stories.previousOnColumn(this.story3)).toBeUndefined();
-      }
-    );
-
+      });
   });
 
   describe("columns", function() {
