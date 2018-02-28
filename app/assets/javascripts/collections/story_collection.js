@@ -40,7 +40,7 @@ module.exports = Backbone.Collection.extend({
       }
     }
 
-    nextStory = this.nextOnColumn(thisStory);
+    var nextStory = this.nextOnColumn(thisStory);
     if (typeof nextStory !== 'undefined' && nextStory.position() <= thisStoryPosition) {
       this.roundPosition(nextStory.id, thisId);
     }
