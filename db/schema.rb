@@ -18,7 +18,6 @@ ActiveRecord::Schema.define(version: 20170914172941) do
   enable_extension "hstore"
   enable_extension "pg_trgm"
 
-
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
     t.text     "body"

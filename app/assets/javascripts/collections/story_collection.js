@@ -1,4 +1,5 @@
 var Story = require('models/story');
+const MAX_DECIMAL_PRECISION = 5;
 
 module.exports = Backbone.Collection.extend({
   model: Story,
@@ -24,25 +25,24 @@ module.exports = Backbone.Collection.extend({
   },
 
   roundPosition: function(thisId, previousStoryId) {
-    const precision = 5;
     const correctionFactor = 0.0001;
 
     var thisStory = this.get(thisId);
     var previousStory = this.get(previousStoryId);
+    var thisStoryPosition = this.round(thisStory.position(), MAX_DECIMAL_PRECISION);
 
-    var thisStoryPosition = this.round(thisStory.position(), precision);
-    thisStory.set({ position: thisStoryPosition });
-  
     if (typeof previousStory !== 'undefined') {
-      var previousStoryPosition = this.round(previousStory.position(), precision);
+      var previousStoryPosition = previousStory.position();
       if (thisStoryPosition <= previousStoryPosition) {
-        const difference = Math.abs(previousStoryPosition - thisStoryPosition) + correctionFactor;
-        previousStory.set({ position: this.round(previousStoryPosition - difference, precision) });
-      } 
-      var beforePreviousStory = this.previousOnColumn(previousStory);
+        const difference = Math.abs(thisStoryPosition - previousStoryPosition) + correctionFactor;
+        thisStoryPosition = thisStoryPosition + difference;
+        thisStory.set({ position: this.round(thisStoryPosition, MAX_DECIMAL_PRECISION) });
+      }
     }
-    if (typeof beforePreviousStory !== 'undefined') {
-      this.roundPosition(previousStoryId, beforePreviousStory.id);
+
+    nextStory = this.nextOnColumn(thisStory);
+    if (typeof nextStory !== 'undefined' && nextStory.position() <= thisStoryPosition) {
+      this.roundPosition(nextStory.id, thisId);
     }
   },
 
@@ -69,7 +69,8 @@ module.exports = Backbone.Collection.extend({
     }
     const difference = (afterPosition - before.position()) / 2;
     const newPosition = difference + before.position();
-    return newPosition;
+
+    return this.round(newPosition, MAX_DECIMAL_PRECISION);
   },
 
   calculatePositionBefore: function(afterId) {
@@ -83,7 +84,7 @@ module.exports = Backbone.Collection.extend({
     }
     const difference = (after.position() - beforePosition) / 2;
     const newPosition = difference + beforePosition;
-    return newPosition;
+    return this.round(newPosition, MAX_DECIMAL_PRECISION);
   },
 
   normalizePositions: function(columnName) {

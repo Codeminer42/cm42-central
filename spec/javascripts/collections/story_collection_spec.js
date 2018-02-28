@@ -151,7 +151,7 @@ describe('StoryCollection', function() {
 
     });
 
-    describe("when the position has more than 5 decimal places in chilly_bin", function() {
+    xdescribe("when the position has more than 5 decimal places in chilly_bin", function() {
       beforeEach(function() {
         this.story1.set({position: 5.55555});
         this.story2.set({position: 5.55555 });
@@ -169,7 +169,7 @@ describe('StoryCollection', function() {
       });
     });
 
-    describe("when the positions has more than 5 decimal places in chilly_bin", function() {
+    xdescribe("when the positions has more than 5 decimal places in chilly_bin", function() {
       beforeEach(function() {
         this.story1.column = this.story2.column = this.story3.column = '#chilly_bin';
         this.story1.set({position: 5.555554});
@@ -186,7 +186,7 @@ describe('StoryCollection', function() {
       });
     });
 
-    describe("when the positions has more than 5 decimal places in chilly_bin", function() {
+    xdescribe("when the positions has more than 5 decimal places in chilly_bin", function() {
       beforeEach(function() {
         this.story1.column = this.story2.column = this.story3.column = '#chilly_bin';
         this.story1.set({position: 5.555554});

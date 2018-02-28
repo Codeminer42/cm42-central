@@ -3,6 +3,7 @@ var NoteCollection = require('collections/note_collection');
 var TaskCollection = require('collections/task_collection');
 var SharedModelMethods = require('mixins/shared_model_methods');
 const POSITION_DECIMAL_PLACES_LIMIT = 10;
+const DECIMAL_PRECISION = 5;
 var Story = module.exports = Backbone.Model.extend({
   defaults: {
     events: [],
@@ -102,11 +103,10 @@ var Story = module.exports = Backbone.Model.extend({
     if (this.collection) {
       newPosition = this.collection.calculateNewPosition(previousStoryId, nextStoryId);
       this.set({ position: newPosition });
-      
+  
       thisId = this.id;
-      factor = this.positionDecimalPlaces();
-
-      if (factor => 5) {
+      const factor = this.positionDecimalPlaces();
+      if (factor => DECIMAL_PRECISION) {
         this.collection.roundPosition(thisId, previousStoryId);
       }
     }
