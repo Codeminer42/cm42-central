@@ -29,20 +29,22 @@ module.exports = Backbone.Collection.extend({
 
     var thisStory = this.get(thisId);
     var previousStory = this.get(previousStoryId);
-    var thisStoryPosition = this.round(thisStory.position(), MAX_DECIMAL_PRECISION);
+    var thisStoryPosition = thisStory.position();
 
     if (typeof previousStory !== 'undefined') {
       var previousStoryPosition = previousStory.position();
       if (thisStoryPosition <= previousStoryPosition) {
         const difference = Math.abs(thisStoryPosition - previousStoryPosition) + correctionFactor;
+        
         thisStoryPosition = thisStoryPosition + difference;
         thisStory.set({ position: this.round(thisStoryPosition, MAX_DECIMAL_PRECISION) });
+        
+        var nextStory = this.nextOnColumn(thisStory);
+        
+        if (typeof nextStory !== 'undefined') {
+          return this.roundPosition(nextStory.id, thisId);
+        }
       }
-    }
-
-    var nextStory = this.nextOnColumn(thisStory);
-    if (typeof nextStory !== 'undefined' && nextStory.position() <= thisStoryPosition) {
-      this.roundPosition(nextStory.id, thisId);
     }
   },
 
