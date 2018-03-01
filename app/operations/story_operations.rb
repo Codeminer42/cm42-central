@@ -49,6 +49,14 @@ module StoryOperations
     end
   end
 
+  class UpdateAll < BaseOperations::UpdateAll
+    def operate!
+      model.map do |record|
+        Update.call(record, params, current_user)
+      end
+    end
+  end
+
   class Destroy < BaseOperations::Destroy
   end
 
