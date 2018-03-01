@@ -52,9 +52,9 @@ module.exports = FormView.extend({
     this.model.on("change:position", this.highlight);
     this.model.on("change:estimate", this.highlight);
     this.model.on("change:story_type", this.highlight);
-    this.model.on("change:column", this.handleBackLoggedRelease());
-    this.model.on("change:estimate", this.handleBackLoggedRelease());
-    this.model.on("change:userVelocity", this.handleBackLoggedRelease());
+    //this.model.on("change:column", this.handleBackLoggedRelease());
+    //this.model.on("change:estimate", this.handleBackLoggedRelease());
+    //this.model.on("change:userVelocity", this.handleBackLoggedRelease());
     this.model.on("change:column", this.moveColumn);
 
     this.model.on("change:estimate", this.setClassName);
