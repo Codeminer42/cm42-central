@@ -2,14 +2,14 @@ require 'rails_helper'
 
 describe StoriesBulkUpdateController do
   describe '#create' do
-    def catch_column(model, arg)
-      model.map do |record|
+    def map_to_attribute(stories, arg)
+      stories.map do |record|
         record.reload[arg.to_sym]
       end
     end
 
-    def response_body(status)
-      JSON.parse(response.body)[status]
+    def response_body(field)
+      JSON.parse(response.body)[field]
     end
 
     before do
@@ -21,11 +21,11 @@ describe StoriesBulkUpdateController do
     let(:user_3) { create(:user, :with_team) }
     let(:user_4) { create(:user, :with_team) }
     let(:project) { create(:project, users: [user_1, user_2, user_3], teams: [user_1.teams.first]) }
-    let(:model) { create_list(:story, 2, project: project, requested_by: user_1) }
+    let(:stories) { create_list(:story, 2, project: project, requested_by: user_1) }
 
     let(:params) do
       {
-        project_id: project.id, story_ids: model.map(&:id), requested_by_id: user_2.id,
+        project_id: project.id, story_ids: stories.map(&:id), requested_by_id: user_2.id,
         owned_by_id: user_3.id, labels: 'back, front'
       }
     end
@@ -37,15 +37,15 @@ describe StoriesBulkUpdateController do
         end
 
         it 'updates the story requester' do
-          expect(catch_column(model, 'requested_by_id')).to all(eq(user_2.id))
+          expect(map_to_attribute(stories, 'requested_by_id')).to all(eq(user_2.id))
         end
 
         it 'updates the story owner' do
-          expect(catch_column(model, 'owned_by_id')).to all(eq(user_3.id))
+          expect(map_to_attribute(stories, 'owned_by_id')).to all(eq(user_3.id))
         end
 
         it 'updates the story labels' do
-          expect(catch_column(model, 'labels')).to all(eq('back, front'))
+          expect(map_to_attribute(stories, 'labels')).to all(eq('back, front'))
         end
 
         it 'responds with 200' do
