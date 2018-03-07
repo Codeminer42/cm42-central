@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- New route to destroy batch stories.
 
 ## [1.18.0] 2018-02-16
 ### Added
