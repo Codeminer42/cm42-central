@@ -9,6 +9,7 @@ var HistoryView = require('./history_view');
 module.exports = Backbone.View.extend({
   template: require('templates/project_view.ejs'),
   columns: {},
+  storyModelEvents: {},
 
   initialize: function() {
     _.bindAll(this, 'addStory', 'addAll', 'render', 'noticeSaveError');
@@ -75,19 +76,40 @@ module.exports = Backbone.View.extend({
 
   // Triggered when the 'Add Story' button is clicked
   newStory: function() {
-    if ($(window).width() <= 992) {
-      _.each(this.columns, function(column, columnId) {
-        if(columnId !== 'chilly_bin')
-          if(!column.hidden())
-            column.toggle();
-      });
+    if (!this.storyIsEditing()) {
+      if ($(window).width() <= 992) {
+        _.each(this.columns, function(column, columnId) {
+          if(columnId !== 'chilly_bin')
+            if(!column.hidden())
+              column.toggle();
+        });
+      }
+      this.model.stories.add([{
+        events: [], files: [], editing: true
+      }]);
     }
-    this.model.stories.add([{
-      events: [], files: [], editing: true
-    }]);
+  },
+
+  storyIsEditing: function () {
+    return this.model.stories.find(
+      function(model) {
+        return model.get('editing')
+      }
+    );
+  },
+
+  destroyView: function(view) {
+    view.undelegateEvents();
+    view.$el.removeData().unbind();
+    view.remove();
+
+    Backbone.View.prototype.remove.call(view);
   },
 
   addStory: function(story, column) {
+    var viewsAttached = story.views.length;
+    var view;
+
     // If column is blank determine it from the story.  When the add event
     // is bound on a collection, the callback sends the collection as the
     // second argument, so also check that column is a string and not an
@@ -95,10 +117,18 @@ module.exports = Backbone.View.extend({
     if (_.isUndefined(column) || !_.isString(column)) {
       column = story.column;
     }
-    var view = new StoryView({
-      model: story,
-      attachmentOptions: this.attachmentOptions
-    }).render();
+
+    // stop multiple views and repeating event calls clearing old views and previous model events
+    if(viewsAttached) {
+      // deep clone to save the initial model events
+      story._events = jQuery.extend(true, {}, this.storyModelEvents);;
+      this.destroyView(story.views[0]);
+      story.views = [];
+    } else {
+      this.storyModelEvents = jQuery.extend(true, {}, story._events);
+    }
+
+    view = this.renderStoryView(story, this.attachmentOptions);
 
     view.listenTo(this, 'attachmentOptions', (options) => {
       view.trigger('attachmentOptions', options);
@@ -109,6 +139,13 @@ module.exports = Backbone.View.extend({
     if (column === '#done') {
       view.$el.addClass('collapsed-iteration');
     }
+  },
+
+  renderStoryView: function(story, attachmentOptions) {
+    return new StoryView({
+            model: story,
+            attachmentOptions: attachmentOptions
+          }).render()
   },
 
   appendViewToColumn: function(view, columnName) {
@@ -147,7 +184,7 @@ module.exports = Backbone.View.extend({
     // Render the chilly bin.  This needs to be rendered separately because
     // the stories don't belong to an iteration.
     _.each(this.model.stories.column('#chilly_bin'), function(story) {
-      that.addStory(story);
+        that.addStory(story);
     });
 
     this.$('#done div.iteration:last').click();
