@@ -203,6 +203,15 @@ describe('StoryView', function() {
       expect(this.story.get('errors')).toBeUndefined();
     });
 
+    it('should clearAtWhoContainer created on edit started', function() {
+      var stub = sinon.stub(this.view, "clearAtWhoContainer");
+
+      this.story.set({errors:false});
+      sinon.stub(this.story, "hasErrors").returns(false);
+
+      this.view.cancelEdit();
+      expect(stub).toHaveBeenCalledOnce();
+    });
   });
 
   describe("save edit", function() {
@@ -307,6 +316,63 @@ describe('StoryView', function() {
     it("should call setAcceptedAt on the story", function() {
       this.view.saveEdit(this.e);
       expect(this.story.setAcceptedAt).toHaveBeenCalledOnce();
+    });
+
+    it('should clear the atwho container on successful save', function() {
+      var atwho_spy = sinon.spy(this.view, 'clearAtWhoContainer');
+
+      this.server.respondWith(
+        "PUT", "/path/to/story", [
+          200, {"Content-Type": "application/json"},
+          '{"story":{"title":"Story title"}}'
+        ]
+      );
+
+      this.story.set({editing: true});
+      this.view.clickSave(this.e);
+
+      this.server.respond();
+
+      expect(atwho_spy).toHaveBeenCalledOnce();
+    });
+
+    it('should clear the atwho container on failed save', function() {
+      var atwho_spy = sinon.spy(this.view, 'clearAtWhoContainer');
+
+      this.server.respondWith(
+        "PUT", "/path/to/story", [
+        422, {"Content-Type": "application/json"},
+        '{"story":{"errors":{"title":["cannot be blank"]}}}'
+      ]);
+
+      this.story.set({editing: true});
+      this.view.clickSave(this.e);
+
+      this.server.respond();
+
+      expect(atwho_spy).toHaveBeenCalledOnce();
+    });
+
+  });
+
+  describe('destroy story', function() {
+    beforeEach(function() {
+      this.confirmStub = sinon.stub(window, 'confirm');
+    });
+
+    afterEach(function() {
+      this.confirmStub.restore();
+    });
+
+    it('should clear the model and atwho container on window confirm', function() {
+        this.view.model.clear = sinon.stub();
+        const spy = sinon.spy(this.view, 'clearAtWhoContainer');
+        this.confirmStub.returns(true);
+
+        this.view.clear();
+
+        expect(spy).toHaveBeenCalledOnce();
+        expect(this.view.model.clear).toHaveBeenCalled();
     });
 
   });
@@ -429,6 +495,13 @@ describe('StoryView', function() {
       spy.restore();
     });
 
+    it("should initialize tagit only once on edit", function() {
+      var spy = sinon.spy(jQuery.fn, 'tagit');
+      this.new_story.set({editing: true});
+      expect(spy).toHaveBeenCalledOnce();
+      spy.restore();
+    });
+
   });
 
   describe("notes", function() {
@@ -513,6 +586,13 @@ describe('StoryView', function() {
       const task = { set: sinon.stub(), save: sinon.stub() };
       this.view.handleTaskSubmit({ task, taskName: 'TestTask' });
       expect(task.save).toHaveBeenCalled();
+    });
+
+    it("has a task deletion handler that clears AtWhoContainer created", function() {
+      const task = { destroy: sinon.stub() };
+      const spy = sinon.spy(this.view, 'clearAtWhoContainer');
+      this.view.handleTaskDelete(task);
+      expect(spy).toHaveBeenCalledOnce();
     });
 
   });
