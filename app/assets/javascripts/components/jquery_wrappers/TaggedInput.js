@@ -10,16 +10,25 @@ class TaggedInput extends React.Component {
     this.loadTagit();
   }
 
+  componentWillUnmount() {
+    this.unloadTagit();
+  }
+
   loadTagit() {
     $(this.input).tagit(
       this.tagitProperties()
     ).on('change', this.props.onChange);
   }
 
+  unloadTagit() {
+    $(this.input).tagit('removeAll');
+  }
+
   tagitProperties() {
     return {
       availableTags: this.props.availableLabels,
       readOnly: this.props.disabled,
+      singleField: true,
     };
   }
 
