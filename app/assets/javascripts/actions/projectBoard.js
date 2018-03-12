@@ -1,4 +1,4 @@
-import ProjectBoard from 'models/projectBoard';
+import * as ProjectBoard from 'models/projectBoard';
 import actionTypes from './actionTypes';
 import { receiveUsers } from './user';
 import { receiveStories } from './story';
@@ -26,9 +26,7 @@ export const fetchProjectBoard = (projectId) => {
   return (dispatch) => {
     dispatch(requestProjectBoard());
 
-    const projectBoard = new ProjectBoard({ id: projectId });
-
-    projectBoard.fetch()
+    ProjectBoard.get(projectId)
       .then(({ project, users, stories }) => {
         dispatch(receiveProject(project));
         dispatch(receiveUsers(users));

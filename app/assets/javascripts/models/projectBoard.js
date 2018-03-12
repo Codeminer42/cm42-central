@@ -1,4 +1,7 @@
-window.BOARD = module.exports = Backbone.Model.extend({
-  name: 'project_board',
-  urlRoot: '/beta/project_boards'
-});
+import axios from 'axios';
+
+export function get(projectId) {
+  return axios
+    .get(`/beta/project_boards/${projectId}`)
+    .then(({ data }) => data);
+}
