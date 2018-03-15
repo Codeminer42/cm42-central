@@ -83,7 +83,7 @@ var Story = module.exports = Backbone.Model.extend({
     }
     var difference = (afterPosition - before.position()) / 2;
     var newPosition = difference + before.position();
-    this.set({position: newPosition});
+    this.set({position: newPosition}, {silent: true});
     this.saveSorting();
     return this;
   },
@@ -100,15 +100,22 @@ var Story = module.exports = Backbone.Model.extend({
     var difference = (after.position() - beforePosition) / 2;
     var newPosition = difference + beforePosition;
 
-    this.set({position: newPosition});
+    this.set({position: newPosition}, {silent: true});
     this.collection.sort({silent: true});
     this.saveSorting();
     return this;
   },
 
   saveSorting: function() {
-    this.save();
-    this.collection.saveSorting(this.column);
+    var that = this;
+    that.save();
+    if(that.collection.sorting) {
+      that.collection.sorting.done(function() {
+        that.collection.saveSorting(that.column);
+      })
+    } else {
+      that.collection.saveSorting(that.column);
+    }
   },
 
   setColumn: function() {

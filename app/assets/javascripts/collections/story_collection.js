@@ -19,6 +19,7 @@ module.exports = Backbone.Collection.extend({
   },
 
   saveSorting: function(columnName) {
+    var collection = this;
     var column = this;
     if(columnName) {
       column = this.column(columnName);
@@ -28,10 +29,13 @@ module.exports = Backbone.Collection.extend({
         return model.id;
       }
     );
-    Backbone.ajax({
+
+    collection.sorting = Backbone.ajax({
       method: 'PUT',
       url: this.url + '/sort',
       data: { ordered_ids: orderedIds }
+    }).always( function() {
+      collection.sorting = null;
     });
   },
 

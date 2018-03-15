@@ -130,9 +130,9 @@ module.exports = FormView.extend({
     // Set the story state if drop column is chilly_bin or backlog
     var column = target.parent().attr('id');
     if (column === 'backlog' || (column === 'in_progress' && this.model.get('state') === 'unscheduled')) {
-      this.model.set({state: 'unstarted'});
+      this.model.set({state: 'unstarted'}, {silent: true});
     } else if (column === 'chilly_bin') {
-      this.model.set({state: 'unscheduled'});
+      this.model.set({state: 'unscheduled'}, {silent: true});
       [previous_story_id, next_story_id] = [next_story_id, previous_story_id];
     }
 
