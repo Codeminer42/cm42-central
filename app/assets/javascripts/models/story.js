@@ -2,7 +2,8 @@ var ActivityCollection = require('collections/activity_collection');
 var NoteCollection = require('collections/note_collection');
 var TaskCollection = require('collections/task_collection');
 var SharedModelMethods = require('mixins/shared_model_methods');
-
+const POSITION_DECIMAL_PLACES_LIMIT = 10;
+const DECIMAL_PRECISION = 5;
 var Story = module.exports = Backbone.Model.extend({
   defaults: {
     events: [],
@@ -62,53 +63,72 @@ var Story = module.exports = Backbone.Model.extend({
     model.setColumn();
   },
 
-  moveBetween: function(before, after) {
-    var beforeStory = this.collection.get(before);
-    var afterStory = this.collection.get(after);
-    var difference = (afterStory.position() - beforeStory.position()) / 2;
-    var newPosition = difference + beforeStory.position();
-    this.set({position: newPosition});
-    this.collection.sort();
-    return this;
-  },
-
-  moveAfter: function(beforeId) {
-    var before = this.collection.get(beforeId);
-    var after = this.collection.nextOnColumn(before);
-    var afterPosition;
-    if (typeof after === 'undefined') {
-      afterPosition = before.position() + 2;
-    } else {
-      afterPosition = after.position();
+  sortUpdate: function(column, previousStoryId, nextStoryId) {
+    this.dropToColumn(column);
+    if(column === 'chilly_bin'){
+      [previousStoryId, nextStoryId] = [nextStoryId, previousStoryId];
     }
-    var difference = (afterPosition - before.position()) / 2;
-    var newPosition = difference + before.position();
-    this.set({position: newPosition});
-    this.saveSorting();
-    return this;
-  },
+    // If both of these are unset, the story has been dropped on an empty
+    // column, which will be either the backlog or the chilly bin as these
+    // are the only columns that can receive drops from other columns.
+    if (_.isUndefined(previousStoryId) && _.isUndefined(nextStoryId)) {
 
-  moveBefore: function(afterId) {
-    var after = this.collection.get(afterId);
-    var before = this.collection.previousOnColumn(after);
-    var beforePosition;
-    if (typeof before === 'undefined') {
-      beforePosition = 0.0;
-    } else {
-      beforePosition = before.position();
+      const beforeSearchColumns = this.collection.project.columnsBefore('#' + column);
+      const afterSearchColumns  = this.collection.project.columnsAfter('#' + column);
+
+      var previousStory = _.last(this.collection.columns(beforeSearchColumns));
+      var nextStory = _.first(this.collection.columns(afterSearchColumns));
+
+      if (typeof previousStory !== 'undefined') {
+        previousStoryId = previousStory.id;
+      }
+      if (typeof nextStory !== 'undefined') {
+        nextStoryId = nextStory.id;
+      }
     }
-    var difference = (after.position() - beforePosition) / 2;
-    var newPosition = difference + beforePosition;
 
-    this.set({position: newPosition});
-    this.collection.sort({silent: true});
-    this.saveSorting();
-    return this;
-  },
-
-  saveSorting: function() {
+    this.move(previousStoryId, nextStoryId);
     this.save();
-    this.collection.saveSorting(this.column);
+    this.checkPosition();
+  },
+
+  dropToColumn: function(column) {
+    if (column === 'backlog' || (column === 'in_progress' && this.get('state') === 'unscheduled')) {
+      this.set({state: 'unstarted'});
+    } else if (column === 'chilly_bin') {
+      this.set({state: 'unscheduled'});
+    }
+  },
+
+
+  move: function(previousStoryId, nextStoryId) {
+    if (this.collection) {
+      newPosition = this.collection.calculateNewPosition(previousStoryId, nextStoryId);
+      this.set({ position: newPosition });
+  
+      thisId = this.id;
+      const factor = this.positionDecimalPlaces();
+      if (factor => DECIMAL_PRECISION) {
+        this.collection.roundPosition(thisId, previousStoryId);
+      }
+    }
+  },
+
+  checkPosition: function() {
+    if (this.positionDecimalPlacesOverflow()){
+      this.collection.normalizePositions(this.column, this.id);      
+    }
+  },
+
+  positionDecimalPlacesOverflow: function() {
+    if (this.positionDecimalPlaces() > POSITION_DECIMAL_PLACES_LIMIT){
+      return true;
+    }
+  },
+
+  positionDecimalPlaces: function (number) {
+    const n = this.position().toString().split(".");
+    return n.length > 1 ? n[1].length : 0;
   },
 
   setColumn: function() {
@@ -210,6 +230,10 @@ var Story = module.exports = Backbone.Model.extend({
 
   position: function() {
     return parseFloat(this.get('position'));
+  },
+
+  title: function() {
+    return this.get('title');
   },
 
   className: function() {

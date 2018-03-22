@@ -15,16 +15,15 @@ module.exports = Backbone.View.extend({
 
     this.$loadingSpin = this.$('.loading-spin');
     this.$columnToggles = this.$el.parent().find('#column-toggles');
-
-    this.model.stories.on('add', this.addStory, this);
     this.model.stories.on('reset', this.addAll, this);
+    this.model.stories.on('add', this.addStory, this);
     this.model.stories.on('all', this.render, this);
     this.listenTo(this.model, 'change:userVelocity', this.addAll);
     this.listenTo(this.model, 'change:current_flow', this.prepareColumns);
 
     this.prepareColumns();
     this.$loadingSpin.show();
-    this.model.stories.fetch({success: this.addAll});
+    this.model.stories.fetch({ success: this.addAll });
 
     const attachmentOptions = new AttachmentOptions({
       refreshCallback: (options) => {
@@ -59,7 +58,6 @@ module.exports = Backbone.View.extend({
       }
     }, this);
 
-    this.addAll();
     this.scaleToViewport();
   },
 
@@ -131,9 +129,9 @@ module.exports = Backbone.View.extend({
 
     _.each(this.columns, function(column) {
       if (
-         column.$el.hasClass('search_results_column') ||
-         column.$el.hasClass('epic_column')
-         ) return;
+        column.$el.hasClass('search_results_column') ||
+        column.$el.hasClass('epic_column')
+        ) return;
       column.$el.find('.story_column').html("");
     });
 

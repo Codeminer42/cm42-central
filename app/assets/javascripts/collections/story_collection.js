@@ -1,4 +1,5 @@
 var Story = require('models/story');
+const MAX_DECIMAL_PRECISION = 5;
 
 module.exports = Backbone.Collection.extend({
   model: Story,
@@ -18,9 +19,77 @@ module.exports = Backbone.Collection.extend({
     this.labels = [];
   },
 
-  saveSorting: function(columnName) {
+  round: function(value, precision) {
+    const multiplier = Math.pow(10, precision || 0);
+    return Math.round(value * multiplier) / multiplier;
+  },
+
+  roundPosition: function(thisId, previousStoryId) {
+    const correctionFactor = 0.0001;
+
+    var thisStory = this.get(thisId);
+    var previousStory = this.get(previousStoryId);
+    var thisStoryPosition = this.round(thisStory.position(), MAX_DECIMAL_PRECISION);
+
+    if (typeof previousStory !== 'undefined') {
+      var previousStoryPosition = previousStory.position();
+      if (thisStoryPosition <= previousStoryPosition) {
+        const difference = Math.abs(thisStoryPosition - previousStoryPosition) + correctionFactor;
+        thisStoryPosition = thisStoryPosition + difference;
+        thisStory.set({ position: this.round(thisStoryPosition, MAX_DECIMAL_PRECISION) });
+      }
+    }
+
+    var nextStory = this.nextOnColumn(thisStory);
+    if (typeof nextStory !== 'undefined' && nextStory.position() <= thisStoryPosition) {
+      this.roundPosition(nextStory.id, thisId);
+    }
+  },
+
+  calculateNewPosition: function(previousStoryId, nextStoryId) {
+    if (!_.isUndefined(previousStoryId)) {
+      return this.calculatePositionAfter(previousStoryId);
+    }
+    if (!_.isUndefined(nextStoryId)) {
+      return this.calculatePositionBefore(nextStoryId);
+    }
+    if (this.length !== 1) {
+      throw new Error("Unable to determine previous or next story id for dropped story");
+    }
+  },
+
+  calculatePositionAfter: function(beforeId) {
+    const before = this.get(beforeId);
+    const after = this.nextOnColumn(before);
+    var afterPosition;
+    if (typeof after === 'undefined') {
+      afterPosition = before.position() + 2;
+    } else {
+      afterPosition = after.position();
+    }
+    const difference = (afterPosition - before.position()) / 2;
+    const newPosition = difference + before.position();
+
+    return this.round(newPosition, MAX_DECIMAL_PRECISION);
+  },
+
+  calculatePositionBefore: function(afterId) {
+    const after = this.get(afterId);
+    const before = this.previousOnColumn(after);
+    var beforePosition;
+    if (typeof before === 'undefined') {
+      beforePosition = 0.0;
+    } else {
+      beforePosition = before.position();
+    }
+    const difference = (after.position() - beforePosition) / 2;
+    const newPosition = difference + beforePosition;
+    return this.round(newPosition, MAX_DECIMAL_PRECISION);
+  },
+
+  normalizePositions: function(columnName) {
     var column = this;
-    if(columnName) {
+    if (columnName) {
       column = this.column(columnName);
     }
     var orderedIds = column.map(

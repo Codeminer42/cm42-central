@@ -14,7 +14,10 @@ describe('Story', function() {
     });
     var collection = {
       project: new Project({}), url: '/foo', remove: function() {},
-      get: function() {}
+      get: function() {},
+      calculateNewPosition: sinon.stub(),
+      normalizePositions: sinon.spy(),
+      roundPosition: sinon.spy(),
     };
     var view = new Backbone.View();
     this.story = new Story({
@@ -26,9 +29,10 @@ describe('Story', function() {
     this.ro_story = new Story({
       id: 998, title: 'Readonly story', position: '2.55'
     });
+
     this.story.collection = this.new_story.collection = this.ro_story.collection = collection;
     this.story.view       = this.new_story.view       = this.ro_story.view       = view;
-
+    
     // the readonly flag is called in the initialize, but the state change depends on the collection, which in this spec is set after the instance, so has to set manually here
     this.ro_story.set({state: 'accepted', accepted_at: new Date()});
     this.ro_story.setReadonly();
@@ -261,16 +265,99 @@ describe('Story', function() {
       this.story.set({state: 'rejected'});
       expect(this.story.column).toEqual('#in_progress');
 
-      // If the story is accepted, but it's accepted_at date is within the
-      // current iteration, it should be in the in_progress column, otherwise
-      // it should be in the #done column
-      sinon.stub(this.story, 'iterationNumber').returns(1);
-      this.story.collection.project.currentIterationNumber = sinon.stub().returns(2);
-      this.story.set({state: 'accepted'});
-      expect(this.story.column).toEqual('#done');
-      this.story.collection.project.currentIterationNumber.returns(1);
-      this.story.setColumn();
-      expect(this.story.column).toEqual('#in_progress');
+      describe('when the story is accepted', function(){
+        sinon.stub(this.story, 'iterationNumber').returns(1);
+
+        describe("but it's accepted_at date is within the current iteration", function() {
+          it('it should be in the in_progress column', function() {
+            this.story.collection.project.currentIterationNumber.returns(1);
+            this.story.setColumn();
+            expect(this.story.column).toEqual('#in_progress');
+          });
+        });
+
+        describe('otherwise ', function() {
+          it('it should be in the #done column', function(){
+            this.story.collection.project.currentIterationNumber = sinon.stub().returns(2);
+            this.story.set({state: 'accepted'});
+            expect(this.story.column).toEqual('#done');
+          })
+        });
+      });
+    });
+  });
+
+  describe('sort update', function() {
+
+    describe('drop to column', function() {
+      it('should set the right state', function(){
+        this.story.dropToColumn('backlog');
+        expect(this.story.get('state')).toEqual('unstarted');
+        this.story.dropToColumn('chilly_bin');
+        expect(this.story.get('state')).toEqual('unscheduled');
+        this.story.dropToColumn('in_progress');
+        expect(this.story.get('state')).toEqual('unstarted');
+      });
+
+      it("should not change state if not unscheduled and dropped on the" +
+         " in_progress column", function() {
+          this.story.set({'state':'finished'});
+          this.story.dropToColumn('in_progress');
+          expect(this.story.get('state')).toEqual('finished');
+        }
+      );
+    });
+
+
+    describe('when the new position has too many decimal places', function(){
+      beforeEach(function() {
+        this.new_story.set({position: 1});
+        this.ro_story.set({position: 2.23728372373});
+        this.story.collection.calculateNewPosition.returns(1.61864186186416);
+        this.story.sortUpdate(this.story.column, this.new_story.id, this.ro_story.id);
+      });
+
+       it('should make a call to normalize the whole column positions', function() {
+        expect(this.story.collection.normalizePositions).toHaveBeenCalledWith(this.story.column);
+      }); 
+    });
+
+    describe('when the new position has 5 decimals and check the previous colliding story', function(){
+      beforeEach(function() {
+        this.ro_story.set({ position: 5.55555 });
+        this.story.set({ position: 5.55554 });
+        this.new_story.collection.calculateNewPosition.returns(5.555554);
+        this.new_story.sortUpdate(this.new_story.column, this.ro_story, undefined);
+      });
+
+      it ('should make a call for the function round when its above 5 decimals', function() {
+        expect(this.new_story.collection.roundPosition).toHaveBeenCalled();
+      });
+    });
+
+    describe('when the new position is valid', function(){
+      beforeEach(function() {
+        this.new_story.set({position: 1});
+        this.ro_story.set({position: 2});
+        this.story.collection.calculateNewPosition.returns(1.5);
+<<<<<<< 9567edc2bb1e72d989028a7e799d20c245a55a1c
+        this.story.sortUpdate(this.story.column, this.new_story.id, this.ro_story.id);
+=======
+        this.story.move(this.new_story.id, this.ro_story.id);
+>>>>>>> Refactor sortUpdate
+      });
+
+      it('should change story position', function() {
+        expect(this.story.position()).toEqual(1.5);
+      });
+
+<<<<<<< 9567edc2bb1e72d989028a7e799d20c245a55a1c
+      it('should not make a call to normalize story column positions', function(){
+=======
+      it('should make a call to normalize story column positions', function(){
+>>>>>>> Refactor sortUpdate
+        expect(this.story.collection.normalizePositions).not.toHaveBeenCalled();
+      });
     });
   });
 
@@ -369,9 +456,7 @@ describe('Story', function() {
     it("should return true the story has a description", function() {
 
       expect(this.story.hasDetails()).toBeFalsy();
-
       this.story.set({description: "Test description"});
-
       expect(this.story.hasDetails()).toBeTruthy();
 
     });

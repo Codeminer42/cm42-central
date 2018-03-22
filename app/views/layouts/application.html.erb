@@ -18,7 +18,7 @@
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
-
+        
         <% if session[:current_team_slug] && current_team.try(:logo) %>
           <%= team_logo(current_team.logo.path) %>
         <% else %>

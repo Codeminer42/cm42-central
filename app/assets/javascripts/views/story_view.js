@@ -34,7 +34,7 @@ module.exports = FormView.extend({
   initialize: function(options) {
     _.extend(this, _.pick(options, "isSearchResult"));
 
-    _.bindAll(this, "render", "highlight", "moveColumn", "setClassName",
+    _.bindAll(this, "render", "highlight", "moveToColumn", "setClassName",
       "transition", "estimate", "disableForm", "renderNotes",
       "hoverBox", "renderTasks", "handleNoteDelete", "handleSaveError",
       "addEmptyTask", "handleNoteSubmit", "renderTaskForm", "handleTaskSubmit",
@@ -52,9 +52,10 @@ module.exports = FormView.extend({
     this.model.on("change:position", this.highlight);
     this.model.on("change:estimate", this.highlight);
     this.model.on("change:story_type", this.highlight);
-
+    this.model.on("change:column", this.handleBackLoggedRelease());
+    this.model.on("change:estimate", this.handleBackLoggedRelease());
+    this.model.on("change:userVelocity", this.handleBackLoggedRelease());
     this.model.on("change:column", this.moveColumn);
-
     this.model.on("change:estimate", this.setClassName);
     this.model.on("change:state", this.setClassName);
 
@@ -118,57 +119,14 @@ module.exports = FormView.extend({
   // Triggered whenever a story is dropped to a new position
   sortUpdate: function(ev, ui) {
     // The target element, i.e. the StoryView.el element
-    var target = $(ev.target);
+    const target = $(ev.target);
 
-    // Initially, try and get the id's of the previous and / or next stories
-    // by just searching up above and below in the DOM of the column position
-    // the story was dropped on.  The case where the column is empty is
-    // handled below.
-    var previous_story_id = target.prev('.story').data('story-id');
-    var next_story_id = target.next('.story').data('story-id');
 
-    // Set the story state if drop column is chilly_bin or backlog
-    var column = target.parent().attr('id');
-    if (column === 'backlog' || (column === 'in_progress' && this.model.get('state') === 'unscheduled')) {
-      this.model.set({state: 'unstarted'});
-    } else if (column === 'chilly_bin') {
-      this.model.set({state: 'unscheduled'});
-      [previous_story_id, next_story_id] = [next_story_id, previous_story_id];
-    }
+    const previous_story_id = target.prev('.story').data('story-id');
+    const next_story_id = target.next('.story').data('story-id');
+    const column = target.parent().attr('id');
 
-    // If both of these are unset, the story has been dropped on an empty
-    // column, which will be either the backlog or the chilly bin as these
-    // are the only columns that can receive drops from other columns.
-    if (_.isUndefined(previous_story_id) && _.isUndefined(next_story_id)) {
-
-      var beforeSearchColumns = this.model.collection.project.columnsBefore('#' + column);
-      var afterSearchColumns  = this.model.collection.project.columnsAfter('#' + column);
-
-      var previousStory = _.last(this.model.collection.columns(beforeSearchColumns));
-      var nextStory = _.first(this.model.collection.columns(afterSearchColumns));
-
-      if (typeof previousStory !== 'undefined') {
-        previous_story_id = previousStory.id;
-      }
-      if (typeof nextStory !== 'undefined') {
-        next_story_id = nextStory.id;
-      }
-    }
-
-    if (!_.isUndefined(previous_story_id)) {
-      this.model.moveAfter(previous_story_id);
-    } else if (!_.isUndefined(next_story_id)) {
-      this.model.moveBefore(next_story_id);
-    } else {
-      // The only possible scenario that we should reach this point under
-      // is if there is only one story in the collection, so there is no
-      // previous or next story.  If this is not the case then something
-      // has gone wrong.
-      if (this.model.collection.length !== 1) {
-        throw "Unable to determine previous or next story id for dropped story";
-      }
-    }
-    this.model.save();
+    this.model.sortUpdate(column, previous_story_id, next_story_id);
   },
 
   transition: function(ev) {
@@ -182,7 +140,6 @@ module.exports = FormView.extend({
 
     if (transitionEvent === 'accept' || transitionEvent === 'reject') {
       var confirmed = confirm( I18n.t('story.definitive_sure', {action: transitionEvent} ));
-
       if (!confirmed) return;
     }
 
@@ -249,8 +206,7 @@ module.exports = FormView.extend({
     }
   },
 
-  // Move the story to a new column
-  moveColumn: function() {
+  moveToColumn: function() {
     this.$el.appendTo(this.model.get('column'));
   },
 
@@ -432,7 +388,6 @@ module.exports = FormView.extend({
     }
 
     this.hoverBox();
-    this.handleBackLoggedRelease();
     return this;
   },
 
