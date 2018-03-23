@@ -1,7 +1,13 @@
 var Story = require('models/story');
 
 module.exports = Backbone.Collection.extend({
-  model: Story,
+  model: function(attrs, options){
+    if(attrs.story) {
+      return new Story(attrs, options);
+    } else {
+      return new FinishedIterationStory(attrs, options);
+    }
+  },
 
   initialize: function() {
     _.bindAll(this, 'sort', 'addLabelsFromStory', 'resetLabels');

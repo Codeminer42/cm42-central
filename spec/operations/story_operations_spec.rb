@@ -364,5 +364,33 @@ describe StoryOperations do
         subject.call
       end
     end
+
+    describe '::ReadAll' do
+      context 'when just have stories in the done column' do
+        let(:pundit_context) { PunditContext.new(current_team, user, current_project: project) }
+        let(:current_team)   { user.teams.first }
+        let(:policy_scope)   { Pundit.policy_scope(pundit_context, done_story) }
+
+        subject do
+          lambda do
+            StoryOperations::ReadAll.call(story_scope: policy_scope, project: project)
+          end
+        end
+
+        let(:done_story) do
+          project.stories.create(
+            story_params.merge(
+              state: 'accepted',
+              accepted_at: DateTime.current,
+              started_at: DateTime.current - 2.day
+            )
+          )
+        end
+
+        it 'does not return those stories' do
+          expect(subject.call).to_not include(done_story)
+        end
+      end
+    end
   end
 end

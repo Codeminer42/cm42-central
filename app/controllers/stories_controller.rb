@@ -9,9 +9,10 @@ class StoriesController < ApplicationController
                elsif params[:label]
                  StorySearch.labels(policy_scope(Story), params[:label])
                else
-                 policy_scope(Story).with_dependencies.order('updated_at DESC').tap do |relation|
-                   relation.limit(ENV['STORIES_CEILING']) if ENV['STORIES_CEILING']
-                 end
+                 StoryOperations::ReadAll.call(
+                   story_scope: policy_scope(Story),
+                   project: @project
+                 )
                end
 
     respond_to do |format|
