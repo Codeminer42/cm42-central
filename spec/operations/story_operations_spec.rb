@@ -364,5 +364,28 @@ describe StoryOperations do
         subject.call
       end
     end
+
+    describe '::ReadAll' do
+      # let(:project) { create(:project, users: [user], teams: [user.teams.first]) }
+      #
+      # let(:accepted_stories) do
+      #   create_list(:story, 3, project: project, requested_by: user, accepted_at: Time.now, state: 'accepted')
+      # end
+      # let(:not_accepted_stories) do
+      #   create_list(:story, 3, project: project, requested_by: user, accepted_at: nil, state: 'unstarted')
+      # end
+
+      context 'when iteration is before the current iteration' do
+        subject do
+          lambda do
+            StoryOperations::ReadAll.call(story_scope: Story, project: project)
+          end
+        end
+
+        it 'returns done stories' do
+          binding.pry
+        end
+      end
+    end
   end
 end
