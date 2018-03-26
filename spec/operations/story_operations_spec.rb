@@ -359,31 +359,36 @@ describe StoryOperations do
           ],
           mattermost: "[Test Project] The story ['Test Story']" \
             "(http://foo.com/projects/123#story-#{story.id}) has been rejected."
-        )
-
+          )
         subject.call
       end
     end
 
     describe '::ReadAll' do
-      # let(:project) { create(:project, users: [user], teams: [user.teams.first]) }
-      #
-      # let(:accepted_stories) do
-      #   create_list(:story, 3, project: project, requested_by: user, accepted_at: Time.now, state: 'accepted')
-      # end
-      # let(:not_accepted_stories) do
-      #   create_list(:story, 3, project: project, requested_by: user, accepted_at: nil, state: 'unstarted')
-      # end
+      let(:accepted_story_params) do
+        { title: 'Accepted Story', requested_by: user, state: 'accepted', accepted_at: DateTime.current, started_at: DateTime.current - 2.day }
+      end
 
-      context 'when iteration is before the current iteration' do
+      let(:accepted_story)  { project.stories.build(accepted_story_params) }
+
+      before do
+       accepted_story.save
+      end
+
+      context 'when just have stories in the done column' do
+
+        let(:current_team) { user.teams.first }
+        let(:pundit_context) { PunditContext.new(current_team, user, current_project: project) }
+        let(:policy_scope) { Pundit.policy_scope(pundit_context, Story.all) }
+
         subject do
           lambda do
-            StoryOperations::ReadAll.call(story_scope: Story, project: project)
+            StoryOperations::ReadAll.call(story_scope: policy_scope, project: project)
           end
         end
 
-        it 'returns done stories' do
-          binding.pry
+        it 'does not return those stories' do
+          expect(subject.call).to_not include(accepted_story)
         end
       end
     end
