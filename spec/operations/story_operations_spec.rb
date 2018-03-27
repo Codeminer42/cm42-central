@@ -359,8 +359,7 @@ describe StoryOperations do
           ],
           mattermost: "[Test Project] The story ['Test Story']" \
             "(http://foo.com/projects/123#story-#{story.id}) has been rejected."
-        )
-
+          )
         subject.call
       end
     end
