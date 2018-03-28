@@ -4,16 +4,7 @@ class StoriesController < ApplicationController
   before_action :set_project
 
   def index
-    @stories = if params[:q]
-                 StorySearch.query(policy_scope(Story), params[:q])
-               elsif params[:label]
-                 StorySearch.labels(policy_scope(Story), params[:label])
-               else
-                 StoryOperations::ReadAll.call(
-                   story_scope: policy_scope(Story),
-                   project: @project
-                 )
-               end
+    @stories = select_stories_by_params
 
     respond_to do |format|
       format.json { render json: @stories }
@@ -97,6 +88,19 @@ class StoriesController < ApplicationController
   end
 
   private
+
+  def select_stories_by_params
+    if params[:q]
+      StorySearch.query(policy_scope(Story), params[:q])
+    elsif params[:label]
+      StorySearch.labels(policy_scope(Story), params[:label])
+    else
+      StoryOperations::ReadAll.call(
+        story_scope: policy_scope(Story),
+        project: @project
+      )
+    end
+  end
 
   def allowed_params
     attachinary_params = %i[
