@@ -382,34 +382,30 @@ describe StoryOperations do
         { state: 'started', started_at: DateTime.current - 2.days }
       end
 
-      subject do
-        lambda do
-          StoryOperations::ReadAll.call(story_scope: policy_scope, project: project)
-        end
-      end
+      subject { StoryOperations::ReadAll.call(story_scope: policy_scope, project: project) }
 
       context 'when there are stories in the done column' do
         let(:done_story)     { project.stories.create(story_params.merge(done_story_params)) }
         let(:not_done_story) { project.stories.create(story_params.merge(not_done_story_params)) }
-        # let(:story) { has been defined at the head }
+
         let(:compact_done_story) do
           {
             id: done_story.id,
             estimate: done_story.estimate,
-            created_at: done_story.created_at
+            created_at: done_story.created_at.to_date
           }
         end
 
-        it 'does not return those stories' do
-          expect(subject.call).to_not include(done_story)
+        it 'does not return done stories as Story objects' do
+          expect(subject[:active_stories]).to_not include(done_story)
         end
 
         it 'returns a compact version of done stories' do
-          expect(subject.call[:done_stories]).to contain_exactly(compact_done_story)
+          expect(subject[:done_stories]).to contain_exactly(compact_done_story)
         end
 
         it 'returns the stories that are not done' do
-          expect(subject.call[:active_stories]).to contain_exactly(story, not_done_story)
+          expect(subject[:active_stories]).to contain_exactly(story, not_done_story)
         end
       end
     end

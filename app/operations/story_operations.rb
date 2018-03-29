@@ -41,8 +41,8 @@ module StoryOperations
           '@changed_attributes',
           model.instance_variable_get('@changed_attributes').merge(
             documents_attributes: model.documents_attributes_was
+            )
           )
-        )
       end
 
       model.changesets.create!
@@ -56,14 +56,12 @@ module StoryOperations
   end
 
   class ReadAll
-    MILLISECONDS_IN_A_DAY = 1000 * 60 * 60 * 24
-
     def self.call(*args)
       new(*args).run
     end
 
     def initialize(story_scope:, project:)
-      @story_scope = story_scope
+      @story_scope = story_scope.with_dependencies
       @project = project
     end
 
@@ -76,40 +74,25 @@ module StoryOperations
 
     private
 
-    def story_scope
-      @story_scope.with_dependencies
+    def active_stories
+      order(@story_scope.where("state != 'accepted' OR
+        accepted_at > ?", current_sprint))
+    end
+
+    def done_stories
+      @story_scope.where.not(id: active_stories).map do |story|
+        {
+          id: story.id,
+          estimate: story.estimate,
+          created_at: story.created_at.to_date
+        }
+      end
     end
 
     def order(query)
       query.order('updated_at DESC').tap do |relation|
         relation.limit(ENV['STORIES_CEILING']) if ENV['STORIES_CEILING']
       end
-    end
-
-    def active_stories
-      except_done_stories(story_scope)
-    end
-
-    def done_stories
-      compact_done_stories
-    end
-
-    def compact_done_stories
-      select_done_stories(story_scope).map do |story|
-        {
-          id: story.id,
-          estimate: story.estimate,
-          created_at: story.created_at
-        }
-      end
-    end
-
-    def select_done_stories(relation)
-      order(relation.where.not(id: except_done_stories(story_scope)))
-    end
-
-    def except_done_stories(relation)
-      order(relation.where("state != 'accepted' OR accepted_at > ?", current_sprint))
     end
 
     def current_sprint
@@ -121,7 +104,7 @@ module StoryOperations
     end
 
     def days_since_project_start
-      ((Date.current - @project.start_date).to_f / MILLISECONDS_IN_A_DAY).round
+      Date.current - @project.start_date
     end
 
     def days_in_iteration
