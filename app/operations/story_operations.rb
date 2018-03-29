@@ -1,6 +1,7 @@
 require 'story_operations/member_notification'
 require 'story_operations/state_change_notification'
 require 'story_operations/legacy_fixes'
+require 'story_operations/project_iteration'
 
 module StoryOperations
   class Create < BaseOperations::Create
@@ -41,8 +42,8 @@ module StoryOperations
           '@changed_attributes',
           model.instance_variable_get('@changed_attributes').merge(
             documents_attributes: model.documents_attributes_was
+            )
           )
-        )
       end
 
       model.changesets.create!
@@ -56,76 +57,48 @@ module StoryOperations
   end
 
   class ReadAll
-    MILLISECONDS_IN_A_DAY = 1000 * 60 * 60 * 24
+    include ProjectIteration
 
     def self.call(*args)
       new(*args).run
     end
 
     def initialize(story_scope:, project:)
-      @story_scope = story_scope
+      @story_scope = story_scope.with_dependencies
       @project = project
     end
 
     def run
       {
         active_stories: active_stories,
-        done_stories: done_stories
+        past_iterations: past_iterations
       }
     end
 
     private
 
-    def story_scope
-      @story_scope.with_dependencies
+    def past_iterations
+      iterations = []
+      (project_number_of_past_iterations + 1).times do |iteration_number|
+        start_date = project_start_date + (iteration_number * iteration_length_in_days).days
+        start_date += 1 if iteration_number != 0
+        end_date = start_date + iteration_length_in_days.days
+        if end_date < current_iteration_start_date
+          iterations << Iteration.new(start_date, end_date, @project)
+        end
+      end
+      iterations
+    end
+
+    def active_stories
+      order(@story_scope.where("state != 'accepted' OR
+        accepted_at > ?", current_iteration_start_date))
     end
 
     def order(query)
       query.order('updated_at DESC').tap do |relation|
         relation.limit(ENV['STORIES_CEILING']) if ENV['STORIES_CEILING']
       end
-    end
-
-    def active_stories
-      except_done_stories(story_scope)
-    end
-
-    def done_stories
-      compact_done_stories
-    end
-
-    def compact_done_stories
-      select_done_stories(story_scope).map do |story|
-        {
-          id: story.id,
-          estimate: story.estimate,
-          created_at: story.created_at
-        }
-      end
-    end
-
-    def select_done_stories(relation)
-      order(relation.where.not(id: except_done_stories(story_scope)))
-    end
-
-    def except_done_stories(relation)
-      order(relation.where("state != 'accepted' OR accepted_at > ?", current_sprint))
-    end
-
-    def current_sprint
-      @project.created_at + (((current_iteration - 1) * @project.iteration_length * 7) + 1).days
-    end
-
-    def current_iteration
-      ((days_since_project_start / days_in_iteration) + 1).floor
-    end
-
-    def days_since_project_start
-      ((Date.current - @project.start_date).to_f / MILLISECONDS_IN_A_DAY).round
-    end
-
-    def days_in_iteration
-      @project.iteration_length * 7
     end
   end
 end
