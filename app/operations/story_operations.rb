@@ -76,7 +76,7 @@ module StoryOperations
 
     def active_stories
       order(@story_scope.where("state != 'accepted' OR
-        accepted_at > ?", current_sprint))
+        accepted_at > ?", current_iteration_start_date))
     end
 
     def done_stories
@@ -95,20 +95,29 @@ module StoryOperations
       end
     end
 
-    def current_sprint
-      @project.created_at + (((current_iteration - 1) * @project.iteration_length * 7) + 1).days
+    def active_stories
+      order(@story_scope.where("state != 'accepted' OR
+        accepted_at > ?", current_iteration_start_date))
     end
 
-    def current_iteration
-      ((days_since_project_start / days_in_iteration) + 1).floor
+    def current_iteration_start_date
+      project_start_date + ((past_iteration_end * iteration_length_in_days) + 1).days
+    end
+
+    def past_iteration_end
+      (days_since_project_start / iteration_length_in_days + 1).floor
     end
 
     def days_since_project_start
-      Date.current - @project.start_date
+      Date.current - project_start_date
     end
 
-    def days_in_iteration
+    def iteration_length_in_days
       @project.iteration_length * 7
+    end
+
+    def project_start_date
+      @project.start_date
     end
   end
 end

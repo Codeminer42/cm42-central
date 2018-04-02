@@ -373,13 +373,13 @@ describe StoryOperations do
         {
           state: 'accepted',
           estimate: 8,
-          accepted_at: DateTime.current - 9.days,
-          started_at: DateTime.current - 12.days
+          accepted_at: DateTime.current.days_ago(9),
+          started_at: DateTime.current.days_ago(12)
         }
       end
 
       let(:not_done_story_params) do
-        { state: 'started', started_at: DateTime.current - 2.days }
+        { state: 'started', started_at: DateTime.current.days_ago(2) }
       end
 
       subject { StoryOperations::ReadAll.call(story_scope: policy_scope, project: project) }
