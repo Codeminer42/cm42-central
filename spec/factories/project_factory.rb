@@ -4,4 +4,8 @@ FactoryGirl.define do
     p.start_date { Time.current }
     p.association :tag_group
   end
+
+  trait :with_past_date do
+    start_date { Time.current.days_ago(14) }
+  end
 end

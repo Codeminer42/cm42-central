@@ -1,6 +1,7 @@
 require 'story_operations/member_notification'
 require 'story_operations/state_change_notification'
 require 'story_operations/legacy_fixes'
+require 'story_operations/project_iteration'
 
 module StoryOperations
   class Create < BaseOperations::Create
@@ -56,6 +57,8 @@ module StoryOperations
   end
 
   class ReadAll
+    include ProjectIteration
+
     def self.call(*args)
       new(*args).run
     end
@@ -68,56 +71,34 @@ module StoryOperations
     def run
       {
         active_stories: active_stories,
-        done_stories: done_stories
+        past_iterations: past_iterations
       }
     end
 
     private
 
+    def past_iterations
+      iterations = []
+      (project_number_of_past_iterations + 1).times do |iteration_number|
+        start_date = project_start_date + (iteration_number * iteration_length_in_days).days
+        start_date += 1 if iteration_number != 0
+        end_date = start_date + iteration_length_in_days.days
+        if end_date < current_iteration_start_date
+          iterations << Iteration.new(start_date, end_date, @project)
+        end
+      end
+      iterations
+    end
+
     def active_stories
       order(@story_scope.where("state != 'accepted' OR
         accepted_at > ?", current_iteration_start_date))
-    end
-
-    def done_stories
-      @story_scope.where.not(id: active_stories).map do |story|
-        {
-          id: story.id,
-          estimate: story.estimate,
-          created_at: story.created_at.to_date
-        }
-      end
     end
 
     def order(query)
       query.order('updated_at DESC').tap do |relation|
         relation.limit(ENV['STORIES_CEILING']) if ENV['STORIES_CEILING']
       end
-    end
-
-    def active_stories
-      order(@story_scope.where("state != 'accepted' OR
-        accepted_at > ?", current_iteration_start_date))
-    end
-
-    def current_iteration_start_date
-      project_start_date + ((past_iteration_end * iteration_length_in_days) + 1).days
-    end
-
-    def past_iteration_end
-      (days_since_project_start / iteration_length_in_days + 1).floor
-    end
-
-    def days_since_project_start
-      Date.current - project_start_date
-    end
-
-    def iteration_length_in_days
-      @project.iteration_length * 7
-    end
-
-    def project_start_date
-      @project.start_date
     end
   end
 end
