@@ -33,11 +33,7 @@ module StoryOperations
       private
 
       def sum_stories_points(iteration_stories)
-        points = 0
-        iteration_stories.each do |story|
-          points += story.estimate || 0
-        end
-        points
+        iteration_stories.map { |story| story.estimate }.sum
       end
 
       def select_iteration_stories(stories)
