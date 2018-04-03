@@ -78,16 +78,19 @@ module StoryOperations
     private
 
     def past_iterations
-      iterations = []
-      (project_number_of_past_iterations + 1).times do |iteration_number|
-        start_date = project_start_date + (iteration_number * iteration_length_in_days).days
-        start_date += 1 if iteration_number != 0
-        end_date = start_date + iteration_length_in_days.days
-        if end_date < current_iteration_start_date
-          iterations << Iteration.new(start_date, end_date, @project)
-        end
+      (0..number_of_iterations - 1).to_a.map do |iteration_number|
+        start_date = start_date(iteration_number)
+        end_date = end_date(start_date)
+        Iteration.new(start_date, end_date, @project)
       end
-      iterations
+    end
+
+    def start_date(iteration_number)
+      project_start_date + (iteration_number * iteration_length_in_days)
+    end
+
+    def end_date(start_date)
+      start_date + iteration_length_in_days - 1
     end
 
     def active_stories

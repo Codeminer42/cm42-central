@@ -6,6 +6,6 @@ FactoryGirl.define do
   end
 
   trait :with_past_date do
-    start_date { Time.current.days_ago(14) }
+    start_date { Time.current.days_ago(10) }
   end
 end

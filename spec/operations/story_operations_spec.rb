@@ -376,9 +376,9 @@ describe StoryOperations do
           title: 'Done story',
           state: 'accepted',
           estimate: 8,
-          created_at: DateTime.current.days_ago(14),
-          accepted_at: DateTime.current.days_ago(14),
-          started_at: DateTime.current.days_ago(14)
+          created_at: DateTime.current.days_ago(10),
+          accepted_at: DateTime.current.days_ago(10),
+          started_at: DateTime.current.days_ago(10)
         }
       end
 
@@ -395,9 +395,10 @@ describe StoryOperations do
       context 'when there are stories in the done column' do
         let(:done_story)     { project.stories.create!(done_story_params) }
         let(:active_story) { project.stories.create!(active_story_params) }
-        let(:past_iteration) { Iteration.new(DateTime.current.days_ago(14), DateTime.current.days_ago(7), project) }
+        let(:past_iteration) { Iteration.new(project.created_at, project.created_at + 7.days , project) }
 
         it 'does not return done stories as Story objects' do
+          binding.pry
           expect(subject[:active_stories]).to_not include(done_story)
         end
 

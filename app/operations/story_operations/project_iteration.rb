@@ -1,10 +1,10 @@
 module StoryOperations
   module ProjectIteration
     def current_iteration_start_date
-      project_start_date + (project_number_of_past_iterations * iteration_length_in_days).days
+      project_start_date + (number_of_iterations * iteration_length_in_days)
     end
 
-    def project_number_of_past_iterations
+    def number_of_iterations
       (days_since_project_start / iteration_length_in_days).floor
     end
 
@@ -21,7 +21,7 @@ module StoryOperations
     end
 
     class Iteration
-      attr_accessor :start_date, :end_date, :points
+      attr_reader :start_date, :end_date, :points
 
       def initialize(start_date, end_date, project)
         @start_date = start_date
