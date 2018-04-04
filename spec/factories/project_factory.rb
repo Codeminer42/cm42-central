@@ -6,6 +6,7 @@ FactoryGirl.define do
   end
 
   trait :with_past_date do
+    created_at { Time.current.days_ago(10) }
     start_date { Time.current.days_ago(10) }
   end
 end

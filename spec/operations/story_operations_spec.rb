@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'json'
 
 describe StoryOperations do
   let(:story_params) do
@@ -395,15 +396,14 @@ describe StoryOperations do
       context 'when there are stories in the done column' do
         let(:done_story)     { project.stories.create!(done_story_params) }
         let(:active_story) { project.stories.create!(active_story_params) }
-        let(:past_iteration) { Iteration.new(project.created_at, project.created_at + 7.days , project) }
+        let(:past_iteration) { StoryOperations::ReadAll::PastIteration.new(project.created_at.to_date, ((project.created_at + project.iteration_length * 7.days) - 1.days).to_date, project) }
 
         it 'does not return done stories as Story objects' do
-          binding.pry
           expect(subject[:active_stories]).to_not include(done_story)
         end
 
         it 'returns the past iterations with its points and dates' do
-          expect(subject[:past_iterations]).to contain_exactly(past_iteration)
+          expect(subject[:past_iterations].first.to_json).to eq(past_iteration.to_json)
         end
 
         it 'returns the stories that are not done' do

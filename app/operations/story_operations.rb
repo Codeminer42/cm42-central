@@ -78,10 +78,10 @@ module StoryOperations
     private
 
     def past_iterations
-      (0..number_of_iterations - 1).to_a.map do |iteration_number|
+      (0...number_of_iterations).to_a.map do |iteration_number|
         start_date = start_date(iteration_number)
         end_date = end_date(start_date)
-        Iteration.new(start_date, end_date, @project)
+        PastIteration.new(start_date, end_date, @project)
       end
     end
 
@@ -95,7 +95,7 @@ module StoryOperations
 
     def active_stories
       order(@story_scope.where("state != 'accepted' OR
-        accepted_at > ?", current_iteration_start_date))
+        accepted_at >= ?", current_iteration_start))
     end
 
     def order(query)

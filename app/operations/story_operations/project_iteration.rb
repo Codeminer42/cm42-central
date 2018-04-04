@@ -1,6 +1,6 @@
 module StoryOperations
   module ProjectIteration
-    def current_iteration_start_date
+    def current_iteration_start
       project_start_date + (number_of_iterations * iteration_length_in_days)
     end
 
@@ -20,7 +20,7 @@ module StoryOperations
       @project.start_date
     end
 
-    class Iteration
+    class PastIteration
       attr_reader :start_date, :end_date, :points
 
       def initialize(start_date, end_date, project)
@@ -37,7 +37,7 @@ module StoryOperations
       end
 
       def select_iteration_stories(stories)
-        stories.where('accepted_at >= ? AND accepted_at < ?', @start_date, @end_date)
+        stories.where('accepted_at >= ? AND accepted_at <= ?', @start_date, @end_date)
       end
     end
   end
