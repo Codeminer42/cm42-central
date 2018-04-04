@@ -27,13 +27,13 @@ module StoryOperations
         @start_date = start_date
         @end_date = end_date
         iteration_stories = select_iteration_stories(project.stories)
-        @points = sum_stories_points(iteration_stories)
+        @points = sum_story_points(iteration_stories)
       end
 
       private
 
-      def sum_stories_points(iteration_stories)
-        iteration_stories.map { |story| story.estimate }.sum
+      def sum_story_points(iteration_stories)
+        iteration_stories.map(&:estimate).sum
       end
 
       def select_iteration_stories(stories)

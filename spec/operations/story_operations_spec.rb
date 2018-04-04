@@ -366,10 +366,10 @@ describe StoryOperations do
     end
 
     describe '::ReadAll' do
-      let(:user) { create(:user, :with_team) }
+      let(:user)           { create(:user, :with_team) }
+      let(:current_team)   { user.teams.first }
       let(:project) { create(:project, :with_past_date, users: [user], teams: [current_team]) }
       let(:pundit_context) { PunditContext.new(current_team, user, current_project: project) }
-      let(:current_team)   { user.teams.first }
       let(:policy_scope)   { Pundit.policy_scope(pundit_context, done_story) }
 
       let(:done_story_params) do
@@ -387,23 +387,37 @@ describe StoryOperations do
         {
           title: 'Active story',
           state: 'started',
-          started_at: DateTime.current.days_ago(2),
+          started_at: DateTime.current.days_ago(2)
         }
       end
 
       subject { StoryOperations::ReadAll.call(story_scope: policy_scope, project: project) }
 
       context 'when there are stories in the done column' do
-        let(:done_story)     { project.stories.create!(done_story_params) }
-        let(:active_story) { project.stories.create!(active_story_params) }
-        let(:past_iteration) { StoryOperations::ReadAll::PastIteration.new(project.created_at.to_date, ((project.created_at + project.iteration_length * 7.days) - 1.days).to_date, project) }
+        let(:done_story)      { project.stories.create!(done_story_params) }
+        let(:active_story)    { project.stories.create!(active_story_params) }
+        let(:iteration_start) { project.created_at.to_date }
+
+        let(:iteration_end) do
+          ((project.created_at + project.iteration_length * 7.days) - 1.day).to_date
+        end
+
+        let(:past_iteration) do
+          StoryOperations::ProjectIteration::PastIteration.new(iteration_start,
+                                                               iteration_end,
+                                                               project)
+        end
 
         it 'does not return done stories as Story objects' do
           expect(subject[:active_stories]).to_not include(done_story)
         end
 
         it 'returns the past iterations with its points and dates' do
-          expect(subject[:past_iterations].first.to_json).to eq(past_iteration.to_json)
+          subject_past_iteration = subject[:past_iterations].first
+
+          expect(subject_past_iteration.start_date).to eq(past_iteration.start_date)
+          expect(subject_past_iteration.end_date).to eq(past_iteration.end_date)
+          expect(subject_past_iteration.points).to eq(past_iteration.points)
         end
 
         it 'returns the stories that are not done' do

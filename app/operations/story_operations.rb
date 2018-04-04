@@ -78,7 +78,7 @@ module StoryOperations
     private
 
     def past_iterations
-      (0...number_of_iterations).to_a.map do |iteration_number|
+      (0...number_of_iterations).map do |iteration_number|
         start_date = start_date(iteration_number)
         end_date = end_date(start_date)
         PastIteration.new(start_date, end_date, @project)
