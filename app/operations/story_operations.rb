@@ -1,7 +1,6 @@
 require 'story_operations/member_notification'
 require 'story_operations/state_change_notification'
 require 'story_operations/legacy_fixes'
-require 'story_operations/project_iteration'
 
 module StoryOperations
   class Create < BaseOperations::Create
@@ -57,8 +56,6 @@ module StoryOperations
   end
 
   class ReadAll
-    include ProjectIteration
-
     def self.call(*args)
       new(*args).run
     end
@@ -66,36 +63,21 @@ module StoryOperations
     def initialize(story_scope:, project:)
       @story_scope = story_scope.with_dependencies
       @project = project
+      @iterations = Iterations::ProjectIterations.new(project: project)
     end
 
     def run
       {
         active_stories: active_stories,
-        past_iterations: past_iterations
+        past_iterations: @iterations.past_iterations
       }
     end
 
     private
 
-    def past_iterations
-      (0...number_of_iterations).map do |iteration_number|
-        start_date = start_date(iteration_number)
-        end_date = end_date(start_date)
-        PastIteration.new(start_date, end_date, @project)
-      end
-    end
-
-    def start_date(iteration_number)
-      project_start_date + (iteration_number * iteration_length_in_days)
-    end
-
-    def end_date(start_date)
-      start_date + iteration_length_in_days - 1
-    end
-
     def active_stories
       order(@story_scope.where("state != 'accepted' OR
-        accepted_at >= ?", current_iteration_start))
+        accepted_at >= ?", @iterations.current_iteration_start))
     end
 
     def order(query)
