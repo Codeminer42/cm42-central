@@ -86,6 +86,9 @@ pt-BR:
       reject: "rejeitar"
       restart: "reiniciar"
       clone: "Clonar história"
+      copy_url: "Copiar URL"
+      copy_id: "Copiar ID"
+      view_history: "Ver histórico"
     type:
       feature: "recurso"
       chore: "chore"

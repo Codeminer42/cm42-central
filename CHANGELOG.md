@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - New route to destroy batch stories.
+- Missing button titles in story component
 
 ## [1.18.0] 2018-02-16
 ### Added
