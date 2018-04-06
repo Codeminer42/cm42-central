@@ -9,7 +9,7 @@ module Iterations
     end
 
     def points
-      @points ||= stories.pluck(:estimate).sum
+      @points ||= stories.sum(:estimate)
     end
 
     private
