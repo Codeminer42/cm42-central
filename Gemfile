@@ -2,64 +2,61 @@ source 'https://rubygems.org'
 
 ruby '2.3.1'
 
+git_source(:github) do |repo_name|
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  "https://github.com/#{repo_name}.git"
+end
+
 gem 'rails', '4.2.7.1'
 
 gem 'activeadmin', '~> 1.0.0.pre4'
 gem 'api-pagination'
 gem 'attachinary'
+gem 'autoprefixer-rails'
+gem 'bootstrap-sass', '~> 3.3.5'
+gem 'central-support', github: 'Codeminer42/cm42-central-support', require: 'central/support'
 gem 'chartkick'
 gem 'chronic'
 gem 'cloudinary'
+gem 'coffee-rails'
+gem 'compass-rails'
 gem 'configuration'
+gem 'dalli'
 gem 'devise', '~> 3.5.4'
-gem 'devise-i18n'
 gem 'devise-async'
 gem 'devise-authy'
+gem 'devise-i18n'
 gem 'differ'
 gem 'dotenv-rails'
+gem 'foreman'
+gem 'friendly_id', '~> 5.1.0'
 gem 'grape'
 gem 'grape-entity'
 gem 'grape-swagger'
 gem 'grape-swagger-rails'
+gem 'gravtastic'
+gem 'i18n-js', '>= 3.0.0.rc8'
+gem 'jquery-atwho-rails'
+gem 'jquery-ui-rails'
 gem 'kaminari'
 gem 'material_icons'
-gem 'friendly_id', '~> 5.1.0'
-gem 'foreman'
-gem 'pundit'
-gem 'rails-i18n'
-gem 'rack-cors', require: 'rack/cors'
-gem 'recaptcha', require: 'recaptcha/rails'
-gem 'rgb_utils'
-gem 'user_impersonate2', require: 'user_impersonate'
-gem 'central-support', git: 'https://github.com/Codeminer42/cm42-central-support.git', branch: 'master', require: 'central/support'
-
 gem 'pg'
 gem 'pg_search'
+gem 'platform-api'
 gem 'puma'
+gem 'pundit'
+gem 'rack-cors', require: 'rack/cors'
+gem 'rails-i18n'
+gem 'recaptcha', require: 'recaptcha/rails'
+gem 'rgb_utils'
+gem 'rollbar'
+gem 'sass-rails'
 gem 'sidekiq'
 gem 'sidekiq_mailer'
 gem 'sinatra', require: nil
-gem 'rollbar'
-
-gem 'sass-rails'
 gem 'uglifier', '>= 2.5.3'
-gem 'compass-rails'
-gem 'coffee-rails'
-gem "autoprefixer-rails"
-
-gem 'bootstrap-sass', '~> 3.3.5'
-gem 'i18n-js', '>= 3.0.0.rc8'
-gem 'jquery-ui-rails'
-gem 'dalli'
+gem 'user_impersonate2', require: 'user_impersonate'
 gem 'webpacker'
-
-gem 'jquery-atwho-rails'
-
-gem 'gravtastic'
-
-# SSL (https://github.com/pixielabs/letsencrypt-rails-heroku)
-gem 'platform-api'
-gem 'letsencrypt-rails-heroku', group: 'production'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-jquery.gritter'
@@ -67,6 +64,7 @@ end
 
 group :production do
   gem 'kgio'
+  gem 'letsencrypt-rails-heroku'
   gem 'newrelic_rpm'
   gem 'rack-cache'
   gem 'rack-timeout'
