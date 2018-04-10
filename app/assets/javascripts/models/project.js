@@ -3,6 +3,7 @@ var Cookies = require('js-cookie');
 var StoryCollection = require('collections/story_collection');
 var UserCollection = require('collections/user_collection');
 var Iteration = require('models/iteration');
+var ProjectBoard = require('models/projectBoard');
 
 module.exports = Backbone.Model.extend({
   defaults: {
@@ -18,9 +19,9 @@ module.exports = Backbone.Model.extend({
 
     this.on('change:last_changeset_id', this.updateChangesets, this);
 
-    this.stories = new StoryCollection();
-    this.stories.url = this.url() + '/stories';
-    this.stories.project = this;
+    this.projectBoard = new ProjectBoard({ project: this });
+    this.projectBoard.stories.url = this.url() + '/stories';
+    // this.projectBoard.project = this;
 
     this.users = new UserCollection();
     this.users.url = this.url() + '/users';
@@ -261,9 +262,9 @@ module.exports = Backbone.Model.extend({
     // Reset all story column values.  Required as the story.column values
     // may have been changed from their default values by a prior run of
     // this method.
-    this.stories.invoke('setColumn');
+    this.projectBoard.stories.invoke('setColumn');
 
-    var doneIterations = _.groupBy(this.stories.column('#done'),
+    var doneIterations = _.groupBy(this.projectBoard.stories.column('#done'),
                                     function(story) {
                                       return story.iterationNumber();
                                     });
@@ -287,7 +288,7 @@ module.exports = Backbone.Model.extend({
 
     var currentIteration = new Iteration({
       'number': this.currentIterationNumber(),
-      'stories': this.stories.column('#in_progress'),
+      'stories': this.projectBoard.stories.column('#in_progress'),
       'maximum_points': this.velocity(), 'column': '#in_progress'
     });
     this.appendIteration(currentIteration, '#done');
@@ -304,7 +305,7 @@ module.exports = Backbone.Model.extend({
     this.appendIteration(backlogIteration, '#backlog');
 
 
-    _.each(this.stories.column('#backlog'), function(story) {
+    _.each(this.projectBoard.stories.column('#backlog'), function(story) {
 
       // The in progress iteration usually needs to be filled with the first
       // few stories from the backlog, unless the points total of the stories

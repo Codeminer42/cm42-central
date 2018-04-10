@@ -58,6 +58,8 @@ Rails.application.routes.draw do
     resources :stories_bulk_destroy, only: [:create]
   end
 
+  resources :project_boards, only: :show
+
   resources :tag_groups
 
   namespace :admin do
