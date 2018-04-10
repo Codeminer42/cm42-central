@@ -367,131 +367,88 @@ describe StoryOperations do
   end
 
   describe '::ReadAll' do
-    let(:user)           { create(:user, :with_team) }
-    let(:current_team)   { user.teams.first }
-    let(:project) { create(:project, :with_past_iteration, users: [user], teams: [current_team]) }
-    let(:pundit_context) { PunditContext.new(current_team, user, current_project: project) }
-    let!(:policy_scope)  { Pundit.policy_scope(pundit_context, Story) }
-
-    let(:done_story_params) do
-      {
-        title: 'Done story',
-        state: 'accepted',
-        estimate: 8,
-        created_at: DateTime.current.days_ago(10),
-        accepted_at: DateTime.current.days_ago(10),
-        started_at: DateTime.current.days_ago(10)
-      }
+    def expect_past_iteration_attrs(subject_past_iteration, past_iteration)
+      expect(subject_past_iteration.start_date).to eq(past_iteration.start_date)
+      expect(subject_past_iteration.end_date).to eq(past_iteration.end_date)
+      expect(subject_past_iteration.points).to eq(past_iteration.points)
     end
 
-    let(:active_story_params) do
-      {
-        title: 'Active story',
-        state: 'started',
-        started_at: DateTime.current.days_ago(2)
-      }
+    let(:user)            { create(:user, :with_team) }
+    let(:current_team)    { user.teams.first }
+    let!(:pundit_context) { PunditContext.new(current_team, user, current_project: project) }
+    let!(:policy_scope)   { Pundit.policy_scope(pundit_context, Story) }
+    let!(:done_story)     { create(:story, :done, project: project, requested_by: user) }
+    let!(:active_story)   { create(:story, :active, project: project, requested_by: user) }
+
+    let!(:read_all_params) do
+      { story_scope: policy_scope, project: project }
     end
 
     subject { StoryOperations::ReadAll }
 
+    let!(:past_iteration) do
+      iteration_start = project.created_at.to_date
+      iteration_end = ((project.created_at + project.iteration_length * 7.days) - 1.day).to_date
+      Iterations::PastIteration.new(start_date: iteration_start,
+                                    end_date: iteration_end,
+                                    project: project)
+    end
+
+    let(:result) { subject.call(read_all_params) }
+
     context 'when there are stories in the done column' do
-      let!(:done_story)     { project.stories.create!(done_story_params) }
-      let!(:active_story)   { project.stories.create!(active_story_params) }
-      let(:iteration_start) { project.created_at.to_date }
-
-      let(:iteration_end) do
-        ((project.created_at + project.iteration_length * 7.days) - 1.day).to_date
-      end
-
-      let(:past_iteration) do
-        Iterations::PastIteration.new(start_date: iteration_start,
-                                      end_date: iteration_end,
-                                      project: project)
-      end
-
-      let(:read_all_params) do
-        { story_scope: policy_scope, project: project }
-      end
+      let(:project) { create(:project, :with_past_iteration, users: [user], teams: [current_team]) }
 
       it 'does not return done stories as Story objects' do
-        expect(subject.call(read_all_params)[:active_stories]).to_not include(done_story)
+        expect(result[:active_stories]).to_not include(done_story)
       end
 
       it 'returns the stories that are active' do
-        expect(subject.call(read_all_params)[:active_stories]).to contain_exactly(active_story)
+        expect(result[:active_stories]).to contain_exactly(active_story)
       end
 
       it 'returns the past iterations with its points and dates' do
-        subject_past_iteration = subject.call(read_all_params)[:past_iterations].first
+        subject_past_iteration = result[:past_iterations].first
 
-        expect(subject_past_iteration.start_date).to eq(past_iteration.start_date)
-        expect(subject_past_iteration.end_date).to eq(past_iteration.end_date)
-        expect(subject_past_iteration.points).to eq(past_iteration.points)
+        expect_past_iteration_attrs(subject_past_iteration, past_iteration)
       end
     end
 
     context 'when there are no past iterations' do
       let(:project) { create(:project, users: [user], teams: [current_team]) }
-      let(:pundit_context) { PunditContext.new(current_team, user, current_project: project) }
-      let!(:active_story)   { project.stories.create!(active_story_params) }
-      let(:iteration_start) { project.created_at.to_date }
-
-      let(:read_all_params) do
-        { story_scope: policy_scope, project: project }
-      end
 
       it 'does not return past iterations' do
-        expect(subject.call(read_all_params)[:past_iterations]).to be_empty
+        expect(result[:past_iterations]).to be_empty
       end
 
       it 'returns the stories that are active' do
-        expect(subject.call(read_all_params)[:active_stories]).to contain_exactly(active_story)
+        expect(result[:active_stories]).to contain_exactly(active_story)
       end
     end
 
     context 'when there are no active stories' do
-      let!(:done_story)     { project.stories.create!(done_story_params) }
-      let(:iteration_start) { project.created_at.to_date }
-
-      let(:iteration_end) do
-        ((project.created_at + project.iteration_length * 7.days) - 1.day).to_date
-      end
-
-      let(:past_iteration) do
-        Iterations::PastIteration.new(start_date: iteration_start,
-                                      end_date: iteration_end,
-                                      project: project)
-      end
-
-      let(:read_all_params) do
-        { story_scope: policy_scope, project: project }
-      end
+      let(:project) { create(:project, :with_past_iteration, users: [user], teams: [current_team]) }
+      let(:active_story) { done_story }
 
       it 'does not return active stories' do
-        expect(subject.call(read_all_params)[:active_stories]).to be_empty
+        expect(result[:active_stories]).to be_empty
       end
 
       it 'returns the past iterations with its points and dates' do
-        subject_past_iteration = subject.call(read_all_params)[:past_iterations].first
+        subject_past_iteration = result[:past_iterations].first
 
-        expect(subject_past_iteration.start_date).to eq(past_iteration.start_date)
-        expect(subject_past_iteration.end_date).to eq(past_iteration.end_date)
-        expect(subject_past_iteration.points).to eq(past_iteration.points)
+        expect_past_iteration_attrs(subject_past_iteration, past_iteration)
       end
     end
 
     context 'when the project started a month ago' do
       let(:project) { create(:project, :with_month_ago, users: [user], teams: [current_team]) }
-      let(:read_all_params) do
-        { story_scope: policy_scope, project: project }
-      end
-
-      let(:iteration_length) { project.iteration_length * 7 }
+      let(:iteration_length)         { project.iteration_length * 7 }
       let(:days_since_project_start) { (Date.current - project.start_date).to_i }
-      let(:number_of_iterations) { days_since_project_start / iteration_length }
+      let(:number_of_iterations)     { days_since_project_start / iteration_length }
 
       it 'returns the correct amount of past iterations' do
-        expect(subject.call(read_all_params)[:past_iterations].length).to eq(number_of_iterations)
+        expect(result[:past_iterations].length).to eq(number_of_iterations)
       end
     end
   end
