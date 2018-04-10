@@ -4,6 +4,10 @@
 ### Added
 - New route to destroy batch stories.
 
+### Fixed
+- CVE-2018-1000119 issue, updating rack-protection gem
+- CVE-2018-8048 issue, updating loofah gem
+
 ## [1.18.0] 2018-02-16
 ### Added
 - Update attachinary options before it gets invalid.
