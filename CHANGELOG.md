@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - New route to destroy batch stories.
+- Missing button titles in story component
 
 ### Fixed
 - CVE-2018-1000119 issue, updating rack-protection gem
