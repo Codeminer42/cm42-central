@@ -12,8 +12,6 @@ module Iterations
       @points ||= stories.sum(:estimate)
     end
 
-    private
-
     def stories
       @stories ||= @project.stories.where(
         'accepted_at >= ? AND accepted_at <= ?', @start_date, @end_date

@@ -13,13 +13,17 @@ module Iterations
 
     subject { described_class.new(past_iteration_params) }
 
-    before do
-      create_list(:story, 3, :done, project: project, requested_by: user)
-    end
+    let!(:stories) { create_list(:story, 3, :done, project: project, requested_by: user) }
 
     describe '#points' do
       it 'sums the story estimates in this iteration' do
         expect(subject.points).to eq(24)
+      end
+    end
+
+    describe '#stories' do
+      it 'returns the stories in the iteration' do
+        expect(subject.stories).to eq(stories)
       end
     end
   end
