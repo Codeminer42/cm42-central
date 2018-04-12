@@ -375,16 +375,8 @@ describe StoryOperations do
 
     let(:user)            { create(:user, :with_team) }
     let(:current_team)    { user.teams.first }
-    let!(:pundit_context) { PunditContext.new(current_team, user, current_project: project) }
-    let!(:policy_scope)   { Pundit.policy_scope(pundit_context, Story) }
     let!(:done_story)     { create(:story, :done, project: project, requested_by: user) }
     let!(:active_story)   { create(:story, :active, project: project, requested_by: user) }
-
-    let!(:read_all_params) do
-      { story_scope: policy_scope, project: project }
-    end
-
-    subject { StoryOperations::ReadAll }
 
     let!(:past_iteration) do
       iteration_start = project.created_at.to_date
@@ -394,7 +386,9 @@ describe StoryOperations do
                                     project: project)
     end
 
-    let(:result) { subject.call(read_all_params) }
+    subject { StoryOperations::ReadAll }
+
+    let(:result) { subject.call(project: project) }
 
     context 'when there are stories in the done column' do
       let(:project) { create(:project, :with_past_iteration, users: [user], teams: [current_team]) }
