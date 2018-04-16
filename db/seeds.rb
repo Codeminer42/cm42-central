@@ -12,7 +12,7 @@ ActiveRecord::Base.transaction do
   project = Project.create!(
     name: 'Test Project',
     users: [user],
-    start_date: Time.now
+    start_date: Time.current.months_ago(1)
   )
 
   project.stories.create!(
@@ -50,6 +50,19 @@ ActiveRecord::Base.transaction do
     estimate: 1,
     labels: 'estimates,features'
   )
+
+  3.times do |n|
+    project.stories.create!(
+      title: 'A project should have some past iterations',
+      story_type: 'feature',
+      state: 'accepted',
+      accepted_at:  Time.current.weeks_ago(n + 1),
+      started_at: Time.current.weeks_ago(n + 1),
+      requested_by: user,
+      estimate: 3,
+      labels: 'features'
+    )
+  end
 
   2.times do |n|
     project.stories.first.notes.create!(

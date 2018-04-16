@@ -13,7 +13,7 @@ module Iterations
     end
 
     describe '#past_iterations' do
-      let(:project) { create(:project, :with_past_date) }
+      let(:project) { create(:project, :with_past_iteration) }
 
       it 'returns a past iteration' do
         expect(subject.past_iterations).to all(be_a(PastIteration))

@@ -1,8 +1,8 @@
 class IterationsController < ApplicationController
   def show
     iteration =
-      IterationOperations::Read.call(start_date: params.permit[:start_date],
-                                     end_date: params.permit[:end_date],
+      IterationOperations::Read.call(start_date: params.require[:start_date],
+                                     end_date: params.require[:end_date],
                                      project: project)
 
     render json: iteration
