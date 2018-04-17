@@ -59,8 +59,8 @@ class User < ApplicationRecord
     WelcomeTour::STEPS.to_json
   end
 
-  def as_json(_options = {})
-    super(**_options, only: JSON_ATTRIBUTES, methods: %i[tour_steps guest?])
+  def as_json(options = {})
+    super(**options, only: JSON_ATTRIBUTES, methods: %i[tour_steps guest?])
   end
 
   def self.find_first_by_auth_conditions(warden_conditions)
