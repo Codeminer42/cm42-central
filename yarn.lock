@@ -1586,8 +1586,8 @@ clone@^1.0.2:
   resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
 
 cloudinary_js@^2.1.2:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/cloudinary_js/-/cloudinary_js-2.5.0.tgz#761388669d42f2264d381637feee8f3d7f2aec4f"
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/cloudinary_js/-/cloudinary_js-2.3.0.tgz#6f9419e429ffc6ce10fff4dfbe31eafd5894726a"
 
 co@^4.6.0:
   version "4.6.0"
