@@ -14,7 +14,8 @@ module Iterations
         end_date = end_date(start_date)
         PastIteration.new(start_date: start_date,
                           end_date: end_date,
-                          project: @project)
+                          project: @project,
+                          iteration_number: iteration_number + 1)
       end
     end
 

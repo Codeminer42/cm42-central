@@ -1,16 +1,14 @@
 var StoryCollection = require('collections/story_collection');
 
-var iterationNumber = 1;
-
 class PastIteration {
-  constructor({ startDate, endDate, points, project }) {
+  constructor({ startDate, endDate, points, iterationNumber, project }) {
     this._startDate = new Date(startDate);
     this._endDate = new Date(endDate);
     this._points = points;
+    this.number = iterationNumber;
     this.project = project;
     this._stories = new StoryCollection();
     this.isLoaded = false;
-    this.number = iterationNumber++;
     this.column = '#done';
   }
 

@@ -17,6 +17,7 @@ class ProjectBoard {
           startDate: past_iteration.start_date,
           endDate: past_iteration.end_date,
           points: past_iteration.points,
+          iterationNumber: past_iteration.iteration_number,
           project: this.project
         }));
       });

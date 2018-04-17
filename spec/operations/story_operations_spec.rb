@@ -371,12 +371,13 @@ describe StoryOperations do
       expect(subject_past_iteration.start_date).to eq(past_iteration.start_date)
       expect(subject_past_iteration.end_date).to eq(past_iteration.end_date)
       expect(subject_past_iteration.points).to eq(past_iteration.points)
+      expect(subject_past_iteration.iteration_number).to eq(1)
     end
 
-    let(:user)            { create(:user, :with_team) }
-    let(:current_team)    { user.teams.first }
-    let!(:done_story)     { create(:story, :done, project: project, requested_by: user) }
-    let!(:active_story)   { create(:story, :active, project: project, requested_by: user) }
+    let(:user)          { create(:user, :with_team) }
+    let(:current_team)  { user.teams.first }
+    let!(:done_story)   { create(:story, :done, project: project, requested_by: user) }
+    let!(:active_story) { create(:story, :active, project: project, requested_by: user) }
 
     let!(:past_iteration) do
       iteration_start = project.created_at.to_date
@@ -386,8 +387,7 @@ describe StoryOperations do
                                     project: project)
     end
 
-    subject { StoryOperations::ReadAll }
-
+    subject      { StoryOperations::ReadAll }
     let(:result) { subject.call(project: project) }
 
     context 'when there are stories in the done column' do
@@ -401,7 +401,7 @@ describe StoryOperations do
         expect(result[:active_stories]).to contain_exactly(active_story)
       end
 
-      it 'returns the past iterations with its points and dates' do
+      it 'returns the past iterations with its iteration number, points and dates' do
         subject_past_iteration = result[:past_iterations].first
 
         expect_past_iteration_attrs(subject_past_iteration, past_iteration)
@@ -428,7 +428,7 @@ describe StoryOperations do
         expect(result[:active_stories]).to be_empty
       end
 
-      it 'returns the past iterations with its points and dates' do
+      it 'returns the past iterations with its iteration number, points and dates' do
         subject_past_iteration = result[:past_iterations].first
 
         expect_past_iteration_attrs(subject_past_iteration, past_iteration)
@@ -443,6 +443,10 @@ describe StoryOperations do
 
       it 'returns the correct amount of past iterations' do
         expect(result[:past_iterations].length).to eq(number_of_iterations)
+      end
+
+      it 'returns the right iteration number for each past iteration' do
+        expect(result[:past_iterations].map(&:iteration_number)).to eq([1, 2, 3, 4])
       end
     end
   end
