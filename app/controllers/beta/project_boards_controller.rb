@@ -11,9 +11,7 @@ class Beta::ProjectBoardsController < ApplicationController
       projects_scope: policy_scope(Project)
     )
 
-    if result.success?
-      render json: result.data.as_json(root: false)
-    end
+    render json: result.data.as_json(root: false)
   end
 
   private
