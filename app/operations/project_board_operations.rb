@@ -12,7 +12,6 @@ module ProjectBoardOperations
     end
 
     def run
-      project = project
       users = project.users
       stories = project.stories
 
@@ -33,7 +32,7 @@ module ProjectBoardOperations
     private
 
     def project
-      @projects_scope
+      @project ||= @projects_scope
         .friendly
         .preload(:users, stories: %i[notes document_files tasks])
         .find(@project_id)
