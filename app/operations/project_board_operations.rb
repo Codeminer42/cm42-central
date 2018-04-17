@@ -35,7 +35,7 @@ module ProjectBoardOperations
     def project
       @projects_scope
         .friendly
-        .preload(:users, stories: [:notes, :document_files, :tasks])
+        .preload(:users, stories: %i[notes, document_files, tasks])
         .find(@project_id)
     end
 
