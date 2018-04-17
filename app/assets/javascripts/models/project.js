@@ -275,8 +275,6 @@ module.exports = Backbone.Model.extend({
     });
     this.appendIteration(currentIteration, '#done');
 
-
-
     //
     // Backlog column
     //
