@@ -26,7 +26,6 @@ module ProjectBoardOperations
       )
 
       OpenStruct.new(success?: true, data: project_board)
-
     rescue ActiveRecord::RecordNotFound => e
       OpenStruct.new(success?: false, error: e)
     end
