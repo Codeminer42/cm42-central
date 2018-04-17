@@ -13,8 +13,6 @@ class Beta::ProjectBoardsController < ApplicationController
 
     if result.success?
       render json: result.data.as_json(root: false)
-    else
-
     end
   end
 
