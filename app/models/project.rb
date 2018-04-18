@@ -31,8 +31,8 @@ class Project < ApplicationRecord
     changesets.last && changesets.last.id
   end
 
-  def as_json(_options = {})
-    super(only: JSON_ATTRIBUTES, methods: JSON_METHODS)
+  def as_json(options = {})
+    super(**options, only: JSON_ATTRIBUTES, methods: JSON_METHODS)
   end
 
   def to_param
