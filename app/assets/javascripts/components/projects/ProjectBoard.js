@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchProjectBoard } from 'actions/projectBoard';
+import Column from './Column'
 
 class ProjectBoard extends React.Component {
   componentWillMount() {
@@ -8,12 +9,40 @@ class ProjectBoard extends React.Component {
   }
 
   render() {
+    console.log(this.props.projectBoard.isFetched)
     if(!this.props.projectBoard.isFetched) {
       return <b>Loading</b>;
     }
+    const stories = [
+        {
+          id: 1,
+          title: 'Teste'
+        }
+      ]
 
     return (
-      <div>{this.props.project.name}</div>
+      <div>
+        <h1> {this.props.project.name} </h1>
+        <div className='stories'>
+          <Column
+            title = "ToDo"
+            stories = {stories}
+          />
+          <Column
+            title = "ToDo"
+            stories = {stories}
+          />
+          <Column
+            title = "ToDo"
+            stories = {stories}
+          />
+          <Column
+            title = "ToDo"
+            stories = {stories}
+          />
+        </div>
+
+      </div>
     );
   }
 }

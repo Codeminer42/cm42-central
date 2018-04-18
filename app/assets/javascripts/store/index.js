@@ -1,5 +1,6 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import project from 'reducers/project';
 import projectBoard from 'reducers/projectBoard';
 import users from 'reducers/users';
@@ -12,6 +13,6 @@ const reducer = combineReducers({
   stories
 });
 
-const store = createStore(reducer, applyMiddleware(thunk));
+const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
 
 export default store;
