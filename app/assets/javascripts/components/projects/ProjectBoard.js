@@ -9,40 +9,32 @@ class ProjectBoard extends React.Component {
   }
 
   render() {
-    console.log(this.props.projectBoard.isFetched)
     if(!this.props.projectBoard.isFetched) {
       return <b>Loading</b>;
     }
-    const stories = [
-        {
-          id: 1,
-          title: 'Teste'
-        }
-      ]
 
     return (
       <div className="project-board">
-          <Column 
-            title = "Done"
-            stories = {stories}
-          />
-
-          <Column
-            title = "In Progress"
-            stories = {stories}
-          />
-          <Column
-            title = "BackLog"
-            stories = {stories}
-          />
-          <Column
-            title = "Search Results"
-            stories = {stories}
-          />
-          <Column
-            title = "Chilly Bin"
-            stories = {stories}
-          />
+        <Column
+          title="Done"
+          stories={this.props.columns.done.stories}
+        />
+        <Column
+          title="In Progress"
+          stories={this.props.columns.in_progress.stories}
+        />
+        <Column
+          title="BackLog"
+          stories={this.props.columns.backlog.stories}
+        />
+        <Column
+          title="Search Results"
+          stories={[]}
+        />
+        <Column
+          title="Chilly Bin"
+          stories={this.props.columns.chilly_bin.stories}
+        />
       </div>
     );
   }
