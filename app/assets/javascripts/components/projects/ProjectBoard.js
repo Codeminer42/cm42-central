@@ -16,24 +16,20 @@ class ProjectBoard extends React.Component {
     return (
       <div className="project-board">
         <Column
-          title="Done"
-          stories={this.props.columns.done.stories}
-        />
-        <Column
-          title="In Progress"
-          stories={this.props.columns.in_progress.stories}
+          title="Chilly Bin"
+          stories={this.props.columns.chilly_bin.stories}
         />
         <Column
           title="BackLog"
           stories={this.props.columns.backlog.stories}
         />
-        <Column
-          title="Search Results"
-          stories={[]}
+         <Column
+          title="In Progress"
+          stories={this.props.columns.in_progress.stories}
         />
         <Column
-          title="Chilly Bin"
-          stories={this.props.columns.chilly_bin.stories}
+          title="Done"
+          stories={this.props.columns.done.stories}
         />
       </div>
     );
