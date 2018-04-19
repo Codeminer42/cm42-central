@@ -62,11 +62,18 @@ class ProjectBoard extends React.Component {
   }
 }
 
-const mapStateToProps = ({ projectBoard, project, users, stories }) => ({
+const mapStateToProps = ({
   projectBoard,
   project,
   users,
-  stories
+  stories,
+  columns
+}) => ({
+  projectBoard,
+  project,
+  users,
+  stories,
+  columns,
 });
 
 const mapDispatchToProps = {
