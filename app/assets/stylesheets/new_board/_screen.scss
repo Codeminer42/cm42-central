@@ -1,17 +1,18 @@
-div.stories {
-  width: 100%;
-  height: 100%;
-  border-spacing: 2px 0;
-  border-collapse: separate;
+.full-heigth {
+    height:100%;
 }
-
-div.stories div {
-  float: left;
-  vertical-align: top;
-  background-color: $darkgrey-11;
+.project-board {
   height: 100%;
-  width: 20%;
-  color: white;
-  text-align: center;
-  @include border-radius(5px 5px 0 0);
+  display: flex;
+  overflow: hidden;
+  
+  &__column{
+    background-color: $darkgrey-11;
+    min-width: 20%;
+    flex-basis: 20%;
+    height: 100%;
+    color: white;
+    margin-left:1px;
+  }
+
 }

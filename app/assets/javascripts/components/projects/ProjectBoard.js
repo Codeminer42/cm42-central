@@ -21,42 +21,28 @@ class ProjectBoard extends React.Component {
       ]
 
     return (
-      <div>
-        <h1> {this.props.project.name} </h1>
-        <div className='stories'>
-          <div>
-            <Column
-              title = "Done"
-              stories = {stories}
-            />
-          </div>
+      <div className="project-board">
+          <Column 
+            title = "Done"
+            stories = {stories}
+          />
 
-          <div>
-            <Column
-              title = "In Progress"
-              stories = {stories}
-            />
-          </div>
-          <div>
-            <Column
-              title = "BackLog"
-              stories = {stories}
-            />
-          </div>
-          <div>
-            <Column
-              title = "Search Results"
-              stories = {stories}
-            />
-          </div>
-
-          <div >
-            <Column
-              title = "Chilly Bin"
-              stories = {stories}
-            />
-          </div>
-        </div>
+          <Column
+            title = "In Progress"
+            stories = {stories}
+          />
+          <Column
+            title = "BackLog"
+            stories = {stories}
+          />
+          <Column
+            title = "Search Results"
+            stories = {stories}
+          />
+          <Column
+            title = "Chilly Bin"
+            stories = {stories}
+          />
       </div>
     );
   }

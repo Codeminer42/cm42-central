@@ -28,7 +28,7 @@ function Stories(props){
 function Column(props){
   console.log(props)
   return (
-      <div className={props.className}>
+      <div className="project-board__column">
         <h1>{props.title}</h1>
         <Stories stories={props.stories} />
      </div>)
