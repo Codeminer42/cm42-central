@@ -1,12 +1,19 @@
 env:
   jquery: true
+  es6: true
 extends:
   - plugin:backbone/recommended
+  - airbnb
 plugins:
   - react
   - backbone
 parser: "babel-eslint"
 rules:
+  react/jsx-filename-extension:
+  - 1
+  - extensions:
+    - ".js"
+    - ".jsx"
   eqeqeq: 1
   backbone/initialize-on-top: 0
   backbone/events-on-top: 0
