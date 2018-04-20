@@ -86,7 +86,7 @@
     "eslint-plugin-flowtype": "^2.34.0",
     "eslint-plugin-import": "^2.6.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.1.0",
+    "eslint-plugin-react": "^7.7.0",
     "inject-loader": "^3.0.0",
     "jasmine-core": "^2.5.1",
     "jasmine-enzyme": "^2.1.2",

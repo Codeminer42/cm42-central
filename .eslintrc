@@ -8,12 +8,19 @@ plugins:
   - react
   - backbone
 parser: "babel-eslint"
+settings:
+  import/resolver:
+    webpack:
+      config: config/webpack/production.js
 rules:
+  jsx-a11y/label-has-for: 0
   react/jsx-filename-extension:
   - 1
   - extensions:
     - ".js"
     - ".jsx"
+  import/no-unresolved: 0
+  import/extensions: 0
   eqeqeq: 1
   backbone/initialize-on-top: 0
   backbone/events-on-top: 0
