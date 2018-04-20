@@ -14,7 +14,7 @@ class ProjectBoard extends React.Component {
     }
 
     return (
-      <div className="Project-board">
+      <div className="ProjectBoard">
         <Column
           title="Chilly Bin"
           stories={this.props.columns.chilly_bin.stories}
