@@ -17,16 +17,18 @@ module.exports = Backbone.View.extend({
     return this.sumPoints(estimates);
   },
 
-  donePoints() {
-    const estimates = _.map(this.done(), e => e.get('estimate'));
+  estimateAction(callback) {
+    const estimates = _.map(callback, e => e.get('estimate'));
 
     return this.sumPoints(estimates);
   },
 
-  remainingPoints() {
-    const estimates = _.map(this.remaining(), e => e.get('estimate'));
+  donePoints() {
+    this.estimateAction(this.done());
+  },
 
-    return this.sumPoints(estimates);
+  remainingPoints() {
+    this.estimateAction(this.remaining());
   },
 
   done() {

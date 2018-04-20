@@ -80,13 +80,20 @@ module.exports = Backbone.View.extend({
     return column;
   },
 
+  columnHide(columnId, key, column) {
+    if (columnId !== 'chilly_bin') {
+      if (!column.hidden()) { column.toggle(); }
+    }
+  },
+
   // Triggered when the 'Add Story' button is clicked
   newStory() {
     if ($(window).width() <= 992) {
       _.each(this.columns, (column, columnId) => {
-        if (columnId !== 'chilly_bin') {
-          if (!column.hidden()) { column.toggle(); }
-        }
+        this.columnHide(columnId, 'chilly_bin', column);
+        // if (columnId !== 'chilly_bin') {
+        //   if (!column.hidden()) { column.toggle(); }
+        // }
       });
     }
     this.model.stories.add([{
@@ -188,9 +195,7 @@ module.exports = Backbone.View.extend({
 
     if ($(window).width() <= 992) {
       _.each(this.columns, (column, columnId) => {
-        if (columnId !== 'in_progress') {
-          if (!column.hidden()) { column.toggle(); }
-        }
+        this.columnHide(columnId, 'in_progress', column);
       });
       this.$('#form_search').hide();
     } else {

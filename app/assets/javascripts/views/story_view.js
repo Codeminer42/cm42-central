@@ -212,7 +212,7 @@ module.exports = FormView.extend({
 
     const that = this;
     this.model.save(null, {
-      success(model, response) {
+      success() {
         that.saveInProgress = false;
         that.render();
       },
@@ -291,10 +291,18 @@ module.exports = FormView.extend({
       return false;
     }
     // Should expand if the click wasn't on one of the buttons.
-    if ($(e.target).is('input')) return false;
-    if ($(e.target).is('.input')) return false;
-    if ($(e.target).is('button')) return false;
-    if ($(e.target).parent().is('button')) return false;
+    if ($(e.target).is('input')) {
+      return false;
+    }
+    if ($(e.target).is('.input')) {
+      return false;
+    }
+    if ($(e.target).is('button')) {
+      return false;
+    }
+    if ($(e.target).parent().is('button')) {
+      return false;
+    }
     return true;
   },
 
@@ -516,18 +524,19 @@ module.exports = FormView.extend({
     }));
   },
 
-  appendTags() {
+  appendDiv(element) {
     this.$el.append(this.makeFormControl((div) => {
-      const $storyTags = $('<div class="form-group" data-tags></div>');
+      const $storyTags = $(element);
       $(div).append($storyTags);
-    }));
+    }))
+  },
+
+  appendTags() {
+    this.appendDiv('<div class="form-group" data-tags></div>');
   },
 
   appendDescription() {
-    this.$el.append(this.makeFormControl((div) => {
-      const $storyDescription = $('<div class="story-description"><div>');
-      $(div).append($storyDescription);
-    }));
+    this.appendDiv('<div class="story-description"><div>');
   },
 
   appendAttachments() {
