@@ -1,7 +1,7 @@
 /* eslint react/prop-types:"off" */
 import React from 'react';
 
-const StoryActionButton = props => (
+const StoryActionButton = (props) => (
   <button
     className={`btn btn-default ${props.className}`}
     title={props.title}

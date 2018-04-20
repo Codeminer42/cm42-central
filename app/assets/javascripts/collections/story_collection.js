@@ -24,7 +24,7 @@ module.exports = Backbone.Collection.extend({
     if (columnName) {
       column = this.column(columnName);
     }
-    const orderedIds = column.map(model => model.id);
+    const orderedIds = column.map((model) => model.id);
     Backbone.ajax({
       method: 'PUT',
       url: `${this.url}/sort`,
@@ -77,14 +77,14 @@ module.exports = Backbone.Collection.extend({
   // Returns all the stories in the named column, either #done, #in_progress,
   // #backlog or #chilly_bin
   column(column) {
-    return this.select(story => story.column === column);
+    return this.select((story) => story.column === column);
   },
 
   // Returns an array of the stories in a set of columns.  Pass an array
   // of the column names accepted by column().
   columns(columns) {
     const that = this;
-    return _.flatten(_.map(columns, column => that.column(column)));
+    return _.flatten(_.map(columns, (column) => that.column(column)));
   },
 
   // Takes comma separated string of labels and adds them to the list of

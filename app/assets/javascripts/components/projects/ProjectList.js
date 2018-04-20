@@ -6,7 +6,7 @@ export default class ProjectList extends React.Component {
   cards() {
     const { user, projects, joined } = this.props;
 
-    return projects.map(project => <ProjectCard key={project.get('slug')} project={project} user={user} joined={joined} />);
+    return projects.map((project) => <ProjectCard key={project.get('slug')} project={project} user={user} joined={joined} />);
   }
 
   render() {

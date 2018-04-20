@@ -25,11 +25,11 @@ module.exports = Backbone.Model.extend({
   },
 
   storiesWithState(state) {
-    return _.select(this.get('stories'), story => (story.get('state') === state));
+    return _.select(this.get('stories'), (story) => (story.get('state') === state));
   },
 
   storiesExceptState(state) {
-    return _.reject(this.get('stories'), story => (story.get('state') === state));
+    return _.reject(this.get('stories'), (story) => (story.get('state') === state));
   },
 
   points() {

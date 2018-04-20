@@ -8,6 +8,6 @@ module.exports = Backbone.Collection.extend({
   },
 
   saved() {
-    return this.reject(note => note.isNew());
+    return this.reject((note) => note.isNew());
   },
 });

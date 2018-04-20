@@ -9,7 +9,7 @@ module.exports = {
   },
 
   errorMessages() {
-    return _.map(this.get('errors'), (errors, field) => _.map(errors, error => `${field} ${error}`).join(', ')).join(', ');
+    return _.map(this.get('errors'), (errors, field) => _.map(errors, (error) => `${field} ${error}`).join(', ')).join(', ');
   },
 
   hasErrors() {

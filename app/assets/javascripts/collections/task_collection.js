@@ -8,6 +8,6 @@ module.exports = Backbone.Collection.extend({
   },
 
   saved() {
-    return this.reject(task => task.isNew());
+    return this.reject((task) => task.isNew());
   },
 });

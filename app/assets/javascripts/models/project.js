@@ -98,7 +98,7 @@ module.exports = Backbone.Model.extend({
   handleChangesets(changesets) {
     const that = this;
 
-    let story_ids = _.map(changesets, changeset => changeset.changeset.story_id);
+    let story_ids = _.map(changesets, (changeset) => changeset.changeset.story_id);
     story_ids = _.uniq(story_ids);
 
     _.each(story_ids, (story_id) => {
@@ -239,7 +239,7 @@ module.exports = Backbone.Model.extend({
   },
 
   doneIterations() {
-    return _.select(this.iterations, iteration => iteration.get('column') === '#done');
+    return _.select(this.iterations, (iteration) => iteration.get('column') === '#done');
   },
 
   rebuildIterations() {
@@ -258,7 +258,7 @@ module.exports = Backbone.Model.extend({
 
     const doneIterations = _.groupBy(
       this.stories.column('#done'),
-      story => story.iterationNumber(),
+      (story) => story.iterationNumber(),
     );
 
     // groupBy() returns an object with keys of the iteration number

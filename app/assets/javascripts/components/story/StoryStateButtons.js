@@ -2,7 +2,7 @@
 /* eslint react/prop-types:"off" */
 import React from 'react';
 
-const renderInputButton = event => (
+const renderInputButton = (event) => (
   <input
     type="button"
     key={event}

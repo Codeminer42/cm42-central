@@ -8,31 +8,31 @@ const requestProjectBoard = () => ({
   type: actionTypes.REQUEST_PROJECT_BOARD,
 });
 
-const receiveProjectBoard = projectId => ({
+const receiveProjectBoard = (projectId) => ({
   type: actionTypes.RECEIVE_PROJECT_BOARD,
   data: projectId,
 });
 
-const errorRequestProjectBoard = error => ({
+const errorRequestProjectBoard = (error) => ({
   type: actionTypes.ERROR_REQUEST_PROJECT_BOARD,
   error,
 });
 
-const receiveProject = project => ({
+const receiveProject = (project) => ({
   type: actionTypes.RECEIVE_PROJECT,
   data: project,
 });
 
-export const fetchProjectBoard = projectId => (dispatch) => {
+export const fetchProjectBoard = (projectId) => (dispatch) => {
   dispatch(requestProjectBoard());
 
-  ProjectBoard.get(projectId)
+  return ProjectBoard.get(projectId)
     .then(({ project, users, stories }) => {
       dispatch(receiveProject(project));
       dispatch(receiveUsers(users));
       dispatch(receiveStories(stories));
       dispatch(receiveProjectBoard(projectId));
     })
-    .catch(error =>
+    .catch((error) =>
       dispatch(errorRequestProjectBoard(error)));
 };

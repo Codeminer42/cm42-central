@@ -254,7 +254,7 @@ describe('Project model', () => {
     });
 
     it('should return velocity', function () {
-      const doneIterations = _.map([1, 2, 3, 4, 5], i => ({ points: sinon.stub().returns(i) }));
+      const doneIterations = _.map([1, 2, 3, 4, 5], (i) => ({ points: sinon.stub().returns(i) }));
       const doneIterationsStub = sinon.stub(this.project, 'doneIterations');
       doneIterationsStub.returns(doneIterations);
 
@@ -264,7 +264,7 @@ describe('Project model', () => {
     });
 
     it('should ignore zero points done iterations while calculating velocity', function () {
-      const doneIterations = _.map([1, 2, 0, 4, 5], i => ({ points: sinon.stub().returns(i) }));
+      const doneIterations = _.map([1, 2, 0, 4, 5], (i) => ({ points: sinon.stub().returns(i) }));
       const doneIterationsStub = sinon.stub(this.project, 'doneIterations');
       doneIterationsStub.returns(doneIterations);
 
@@ -274,7 +274,7 @@ describe('Project model', () => {
     });
 
     it('should floor the velocity when it returns a fraction', function () {
-      const doneIterations = _.map([3, 2, 2], i => ({ points: sinon.stub().returns(i) }));
+      const doneIterations = _.map([3, 2, 2], (i) => ({ points: sinon.stub().returns(i) }));
       const doneIterationsStub = sinon.stub(this.project, 'doneIterations');
       doneIterationsStub.returns(doneIterations);
 
@@ -286,7 +286,7 @@ describe('Project model', () => {
     it('should return the velocity when few iterations are complete', function () {
       // Still calculate the average correctly if fewer than the expected
       // number of iterations have been completed.
-      const doneIterations = _.map([3, 1], i => ({ points: sinon.stub().returns(i) }));
+      const doneIterations = _.map([3, 1], (i) => ({ points: sinon.stub().returns(i) }));
       const doneIterationsStub = sinon.stub(this.project, 'doneIterations');
       doneIterationsStub.returns(doneIterations);
 
@@ -294,7 +294,7 @@ describe('Project model', () => {
     });
 
     it('should not return less than 1', function () {
-      const doneIterations = _.map([0, 0, 0], i => ({ points: sinon.stub().returns(i) }));
+      const doneIterations = _.map([0, 0, 0], (i) => ({ points: sinon.stub().returns(i) }));
       const doneIterationsStub = sinon.stub(this.project, 'doneIterations');
       doneIterationsStub.returns(doneIterations);
 

@@ -277,7 +277,7 @@ const Story = module.exports = Backbone.Model.extend({
     if (!_.isString(this.get('labels'))) {
       return [];
     }
-    return _.map(this.get('labels').split(','), label => $.trim(label));
+    return _.map(this.get('labels').split(','), (label) => $.trim(label));
   },
 
   // Initialize the notes collection on this story, and populate if necessary
@@ -295,7 +295,7 @@ const Story = module.exports = Backbone.Model.extend({
 
   // Returns true if any of the story has any saved notes.
   hasNotes() {
-    return this.notes.any(note => !note.isNew());
+    return this.notes.any((note) => !note.isNew());
   },
 
   // Initialize the tasks collection on this story, and populate if necessary
@@ -328,7 +328,7 @@ const Story = module.exports = Backbone.Model.extend({
     } else {
       documents = model.get('documents');
       if (!_.isUndefined(documents)) {
-        documents = _.map(documents, elem => elem.file);
+        documents = _.map(documents, (elem) => elem.file);
         model.set('documents', documents);
       }
     }

@@ -9,7 +9,7 @@ import memoize from 'memoizee';
 
 import StoryLink from 'components/stories/StoryLink';
 
-const editButton = isReadonly => (
+const editButton = (isReadonly) => (
   <input
     className={!isReadonly && 'edit-description'}
     name="edit-description"
@@ -33,7 +33,7 @@ const DescriptionContent = ({
   const isEmpty = !description || !description.length;
 
   description = Parser(descriptionHTML, {
-    replace: domNode =>
+    replace: (domNode) =>
       replaceStoryLink(domNode, linkedStories),
   });
 

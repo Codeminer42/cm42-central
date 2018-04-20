@@ -8,6 +8,6 @@ module.exports = Backbone.Collection.extend({
   },
 
   forSelect() {
-    return this.sort().map(user => [user.get('name'), user.id]);
+    return this.sort().map((user) => [user.get('name'), user.id]);
   },
 });

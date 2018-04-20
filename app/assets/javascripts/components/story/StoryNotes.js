@@ -4,7 +4,7 @@ import React from 'react';
 import Note from 'components/notes/Note';
 
 const renderNotes = ({ notes, disabled, handleDelete }) =>
-  notes.map(note =>
+  notes.map((note) =>
     (<Note
       note={note}
       disabled={disabled}
@@ -12,7 +12,7 @@ const renderNotes = ({ notes, disabled, handleDelete }) =>
       key={note.get('id')}
     />));
 
-const StoryNotes = props =>
+const StoryNotes = (props) =>
   (<div className="form-group">
     <label htmlFor="note">{I18n.t('story.notes')}</label>
     <div className="notelist">

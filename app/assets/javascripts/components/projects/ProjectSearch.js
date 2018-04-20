@@ -61,7 +61,7 @@ export default class ProjectSearch extends React.Component {
   }
 
   filterOptions() {
-    return Project.filters.map(filter => (<option key={filter} value={filter}>{ I18n.t(filter) }</option>));
+    return Project.filters.map((filter) => (<option key={filter} value={filter}>{ I18n.t(filter) }</option>));
   }
 
   renderProjectList(list) {

@@ -18,7 +18,7 @@ module.exports = Backbone.View.extend({
   },
 
   estimateAction(callback) {
-    const estimates = _.map(callback, e => e.get('estimate'));
+    const estimates = _.map(callback, (e) => e.get('estimate'));
 
     return this.sumPoints(estimates);
   },
@@ -32,11 +32,11 @@ module.exports = Backbone.View.extend({
   },
 
   done() {
-    return _.select(this.model.search.models, story => (story.get('state') === 'accepted'));
+    return _.select(this.model.search.models, (story) => (story.get('state') === 'accepted'));
   },
 
   remaining() {
-    return _.select(this.model.search.models, story => (story.get('state') !== 'accepted'));
+    return _.select(this.model.search.models, (story) => (story.get('state') !== 'accepted'));
   },
 
   sumPoints(estimates) {

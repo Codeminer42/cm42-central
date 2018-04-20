@@ -222,7 +222,7 @@ module.exports = Backbone.View.extend({
 
   usernames() {
     return this.model.users
-      .map(user => user.get('username'))
+      .map((user) => user.get('username'))
       .sort();
   },
 

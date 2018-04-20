@@ -27,7 +27,7 @@ export default class StoryLink extends React.Component {
   handleClick() {
     const { story } = this.props;
     document.getElementById(`story-${story.get('id')}`).scrollIntoView();
-    story && _.each(story.views, view => view.highlight());
+    story && _.each(story.views, (view) => view.highlight());
   }
 
   renderIcon(storyState) {

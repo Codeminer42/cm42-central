@@ -36,7 +36,7 @@ module.exports = Backbone.View.extend({
 
   addActivities(activities) {
     this.$column.html('');
-    activities.models.map(item => this.addActivity(item.attributes));
+    activities.models.map((item) => this.addActivity(item.attributes));
 
     this.$loadingSpin.hide();
     this.$el.show();

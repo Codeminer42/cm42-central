@@ -621,7 +621,7 @@ module.exports = FormView.extend({
           editingDescription={this.model.get('editingDescription')}
           value={this.model.get('description')}
           fileuploadprogressall={this.uploadProgressBar}
-          onChange={event => this.onChangeModel(event.target.value, 'description')}
+          onChange={(event) => this.onChangeModel(event.target.value, 'description')}
           onClick={this.editDescription}
         />,
         description,
@@ -638,7 +638,7 @@ module.exports = FormView.extend({
           className="labels"
           value={this.model.get('labels')}
           availableLabels={this.model.collection.labels}
-          onChange={event => this.onChangeModel(event.target.value, 'labels')}
+          onChange={(event) => this.onChangeModel(event.target.value, 'labels')}
           disabled={this.isReadonly()}
         />,
         tagsInput,
