@@ -1,139 +1,137 @@
-var Story = require('models/story');
-var User = require('models/user');
+/* eslint backbone/defaults-on-top:"off" */
+/* eslint max-len:"off" */
+const Story = require('models/story');
+const User = require('models/user');
 
-describe('Story', function() {
-
-  beforeEach(function() {
-    var Project = Backbone.Model.extend({
+describe('Story', () => {
+  beforeEach(function () {
+    const Project = Backbone.Model.extend({
       name: 'project',
-      defaults: {point_values: [0, 1, 2, 3]},
-      users: { get: function() {} },
+      defaults: { point_values: [0, 1, 2, 3] },
+      users: { get() {} },
       current_user: new User({ id: 999, 'guest?': false }),
-      currentIterationNumber: function() { return 1; },
-      getIterationNumberForDate: function() { return 999; }
+      currentIterationNumber() { return 1; },
+      getIterationNumberForDate() { return 999; },
     });
-    var collection = {
-      project: new Project({}), url: '/foo', remove: function() {},
-      get: function() {}
+    const collection = {
+      project: new Project({}),
+      url: '/foo',
+      remove() {},
+      get() {},
     };
-    var view = new Backbone.View();
+    const view = new Backbone.View();
     this.story = new Story({
-      id: 999, title: 'Test story', position: '2.45'
+      id: 999, title: 'Test story', position: '2.45',
     });
     this.new_story = new Story({
-      title: 'New story'
+      title: 'New story',
     });
     this.ro_story = new Story({
-      id: 998, title: 'Readonly story', position: '2.55'
+      id: 998, title: 'Readonly story', position: '2.55',
     });
     this.story.collection = this.new_story.collection = this.ro_story.collection = collection;
-    this.story.view       = this.new_story.view       = this.ro_story.view       = view;
+    this.story.view = this.new_story.view = this.ro_story.view = view;
 
     // the readonly flag is called in the initialize, but the state change depends on the collection, which in this spec is set after the instance, so has to set manually here
-    this.ro_story.set({state: 'accepted', accepted_at: new Date()});
+    this.ro_story.set({ state: 'accepted', accepted_at: new Date() });
     this.ro_story.setReadonly();
 
     this.server = sinon.fakeServer.create();
   });
 
-  describe('when instantiated', function() {
-
-    it('should exhibit attributes', function() {
+  describe('when instantiated', () => {
+    it('should exhibit attributes', function () {
       expect(this.story.get('title'))
         .toEqual('Test story');
     });
 
-    it('should have a default state of unscheduled', function() {
+    it('should have a default state of unscheduled', function () {
       expect(this.story.get('state'))
         .toEqual('unscheduled');
     });
 
-    it('should have a default story type of feature', function() {
+    it('should have a default story type of feature', function () {
       expect(this.story.get('story_type'))
         .toEqual('feature');
     });
 
-    it('should have an empty array of events by default', function() {
+    it('should have an empty array of events by default', function () {
       expect(this.story.get('events'))
         .toEqual([]);
     });
 
-    it('does not have a default release date setted', function() {
+    it('does not have a default release date setted', function () {
       expect(this.story.get('release_date'))
-        .toBeUndefined()
+        .toBeUndefined();
     });
-
   });
 
-  describe('state transitions', function() {
-
-    it('should start', function() {
+  describe('state transitions', () => {
+    it('should start', function () {
       this.story.start();
       expect(this.story.get('state')).toEqual('started');
     });
 
-    it('should finish', function() {
+    it('should finish', function () {
       this.story.finish();
       expect(this.story.get('state')).toEqual('finished');
     });
 
-    it('should deliver', function() {
+    it('should deliver', function () {
       this.story.deliver();
       expect(this.story.get('state')).toEqual('delivered');
     });
 
-    it('should accept', function() {
+    it('should accept', function () {
       this.story.accept();
       expect(this.story.get('state')).toEqual('accepted');
     });
 
-    it('should reject', function() {
+    it('should reject', function () {
       this.story.reject();
       expect(this.story.get('state')).toEqual('rejected');
     });
 
-    it('should restart', function() {
+    it('should restart', function () {
       this.story.restart();
       expect(this.story.get('state')).toEqual('started');
     });
-
   });
 
-  describe("events", function() {
-    it("transitions from unscheduled", function() {
-      this.story.set({state: "unscheduled"});
-      expect(this.story.events()).toEqual(["start"]);
+  describe('events', () => {
+    it('transitions from unscheduled', function () {
+      this.story.set({ state: 'unscheduled' });
+      expect(this.story.events()).toEqual(['start']);
     });
-    it("transitions from unstarted", function() {
-      this.story.set({state: "unstarted"});
-      expect(this.story.events()).toEqual(["start"]);
+    it('transitions from unstarted', function () {
+      this.story.set({ state: 'unstarted' });
+      expect(this.story.events()).toEqual(['start']);
     });
-    it("transitions from started", function() {
-      this.story.set({state: "started"});
-      expect(this.story.events()).toEqual(["finish"]);
+    it('transitions from started', function () {
+      this.story.set({ state: 'started' });
+      expect(this.story.events()).toEqual(['finish']);
     });
-    it("transitions from finished", function() {
-      this.story.set({state: "finished"});
-      expect(this.story.events()).toEqual(["deliver"]);
+    it('transitions from finished', function () {
+      this.story.set({ state: 'finished' });
+      expect(this.story.events()).toEqual(['deliver']);
     });
-    it("transitions from delivered", function() {
-      this.story.set({state: "delivered"});
-      expect(this.story.events()).toEqual(["accept", "reject"]);
+    it('transitions from delivered', function () {
+      this.story.set({ state: 'delivered' });
+      expect(this.story.events()).toEqual(['accept', 'reject']);
     });
-    it("transitions from rejected", function() {
-      this.story.set({state: "rejected"});
-      expect(this.story.events()).toEqual(["restart"]);
+    it('transitions from rejected', function () {
+      this.story.set({ state: 'rejected' });
+      expect(this.story.events()).toEqual(['restart']);
     });
-    it("has no transitions from accepted", function() {
-      this.story.set({state: "accepted"});
+    it('has no transitions from accepted', function () {
+      this.story.set({ state: 'accepted' });
       expect(this.story.events()).toEqual([]);
     });
   });
 
-  describe("setAcceptedAt", function() {
-
-    it("should set accepted at to today's date when accepted", function() {
-      var today = new Date();
+  describe('setAcceptedAt', () => {
+    it("should set accepted at to today's date when accepted", function () {
+      const today = new Date();
       today.setHours(0);
       today.setMinutes(0);
       today.setSeconds(0);
@@ -143,122 +141,111 @@ describe('Story', function() {
       expect(new Date(this.story.get('accepted_at'))).toEqual(today);
     });
 
-    it("should not set accepted at when accepted if already set", function() {
-      this.story.set({accepted_at: "2001/01/01"});
+    it('should not set accepted at when accepted if already set', function () {
+      this.story.set({ accepted_at: '2001/01/01' });
       this.story.accept();
-      expect(this.story.get('accepted_at')).toEqual("2001/01/01");
+      expect(this.story.get('accepted_at')).toEqual('2001/01/01');
     });
   });
 
-  describe('estimable', function() {
-
-    describe("when story is a feature", function() {
-      beforeEach(function() {
-        this.story.set({story_type: 'feature'});
+  describe('estimable', () => {
+    describe('when story is a feature', () => {
+      beforeEach(function () {
+        this.story.set({ story_type: 'feature' });
       });
-      it('should be estimable when not estimated', function() {
+      it('should be estimable when not estimated', function () {
         sinon.stub(this.story, 'estimated').returns(false);
         expect(this.story.estimable()).toBeTruthy();
       });
-      it('should not be estimable when estimated', function() {
+      it('should not be estimable when estimated', function () {
         sinon.stub(this.story, 'estimated').returns(true);
         expect(this.story.estimable()).toBeFalsy();
       });
     });
 
-    describe("when story is not a feature", function() {
-      it('should not be estimable', function() {
-        this.story.set({story_type: 'release'});
+    describe('when story is not a feature', () => {
+      it('should not be estimable', function () {
+        this.story.set({ story_type: 'release' });
         expect(this.story.estimable()).toBeFalsy();
       });
     });
-
   });
 
-  describe('estimated', function() {
-
-    it('should say if it is estimated or not', function() {
+  describe('estimated', () => {
+    it('should say if it is estimated or not', function () {
       this.story.unset('estimate');
       expect(this.story.estimated()).toBeFalsy();
-      this.story.set({estimate: null});
+      this.story.set({ estimate: null });
       expect(this.story.estimated()).toBeFalsy();
-      this.story.set({estimate: 0});
+      this.story.set({ estimate: 0 });
       expect(this.story.estimated()).toBeTruthy();
-      this.story.set({estimate: 1});
+      this.story.set({ estimate: 1 });
       expect(this.story.estimated()).toBeTruthy();
     });
-
   });
 
-  describe('notEstimable', function () {
+  describe('notEstimable', () => {
     it('should not be estimable when story type is bug', function () {
-      this.story.set({story_type: 'bug'});
+      this.story.set({ story_type: 'bug' });
 
       expect(this.story.notEstimable()).toBeTruthy();
     });
 
     it('should not be estimable when story type is chore', function () {
-      this.story.set({story_type: 'chore'});
+      this.story.set({ story_type: 'chore' });
 
       expect(this.story.notEstimable()).toBeTruthy();
     });
 
     it('should not be estimable when story type is release', function () {
-      this.story.set({story_type: 'release'});
+      this.story.set({ story_type: 'release' });
 
       expect(this.story.notEstimable()).toBeTruthy();
     });
 
     it('should be estimable when story type is feature', function () {
-      this.story.set({story_type: 'feature'});
+      this.story.set({ story_type: 'feature' });
 
       expect(this.story.notEstimable()).toBeFalsy();
     });
-
   });
 
-  describe('point_values', function() {
-
-    it('should known about its valid points values', function() {
+  describe('point_values', () => {
+    it('should known about its valid points values', function () {
       expect(this.story.point_values()).toEqual([0, 1, 2, 3]);
     });
-
   });
 
-  describe('class name', function() {
-
-    it('should have a classes of story and story type', function() {
-      this.story.set({estimate: 1});
+  describe('class name', () => {
+    it('should have a classes of story and story type', function () {
+      this.story.set({ estimate: 1 });
       expect(this.story.className()).toEqual('story feature');
     });
 
-    it('should have an unestimated class if unestimated', function() {
+    it('should have an unestimated class if unestimated', function () {
       expect(this.story.estimable()).toBeTruthy();
       expect(this.story.estimated()).toBeFalsy();
       expect(this.story.className()).toEqual('story feature unestimated');
     });
-
   });
 
-  describe('position', function() {
-
-    it('should get position as a float', function() {
+  describe('position', () => {
+    it('should get position as a float', function () {
       expect(this.story.position()).toEqual(2.45);
     });
-
   });
 
-  describe('column', function() {
-    it('should return the right column', function() {
-      this.story.set({state: 'unscheduled'});
+  describe('column', () => {
+    it('should return the right column', function () {
+      this.story.set({ state: 'unscheduled' });
       expect(this.story.column).toEqual('#chilly_bin');
-      this.story.set({state: 'unstarted'});
+      this.story.set({ state: 'unstarted' });
       expect(this.story.column).toEqual('#backlog');
-      this.story.set({state: 'started'});
+      this.story.set({ state: 'started' });
       expect(this.story.column).toEqual('#in_progress');
-      this.story.set({state: 'delivered'});
+      this.story.set({ state: 'delivered' });
       expect(this.story.column).toEqual('#in_progress');
-      this.story.set({state: 'rejected'});
+      this.story.set({ state: 'rejected' });
       expect(this.story.column).toEqual('#in_progress');
 
       // If the story is accepted, but it's accepted_at date is within the
@@ -266,7 +253,7 @@ describe('Story', function() {
       // it should be in the #done column
       sinon.stub(this.story, 'iterationNumber').returns(1);
       this.story.collection.project.currentIterationNumber = sinon.stub().returns(2);
-      this.story.set({state: 'accepted'});
+      this.story.set({ state: 'accepted' });
       expect(this.story.column).toEqual('#done');
       this.story.collection.project.currentIterationNumber.returns(1);
       this.story.setColumn();
@@ -274,218 +261,193 @@ describe('Story', function() {
     });
   });
 
-  describe("clear", function() {
-
-    it("should destroy itself and its view", function() {
-      var modelStub = sinon.stub(this.story, "destroy");
+  describe('clear', () => {
+    it('should destroy itself and its view', function () {
+      const modelStub = sinon.stub(this.story, 'destroy');
 
       this.story.clear();
 
       expect(modelStub).toHaveBeenCalled();
     });
-
   });
 
-  describe("errors", function() {
-
-    it("should record errors", function() {
+  describe('errors', () => {
+    it('should record errors', function () {
       expect(this.story.hasErrors()).toBeFalsy();
       expect(this.story.errorsOn('title')).toBeFalsy();
 
-      this.story.set({errors: {
-        title: ["cannot be blank", "needs to be better"],
-        estimate: ["is helluh unrealistic"]
-      }});
+      this.story.set({
+        errors: {
+          title: ['cannot be blank', 'needs to be better'],
+          estimate: ['is helluh unrealistic'],
+        },
+      });
 
       expect(this.story.hasErrors()).toBeTruthy();
       expect(this.story.errorsOn('title')).toBeTruthy();
       expect(this.story.errorsOn('position')).toBeFalsy();
 
       expect(this.story.errorMessages())
-        .toEqual("title cannot be blank, title needs to be better, estimate is helluh unrealistic");
+        .toEqual('title cannot be blank, title needs to be better, estimate is helluh unrealistic');
     });
-
   });
 
-  describe("users", function() {
-
-    it("should get it's owner", function() {
-
+  describe('users', () => {
+    it("should get it's owner", function () {
       // Should return undefined if the story does not have an owner
-      var spy = sinon.spy(this.story.collection.project.users, "get");
-      var owned_by = this.story.owned_by();
+      const spy = sinon.spy(this.story.collection.project.users, 'get');
+      let owned_by = this.story.owned_by();
       expect(spy).toHaveBeenCalledWith(undefined);
       expect(owned_by).toBeUndefined();
 
-      this.story.set({'owned_by_id': 999});
+      this.story.set({ owned_by_id: 999 });
       owned_by = this.story.owned_by();
       expect(spy).toHaveBeenCalledWith(999);
     });
 
-    it("should get it's requester", function() {
-
+    it("should get it's requester", function () {
       // Should return undefined if the story does not have an owner
-      var stub = sinon.stub(this.story.collection.project.users, "get");
-      var dummyUser = {};
+      const stub = sinon.stub(this.story.collection.project.users, 'get');
+      const dummyUser = {};
       stub.withArgs(undefined).returns(undefined);
       stub.withArgs(999).returns(dummyUser);
 
-      var requested_by = this.story.requested_by();
+      let requested_by = this.story.requested_by();
       expect(stub).toHaveBeenCalledWith(undefined);
       expect(requested_by).toBeUndefined();
 
-      this.story.set({'requested_by_id': 999});
+      this.story.set({ requested_by_id: 999 });
       requested_by = this.story.requested_by();
       expect(requested_by).toEqual(dummyUser);
       expect(stub).toHaveBeenCalledWith(999);
     });
 
-    it("should return a readable created_at", function() {
-
-      var timestamp = "2011/09/19 02:25:56 +0000";
-      this.story.set({'created_at': timestamp});
-      expect(this.story.created_at()).toBe(
-        new Date(timestamp).format(this.story.timestampFormat)
-      );
-
+    it('should return a readable created_at', function () {
+      const timestamp = '2011/09/19 02:25:56 +0000';
+      this.story.set({ created_at: timestamp });
+      expect(this.story.created_at()).toBe(new Date(timestamp).format(this.story.timestampFormat));
     });
 
-    it("should be assigned to the current user when started", function() {
-
+    it('should be assigned to the current user when started', function () {
       expect(this.story.get('state')).toEqual('unscheduled');
       expect(this.story.owned_by()).toBeUndefined();
 
-      this.story.set({state: 'started'});
+      this.story.set({ state: 'started' });
 
       expect(this.story.get('owned_by_id')).toEqual(999);
     });
-
   });
 
 
-  describe("details", function() {
-
+  describe('details', () => {
     // If the story has details other than the title, e.g. description
-    it("should return true the story has a description", function() {
-
+    it('should return true the story has a description', function () {
       expect(this.story.hasDetails()).toBeFalsy();
 
-      this.story.set({description: "Test description"});
+      this.story.set({ description: 'Test description' });
 
       expect(this.story.hasDetails()).toBeTruthy();
-
     });
 
-    it("should return true if the story has saved notes", function() {
-
+    it('should return true if the story has saved notes', function () {
       expect(this.story.hasDetails()).toBeFalsy();
       this.story.hasNotes = sinon.stub().returns(true);
       expect(this.story.hasDetails()).toBeTruthy();
-
     });
   });
 
 
-  describe("iterations", function() {
-
-    it("should return the iteration number for an accepted story", function() {
+  describe('iterations', () => {
+    it('should return the iteration number for an accepted story', function () {
       this.story.collection.project.getIterationNumberForDate = sinon.stub().returns(999);
-      this.story.set({accepted_at: "2011/07/25", state: "accepted"});
+      this.story.set({ accepted_at: '2011/07/25', state: 'accepted' });
       expect(this.story.iterationNumber()).toEqual(999);
     });
-
   });
 
-  describe("labels", function() {
-
-    it("should return an empty array if labels undefined", function() {
+  describe('labels', () => {
+    it('should return an empty array if labels undefined', function () {
       expect(this.story.get('labels')).toBeUndefined();
       expect(this.story.labels()).toEqual([]);
     });
 
-    it("should return an array of labels", function() {
-      this.story.set({labels: "foo,bar"});
-      expect(this.story.labels()).toEqual(["foo","bar"]);
+    it('should return an array of labels', function () {
+      this.story.set({ labels: 'foo,bar' });
+      expect(this.story.labels()).toEqual(['foo', 'bar']);
     });
 
-    it("should remove trailing and leading whitespace when spliting labels", function() {
-      this.story.set({labels: "foo , bar , baz"});
-      expect(this.story.labels()).toEqual(["foo","bar","baz"]);
+    it('should remove trailing and leading whitespace when spliting labels', function () {
+      this.story.set({ labels: 'foo , bar , baz' });
+      expect(this.story.labels()).toEqual(['foo', 'bar', 'baz']);
     });
-
   });
 
-  describe("notes", function() {
-
-    it("should default with an empty notes collection", function() {
+  describe('notes', () => {
+    it('should default with an empty notes collection', function () {
       expect(this.story.notes.length).toEqual(0);
     });
 
-    it("should set the right notes collection url", function() {
+    it('should set the right notes collection url', function () {
       expect(this.story.notes.url()).toEqual('/foo/999/notes');
     });
 
-    it("should set a notes collection", function() {
-      var story = new Story({
-        notes: [{"note":{"text": "Dummy note"}}]
+    it('should set a notes collection', () => {
+      const story = new Story({
+        notes: [{ note: { text: 'Dummy note' } }],
       });
 
       expect(story.notes.length).toEqual(1);
     });
 
-    describe("hasNotes", function() {
-
-      it("returns true if it has saved notes", function() {
+    describe('hasNotes', () => {
+      it('returns true if it has saved notes', function () {
         expect(this.story.hasNotes()).toBeFalsy();
-        this.story.notes.add({id: 999, note: "Test note"});
+        this.story.notes.add({ id: 999, note: 'Test note' });
         expect(this.story.hasNotes()).toBeTruthy();
       });
 
-      it("returns false if it has unsaved notes", function() {
-        this.story.notes.add({note: "Unsaved note"});
+      it('returns false if it has unsaved notes', function () {
+        this.story.notes.add({ note: 'Unsaved note' });
         expect(this.story.hasNotes()).toBeFalsy();
       });
-
     });
-
   });
 
-  describe('humanAttributeName', function() {
-
-    beforeEach(function() {
-      I18n = {t: sinon.stub()};
+  describe('humanAttributeName', () => {
+    beforeEach(() => {
+      I18n = { t: sinon.stub() };
       I18n.t.withArgs('foo_bar').returns('Foo bar');
     });
 
-    it("returns the translated attribute name", function() {
+    it('returns the translated attribute name', function () {
       expect(this.story.humanAttributeName('foo_bar')).toEqual('Foo bar');
     });
 
-    it("strips of the id suffix", function() {
+    it('strips of the id suffix', function () {
       expect(this.story.humanAttributeName('foo_bar_id')).toEqual('Foo bar');
     });
   });
 
-  describe('isReadonly', function() {
-    it("should not be read only", function() {
+  describe('isReadonly', () => {
+    it('should not be read only', function () {
       expect(this.story.isReadonly).toBeFalsy();
     });
-    it("should be read only", function() {
+    it('should be read only', function () {
       expect(this.ro_story.isReadonly).toBeTruthy();
     });
   });
 
-  describe('changeState', function() {
-    describe('when story is started', function() {
-      it('sets the owner to the current user', function() {
+  describe('changeState', () => {
+    describe('when story is started', () => {
+      it('sets the owner to the current user', function () {
         this.story.set({ onwed_by_id: 123 });
         this.story.changeState(this.story, 'started');
         expect(this.story.get('owned_by_id')).toBe(999);
       });
     });
 
-    describe('when story is not started', function() {
-      it('does not change the owner', function() {
+    describe('when story is not started', () => {
+      it('does not change the owner', function () {
         this.story.changeState(this.story, 'finished');
         expect(this.story.get('owned_by_id')).toBe(undefined);
       });

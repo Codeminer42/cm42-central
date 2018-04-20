@@ -1,11 +1,12 @@
-var Story = require('models/story');
+/* eslint no-return-assign:"off" */
+const Story = require('models/story');
 
 module.exports = Backbone.Collection.extend({
   model: Story,
 
-  initialize: function() {
+  initialize() {
     _.bindAll(this, 'sort', 'addLabelsFromStory', 'resetLabels');
-    var triggerReset = _.bind(this.trigger, this, 'reset');
+    const triggerReset = _.bind(this.trigger, this, 'reset');
 
     this.on('change:position', this.sort, this);
     this.on('change:state', this.sort, this);
@@ -18,60 +19,56 @@ module.exports = Backbone.Collection.extend({
     this.labels = [];
   },
 
-  saveSorting: function(columnName) {
-    var column = this;
-    if(columnName) {
+  saveSorting(columnName) {
+    let column = this;
+    if (columnName) {
       column = this.column(columnName);
     }
-    var orderedIds = column.map(
-      function(model) {
-        return model.id;
-      }
-    );
+    const orderedIds = column.map((model) => model.id);
     Backbone.ajax({
       method: 'PUT',
-      url: this.url + '/sort',
-      data: { ordered_ids: orderedIds }
+      url: `${this.url}/sort`,
+      data: { ordered_ids: orderedIds },
     });
   },
 
-  comparator: function(story) {
+  comparator(story) {
     return story.position();
   },
 
-  columnStoryIndex: function(story) {
+  columnStoryIndex(story) {
     return this.column(story.column).indexOf(story);
   },
 
-  nextOnColumn: function(story) {
-    var index =  this.columnStoryIndex(story) + 1;
+  nextOnColumn(story) {
+    const index = this.columnStoryIndex(story) + 1;
     return this.storyByIndexOnColumn(index, story.column);
   },
 
-  previousOnColumn: function(story) {
-    var index = this.columnStoryIndex(story) - 1;
+  previousOnColumn(story) {
+    const index = this.columnStoryIndex(story) - 1;
     return this.storyByIndexOnColumn(index, story.column);
   },
 
-  storyByIndexOnColumn: function(index, column) {
-    if(index >= this.length || index < 0) {
+  storyByIndexOnColumn(index, column) {
+    if (index >= this.length || index < 0) {
       return undefined;
     }
     return this.column(column)[index];
   },
 
-  previous: function(story) {
-    var index = this.indexOf(story) - 1;
+  previous(story) {
+    const index = this.indexOf(story) - 1;
     return this.storyByIndex(index);
   },
 
-  next: function(story) {
-    var index = this.indexOf(story) + 1;
+  next(story) {
+    const index = this.indexOf(story) + 1;
     return this.storyByIndex(index);
   },
 
-  storyByIndex: function(index) {
-    if(index < 0 || index >= this.length) {
+  storyByIndex(index) {
+    if (index < 0 || index >= this.length) {
       return undefined;
     }
     return this.at(index);
@@ -79,35 +76,31 @@ module.exports = Backbone.Collection.extend({
 
   // Returns all the stories in the named column, either #done, #in_progress,
   // #backlog or #chilly_bin
-  column: function(column) {
-    return this.select(function(story) {
-      return story.column === column;
-    });
+  column(column) {
+    return this.select((story) => story.column === column);
   },
 
   // Returns an array of the stories in a set of columns.  Pass an array
   // of the column names accepted by column().
-  columns: function(columns) {
-    var that = this;
-    return _.flatten(_.map(columns, function(column) {
-      return that.column(column);
-    }));
+  columns(columns) {
+    const that = this;
+    return _.flatten(_.map(columns, (column) => that.column(column)));
   },
 
   // Takes comma separated string of labels and adds them to the list of
   // availableLabels.  Any that are already present are ignored.
-  addLabels: function(labels) {
-    return (this.labels = _.union(this.labels,labels));
+  addLabels(labels) {
+    return (this.labels = _.union(this.labels, labels));
   },
 
-  addLabelsFromStory: function(story) {
+  addLabelsFromStory(story) {
     return this.addLabels(story.labels());
   },
 
-  resetLabels: function() {
-    var collection = this;
-    collection.each(function(story) {
+  resetLabels() {
+    const collection = this;
+    collection.each((story) => {
       collection.addLabelsFromStory(story);
     });
-  }
+  },
 });

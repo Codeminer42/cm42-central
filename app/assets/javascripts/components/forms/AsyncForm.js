@@ -1,3 +1,5 @@
+/* eslint no-underscore-dangle:"off" */
+/* eslint react/prop-types:"off" */
 import React from 'react';
 
 class AsyncForm extends React.Component {
@@ -18,7 +20,7 @@ class AsyncForm extends React.Component {
   render() {
     return this.props.children({
       loading: this.state.loading,
-      handleSubmit: this._handleSubmit
+      handleSubmit: this._handleSubmit,
     });
   }
 }

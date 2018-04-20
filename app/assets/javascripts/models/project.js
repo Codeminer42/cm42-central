@@ -1,17 +1,22 @@
-var Cookies = require('js-cookie');
+/* eslint camelcase:"off" */
+/* eslint no-throw-literal:"off" */
+/* eslint no-mixed-operators:"off" */
+/* eslint no-param-reassign:"off" */
+/* eslint max-len:"off" */
+const Cookies = require('js-cookie');
 
-var StoryCollection = require('collections/story_collection');
-var UserCollection = require('collections/user_collection');
-var Iteration = require('models/iteration');
+const StoryCollection = require('collections/story_collection');
+const UserCollection = require('collections/user_collection');
+const Iteration = require('models/iteration');
 
 module.exports = Backbone.Model.extend({
   defaults: {
-    default_velocity: 10
+    default_velocity: 10,
   },
 
   name: 'project',
 
-  initialize: function(args) {
+  initialize(args) {
     this.maybeUnwrap(args);
 
     _.bindAll(this, 'updateChangesets');
@@ -19,22 +24,22 @@ module.exports = Backbone.Model.extend({
     this.on('change:last_changeset_id', this.updateChangesets, this);
 
     this.stories = new StoryCollection();
-    this.stories.url = this.url() + '/stories';
+    this.stories.url = `${this.url()}/stories`;
     this.stories.project = this;
 
     this.users = new UserCollection();
-    this.users.url = this.url() + '/users';
+    this.users.url = `${this.url()}/users`;
     this.users.project = this;
 
     this.search = new StoryCollection();
-    this.search.url = this.url() + '/stories';
+    this.search.url = `${this.url()}/stories`;
     this.search.project = this;
 
     this.iterations = [];
   },
 
-  url: function() {
-    return '/projects/' + this.id;
+  url() {
+    return `/projects/${this.id}`;
   },
 
   // The ids of the columns, in the order that they appear by story weight
@@ -42,22 +47,22 @@ module.exports = Backbone.Model.extend({
 
   // Return an array of the columns that appear after column, or an empty
   // array if the column is the last
-  columnsAfter: function(column) {
-    var index = _.indexOf(this.columnIds, column);
+  columnsAfter(column) {
+    const index = _.indexOf(this.columnIds, column);
     if (index === -1) {
       // column was not found in the array
-      throw column.toString() + ' is not a valid column';
+      throw `${column.toString()} is not a valid column`;
     }
     return this.columnIds.slice(index + 1);
   },
 
   // Return an array of the columns that appear before column, or an empty
   // array if the column is the first
-  columnsBefore: function(column) {
-    var index = _.indexOf(this.columnIds, column);
+  columnsBefore(column) {
+    const index = _.indexOf(this.columnIds, column);
     if (index === -1) {
       // column was not found in the array
-      throw column.toString() + ' is not a valid column';
+      throw `${column.toString()} is not a valid column`;
     }
     return this.columnIds.slice(0, index);
   },
@@ -65,49 +70,47 @@ module.exports = Backbone.Model.extend({
   // This method is triggered when the last_changeset_id attribute is changed,
   // which indicates there are changed or new stories on the server which need
   // to be loaded.
-  updateChangesets: function() {
-    var from = this.previous('last_changeset_id');
+  updateChangesets() {
+    let from = this.previous('last_changeset_id');
     if (_.isNull(from)) {
       from = 0;
     }
-    var to = this.get('last_changeset_id');
+    let to = this.get('last_changeset_id');
     if (_.isNull(to)) {
       to = 0;
     }
 
-    var model = this;
-    var options = {
+    const model = this;
+    const options = {
       type: 'GET',
       dataType: 'json',
-      success: function(resp) {
+      success(resp) {
         model.handleChangesets(resp);
       },
-      data: {from: from, to: to},
-      url: this.url() + '/changesets'
+      data: { from, to },
+      url: `${this.url()}/changesets`,
     };
 
     $.ajax(options);
   },
 
   // (Re)load each of the stories described in the provided changesets.
-  handleChangesets: function(changesets) {
-    var that = this;
+  handleChangesets(changesets) {
+    const that = this;
 
-    var story_ids = _.map(changesets, function(changeset) {
-      return changeset.changeset.story_id;
-    });
+    let story_ids = _.map(changesets, (changeset) => changeset.changeset.story_id);
     story_ids = _.uniq(story_ids);
 
-    _.each(story_ids, function(story_id) {
+    _.each(story_ids, (story_id) => {
       // FIXME - Feature envy on stories collection
-      var story = that.stories.get(story_id);
+      let story = that.stories.get(story_id);
       if (story) {
         // This is an existing story on the collection, just reload it
         story.fetch();
       } else {
         // This is a new story, which is present on the server but we don't
         // have it locally yet.
-        that.stories.add({id: story_id});
+        that.stories.add({ id: story_id });
         story = that.stories.get(story_id);
         story.fetch();
       }
@@ -117,49 +120,48 @@ module.exports = Backbone.Model.extend({
   milliseconds_in_a_day: 1000 * 60 * 60 * 24,
 
   // Return the correct iteration number for a given date.
-  getIterationNumberForDate: function(compare_date) {
-    //var start_date = new Date(this.get('start_date'));
-    var start_date = this.startDate();
-    var difference = Math.abs(compare_date.getTime() - start_date.getTime());
-    var days_apart = Math.round(difference / this.milliseconds_in_a_day);
-    var days_in_iteration = this.get('iteration_length') * 7;
-    var iteration_number = Math.floor((days_apart / days_in_iteration) + 1);
+  getIterationNumberForDate(compare_date) {
+    // var start_date = new Date(this.get('start_date'));
+    const start_date = this.startDate();
+    const difference = Math.abs(compare_date.getTime() - start_date.getTime());
+    const days_apart = Math.round(difference / this.milliseconds_in_a_day);
+    const days_in_iteration = this.get('iteration_length') * 7;
+    const iteration_number = Math.floor((days_apart / days_in_iteration) + 1);
 
     return iteration_number;
   },
 
-  getDateForIterationNumber: function(iteration_number) {
+  getDateForIterationNumber(iteration_number) {
     // The difference betweeen the start date in days.  Iteration length is
     // in weeks.
-    var difference = (7 * this.get('iteration_length')) * (iteration_number - 1);
-    var start_date = this.startDate();
-    var iteration_date = new Date(start_date);
+    const difference = (7 * this.get('iteration_length')) * (iteration_number - 1);
+    const start_date = this.startDate();
+    const iteration_date = new Date(start_date);
 
     iteration_date.setDate(start_date.getDate() + difference);
     return iteration_date;
   },
 
-  currentIterationNumber: function() {
+  currentIterationNumber() {
     return this.getIterationNumberForDate(this.today());
   },
 
-  today: function() {
-    var today = new Date();
-    today.setHours(0,0,0,0);
+  today() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
     return today;
   },
 
-  startDate: function() {
-
-    var start_date;
+  startDate() {
+    let start_date;
     if (this.get('start_date')) {
       // Parse the date string into an array of [YYYY, MM, DD] to
       // ensure identical date behaviour across browsers.
-      var dateArray = this.get('start_date').split('/');
-      var year = parseInt(dateArray[0], 10);
+      const dateArray = this.get('start_date').split('/');
+      const year = parseInt(dateArray[0], 10);
       // Month is zero indexed
-      var month = parseInt(dateArray[1], 10) - 1;
-      var day = parseInt(dateArray[2], 10);
+      const month = parseInt(dateArray[1], 10) - 1;
+      const day = parseInt(dateArray[2], 10);
 
       start_date = new Date(year, month, day);
     } else {
@@ -170,90 +172,81 @@ module.exports = Backbone.Model.extend({
     // start day?
     if (start_date.getDay() === this.get('iteration_start_day')) {
       return start_date;
-    } else {
-      // Calculate the date of the nearest prior iteration start day to the
-      // specified project start date.  So if the iteration start day is
-      // set to Monday, but the project start date is set to a specific
-      // Thursday, return the Monday before the Thursday.  A greater
-      // mathemtician than I could probably do this with the modulo.
-      var day_difference = start_date.getDay() - this.get('iteration_start_day');
-
-      // The iteration start day is after the project start date, in terms of
-      // day number
-      if (day_difference < 0) {
-        day_difference = day_difference + 7;
-      }
-      return new Date(start_date - day_difference * this.milliseconds_in_a_day);
     }
+    // Calculate the date of the nearest prior iteration start day to the
+    // specified project start date.  So if the iteration start day is
+    // set to Monday, but the project start date is set to a specific
+    // Thursday, return the Monday before the Thursday.  A greater
+    // mathemtician than I could probably do this with the modulo.
+    let day_difference = start_date.getDay() - this.get('iteration_start_day');
+
+    // The iteration start day is after the project start date, in terms of
+    // day number
+    if (day_difference < 0) {
+      day_difference += 7;
+    }
+    return new Date(start_date - day_difference * this.milliseconds_in_a_day);
   },
 
   // Override the calculated velocity with a user defined value.  If this
   // value is different to the calculated velocity, the velocityIsFake
   // attribute will be set to true.
-  velocity: function(userVelocity) {
-    if(!_.isUndefined(userVelocity)) {
-
-      if(userVelocity < 1) {
+  velocity(userVelocity) {
+    if (!_.isUndefined(userVelocity)) {
+      if (userVelocity < 1) {
         userVelocity = 1;
       }
 
-      if(userVelocity === this.calculateVelocity()) {
+      if (userVelocity === this.calculateVelocity()) {
         this.unset('userVelocity');
       } else {
-        this.set({userVelocity: userVelocity});
+        this.set({ userVelocity });
       }
     }
-    if(this.get('userVelocity')) {
+    if (this.get('userVelocity')) {
       return this.get('userVelocity');
-    } else {
-      return this.calculateVelocity();
     }
+    return this.calculateVelocity();
   },
 
-  velocityIsFake: function() {
+  velocityIsFake() {
     return (!_.isUndefined(this.get('userVelocity')));
   },
 
-  calculateVelocity: function() {
+  calculateVelocity() {
     if (this.doneIterations().length === 0) {
       return this.get('default_velocity');
-    } else {
-      // TODO Make number of iterations configurable
-      var numIterations = 3;
-      var doneIterations = this.doneIterations();
-      var iterations = _.last(doneIterations, numIterations);
-
-      var velocity = 1;
-      var pointsArray = _.invoke(iterations, 'points');
-
-      if (pointsArray.length > 0) {
-        var sum = _.reduce(pointsArray, function(memo, points) {
-          return memo + points;
-        }, 0);
-
-        velocity = Math.floor(sum / pointsArray.length);
-      }
-
-      return velocity < 1 ? 1 : velocity;
     }
+    // TODO Make number of iterations configurable
+    const numIterations = 3;
+    const doneIterations = this.doneIterations();
+    const iterations = _.last(doneIterations, numIterations);
+
+    let velocity = 1;
+    const pointsArray = _.invoke(iterations, 'points');
+
+    if (pointsArray.length > 0) {
+      const sum = _.reduce(pointsArray, (memo, points) => memo + points, 0);
+
+      velocity = Math.floor(sum / pointsArray.length);
+    }
+
+    return velocity < 1 ? 1 : velocity;
   },
 
-  revertVelocity: function() {
+  revertVelocity() {
     this.unset('userVelocity');
   },
 
-  doneIterations: function() {
-    return _.select(this.iterations, function(iteration) {
-      return iteration.get('column') === "#done";
-    });
+  doneIterations() {
+    return _.select(this.iterations, (iteration) => iteration.get('column') === '#done');
   },
 
-  rebuildIterations: function() {
-
+  rebuildIterations() {
     //
     // Done column
     //
-    var that = this;
+    const that = this;
 
     // Clear the project iterations
     this.iterations = [];
@@ -263,54 +256,50 @@ module.exports = Backbone.Model.extend({
     // this method.
     this.stories.invoke('setColumn');
 
-    var doneIterations = _.groupBy(this.stories.column('#done'),
-                                    function(story) {
-                                      return story.iterationNumber();
-                                    });
+    const doneIterations = _.groupBy(
+      this.stories.column('#done'),
+      (story) => story.iterationNumber(),
+    );
 
     // groupBy() returns an object with keys of the iteration number
     // and values of the stories array.  Ensure the keys are sorted
     // in numeric order.
-    var doneNumbers = _.keys(doneIterations).sort(function(left, right) {
-      return (left - right);
-    });
+    const doneNumbers = _.keys(doneIterations).sort((left, right) => (left - right));
 
-    _.each(doneNumbers, function(iterationNumber) {
-      var stories = doneIterations[iterationNumber];
-      var iteration = new Iteration({
-        'number': iterationNumber, 'stories': stories, column: '#done'
+    _.each(doneNumbers, (iterationNumber) => {
+      const stories = doneIterations[iterationNumber];
+      const iteration = new Iteration({
+        number: iterationNumber, stories, column: '#done',
       });
 
       that.appendIteration(iteration, '#done');
-
     });
 
-    var currentIteration = new Iteration({
-      'number': this.currentIterationNumber(),
-      'stories': this.stories.column('#in_progress'),
-      'maximum_points': this.velocity(), 'column': '#in_progress'
+    const currentIteration = new Iteration({
+      number: this.currentIterationNumber(),
+      stories: this.stories.column('#in_progress'),
+      maximum_points: this.velocity(),
+      column: '#in_progress',
     });
     this.appendIteration(currentIteration, '#done');
-
 
 
     //
     // Backlog column
     //
-    var backlogIteration = new Iteration({
-      'number': currentIteration.get('number') + 1,
-      'column': '#backlog', 'maximum_points': this.velocity()
+    let backlogIteration = new Iteration({
+      number: currentIteration.get('number') + 1,
+      column: '#backlog',
+      maximum_points: this.velocity(),
     });
     this.appendIteration(backlogIteration, '#backlog');
 
 
-    _.each(this.stories.column('#backlog'), function(story) {
-
+    _.each(this.stories.column('#backlog'), (story) => {
       // The in progress iteration usually needs to be filled with the first
       // few stories from the backlog, unless the points total of the stories
       // in progress already equal or exceed the project velocity
       if (currentIteration.canTakeStory(story)) {
-
         // On initialisation, a stories column is determined based on the
         // story state.  For unstarted stories this defaults to #backlog.
         // Stories matched here need this value overridden to #in_progress
@@ -321,15 +310,15 @@ module.exports = Backbone.Model.extend({
       }
 
       if (!backlogIteration.canTakeStory(story)) {
-
         // Iterations sometimes 'overflow', i.e. an iteration may contain a
         // 5 point story but the project velocity is 1.  In this case, the
         // next iteration that can have a story added is the current + 4.
-        var nextNumber = backlogIteration.get('number') + 1 + Math.ceil(backlogIteration.overflowsBy() / that.velocity());
+        const nextNumber = backlogIteration.get('number') + 1 + Math.ceil(backlogIteration.overflowsBy() / that.velocity());
 
         backlogIteration = new Iteration({
-          'number': nextNumber, 'column': '#backlog',
-          'maximum_points': that.velocity()
+          number: nextNumber,
+          column: '#backlog',
+          maximum_points: that.velocity(),
         });
 
         that.appendIteration(backlogIteration, '#backlog');
@@ -338,7 +327,7 @@ module.exports = Backbone.Model.extend({
       backlogIteration.get('stories').push(story);
     });
 
-    _.each(this.iterations, function(iteration) {
+    _.each(this.iterations, (iteration) => {
       iteration.project = that;
     });
 
@@ -347,28 +336,25 @@ module.exports = Backbone.Model.extend({
 
   // Adds an iteration to the project.  Creates empty iterations to fill any
   // gaps between the iteration number and the last iteration number added.
-  appendIteration: function(iteration, columnForMissingIterations) {
-
-    var lastIteration = _.last(this.iterations);
+  appendIteration(iteration, columnForMissingIterations) {
+    const lastIteration = _.last(this.iterations);
 
     // If there is a gap between the last iteration and this one, fill
     // the gap with empty iterations
-    this.iterations = this.iterations.concat(
-      Iteration.createMissingIterations(columnForMissingIterations, lastIteration, iteration)
-    );
+    this.iterations = this.iterations.concat(Iteration.createMissingIterations(columnForMissingIterations, lastIteration, iteration));
 
     this.iterations.push(iteration);
   },
 
-  toggleStoryFlow: function () {
-    var defaultFlow = this.get('default_flow');
-    var nextValue = (this.get('current_flow') === defaultFlow)
+  toggleStoryFlow() {
+    const defaultFlow = this.get('default_flow');
+    const nextValue = (this.get('current_flow') === defaultFlow)
       ? 'progress_to_right' // alternative story flow
       : defaultFlow;
 
     this.set('current_flow', nextValue);
-    Cookies.set('current_flow', nextValue, {expires: 365});
-  }
-},{
+    Cookies.set('current_flow', nextValue, { expires: 365 });
+  },
+}, {
   filters: ['not_archived', 'archived', 'all_projects'],
 });

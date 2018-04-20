@@ -1,30 +1,31 @@
+/* eslint no-undef:"off" */
+/* eslint react/prop-types:"off" */
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
 export default class StoryDatePicker extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     moment.locale(I18n.locale);
-    const releaseDate = moment(this.props.releaseDate, ["YYYY-MM-DD"])
+    const releaseDate = moment(this.props.releaseDate, ['YYYY-MM-DD']);
     this.state = {
-      startDate: releaseDate.isValid() ? releaseDate : null
+      startDate: releaseDate.isValid() ? releaseDate : null,
     };
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(date) {
     this.setState({
-      startDate: date
-    }, () => this.props.onChangeCallback()
-    );
+      startDate: date,
+    }, () => this.props.onChangeCallback());
   }
 
   render() {
     return (
       <div>
         <label htmlFor="release-date">{I18n.t('activerecord.attributes.story.release_date')}</label>
-        <br/>
+        <br />
         <DatePicker
           selected={this.state.startDate}
           onChange={this.handleChange}

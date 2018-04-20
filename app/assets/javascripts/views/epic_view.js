@@ -1,41 +1,46 @@
-var EpicBarView = require('./epic_bar_view');
+/* eslint global-require:"off" */
+/* eslint camelcase:"off" */
+/* eslint prefer-destructuring:"off" */
+/* eslint no-unused-vars:"off" */
+/* eslint no-shadow:"off" */
+const EpicBarView = require('./epic_bar_view');
 
 module.exports = Backbone.View.extend({
 
-  initialize: function(options) {
+  initialize(options) {
     this.options = options;
     this.$('td.epic_column').css('display', 'table-cell');
     this.doSearch();
   },
 
-  addBar: function(column) {
-    var view = new EpicBarView({model: this.model}).render();
+  addBar(column) {
+    const view = new EpicBarView({ model: this.model }).render();
     this.appendViewToColumn(view, column);
   },
 
-  addStory: function(story, column) {
-    var StoryView = require('./story_view');
+  addStory(story, column) {
+    const StoryView = require('./story_view');
 
-    var view = new StoryView({model: story, isSearchResult: true}).render();
+    const view = new StoryView({ model: story, isSearchResult: true }).render();
     this.appendViewToColumn(view, column);
     view.setFocus();
   },
 
-  appendViewToColumn: function(view, columnName) {
+  appendViewToColumn(view, columnName) {
     $(columnName).append(view.el);
   },
 
-  addAll: function() {
-    var that = this;
-    that.$ = $
-    that.$('#epic').html("");
+  addAll() {
+    const that = this;
+    that.$ = $;
+    that.$('#epic').html('');
     that.$('td.epic_column').show();
     this.addBar('#epic');
 
-    var search_results_ids = this.model.search.pluck("id");
-    var stories = this.model.stories;
-    _.each(search_results_ids, function(id) {
-      var story = stories.get(id);
+    const search_results_ids = this.model.search.pluck('id');
+    const stories = this.model.stories;
+    _.each(search_results_ids, (id) => {
+      const story = stories.get(id);
       if (!_.isUndefined(story)) {
         that.addStory(story, '#epic');
       } else {
@@ -47,23 +52,23 @@ module.exports = Backbone.View.extend({
     this.$('.loading-spin').removeClass('show');
   },
 
-  doSearch: function(e) {
+  doSearch(e) {
     this.$('.loading-spin').addClass('show');
-    var that = this;
+    const that = this;
     this.model.search.fetch({
       reset: true,
       data: {
-        label: this.options.label
+        label: this.options.label,
       },
-      success: function() {
+      success() {
         that.addAll();
       },
-      error: function(e) {
+      error(e) {
         window.projectView.notice({
           title: 'Search Error',
-          text: e
+          text: e,
         });
-      }
+      },
     });
   },
 });

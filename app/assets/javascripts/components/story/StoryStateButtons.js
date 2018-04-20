@@ -1,3 +1,5 @@
+/* eslint no-undef:"off" */
+/* eslint react/prop-types:"off" */
 import React from 'react';
 
 const renderInputButton = (event) => (

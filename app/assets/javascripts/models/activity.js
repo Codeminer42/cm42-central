@@ -1,6 +1,10 @@
-var SharedModelMethods = require('mixins/shared_model_methods');
+/* eslint no-multi-assign:"off" */
+/* eslint no-undef:"off" */
+/* eslint func-names:"off" */
+/* eslint no-param-reassign:"off" */
+const SharedModelMethods = require('mixins/shared_model_methods');
 
-var Activity = module.exports = Backbone.Model.extend({
+const Activity = module.exports = Backbone.Model.extend({
   defaults: {
     name: 'activity',
     date: '',
@@ -14,31 +18,31 @@ var Activity = module.exports = Backbone.Model.extend({
 
   timestampFormat: 'd mmm yyyy',
 
-  initialize: function(args) {
-    var data = args.activity;
+  initialize(args) {
+    const data = args.activity;
 
     this.i18nScope += data.subject_type.toLowerCase();
     this.set({
       date: new Date(data.updated_at).format(this.timestampFormat),
       action: this.humanActionName(data.action),
-      subject_changes: this.parseChanges(data.subject_changes)
+      subject_changes: this.parseChanges(data.subject_changes),
     });
   },
 
-  humanActionName: function(action) {
-    return I18n.t(action, {scope: 'activity.actions'});
+  humanActionName(action) {
+    return I18n.t(action, { scope: 'activity.actions' });
   },
 
-  parseChanges: function(changes) {
-    return _.map(changes, function(value, key) {
+  parseChanges(changes) {
+    return _.map(changes, function (value, key) {
       if (key === 'documents_attributes') key = 'documents';
       return {
         attribute: this.humanAttributeName(key),
         oldValue: value[0],
-        newValue: value[1]
-      }
+        newValue: value[1],
+      };
     }, this);
-  }
+  },
 });
 
 _.defaults(Activity.prototype, SharedModelMethods);

@@ -1,21 +1,20 @@
+/* eslint global-require:"off" */
 module.exports = Backbone.View.extend({
 
   template: require('templates/search_results_bar.ejs'),
 
   className: 'iteration',
 
-  render: function() {
-    this.$el.html(this.template({stories: this.model.search.length, points: this.points()}));
+  render() {
+    this.$el.html(this.template({ stories: this.model.search.length, points: this.points() }));
     return this;
   },
 
-  points: function() {
-    var estimates = this.model.search.pluck('estimate')
-    var sum = _.reduce(estimates, function(total, estimate) {
-      return total + estimate;
-    })
+  points() {
+    const estimates = this.model.search.pluck('estimate');
+    const sum = _.reduce(estimates, (total, estimate) => total + estimate);
     return sum;
-  }
+  },
 
 });
 

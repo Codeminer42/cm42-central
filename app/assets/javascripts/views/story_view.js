@@ -1,3 +1,21 @@
+/* eslint no-unused-vars:"off" */
+/* eslint no-shadow:"off" */
+/* eslint camelcase:"off" */
+/* eslint no-restricted-globals:"off" */
+/* eslint global-require:"off" */
+/* eslint no-multi-assign:"off" */
+/* eslint no-undef:"off" */
+/* eslint prefer-destructuring:"off" */
+/* eslint no-lonely-if:"off" */
+/* eslint no-new:"off" */
+/* eslint no-throw-literal:"off" */
+/* eslint no-alert:"off" */
+/* eslint func-names:"off" */
+/* eslint react/jsx-no-bind:"off" */
+/* eslint one-var:"off" */
+/* eslint consistent-return:"off" */
+/* eslint no-param-reassign:"off" */
+/* eslint max-len:"off" */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import StoryControls from 'components/story/StoryControls';
@@ -13,13 +31,14 @@ import TaskForm from 'components/tasks/TaskForm';
 import StoryAttachment from 'components/story/StoryAttachment';
 import StoryStateButtons from 'components/story/StoryStateButtons';
 import StoryEstimateButtons from 'components/story/StoryEstimateButtons';
-import AttachmentOptions from 'models/attachmentOptions'
-var Clipboard = require('clipboard');
+import AttachmentOptions from 'models/attachmentOptions';
 
-var executeAttachinary = require('libs/execute_attachinary');
+const Clipboard = require('clipboard');
 
-var FormView = require('./form_view');
-var EpicView = require('./epic_view');
+const executeAttachinary = require('libs/execute_attachinary');
+
+const FormView = require('./form_view');
+const EpicView = require('./epic_view');
 
 const LOCAL_STORY_REGEXP = /(?!\s|\b)(#\d+)(?!\w)/g;
 
@@ -31,44 +50,46 @@ module.exports = FormView.extend({
   tagName: 'div',
   linkedStories: {},
 
-  initialize: function(options) {
-    _.extend(this, _.pick(options, "isSearchResult"));
+  initialize(options) {
+    _.extend(this, _.pick(options, 'isSearchResult'));
 
-    _.bindAll(this, "render", "highlight", "moveColumn", "setClassName",
-      "transition", "estimate", "disableForm", "renderNotes",
-      "hoverBox", "renderTasks", "handleNoteDelete", "handleSaveError",
-      "addEmptyTask", "handleNoteSubmit", "renderTaskForm", "handleTaskSubmit",
-      "clickSave", "attachmentDone", "attachmentStart", "handleTaskUpdate",
-      "handleTaskSaveSuccess", "handleTaskDelete","attachmentFail",
-      "toggleControlButtons");
+    _.bindAll(
+      this, 'render', 'highlight', 'moveColumn', 'setClassName',
+      'transition', 'estimate', 'disableForm', 'renderNotes',
+      'hoverBox', 'renderTasks', 'handleNoteDelete', 'handleSaveError',
+      'addEmptyTask', 'handleNoteSubmit', 'renderTaskForm', 'handleTaskSubmit',
+      'clickSave', 'attachmentDone', 'attachmentStart', 'handleTaskUpdate',
+      'handleTaskSaveSuccess', 'handleTaskDelete', 'attachmentFail',
+      'toggleControlButtons',
+    );
 
     // Rerender on any relevant change to the views story
-    this.model.on("change", this.render);
+    this.model.on('change', this.render);
 
-    this.model.on("change:title", this.highlight);
-    this.model.on("change:description", this.highlight);
-    this.model.on("change:column", this.highlight);
-    this.model.on("change:state", this.highlight);
-    this.model.on("change:position", this.highlight);
-    this.model.on("change:estimate", this.highlight);
-    this.model.on("change:story_type", this.highlight);
+    this.model.on('change:title', this.highlight);
+    this.model.on('change:description', this.highlight);
+    this.model.on('change:column', this.highlight);
+    this.model.on('change:state', this.highlight);
+    this.model.on('change:position', this.highlight);
+    this.model.on('change:estimate', this.highlight);
+    this.model.on('change:story_type', this.highlight);
 
-    this.model.on("change:column", this.moveColumn);
+    this.model.on('change:column', this.moveColumn);
 
-    this.model.on("change:estimate", this.setClassName);
-    this.model.on("change:state", this.setClassName);
+    this.model.on('change:estimate', this.setClassName);
+    this.model.on('change:state', this.setClassName);
 
-    this.model.on("change:tasks", this.addEmptyTask);
-    this.model.on("change:tasks", this.renderTasksCollection);
+    this.model.on('change:tasks', this.addEmptyTask);
+    this.model.on('change:tasks', this.renderTasksCollection);
 
-    this.model.on("render", this.hoverBox);
+    this.model.on('render', this.hoverBox);
     // Supply the model with a reference to it's own view object, so it can
     // remove itself from the page when destroy() gets called.
     this.model.views.push(this);
 
     if (this.model.id) {
       this.id = this.el.id = (this.isSearchResult ? 'search-result-' : '') + this.model.id;
-      this.$el.attr('id', 'story-' + this.id);
+      this.$el.attr('id', `story-${this.id}`);
       this.$el.data('story-id', this.id);
     }
 
@@ -77,10 +98,10 @@ module.exports = FormView.extend({
 
     this.on('attachmentOptions', (options) => {
       this.attachmentOptions = options;
-      if(this.canEdit()) {
+      if (this.canEdit()) {
         // attachinary won't re-create the instance with the new
         // signature if the instance for the element is already created
-        if(this.$('.attachinary-input').data('attachinary-bond')) {
+        if (this.$('.attachinary-input').data('attachinary-bond')) {
           this.$('.attachinary-input')
             .fileupload('destroy')
             .data('attachinary-bond').initFileUpload();
@@ -93,46 +114,46 @@ module.exports = FormView.extend({
     this.attachmentOptions = options.attachmentOptions;
   },
 
-  isReadonly: function() {
+  isReadonly() {
     return this.model.isReadonly;
   },
 
   events: {
-    "click": "startEdit",
-    "click .epic-link": "openEpic",
-    "click .cancel": "cancelEdit",
-    "click .clone-story": "cloneStory",
-    "click .transition": "transition",
-    "change select.story_type": "render",
-    "click .destroy": "clear",
-    "click .description": "editDescription",
-    "click .edit-description": "editDescription",
-    "click .toggle-history": "showHistory",
-    "sortupdate": "sortUpdate",
-    "fileuploaddone": "attachmentDone",
-    "fileuploadstart": "attachmentStart",
-    "fileuploadfail": "attachmentFail",
-    "click #locate": "highlightSearchedStory"
+    click: 'startEdit',
+    'click .epic-link': 'openEpic',
+    'click .cancel': 'cancelEdit',
+    'click .clone-story': 'cloneStory',
+    'click .transition': 'transition',
+    'change select.story_type': 'render',
+    'click .destroy': 'clear',
+    'click .description': 'editDescription',
+    'click .edit-description': 'editDescription',
+    'click .toggle-history': 'showHistory',
+    sortupdate: 'sortUpdate',
+    fileuploaddone: 'attachmentDone',
+    fileuploadstart: 'attachmentStart',
+    fileuploadfail: 'attachmentFail',
+    'click #locate': 'highlightSearchedStory',
   },
 
   // Triggered whenever a story is dropped to a new position
-  sortUpdate: function(ev, ui) {
+  sortUpdate(ev, ui) {
     // The target element, i.e. the StoryView.el element
-    var target = $(ev.target);
+    const target = $(ev.target);
 
     // Initially, try and get the id's of the previous and / or next stories
     // by just searching up above and below in the DOM of the column position
     // the story was dropped on.  The case where the column is empty is
     // handled below.
-    var previous_story_id = target.prev('.story').data('story-id');
-    var next_story_id = target.next('.story').data('story-id');
+    let previous_story_id = target.prev('.story').data('story-id');
+    let next_story_id = target.next('.story').data('story-id');
 
     // Set the story state if drop column is chilly_bin or backlog
-    var column = target.parent().attr('id');
+    const column = target.parent().attr('id');
     if (column === 'backlog' || (column === 'in_progress' && this.model.get('state') === 'unscheduled')) {
-      this.model.set({state: 'unstarted'});
+      this.model.set({ state: 'unstarted' });
     } else if (column === 'chilly_bin') {
-      this.model.set({state: 'unscheduled'});
+      this.model.set({ state: 'unscheduled' });
       [previous_story_id, next_story_id] = [next_story_id, previous_story_id];
     }
 
@@ -140,12 +161,11 @@ module.exports = FormView.extend({
     // column, which will be either the backlog or the chilly bin as these
     // are the only columns that can receive drops from other columns.
     if (_.isUndefined(previous_story_id) && _.isUndefined(next_story_id)) {
+      const beforeSearchColumns = this.model.collection.project.columnsBefore(`#${column}`);
+      const afterSearchColumns = this.model.collection.project.columnsAfter(`#${column}`);
 
-      var beforeSearchColumns = this.model.collection.project.columnsBefore('#' + column);
-      var afterSearchColumns  = this.model.collection.project.columnsAfter('#' + column);
-
-      var previousStory = _.last(this.model.collection.columns(beforeSearchColumns));
-      var nextStory = _.first(this.model.collection.columns(afterSearchColumns));
+      const previousStory = _.last(this.model.collection.columns(beforeSearchColumns));
+      const nextStory = _.first(this.model.collection.columns(afterSearchColumns));
 
       if (typeof previousStory !== 'undefined') {
         previous_story_id = previousStory.id;
@@ -165,23 +185,29 @@ module.exports = FormView.extend({
       // previous or next story.  If this is not the case then something
       // has gone wrong.
       if (this.model.collection.length !== 1) {
-        throw "Unable to determine previous or next story id for dropped story";
+        throw 'Unable to determine previous or next story id for dropped story';
       }
     }
     this.model.save();
   },
 
-  transition: function(ev) {
+  onError(model, resonse) {
+    const json = $.parseJSON(response.responseText);
+    window.projectView.notice({
+      title: I18n.t('save error'),
+      text: model.errorMessages(),
+    });
+  },
+  transition(ev) {
     // The name of the function that needs to be called on the model is the
     // value of the form button that was clicked.
-    var transitionEvent = ev.target.value;
-    _.each(I18n.t('story.events'), function(value, key) {
-      if( value === transitionEvent )
-        transitionEvent = key;
-    })
+    let transitionEvent = ev.target.value;
+    _.each(I18n.t('story.events'), (value, key) => {
+      if (value === transitionEvent) { transitionEvent = key; }
+    });
 
     if (transitionEvent === 'accept' || transitionEvent === 'reject') {
-      var confirmed = confirm( I18n.t('story.definitive_sure', {action: transitionEvent} ));
+      const confirmed = confirm(I18n.t('story.definitive_sure', { action: transitionEvent }));
 
       if (!confirmed) return;
     }
@@ -189,101 +215,94 @@ module.exports = FormView.extend({
     this.saveInProgress = true;
     this.render();
 
-    this.model[transitionEvent]({silent:true});
+    this.model[transitionEvent]({ silent: true });
 
-    var that = this;
+    const that = this;
     this.model.save(null, {
-      success: function(model, response) {
+      success() {
         that.saveInProgress = false;
         that.render();
       },
-      error: function(model, response) {
-        var json = $.parseJSON(response.responseText);
-        window.projectView.notice({
-          title: I18n.t("save error"),
-          text: model.errorMessages()
-        });
+      error(model, response) {
+        this.onError(model, response);
         that.saveInProgress = false;
         that.render();
-      }
+      },
     });
   },
 
-  estimate: function(points) {
+  estimate(points) {
     this.saveInProgress = true;
     this.render();
     this.model.set({ estimate: points });
 
-    var that = this;
+    const that = this;
     this.model.save(null, {
-      success: function(model, response) {
+      success(model, response) {
         that.saveInProgress = false;
         that.render();
       },
-      error: function(model, response) {
-        var json = $.parseJSON(response.responseText);
-        window.projectView.notice({
-          title: I18n.t("save error"),
-          text: model.errorMessages()
-        });
+      error(model, response) {
+        this.onError(model, response);
         that.saveInProgress = false;
         that.render();
-      }
+      },
     });
   },
 
-  canEdit: function() {
-    var isEditable              = this.model.get('editing');
-    var isSearchResultContainer = this.$el.hasClass('searchResult');
-    var clickFromSearchResult   = this.model.get('clickFromSearchResult');
-    if (_.isUndefined(isEditable))
-      isEditable = false;
-    if (_.isUndefined(clickFromSearchResult))
-      clickFromSearchResult = false;
-    if ( clickFromSearchResult && isSearchResultContainer ) {
+  canEdit() {
+    let isEditable = this.model.get('editing');
+    const isSearchResultContainer = this.$el.hasClass('searchResult');
+    let clickFromSearchResult = this.model.get('clickFromSearchResult');
+    if (_.isUndefined(isEditable)) { isEditable = false; }
+    if (_.isUndefined(clickFromSearchResult)) { clickFromSearchResult = false; }
+    if (clickFromSearchResult && isSearchResultContainer) {
       return isEditable;
-    } else if ( !clickFromSearchResult && !isSearchResultContainer ) {
+    } else if (!clickFromSearchResult && !isSearchResultContainer) {
       return isEditable;
-    } else {
-      return false;
     }
+    return false;
   },
 
   // Move the story to a new column
-  moveColumn: function() {
+  moveColumn() {
     this.$el.appendTo(this.model.get('column'));
   },
 
-  startEdit: function(e) {
+  startEdit(e) {
     if (this.eventShouldExpandStory(e)) {
-      this.model.set({editing: true, editingDescription: false, clickFromSearchResult: this.$el.hasClass('searchResult')});
+      this.model.set({ editing: true, editingDescription: false, clickFromSearchResult: this.$el.hasClass('searchResult') });
       this.removeHoverbox();
     }
   },
 
-  openEpic: function(e) {
+  openEpic(e) {
     e.stopPropagation();
-    var label = $(e.target).text();
-    new EpicView({model: this.model.collection.project, label: label});
+    const label = $(e.target).text();
+    new EpicView({ model: this.model.collection.project, label });
   },
 
   // When a story is clicked, this method is used to check whether the
   // corresponding click event should expand the story into its form view.
-  eventShouldExpandStory: function(e) {
+  eventShouldExpandStory(e) {
     // Shouldn't expand if it's already expanded.
     if (this.canEdit()) {
       return false;
     }
     // Should expand if the click wasn't on one of the buttons.
-    if ($(e.target).is('input')) return false
-    if ($(e.target).is('.input')) return false
-    if ($(e.target).is('button')) return false
-    if ($(e.target).parent().is('button')) return false
+    if (
+      $(e.target).is('input') ||
+      $(e.target).is('.input') ||
+      $(e.target).is('button') ||
+      $(e.target).parent().is('button')
+    ) {
+      return false;
+    }
     return true;
   },
 
-  cancelEdit: function() {
-    this.model.set({editing: false});
+  cancelEdit() {
+    this.model.set({ editing: false });
 
     // If the model was edited, but the edits were deemed invalid by the
     // server, the local copy of the model will still be invalid and have
@@ -301,7 +320,7 @@ module.exports = FormView.extend({
     }
   },
 
-  saveEdit: function(event, editMode) {
+  saveEdit(event, editMode) {
     this.disableForm();
 
     // Call this here to ensure the story gets it's accepted_at date set
@@ -310,57 +329,56 @@ module.exports = FormView.extend({
     // put an accepted story in.
     this.model.setAcceptedAt();
 
-    var that = this;
-    var documents = $(event.currentTarget).closest('.story')
+    const that = this;
+    const documents = $(event.currentTarget).closest('.story')
       .find("[type='hidden'][name='attachments']");
 
-    this.model.save(null, { documents: documents,
-      success: function(model, response) {
+    this.model.save(null, {
+      documents,
+      success(model, response) {
         that.enableForm();
         that.model.set({ editing: editMode });
         that.toggleControlButtons(false);
         that.highlightStory();
       },
-      error: function(model, response) {
-        var json = $.parseJSON(response.responseText);
-        model.set({editing: true, errors: json.story.errors});
+      error(model, response) {
+        const json = $.parseJSON(response.responseText);
+        model.set({ editing: true, errors: json.story.errors });
 
         window.projectView.notice({
-          title: I18n.t("save error"),
-          text: model.errorMessages()
+          title: I18n.t('save error'),
+          text: model.errorMessages(),
         });
 
         that.enableForm();
-      }
+      },
     });
   },
 
   // Delete the story and remove it's view element
-  clear: function() {
-    if (confirm("Are you sure you want to destroy this story?"))
-      this.model.clear();
+  clear() {
+    if (confirm('Are you sure you want to destroy this story?')) { this.model.clear(); }
   },
 
-  editDescription: function(ev) {
+  editDescription(ev) {
     const $target = $(ev.target);
-    if ($target.hasClass('story-link') || $target.hasClass('story-link-icon'))
-      return;
+    if ($target.hasClass('story-link') || $target.hasClass('story-link-icon')) { return; }
 
-    this.model.set({editingDescription: true});
+    this.model.set({ editingDescription: true });
     this.render();
   },
 
   // Visually highlight the story if an external change happens
-  highlight: function() {
-    if(!this.model.get('editing')) {
+  highlight() {
+    if (!this.model.get('editing')) {
       // Workaround for http://bugs.jqueryui.com/ticket/5506
       if (this.$el.is(':visible')) {
-        this.$el.effect("highlight", {}, 3000);
+        this.$el.effect('highlight', {}, 3000);
       }
     }
   },
 
-  cloneStory: function () {
+  cloneStory() {
     this.cancelEdit();
     const clonedStory = this.model.clone();
     this.resetAttributes(clonedStory);
@@ -373,59 +391,59 @@ module.exports = FormView.extend({
         },
         error: (model, response) => {
           window.projectView.notice({
-            title: I18n.t("save error"),
+            title: I18n.t('save error'),
             text: model.errorMessages(),
           });
-        }
+        },
       });
     }
   },
 
-  resetAttributes: function (story) {
+  resetAttributes(story) {
     story.set({
       id: null,
       created_at: null,
       updated_at: null,
       position: null,
-      state: "unscheduled",
+      state: 'unscheduled',
     });
     return story;
   },
 
-  highlightSearchedStory: function () {
+  highlightSearchedStory() {
     this.scrollToStory();
     this.highlightStory();
   },
 
-  scrollToStory: function () {
+  scrollToStory() {
     const storyElement = this.storyElement();
     $('.content-wrapper').animate({
-      scrollTop: storyElement.offset().top - 15
+      scrollTop: storyElement.offset().top - 15,
     }, 'fast');
   },
 
-  highlightStory: function () {
+  highlightStory() {
     const element = this.storyElement();
-    element.effect("highlight", {color: 'lightgreen'}, 1500);
+    element.effect('highlight', { color: 'lightgreen' }, 1500);
   },
 
-  storyElement: function ()  {
-    return $(`#story-${ this.model.get('id') }`);
+  storyElement() {
+    return $(`#story-${this.model.get('id')}`);
   },
 
-  render: function() {
+  render() {
     const storyControlsContainer = this.$('[data-story-controls]').get(0);
     if (storyControlsContainer) {
       ReactDOM.unmountComponentAtNode(storyControlsContainer);
     }
 
-    var isGuest = (
+    const isGuest = (
       this.model.collection !== undefined &&
       this.model.collection.project.current_user !== undefined &&
       this.model.collection.project.current_user.get('guest?')
     );
 
-    if(this.canEdit()) {
+    if (this.canEdit()) {
       this.renderExpanded(isGuest);
     } else {
       this.renderCollapsed(isGuest);
@@ -436,7 +454,7 @@ module.exports = FormView.extend({
     return this;
   },
 
-  renderExpanded: function(isGuest) {
+  renderExpanded(isGuest) {
     this.$el.empty();
     this.$el.addClass('editing');
 
@@ -453,119 +471,108 @@ module.exports = FormView.extend({
     this.appendAttachments();
     this.$el.append($('<div data-story-notes></div>'));
     this.$el.append($('<div data-story-note-form></div>'));
-    if(this.model.get('story_type') === 'release') {
+    if (this.model.get('story_type') === 'release') {
       this.$el.empty();
       this.$el.append($storyControls);
       this.renderReleaseStory();
     }
     this.renderReactComponents();
 
-    if (isGuest) { this.toggleControlButtons(true, false) }
+    if (isGuest) { this.toggleControlButtons(true, false); }
   },
 
-  appendHistoryLocation: function() {
+  appendHistoryLocation() {
     if (this.id !== undefined) {
       const $storyHistoryLocation = $('<div data-story-history-location></div>');
       this.$el.append($storyHistoryLocation);
     }
   },
 
-  appendTitle: function() {
-    this.$el.append(
-      this.makeFormControl(this.makeTitle())
-    );
+  appendTitle() {
+    this.$el.append(this.makeFormControl(this.makeTitle()));
   },
 
-  appendEstimateTypeState: function() {
-    this.$el.append(
-      this.makeFormControl(function(div) {
-        $(div).addClass('form-inline');
+  appendEstimateTypeState() {
+    this.$el.append(this.makeFormControl((div) => {
+      $(div).addClass('form-inline');
 
-        const $storyEstimate = $('<div class="form-group" data-story-estimate></div>');
-        $(div).append($storyEstimate);
+      const $storyEstimate = $('<div class="form-group" data-story-estimate></div>');
+      $(div).append($storyEstimate);
 
-        const $storyType = $('<div class="form-group" data-story-type></div>');
-        $(div).append($storyType);
+      const $storyType = $('<div class="form-group" data-story-type></div>');
+      $(div).append($storyType);
 
-        const $storyState = $('<div class="form-group" data-story-state></div>');
-        $(div).append($storyState);
-      })
-    );
+      const $storyState = $('<div class="form-group" data-story-state></div>');
+      $(div).append($storyState);
+    }));
   },
 
-  appendRequestedAndOwnedBy: function() {
-    this.$el.append(
-      this.makeFormControl(function(div) {
-        $(div).addClass('form-inline');
+  appendRequestedAndOwnedBy() {
+    this.$el.append(this.makeFormControl((div) => {
+      $(div).addClass('form-inline');
 
-        const $storyRequestedBy = $('<div class="form-group" data-requested-by></div>');
-        $(div).append($storyRequestedBy);
+      const $storyRequestedBy = $('<div class="form-group" data-requested-by></div>');
+      $(div).append($storyRequestedBy);
 
-        const $storyOwnedBy = $('<div class="form-group" data-owned-by></div>');
-        $(div).append($storyOwnedBy);
-      })
-    );
+      const $storyOwnedBy = $('<div class="form-group" data-owned-by></div>');
+      $(div).append($storyOwnedBy);
+    }));
   },
 
-  appendTags: function() {
-    this.$el.append(
-      this.makeFormControl(function(div) {
-        const $storyTags = $('<div class="form-group" data-tags></div>');
-        $(div).append($storyTags);
-      })
-    );
+  appendDiv(element) {
+    this.$el.append(this.makeFormControl((div) => {
+      const $storyTags = $(element);
+      $(div).append($storyTags);
+    }));
   },
 
-  appendDescription: function() {
-    this.$el.append(
-      this.makeFormControl(function(div) {
-        var $storyDescription = $('<div class="story-description"><div>');
-        $(div).append($storyDescription);
-      })
-    );
+  appendTags() {
+    this.appendDiv('<div class="form-group" data-tags></div>');
   },
 
-  appendAttachments: function() {
-    this.$el.append(
-      this.makeFormControl(function(div) {
-        const $storyAttachments = $('<div class="story-attachments"></div>');
-        $(div).append($storyAttachments);
-
-        clearTimeout(window.executeAttachinaryTimeout);
-        window.executeAttachinaryTimeout = setTimeout(executeAttachinary, 1000);
-      })
-    );
+  appendDescription() {
+    this.appendDiv('<div class="story-description"><div>');
   },
 
-  renderCollapsed: function(isGuest) {
+  appendAttachments() {
+    this.$el.append(this.makeFormControl((div) => {
+      const $storyAttachments = $('<div class="story-attachments"></div>');
+      $(div).append($storyAttachments);
+
+      clearTimeout(window.executeAttachinaryTimeout);
+      window.executeAttachinaryTimeout = setTimeout(executeAttachinary, 1000);
+    }));
+  },
+
+  renderCollapsed(isGuest) {
     this.$el.removeClass('editing');
-    this.$el.html(this.template({story: this.model, view: this}));
+    this.$el.html(this.template({ story: this.model, view: this }));
 
-    const stateButtons = this.$('[data-story-state-buttons]').get(0)
-    if(stateButtons) {
+    const stateButtons = this.$('[data-story-state-buttons]').get(0);
+    if (stateButtons) {
       ReactDOM.render(
         <StoryStateButtons
           events={this.model.events()}
         />,
-        stateButtons
+        stateButtons,
       );
     }
 
-    const estimateButtons = this.$('[data-story-estimate-buttons]').get(0)
-    if(estimateButtons) {
+    const estimateButtons = this.$('[data-story-estimate-buttons]').get(0);
+    if (estimateButtons) {
       ReactDOM.render(
         <StoryEstimateButtons
           points={this.model.point_values()}
           onClick={this.estimate}
         />,
-        estimateButtons
+        estimateButtons,
       );
     }
 
-    if (isGuest) { this.$el.find('.state-actions').find('.transition').prop('disabled', true) }
+    if (isGuest) { this.$el.find('.state-actions').find('.transition').prop('disabled', true); }
   },
 
-  renderReactComponents: function() {
+  renderReactComponents() {
     this.renderControls();
     this.renderHistoryLocationContainer();
     this.renderDescription();
@@ -576,17 +583,17 @@ module.exports = FormView.extend({
     this.renderNotes();
   },
 
-  renderControls: function() {
+  renderControls() {
     ReactDOM.render(
       <StoryControls
         onClickSave={this.clickSave}
         onClickCancel={this.cancelEdit}
       />,
-      this.$('[data-story-controls]').get(0)
+      this.$('[data-story-controls]').get(0),
     );
   },
 
-  renderHistoryLocationContainer: function() {
+  renderHistoryLocationContainer() {
     const historyLocationContainer = this.$('[data-story-history-location]').get(0);
     if (historyLocationContainer) {
       ReactDOM.render(
@@ -594,80 +601,80 @@ module.exports = FormView.extend({
           id={this.id}
           url={`${this.getLocation()}#story-${this.id}`}
         />,
-        historyLocationContainer
+        historyLocationContainer,
       );
       new Clipboard('.btn-clipboard');
     }
   },
 
-  renderDescription: function() {
+  renderDescription() {
     const description = this.$('.story-description')[0];
     if (description) {
       ReactDOM.render(
         <StoryDescription
-          name='description'
+          name="description"
           linkedStories={this.linkedStories}
           isReadonly={this.isReadonly()}
           description={this.parseDescription()}
           usernames={window.projectView.usernames()}
           isNew={this.model.isNew()}
           editingDescription={this.model.get('editingDescription')}
-          value={this.model.get("description")}
+          value={this.model.get('description')}
           fileuploadprogressall={this.uploadProgressBar}
-          onChange={ (event) => this.onChangeModel(event.target.value, "description") }
+          onChange={(event) => this.onChangeModel(event.target.value, 'description')}
           onClick={this.editDescription}
         />,
-        description
+        description,
       );
     }
   },
 
-  renderTagsInput: function() {
+  renderTagsInput() {
     const tagsInput = this.$('[data-tags]')[0];
     if (tagsInput) {
       ReactDOM.render(
         <StoryLabels
-          name='labels'
-          className='labels'
+          name="labels"
+          className="labels"
           value={this.model.get('labels')}
           availableLabels={this.model.collection.labels}
-          onChange={ (event) => this.onChangeModel(event.target.value, "labels") }
+          onChange={(event) => this.onChangeModel(event.target.value, 'labels')}
           disabled={this.isReadonly()}
         />,
-        tagsInput
+        tagsInput,
       );
     }
   },
 
-  renderAttachments: function() {
+  renderAttachments() {
     const attachments = this.$('.story-attachments')[0];
-    if(attachments) {
+    if (attachments) {
       ReactDOM.render(
         <StoryAttachment
-          name='attachments'
+          name="attachments"
           isReadonly={this.isReadonly()}
           filesModel={this.model.get('documents')}
           options={this.attachmentOptions}
         />,
-        attachments
+        attachments,
       );
     }
   },
 
-  renderSelects: function() {
+  renderSelects() {
     const $storyEstimateSelect = this.$('[data-story-estimate]');
     if ($storyEstimateSelect.length) {
       const storyEstimateOptions = this.model.point_values().map(this.createStoryEstimateOptions);
       ReactDOM.render(
         <StorySelect
-          name='estimate'
-          className='story_estimate'
+          name="estimate"
+          className="story_estimate"
           blank={I18n.t('story.no_estimate')}
           options={storyEstimateOptions}
           selected={this.model.get('estimate')}
           disabled={this.model.notEstimable() || this.isReadonly()}
         />,
-        $storyEstimateSelect.get(0)
+        $storyEstimateSelect.get(0),
       );
 
       this.bindElementToAttribute($storyEstimateSelect.find('select[name="estimate"]'), 'estimate');
@@ -675,17 +682,17 @@ module.exports = FormView.extend({
 
     const $storyTypeSelect = this.$('[data-story-type]');
     if ($storyTypeSelect.length) {
-      const typeOptions = ["feature", "chore", "bug", "release"];
+      const typeOptions = ['feature', 'chore', 'bug', 'release'];
       const storyTypeOptions = typeOptions.map(this.createStoryTypeOptions);
       ReactDOM.render(
         <StorySelect
-          className='story_type'
+          className="story_type"
           options={storyTypeOptions}
-          name='story_type'
+          name="story_type"
           selected={this.model.get('story_type')}
           disabled={this.isReadonly()}
         />,
-        $storyTypeSelect.get(0)
+        $storyTypeSelect.get(0),
       );
 
       this.bindElementToAttribute($storyTypeSelect.find('select[name="story_type"]'), 'story_type');
@@ -693,17 +700,17 @@ module.exports = FormView.extend({
 
     const $storyStateSelect = this.$('[data-story-state]');
     if ($storyStateSelect.length) {
-      const stateOptions = ["unscheduled", "unstarted", "started", "finished", "delivered", "accepted", "rejected"];
+      const stateOptions = ['unscheduled', 'unstarted', 'started', 'finished', 'delivered', 'accepted', 'rejected'];
       const storyStateOptions = stateOptions.map(this.createStoryStateOptions);
       ReactDOM.render(
         <StorySelect
-          name='state'
-          className='story_state'
+          name="state"
+          className="story_state"
           options={storyStateOptions}
           selected={this.model.get('state')}
           disabled={this.isReadonly()}
         />,
-        $storyStateSelect.get(0)
+        $storyStateSelect.get(0),
       );
 
       this.bindElementToAttribute($storyStateSelect.find('select[name="state"]'), 'state');
@@ -714,14 +721,14 @@ module.exports = FormView.extend({
       const storyRequestedByOptions = this.model.collection.project.users.forSelect();
       ReactDOM.render(
         <StorySelect
-          name='requested_by'
-          blank='---'
-          className='requested_by_id'
+          name="requested_by"
+          blank="---"
+          className="requested_by_id"
           options={storyRequestedByOptions}
           selected={this.model.get('requested_by_id')}
           disabled={this.isReadonly()}
         />,
-        $storyRequestedBySelect.get(0)
+        $storyRequestedBySelect.get(0),
       );
 
       this.bindElementToAttribute($storyRequestedBySelect.find('select[name="requested_by"]'), 'requested_by_id');
@@ -732,21 +739,21 @@ module.exports = FormView.extend({
       const storyOwnedByOptions = this.model.collection.project.users.forSelect();
       ReactDOM.render(
         <StorySelect
-          name='owned_by'
-          className='owned_by_id'
+          name="owned_by"
+          className="owned_by_id"
           options={storyOwnedByOptions}
-          blank='---'
+          blank="---"
           selected={this.model.get('owned_by_id')}
           disabled={this.isReadonly()}
         />,
-        $storyOwnedBySelect.get(0)
+        $storyOwnedBySelect.get(0),
       );
 
       this.bindElementToAttribute($storyOwnedBySelect.find('select[name="owned_by"]'), 'owned_by_id');
     }
   },
 
-  renderNotes: function() {
+  renderNotes() {
     const $storyNotes = this.$('[data-story-notes]');
     if ($storyNotes.length && !this.model.isNew()) {
       const isReadonly = this.isReadonly();
@@ -754,11 +761,11 @@ module.exports = FormView.extend({
 
       ReactDOM.render(
         <StoryNotes
-          notes={isReadonly ? notes : notes.slice(0,-1)}
+          notes={isReadonly ? notes : notes.slice(0, -1)}
           disabled={isReadonly}
           handleDelete={this.handleNoteDelete}
         />,
-        $storyNotes.get(0)
+        $storyNotes.get(0),
       );
 
       if (!isReadonly) {
@@ -767,7 +774,7 @@ module.exports = FormView.extend({
     }
   },
 
-  renderNoteForm: function() {
+  renderNoteForm() {
     const $noteForm = this.$('[data-story-note-form]');
     if ($noteForm.length) {
       this.addEmptyNote();
@@ -777,30 +784,30 @@ module.exports = FormView.extend({
           note={this.model.notes.last()}
           onSubmit={this.handleNoteSubmit}
         />,
-        $noteForm.get(0)
+        $noteForm.get(0),
       );
 
       $noteForm.find('textarea').atwho({
         at: '@',
-        data: window.projectView.usernames()
+        data: window.projectView.usernames(),
       });
     }
   },
 
-  handleNoteDelete: function(note) {
+  handleNoteDelete(note) {
     note.destroy();
     this.renderNotes();
   },
 
-  handleNoteSubmit: function({ note, newValue }) {
-    note.set({note: newValue});
+  handleNoteSubmit({ note, newValue }) {
+    note.set({ note: newValue });
     return note.save(null, {
       success: () => window.projectView.model.fetch(),
-      error: this.handleSaveError
+      error: this.handleSaveError,
     });
   },
 
-  renderTasks: function() {
+  renderTasks() {
     const $storyTasks = this.$('[data-story-tasks]');
     if ($storyTasks.length && !this.model.isNew()) {
       const isReadonly = this.isReadonly();
@@ -813,7 +820,7 @@ module.exports = FormView.extend({
           handleUpdate={this.handleTaskUpdate}
           handleDelete={this.handleTaskDelete}
         />,
-        $storyTasks.get(0)
+        $storyTasks.get(0),
       );
 
       if (!isReadonly) {
@@ -822,7 +829,7 @@ module.exports = FormView.extend({
     }
   },
 
-  renderTaskForm: function() {
+  renderTaskForm() {
     const $taskForm = this.$('[data-story-task-form]');
     if ($taskForm.length) {
       this.addEmptyTask();
@@ -832,80 +839,74 @@ module.exports = FormView.extend({
           onSubmit={this.handleTaskSubmit}
           task={this.model.tasks.last()}
         />,
-        $taskForm.get(0)
+        $taskForm.get(0),
       );
     }
   },
 
-  handleTaskSubmit: function({task, taskName}) {
+  handleTaskSubmit({ task, taskName }) {
     task.set('name', taskName);
     return task.save(null, {
       dataType: 'text',
       success: this.handleTaskSaveSuccess,
-      error: this.handleSaveError
+      error: this.handleSaveError,
     });
   },
 
-  handleTaskDelete: function(task) {
+  handleTaskDelete(task) {
     task.destroy();
     this.renderTasks();
   },
 
-  handleTaskSaveSuccess: function() {
+  handleTaskSaveSuccess() {
     window.projectView.model.fetch();
     this.renderTasks();
   },
 
-  handleTaskUpdate: function({task, done}) {
+  handleTaskUpdate({ task, done }) {
     task.set('done', done);
     task.save(null, {
       dataType: 'text',
       success: this.handleTaskSaveSuccess,
-      error: this.handleSaveError
+      error: this.handleSaveError,
     });
   },
 
-  handleSaveError: function(model, response) {
+  handleSaveError(model, response) {
     const json = JSON.parse(response.responseText);
-    model.set({errors: json[model.name].errors});
+    model.set({ errors: json[model.name].errors });
     window.projectView.noticeSaveError(model);
   },
 
-  createStoryEstimateOptions: function(option) {
+  createStoryEstimateOptions(option) {
     return [option, option];
   },
 
-  createStoryTypeOptions: function(option) {
-    return [I18n.t('story.type.' + option), option];
+  createStoryTypeOptions(option) {
+    return [I18n.t(`story.type.${option}`), option];
   },
 
-  createStoryStateOptions: function(option) {
-    return [I18n.t('story.state.' + option), option];
+  createStoryStateOptions(option) {
+    return [I18n.t(`story.state.${option}`), option];
   },
 
-  makeTitle: function() {
-    return function(div) {
-      $(div).append(this.label("title", I18n.t('activerecord.attributes.story.title')));
-      $(div).append(this.textField("title", {
-        'class' : 'title form-control input-sm',
-        'placeholder': I18n.t('story title'),
-        'maxlength': 255,
-        'disabled': this.isReadonly()
+  makeTitle() {
+    return function (div) {
+      $(div).append(this.label('title', I18n.t('activerecord.attributes.story.title')));
+      $(div).append(this.textField('title', {
+        class: 'title form-control input-sm',
+        placeholder: I18n.t('story title'),
+        maxlength: 255,
+        disabled: this.isReadonly(),
       }));
-    }
+    };
   },
 
-  renderReleaseStory: function() {
-    this.$el.append(
-      this.makeFormControl(this.makeTitle())
-    );
+  renderReleaseStory() {
+    this.$el.append(this.makeFormControl(this.makeTitle()));
 
-    if(this.model.get('editing')) {
-      this.$el.append(
-        this.makeFormControl(function(div) {
-          const $storyType = $('<div class="form-group" data-story-type></div>');
-          $(div).append($storyType);
-        }));
+    if (this.model.get('editing')) {
+      this.appendDiv('<div class="form-group" data-story-type></div>');
     }
 
     const $storyDate = $('<div class="form-group" data-story-datepicker></div>');
@@ -914,26 +915,22 @@ module.exports = FormView.extend({
     ReactDOM.render(
       <StoryDatePicker
         releaseDate={this.model.get('release_date')}
-        onChangeCallback={function() {$('input[name=release_date]').trigger('change')}}
+        onChangeCallback={function () { $('input[name=release_date]').trigger('change'); }}
       />,
-      $storyDate.get(0)
+      $storyDate.get(0),
     );
 
     const dateInput = this.$('input[name=release_date]');
     this.bindElementToAttribute(dateInput, 'release_date');
 
-    this.$el.append(
-      this.makeFormControl(function(div) {
-        var $description = $('<div class="story-description"><div>');
-        $(div).append($description);
-      })
-    );
+    this.appendDiv('<div class="story-description"><div>');
   },
 
-  parseDescription: function() {
+  parseDescription() {
     const description = this.model.get('description') || '';
-    var id, story;
-    return description.replace(LOCAL_STORY_REGEXP, story_id => {
+    let id,
+      story;
+    return description.replace(LOCAL_STORY_REGEXP, (story_id) => {
       id = story_id.substring(1);
       story = this.model.collection.get(id);
       this.linkedStories[id] = story;
@@ -941,9 +938,9 @@ module.exports = FormView.extend({
     });
   },
 
-  setClassName: function() {
-    var className = [
-      'story', this.model.get('story_type'), this.model.get('state')
+  setClassName() {
+    let className = [
+      'story', this.model.get('story_type'), this.model.get('state'),
     ].join(' ');
     if (this.model.estimable() && !this.model.estimated()) {
       className += ' unestimated';
@@ -957,26 +954,26 @@ module.exports = FormView.extend({
 
   saveInProgress: false,
 
-  disableForm: function() {
+  disableForm() {
     this.$el.find('input,select,textarea').attr('disabled', 'disabled');
     this.$el.find('a.collapse,a.expand').removeClass(/icons-/).addClass('icons-throbber');
   },
 
-  enableForm: function() {
+  enableForm() {
     this.$el.find('input,select,textarea').removeAttr('disabled');
-    this.$el.find('a.collapse').removeClass(/icons-/).addClass("icons-collapse");
+    this.$el.find('a.collapse').removeClass(/icons-/).addClass('icons-collapse');
   },
 
-  onChangeModel: function(value, element) {
-    this.model.set({ [element]: value }, {silent: true});
+  onChangeModel(value, element) {
+    this.model.set({ [element]: value }, { silent: true });
   },
 
-  addEmptyTask: function() {
+  addEmptyTask() {
     if (this.model.isNew()) {
       return;
     }
 
-    var task = this.model.tasks.last();
+    const task = this.model.tasks.last();
     if (task && task.isNew()) {
       return;
     }
@@ -984,8 +981,7 @@ module.exports = FormView.extend({
     this.model.tasks.add({});
   },
 
-  addEmptyNote: function() {
-
+  addEmptyNote() {
     // Don't add an empty note if the story is unsaved.
     if (this.model.isNew()) {
       return;
@@ -993,7 +989,7 @@ module.exports = FormView.extend({
 
     // Don't add an empty note if the notes collection already has a trailing
     // new Note.
-    var last = this.model.notes.last();
+    const last = this.model.notes.last();
     if (last && last.isNew()) {
       return;
     }
@@ -1005,66 +1001,66 @@ module.exports = FormView.extend({
   },
 
   // FIXME Move to separate view
-  hoverBox: function() {
+  hoverBox() {
     if (!this.model.isNew()) {
       this.$el.find('.popover-activate').popover({
         delay: 200, // A small delay to stop the popovers triggering whenever the mouse is moving around
         html: true,
         trigger: 'hover',
-        title: () => this.model.get("title"),
+        title: () => this.model.get('title'),
         content: () => require('templates/story_hover.ejs')({
           story: this.model,
-          noteTemplate: require('templates/note.ejs')
-        })
+          noteTemplate: require('templates/note.ejs'),
+        }),
       });
     }
   },
 
-  removeHoverbox: function() {
+  removeHoverbox() {
     $('.popover').remove();
   },
 
-  backLoggedRelease: function() {
-    var backlogged = false;
+  backLoggedRelease() {
+    let backlogged = false;
     const {
       collection,
       attributes,
     } = this.model;
-    if(collection.project.iterations) {
+    if (collection.project.iterations) {
       collection.project.iterations.forEach((iteration) => {
         iteration.stories().forEach((story) => {
           if (story.id === attributes.id && attributes.release_date) {
-            var iteration_date = new Date(iteration.startDate());
-            var release_date = new Date(attributes.release_date);
+            const iteration_date = new Date(iteration.startDate());
+            const release_date = new Date(attributes.release_date);
             backlogged = iteration_date > release_date;
           }
-        })
+        });
       });
       return backlogged;
     }
   },
 
-  handleBackLoggedRelease: function() {
+  handleBackLoggedRelease() {
     this.$el.toggleClass('backlogged-release', this.backLoggedRelease());
-    if(this.backLoggedRelease()){
+    if (this.backLoggedRelease()) {
       this.$el.attr('title', I18n.t('story.warnings.backlogged_release'));
     }
   },
 
-  setFocus: function() {
-    if (this.model.get('editing') === true ) {
+  setFocus() {
+    if (this.model.get('editing') === true) {
       this.$('input.title').first().focus();
     }
   },
 
-  makeFormControl: function(content) {
-    var div = this.make('div', {
-      class: 'form-group'
+  makeFormControl(content) {
+    const div = this.make('div', {
+      class: 'form-group',
     });
     if (typeof content === 'function') {
       content.call(this, div);
     } else if (typeof content === 'object') {
-      var $div = $(div);
+      const $div = $(div);
       if (content.label) {
         $div.append(this.label(content.name));
         $div.append('<br/>');
@@ -1074,7 +1070,7 @@ module.exports = FormView.extend({
     return div;
   },
 
-  attachmentDone: function(event) {
+  attachmentDone(event) {
     if (this.model.isNew()) {
       this.toggleControlButtons(false);
     } else {
@@ -1082,39 +1078,39 @@ module.exports = FormView.extend({
     }
   },
 
-  clickSave: function(event) {
+  clickSave(event) {
     this.saveEdit(event, false);
   },
 
-  attachmentStart: function() {
+  attachmentStart() {
     this.toggleControlButtons(true);
   },
 
-  attachmentFail: function() {
+  attachmentFail() {
     this.toggleControlButtons(false);
 
     this.$('.uploads').prepend(this.alert({
       className: 'story-alert alert-danger',
-      message: I18n.t('story.errors.failed_upload')
+      message: I18n.t('story.errors.failed_upload'),
     }));
   },
 
-  toggleControlButtons: function(isDisabled, changeCancel) {
-    var $storyControls = this.$el.find('.story-controls');
+  toggleControlButtons(isDisabled, changeCancel) {
+    const $storyControls = this.$el.find('.story-controls');
     $storyControls.find('.submit, .destroy').prop('disabled', isDisabled);
 
-    if (changeCancel === undefined) { changeCancel = true }
+    if (changeCancel === undefined) { changeCancel = true; }
     if (changeCancel) { $storyControls.find('.cancel').prop('disabled', isDisabled); }
   },
 
-  getLocation: function() {
-    var location = window.location.href;
-    var hashIndex = location.indexOf('#');
-    var endIndex = hashIndex > 0 ? hashIndex : location.length;
+  getLocation() {
+    const location = window.location.href;
+    const hashIndex = location.indexOf('#');
+    const endIndex = hashIndex > 0 ? hashIndex : location.length;
     return location.substring(0, endIndex);
   },
 
-  showHistory: function() {
+  showHistory() {
     this.model.showHistory();
   },
 });

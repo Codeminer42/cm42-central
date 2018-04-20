@@ -1,3 +1,4 @@
+/* eslint react/prop-types:"off" */
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchProjectBoard } from 'actions/projectBoard';
@@ -8,7 +9,7 @@ class ProjectBoard extends React.Component {
   }
 
   render() {
-    if(!this.props.projectBoard.isFetched) {
+    if (!this.props.projectBoard.isFetched) {
       return <b>Loading</b>;
     }
 
@@ -18,15 +19,17 @@ class ProjectBoard extends React.Component {
   }
 }
 
-const mapStateToProps = ({ projectBoard, project, users, stories }) => ({
+const mapStateToProps = ({
+  projectBoard, project, users, stories,
+}) => ({
   projectBoard,
   project,
   users,
-  stories
+  stories,
 });
 
 const mapDispatchToProps = {
-  fetchProjectBoard
+  fetchProjectBoard,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectBoard);

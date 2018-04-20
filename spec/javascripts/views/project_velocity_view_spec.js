@@ -1,10 +1,10 @@
-var ProjectVelocityViewInjector = require('inject-loader!views/project_velocity_view');
+/* eslint import/no-webpack-loader-syntax:"off" */
+const ProjectVelocityViewInjector = require('inject-loader!views/project_velocity_view');
 
-describe('ProjectVelocityView', function() {
-
-  beforeEach(function() {
+describe('ProjectVelocityView', () => {
+  beforeEach(function () {
     this.model = {};
-    var overrideView = this.overrideView = {};
+    const overrideView = this.overrideView = {};
 
     function ProjectVelocityOverrideViewStub() {
       return overrideView;
@@ -12,110 +12,95 @@ describe('ProjectVelocityView', function() {
 
     ProjectVelocityOverrideViewStub.prototype.template = sinon.stub();
 
-    var ProjectVelocityView = ProjectVelocityViewInjector({
-      './project_velocity_override_view': ProjectVelocityOverrideViewStub
+    const ProjectVelocityView = ProjectVelocityViewInjector({
+      './project_velocity_override_view': ProjectVelocityOverrideViewStub,
     });
 
     sinon.stub(ProjectVelocityView.prototype, 'listenTo');
 
-    this.subject = new ProjectVelocityView({model: this.model});
+    this.subject = new ProjectVelocityView({ model: this.model });
   });
 
-  it("should have a top level element", function() {
+  it('should have a top level element', function () {
     expect(this.subject.el.nodeName).toEqual('DIV');
   });
 
-  describe("initialize", function() {
-
-    it("creates the override view", function() {
+  describe('initialize', () => {
+    it('creates the override view', function () {
       expect(this.subject.override_view).toEqual(this.overrideView);
     });
 
-    it("binds setFakeClass to change:userVelocity on the model", function() {
-      expect(this.subject.listenTo).toHaveBeenCalledWith(
-        this.subject.model, "change:userVelocity", this.subject.setFakeClass
-      );
+    it('binds setFakeClass to change:userVelocity on the model', function () {
+      expect(this.subject.listenTo).toHaveBeenCalledWith(this.subject.model, 'change:userVelocity', this.subject.setFakeClass);
     });
 
-    it("binds render to rebuilt-iterations on the model", function() {
-      expect(this.subject.listenTo).toHaveBeenCalledWith(
-        this.subject.model, "rebuilt-iterations", this.subject.render
-      );
+    it('binds render to rebuilt-iterations on the model', function () {
+      expect(this.subject.listenTo).toHaveBeenCalledWith(this.subject.model, 'rebuilt-iterations', this.subject.render);
     });
-
   });
 
-  describe("render", function() {
-
-    beforeEach(function() {
+  describe('render', () => {
+    beforeEach(function () {
       this.subject.$el.html = sinon.stub();
       this.subject.setFakeClass = sinon.stub();
       this.template = {};
-      this.subject.template = sinon.stub().withArgs({project: this.model}).returns(this.template);
+      this.subject.template = sinon.stub().withArgs({ project: this.model }).returns(this.template);
     });
 
-    it("renders the template", function() {
+    it('renders the template', function () {
       this.subject.render();
       expect(this.subject.$el.html).toHaveBeenCalledWith(this.template);
     });
 
-    it("calls setFakeClass()", function() {
+    it('calls setFakeClass()', function () {
       this.subject.render();
       expect(this.subject.setFakeClass).toHaveBeenCalledWith(this.model);
     });
 
-    it("returns itself", function() {
+    it('returns itself', function () {
       expect(this.subject.render()).toBe(this.subject);
     });
-
   });
 
-  describe("editVelocityOverride", function() {
-
-    beforeEach(function() {
+  describe('editVelocityOverride', () => {
+    beforeEach(function () {
       this.el = {};
       this.subject.override_view.render = sinon.stub();
-      this.subject.override_view.render.returns({el: this.el});
+      this.subject.override_view.render.returns({ el: this.el });
       this.subject.$el.append = sinon.stub();
     });
 
-    it("appends the override view to its $el", function() {
+    it('appends the override view to its $el', function () {
       this.subject.editVelocityOverride();
       expect(this.subject.$el.append).toHaveBeenCalled(this.el);
     });
-
   });
 
-  describe("setFakeClass", function() {
-
-    beforeEach(function() {
+  describe('setFakeClass', () => {
+    beforeEach(function () {
       this.model.velocityIsFake = sinon.stub();
     });
 
-    describe("when velocity is fake", function() {
-
-      beforeEach(function() {
+    describe('when velocity is fake', () => {
+      beforeEach(function () {
         this.model.velocityIsFake.returns(true);
       });
 
-      it("adds the fake class to $el", function() {
+      it('adds the fake class to $el', function () {
         this.subject.setFakeClass(this.model);
         expect(this.subject.$el).toHaveClass('fake');
       });
-
     });
 
-    describe("when velocity is not fake", function() {
-
-      beforeEach(function() {
+    describe('when velocity is not fake', () => {
+      beforeEach(function () {
         this.model.velocityIsFake.returns(false);
       });
 
-      it("adds the fake class to $el", function() {
+      it('adds the fake class to $el', function () {
         this.subject.setFakeClass(this.model);
         expect(this.subject.$el).not.toHaveClass('fake');
       });
-
     });
   });
 });

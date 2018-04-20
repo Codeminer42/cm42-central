@@ -9,7 +9,7 @@ const reducer = combineReducers({
   project,
   projectBoard,
   users,
-  stories
+  stories,
 });
 
 const store = createStore(reducer, applyMiddleware(thunk));

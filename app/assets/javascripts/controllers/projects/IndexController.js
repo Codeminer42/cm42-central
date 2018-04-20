@@ -9,8 +9,8 @@ export default () => {
 
   const projects = {
     joined: new ProjectCollection($('#projects-search').data('projects_joined')),
-    unjoined: new ProjectCollection($('#projects-search').data('projects_unjoined'))
+    unjoined: new ProjectCollection($('#projects-search').data('projects_unjoined')),
   };
 
-  ReactDOM.render(<ProjectSearch projects={ projects } user={ user } />, document.getElementById('projects-search'));
-}
+  ReactDOM.render(<ProjectSearch projects={projects} user={user} />, document.getElementById('projects-search'));
+};

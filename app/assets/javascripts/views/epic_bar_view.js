@@ -1,49 +1,47 @@
+/* eslint global-require:"off" */
+/* eslint max-len:"off" */
 module.exports = Backbone.View.extend({
 
   template: require('templates/epic_bar.ejs'),
 
   className: 'iteration',
 
-  render: function() {
-    this.$el.html(this.template({points: this.points(), done: this.donePoints(), remaining: this.remainingPoints()}));
+  render() {
+    this.$el.html(this.template({ points: this.points(), done: this.donePoints(), remaining: this.remainingPoints() }));
     return this;
   },
 
-  points: function() {
-    var estimates = this.model.search.pluck('estimate')
+  points() {
+    const estimates = this.model.search.pluck('estimate');
 
     return this.sumPoints(estimates);
   },
 
-  donePoints: function() {
-    var estimates = _.map(this.done(), function(e) { return e.get('estimate') })
+  estimateAction(callback) {
+    const estimates = _.map(callback, (e) => e.get('estimate'));
 
     return this.sumPoints(estimates);
   },
 
-  remainingPoints: function(){
-    var estimates = _.map(this.remaining(), function(e) { return e.get('estimate') })
-
-    return this.sumPoints(estimates);
+  donePoints() {
+    this.estimateAction(this.done());
   },
 
-  done: function() {
-    return _.select(this.model.search.models, function(story) {
-      return (story.get('state') === 'accepted');
-    });
+  remainingPoints() {
+    this.estimateAction(this.remaining());
   },
 
-  remaining: function(){
-    return _.select(this.model.search.models, function(story) {
-      return (story.get('state') !== 'accepted');
-    });
+  done() {
+    return _.select(this.model.search.models, (story) => (story.get('state') === 'accepted'));
   },
 
-  sumPoints: function(estimates) {
-    var sum = _.reduce(estimates, function(total, estimate) {
-      return total + estimate;
-    })
+  remaining() {
+    return _.select(this.model.search.models, (story) => (story.get('state') !== 'accepted'));
+  },
+
+  sumPoints(estimates) {
+    const sum = _.reduce(estimates, (total, estimate) => total + estimate);
 
     return sum;
-  }
+  },
 });

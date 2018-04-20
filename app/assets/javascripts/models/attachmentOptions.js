@@ -1,3 +1,4 @@
+/* eslint class-methods-use-this:"off" */
 const REFRESH_TIME = 3600001;
 
 export default class AttachmentOptions {
@@ -10,7 +11,7 @@ export default class AttachmentOptions {
       this.refreshCallback(response);
       this.timestampVerifierId = this.initExpirationVerifier();
       return response;
-    })
+    });
   }
 
   clear() {
@@ -21,9 +22,9 @@ export default class AttachmentOptions {
     const requestOptions = {
       type: 'GET',
       dataType: 'json',
-      url: '/attachments/signature'
-    }
-    return $.ajax(requestOptions)
+      url: '/attachments/signature',
+    };
+    return $.ajax(requestOptions);
   }
 
   initExpirationVerifier() {

@@ -1,22 +1,23 @@
+/* eslint no-undef:"off" */
+/* eslint react/jsx-indent:"off" */
 import React from 'react';
 import Note from 'components/notes/Note';
 
 const renderNotes = ({ notes, disabled, handleDelete }) =>
   notes.map((note) =>
-    <Note
+    (<Note
       note={note}
       disabled={disabled}
       handleDelete={handleDelete}
       key={note.get('id')}
-    />
-  );
+    />));
 
 const StoryNotes = (props) =>
-  <div className="form-group">
-    <label htmlFor='note'>{I18n.t('story.notes')}</label>
+  (<div className="form-group">
+    <label htmlFor="note">{I18n.t('story.notes')}</label>
     <div className="notelist">
       { renderNotes(props) }
     </div>
-  </div>
+   </div>);
 
 export default StoryNotes;

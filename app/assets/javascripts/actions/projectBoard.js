@@ -1,40 +1,38 @@
+/* eslint import/prefer-default-export:"off" */
 import * as ProjectBoard from 'models/projectBoard';
 import actionTypes from './actionTypes';
 import { receiveUsers } from './user';
 import { receiveStories } from './story';
 
 const requestProjectBoard = () => ({
-  type: actionTypes.REQUEST_PROJECT_BOARD
+  type: actionTypes.REQUEST_PROJECT_BOARD,
 });
 
 const receiveProjectBoard = (projectId) => ({
   type: actionTypes.RECEIVE_PROJECT_BOARD,
-  data: projectId
+  data: projectId,
 });
 
 const errorRequestProjectBoard = (error) => ({
   type: actionTypes.ERROR_REQUEST_PROJECT_BOARD,
-  error: error
+  error,
 });
 
 const receiveProject = (project) => ({
   type: actionTypes.RECEIVE_PROJECT,
-  data: project
+  data: project,
 });
 
-export const fetchProjectBoard = (projectId) => {
-  return (dispatch) => {
-    dispatch(requestProjectBoard());
+export const fetchProjectBoard = (projectId) => (dispatch) => {
+  dispatch(requestProjectBoard());
 
-    ProjectBoard.get(projectId)
-      .then(({ project, users, stories }) => {
-        dispatch(receiveProject(project));
-        dispatch(receiveUsers(users));
-        dispatch(receiveStories(stories));
-        dispatch(receiveProjectBoard(projectId));
-      })
-      .catch((error) =>
-        dispatch(errorRequestProjectBoard(error))
-      );
-  };
-}
+  return ProjectBoard.get(projectId)
+    .then(({ project, users, stories }) => {
+      dispatch(receiveProject(project));
+      dispatch(receiveUsers(users));
+      dispatch(receiveStories(stories));
+      dispatch(receiveProjectBoard(projectId));
+    })
+    .catch((error) =>
+      dispatch(errorRequestProjectBoard(error)));
+};

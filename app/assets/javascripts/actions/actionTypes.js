@@ -6,5 +6,5 @@ export default keyMirror({
   ERROR_REQUEST_PROJECT_BOARD: null,
   RECEIVE_PROJECT: null,
   RECEIVE_USERS: null,
-  RECEIVE_STORIES: null
+  RECEIVE_STORIES: null,
 });

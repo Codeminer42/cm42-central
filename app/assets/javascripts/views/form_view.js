@@ -1,66 +1,73 @@
+/* eslint camelcase:"off" */
+/* eslint no-param-reassign:"off" */
+/* eslint func-names:"off" */
+/* eslint prefer-destructuring:"off" */
+/* eslint one-var:"off" */
+/* eslint no-multi-assign:"off" */
 module.exports = Backbone.View.extend({
   tagName: 'form',
 
-  label: function(elem_id, value) {
+  label(elem_id, value) {
     value = value || this.model.humanAttributeName(elem_id);
-    return this.make('label', {'for': elem_id}, value);
+    return this.make('label', { for: elem_id }, value);
   },
 
-  textField: function(name, extra_opts) {
-    var defaults = {type: "text", name: name, value: this.model.get(name)}
+  textField(name, extra_opts) {
+    const defaults = { type: 'text', name, value: this.model.get(name) };
     this.mergeAttrs(defaults, extra_opts);
-    var el = this.make('input', defaults);
-    this.bindElementToAttribute(el, name, "keyup");
+    const el = this.make('input', defaults);
+    this.bindElementToAttribute(el, name, 'keyup');
     return el;
   },
 
-  hiddenField: function(name) {
-    var el = this.make('input', {type: "hidden", name: name, value: this.model.get(name)});
+  hiddenField(name) {
+    const el = this.make('input', { type: 'hidden', name, value: this.model.get(name) });
     this.bindElementToAttribute(el, name);
     return el;
   },
 
-  textArea: function(name) {
-    var el = this.make('textarea', {name: name, class: `form-control ${name}-textarea` }, this.model.get(name));
+  textArea(name) {
+    const el = this.make('textarea', { name, class: `form-control ${name}-textarea` }, this.model.get(name));
     $(el).attr('style', 'min-height:100px;');
     $(el).on('input', function () {
       this.style.height = 'auto';
-      this.style.height = (this.scrollHeight) + 'px';
+      this.style.height = `${this.scrollHeight}px`;
     });
 
     this.bindElementToAttribute(el, name);
     return el;
   },
 
-  select: function(name, select_options, options) {
+  select(name, select_options, options) {
     if (typeof options === 'undefined') {
       options = {};
     }
 
     options = _.defaults(options, { attrs: { class: [] } });
 
-    options.attrs.class = 'form-control input-sm ' +options.attrs.class.join(' ');
+    options.attrs.class = `form-control input-sm ${options.attrs.class.join(' ')}`;
 
-    var select = this.make('select', _.extend({name: name}, options.attrs));
+    const select = this.make('select', _.extend({ name }, options.attrs));
 
-    var view = this;
-    var model = this.model;
+    const view = this;
+    const model = this.model;
 
 
     if (options.blank) {
-      $(select).append(this.make('option', {value: ''}, options.blank));
+      $(select).append(this.make('option', { value: '' }, options.blank));
     }
 
-    _.each(select_options, function(option) {
-      var option_name, option_value;
+    _.each(select_options, (option) => {
+      let option_name,
+        option_value;
 
       if (option instanceof Array) {
         option_name = option[0];
         option_value = option[1];
       } else {
-        option_name = option_value = option + '';
+        option_name = option_value = `${option}`;
       }
-      var attr = {value: option_value};
+      const attr = { value: option_value };
       if (model.get(name) === option_value) {
         attr.selected = true;
       }
@@ -70,28 +77,28 @@ module.exports = Backbone.View.extend({
     return select;
   },
 
-  checkBox: function(name) {
-    var attr = {type: "checkbox", name: name, value: 1};
+  checkBox(name) {
+    const attr = { type: 'checkbox', name, value: 1 };
     if (this.model.get(name)) {
-      attr.checked = "checked";
+      attr.checked = 'checked';
     }
-    var el = this.make('input', attr);
+    const el = this.make('input', attr);
     this.bindElementToAttribute(el, name);
     return el;
   },
 
-  bindElementToAttribute: function(el, name, eventType, { silent = true } = {}) {
-    var that = this;
-    eventType = typeof(eventType) !== 'undefined' ? eventType : 'change';
-    $(el).on(eventType, function() {
-      var obj = {};
+  bindElementToAttribute(el, name, eventType, { silent = true } = {}) {
+    const that = this;
+    eventType = typeof (eventType) !== 'undefined' ? eventType : 'change';
+    $(el).on(eventType, () => {
+      const obj = {};
       obj[name] = $(el).val();
       that.model.set(obj, { silent });
       return true;
     });
   },
 
-  mergeAttrs: function(defaults, opts) {
+  mergeAttrs(defaults, opts) {
     return jQuery.extend(defaults, opts);
-  }
+  },
 });

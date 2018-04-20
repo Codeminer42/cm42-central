@@ -1,25 +1,25 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
 
-const merge = require('webpack-merge')
-const ManifestPlugin = require('webpack-manifest-plugin')
-const sharedConfig = require('./shared.js')
-const { env, settings, output } = require('./configuration.js')
+const merge = require('webpack-merge');
+const ManifestPlugin = require('webpack-manifest-plugin');
+const sharedConfig = require('./shared.js');
+const { env, settings, output } = require('./configuration.js');
 
 module.exports = merge(sharedConfig, {
   plugins: [
     new ManifestPlugin({
       publicPath: output.manifest.publicPath,
-      writeToFileEmit: env.NODE_ENV !== 'test'
-    })
+      writeToFileEmit: env.NODE_ENV !== 'test',
+    }),
   ],
   devtool: 'cheap-eval-source-map',
 
   stats: {
-    errorDetails: true
+    errorDetails: true,
   },
 
   output: {
-    pathinfo: true
+    pathinfo: true,
   },
 
   devServer: {
@@ -33,7 +33,7 @@ module.exports = merge(sharedConfig, {
     headers: { 'Access-Control-Allow-Origin': '*' },
     historyApiFallback: true,
     watchOptions: {
-      ignored: /node_modules/
-    }
-  }
-})
+      ignored: /node_modules/,
+    },
+  },
+});

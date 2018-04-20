@@ -2,10 +2,10 @@
 
 /* eslint global-require: 0 */
 
-const webpack = require('webpack')
-const merge = require('webpack-merge')
-const CompressionPlugin = require('compression-webpack-plugin')
-const sharedConfig = require('./shared.js')
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const CompressionPlugin = require('compression-webpack-plugin');
+const sharedConfig = require('./shared.js');
 
 module.exports = merge(sharedConfig, {
   output: { filename: '[name]-[chunkhash].js' },
@@ -15,7 +15,7 @@ module.exports = merge(sharedConfig, {
   plugins: [
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
-      'process.env': { NODE_ENV: JSON.stringify('production') }
+      'process.env': { NODE_ENV: JSON.stringify('production') },
     }),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
@@ -24,18 +24,18 @@ module.exports = merge(sharedConfig, {
       sourceMap: true,
 
       compress: {
-        warnings: false
+        warnings: false,
       },
 
       output: {
-        comments: false
-      }
+        comments: false,
+      },
     }),
 
     new CompressionPlugin({
       asset: '[path].gz[query]',
       algorithm: 'gzip',
-      test: /\.(js|css|html|json|ico|svg|eot|otf|ttf)$/
-    })
-  ]
-})
+      test: /\.(js|css|html|json|ico|svg|eot|otf|ttf)$/,
+    }),
+  ],
+});

@@ -1,13 +1,19 @@
+/* eslint react/sort-comp:"off" */
+/* eslint class-methods-use-this:"off" */
+/* eslint react/prop-types:"off" */
+/* eslint no-undef:"off" */
+/* eslint jsx-a11y/anchor-is-valid:"off" */
+/* eslint consistent-return:"off" */
+/* eslint camelcase:"off" */
 import React from 'react';
 
 export default class ProjectCard extends React.Component {
-
   renderTag(project) {
     if (!project.get('tag_name')) { return; }
 
-    let style = {
+    const style = {
       backgroundColor: project.get('tag_bg_color'),
-      color: project.get('tag_fore_color')
+      color: project.get('tag_fore_color'),
     };
 
     return (
@@ -21,23 +27,25 @@ export default class ProjectCard extends React.Component {
     const { project, joined } = this.props;
 
     if (joined) {
-      return(
+      return (
         <div className="panel-heading card-heading">
           <div>
-            <a href={ project.get('path_to').project } className="card-title project-title">{ project.get('name') }</a>
+            <a href={project.get('path_to').project} className="card-title project-title">{ project.get('name') }</a>
             { this.renderTag(project) }
           </div>
           <div className="icons pull-right">
-            <a href={ project.get('path_to').projectReports }
+            <a
+              href={project.get('path_to').projectReports}
               className="unstyled-link"
               data-toggle="tooltip"
               data-placement="top"
-              data-title={ I18n.t('reports') }
+              data-title={I18n.t('reports')}
             >
               <i className="mi md-20 heading-icon">insert_chart</i>
             </a>
 
-            <a href={ project.get('path_to').projectUsers }
+            <a
+              href={project.get('path_to').projectUsers}
               className="unstyled-link"
               data-toggle="tooltip"
               data-placement="top"
@@ -46,7 +54,8 @@ export default class ProjectCard extends React.Component {
             </a>
 
             <span className="dropdown">
-              <a className="unstyled-link"
+              <a
+                className="unstyled-link"
                 type="button"
                 data-toggle="dropdown"
                 aria-haspopup="true"
@@ -61,16 +70,17 @@ export default class ProjectCard extends React.Component {
                 </li>
 
                 <li>
-                  <a href={ project.get('path_to').projectSettings }
+                  <a
+                    href={project.get('path_to').projectSettings}
                     data-toggle="tooltip"
                     data-placement="top"
-                    data-title={ I18n.t('settings') }
+                    data-title={I18n.t('settings')}
                   >
                     { I18n.t('settings') }
                   </a>
                 </li>
 
-                <li className="divider"></li>
+                <li className="divider" />
 
                 <li>
                   <a href={`${project.get('path_to').projectUnjoin}${this.props.user.id}`} data-method="delete">
@@ -84,9 +94,9 @@ export default class ProjectCard extends React.Component {
       );
     }
 
-    return(
+    return (
       <div className="panel-heading">
-        <span href={ project.get('path_to').project } className="card-title">{ project.get('name') }</span>
+        <span href={project.get('path_to').project} className="card-title">{ project.get('name') }</span>
       </div>
     );
   }
@@ -95,7 +105,7 @@ export default class ProjectCard extends React.Component {
     const { project, joined } = this.props;
 
     if (joined) {
-      return(
+      return (
         <div className="panel-body">
           <div className="col-md-6 col-xs-6 counter">
             <span className="counter-description">{ I18n.t('velocity') }</span>
@@ -117,14 +127,14 @@ export default class ProjectCard extends React.Component {
     }
 
     if (!joined && project.get('archived_at')) {
-      return(
+      return (
         <div className="panel-body">
           <span className="col-md-12 text-center">{ I18n.t('projects.unable_to_join') }</span>
         </div>
       );
     }
 
-    return(
+    return (
       <div className="panel-body">
         <span className="col-md-12 text-center">{ I18n.t('projects.to_view_more_join') }</span>
       </div>
@@ -136,8 +146,7 @@ export default class ProjectCard extends React.Component {
 
     if (joined) {
       return project.get('users_avatar').map((avatar_url) =>
-        <li key={ avatar_url } className="member"><img src={ avatar_url } alt="User avatar" className="identicon" /></li>
-      );
+        <li key={avatar_url} className="member"><img src={avatar_url} alt="User avatar" className="identicon" /></li>);
     }
   }
 
@@ -145,14 +154,14 @@ export default class ProjectCard extends React.Component {
     const { project, joined } = this.props;
 
     if (project.get('archived_at')) {
-      return(<span className="card-footer panel-footer">{I18n.t('archived_at')} {project.get('archived_at')}</span>);
+      return (<span className="card-footer panel-footer">{I18n.t('archived_at')} {project.get('archived_at')}</span>);
     }
 
     if (joined) {
-      return (<a href={ project.get('path_to').project } className="card-footer panel-footer">{ I18n.t('projects.select') }</a>);
+      return (<a href={project.get('path_to').project} className="card-footer panel-footer">{ I18n.t('projects.select') }</a>);
     }
 
-    return(<a href={ project.get('path_to').projectJoin } className="card-footer panel-footer">{ I18n.t('projects.join') }</a>);
+    return (<a href={project.get('path_to').projectJoin} className="card-footer panel-footer">{ I18n.t('projects.join') }</a>);
   }
 
   render() {

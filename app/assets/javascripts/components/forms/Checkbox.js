@@ -1,9 +1,13 @@
+/* eslint react/prop-types:"off" */
+/* eslint react/jsx-indent:"off" */
 import React from 'react';
 
-const Checkbox = ({ name, onChange, checked, disabled, children, label }) =>
-  <label>
+const Checkbox = ({
+  name, onChange, checked, disabled, children, label,
+}) =>
+  (<label>
     <input
-      type='checkbox'
+      type="checkbox"
       name={name}
       checked={checked}
       disabled={disabled}
@@ -11,6 +15,6 @@ const Checkbox = ({ name, onChange, checked, disabled, children, label }) =>
     />
     { label }
     { children }
-  </label>
+   </label>);
 
 export default Checkbox;
