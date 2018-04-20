@@ -1,0 +1,4 @@
+node_modules/*
+spec/javascripts/extra/jasmine-sinon.js
+spec/javascripts/extra/jasmine-jquery.js
+**/vendor/*.js

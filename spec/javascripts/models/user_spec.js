@@ -1,7 +1,7 @@
 import User from 'models/user';
 
-describe("User", () => {
-  beforeEach(function() {
+describe('User', () => {
+  beforeEach(() => {
     const userData = {
       email: 'foo@bar.com',
       finished_tour: false,
@@ -9,19 +9,19 @@ describe("User", () => {
       initials: 'FB',
       name: 'Foo Bar',
       username: 'foobar',
-      tour_steps: '[]'
+      tour_steps: '[]',
     };
 
     sinon.stub($, 'ajax').withArgs({
       type: 'GET',
       dataType: 'json',
-      url: '/users/current'
+      url: '/users/current',
     }).returns($.when(userData));
   });
 
   afterEach(() => $.ajax.restore());
 
-  it('returns current user', function(done) {
+  it('returns current user', (done) => {
     User.getCurrent().then((currentUser) => {
       expect(currentUser.attributes).toEqual({
         email: 'foo@bar.com',
@@ -30,7 +30,7 @@ describe("User", () => {
         initials: 'FB',
         name: 'Foo Bar',
         username: 'foobar',
-        tour_steps: []
+        tour_steps: [],
       });
 
       expect(currentUser instanceof User).toEqual(true);

@@ -13,7 +13,7 @@ const story = {
   humanAttributeName: sinon.stub().returns('Description'),
   escape: sinon.stub().returns('description'),
   hasNotes: sinon.stub().returns(false),
-  views: [{highlight: sinon.stub()}]
+  views: [{ highlight: sinon.stub() }],
 };
 
 story.get.withArgs('id').returns('2');
@@ -21,46 +21,42 @@ story.get.withArgs('requested_by_name').returns('Test');
 story.get.withArgs('state').returns('unscheduled');
 story.get.withArgs('story_type').returns('feature');
 
-describe('<StoryLink />', function() {
-
-  beforeEach(function() {
+describe('<StoryLink />', () => {
+  beforeEach(() => {
     jasmineEnzyme();
     sinon.stub(I18n, 't');
     sinon.stub(window.md, 'makeHtml');
     sinon.stub(document, 'getElementById');
-    document.getElementById.returns({scrollIntoView: sinon.stub()});
+    document.getElementById.returns({ scrollIntoView: sinon.stub() });
   });
 
-  afterEach(function() {
+  afterEach(() => {
     I18n.t.restore();
     window.md.makeHtml.restore();
     document.getElementById.restore();
   });
 
-  it("should have his id as content", function() {
-    const wrapper = shallow( <StoryLink story={story} /> );
+  it('should have his id as content', () => {
+    const wrapper = shallow(<StoryLink story={story} />);
     expect(wrapper.find('.story-link')).toHaveText('#2');
   });
 
-  it("should highlight on click", function() {
-    const wrapper = shallow( <StoryLink story={story} /> );
+  it('should highlight on click', () => {
+    const wrapper = shallow(<StoryLink story={story} />);
     wrapper.find('.story-link').simulate('click');
     expect(story.views[0].highlight).toHaveBeenCalled();
   });
 
-  describe(".story-link-icon", function() {
-
-    it("should not exist when story's state is unscheduled", function() {
-      const wrapper = shallow( <StoryLink story={story} /> );
+  describe('.story-link-icon', () => {
+    it("should not exist when story's state is unscheduled", () => {
+      const wrapper = shallow(<StoryLink story={story} />);
       expect(wrapper.find('.story-link-icon').length).toBe(0);
     });
 
-    it("should have a material icon when state is not unscheduled", function() {
+    it('should have a material icon when state is not unscheduled', () => {
       story.get.withArgs('state').returns('accepted');
-      const wrapper = shallow( <StoryLink story={story} /> );
+      const wrapper = shallow(<StoryLink story={story} />);
       expect(wrapper.find('.story-link-icon')).toHaveText('done');
     });
-
   });
-
 });

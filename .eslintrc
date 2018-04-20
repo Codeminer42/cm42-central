@@ -1,6 +1,11 @@
 env:
   jquery: true
   es6: true
+  jest: true
+  jasmine: true
+globals:
+ sinon: true
+ I18n: true
 extends:
   - plugin:backbone/recommended
   - airbnb

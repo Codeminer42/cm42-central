@@ -5,39 +5,32 @@ import { mount, shallow } from 'enzyme';
 import StoryTasks from 'components/story/StoryTasks';
 import Task from 'components/tasks/Task';
 
-describe('<StoryTasks />', function() {
+describe('<StoryTasks />', () => {
   let story;
 
-  beforeEach(function() {
+  beforeEach(() => {
     jasmineEnzyme();
     sinon.stub(I18n, 't');
   });
 
-  afterEach(function() {
+  afterEach(() => {
     I18n.t.restore();
   });
 
-  it("should render a list of <Task /> components", function() {
+  it('should render a list of <Task /> components', () => {
     const task = {
       get: sinon.stub(),
-      escape: sinon.stub().returns('Test')
+      escape: sinon.stub().returns('Test'),
     };
 
-    const wrapper = mount(
-      <StoryTasks tasks={[task]} disabled={false} />
-    );
+    const wrapper = mount(<StoryTasks tasks={[task]} disabled={false} />);
     expect(wrapper.find('.task')).toBePresent();
   });
 
-  describe("with an empty collection", function() {
-
-    it("should still have a label", function() {
-      const wrapper = shallow(
-        <StoryTasks tasks={[]} disabled={false} />
-      );
+  describe('with an empty collection', () => {
+    it('should still have a label', () => {
+      const wrapper = shallow(<StoryTasks tasks={[]} disabled={false} />);
       expect(I18n.t).toHaveBeenCalledWith('story.tasks');
     });
-
   });
-
 });
