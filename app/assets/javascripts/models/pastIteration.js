@@ -1,4 +1,4 @@
-var StoryCollection = require('collections/story_collection');
+var Story = require('models/story');
 
 class PastIteration {
   constructor({ startDate, endDate, points, iterationNumber, project }) {
@@ -6,17 +6,26 @@ class PastIteration {
     this._endDate = new Date(endDate);
     this._points = points;
     this.number = iterationNumber;
+    this._stories = [];
+    this._stories.project = project;
     this.project = project;
-    this._stories = new StoryCollection();
-    this.isLoaded = false;
+    this.needsLoad = true;
     this.column = '#done';
   }
 
   fetch() {
+    if(this.needsLoad) {
+      this.needsLoad = false;
+    }
+
+    const that = this;
     return $.ajax(`/project_boards/${this.project.get('id')}/iterations`, {
-      data: { startDate: this.startDate, endDate: this.endDate }
+      data: { start_date: this._startDate.toISOString(), end_date: this._endDate.toISOString() }
     }).then((data) => {
-       this._stories.reset(data.stories);
+      that._stories = data.stories.map((attrs) => new Story(attrs, {
+        collection: that.project.projectBoard.stories
+      }));
+      that.project.projectBoard.stories.add(that._stories);
     });
   }
 

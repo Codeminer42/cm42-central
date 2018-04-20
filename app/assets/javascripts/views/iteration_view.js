@@ -12,6 +12,10 @@ module.exports = Backbone.View.extend({
   },
 
   toggleStories: function() {
+    if(this.model.needsLoad) {
+      this.model.fetch();
+    }
+
     var item = this.$el.next();
     while(true) {
       if ($(item).hasClass('story')) {

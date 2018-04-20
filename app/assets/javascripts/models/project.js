@@ -21,7 +21,6 @@ module.exports = Backbone.Model.extend({
 
     this.projectBoard = new ProjectBoard({ project: this });
     this.projectBoard.stories.url = this.url() + '/stories';
-    // this.projectBoard.project = this;
 
     this.users = new UserCollection();
     this.users.url = this.url() + '/users';

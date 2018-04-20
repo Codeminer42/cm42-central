@@ -10,15 +10,16 @@ class ProjectBoard {
   }
 
   fetch() {
+    const that = this;
     return $.ajax(`/project_boards/${this.project.get('id')}`)
       .then((data) => {
-        this.stories.reset(data.active_stories);
-        this.pastIterations = data.past_iterations.map(past_iteration => new PastIteration({
+        that.stories.reset(data.active_stories);
+        that.pastIterations = data.past_iterations.map(past_iteration => new PastIteration({
           startDate: past_iteration.start_date,
           endDate: past_iteration.end_date,
           points: past_iteration.points,
           iterationNumber: past_iteration.iteration_number,
-          project: this.project
+          project: that.project
         }));
       });
   }

@@ -1,8 +1,9 @@
 class IterationsController < ApplicationController
   def show
+    authorize current_user
     iteration =
-      IterationOperations::Read.call(start_date: params.require[:start_date],
-                                     end_date: params.require[:end_date],
+      IterationOperations::Read.call(start_date: params.require(:start_date).to_time,
+                                     end_date: params.require(:end_date).to_time,
                                      project: project)
 
     render json: iteration
