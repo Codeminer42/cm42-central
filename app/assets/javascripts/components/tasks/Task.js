@@ -1,3 +1,10 @@
+/* eslint react/no-unused-state:"off" */
+/* eslint react/prop-types:"off" */
+/* eslint no-underscore-dangle:"off" */
+/* eslint react/prop-types:"off" */
+/* eslint jsx-a11y/click-events-have-key-events:"off" */
+/* eslint jsx-a11y/no-static-element-interactions:"off" */
+/* eslint no-undef:"off" */
 import React from 'react';
 import Checkbox from 'components/forms/Checkbox';
 
@@ -26,7 +33,7 @@ class Task extends React.Component {
       <span
         onClick={this._handleDelete}
         title={I18n.t('delete')}
-        className='delete-btn'
+        className="delete-btn"
         key={this.props.task.get('id')}
       >
         { I18n.t('delete') }
@@ -37,9 +44,9 @@ class Task extends React.Component {
   render() {
     const { task, disabled } = this.props;
     return (
-      <div className='task'>
+      <div className="task">
         <Checkbox
-          name='done'
+          name="done"
           disabled={disabled}
           onChange={this._handleChange}
           checked={task.get('done')}

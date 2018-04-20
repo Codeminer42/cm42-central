@@ -1,14 +1,19 @@
-var ActivityCollection = require('collections/activity_collection');
-var NoteCollection = require('collections/note_collection');
-var TaskCollection = require('collections/task_collection');
-var SharedModelMethods = require('mixins/shared_model_methods');
+/* eslint no-multi-assign:"off" */
+/* eslint default-case:"off" */
+/* eslint camelcase:"off" */
+/* eslint consistent-return:"off" */
+/* eslint prefer-destructuring:"off" */
+const ActivityCollection = require('collections/activity_collection');
+const NoteCollection = require('collections/note_collection');
+const TaskCollection = require('collections/task_collection');
+const SharedModelMethods = require('mixins/shared_model_methods');
 
-var Story = module.exports = Backbone.Model.extend({
+const Story = module.exports = Backbone.Model.extend({
   defaults: {
     events: [],
     documents: [],
-    state: "unscheduled",
-    story_type: "feature"
+    state: 'unscheduled',
+    story_type: 'feature',
   },
 
   name: 'story',
@@ -19,7 +24,7 @@ var Story = module.exports = Backbone.Model.extend({
 
   isReadonly: false,
 
-  initialize: function(args) {
+  initialize(args) {
     _.bindAll(this, 'changeState', 'populateNotes', 'populateTasks');
 
     this.views = [];
@@ -40,20 +45,20 @@ var Story = module.exports = Backbone.Model.extend({
     this.setReadonly();
   },
 
-  setReadonly: function () {
-    var accepted = this.get('state') === 'accepted' && this.get('accepted_at') !== undefined;
-    var isGuest = (
+  setReadonly() {
+    const accepted = this.get('state') === 'accepted' && this.get('accepted_at') !== undefined;
+    const isGuest = (
       this.collection !== undefined &&
       this.collection.project.current_user !== undefined &&
       this.collection.project.current_user.get('guest?')
     );
 
     if (isGuest || accepted) {
-      this.isReadonly = true
+      this.isReadonly = true;
     }
   },
 
-  changeState: function(model, newValue) {
+  changeState(model, newValue) {
     if (newValue === 'started') {
       model.set({ owned_by_id: model.collection.project.current_user.id }, true);
     }
@@ -62,60 +67,59 @@ var Story = module.exports = Backbone.Model.extend({
     model.setColumn();
   },
 
-  moveBetween: function(before, after) {
-    var beforeStory = this.collection.get(before);
-    var afterStory = this.collection.get(after);
-    var difference = (afterStory.position() - beforeStory.position()) / 2;
-    var newPosition = difference + beforeStory.position();
-    this.set({position: newPosition});
+  moveBetween(before, after) {
+    const beforeStory = this.collection.get(before);
+    const afterStory = this.collection.get(after);
+    const difference = (afterStory.position() - beforeStory.position()) / 2;
+    const newPosition = difference + beforeStory.position();
+    this.set({ position: newPosition });
     this.collection.sort();
     return this;
   },
 
-  moveAfter: function(beforeId) {
-    var before = this.collection.get(beforeId);
-    var after = this.collection.nextOnColumn(before);
-    var afterPosition;
+  moveAfter(beforeId) {
+    const before = this.collection.get(beforeId);
+    const after = this.collection.nextOnColumn(before);
+    let afterPosition;
     if (typeof after === 'undefined') {
       afterPosition = before.position() + 2;
     } else {
       afterPosition = after.position();
     }
-    var difference = (afterPosition - before.position()) / 2;
-    var newPosition = difference + before.position();
-    this.set({position: newPosition});
+    const difference = (afterPosition - before.position()) / 2;
+    const newPosition = difference + before.position();
+    this.set({ position: newPosition });
     this.saveSorting();
     return this;
   },
 
-  moveBefore: function(afterId) {
-    var after = this.collection.get(afterId);
-    var before = this.collection.previousOnColumn(after);
-    var beforePosition;
+  moveBefore(afterId) {
+    const after = this.collection.get(afterId);
+    const before = this.collection.previousOnColumn(after);
+    let beforePosition;
     if (typeof before === 'undefined') {
       beforePosition = 0.0;
     } else {
       beforePosition = before.position();
     }
-    var difference = (after.position() - beforePosition) / 2;
-    var newPosition = difference + beforePosition;
+    const difference = (after.position() - beforePosition) / 2;
+    const newPosition = difference + beforePosition;
 
-    this.set({position: newPosition});
-    this.collection.sort({silent: true});
+    this.set({ position: newPosition });
+    this.collection.sort({ silent: true });
     this.saveSorting();
     return this;
   },
 
-  saveSorting: function() {
+  saveSorting() {
     this.save();
     this.collection.saveSorting(this.column);
   },
 
-  setColumn: function() {
+  setColumn() {
+    let column = '#in_progress';
 
-    var column = '#in_progress';
-
-    switch(this.get('state')) {
+    switch (this.get('state')) {
       case 'unscheduled':
         column = '#chilly_bin';
         break;
@@ -136,84 +140,83 @@ var Story = module.exports = Backbone.Model.extend({
     this.column = column;
   },
 
-  clear: function() {
+  clear() {
     this.destroy();
-    _.each(this.views, function(view) {
+    _.each(this.views, (view) => {
       view.remove();
     });
   },
 
-  estimable: function() {
+  estimable() {
     if (this.get('story_type') === 'feature') {
       return !this.estimated();
-    } else {
-      return false;
     }
+    return false;
   },
 
-  estimated: function() {
-    var estimate = this.get('estimate');
+  estimated() {
+    const estimate = this.get('estimate');
     return !(_.isUndefined(estimate) || _.isNull(estimate));
   },
 
-  notEstimable: function () {
-    var storyType = this.get('story_type');
+  notEstimable() {
+    const storyType = this.get('story_type');
     return (storyType !== 'feature');
   },
 
-  point_values: function() {
+  point_values() {
     return this.collection.project.get('point_values');
   },
 
   // List available state transitions for this story
-  events: function() {
+  events() {
     switch (this.get('state')) {
       case 'started':
-        return ["finish"];
+        return ['finish'];
       case 'finished':
-        return ["deliver"];
+        return ['deliver'];
       case 'delivered':
-        return ["accept", "reject"];
+        return ['accept', 'reject'];
       case 'rejected':
-        return ["restart"];
+        return ['restart'];
       case 'accepted':
         return [];
       default:
-        return ["start"];
+        return ['start'];
     }
   },
 
   // State machine transitions
-  start: function() {
-    this.set({state: "started"});
+  start() {
+    this.set({ state: 'started' });
   },
 
-  finish: function() {
-    this.set({state: "finished"});
+  finish() {
+    this.set({ state: 'finished' });
   },
 
-  deliver: function() {
-    this.set({state: "delivered"});
+  deliver() {
+    this.set({ state: 'delivered' });
   },
 
-  accept: function() {
-    this.set({state: "accepted"});
+  accept() {
+    this.set({ state: 'accepted' });
   },
 
-  reject: function() {
-    this.set({state: "rejected"});
+  reject() {
+    this.set({ state: 'rejected' });
   },
 
-  restart: function() {
-    this.set({state: "started"});
+  restart() {
+    this.set({ state: 'started' });
   },
 
-  position: function() {
+  position() {
     return parseFloat(this.get('position'));
   },
 
-  className: function() {
-    var className = 'story ' + this.get('story_type');
+  className() {
+    let className = `story ${this.get('story_type')}`;
     if (this.estimable() && !this.estimated()) {
       className += ' unestimated';
     }
@@ -222,31 +225,31 @@ var Story = module.exports = Backbone.Model.extend({
 
   // Returns the user that owns this Story, or undefined if no user owns
   // the Story
-  owned_by: function() {
+  owned_by() {
     return this.collection.project.users.get(this.get('owned_by_id'));
   },
 
-  requested_by: function() {
+  requested_by() {
     return this.collection.project.users.get(this.get('requested_by_id'));
   },
 
-  created_at: function() {
-    var d = new Date(this.get('created_at'));
+  created_at() {
+    const d = new Date(this.get('created_at'));
     return d.format(this.timestampFormat);
   },
 
-  hasDetails: function() {
+  hasDetails() {
     return (_.isString(this.get('description')) || this.hasNotes());
   },
 
-  iterationNumber: function() {
-    if (this.get('state') === "accepted") {
+  iterationNumber() {
+    if (this.get('state') === 'accepted') {
       return this.collection.project.getIterationNumberForDate(this.acceptedAtBeginningOfDay());
     }
   },
 
-  acceptedAtBeginningOfDay: function() {
-    var accepted_at = this.get("accepted_at");
+  acceptedAtBeginningOfDay() {
+    let accepted_at = this.get('accepted_at');
     if (!_.isUndefined(accepted_at)) {
       accepted_at = new Date(accepted_at);
       accepted_at.setHours(0);
@@ -259,68 +262,64 @@ var Story = module.exports = Backbone.Model.extend({
 
   // If the story state is 'accepted', and the 'accepted_at' attribute is not
   // set, set it to today's date.
-  setAcceptedAt: function() {
-    if (this.get('state') === "accepted" && !this.get('accepted_at')) {
-      var today = new Date();
+  setAcceptedAt() {
+    if (this.get('state') === 'accepted' && !this.get('accepted_at')) {
+      const today = new Date();
       today.setHours(0);
       today.setMinutes(0);
       today.setSeconds(0);
       today.setMilliseconds(0);
-      this.set({accepted_at: today});
+      this.set({ accepted_at: today });
     }
   },
 
-  labels: function() {
+  labels() {
     if (!_.isString(this.get('labels'))) {
       return [];
     }
-    return _.map(this.get('labels').split(','), function(label) {
-      return $.trim(label);
-    });
+    return _.map(this.get('labels').split(','), label => $.trim(label));
   },
 
   // Initialize the notes collection on this story, and populate if necessary
-  initNotes: function() {
+  initNotes() {
     this.notes = new NoteCollection();
     this.notes.story = this;
     this.populateNotes();
   },
 
   // Resets this stories notes collection
-  populateNotes: function() {
-    var notes = this.get("notes") || [];
+  populateNotes() {
+    const notes = this.get('notes') || [];
     this.notes.reset(notes);
   },
 
   // Returns true if any of the story has any saved notes.
-  hasNotes: function() {
-    return this.notes.any(function(note) {
-      return !note.isNew();
-    });
+  hasNotes() {
+    return this.notes.any(note => !note.isNew());
   },
 
   // Initialize the tasks collection on this story, and populate if necessary
-  initTasks: function() {
+  initTasks() {
     this.tasks = new TaskCollection();
     this.tasks.story = this;
     this.populateTasks();
   },
 
-  populateTasks: function() {
-    var tasks = this.get('tasks') || [];
+  populateTasks() {
+    const tasks = this.get('tasks') || [];
     this.tasks.reset(tasks);
   },
 
-  sync: function(method, model, options) {
-    var documents;
+  sync(method, model, options) {
+    let documents;
 
-    if( model.isReadonly ) {
+    if (model.isReadonly) {
       return true;
     }
 
     documents = options.documents;
-    if(!_.isUndefined(documents)) {
-      if(documents && documents.length > 0 && documents.val()) {
+    if (!_.isUndefined(documents)) {
+      if (documents && documents.length > 0 && documents.val()) {
         model.set('documents', JSON.parse(documents.val()));
       } else {
         // model.set('documents', [{}]);
@@ -328,24 +327,22 @@ var Story = module.exports = Backbone.Model.extend({
       }
     } else {
       documents = model.get('documents');
-      if(!_.isUndefined(documents)) {
-        documents = _.map(documents, function(elem) {
-          return elem["file"];
-        });
+      if (!_.isUndefined(documents)) {
+        documents = _.map(documents, elem => elem.file);
         model.set('documents', documents);
       }
     }
     Backbone.sync(method, model, options);
   },
 
-  initHistory: function() {
+  initHistory() {
     this.history = new ActivityCollection();
     this.history.story = this;
   },
 
-  showHistory: function() {
+  showHistory() {
     window.projectView.historyView.setStory(this);
-  }
+  },
 });
 
 _.defaults(Story.prototype, SharedModelMethods);

@@ -1,17 +1,20 @@
+/* eslint no-underscore-dangle:"off" */
+/* eslint react/prop-types:"off" */
+/* eslint no-undef:"off" */
 import React from 'react';
 import AsyncForm from 'components/forms/AsyncForm';
 
 class NoteForm extends React.Component {
   constructor(props) {
     super(props);
-    this.saveInputRef = input => { this.input = input };
+    this.saveInputRef = (input) => { this.input = input; };
     this._getFormData = this._getFormData.bind(this);
   }
 
   _getFormData() {
     return {
       note: this.props.note,
-      newValue: this.input.value
+      newValue: this.input.value,
     };
   }
 
@@ -22,17 +25,17 @@ class NoteForm extends React.Component {
         onSubmit={this.props.onSubmit}
       >
         {
-          ({loading, handleSubmit}) => (
-            <div className='note_form clearfix'>
+          ({ loading, handleSubmit }) => (
+            <div className="note_form clearfix">
               <textarea
-                name='note'
-                defaultValue=''
+                name="note"
+                defaultValue=""
                 disabled={loading}
-                className='form-control note-textarea'
+                className="form-control note-textarea"
                 ref={this.saveInputRef}
               />
               <button
-                type='submit'
+                type="submit"
                 className={`add-note btn btn-default btn-xs ${loading ? 'icons-throbber saving' : ''}`}
                 disabled={loading}
                 onClick={handleSubmit}

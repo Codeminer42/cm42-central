@@ -1,3 +1,4 @@
+/* eslint import/prefer-default-export:"off" */
 import axios from 'axios';
 
 export function get(projectId) {

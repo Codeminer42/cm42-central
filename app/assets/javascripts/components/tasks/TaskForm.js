@@ -1,17 +1,20 @@
+/* eslint no-underscore-dangle:"off" */
+/* eslint react/prop-types:"off" */
+/* eslint no-undef:"off" */
 import React from 'react';
 import AsyncForm from 'components/forms/AsyncForm';
 
 class TaskForm extends React.Component {
   constructor(props) {
     super(props);
-    this.saveInputRef = input => { this.input = input };
+    this.saveInputRef = (input) => { this.input = input; };
     this._getFormData = this._getFormData.bind(this);
   }
 
   _getFormData() {
     return {
       task: this.props.task,
-      taskName: this.input.value
+      taskName: this.input.value,
     };
   }
 
@@ -22,17 +25,17 @@ class TaskForm extends React.Component {
         onSubmit={this.props.onSubmit}
       >
         {
-          ({loading, handleSubmit}) => (
-            <div className='task_form clearfix'>
+          ({ loading, handleSubmit }) => (
+            <div className="task_form clearfix">
               <input
-                name='task'
-                defaultValue=''
+                name="task"
+                defaultValue=""
                 disabled={loading}
-                className='form-control input-sm input-task'
+                className="form-control input-sm input-task"
                 ref={this.saveInputRef}
               />
               <button
-                type='submit'
+                type="submit"
                 className={`add-task btn btn-default btn-xs ${loading ? 'icons-throbber saving' : ''}`}
                 disabled={loading}
                 onClick={handleSubmit}

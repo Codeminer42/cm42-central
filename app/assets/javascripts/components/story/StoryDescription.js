@@ -1,11 +1,15 @@
+/* eslint react/prop-types:"off" */
+/* eslint no-undef:"off" */
 import React from 'react';
 import AtWhoInput from 'components/jquery_wrappers/AtWhoInput';
 import DescriptionContent from 'components/description/DescriptionContent';
 
 class StoryDescription extends React.Component {
   editDescription() {
-    const { usernames, name, value, onChange } = this.props;
-    return(
+    const {
+      usernames, name, value, onChange,
+    } = this.props;
+    return (
       <AtWhoInput
         usernames={usernames}
         name={name}
@@ -16,8 +20,10 @@ class StoryDescription extends React.Component {
   }
 
   descriptionContent() {
-    const { linkedStories, isReadonly, description, onClick, value } = this.props;
-    return(
+    const {
+      linkedStories, isReadonly, description, onClick, value,
+    } = this.props;
+    return (
       <DescriptionContent
         linkedStories={linkedStories}
         isReadonly={isReadonly}

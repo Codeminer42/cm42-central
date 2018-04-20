@@ -1,13 +1,13 @@
-var Activity = require('models/activity');
+const Activity = require('models/activity');
 
 module.exports = Backbone.Collection.extend({
   model: Activity,
 
-  comparator: function(activity) {
+  comparator(activity) {
     return -new Date(activity.attributes.updated_at).getTime();
   },
 
-  url: function() {
-    return this.story.url() + '/activities';
-  }
+  url() {
+    return `${this.story.url()}/activities`;
+  },
 });

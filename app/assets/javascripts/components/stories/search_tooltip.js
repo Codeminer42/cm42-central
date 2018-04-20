@@ -1,7 +1,8 @@
+/* eslint react/prefer-stateless-function:"off" */
+/* eslint no-undef:"off" */
 import React, { Component } from 'react';
 
 export default class SearchTooltip extends Component {
-
   render() {
     return (
       <div className="col-sm-12">
@@ -9,7 +10,7 @@ export default class SearchTooltip extends Component {
           <h4>{ I18n.t('projects.search_tooltip.title') }</h4>
           <ul>
             <li><span>{ I18n.t('projects.search_tooltip.syntax') }</span></li>
-            <li><p>{ I18n.t('projects.search_tooltip.example',{story: I18n.t('activerecord.models.story.one')}) }</p></li>
+            <li><p>{ I18n.t('projects.search_tooltip.example', { story: I18n.t('activerecord.models.story.one') }) }</p></li>
           </ul>
         </div>
         <div className="col-sm-6 tooltip-content">
@@ -34,11 +35,12 @@ export default class SearchTooltip extends Component {
             <li><p>&nbsp;</p></li>
             <li><span><b>state:</b> { I18n.t('story.state.unscheduled') }</span></li>
             <li>
-              <span><b>created_at:</b> 2017/10/20</span></li>
+              <span><b>created_at:</b> 2017/10/20</span>
+            </li>
             <li><span><b>release_date:</b> 2017/10/30</span></li>
           </ul>
         </div>
       </div>
-    )
+    );
   }
 }

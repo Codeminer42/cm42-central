@@ -1,3 +1,4 @@
+/* eslint no-unused-vars: "off" */
 import Tether from 'tether';
 import Shepherd from 'tether-shepherd';
 
@@ -8,8 +9,8 @@ export default class Tour {
     this.shepherd = new Shepherd.Tour({
       defaults: {
         classes: 'shepherd-theme-arrows',
-        scrollTo: false
-      }
+        scrollTo: false,
+      },
     });
   }
 
@@ -35,15 +36,15 @@ export default class Tour {
 
     const data = {
       user: {
-        finished_tour: this.user.get('finished_tour')
-      }
+        finished_tour: this.user.get('finished_tour'),
+      },
     };
 
     const options = {
       type: 'PUT',
       dataType: 'json',
-      data: data,
-      url: `/users/${this.user.get('id')}/tour`
+      data,
+      url: `/users/${this.user.get('id')}/tour`,
     };
 
     return $.ajax(options);

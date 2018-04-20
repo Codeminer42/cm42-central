@@ -1,3 +1,9 @@
+/* eslint react/prop-types: "off" */
+/* eslint no-undef: "off" */
+/* eslint class-methods-use-this: "off" */
+/* eslint react/no-string-refs: "off" */
+/* eslint max-len: "off" */
+/* eslint consistent-return: "off" */
 import React from 'react';
 import Project from 'models/project';
 import ProjectList from 'components/projects/ProjectList';
@@ -11,14 +17,14 @@ export default class ProjectSearch extends React.Component {
         joined: {
           title: I18n.t('projects.mine'),
           projects: this.props.projects.joined.notArchived(),
-          joined: true
+          joined: true,
         },
         unjoined: {
           title: I18n.t('projects.not_member_of'),
           projects: this.props.projects.unjoined.notArchived(),
-          joined: false
-        }
-      }
+          joined: false,
+        },
+      },
     };
     this.handleSearch = this.handleSearch.bind(this);
   }
@@ -43,38 +49,36 @@ export default class ProjectSearch extends React.Component {
         joined: {
           title: I18n.t('projects.mine'),
           projects: this.filterProjects(this.props.projects.joined, projectsSearch, projectsFilter),
-          joined: true
+          joined: true,
         },
         unjoined: {
           title: I18n.t('projects.not_member_of'),
           projects: this.filterProjects(this.props.projects.unjoined, projectsSearch, projectsFilter),
-          joined: false
-        }
-      }
+          joined: false,
+        },
+      },
     });
   }
 
   filterOptions() {
-    return Project.filters.map((filter) => {
-      return(<option key={ filter } value={ filter }>{ I18n.t(filter) }</option>);
-    });
+    return Project.filters.map(filter => (<option key={filter} value={filter}>{ I18n.t(filter) }</option>));
   }
 
   renderProjectList(list) {
     if (list.projects.length > 0) {
-      return(
+      return (
         <ProjectList
-          title={ list.title }
-          projects={ list.projects }
-          user={ this.state.user }
-          joined={ list.joined }
+          title={list.title}
+          projects={list.projects}
+          user={this.state.user}
+          joined={list.joined}
         />
       );
     }
   }
 
   render() {
-    return(
+    return (
       <div>
         <div className="search-projects">
           <div className="form-group col-md-12">
@@ -106,4 +110,4 @@ export default class ProjectSearch extends React.Component {
       </div>
     );
   }
-};
+}

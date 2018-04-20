@@ -1,3 +1,6 @@
+/* eslint jsx-a11y/click-events-have-key-events:"off" */
+/* eslint jsx-a11y/no-static-element-interactions:"off" */
+/* eslint react/prop-types:"off" */
 import React from 'react';
 
 const renderButton = (point, onClick) => (
@@ -15,7 +18,7 @@ const renderButton = (point, onClick) => (
 const EstimateButtons = ({ points, onClick }) => (
   <div className="estimates">
     {
-      points.map((point) => renderButton(point, onClick))
+      points.map(point => renderButton(point, onClick))
     }
   </div>
 );

@@ -1,14 +1,20 @@
+/* eslint react/prop-types:"off" */
+/* eslint no-unused-expressions:"off" */
+/* eslint class-methods-use-this:"off" */
+/* eslint jsx-a11y/click-events-have-key-events:"off" */
+/* eslint jsx-a11y/no-static-element-interactions:"off" */
+/* eslint jsx-a11y/anchor-is-valid:"off" */
 import React from 'react';
 import hoverTemplate from 'templates/story_hover.ejs';
 import noteTemplate from 'templates/note.ejs';
 
 const STORY_STATE_ICONS = {
   unstarted: 'access_time',
-  started:   'check_box_outline_blank',
-  finished:  'check_box',
+  started: 'check_box_outline_blank',
+  finished: 'check_box',
   delivered: 'hourglass_empty',
-  rejected:  'close',
-  accepted:  'done'
+  rejected: 'close',
+  accepted: 'done',
 };
 
 export default class StoryLink extends React.Component {
@@ -37,16 +43,18 @@ export default class StoryLink extends React.Component {
     const storyState = story.get('state');
     const id = story.get('id');
     const popoverContent = hoverTemplate({
-      story: story,
-      noteTemplate: noteTemplate
+      story,
+      noteTemplate,
     });
 
     return (
-      <a className={`story-link popover-activate ${storyState}`}
-         data-content={popoverContent}
-         data-original-title={story.get('title')}
-         id={`story-link-${id}`}
-         onClick={this.handleClick}>
+      <a
+        className={`story-link popover-activate ${storyState}`}
+        data-content={popoverContent}
+        data-original-title={story.get('title')}
+        id={`story-link-${id}`}
+        onClick={this.handleClick}
+      >
         { `#${id}` }
         { (storyState !== 'unscheduled') && this.renderIcon(storyState) }
       </a>
