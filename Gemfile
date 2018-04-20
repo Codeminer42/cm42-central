@@ -101,5 +101,6 @@ end
 
 group :development, :test do
   gem 'pry-rails'
+  gem 'pry-remote'
   gem 'quiet_assets'
 end
