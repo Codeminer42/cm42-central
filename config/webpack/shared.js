@@ -2,33 +2,36 @@
 
 /* eslint global-require: 0 */
 /* eslint import/no-dynamic-require: 0 */
+/* eslint comma-dangle: "off" */
+/* eslint object-curly-newline: "off" */
+/* eslint function-paren-newline: "off" */
 
-const path = require('path')
-const webpack = require('webpack')
-const { basename, dirname, join, relative, resolve } = require('path')
-const { sync } = require('glob')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const ManifestPlugin = require('webpack-manifest-plugin')
-const extname = require('path-complete-extname')
-const { env, settings, output, loadersDir } = require('./configuration.js')
+const path = require('path');
+const webpack = require('webpack');
+const { basename, dirname, join, relative, resolve } = require('path');
+const { sync } = require('glob');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
+const extname = require('path-complete-extname');
+const { env, settings, output, loadersDir } = require('./configuration.js');
 
-const extensionGlob = `**/*{${settings.extensions.join(',')}}*`
-const entryPath = join(settings.source_path, settings.source_entry_path)
-const packPaths = sync(join(entryPath, extensionGlob))
+const extensionGlob = `**/*{${settings.extensions.join(',')}}*`;
+const entryPath = join(settings.source_path, settings.source_entry_path);
+const packPaths = sync(join(entryPath, extensionGlob));
 
 module.exports = {
 
   entry: packPaths.reduce(
     (map, entry) => {
-      const localMap = map
-      const namespace = relative(join(entryPath), dirname(entry))
-      localMap[join(namespace, basename(entry, extname(entry)))] = resolve(entry)
-      return localMap
+      const localMap = map;
+      const namespace = relative(join(entryPath), dirname(entry));
+      localMap[join(namespace, basename(entry, extname(entry)))] = resolve(entry);
+      return localMap;
     }, {}
   ),
 
   externals: {
-    'cheerio': 'window',
+    cheerio: 'window',
     'react/addons': true,
     'react/lib/ExecutionEnvironment': true,
     'react/lib/ReactContext': true
@@ -96,4 +99,4 @@ module.exports = {
   resolveLoader: {
     modules: ['node_modules']
   }
-}
+};
