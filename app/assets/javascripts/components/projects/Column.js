@@ -25,10 +25,10 @@ const Stories = ({ stories }) => {
 };
 
 const Column = ({ title, stories }) => (
-  <div className="project-board__column">
-    <div className="project-board__header">
-      <h3 className="project-board__name">{title}</h3>
-      <button type="button" className="project-board__btn-close">x</button>
+  <div className="Column">
+    <div className="Column__header">
+      <h3 className="Column__name">{title}</h3>
+      <button type="button" className="Column__btn-close">x</button>
     </div>
     <Stories stories={stories} />
   </div>
