@@ -191,6 +191,13 @@ module.exports = FormView.extend({
     this.model.save();
   },
 
+  onError(model, resonse) {
+    const json = $.parseJSON(response.responseText);
+    window.projectView.notice({
+      title: I18n.t('save error'),
+      text: model.errorMessages(),
+    });
+  },
   transition(ev) {
     // The name of the function that needs to be called on the model is the
     // value of the form button that was clicked.
@@ -217,11 +224,7 @@ module.exports = FormView.extend({
         that.render();
       },
       error(model, response) {
-        const json = $.parseJSON(response.responseText);
-        window.projectView.notice({
-          title: I18n.t('save error'),
-          text: model.errorMessages(),
-        });
+        this.onError(model, response);
         that.saveInProgress = false;
         that.render();
       },
@@ -240,11 +243,7 @@ module.exports = FormView.extend({
         that.render();
       },
       error(model, response) {
-        const json = $.parseJSON(response.responseText);
-        window.projectView.notice({
-          title: I18n.t('save error'),
-          text: model.errorMessages(),
-        });
+        this.onError(model, response);
         that.saveInProgress = false;
         that.render();
       },
@@ -291,16 +290,12 @@ module.exports = FormView.extend({
       return false;
     }
     // Should expand if the click wasn't on one of the buttons.
-    if ($(e.target).is('input')) {
-      return false;
-    }
-    if ($(e.target).is('.input')) {
-      return false;
-    }
-    if ($(e.target).is('button')) {
-      return false;
-    }
-    if ($(e.target).parent().is('button')) {
+    if (
+      $(e.target).is('input') ||
+      $(e.target).is('.input') ||
+      $(e.target).is('button') ||
+      $(e.target).parent().is('button')
+    ) {
       return false;
     }
     return true;
@@ -528,7 +523,7 @@ module.exports = FormView.extend({
     this.$el.append(this.makeFormControl((div) => {
       const $storyTags = $(element);
       $(div).append($storyTags);
-    }))
+    }));
   },
 
   appendTags() {
@@ -907,14 +902,18 @@ module.exports = FormView.extend({
     };
   },
 
+  renderElement(element) {
+    this.$el.append(this.makeFormControl((div) => {
+      const $storyType = $(element);
+      $(div).append($storyType);
+    }));
+  },
+
   renderReleaseStory() {
     this.$el.append(this.makeFormControl(this.makeTitle()));
 
     if (this.model.get('editing')) {
-      this.$el.append(this.makeFormControl((div) => {
-        const $storyType = $('<div class="form-group" data-story-type></div>');
-        $(div).append($storyType);
-      }));
+      this.renderElement('<div class="form-group" data-story-type></div>');
     }
 
     const $storyDate = $('<div class="form-group" data-story-datepicker></div>');
@@ -931,10 +930,7 @@ module.exports = FormView.extend({
     const dateInput = this.$('input[name=release_date]');
     this.bindElementToAttribute(dateInput, 'release_date');
 
-    this.$el.append(this.makeFormControl((div) => {
-      const $description = $('<div class="story-description"><div>');
-      $(div).append($description);
-    }));
+    this.renderElement('<div class="story-description"><div>');
   },
 
   parseDescription() {
