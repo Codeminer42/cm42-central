@@ -902,18 +902,11 @@ module.exports = FormView.extend({
     };
   },
 
-  renderElement(element) {
-    this.$el.append(this.makeFormControl((div) => {
-      const $storyType = $(element);
-      $(div).append($storyType);
-    }));
-  },
-
   renderReleaseStory() {
     this.$el.append(this.makeFormControl(this.makeTitle()));
 
     if (this.model.get('editing')) {
-      this.renderElement('<div class="form-group" data-story-type></div>');
+      this.appendDiv('<div class="form-group" data-story-type></div>');
     }
 
     const $storyDate = $('<div class="form-group" data-story-datepicker></div>');
@@ -930,7 +923,7 @@ module.exports = FormView.extend({
     const dateInput = this.$('input[name=release_date]');
     this.bindElementToAttribute(dateInput, 'release_date');
 
-    this.renderElement('<div class="story-description"><div>');
+    this.appendDiv('<div class="story-description"><div>');
   },
 
   parseDescription() {
