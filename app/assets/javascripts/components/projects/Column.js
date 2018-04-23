@@ -1,11 +1,11 @@
 import React from 'react'
+import Story1 from './Story1'
 
 const Story = ({ title }) => (
   <div>
     {title}
   </div>
 );
-
 
 const Stories = ({ stories }) => {
   if (!stories.length) {
@@ -30,6 +30,7 @@ const Column = ({ title, stories }) => (
       <h3 className="Column__name">{title}</h3>
       <button type="button" className="Column__btn-close">x</button>
     </div>
+    <Story1 />
     <Stories stories={stories} />
   </div>
 );

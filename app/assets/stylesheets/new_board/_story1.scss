@@ -1,0 +1,27 @@
+.Story1 {
+  display: flex;
+  padding: 7px 8px;
+  background-repeat: no-repeat;
+  background-position: 4px 4px;
+  background-color: #f4f4f4;
+  border-bottom: 1px solid #dddddd;
+  border-top: 1px solid #ffffff;
+  min-height: 37px;
+  color: black;
+  justify-content: space-between;
+  cursor: move;
+
+  &__state-action{
+    float: right;
+    margin-left: .2em;
+  }
+  &__story-icons{
+    float: left;
+  }
+  &__story-title{
+    font-style: italic;
+    margin-left: 65px;
+    word-wrap: break-word;
+  }
+
+}
