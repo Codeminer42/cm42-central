@@ -36,12 +36,10 @@
     border-radius: 2px;
 
     &:hover {
-        background-color: $btn-close-hover
+        background-color: $column-btn-close-hover
       }
     &:active {
-        background-color: $btn-close-active
+        background-color: $column-btn-close-active
       }
   }
 }
-
-
