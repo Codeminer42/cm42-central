@@ -1,12 +1,6 @@
 
 import React from 'react'
-import Story1 from './Story1'
-
-const Story = ({ title }) => (
-  <div>
-    {title}
-  </div>
-);
+import Story from '../story/StoryItem'
 
 const Stories = ({ stories }) => {
   if (!stories.length) {
@@ -31,11 +25,11 @@ const Column = ({ title, stories }) => (
       <h3 className="Column__name">{title}</h3>
       <button type="button" className="Column__btn-close">x</button>
     </div>
-    <Story1 name="features" icon="star" nameIcon="star" />
-    <Story1 name="bugs" icon="bug" nameIcon="bug_report" />
-    <Story1 name="chores" icon="dark" nameIcon="settings"/>
-    <Story1 name="releases" icon="releae" nameIcon="bookmark"/>
-    <Story1 name="estimate features"/>
+    {/* <Story name="features" icon="star" nameIcon="star" />
+    <Story name="bugs" icon="bug" nameIcon="bug_report" />
+    <Story name="chores" icon="dark" nameIcon="settings"/>
+    <Story name="releases" icon="releae" nameIcon="bookmark"/>
+    <Story name="estimate features"/> */}
     <Stories stories={stories} />
   </div>
 );
