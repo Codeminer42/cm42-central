@@ -1,6 +1,6 @@
 class ProjectBoardsController < ApplicationController
   def show
-    authorize current_user
+    authorize project
     project_board = StoryOperations::ReadAll.call(project: project)
 
     render json: project_board

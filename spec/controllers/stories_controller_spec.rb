@@ -81,10 +81,12 @@ describe StoriesController do
     end
 
     describe '#index' do
+      let(:stories) { { active_stories: project.stories, past_iterations: [] } }
+
       specify do
         xhr :get, :index, project_id: project.id
         expect(response).to be_success
-        expect(response.body).to eq(project.stories.to_json)
+        expect(response.body).to eq(stories.to_json)
       end
     end
 

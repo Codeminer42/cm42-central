@@ -100,15 +100,15 @@ module.exports = Backbone.Model.extend({
 
     _.each(story_ids, function(story_id) {
       // FIXME - Feature envy on stories collection
-      var story = that.stories.get(story_id);
+      var story = that.projectBoard.stories.get(story_id);
       if (story) {
         // This is an existing story on the collection, just reload it
         story.fetch();
       } else {
         // This is a new story, which is present on the server but we don't
         // have it locally yet.
-        that.stories.add({id: story_id});
-        story = that.stories.get(story_id);
+        that.projectBoard.stories.add({id: story_id});
+        story = that.projectBoard.stories.get(story_id);
         story.fetch();
       }
     });
