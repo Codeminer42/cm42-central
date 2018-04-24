@@ -22,7 +22,8 @@ describe('Project model', function() {
       default_flow: Cookies.get('current_flow'),
       current_flow: Cookies.get('current_flow')
     });
-    this.project.stories.add(this.story);
+
+    this.project.projectBoard.stories.add(this.story);
   });
 
   describe('when instantiated', function() {
@@ -33,10 +34,10 @@ describe('Project model', function() {
     });
 
     it('should set up a story collection', function() {
-      expect(this.project.stories).toBeDefined();
-      expect(this.project.stories.url).toEqual('/projects/999/stories');
+      expect(this.project.projectBoard.stories).toBeDefined();
+      expect(this.project.projectBoard.stories.url).toEqual('/projects/999/stories');
       // Sets up a reference on the collection to itself
-      expect(this.project.stories.project).toBe(this.project);
+      expect(this.project.projectBoard.project).toBe(this.project);
     });
 
     it('should set up a user collection', function() {
@@ -92,7 +93,7 @@ describe('Project model', function() {
     it("should reload changed stories from changesets", function() {
 
       var changesets = [{"changeset":{"id":123,"story_id":456,"project_id":789}}];
-      var getSpy = sinon.spy(this.project.stories, 'get');
+      var getSpy = sinon.spy(this.project.projectBoard.stories, 'get');
       var fetchSpy = sinon.spy(this.story, 'fetch');
 
       this.project.handleChangesets(changesets);
@@ -114,9 +115,9 @@ describe('Project model', function() {
       );
 
       var changesets = [{"changeset":{"id":123,"story_id":987,"project_id":789}}];
-      var getSpy = sinon.spy(this.project.stories, 'get');
-      var addSpy = sinon.spy(this.project.stories, 'add');
-      var initial_collection_length = this.project.stories.length;
+      var getSpy = sinon.spy(this.project.projectBoard.stories, 'get');
+      var addSpy = sinon.spy(this.project.projectBoard.stories, 'add');
+      var initial_collection_length = this.project.projectBoard.stories.length;
 
       this.project.handleChangesets(changesets);
 
@@ -125,8 +126,8 @@ describe('Project model', function() {
 
       expect(getSpy).toHaveBeenCalled();
       expect(addSpy).toHaveBeenCalled();
-      expect(this.project.stories.length).toEqual(initial_collection_length + 1);
-      expect(this.project.stories.get(987).get('title')).toEqual("New changeset story");
+      expect(this.project.projectBoard.stories.length).toEqual(initial_collection_length + 1);
+      expect(this.project.projectBoard.stories.get(987).get('title')).toEqual("New changeset story");
 
       server.restore();
     });
@@ -494,7 +495,7 @@ describe('Project model', function() {
   describe("rebuildIterations", function() {
 
     beforeEach(function() {
-      this.project.stories.invoke = sinon.stub();
+      this.project.projectBoard.stories.invoke = sinon.stub();
     });
 
     it("triggers a rebuilt-iterations event", function() {
