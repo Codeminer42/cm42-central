@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { fetchProjectBoard } from 'actions/projectBoard';
 import Column from './Column'
+import Story1 from './Story1'
 
 class ProjectBoard extends React.Component {
   componentWillMount() {

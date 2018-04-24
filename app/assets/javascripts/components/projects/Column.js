@@ -31,7 +31,11 @@ const Column = ({ title, stories }) => (
       <h3 className="Column__name">{title}</h3>
       <button type="button" className="Column__btn-close">x</button>
     </div>
-    <Story1 />
+    <Story1 name="features" icon="star" nameIcon="star" />
+    <Story1 name="bugs" icon="bug" nameIcon="bug_report" />
+    <Story1 name="chores" icon="dark" nameIcon="settings"/>
+    <Story1 name="releases" icon="releae" nameIcon="bookmark"/>
+    <Story1 name="estimate features"/>
     <Stories stories={stories} />
   </div>
 );

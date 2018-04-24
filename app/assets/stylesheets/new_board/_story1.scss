@@ -23,5 +23,12 @@
     margin-left: 65px;
     word-wrap: break-word;
   }
-
+  &__estimate {
+    left: 2px;
+    padding: 2px 3px;
+    line-height: 1;
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
+  }
 }
