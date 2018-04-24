@@ -11,11 +11,12 @@ const SpanStory = () => (
   </div>
 )
 
-const StateActions = (story_type) => (
+const StateActions = ({ story_type }) => (
   <div className='Story__state-actions'>
-    { (story_type.feature === 'feature') ? <SpanStory /> : <ButtonStart /> }
+    {(story_type === 'feature') ? <SpanStory /> : <ButtonStart />}
   </div>
-)
+);
+
 StateActions.propTypes = {
   story_type : PropTypes.string.isRequired
 }
