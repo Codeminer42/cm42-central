@@ -11,16 +11,27 @@ const SpanStory = () => (
   </div>
 )
 
-const StateActions = () => (
+const StateActions = (story_type) => (
   <div className='Story__state-actions'>
-    <SpanStory />
+    { (story_type.feature === 'feature') ? <SpanStory /> : <ButtonStart /> }
   </div>
 )
+StateActions.propTypes = {
+  story_type : PropTypes.string.isRequired
+}
+{/*<i className='mi md-14 md-dark details'>qw</i>
+   <i className='mi md-14 md-dark details'>question_answer</i> */}
 
 const iconRule = (story_type) => {
   switch (story_type) {
     case 'feature':
       return 'star';
+    case 'bug':
+      return 'bug_report';
+    case 'chore':
+      return 'settings'
+    case 'release':
+      return 'bookmark'
     default:
       return null
   }
@@ -29,19 +40,32 @@ const iconRule = (story_type) => {
 const classIconRule = (story_type) => {
   switch (story_type) {
     case 'feature':
-      return 'star';
+      return 'star'
+    case 'bug':
+      return 'bug';
+    case 'chore':
+      return 'dark' ;
+    case 'release':
+      return 'release'
     default:
       return null
   }
 };
+
+      {/*<i className='mi md-14 md-dark details'>qw</i>
+      <i className='mi md-14 md-dark details'>question_answer</i>*/}
+
+const ButtonStart = () => (
+  <div>
+    <input type="button" className="transition start" value="start" />
+  </div>
+);
 
 const StoryIcons = ({ story_type }) => (
   <div className='Story__story-icons'>
     <span className='popover-activate' data-original-title='' title=''>
       <i className={`mi md-${classIconRule(story_type)} md-16`}>{iconRule(story_type)}</i>
       <span className='Story__estimate' data-value='0'>-</span>
-      <i className='mi md-14 md-dark details'>qw</i>
-      <i className='mi md-14 md-dark details'>question_answer</i>
     </span>
   </div>
 );
@@ -65,7 +89,7 @@ const StoryItem = ({ title, story_type }) => (
   <div className='Story'>
     <StoryIcons story_type={story_type} />
     <StoryTitle title={title} />
-    <StateActions />
+    <StateActions story_type={story_type}/>
   </div>
 );
 

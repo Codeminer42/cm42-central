@@ -1,6 +1,6 @@
 
 import React from 'react'
-import Story from '../story/StoryItem'
+import StoryItem from '../story/StoryItem'
 
 const Stories = ({ stories }) => {
   if (!stories.length) {
@@ -10,7 +10,7 @@ const Stories = ({ stories }) => {
   return (
     <div>
       {stories.map(story => (
-        <Story
+        <StoryItem
           key={story.id}
           {...story}
         />
