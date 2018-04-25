@@ -1,4 +1,5 @@
 import React from 'react';
+import classname from 'classnames';
 import PropTypes from 'prop-types';
 import {
   classIconRule,
@@ -100,8 +101,16 @@ StoryInfo.defaultProps = {
   labels: '',
 };
 
+const classNameStory = (story_type, estimate) => classname(
+  'Story',
+  {
+    'Story--unestimated': isStoryDontEstimated(story_type, estimate),
+    'Story--estimated': !isStoryDontEstimated(story_type, estimate),
+  }
+);
+
 const StoryItem = ({ title, story_type, estimate, labels }) => (
-  <div className='Story'>
+  <div className={classNameStory(story_type, estimate)}>
     <StoryIcons story_type={story_type} />
     <StoryEstimate estimate={estimate} />
     <StoryInfo title={title} labels={labels} story_type={story_type} estimate={estimate} />

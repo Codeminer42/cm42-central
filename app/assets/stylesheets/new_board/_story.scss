@@ -11,6 +11,10 @@
   cursor: move;
   font-size: 12px;
 
+  &--unestimated {
+    font-style: italic;
+  }
+
   &:hover {
     background-color: #e6e6e6;
   }
@@ -50,6 +54,7 @@
     border-radius: 3px;
     line-height: 1;
     min-width: 15px;
+    font-style: normal;
   }
 
   &__estimate {
@@ -62,6 +67,7 @@
     font-weight: bold;
     color: #407aa5;
     cursor: pointer;
+    font-style: normal;
   }
 
   &__label {
