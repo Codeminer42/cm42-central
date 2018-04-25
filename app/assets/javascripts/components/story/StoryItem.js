@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 const SpanStory = () => (
   <div>
-    <span className="Story__estimate" data-value="1" id="estimate-1">1</span>
-    <span className="Story__estimate" data-value="2" id="estimate-1">2</span>
-    <span className="Story__estimate" data-value="3" id="estimate-1">3</span>
-    <span className="Story__estimate" data-value="5" id="estimate-1">5</span>
-    <span className="Story__estimate" data-value="8" id="estimate-1">8</span>
+    <span className="Story__estimate">1</span>
+    <span className="Story__estimate">2</span>
+    <span className="Story__estimate">3</span>
+    <span className="Story__estimate">5</span>
+    <span className="Story__estimate">8</span>
   </div>
 )
 
