@@ -11,9 +11,20 @@ const SpanStory = () => (
   </div>
 )
 
-const StateActions = ({story_type, estimate}) => (
+const ShowButtonOrEstimate = ({ story_type, estimate, SpanStory, ButtonStart }) => (
+  story_type === 'feature' && !estimate ?
+    <SpanStory/> :
+    <ButtonStart/>
+);
+
+const StateActions = ({ story_type, estimate }) => (
   <div className='Story__state-actions'>
-    { (story_type === 'feature' &&  estimate === null) ? <SpanStory /> : <ButtonStart /> }
+    <ShowButtonOrEstimate
+      story_type={story_type}
+      estimate={estimate}
+      SpanStory={SpanStory}
+      ButtonStart={ButtonStart}
+    />
   </div>
 )
 StateActions.propTypes = {
@@ -52,6 +63,8 @@ const classIconRule = (story_type) => {
   }
 };
 
+
+
       {/*<i className='mi md-14 md-dark details'>qw</i>
       <i className='mi md-14 md-dark details'>question_answer</i>*/}
 
@@ -74,28 +87,64 @@ StoryIcons.propTypes = {
   story_type: PropTypes.string.isRequired,
 };
 
-const StoryTitle = ({ title }) =>(
-  <div className='Story__story-title'>
-    <span className='tags'>
-      <a href='#' className='epic-link' title='features'>{title}</a>
-    </span>
-  </div>
-)
-StoryTitle.propTypes = {
-  title: PropTypes.string.isRequired,
-}
+const labelSplit = (labels) => labels.split(',')
 
-const StoryItem = ({ title, story_type, estimate }) => (
+const StoryLabel = ({ label }) => (
+  <a href="#" className="epic-link" title={label}>{label}</a>
+);
+
+StoryLabel.propTypes = {
+  label: PropTypes.string.isRequired,
+};
+
+const StoryLabels = ({ labels }) => {
+  if (!labels) {
+    return null
+  }
+
+  return (
+    <span className='tags'>
+      {labelSplit(labels).map(label => (
+        <StoryLabel key={label} label={label} />
+      ))}
+    </span>
+  );
+};
+
+const StoryInfo = ({ title, labels }) => (
+  <div className='Story__story-title'>
+    <StoryLabels labels={labels} />
+    {title}
+  </div>
+);
+
+StoryInfo.propTypes = {
+  title: PropTypes.string.isRequired,
+  labels: PropTypes.string,
+};
+
+StoryInfo.defaultProps = {
+  labels: '',
+};
+
+const StoryItem = ({ title, story_type, estimate, labels }) => (
   <div className='Story'>
     <StoryIcons story_type={story_type} />
-    <StoryTitle title={title} />
+    <StoryInfo title={title} labels={labels} />
     <StateActions story_type={story_type} estimate={estimate}/>
   </div>
 );
 
 StoryItem.propTypes = {
+  id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
+  description: PropTypes.string,
   story_type: PropTypes.string.isRequired,
+  labels: PropTypes.any,
 };
+
+StoryItem.defaultProps = {
+  description: '',
+}
 
 export default StoryItem
