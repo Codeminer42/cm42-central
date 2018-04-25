@@ -1,7 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  classIconRule,
+  iconRule,
+  isStoryDontEstimated,
+  IsShow,
+  estimateRule,
+  labelSplit,
+} from '../../rules/story';
 
-const SpanStory = () => (
+const StoryPoints = () => (
   <div>
     <span className="Story__estimate">1</span>
     <span className="Story__estimate">2</span>
@@ -11,62 +19,24 @@ const SpanStory = () => (
   </div>
 )
 
-const ShowButtonOrEstimate = ({ story_type, estimate, SpanStory, ButtonStart }) => (
-  story_type === 'feature' && !estimate ?
-  <SpanStory/> :
-  <ButtonStart/>
-);
-
 const StateActions = ({ story_type, estimate }) => (
   <div className='Story__actions'>
-    <ShowButtonOrEstimate
-      story_type={story_type}
-      estimate={estimate}
-      SpanStory={SpanStory}
-      ButtonStart={ButtonStart}
-    />
+    <IsShow logic={isStoryDontEstimated(story_type, estimate)}>
+      <StoryPoints />
+    </IsShow>
+    <IsShow logic={!isStoryDontEstimated(story_type, estimate)}>
+      <ButtonStart />
+    </IsShow>
   </div>
 )
 StateActions.propTypes = {
   story_type : PropTypes.string.isRequired
 }
 
-
-const iconRule = (story_type) => {
-  switch (story_type) {
-    case 'feature':
-      return 'star';
-    case 'bug':
-      return 'bug_report';
-    case 'chore':
-      return 'settings'
-    case 'release':
-      return 'bookmark'
-    default:
-      return null
-  }
-};
-
-const classIconRule = (story_type) => {
-  switch (story_type) {
-    case 'feature':
-      return 'star'
-    case 'bug':
-      return 'bug';
-    case 'chore':
-      return 'dark' ;
-    case 'release':
-      return 'release'
-    default:
-      return null
-  }
-};
-
 const ButtonStart = () => (
   <button type="button" className="Story__btn Story__btn--start">start</button>
 );
 
-const estimateRule = (estimate) => estimate > 0 ? estimate : '-';
 
 const StoryEstimate = ({ estimate }) => (
   <span className='Story__estimated'>{estimateRule(estimate)}</span>
@@ -89,8 +59,6 @@ const StoryIcons = ({ story_type }) => (
 StoryIcons.propTypes = {
   story_type: PropTypes.string.isRequired,
 };
-
-const labelSplit = (labels) => labels.split(',')
 
 const StoryLabel = ({ label }) => (
   <a href="#" className="Story__label" title={label}>{label}</a>

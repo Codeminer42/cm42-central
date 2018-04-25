@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchProjectBoard } from 'actions/projectBoard';
-import Column from './Column'
+import Column from '../Columns/ColumnItem';
 
 class ProjectBoard extends React.Component {
   componentWillMount() {
