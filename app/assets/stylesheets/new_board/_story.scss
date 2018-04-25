@@ -8,18 +8,19 @@
   border-top: 1px solid #ffffff;
   min-height: 37px;
   color: black;
-  justify-content: space-between;
   cursor: move;
 
   &__state-action{
-    float: right;
+    display: block;
     margin-left: .2em;
   }
   &__story-icons{
+    display: block;
     float: left;
+    margin-right: 45px;
   }
-  &__story-title{
-    font-style: italic;
+  &__story-title {
+    flex-grow: 1;
     margin-left: 65px;
     word-wrap: break-word;
   }
@@ -32,5 +33,22 @@
     border-radius: 3px;
     font-weight: bold;
     color: #407aa5;
+  }
+
+  &__epic-link{
+    padding-right: 3px;
+    color: #337ab7;
+    text-decoration: none;
+  }
+  &__tags{
+    color: #204a87;
+    font-size: 84%;
+    margin: 0;
+  }
+  &__first--history{
+    flex-grow: 1;
+    font-style: italic;
+    margin-left: 65px;
+    word-wrap: break-word;
   }
 }
