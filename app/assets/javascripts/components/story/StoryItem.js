@@ -12,15 +12,13 @@ const SpanStory = () => (
 )
 
 const ShowButtonOrEstimate = ({ story_type, estimate, SpanStory, ButtonStart }) => (
-  <div>
-    {(story_type === 'feature') && !estimate ?
-    <SpanStory/> :
-    <ButtonStart/>}
-  </div>
+  story_type === 'feature' && !estimate ?
+  <SpanStory/> :
+  <ButtonStart/>
 );
 
 const StateActions = ({ story_type, estimate }) => (
-  <div className='Story__state-actions'>
+  <div className='Story__actions'>
     <ShowButtonOrEstimate
       story_type={story_type}
       estimate={estimate}
@@ -32,8 +30,7 @@ const StateActions = ({ story_type, estimate }) => (
 StateActions.propTypes = {
   story_type : PropTypes.string.isRequired
 }
-{/*<i className='mi md-14 md-dark details'>qw</i>
-   <i className='mi md-14 md-dark details'>question_answer</i> */}
+
 
 const iconRule = (story_type) => {
   switch (story_type) {
@@ -65,22 +62,28 @@ const classIconRule = (story_type) => {
   }
 };
 
-      {/*<i className='mi md-14 md-dark details'>qw</i>
-      <i className='mi md-14 md-dark details'>question_answer</i>*/}
-
 const ButtonStart = () => (
-  <div>
-    <input type="button" className="transition start" value="start" />
-  </div>
+  <button type="button" className="Story__btn Story__btn--start">start</button>
 );
 
+const estimateRule = (estimate) => estimate > 0 ? estimate : '-';
+
+const StoryEstimate = ({ estimate }) => (
+  <span className='Story__estimated'>{estimateRule(estimate)}</span>
+);
+
+StoryEstimate.propTypes = {
+  estimate: PropTypes.number,
+};
+
+StoryEstimate.defaultProp = {
+  estimate: '-',
+};
+
 const StoryIcons = ({ story_type }) => (
-  <div className='Story__story-icons-spans'>
-    <span className='popover-activate' data-original-title='' title=''>
-      <i className={`mi md-${classIconRule(story_type)} md-16`}>{iconRule(story_type)}</i>
-      <span className='Story__estimate' data-value='0'>-</span>
-    </span>
-  </div>
+  <span className='Story__icon'>
+    <i className={`mi md-${classIconRule(story_type)} md-16`}>{iconRule(story_type)}</i>
+  </span>
 );
 
 StoryIcons.propTypes = {
@@ -90,7 +93,7 @@ StoryIcons.propTypes = {
 const labelSplit = (labels) => labels.split(',')
 
 const StoryLabel = ({ label }) => (
-  <a href="#" className="Story__epic-link" title={label}>{label}</a>
+  <a href="#" className="Story__label" title={label}>{label}</a>
 );
 
 StoryLabel.propTypes = {
@@ -103,7 +106,7 @@ const StoryLabels = ({ labels }) => {
   }
 
   return (
-    <span className='Story__tags'>
+    <span className='Story__labels'>
       {labelSplit(labels).map(label => (
         <StoryLabel key={label} label={label} />
       ))}
@@ -112,19 +115,11 @@ const StoryLabels = ({ labels }) => {
 };
 
 const StoryInfo = ({ story_type ,title, labels, estimate }) => (
-  <div>
-  { (story_type === 'feature') && !estimate ?
-   <div className='Story__first--history'>
-   <StoryLabels labels={labels} />
-   {title}
- </div>
-  :
-  <div className='Story__story-title'>
+  <div className="Story__info">
     <StoryLabels labels={labels} />
-    {title}
-  </div>
-
-}
+    <div className="Story__title">
+      {title}
+    </div>
 </div>
 );
 
@@ -140,6 +135,7 @@ StoryInfo.defaultProps = {
 const StoryItem = ({ title, story_type, estimate, labels }) => (
   <div className='Story'>
     <StoryIcons story_type={story_type} />
+    <StoryEstimate estimate={estimate} />
     <StoryInfo title={title} labels={labels} story_type={story_type} estimate={estimate} />
     <StateActions story_type={story_type} estimate={estimate}/>
   </div>

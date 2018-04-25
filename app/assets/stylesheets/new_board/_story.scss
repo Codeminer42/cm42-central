@@ -1,5 +1,6 @@
 .Story {
   display: flex;
+  justify-content: space-between;
   padding: 7px 8px;
   background-repeat: no-repeat;
   background-position: 4px 4px;
@@ -7,48 +8,107 @@
   border-bottom: 1px solid #dddddd;
   border-top: 1px solid #ffffff;
   min-height: 37px;
-  color: black;
   cursor: move;
+  font-size: 12px;
 
-  &__state-action{
-    display: block;
-    margin-left: .2em;
+  &:hover {
+    background-color: #e6e6e6;
   }
-  &__story-icons{
-    display: block;
-    float: left;
-    margin-right: 45px;
+
+  &__info {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 15px;
   }
-  &__story-title {
-    flex-grow: 1;
-    margin-left: 65px;
-    word-wrap: break-word;
+
+  &__icon {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-right: 5px;
   }
-  &__estimate {
-    left: 2px;
-    padding: 2px 3px;
-    line-height: 1;
+
+  &__title {
+    flex: 1;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+  }
+
+  &__estimated {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background: rgba(255, 255, 255, 0.4);
+    margin-right: 3px;
+    padding: 2px 3px;
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 3px;
-    font-weight: bold;
-    color: #407aa5;
+    line-height: 1;
+    min-width: 15px;
   }
 
-  &__epic-link{
+  &__estimate {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 3px;
+    padding: 2px 3px;
+    line-height: 1;
+    font-weight: bold;
+    color: #407aa5;
+    cursor: pointer;
+  }
+
+  &__label {
     padding-right: 3px;
     color: #337ab7;
     text-decoration: none;
   }
-  &__tags{
+
+  &__labels {
     color: #204a87;
     font-size: 84%;
     margin: 0;
   }
-  &__first--history{
-    flex-grow: 1;
-    font-style: italic;
-    margin-left: 65px;
-    word-wrap: break-word;
+
+  &__btn {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    user-select: none;
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+
+    &--start {
+      color: #333;
+      background-color: #fff;
+      border-color: #ccc;
+
+      &:hover,
+      &:active {
+        color: #333;
+        background-color: #e6e6e6;
+        border-color: #adadad;
+      }
+    }
   }
 }
