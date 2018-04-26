@@ -8,7 +8,8 @@ var Story = module.exports = Backbone.Model.extend({
     events: [],
     documents: [],
     state: "unscheduled",
-    story_type: "feature"
+    story_type: "feature",
+    isVisible: true
   },
 
   name: 'story',

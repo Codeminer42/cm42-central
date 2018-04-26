@@ -14,17 +14,10 @@ module.exports = Backbone.View.extend({
   toggleStories: function() {
     if(this.model.needsLoad) {
       this.model.fetch();
-    }
-
-    var item = this.$el.next();
-    while(true) {
-      if ($(item).hasClass('story')) {
-        $(item).toggle();
-      }
-      item = item.next();
-      if (item.length === 0 || $(item).hasClass('iteration')) {
-        break;
-      }
+    } else {
+      this.model.stories().forEach(story => {
+        story.set('isVisible', !story.get('isVisible'));
+      })
     }
   },
 
