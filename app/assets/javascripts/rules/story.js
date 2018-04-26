@@ -29,11 +29,11 @@ export const classIconRule = (story_type) => {
 };
 
 export const isStoryDontEstimated = (story_type, estimate) => (story_type === 'feature' && !estimate);
+export const IsRelease = (story_type) => (story_type === 'release');
 
 export const IsShow = ({ logic, children }) => (
   logic ? children : null
 );
-
 
 export const estimateRule = (estimate) => estimate > 0 ? estimate : '-';
 

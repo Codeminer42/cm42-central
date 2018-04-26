@@ -8,6 +8,7 @@ import {
   IsShow,
   estimateRule,
   labelSplit,
+  IsRelease,
 } from '../../rules/story';
 
 const StoryPoints = () => (
@@ -37,7 +38,6 @@ StateActions.propTypes = {
 const ButtonStart = () => (
   <button type="button" className="Story__btn Story__btn--start">start</button>
 );
-
 
 const StoryEstimate = ({ estimate }) => (
   <span className='Story__estimated'>{estimateRule(estimate)}</span>
@@ -101,11 +101,12 @@ StoryInfo.defaultProps = {
   labels: '',
 };
 
-const classNameStory = (story_type, estimate) => classname(
+const classNameStory = (story_type, estimate) => classname (
   'Story',
   {
     'Story--unestimated': isStoryDontEstimated(story_type, estimate),
     'Story--estimated': !isStoryDontEstimated(story_type, estimate),
+    'Story--release' : IsRelease(story_type)
   }
 );
 
