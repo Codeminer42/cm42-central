@@ -11,24 +11,27 @@
   cursor: move;
   font-size: 12px;
 
+  &:hover {
+    background-color: #e6e6e6;
+  }
+
   &--unestimated {
     font-style: italic;
   }
+
   &--release {
     color: $white;
     background-color: $blue-4;
     border-top-color: $blue-5;
     border-bottom-color: $blue-3;
+
     a {
       color: white;
     }
-    :hover {
+
+    &:hover {
       background-color: $blue-3;
     }
-  }
-
-  &:hover {
-    background-color: #e6e6e6;
   }
 
   &__info {
