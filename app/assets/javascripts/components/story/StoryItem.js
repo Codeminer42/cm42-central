@@ -8,7 +8,7 @@ import {
   IsShow,
   estimateRule,
   labelSplit,
-  IsRelease,
+  isRelease,
 } from '../../rules/story';
 
 const StoryPoints = () => (
@@ -106,7 +106,7 @@ const classNameStory = (story_type, estimate) => classname (
   {
     'Story--unestimated': isStoryDontEstimated(story_type, estimate),
     'Story--estimated': !isStoryDontEstimated(story_type, estimate),
-    'Story--release' : IsRelease(story_type)
+    'Story--release' : isRelease(story_type)
   }
 );
 
