@@ -387,12 +387,9 @@ describe StoryOperations do
                                     project: project)
     end
 
-    subject      { StoryOperations::ReadAll }
-    let(:result) { subject.call(project: project) }
+    subject { StoryOperations::ReadAll }
 
-    context 'when there are stories in the done column' do
-      let(:project) { create(:project, :with_past_iteration, users: [user], teams: [current_team]) }
-
+    shared_examples 'when there are stories in the done column' do
       it 'does not return done stories as Story objects' do
         expect(result[:active_stories]).to_not include(done_story)
       end
@@ -408,9 +405,7 @@ describe StoryOperations do
       end
     end
 
-    context 'when there are no past iterations' do
-      let(:project) { create(:project, users: [user], teams: [current_team]) }
-
+    shared_examples 'when there are no past iterations' do
       it 'does not return past iterations' do
         expect(result[:past_iterations]).to be_empty
       end
@@ -420,10 +415,7 @@ describe StoryOperations do
       end
     end
 
-    context 'when there are no active stories' do
-      let(:project) { create(:project, :with_past_iteration, users: [user], teams: [current_team]) }
-      let(:active_story) { done_story }
-
+    shared_examples 'when there are no active stories' do
       it 'does not return active stories' do
         expect(result[:active_stories]).to be_empty
       end
@@ -435,18 +427,85 @@ describe StoryOperations do
       end
     end
 
-    context 'when the project started a month ago' do
-      let(:project) { create(:project, :with_month_ago, users: [user], teams: [current_team]) }
-      let(:iteration_length)         { project.iteration_length * 7 }
-      let(:days_since_project_start) { (Date.current - project.start_date).to_i }
-      let(:number_of_iterations)     { days_since_project_start / iteration_length }
-
+    shared_examples 'when the project started a month ago' do |iteration_numbers|
       it 'returns the correct amount of past iterations' do
         expect(result[:past_iterations].length).to eq(number_of_iterations)
       end
 
       it 'returns the right iteration number for each past iteration' do
-        expect(result[:past_iterations].map(&:iteration_number)).to eq([1, 2, 3, 4])
+        expect(result[:past_iterations].map(&:iteration_number)).to eq(iteration_numbers)
+      end
+    end
+
+    describe 'when not passing iteration length' do
+      let(:result) { subject.call(project: project, iteration_length: nil) }
+
+      context 'when there are stories in the done column' do
+        let(:project) { create(:project, :with_past_iteration, users: [user], teams: [current_team]) }
+
+        include_examples 'when there are stories in the done column'
+      end
+
+      context 'when there are no past iterations' do
+        let(:project) { create(:project, users: [user], teams: [current_team]) }
+
+        include_examples 'when there are no past iterations'
+      end
+
+      context 'when there are no active stories' do
+        let(:project) { create(:project, :with_past_iteration, users: [user], teams: [current_team]) }
+        let(:active_story) { done_story }
+
+        include_examples 'when there are no active stories'
+      end
+
+      context 'when the project started a month ago' do
+        let(:project) { create(:project, :with_month_ago, users: [user], teams: [current_team]) }
+        let(:iteration_length)         { (project.iteration_length) * 7 }
+        let(:days_since_project_start) { (Date.current - project.start_date).to_i }
+        let(:number_of_iterations)     { days_since_project_start / iteration_length }
+
+        include_examples 'when the project started a month ago', [1, 2, 3, 4]
+      end
+    end
+
+    describe 'when passing iteration length' do
+      let(:result) { subject.call(project: project, iteration_length: 2) }
+
+      let!(:past_iteration) do
+        iteration_start = project.created_at.to_date
+        iteration_end = ((project.created_at + (project.iteration_length + 1) * 7.days) - 1.day).to_date
+        Iterations::PastIteration.new(start_date: iteration_start,
+                                      end_date: iteration_end,
+                                      project: project)
+      end
+
+      context 'when there are stories in the done column' do
+        let(:project) { create(:project, :with_month_ago, users: [user], teams: [current_team]) }
+
+        include_examples 'when there are stories in the done column'
+      end
+
+      context 'when there are no past iterations' do
+        let(:project) { create(:project, users: [user], teams: [current_team]) }
+
+        include_examples 'when there are no past iterations'
+      end
+
+      context 'when there are no active stories' do
+        let(:project) { create(:project, :with_month_ago, users: [user], teams: [current_team]) }
+        let(:active_story) { done_story }
+
+        include_examples 'when there are no active stories'
+      end
+
+      context 'when the project started a month ago' do
+        let(:project) { create(:project, :with_month_ago, users: [user], teams: [current_team]) }
+        let(:iteration_length)         { (project.iteration_length + 1) * 7 }
+        let(:days_since_project_start) { (Date.current - project.start_date).to_i }
+        let(:number_of_iterations)     { days_since_project_start / iteration_length }
+
+        include_examples 'when the project started a month ago', [1, 2]
       end
     end
   end

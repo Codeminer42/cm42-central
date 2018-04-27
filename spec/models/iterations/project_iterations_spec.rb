@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module Iterations
   describe ProjectIterations do
-    subject { described_class.new(project: project) }
+    subject { described_class.new(project: project, iteration_length: 1) }
 
     describe '#current_iteration_start' do
       let(:project) { create(:project) }
