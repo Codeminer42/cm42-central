@@ -1,39 +1,25 @@
-export const iconRule = (story_type) => {
-  switch (story_type) {
-    case 'feature':
-      return 'star';
-    case 'bug':
-      return 'bug_report';
-    case 'chore':
-      return 'settings'
-    case 'release':
-      return 'bookmark'
-    default:
-      return null
-  }
+const iconRules = {
+  feature: { icon: 'start', className: 'star' },
+  bug: { icon: 'bug_report', className: 'bug' },
+  chore: { icon: 'settings', className: 'dark' },
+  release: { icon: 'bookmark', className: 'bookmark' }
 };
 
-export const classIconRule = (story_type) => {
-  switch (story_type) {
-    case 'feature':
-      return 'star'
-    case 'bug':
-      return 'bug';
-    case 'chore':
-      return 'dark' ;
-    case 'release':
-      return 'release'
-    default:
-      return null
-  }
-};
-
-export const isStoryDontEstimated = (story_type, estimate) => (story_type === 'feature' && !estimate);
-export const isRelease = (story_type) => (story_type === 'release');
-
-export const IsShow = ({ logic, children }) => (
-  logic ? children : null
+const iconRuleFor = (storyType, ruleType) => (
+  iconRules[storyType]
+  ? iconRules[storyType][ruleType]
+  : null
 );
+
+export const iconRule = (storyType) => iconRuleFor(storyType, 'icon');
+
+export const classIconRule = (storyType) => iconRuleFor(storyType, 'className');
+
+export const isStoryDontEstimated = (storyType, estimate) => storyType === 'feature' && !estimate;
+
+export const isRelease = (storyType) => storyType === 'release';
+
+export const IsShow = ({ logic, children }) => logic ? children : null;
 
 export const estimateRule = (estimate) => estimate > 0 ? estimate : '-';
 
