@@ -1,4 +1,4 @@
-import * as ProjectBoard from 'models/projectBoard';
+import * as ProjectBoard from 'models/beta/projectBoard';
 import actionTypes from './actionTypes';
 import { receiveUsers } from './user';
 import { receiveStories } from './story';
