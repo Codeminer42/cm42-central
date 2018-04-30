@@ -1,8 +1,7 @@
 module Iterations
   class ProjectIterations
-    def initialize(project:, iteration_length: nil)
+    def initialize(project:)
       @project = project
-      @iteration_length = iteration_length || project.iteration_length
     end
 
     def current_iteration_start
@@ -27,7 +26,7 @@ module Iterations
     end
 
     def iteration_length_in_days
-      @iteration_length * 7
+      @project.iteration_length * 7
     end
 
     def project_start_date

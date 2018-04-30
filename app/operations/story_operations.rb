@@ -60,13 +60,10 @@ module StoryOperations
       new(*args).run
     end
 
-    def initialize(project:, iteration_length: nil)
+    def initialize(project:)
       @story_scope = project.stories.with_dependencies
       @project = project
-      @iterations = Iterations::ProjectIterations.new(
-        project: project,
-        iteration_length: iteration_length || project.iteration_length
-      )
+      @iterations = Iterations::ProjectIterations.new(project: project)
     end
 
     def run
