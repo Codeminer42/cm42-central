@@ -19,8 +19,6 @@ export const isStoryDontEstimated = (storyType, estimate) => storyType === 'feat
 
 export const isRelease = (storyType) => storyType === 'release';
 
-export const IsShow = ({ logic, children }) => logic ? children : null;
-
 export const estimateRule = (estimate) => estimate > 0 ? estimate : '-';
 
-export const labelSplit = (labels) => labels.split(',')
+export const labelSplit = (labels) => labels.split(',');

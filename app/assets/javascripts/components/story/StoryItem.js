@@ -21,18 +21,17 @@ const StoryPoints = () => (
   </div>
 )
 
-const StateActions = ({ story_type, estimate }) => (
-  <div className='Story__actions'>
-    <IsShow logic={isStoryDontEstimated(story_type, estimate)}>
-      <StoryPoints />
-    </IsShow>
-    <IsShow logic={!isStoryDontEstimated(story_type, estimate)}>
-      <ButtonStart />
-    </IsShow>
-  </div>
+const StateActions = ({ storyType, estimate }) => (
+<div className='Story__actions'>
+  {
+    isStoryDontEstimated(storyType, estimate)
+      ? <StoryPoints />
+      : <ButtonStart />
+  }
+</div>
 )
 StateActions.propTypes = {
-  story_type : PropTypes.string.isRequired
+  storyType : PropTypes.string.isRequired
 }
 
 const ButtonStart = () => (
@@ -51,14 +50,14 @@ StoryEstimate.defaultProp = {
   estimate: '-',
 };
 
-const StoryIcons = ({ story_type }) => (
+const StoryIcon = ({ storyType }) => (
   <span className='Story__icon'>
-    <i className={`mi md-${classIconRule(story_type)} md-16`}>{iconRule(story_type)}</i>
+    <i className={`mi md-${classIconRule(storyType)} md-16`}>{iconRule(storyType)}</i>
   </span>
 );
 
-StoryIcons.propTypes = {
-  story_type: PropTypes.string.isRequired,
+StoryIcon.propTypes = {
+  storyType: PropTypes.string.isRequired,
 };
 
 const StoryLabel = ({ label }) => (
@@ -83,7 +82,7 @@ const StoryLabels = ({ labels }) => {
   );
 };
 
-const StoryInfo = ({ story_type ,title, labels, estimate }) => (
+const StoryInfo = ({ storyType ,title, labels, estimate }) => (
   <div className="Story__info">
     <StoryLabels labels={labels} />
     <div className="Story__title">
@@ -101,21 +100,21 @@ StoryInfo.defaultProps = {
   labels: '',
 };
 
-const classNameStory = (story_type, estimate) => classname (
+const classNameStory = (storyType, estimate) => classname (
   'Story',
   {
-    'Story--unestimated': isStoryDontEstimated(story_type, estimate),
-    'Story--estimated': !isStoryDontEstimated(story_type, estimate),
-    'Story--release' : isRelease(story_type)
+    'Story--unestimated': isStoryDontEstimated(storyType, estimate),
+    'Story--estimated': !isStoryDontEstimated(storyType, estimate),
+    'Story--release' : isRelease(storyType)
   }
 );
 
-const StoryItem = ({ title, story_type, estimate, labels }) => (
-  <div className={classNameStory(story_type, estimate)}>
-    <StoryIcons story_type={story_type} />
+const StoryItem = ({ title, storyType, estimate, labels }) => (
+  <div className={classNameStory(storyType, estimate)}>
+    <StoryIcon storyType={storyType} />
     <StoryEstimate estimate={estimate} />
-    <StoryInfo title={title} labels={labels} story_type={story_type} estimate={estimate} />
-    <StateActions story_type={story_type} estimate={estimate}/>
+    <StoryInfo title={title} labels={labels} storyType={storyType} estimate={estimate} />
+    <StateActions storyType={storyType} estimate={estimate}/>
   </div>
 );
 
@@ -123,7 +122,7 @@ StoryItem.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string,
-  story_type: PropTypes.string.isRequired,
+  storyType: PropTypes.string.isRequired,
   labels: PropTypes.any,
 };
 
