@@ -538,9 +538,12 @@ module.exports = FormView.extend({
   },
 
   renderCollapsed: function(isGuest) {
+
     this.$el.removeClass('editing');
     this.$el.html(this.template({story: this.model, view: this}));
-    this.$el.toggleClass('collapsed-iteration', !this.model.get('isVisible'));
+    this.$el.toggleClass('collapsed-iteration',
+                         !this.model.get('isVisible') &&
+                         !this.isSearchResult);
 
     const stateButtons = this.$('[data-story-state-buttons]').get(0)
     if(stateButtons) {

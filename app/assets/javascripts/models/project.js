@@ -20,14 +20,14 @@ module.exports = Backbone.Model.extend({
     this.on('change:last_changeset_id', this.updateChangesets, this);
 
     this.projectBoard = new ProjectBoard({ project: this });
-    this.projectBoard.stories.url = this.url() + '/stories';
+    this.projectBoard.stories.url = `${this.url()}/stories`;
 
     this.users = new UserCollection();
-    this.users.url = this.url() + '/users';
+    this.users.url = `${this.url()}/users`;
     this.users.project = this;
 
     this.search = new StoryCollection();
-    this.search.url = this.url() + '/stories';
+    this.search.url = `${this.url()}/stories`;
     this.search.project = this;
 
     this.iterations = [];

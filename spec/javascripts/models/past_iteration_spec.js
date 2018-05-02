@@ -18,7 +18,7 @@ describe('PastIteration model', function() {
     this.pastIterations = new PastIteration({
     	project: this.project,
     	startDate: Date.now(),
-    	endDate: Date.now() +7,
+    	endDate: Date.now() + 7,
     	points: 3,
     	iterationNumber: 2
     });
@@ -36,7 +36,7 @@ describe('PastIteration model', function() {
 
     it("should have a default column", function() {
       expect(this.pastIterations.get('column')).toBe('#done');
-    }); 
+    });
   });
 
   describe('stories', function() {
