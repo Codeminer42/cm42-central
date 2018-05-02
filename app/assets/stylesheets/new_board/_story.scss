@@ -4,15 +4,15 @@
   padding: 7px 8px;
   background-repeat: no-repeat;
   background-position: 4px 4px;
-  background-color: #f4f4f4;
-  border-bottom: 1px solid #dddddd;
-  border-top: 1px solid #ffffff;
+  background-color: $story-background-color;
+  border-bottom: 1px solid $story-border-bottom-color;
+  border-top: 1px solid $story-border-top-color;
   min-height: 37px;
   cursor: move;
   font-size: 12px;
 
   &:hover {
-    background-color: #e6e6e6;
+    background-color: $story-hover-background-color;
   }
 
   &--unestimated {
@@ -26,7 +26,7 @@
     border-bottom-color: $blue-3;
 
     a {
-      color: white;
+      color: $white;
     }
 
     &:hover {
@@ -62,10 +62,10 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.4);
+    background: $estimated-background-color;
     margin-right: 1px;
     padding: 1px 1px;
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    border: 1px solid $estimated-border-color;
     border-radius: 3px;
     line-height: 1;
     min-width: 15px;
@@ -80,19 +80,19 @@
     padding: 1px 1px;
     line-height: 1;
     font-weight: bold;
-    color: #407aa5;
+    color: $estimate-background-color;
     cursor: pointer;
     font-style: normal;
   }
 
   &__label {
     padding-right: 3px;
-    color: #337ab7;
+    color: $story-label-color;
     text-decoration: none;
   }
 
   &__labels {
-    color: #204a87;
+    color: $story-labels-color;
     font-size: 84%;
     margin: 0;
   }
@@ -120,15 +120,15 @@
     border-radius: 3px;
 
     &--start {
-      color: #333;
-      background-color: #fff;
-      border-color: #ccc;
+      color: $story-btn-start-color;
+      background-color: $white;
+      border-color: $story-btn-start-border-color;
 
       &:hover,
       &:active {
-        color: #333;
-        background-color: #e6e6e6;
-        border-color: #adadad;
+        color: $story-btn-start-hover-color;
+        background-color: $story-btn-start-color;
+        border-color: $story-btn-start-color;
       }
     }
   }

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import camelCase from 'camelcase-keys';
+import camelCase from 'camelcase-object-deep';
 
 export function get(projectId) {
   return axios
