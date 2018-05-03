@@ -22,13 +22,13 @@ const StoryPoints = () => (
 )
 
 const StateActions = ({ storyType, estimate }) => (
-<div className='Story__actions'>
-  {
-    isStoryDontEstimated(storyType, estimate)
-      ? <StoryPoints />
-      : <ButtonStart />
-  }
-</div>
+  <div className='Story__actions'>
+    {
+      isStoryDontEstimated(storyType, estimate)
+        ? <StoryPoints />
+        : <ButtonStart />
+    }
+  </div>
 )
 StateActions.propTypes = {
   storyType : PropTypes.string.isRequired
@@ -88,7 +88,7 @@ const StoryInfo = ({ storyType ,title, labels, estimate }) => (
     <div className="Story__title">
       {title}
     </div>
-</div>
+  </div>
 );
 
 StoryInfo.propTypes = {
