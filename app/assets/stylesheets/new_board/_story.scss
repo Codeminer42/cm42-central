@@ -2,8 +2,6 @@
   display: flex;
   justify-content: space-between;
   padding: 7px 8px;
-  background-repeat: no-repeat;
-  background-position: 4px 4px;
   background-color: $story-background-color;
   border-bottom: 1px solid $story-border-bottom-color;
   border-top: 1px solid $story-border-top-color;
@@ -108,16 +106,13 @@
     background-image: none;
     border: 1px solid transparent;
     white-space: nowrap;
-    padding: 6px 12px;
     font-size: 14px;
-    line-height: 1.42857143;
+    line-height: 1.5;
     border-radius: 4px;
     -webkit-user-select: none;
     user-select: none;
     padding: 1px 5px;
     font-size: 12px;
-    line-height: 1.5;
-    border-radius: 3px;
 
     &--start {
       color: $story-btn-start-color;
