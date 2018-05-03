@@ -13,7 +13,7 @@ export const iconRule = (storyType) => iconRuleFor([storyType, 'icon']);
 
 export const classIconRule = (storyType) => iconRuleFor([storyType, 'className']);
 
-export const isStoryDontEstimated = (storyType, estimate) => storyType === 'feature' && !estimate;
+export const isStoryNotEstimated = (storyType, estimate) => storyType === 'feature' && !estimate;
 
 export const isRelease = (storyType) => storyType === 'release';
 

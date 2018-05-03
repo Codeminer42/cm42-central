@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {
   classIconRule,
   iconRule,
-  isStoryDontEstimated,
+  isStoryNotEstimated,
   IsShow,
   estimateRule,
   labelSplit,
@@ -24,7 +24,7 @@ const StoryPoints = () => (
 const StateActions = ({ storyType, estimate }) => (
   <div className='Story__actions'>
     {
-      isStoryDontEstimated(storyType, estimate)
+      isStoryNotEstimated(storyType, estimate)
         ? <StoryPoints />
         : <ButtonStart />
     }
@@ -103,8 +103,8 @@ StoryInfo.defaultProps = {
 const classNameStory = (storyType, estimate) => classname (
   'Story',
   {
-    'Story--unestimated': isStoryDontEstimated(storyType, estimate),
-    'Story--estimated': !isStoryDontEstimated(storyType, estimate),
+    'Story--unestimated': isStoryNotEstimated(storyType, estimate),
+    'Story--estimated': !isStoryNotEstimated(storyType, estimate),
     'Story--release' : isRelease(storyType)
   }
 );
