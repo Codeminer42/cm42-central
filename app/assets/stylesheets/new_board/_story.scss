@@ -127,8 +127,8 @@
       &:hover,
       &:active {
         color: $story-btn-start-hover-color;
-        background-color: $story-btn-start-color;
-        border-color: $story-btn-start-color;
+        background-color: $story-btn-start-hover-background-color;
+        border-color: $story-btn-start-hover-border-color;
       }
     }
   }
