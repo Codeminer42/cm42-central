@@ -1,3 +1,5 @@
+import _ from 'underscore';
+
 const iconRules = {
   feature: { icon: 'start', className: 'star' },
   bug: { icon: 'bug_report', className: 'bug' },
@@ -5,15 +7,11 @@ const iconRules = {
   release: { icon: 'bookmark', className: 'bookmark' }
 };
 
-const iconRuleFor = (storyType, ruleType) => (
-  iconRules[storyType]
-  ? iconRules[storyType][ruleType]
-  : null
-);
+const iconRuleFor = _.propertyOf(iconRules);
 
-export const iconRule = (storyType) => iconRuleFor(storyType, 'icon');
+export const iconRule = (storyType) => iconRuleFor([storyType, 'icon']);
 
-export const classIconRule = (storyType) => iconRuleFor(storyType, 'className');
+export const classIconRule = (storyType) => iconRuleFor([storyType, 'className']);
 
 export const isStoryDontEstimated = (storyType, estimate) => storyType === 'feature' && !estimate;
 

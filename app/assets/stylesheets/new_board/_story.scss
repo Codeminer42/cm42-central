@@ -62,7 +62,6 @@
     justify-content: center;
     background: $estimated-background-color;
     margin-right: 1px;
-    padding: 1px 1px;
     border: 1px solid $estimated-border-color;
     border-radius: 3px;
     line-height: 1;
@@ -75,7 +74,6 @@
     align-items: center;
     justify-content: center;
     margin-right: 1px;
-    padding: 1px 1px;
     line-height: 1;
     font-weight: bold;
     color: $estimate-background-color;
@@ -121,7 +119,7 @@
 
       &:hover,
       &:active {
-        color: $story-btn-start-hover-color;
+        color: $story-btn-start-color;
         background-color: $story-btn-start-hover-background-color;
         border-color: $story-btn-start-hover-border-color;
       }
