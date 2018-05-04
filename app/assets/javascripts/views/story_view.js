@@ -1121,4 +1121,14 @@ module.exports = FormView.extend({
   showHistory: function() {
     this.model.showHistory();
   },
+
+  isLoaded: function() {
+    const projectStories = this.model.collection.project.projectBoard.stories;
+    const isLoaded = !!projectStories.get(this.model.get('id'));
+    return isLoaded;
+  },
+
+  isLoadedSearchResult: function() {
+    return this.isSearchResult && this.isLoaded();
+  }
 });

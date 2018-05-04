@@ -56,7 +56,7 @@ module.exports = Backbone.View.extend({
     const currentLocale = I18n.currentLocale();
 
     I18n.missingTranslation = () => false;
-    
+
     if (currentLocale !== locale) {
       queries.forEach(entry => {
         const operand = entry.match(/\w+/);
@@ -86,16 +86,8 @@ module.exports = Backbone.View.extend({
 
     this.addBar('#search_results');
 
-    var search_results_ids = this.model.search.pluck("id");
-    var stories = this.model.projectBoard.stories;
-    _.each(search_results_ids, function(id) {
-      var story = stories.get(id);
-      if (!_.isUndefined(story)) {
-        that.addStory(story, '#search_results');
-      } else {
-        // the search may return IDs that are not in the stories collection in the client-side
-        // because of the STORIES_CEILING configuration
-      }
+    this.model.search.forEach(function(searchResult) {
+      that.addStory(searchResult, '#search_results');
     });
 
     this.$('.loading-spin').removeClass('show');
