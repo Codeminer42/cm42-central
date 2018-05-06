@@ -376,14 +376,21 @@ describe 'Stories' do
         within('#form_search') do
           fill_in 'q', with: 'iteration'
         end
+
+        page.execute_script("$('#form_search').submit()")
       end
 
       it 'does not show the locate button', js: true do
-        page.execute_script("$('#form_search').submit()")
-
         story_element = find(story_search_result_selector(done_story))
         expect(story_element[:class]).to include('searchResult')
         expect(story_element).not_to have_css('#locate')
+      end
+
+      it 'does not show the control buttons', js: true do
+        story_element = find(story_search_result_selector(done_story))
+        story_element.click
+        expect(story_element).not_to have_css('.submit')
+        expect(story_element).not_to have_css('.destroy')
       end
     end
 

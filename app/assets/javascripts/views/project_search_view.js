@@ -86,8 +86,11 @@ module.exports = Backbone.View.extend({
 
     this.addBar('#search_results');
 
+    const stories = this.model.projectBoard.stories;
     this.model.search.forEach(function(searchResult) {
-      that.addStory(searchResult, '#search_results');
+      const actualStory = stories.get(searchResult.get('id'));
+
+      that.addStory(actualStory || searchResult, '#search_results');
     });
 
     this.$('.loading-spin').removeClass('show');
