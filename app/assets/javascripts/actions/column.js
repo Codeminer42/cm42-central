@@ -19,10 +19,13 @@ const setColumn = dispatch => story => {
   switch(story.state) {
     case 'unscheduled':
       dispatch(setStoryChillyBin(story));
+      break;
     case 'unstarted':
       dispatch(setStoryBacklog(story));
+      break;
     case 'accepted':
       // to do
+      break;
     default :
       dispatch(setStoryInProgress(story));
   }

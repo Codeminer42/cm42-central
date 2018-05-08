@@ -5,7 +5,7 @@ import project from 'reducers/project';
 import projectBoard from 'reducers/projectBoard';
 import users from 'reducers/users';
 import stories from 'reducers/stories';
-import columns from 'reducers/columns'
+import columns from 'reducers/columns/index'
 
 const reducer = combineReducers({
   project,
