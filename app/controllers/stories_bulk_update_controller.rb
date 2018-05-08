@@ -5,11 +5,7 @@ class StoriesBulkUpdateController < ApplicationController
     return render(json: { message: 'Stories not found' }, status: :not_found) if stories.blank?
     @updater = StoryOperations::UpdateAll.call(stories, allowed_params, current_user)
 
-    if @updater
-      render json: { message: 'Stories were successfully updated' }, status: :ok
-    else
-      render json: { error: stories.map(&:errors) }, status: :unprocessable_entity
-    end
+    returns_message @updater
   end
 
   private
@@ -26,5 +22,13 @@ class StoriesBulkUpdateController < ApplicationController
     params
       .permit(:requested_by_id, :owned_by_id, :labels)
       .merge(acting_user: current_user)
+  end
+
+  def returns_message(records)
+    if records
+      render json: { message: t(:update_stories_successfully) }, status: :ok
+    else
+      render json: { error: stories.map(&:errors) }, status: :unprocessable_entity
+    end
   end
 end
