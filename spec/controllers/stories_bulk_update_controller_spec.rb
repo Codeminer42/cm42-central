@@ -16,10 +16,10 @@ describe StoriesBulkUpdateController do
       sign_in user_1
     end
 
-    let(:user_1) { create(:user, :with_team) }
-    let(:user_2) { create(:user, :with_team) }
-    let(:user_3) { create(:user, :with_team) }
-    let(:user_4) { create(:user, :with_team) }
+    let(:user_1)  { create(:user, :with_team) }
+    let(:user_2)  { create(:user, :with_team) }
+    let(:user_3)  { create(:user, :with_team) }
+    let(:user_4)  { create(:user, :with_team) }
     let(:project) { create(:project, users: [user_1, user_2, user_3], teams: [user_1.teams.first]) }
     let(:stories) { create_list(:story, 2, project: project, requested_by: user_1) }
 
