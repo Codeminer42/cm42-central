@@ -17,8 +17,7 @@ class ProjectBoard extends React.Component {
       <div className="ProjectBoard">
         <Column
           title="Chilly Bin"
-          // stories={this.props.columns.chilly_bin.stories}
-          stories={this.props.stories}
+          stories={this.props.columns.chilly_bin.stories}
         />
         <Column
           title="BackLog"
