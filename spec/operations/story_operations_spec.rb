@@ -464,7 +464,7 @@ describe StoryOperations do
     subject { StoryOperations::UpdateAll }
 
     let(:result) do
-      stories = [story_2]
+      stories = [story_1, story_2, story_3]
       params = { labels: 'backend', requested_by_id: user_2.id, owned_by_id: user_1.id }
       subject.call(stories, params, user_1)
     end

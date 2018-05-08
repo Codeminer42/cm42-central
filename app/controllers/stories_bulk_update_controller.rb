@@ -26,7 +26,7 @@ class StoriesBulkUpdateController < ApplicationController
 
   def returns_message(records)
     if records
-      render json: { message: t(:update_stories_successfully) }, status: :ok
+      render json: { message: t(:update_stories_successfully) }
     else
       render json: { error: stories.map(&:errors) }, status: :unprocessable_entity
     end

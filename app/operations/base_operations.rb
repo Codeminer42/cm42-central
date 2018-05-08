@@ -3,6 +3,7 @@ require 'base_operations/activity_recording'
 module BaseOperations
   class Create
     include ActivityRecording
+    IncompleteOperationError = Class.new(StandardError)
 
     def self.call(*args)
       new(*args).run
@@ -19,10 +20,10 @@ module BaseOperations
         @operations = operate!
         after_save
       end
-      raise ActiveRecord::Rollback if Array(@operations).include?(false)
+      raise IncompleteOperationError if Array(@operations).include?(false)
       create_activity
       return model
-    rescue ActiveRecord::RecordInvalid, ActiveRecord::Rollback
+    rescue ActiveRecord::RecordInvalid, IncompleteOperationError
       return false
     end
 
