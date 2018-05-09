@@ -1,8 +1,8 @@
-.Column{
+
+.Column {
   background-color: $darkgrey-11;
-  flex-grow: 1;
+  flex: 1;
   height: 100%;
-  color: $white;
   margin-left: 1px;
   margin-right: 1px;
 
@@ -36,10 +36,10 @@
     border-radius: 2px;
 
     &:hover {
-        background-color: $column-btn-close-hover
+        background-color: $column-btn-close-hover;
       }
     &:active {
-        background-color: $column-btn-close-active
+        background-color: $column-btn-close-active;
       }
   }
 }

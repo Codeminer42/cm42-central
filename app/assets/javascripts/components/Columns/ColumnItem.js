@@ -1,28 +1,5 @@
 import React from 'react'
-
-const Story = ({ title }) => (
-  <div>
-    {title}
-  </div>
-);
-
-
-const Stories = ({ stories }) => {
-  if (!stories.length) {
-    return null;
-  }
-
-  return (
-    <div>
-      {stories.map(story => (
-        <Story
-          key={story.id}
-          {...story}
-        />
-      ))}
-    </div>
-  );
-};
+import Stories from '../stories/Stories';
 
 const Column = ({ title, stories }) => (
   <div className="Column">

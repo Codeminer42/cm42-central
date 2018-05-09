@@ -1,5 +1,6 @@
-import * as ProjectBoard from 'models/projectBoard';
+import * as ProjectBoard from 'models/beta/projectBoard';
 import actionTypes from './actionTypes';
+import { classifyStories } from './column';
 import { receiveUsers } from './user';
 import { receiveStories } from './story';
 
@@ -32,6 +33,7 @@ export const fetchProjectBoard = (projectId) => {
         dispatch(receiveUsers(users));
         dispatch(receiveStories(stories));
         dispatch(receiveProjectBoard(projectId));
+        classifyStories(dispatch, stories);
       })
       .catch((error) =>
         dispatch(errorRequestProjectBoard(error))

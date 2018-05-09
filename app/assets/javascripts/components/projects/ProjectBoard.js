@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchProjectBoard } from 'actions/projectBoard';
-import Column from './Column'
+import Column from '../Columns/ColumnItem';
 
 class ProjectBoard extends React.Component {
   componentWillMount() {
@@ -17,7 +17,7 @@ class ProjectBoard extends React.Component {
       <div className="ProjectBoard">
         <Column
           title="Chilly Bin"
-          stories={this.props.columns.chilly_bin.stories}
+          stories={this.props.columns.chillyBin.stories}
         />
         <Column
           title="BackLog"
@@ -25,7 +25,7 @@ class ProjectBoard extends React.Component {
         />
          <Column
           title="In Progress"
-          stories={this.props.columns.in_progress.stories}
+          stories={this.props.columns.inProgress.stories}
         />
         <Column
           title="Done"
