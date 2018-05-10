@@ -4,7 +4,7 @@ class Beta::ProjectBoardsController < ApplicationController
   def show
     authorize current_user
 
-    result = ::ProjectBoardOperations::Read.call(
+    result = Beta::ProjectBoardOperations::Read.call(
       params[:id],
       current_user,
       current_flow: cookies[:current_flow],
