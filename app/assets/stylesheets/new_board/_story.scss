@@ -1,0 +1,128 @@
+.Story {
+  display: flex;
+  justify-content: space-between;
+  padding: 7px 8px;
+  background-color: $story-background-color;
+  border-bottom: 1px solid $story-border-bottom-color;
+  border-top: 1px solid $story-border-top-color;
+  min-height: 37px;
+  cursor: move;
+  font-size: 12px;
+
+  &:hover {
+    background-color: $story-hover-background-color;
+  }
+
+  &--unestimated {
+    font-style: italic;
+  }
+
+  &--release {
+    color: $white;
+    background-color: $blue-4;
+    border-top-color: $blue-5;
+    border-bottom-color: $blue-3;
+
+    a {
+      color: $white;
+    }
+
+    &:hover {
+      background-color: $blue-3;
+    }
+  }
+
+  &__info {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 15px;
+  }
+
+  &__icon {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-right: 5px;
+  }
+
+  &__title {
+    flex: 1;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+  }
+
+  &__estimated {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: $estimated-background-color;
+    margin-right: 1px;
+    border: 1px solid $estimated-border-color;
+    border-radius: 3px;
+    line-height: 1;
+    min-width: 15px;
+    font-style: normal;
+  }
+
+  &__estimate {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1px;
+    line-height: 1;
+    font-weight: bold;
+    color: $estimate-background-color;
+    cursor: pointer;
+    font-style: normal;
+  }
+
+  &__label {
+    padding-right: 3px;
+    color: $story-label-color;
+    text-decoration: none;
+  }
+
+  &__labels {
+    color: $story-labels-color;
+    font-size: 84%;
+    margin: 0;
+  }
+
+  &__btn {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    user-select: none;
+    padding: 1px 5px;
+    font-size: 12px;
+
+    &--start {
+      color: $story-btn-start-color;
+      background-color: $white;
+      border-color: $story-btn-start-border-color;
+
+      &:hover,
+      &:active {
+        color: $story-btn-start-color;
+        background-color: $story-btn-start-hover-background-color;
+        border-color: $story-btn-start-hover-border-color;
+      }
+    }
+  }
+}

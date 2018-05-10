@@ -63,6 +63,11 @@ Rails.application.routes.draw do
       get 'iterations' => 'iterations#show'
     end
   end
+  
+  namespace :beta do
+    resources :projects, only: :show
+    resources :project_boards, only: :show
+  end
 
   resources :tag_groups
 

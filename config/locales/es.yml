@@ -85,6 +85,9 @@ es:
       reject: "rechazar"
       restart: "reanudar"
       clone: "Clonar historia"
+      copy_url: "Copiar URL"
+      copy_id: "Copiar ID"
+      view_history: "Mirar historia"
     type:
       feature: "característica"
       chore: "tarea"

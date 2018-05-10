@@ -1,7 +1,6 @@
 GIT
   remote: https://github.com/Codeminer42/cm42-central-support.git
   revision: babced080b5694484b198f8384632f98ca7fb494
-  branch: master
   specs:
     central-support (0.9.3)
       activerecord (>= 3.2)
@@ -149,7 +148,7 @@ GEM
     connection_pool (2.2.0)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
-    crass (1.0.3)
+    crass (1.0.4)
     dalli (2.7.6)
     database_cleaner (1.5.3)
     debug_inspector (0.0.2)
@@ -177,7 +176,7 @@ GEM
     dotenv-rails (2.1.1)
       dotenv (= 2.1.1)
       railties (>= 4.0, < 5.1)
-    enumerize (2.1.2)
+    enumerize (2.2.2)
       activesupport (>= 3.2)
     equalizer (0.0.11)
     erubis (2.7.0)
@@ -262,7 +261,7 @@ GEM
     letter_opener_web (1.2.3)
       letter_opener (~> 1.0)
       rails (>= 3.2)
-    loofah (2.1.1)
+    loofah (2.2.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.0)
@@ -282,7 +281,7 @@ GEM
     multipart-post (2.0.0)
     netrc (0.11.0)
     newrelic_rpm (3.17.0.325)
-    nokogiri (1.8.1)
+    nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
     orm_adapter (0.5.0)
     parallel (1.12.0)
@@ -318,7 +317,7 @@ GEM
       activesupport (>= 3.0.0)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
-    rack (1.6.8)
+    rack (1.6.9)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-cache (1.6.1)
@@ -326,7 +325,7 @@ GEM
     rack-cors (0.4.0)
     rack-mount (0.8.3)
       rack (>= 1.0.0)
-    rack-protection (1.5.3)
+    rack-protection (1.5.5)
       rack
     rack-test (0.6.3)
       rack (>= 1.0)

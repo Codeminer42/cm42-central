@@ -89,6 +89,9 @@ en:
       reject: "reject"
       restart: "restart"
       clone: "Clone story"
+      copy_url: "Copy URL"
+      copy_id: "Copy ID"
+      view_history: "View history"
     type:
       feature: "feature"
       chore: "chore"
