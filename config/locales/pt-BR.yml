@@ -68,6 +68,8 @@ pt-BR:
   reset_tour_fail: "Ocorreu um erro, por favor tente novamente"
   stories_destroy_success: "As histórias foram destruídas com sucesso"
   stories_destroy_fail: "As histórias não puderam ser destruídas por alguns erros de validação"
+  update_stories_successfully: "As histórias foram atualizadas com sucesso"
+  stories_not_found: "Histórias não encontradas"
 
   story:
     state:
