@@ -20,7 +20,7 @@ class ProjectBoard extends React.Component {
           stories={this.props.columns.chillyBin.stories}
         />
         <Column
-          title={I18n.t('projects.show.backlog')}
+          title={I18n.t('projects.show.backlog_in_progress')}
           stories={this.props.columns.backlog.stories}
         />
         <Column
