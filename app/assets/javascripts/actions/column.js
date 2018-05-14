@@ -10,11 +10,6 @@ const setStoryBacklog = (payload) => ({
   data: payload,
 });
 
-const setStoryInProgress = (payload) => ({
-  type: actionTypes.COLUMN_IN_PROGRESS,
-  data: payload,
-});
-
 const setColumn = dispatch => story => {
   switch(story.state) {
     case 'unscheduled':
@@ -27,7 +22,7 @@ const setColumn = dispatch => story => {
       // to do
       break;
     default :
-      dispatch(setStoryInProgress(story));
+      dispatch(setStoryBacklog(story));
   }
 }
 
