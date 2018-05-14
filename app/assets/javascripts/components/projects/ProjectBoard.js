@@ -20,11 +20,11 @@ class ProjectBoard extends React.Component {
           stories={this.props.columns.chillyBin.stories}
         />
         <Column
-          title={I18n.t('projects.show.backlog_in_progress')}
+          title={`${I18n.t('projects.show.backlog')}/${I18n.t('projects.show.in_progress')}`}
           stories={this.props.columns.backlog.stories}
         />
         <Column
-          title="Done"
+          title={I18n.t('projects.show.done')}
           stories={this.props.columns.done.stories}
         />
       </div>

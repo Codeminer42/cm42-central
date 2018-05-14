@@ -294,7 +294,6 @@ en:
       done: "Done"
       in_progress: "In Progress"
       backlog: "Backlog"
-      backlog_in_progress: "Backlog/In Progress"
       chilly_bin: "Chilly Bin"
       search_results: "Search Results"
       epic: 'Epic'

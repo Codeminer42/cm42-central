@@ -296,7 +296,6 @@ pt-BR:
       done: "Concluído"
       in_progress: "Em Progresso"
       backlog: "Backlog"
-      backlog_in_progress: "Backlog/Em Progresso"
       chilly_bin: "Chilly Bin"
       search_results: "Resultados da Busca"
       epic: 'Épico'
