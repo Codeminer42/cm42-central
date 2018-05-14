@@ -16,11 +16,11 @@ class ProjectBoard extends React.Component {
     return (
       <div className="ProjectBoard">
         <Column
-          title="Chilly Bin"
+          title={I18n.t('projects.show.chilly_bin')}
           stories={this.props.columns.chillyBin.stories}
         />
         <Column
-          title="BackLog/In Progress"
+          title={I18n.t('projects.show.backlog')}
           stories={this.props.columns.backlog.stories}
         />
         <Column

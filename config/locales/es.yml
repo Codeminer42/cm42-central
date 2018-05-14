@@ -283,8 +283,7 @@ es:
 
     show:
       done: "Terminadas"
-      in_progress: "En progreso"
-      backlog: "Backlog"
+      backlog: "Backlog/En progreso"
       chilly_bin: "Icebox"
       search_results: "Resultados de la búsqueda"
       epic: 'Epic'
