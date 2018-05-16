@@ -11,7 +11,7 @@ describe('iteration', function() {
   });
 
   describe('when 1 out of 1 week has passed', function() {
-    fit('should return 2', function() {
+    it('should return 2', function() {
       const sprintNumber = Iteration.getSprint({
                             iterationLength: 1,
                             startDate: "2018-04-24T16:00:00"
@@ -21,7 +21,7 @@ describe('iteration', function() {
   });
 
   describe("when 3 out of 3 weeks has passed", function() {
-    fit('should return 2', function() {
+    it('should return 2', function() {
       const sprintNumber = Iteration.getSprint({
                             iterationLength: 3,
                             startDate: "2018-04-10T16:00:00"
@@ -31,7 +31,7 @@ describe('iteration', function() {
   });
 
   describe("when 1 out of 2 weeks has passed", function() {
-    fit('should return 1', function() {
+    it('should return 1', function() {
       const sprintNumber = Iteration.getSprint({
                             iterationLength: 2,
                             startDate: "2018-04-24T16:00:00"
@@ -41,7 +41,7 @@ describe('iteration', function() {
   });
 
   describe("when a story was acceped a week ago", function() {
-    fit('should return 1', function() {
+    it('should return 1', function() {
       const sprintNumber = Iteration.getIterationForStory(
                             { state: 'accepted', acceptedAt: "2018-04-24T16:00:00" },
                             { iterationLength: 2 }

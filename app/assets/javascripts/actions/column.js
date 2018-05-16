@@ -14,14 +14,17 @@ const setStoryBacklog = (payload) => ({
 const setColumn = (dispatch, project) => story => {
   if(story.state === 'unscheduled') {
     return dispatch(setStoryChillyBin(story));
-  } else {
-    const currentSprint = iteration.getSprint(project);
-    const storySprint = iteration.getIterationForStory(story, project);
-    const isFromCurrentSprint = currentSprint === storySprint;
-    if(story.state !== 'accepted' || isFromCurrentSprint) {
-      return dispatch(setStoryBacklog(story));
-    }
   }
+  if(isBacklog(story, project)) {
+    return dispatch(setStoryBacklog(story));
+  }
+}
+
+const isBacklog = (story, project) => {
+  const currentSprint = iteration.getSprint(project);
+  const storySprint = iteration.getIterationForStory(story, project);
+  const isFromCurrentSprint = currentSprint === storySprint;
+  return story.state !== 'accepted' || isFromCurrentSprint
 }
 
 export const classifyStories = (dispatch, stories, project) => stories.map(setColumn(dispatch, project))
