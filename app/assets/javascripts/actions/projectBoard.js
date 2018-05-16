@@ -33,7 +33,7 @@ export const fetchProjectBoard = (projectId) => {
         dispatch(receiveUsers(users));
         dispatch(receiveStories(stories));
         dispatch(receiveProjectBoard(projectId));
-        classifyStories(dispatch, stories);
+        classifyStories(dispatch, stories, project);
       })
       .catch((error) =>
         dispatch(errorRequestProjectBoard(error))

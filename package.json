@@ -48,7 +48,7 @@
     "js-yaml": "^3.8.4",
     "keymirror": "^0.1.1",
     "memoizee": "^0.4.4",
-    "moment": "^2.18.1",
+    "moment": "^2.22.1",
     "node-sass": "^4.5.3",
     "path-complete-extname": "^0.1.0",
     "postcss-loader": "^2.0.6",
