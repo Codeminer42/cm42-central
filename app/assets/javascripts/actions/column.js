@@ -21,9 +21,9 @@ const setColumn = (dispatch, project) => story => {
 }
 
 const isBacklog = (story, project) => {
-  const currentSprint = iteration.getSprint(project);
-  const storySprint = iteration.getIterationForStory(story, project);
-  const isFromCurrentSprint = currentSprint === storySprint;
+  const currentIteration = iteration.getCurrentIteration(project);
+  const storyIteration = iteration.getIterationForStory(story, project);
+  const isFromCurrentSprint = currentIteration === storyIteration;
   return story.state !== 'accepted' || isFromCurrentSprint
 }
 
