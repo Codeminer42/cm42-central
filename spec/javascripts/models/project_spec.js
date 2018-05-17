@@ -226,7 +226,7 @@ describe('Project model', function() {
 
       expect(this.project.doneIterations()).toEqual([doneIteration]);
     });
-
+    
   });
 
 

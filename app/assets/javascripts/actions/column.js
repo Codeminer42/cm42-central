@@ -1,4 +1,5 @@
 import actionTypes from './actionTypes';
+import * as iteration from '../models/beta/iteration';
 
 const setStoryChillyBin = (payload) => ({
   type: actionTypes.COLUMN_CHILLY_BIN,
@@ -10,25 +11,20 @@ const setStoryBacklog = (payload) => ({
   data: payload,
 });
 
-const setStoryInProgress = (payload) => ({
-  type: actionTypes.COLUMN_IN_PROGRESS,
-  data: payload,
-});
-
-const setColumn = dispatch => story => {
-  switch(story.state) {
-    case 'unscheduled':
-      dispatch(setStoryChillyBin(story));
-      break;
-    case 'unstarted':
-      dispatch(setStoryBacklog(story));
-      break;
-    case 'accepted':
-      // to do
-      break;
-    default :
-      dispatch(setStoryInProgress(story));
+const setColumn = (dispatch, project) => story => {
+  if(story.state === 'unscheduled') {
+    return dispatch(setStoryChillyBin(story));
+  }
+  if(isBacklog(story, project)) {
+    return dispatch(setStoryBacklog(story));
   }
 }
 
-export const classifyStories = (dispatch, stories) => stories.map(setColumn(dispatch))
+const isBacklog = (story, project) => {
+  const currentIteration = iteration.getCurrentIteration(project);
+  const storyIteration = iteration.getIterationForStory(story, project);
+  const isFromCurrentSprint = currentIteration === storyIteration;
+  return story.state !== 'accepted' || isFromCurrentSprint
+}
+
+export const classifyStories = (dispatch, stories, project) => stories.map(setColumn(dispatch, project))
