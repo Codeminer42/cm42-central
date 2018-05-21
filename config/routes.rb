@@ -35,6 +35,9 @@ Rails.application.routes.draw do
     post 'create_enrollment' => 'teams#create_enrollment'
     resources :users, only: [:create]
     resources :api_tokens, only: [:create, :destroy]
+    member do
+      post :unarchiving
+    end
   end
 
   resources :projects do

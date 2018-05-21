@@ -59,7 +59,7 @@
 
                   <li class="divider"></li>
 
-                  <% current_user.teams.each do |team| %>
+                  <% current_user.teams.not_archived.each do |team| %>
                     <li><%= link_to team.name, switch_teams_path(team_slug: team.slug) %></li>
                   <% end %>
 

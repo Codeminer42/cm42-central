@@ -1,0 +1,29 @@
+<%= link_to switch_teams_path(team_slug: team.slug), class: 'card-link' do %>
+  <div class="col-md-4 col-xs-12">
+    <div class="panel panel-default card clickable animated scale-in">
+
+      <div class="panel-heading">
+        <%= team.name %>
+      </div>
+
+      <div class="panel-body">
+        <div class="col-md-6 col-xs-6 counter">
+          <span class="counter-description"><%= User.model_name.human(count: 2) %></span>
+          <span class="counter-value"><%= team.users.size %> </span>
+        </div>
+
+        <div class="col-md-6 col-xs-6 counter">
+          <span class="counter-description"><%= Project.model_name.human(count: 2) %></span>
+          <span class="counter-value"><%= team.projects.size %> </span>
+        </div>
+      </div>
+      <% if team.archived_at? %>
+        <div class="panel-footer">
+          <div class="text-center">
+            <%= link_to 'Unarchive', unarchiving_team_path(team.id), method: :post %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

@@ -66,10 +66,15 @@
         <% end %>
 
         <%= link_to t('teams.members'), team_manage_users_path(current_team.slug), class: 'btn btn-default col-xs-12 btn-square' %>
+        <%= link_to 'Archive Team',
+                    team_url,
+                    method: :delete,
+                    data: { confirm: 'Are you sure you want to archive this team?' },
+                    class: 'btn btn-default col-xs-12 btn-square' %>
       </div>
     </div>
 
-    <% if current_user.teams.count > 1 %>
+    <% if @user_teams.count > 1 %>
       <div class="panel panel-default card">
         <div class="panel-heading">
           <%= t('teams.switch') %>

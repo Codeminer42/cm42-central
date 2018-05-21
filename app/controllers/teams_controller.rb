@@ -53,7 +53,7 @@ class TeamsController < ApplicationController
   # GET /teams/1/edit
   def edit
     @team = current_team
-    @user_teams = current_user.teams.order(:name)
+    @user_teams = current_user.teams.not_archived.order(:name)
 
     authorize @team
   end
@@ -110,8 +110,26 @@ class TeamsController < ApplicationController
     session[:current_team_slug] = nil
 
     respond_to do |format|
-      format.html { redirect_to root_path }
+      format.html do
+        flash[:notice] = t('teams.successfully_archived')
+        redirect_to root_path
+      end
       format.xml  { head :ok }
+    end
+  end
+
+  def unarchiving
+    archived_team = Team.find_by(id: params[:id])
+    authorize archived_team, :update?
+    unarchived_team = TeamOperations::Unarchive.call(archived_team)
+
+    respond_to do |format|
+      if unarchived_team
+        format.html do
+          flash[:notice] = t('teams.successfully_unarchived')
+          redirect_to teams_path
+        end
+      end
     end
   end
 
