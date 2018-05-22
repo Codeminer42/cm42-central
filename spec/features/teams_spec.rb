@@ -83,5 +83,20 @@ describe 'Teams' do
         expect(page).to have_text(I18n.t('teams.user_is_already_in_this_team'))
       end
     end
+
+    describe 'archiving teams' do
+      let!(:user)  { create :user, :with_team_and_is_admin }
+
+      it 'archives the team', js: true do
+        click_button 'Teams'
+        click_link 'Settings'
+        accept_confirm do
+          click_link 'Archive Team'
+        end
+
+        expect(page).to have_text(I18n.t('teams.successfully_archived'))
+      end
+    end
+
   end
 end
