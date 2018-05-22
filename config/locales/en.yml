@@ -350,6 +350,7 @@ en:
     update: 'Update Team'
     switch: 'Change to another team'
     select: "Select Team"
+    archived: 'Archived Teams'
     team was successfully created: 'Team was successfully created'
     team_was_successfully_updated: 'Team was successfully updated'
     successfully_archived: 'Team was successfully archived'

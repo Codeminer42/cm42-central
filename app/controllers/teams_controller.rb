@@ -114,7 +114,7 @@ class TeamsController < ApplicationController
         flash[:notice] = t('teams.successfully_archived')
         redirect_to root_path
       end
-      format.xml  { head :ok }
+      format.xml { head :ok }
     end
   end
 

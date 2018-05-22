@@ -333,6 +333,7 @@ es:
     update: 'Actualizar Equipo'
     switch: 'Cambiar a otro Equipo'
     select: "Seleccionar Equipo"
+    archived: 'Equipos archivados'
     team was successfully created: 'El equipo ha sido creado con éxito'
     team_was_successfully_updated: 'El equipo ha sido actualizado correctamente'
     successfully_archived: 'El equipo ha sido archivado con éxito'
