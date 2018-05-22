@@ -33,7 +33,7 @@ module.exports = Backbone.View.extend({
     this.addBar('#epic');
 
     var search_results_ids = this.model.search.pluck("id");
-    var stories = this.model.stories;
+    var stories = this.model.projectBoard.stories;
     _.each(search_results_ids, function(id) {
       var story = stories.get(id);
       if (!_.isUndefined(story)) {

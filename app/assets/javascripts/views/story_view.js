@@ -538,8 +538,12 @@ module.exports = FormView.extend({
   },
 
   renderCollapsed: function(isGuest) {
+
     this.$el.removeClass('editing');
     this.$el.html(this.template({story: this.model, view: this}));
+    this.$el.toggleClass('collapsed-iteration',
+                         !this.model.get('isVisible') &&
+                         !this.isSearchResult);
 
     const stateButtons = this.$('[data-story-state-buttons]').get(0)
     if(stateButtons) {
@@ -581,6 +585,7 @@ module.exports = FormView.extend({
       <StoryControls
         onClickSave={this.clickSave}
         onClickCancel={this.cancelEdit}
+        disableChanges={!this.isLoaded()}
       />,
       this.$('[data-story-controls]').get(0)
     );
@@ -1117,4 +1122,14 @@ module.exports = FormView.extend({
   showHistory: function() {
     this.model.showHistory();
   },
+
+  isLoaded: function() {
+    const projectStories = this.model.collection.project.projectBoard.stories;
+    const isLoaded = !!projectStories.get(this.model.get('id')) || !this.model.get('id');
+    return isLoaded;
+  },
+
+  isLoadedSearchResult: function() {
+    return this.isSearchResult && this.isLoaded();
+  }
 });

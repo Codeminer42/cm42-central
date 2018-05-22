@@ -3,6 +3,7 @@ var Cookies = require('js-cookie');
 var StoryCollection = require('collections/story_collection');
 var UserCollection = require('collections/user_collection');
 var Iteration = require('models/iteration');
+var ProjectBoard = require('models/projectBoard');
 
 module.exports = Backbone.Model.extend({
   defaults: {
@@ -18,16 +19,15 @@ module.exports = Backbone.Model.extend({
 
     this.on('change:last_changeset_id', this.updateChangesets, this);
 
-    this.stories = new StoryCollection();
-    this.stories.url = this.url() + '/stories';
-    this.stories.project = this;
+    this.projectBoard = new ProjectBoard({ project: this });
+    this.projectBoard.stories.url = `${this.url()}/stories`;
 
     this.users = new UserCollection();
-    this.users.url = this.url() + '/users';
+    this.users.url = `${this.url()}/users`;
     this.users.project = this;
 
     this.search = new StoryCollection();
-    this.search.url = this.url() + '/stories';
+    this.search.url = `${this.url()}/stories`;
     this.search.project = this;
 
     this.iterations = [];
@@ -100,15 +100,15 @@ module.exports = Backbone.Model.extend({
 
     _.each(story_ids, function(story_id) {
       // FIXME - Feature envy on stories collection
-      var story = that.stories.get(story_id);
+      var story = that.projectBoard.stories.get(story_id);
       if (story) {
         // This is an existing story on the collection, just reload it
         story.fetch();
       } else {
         // This is a new story, which is present on the server but we don't
         // have it locally yet.
-        that.stories.add({id: story_id});
-        story = that.stories.get(story_id);
+        that.projectBoard.stories.add({id: story_id});
+        story = that.projectBoard.stories.get(story_id);
         story.fetch();
       }
     });
@@ -261,38 +261,18 @@ module.exports = Backbone.Model.extend({
     // Reset all story column values.  Required as the story.column values
     // may have been changed from their default values by a prior run of
     // this method.
-    this.stories.invoke('setColumn');
+    this.projectBoard.stories.invoke('setColumn');
 
-    var doneIterations = _.groupBy(this.stories.column('#done'),
-                                    function(story) {
-                                      return story.iterationNumber();
-                                    });
-
-    // groupBy() returns an object with keys of the iteration number
-    // and values of the stories array.  Ensure the keys are sorted
-    // in numeric order.
-    var doneNumbers = _.keys(doneIterations).sort(function(left, right) {
-      return (left - right);
-    });
-
-    _.each(doneNumbers, function(iterationNumber) {
-      var stories = doneIterations[iterationNumber];
-      var iteration = new Iteration({
-        'number': iterationNumber, 'stories': stories, column: '#done'
-      });
-
+    this.projectBoard.pastIterations.forEach((iteration) => {
       that.appendIteration(iteration, '#done');
-
     });
 
     var currentIteration = new Iteration({
       'number': this.currentIterationNumber(),
-      'stories': this.stories.column('#in_progress'),
+      'stories': this.projectBoard.stories.column('#in_progress'),
       'maximum_points': this.velocity(), 'column': '#in_progress'
     });
     this.appendIteration(currentIteration, '#done');
-
-
 
     //
     // Backlog column
@@ -304,7 +284,7 @@ module.exports = Backbone.Model.extend({
     this.appendIteration(backlogIteration, '#backlog');
 
 
-    _.each(this.stories.column('#backlog'), function(story) {
+    _.each(this.projectBoard.stories.column('#backlog'), function(story) {
 
       // The in progress iteration usually needs to be filled with the first
       // few stories from the backlog, unless the points total of the stories

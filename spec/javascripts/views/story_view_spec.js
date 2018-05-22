@@ -31,7 +31,7 @@ describe('StoryView', function() {
       errorsOn: function() { return false; },
       documents: function() { return [{"file":{"id":25,"public_id":"ikhhkie4ygljblsleqie.diff","version":"1435342626","format":null,"resource_type":"raw","path":"v1435342626/ikhhkie4ygljblsleqie.diff"}},{"file":{"id":26,"public_id":"zvjhfvramk76ebgvhioa.csv","version":"1435342608","format":null,"resource_type":"raw","path":"v1435342608/zvjhfvramk76ebgvhioa.csv"}},{"file":{"id":27,"public_id":"rythcrivxemvnbyh5mjb","version":"1435346191","format":"png","resource_type":"image","path":"v1435346191/rythcrivxemvnbyh5mjb.png"}}] },
       url: '/path/to/story',
-      collection: { project: { users: { forSelect: function() {return [];} } } },
+      collection: { project: { users: { forSelect: function() {return [];} }, projectBoard: { stories: { get(s) { return s; } } } } },
       start: function()   { this.set({state: "started"}); },
       deliver: function() { this.set({state: "delivered"}); },
       accept: function()  { this.set({state: "accepted"}); },

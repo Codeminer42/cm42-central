@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 ### Added
+- New way to load past stories
 - New route to destroy batch stories.
 - Missing button titles in story component
 

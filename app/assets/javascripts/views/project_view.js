@@ -16,15 +16,15 @@ module.exports = Backbone.View.extend({
     this.$loadingSpin = this.$('.loading-spin');
     this.$columnToggles = this.$el.parent().find('#column-toggles');
 
-    this.model.stories.on('add', this.addStory, this);
-    this.model.stories.on('reset', this.addAll, this);
-    this.model.stories.on('all', this.render, this);
+    this.model.projectBoard.stories.on('add', this.addStory, this);
+    this.model.projectBoard.stories.on('reset', this.addAll, this);
+    this.model.projectBoard.stories.on('all', this.render, this);
     this.listenTo(this.model, 'change:userVelocity', this.addAll);
     this.listenTo(this.model, 'change:current_flow', this.prepareColumns);
 
     this.prepareColumns();
     this.$loadingSpin.show();
-    this.model.stories.fetch({success: this.addAll});
+    this.model.projectBoard.fetch().then(this.addAll);
 
     const attachmentOptions = new AttachmentOptions({
       refreshCallback: (options) => {
@@ -82,7 +82,7 @@ module.exports = Backbone.View.extend({
             column.toggle();
       });
     }
-    this.model.stories.add([{
+    this.model.projectBoard.stories.add([{
       events: [], files: [], editing: true
     }]);
   },
@@ -106,9 +106,6 @@ module.exports = Backbone.View.extend({
 
     this.appendViewToColumn(view, column);
     view.setFocus();
-    if (column === '#done') {
-      view.$el.addClass('collapsed-iteration');
-    }
   },
 
   appendViewToColumn: function(view, columnName) {
@@ -146,11 +143,10 @@ module.exports = Backbone.View.extend({
 
     // Render the chilly bin.  This needs to be rendered separately because
     // the stories don't belong to an iteration.
-    _.each(this.model.stories.column('#chilly_bin'), function(story) {
+    _.each(this.model.projectBoard.stories.column('#chilly_bin'), function(story) {
       that.addStory(story);
     });
 
-    this.$('#done div.iteration:last').click();
     this.$loadingSpin.hide();
     this.scrollToStory(window.location.hash || '');
   },

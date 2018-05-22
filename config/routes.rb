@@ -58,6 +58,12 @@ Rails.application.routes.draw do
     resources :stories_bulk_destroy, only: [:create]
   end
 
+  resources :project_boards, only: :show do
+    member do
+      get 'iterations' => 'iterations#show'
+    end
+  end
+  
   namespace :beta do
     resources :projects, only: :show
     resources :project_boards, only: :show

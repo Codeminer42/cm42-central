@@ -360,6 +360,40 @@ describe 'Stories' do
       expect(page).not_to have_css(story_selector(story))
     end
 
+    context 'when search for past iteration story' do
+      let(:project) do
+        create(:project, :with_past_iteration, users: [user], teams: [user.teams.first])
+      end
+      let(:done_story) do
+        create(:story, :done, title: 'Past iteration', project: project, requested_by: user)
+      end
+
+      before do
+        done_story
+        visit project_path(project)
+        wait_spinner
+
+        within('#form_search') do
+          fill_in 'q', with: 'iteration'
+        end
+
+        page.execute_script("$('#form_search').submit()")
+      end
+
+      it 'does not show the locate button', js: true do
+        story_element = find(story_search_result_selector(done_story))
+        expect(story_element[:class]).to include('searchResult')
+        expect(story_element).not_to have_css('#locate')
+      end
+
+      it 'does not show the control buttons', js: true do
+        story_element = find(story_search_result_selector(done_story))
+        story_element.click
+        expect(story_element).not_to have_css('.submit')
+        expect(story_element).not_to have_css('.destroy')
+      end
+    end
+
     it 'finds the story using a contextual search query', js: true do
       page.execute_script("$('#form_search').val('')")
 

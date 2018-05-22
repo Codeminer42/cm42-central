@@ -12,15 +12,12 @@ module.exports = Backbone.View.extend({
   },
 
   toggleStories: function() {
-    var item = this.$el.next();
-    while(true) {
-      if ($(item).hasClass('story')) {
-        $(item).toggle();
-      }
-      item = item.next();
-      if (item.length === 0 || $(item).hasClass('iteration')) {
-        break;
-      }
+    if(this.model.needsLoad) {
+      this.model.fetch();
+    } else {
+      this.model.stories().forEach(story => {
+        story.set('isVisible', !story.get('isVisible'));
+      })
     }
   },
 

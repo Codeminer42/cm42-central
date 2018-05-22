@@ -41,8 +41,8 @@ module StoryOperations
           '@changed_attributes',
           model.instance_variable_get('@changed_attributes').merge(
             documents_attributes: model.documents_attributes_was
+            )
           )
-        )
       end
 
       model.changesets.create!
@@ -53,5 +53,37 @@ module StoryOperations
   end
 
   class DestroyAll < BaseOperations::DestroyAll
+  end
+
+  class ReadAll
+    def self.call(*args)
+      new(*args).run
+    end
+
+    def initialize(project:)
+      @story_scope = project.stories.with_dependencies
+      @project = project
+      @iterations = Iterations::ProjectIterations.new(project: project)
+    end
+
+    def run
+      {
+        active_stories: active_stories,
+        past_iterations: @iterations.past_iterations
+      }
+    end
+
+    private
+
+    def active_stories
+      order(@story_scope.where("state != 'accepted' OR
+        accepted_at >= ?", @iterations.current_iteration_start))
+    end
+
+    def order(query)
+      query.order('updated_at DESC').tap do |relation|
+        relation.limit(ENV['STORIES_CEILING']) if ENV['STORIES_CEILING']
+      end
+    end
   end
 end
