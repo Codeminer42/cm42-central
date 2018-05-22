@@ -15,7 +15,7 @@ module.exports = {
   },
 
   hasErrors: function() {
-    return (!_.isUndefined(this.get('errors')));
+    return (!_.isEmpty(this.get('errors')));
   },
 
   errorsOn: function(field) {

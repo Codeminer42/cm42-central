@@ -6,8 +6,7 @@
   <%= csrf_meta_tag %>
   <%= favicon_link_tag "favicon.ico" %>
   <%= stylesheet_link_tag :application %>
-  <%= javascript_include_tag "https://www.authy.com/form.authy.min.js" %>
-  <%= stylesheet_link_tag "https://www.authy.com/form.authy.min.css" %>
+  <%= stylesheet_link_tag "//cdnjs.cloudflare.com/ajax/libs/authy-form-helpers/2.3/form.authy.min.css" %>
   <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Noto+Sans:400,700" %>
 </head>
 <body class='<%= "board" if @layout_settings[:fluid] %>' data-page='<%= "#{params[:controller]}.#{params[:action]}" %>'>
@@ -118,6 +117,7 @@
   </div>
 </div>
 
+<%= javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/authy-form-helpers/2.3/form.authy.min.js" %>
 <%= javascript_pack_tag 'app' %>
 <%= javascript_include_tag 'i18n/translations' %>
 <%= javascript_include_tag :attachinary %>

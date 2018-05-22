@@ -10,11 +10,19 @@ class AtWhoInput extends React.Component {
     this.loadAtWho();
   }
 
+  componentWillUnmount() {
+    this.unloadAtWho();
+  }
+
   loadAtWho() {
     $(this.textarea).atwho({
       at: "@",
       data: this.props.usernames
     }).on('inserted.atwho', this.props.onChange);
+  }
+
+  unloadAtWho() {
+    $(this.textarea).atwho('destroy');
   }
 
   render() {

@@ -130,9 +130,9 @@ module.exports = FormView.extend({
     // Set the story state if drop column is chilly_bin or backlog
     var column = target.parent().attr('id');
     if (column === 'backlog' || (column === 'in_progress' && this.model.get('state') === 'unscheduled')) {
-      this.model.set({state: 'unstarted'});
+      this.model.set({state: 'unstarted'}, {silent: true});
     } else if (column === 'chilly_bin') {
-      this.model.set({state: 'unscheduled'});
+      this.model.set({state: 'unscheduled'}, {silent: true});
       [previous_story_id, next_story_id] = [next_story_id, previous_story_id];
     }
 
@@ -283,6 +283,7 @@ module.exports = FormView.extend({
   },
 
   cancelEdit: function() {
+    this.clearAtWhoContainer();
     this.model.set({editing: false});
 
     // If the model was edited, but the edits were deemed invalid by the
@@ -320,6 +321,7 @@ module.exports = FormView.extend({
         that.model.set({ editing: editMode });
         that.toggleControlButtons(false);
         that.highlightStory();
+        that.clearAtWhoContainer();
       },
       error: function(model, response) {
         var json = $.parseJSON(response.responseText);
@@ -329,16 +331,18 @@ module.exports = FormView.extend({
           title: I18n.t("save error"),
           text: model.errorMessages()
         });
-
         that.enableForm();
+        that.clearAtWhoContainer();
       }
     });
   },
 
   // Delete the story and remove it's view element
   clear: function() {
-    if (confirm("Are you sure you want to destroy this story?"))
+    if (confirm("Are you sure you want to destroy this story?")) {
+      this.clearAtWhoContainer();
       this.model.clear();
+    }
   },
 
   editDescription: function(ev) {
@@ -847,6 +851,7 @@ module.exports = FormView.extend({
   },
 
   handleTaskDelete: function(task) {
+    this.clearAtWhoContainer();
     task.destroy();
     this.renderTasks();
   },
@@ -1116,5 +1121,10 @@ module.exports = FormView.extend({
 
   showHistory: function() {
     this.model.showHistory();
+  },
+
+  clearAtWhoContainer: function() {
+    // to destroy the atwho container
+    $('.atwho-container').remove();
   },
 });
