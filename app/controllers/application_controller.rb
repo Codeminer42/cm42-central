@@ -75,7 +75,7 @@ class ApplicationController < ActionController::Base
 
   def set_first_team
     user_teams = current_user.teams.not_archived
-    return if user_teams.empty?
+    return if user_teams.size != 1
 
     session[:current_team_slug] = user_teams.first.slug
   end
