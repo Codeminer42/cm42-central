@@ -90,7 +90,7 @@ class TeamsController < ApplicationController
 
         format.html do
           flash[:notice] = t('teams.team_was_successfully_updated')
-          render action: 'edit'
+          redirect_to edit_team_path
         end
         format.xml  { head :ok }
       else
@@ -107,14 +107,13 @@ class TeamsController < ApplicationController
     authorize @team
 
     TeamOperations::Destroy.call(@team, current_user)
-    session[:current_team_slug] = nil
+    session[:current_team_slug] = nil if @team.slug == session[:current_team_slug]
 
     respond_to do |format|
       format.html do
         flash[:notice] = t('teams.successfully_archived')
-        redirect_to root_path
+        redirect_to teams_path
       end
-      format.xml { head :ok }
     end
   end
 
