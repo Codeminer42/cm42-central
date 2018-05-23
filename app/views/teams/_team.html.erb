@@ -20,7 +20,7 @@
       <% if team.archived_at? %>
         <div class="panel-footer">
           <div class="text-center">
-            <%= link_to t('teams.unarchive'), unarchiving_team_path(team.id), method: :post %>
+            <%= link_to t('teams.unarchive'), unarchive_team_path(team.id), method: :post %>
           </div>
         </div>
       <% end %>
