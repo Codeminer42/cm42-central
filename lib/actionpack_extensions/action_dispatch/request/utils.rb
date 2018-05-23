@@ -24,5 +24,5 @@ end
 
 Rails.configuration.to_prepare do
   ActionDispatch::Request::Utils.singleton_class
-    .prepend ActionpackExtensions::ActionDispatch::Request::Utils
+                                .prepend ActionpackExtensions::ActionDispatch::Request::Utils
 end
