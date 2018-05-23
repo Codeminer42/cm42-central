@@ -154,7 +154,7 @@ describe TeamsController, type: :controller do
           delete :destroy, id: 'xyz'
           expect(assigns[:team].archived_at).to_not be_nil
           expect(session[:current_team_slug]).to be_nil
-          expect(response).to redirect_to(root_path)
+          expect(response).to redirect_to(teams_path)
         end
       end
     end
