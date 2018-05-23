@@ -354,6 +354,8 @@ pt-BR:
     switch: 'Mudar para outra Equipe'
     select: "Selecionar Equipe"
     archived: 'Equipes arquivadas'
+    archive: 'Arquivar Equipe'
+    unarchive: 'Desarquivar'
     team was successfully created: 'Equipe foi criado com sucesso'
     team_was_successfully_updated: 'Equipe foi atualizada com sucesso'
     successfully_archived: 'O time foi arquivado com sucesso'
