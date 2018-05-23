@@ -118,7 +118,7 @@ class TeamsController < ApplicationController
     end
   end
 
-  def unarchiving
+  def unarchive
     archived_team = Team.find_by(id: params[:id])
     authorize archived_team, :update?
     unarchived_team = TeamOperations::Unarchive.call(archived_team)

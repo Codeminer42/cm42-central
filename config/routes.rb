@@ -36,7 +36,7 @@ Rails.application.routes.draw do
     resources :users, only: [:create]
     resources :api_tokens, only: [:create, :destroy]
     member do
-      post :unarchiving
+      post :unarchive
     end
   end
 
