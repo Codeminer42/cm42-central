@@ -87,14 +87,30 @@ describe 'Teams' do
     describe 'archiving teams' do
       let!(:user)  { create :user, :with_team_and_is_admin }
 
-      it 'archives the team', js: true do
+      it 'successfully archive the team', js: true do
         click_button 'Teams'
         click_link 'Settings'
+
         accept_confirm do
           click_link 'Archive Team'
         end
 
         expect(page).to have_text(I18n.t('teams.successfully_archived'))
+      end
+
+      it 'moves the archived team to the archived section', js: true do
+        click_button 'Teams'
+        click_link 'Settings'
+
+        accept_confirm do
+          click_link 'Archive Team'
+        end
+
+        within('#main > .container') do
+          within('div:nth-child(3) .teams')  do
+            expect(page).to have_css('div.col-md-4.col-xs-12', count: 1)
+          end
+        end
       end
     end
 
