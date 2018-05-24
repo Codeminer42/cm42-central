@@ -1,5 +1,5 @@
 class TeamsController < ApplicationController
-  skip_before_action :check_team_presence, only: %i[index switch new create]
+  skip_before_action :check_team_presence, only: %i[index switch new create unarchive]
   skip_after_action :verify_policy_scoped, only: :index
 
   def index

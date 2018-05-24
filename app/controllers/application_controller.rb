@@ -61,19 +61,19 @@ class ApplicationController < ActionController::Base
       return public_send("#{resource_name}_enable_authy_path")
     end
 
-    set_first_team
+    set_current_team_if_single
 
     return teams_url if session[:current_team_slug].blank?
     super
   end
 
   def check_team_presence
-    set_first_team
+    set_current_team_if_single
 
     redirect_to teams_url if current_team.blank?
   end
 
-  def set_first_team
+  def set_current_team_if_single
     user_teams = current_user.teams.not_archived
     return if user_teams.size != 1
 
