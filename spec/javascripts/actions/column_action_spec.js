@@ -5,16 +5,16 @@ const ColumnAction = require('actions/column');
 describe('ColumnAction', function() {
     
   describe("setColumn", function() {
-    const current_sprint_date = moment();
-    const previous_sprint_date = moment().subtract(1, 'weeks');
+    const currentSprintDate = moment();
+    const previousSprintDate = moment().subtract(1, 'weeks');
     
     const project = {    
       iterationLength: 1,
       iterationStartDay: 1,
-      startDate : current_sprint_date.format()
+      startDate : currentSprintDate.format()
     }
     
-    const build_story_object = (state, acceptedAt) => {
+    const buildStoryObject = (state, acceptedAt) => {
       return {
         state: state,
         acceptedAt: acceptedAt,
@@ -27,7 +27,7 @@ describe('ColumnAction', function() {
 
     it("should return chilly bin if the story is unscheduled", function() {
      
-      const story = build_story_object('unscheduled', null);
+      const story = buildStoryObject('unscheduled', null);
 
       const action = ColumnAction.getColumnType(story, project);
   
@@ -36,7 +36,7 @@ describe('ColumnAction', function() {
 
     it("should return done if the story is accepted and belongs to previous sprint", function() {
       
-      const story = build_story_object('accepted', previous_sprint_date.format());
+      const story = buildStoryObject('accepted', previousSprintDate.format());
       
       const action = ColumnAction.getColumnType(story, project);
   
@@ -45,7 +45,7 @@ describe('ColumnAction', function() {
 
     it("should return backlog if the story is accepted and belongs to current sprint", function() {
       
-      const story = build_story_object('accepted', project.startDate);
+      const story = buildStoryObject('accepted', project.startDate);
   
       const action = ColumnAction.getColumnType(story, project);
   
@@ -54,7 +54,7 @@ describe('ColumnAction', function() {
 
     it("should return backlog if the story is not accepted and belongs to current sprint", function() {
       
-      const story = build_story_object(null, null);
+      const story = buildStoryObject(null, null);
 
       const action = ColumnAction.getColumnType(story, project);
   
