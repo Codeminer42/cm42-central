@@ -11,18 +11,29 @@ const setStoryBacklog = (payload) => ({
   data: payload,
 });
 
-const setColumn = (dispatch, project) => story => {
+const setStoryDone = (payload) => ({
+  type: actionTypes.COLUMN_DONE,
+  data: payload,
+});
+
+export const getColumnType = (story, project) => {
   if(story.state === 'unscheduled') {
-    return dispatch(setStoryChillyBin(story));
+    return setStoryChillyBin(story);
   }
   if(isBacklog(story, project)) {
-    return dispatch(setStoryBacklog(story));
+    return setStoryBacklog(story);
   }
+  return setStoryDone(story);
+}
+
+const setColumn = (dispatch, project) => story => {
+  var type = getColumnType(story, project);  
+  return dispatch(type)
 }
 
 const isBacklog = (story, project) => {
   const currentIteration = iteration.getCurrentIteration(project);
-  const storyIteration = iteration.getIterationForStory(story, project);
+  const storyIteration = iteration.getIterationForStory(story, project);  
   const isFromCurrentSprint = currentIteration === storyIteration;
   return story.state !== 'accepted' || isFromCurrentSprint
 }

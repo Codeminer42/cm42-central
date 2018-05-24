@@ -10,4 +10,5 @@ export default keyMirror({
   COLUMN_CHILLY_BIN: null,
   COLUMN_BACKLOG: null,
   COLUMN_IN_PROGRESS: null,
+  COLUMN_DONE: null,
 });

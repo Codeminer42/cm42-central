@@ -6,6 +6,13 @@ const initialState = {
 
 const done = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.COLUMN_DONE:
+      return {
+        stories: [
+          ...state.stories,
+          action.data,
+        ]
+      }
     default:
       return state;
   }
