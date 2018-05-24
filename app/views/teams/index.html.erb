@@ -12,7 +12,7 @@
     </div>
 
     <div class="teams">
-      <% unless @teams.empty? %>
+      <% if @teams.any? %>
         <%= render @teams.not_archived %>
       <% else %>
         <div class="simple-alert">
@@ -34,7 +34,7 @@
     </div>
 
     <div class="teams">
-      <% unless @teams.empty? %>
+      <% if @teams.any? %>
         <%= render @teams.archived %>
       <% else %>
       <div class="simple-alert">
