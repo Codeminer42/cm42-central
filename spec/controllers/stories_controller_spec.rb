@@ -90,7 +90,7 @@ describe StoriesController do
       end
     end
 
-    context 'update without losing documents' do
+    context 'update documents' do
       let(:attachments) do
         [
           {
@@ -142,6 +142,13 @@ describe StoriesController do
             end.to change { story.reload; story.documents.count }.by(0)
             expect(response).to be_success
           end
+        end
+
+        it 'should delete all documents (resilient against deep_munge rails/rails#13420)' do
+          expect(story.documents.count).to eq(2)
+          xhr :put, :update, project_id: project.id, id: story.id, story: ActionDispatch::Request::Utils.deep_munge({ documents: [] })
+          story.reload
+          expect(story.documents.count).to eq(0)
         end
       end
     end
