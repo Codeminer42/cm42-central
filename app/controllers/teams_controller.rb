@@ -90,7 +90,7 @@ class TeamsController < ApplicationController
 
         format.html do
           flash[:notice] = t('teams.team_was_successfully_updated')
-          redirect_to edit_team_path
+          redirect_to edit_team_path(@team)
         end
         format.xml  { head :ok }
       else

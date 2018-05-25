@@ -116,18 +116,18 @@ describe TeamsController, type: :controller do
       end
 
       describe '#update' do
+        let(:team) { user.teams.first }
         let(:team_params) { { name: 'New Team Name' } }
 
         specify do
-          put :update, id: 'xyz', team: team_params
+          put :update, id: team, team: team_params
           expect(assigns[:team].name).to eq('New Team Name')
         end
 
         context 'when update succeeds' do
           specify do
-            put :update, id: 'xyz', team: team_params
-            expect(response).to be_success
-            expect(response).to render_template('edit')
+            put :update, id: team, team: team_params
+            expect(response).to redirect_to(edit_team_path(team))
           end
         end
 
