@@ -2,9 +2,9 @@ import moment from 'moment';
 
 const ColumnAction = require('actions/column');
 
-describe('ColumnAction', function() {
+describe('ColumnAction', () => {
     
-  describe("setColumn", function() {
+  describe("setColumn", () => {
     const currentSprintDate = moment();
     const previousSprintDate = moment().subtract(1, 'weeks');
     
@@ -25,7 +25,7 @@ describe('ColumnAction', function() {
       };
     }
 
-    it("should return chilly bin if the story is unscheduled", function() {
+    it("return chilly bin if the story is unscheduled", () => {
      
       const story = buildStoryObject('unscheduled', null);
 
@@ -34,7 +34,7 @@ describe('ColumnAction', function() {
       expect(action.type).toEqual('COLUMN_CHILLY_BIN');
     });
 
-    it("should return done if the story is accepted and belongs to previous sprint", function() {
+    it("return done if the story is accepted and belongs to previous sprint", () => {
       
       const story = buildStoryObject('accepted', previousSprintDate.format());
       
@@ -43,7 +43,7 @@ describe('ColumnAction', function() {
       expect(action.type).toEqual('COLUMN_DONE');
     });
 
-    it("should return backlog if the story is accepted and belongs to current sprint", function() {
+    it("return backlog if the story is accepted and belongs to current sprint", () => {
       
       const story = buildStoryObject('accepted', project.startDate);
   
@@ -52,7 +52,7 @@ describe('ColumnAction', function() {
       expect(action.type).toEqual('COLUMN_BACKLOG');
     });
 
-    it("should return backlog if the story is not accepted and belongs to current sprint", function() {
+    it("return backlog if the story is not accepted and belongs to current sprint", () => {
       
       const story = buildStoryObject(null, null);
 
