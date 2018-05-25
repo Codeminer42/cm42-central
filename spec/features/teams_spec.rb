@@ -37,8 +37,9 @@ describe 'Teams' do
   end
 
   context 'when current user is the current team admin or the root' do
+    let!(:user) { create :user, :with_team_and_is_admin }
+
     describe 'trying to add a existing user that is not in the current team' do
-      let!(:user) { create :user, :with_team_and_is_admin }
       let!(:user_to_be_added) { create :user, email: 'user@example.com' }
 
       it 'should update the team with this user' do
@@ -54,7 +55,6 @@ describe 'Teams' do
     end
 
     describe 'trying to add an email that is not registered' do
-      let!(:user)  { create :user, :with_team_and_is_admin }
 
       it 'shows an error message' do
         visit team_manage_users_path(user.teams.first.slug)
@@ -69,7 +69,6 @@ describe 'Teams' do
     end
 
     describe 'trying to add a user that is not enrolled in the current team' do
-      let!(:user) { create :user, :with_team_and_is_admin }
       let!(:user_to_be_added) { create :user, teams: [user.teams.first], email: 'user@example.com' }
 
       it 'shows a message saying that the user is already on the team' do
@@ -85,7 +84,6 @@ describe 'Teams' do
     end
 
     describe 'archiving teams' do
-      let!(:user)  { create :user, :with_team_and_is_admin }
 
       it 'successfully archive the team', js: true do
         click_button 'Teams'
@@ -114,5 +112,16 @@ describe 'Teams' do
       end
     end
 
+    describe 'uncharving teams' do
+      let!(:user) { create :user, :with_archived_team_and_is_admin }
+
+      it 'successfully uncharving the team' do
+        visit teams_path
+
+        click_link 'Unarchive'
+
+        expect(page).to have_text(I18n.t('teams.successfully_unarchived'))
+      end
+    end
   end
 end
