@@ -12,7 +12,7 @@ const done = (state = initialState, action) => {
           ...state.stories,
           action.data,
         ]
-      }
+      };
     default:
       return state;
   }

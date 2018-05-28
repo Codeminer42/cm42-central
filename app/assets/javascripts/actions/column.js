@@ -27,15 +27,15 @@ export const getColumnType = (story, project) => {
 }
 
 const setColumn = (dispatch, project) => story => {
-  var type = getColumnType(story, project);  
-  return dispatch(type)
+  var type = getColumnType(story, project);
+  return dispatch(type);
 }
 
 const isBacklog = (story, project) => {
   const currentIteration = iteration.getCurrentIteration(project);
-  const storyIteration = iteration.getIterationForStory(story, project);  
+  const storyIteration = iteration.getIterationForStory(story, project);
   const isFromCurrentSprint = currentIteration === storyIteration;
-  return story.state !== 'accepted' || isFromCurrentSprint
+  return story.state !== 'accepted' || isFromCurrentSprint;
 }
 
 export const classifyStories = (dispatch, stories, project) => stories.map(setColumn(dispatch, project))
