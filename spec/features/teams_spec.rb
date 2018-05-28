@@ -122,6 +122,18 @@ describe 'Teams' do
 
         expect(page).to have_text(I18n.t('teams.successfully_unarchived'))
       end
+
+      it 'moves the archived team to select team section' do
+          visit teams_path
+
+          click_link 'Unarchive'
+
+        within('#main > .container') do
+          within('div:nth-child(2) .teams')  do
+            expect(page).to have_css('div.col-md-4.col-xs-12', count: 1)
+          end
+        end
+      end
     end
   end
 end
