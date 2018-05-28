@@ -124,9 +124,9 @@ describe 'Teams' do
       end
 
       it 'moves the archived team to select team section' do
-          visit teams_path
+        visit teams_path
 
-          click_link 'Unarchive'
+        click_link 'Unarchive'
 
         within('#main > .container') do
           within('div:nth-child(2) .teams')  do
