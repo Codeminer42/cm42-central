@@ -143,13 +143,6 @@ describe StoriesController do
             expect(response).to be_success
           end
         end
-
-        it 'should delete all documents (resilient against deep_munge rails/rails#13420)' do
-          expect(story.documents.count).to eq(2)
-          xhr :put, :update, project_id: project.id, id: story.id, story: ActionDispatch::Request::Utils.deep_munge({ documents: [] })
-          story.reload
-          expect(story.documents.count).to eq(0)
-        end
       end
     end
 
