@@ -20,7 +20,6 @@ RSpec.describe 'Story document', type: :request do
             'version' => '1471624237',
             'format' => 'png',
             'resource_type' => 'image',
-            'path' => 'v1471624237/Screen_Shot_2016-08-19_at_09.30.57_blnr1a.png'
           },
           {
             'id' => 31,
@@ -28,20 +27,14 @@ RSpec.describe 'Story document', type: :request do
             'version' => '1471624237',
             'format' => 'png',
             'resource_type' => 'image',
-            'path' => 'v1471624237/Screen_Shot_2016-08-19_at_09.30.57_blnr1a.png'
           }
         ]
       end
 
       let(:story) { create(:story, project: project, requested_by: user) }
 
-      let(:story_params) do
-        { title: 'Foo', documents: [attachments.first, attachments.last] }
-      end
-
       before do
         attachments.each do |a|
-          a.delete('path')
           Story.connection.execute(
             'insert into attachinary_files ' \
             "(#{a.keys.join(', ')}, scope, attachinariable_id, attachinariable_type) " \
