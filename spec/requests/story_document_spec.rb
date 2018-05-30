@@ -54,7 +54,9 @@ RSpec.describe 'Story document', type: :request do
         expect(story.documents.count).to eq(2)
         params = { story: { documents: [] } }.to_json
         headers = { 'CONTENT_TYPE' => 'application/json' }
+        
         put project_story_path(project_id: project.id, id: story.id), params, headers
+        
         story.reload
         expect(story.documents.count).to eq(0)
       end
