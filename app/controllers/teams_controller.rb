@@ -108,6 +108,7 @@ class TeamsController < ApplicationController
 
     TeamOperations::Destroy.call(@team, current_user)
     session[:current_team_slug] = nil if @team.slug == session[:current_team_slug]
+    Notifications.archive_team(@team).deliver_later if params[:send_email]
 
     respond_to do |format|
       format.html do

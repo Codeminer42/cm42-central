@@ -66,11 +66,9 @@
         <% end %>
 
         <%= link_to t('teams.members'), team_manage_users_path(current_team.slug), class: 'btn btn-default col-xs-12 btn-square' %>
-        <%= link_to t('teams.archive'),
-                    team_url,
-                    method: :delete,
-                    data: { confirm: 'Are you sure you want to archive this team?' },
-                    class: 'btn btn-default col-xs-12 btn-square' %>
+        <button class="btn btn-default col-xs-12 btn-square" type="button" data-toggle="modal" data-target="#archiveTeamModal">
+          <%= t('teams.archive') %>
+        </button>
       </div>
     </div>
 
@@ -88,5 +86,29 @@
         </div>
       </div>
     <% end %>
+  </div>
+</div>
+
+<div class="modal fade" id="archiveTeamModal" tabindex="-1" role="dialog" aria-labelledby="archiveTeamModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="archiveTeamModalLabel">
+          Are you sure you want to archive this team?
+        </h5>
+      </div>
+      <div class="modal-body">
+        <%= form_tag(team_url, method: 'delete') do %>
+          <%= check_box_tag :send_email, '1', true%> Send email about the team archiving<br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <%= submit_tag 'OK', class: 'btn btn-primary' %>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>
