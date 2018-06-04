@@ -17,7 +17,7 @@ class TeamsController < ApplicationController
   def manage_users
     team = current_user.teams.friendly.find params[:team_id]
     authorize team
-    @users = team.users.order(:name).map do |user|
+    @users = team.users.by_name.map do |user|
       Admin::UserPresenter.new(user)
     end
   end
@@ -53,7 +53,7 @@ class TeamsController < ApplicationController
   # GET /teams/1/edit
   def edit
     @team = current_team
-    @user_teams = current_user.teams.not_archived.order(:name)
+    @user_teams = current_user.teams.not_archived.by_name
 
     authorize @team
   end
