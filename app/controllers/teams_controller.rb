@@ -17,7 +17,7 @@ class TeamsController < ApplicationController
   def manage_users
     team = current_user.teams.friendly.find params[:team_id]
     authorize team
-    @users = team.users.by_name.map do |user|
+    @users = team.users.order(:name).map do |user|
       Admin::UserPresenter.new(user)
     end
   end
@@ -108,7 +108,7 @@ class TeamsController < ApplicationController
 
     TeamOperations::Destroy.call(@team, current_user)
     session[:current_team_slug] = nil if @team.slug == session[:current_team_slug]
-    Notifications.archive_team(@team).deliver_later if params[:send_email]
+    Notifications.archived_team(@team).deliver_later if params[:send_email]
 
     respond_to do |format|
       format.html do

@@ -26,9 +26,11 @@ class Notifications < ActionMailer::Base
          subject: "[#{@story.project.name}] New mention on '#{@story.title}'"
   end
 
-  def archive_team(team)
-    mail to: team.projects.map { |p| p.users.pluck(:email) },
-         subject: "The team <#{team.name}> you're member of was archived"
+  def archived_team(team)
+    @team = team
+
+    mail to: @team.users.pluck(:email),
+         subject: "The team <#{@team.name}> you're member of was archived"
   end
 
   class MailParams < Struct.new(:story, :actor)

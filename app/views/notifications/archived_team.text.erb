@@ -1,0 +1,5 @@
+The team <<%= @team.name %>> you're member of was archived with its projects:
+
+<% @team.projects.each do |project| %>
+=> <%= project.name %>
+<% end %>

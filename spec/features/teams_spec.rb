@@ -55,7 +55,6 @@ describe 'Teams' do
     end
 
     describe 'trying to add an email that is not registered' do
-
       it 'shows an error message' do
         visit team_manage_users_path(user.teams.first.slug)
         click_link 'Add'
@@ -84,25 +83,20 @@ describe 'Teams' do
     end
 
     describe 'archiving teams' do
-
-      it 'successfully archive the team', js: true do
+      it 'successfully archive the team' do
         click_button 'Teams'
-        click_link 'Settings'
-
-        accept_confirm do
-          click_link 'Archive Team'
-        end
+        click_link   'Settings'
+        click_button 'Archive Team'
+        click_on     'OK'
 
         expect(page).to have_text(I18n.t('teams.successfully_archived'))
       end
 
-      it 'moves the archived team to the archived section', js: true do
+      it 'moves the archived team to the archived section' do
         click_button 'Teams'
-        click_link 'Settings'
-
-        accept_confirm do
-          click_link 'Archive Team'
-        end
+        click_link   'Settings'
+        click_button 'Archive Team'
+        click_on     'OK'
 
         within('#main > .container') do
           within('div:nth-child(3) .teams')  do
