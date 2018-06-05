@@ -83,20 +83,22 @@ describe 'Teams' do
     end
 
     describe 'archiving teams' do
-      it 'successfully archive the team' do
+      it 'successfully archive the team', js: true do
         click_button 'Teams'
         click_link   'Settings'
         click_button 'Archive Team'
-        click_on     'OK'
+        page.uncheck('send_email')
+        click_button 'OK'
 
         expect(page).to have_text(I18n.t('teams.successfully_archived'))
       end
 
-      it 'moves the archived team to the archived section' do
+      it 'moves the archived team to the archived section', js: true do
         click_button 'Teams'
         click_link   'Settings'
         click_button 'Archive Team'
-        click_on     'OK'
+        page.uncheck('send_email')
+        click_button  'OK'
 
         within('#main > .container') do
           within('div:nth-child(3) .teams')  do
