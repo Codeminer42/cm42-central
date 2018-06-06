@@ -294,7 +294,7 @@ pt-BR:
 
     show:
       done: "Concluído"
-      in_progress: "Em Progresso"
+      in_progress: "Sprint Atual"
       backlog: "Backlog"
       chilly_bin: "Chilly Bin"
       search_results: "Resultados da Busca"
