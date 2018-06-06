@@ -97,15 +97,15 @@
           <span aria-hidden="true">&times;</span>
         </button>
         <h5 class="modal-title" id="archiveTeamModalLabel">
-          Are you sure you want to archive this team?
+          <%= t('teams.are_you_sure_to_arquive_team')%>
         </h5>
       </div>
       <div class="modal-body">
         <%= form_tag(team_url, method: 'delete') do %>
-          <%= check_box_tag :send_email, '1', true %> Send email about the team archiving<br>
+          <%= check_box_tag :send_email, '1', true %> <%= t('teams.send_email_about_archiving_team')%> <br>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><%= t('teams.close')%></button>
           <%= submit_tag 'OK', class: 'btn btn-primary' %>
         <% end %>
       </div>
