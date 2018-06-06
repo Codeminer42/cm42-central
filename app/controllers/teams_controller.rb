@@ -107,8 +107,8 @@ class TeamsController < ApplicationController
     authorize @team
 
     TeamOperations::Destroy.call(@team, current_user)
-    session[:current_team_slug] = nil if @team.slug == session[:current_team_slug]
-    Notifications.archived_team(@team).deliver_later if params[:send_email]
+    unselect_slug
+    send_notification
 
     respond_to do |format|
       format.html do
@@ -160,5 +160,13 @@ class TeamsController < ApplicationController
     return true unless show_recaptcha?
 
     verify_recaptcha
+  end
+
+  def unselect_slug
+    session[:current_team_slug] = nil if @team.slug == session[:current_team_slug]
+  end
+
+  def send_notification
+    Notifications.archived_team(@team).deliver_later if params[:send_email]
   end
 end
