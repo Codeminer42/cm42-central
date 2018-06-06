@@ -411,7 +411,7 @@ pt-BR:
       title: "Backlog"
       text: "O <strong>Backlog</strong> DEVE ter todas as histórias por ordem de PRIORIDADE. As histórias mais valiosas e que estão prontas para serem iniciadas no topo e as histórias opcionais ou incertas devem ficar embaixo."
     in_progress:
-      title: "Em Progresso"
+      title: "Sprint Atual"
       text: "Aqui é onde as histórias que devem ser trabalhadas ficarão. O Central irá automaticamente pegar as principais histórias do Backlog para ajustar a atual velocidade do time."
     done:
       title: "Concluído"
