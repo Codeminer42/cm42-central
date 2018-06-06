@@ -1,10 +1,10 @@
 # Changelog
 
 ## [Unreleased]
+- New endpoint to update batch stories
 
 ## [1.19.0] 2018-05-25
 ### Added
-- New endpoint to update batch stories
 - New way to load past stories
 - New route to destroy batch stories.
 - Missing button titles in story component
