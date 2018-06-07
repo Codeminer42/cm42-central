@@ -283,7 +283,7 @@ es:
 
     show:
       done: "Terminadas"
-      in_progress: "En progreso"
+      in_progress: "Sprint actual"
       backlog: "Backlog"
       chilly_bin: "Icebox"
       search_results: "Resultados de la búsqueda"
@@ -593,7 +593,7 @@ es:
       title: "Backlog"
       text: "Lo Backlog debe tener todas las historias por orden de PRIORIDAD. Historias más valiosas y listas para empezar en la parte superior e historias opcionales o inciertas en la parte inferior"
     in_progress:
-      title: "En Progreso"
+      title: "Sprint actual"
       text: "Aquí es donde las historias que se deben trabajar encendido ahora residirán. Central recogerá automáticamente las historias más importantes del Backlog para ajustarse a la velocidad actual del equipo"
     done:
       title: "Hecho"

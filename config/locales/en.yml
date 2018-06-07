@@ -292,7 +292,7 @@ en:
 
     show:
       done: "Done"
-      in_progress: "In Progress"
+      in_progress: "Current sprint"
       backlog: "Backlog"
       chilly_bin: "Chilly Bin"
       search_results: "Search Results"
@@ -410,7 +410,7 @@ en:
       title: "Backlog"
       text: "The backlog MUST have all stories by order of PRIORITY. Most valuable and ready-to-start stories at the top and optional or uncertain stories at the very bottom"
     in_progress:
-      title: "In Progress"
+      title: "Current sprint"
       text: "This is where stories that must be worked on right now will reside. Central will automatically pick up the top stories from the Backlog to fit the team's current Velocity"
     done:
       title: "Done"
