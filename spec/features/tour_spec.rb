@@ -22,7 +22,7 @@ describe 'Tour' do
       expect(tour_title).to have_content('Backlog')
       next_button
 
-      expect(tour_title).to have_content('In Progress')
+      expect(tour_title).to have_content('Current sprint')
       next_button
 
       expect(tour_title).to have_content('Done')

@@ -445,7 +445,7 @@ describe 'Stories' do
 
       columns = {
         'done'        => 'Done',
-        'in_progress' => 'In Progress',
+        'in_progress' => 'Current sprint',
         'backlog'     => 'Backlog',
         'chilly_bin'  => 'Chilly Bin'
       }
