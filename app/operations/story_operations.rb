@@ -49,11 +49,11 @@ module StoryOperations
     end
   end
 
-  class Destroy < BaseOperations::Destroy
-  end
+  class UpdateAll < BaseOperations::UpdateAll; end
 
-  class DestroyAll < BaseOperations::DestroyAll
-  end
+  class Destroy < BaseOperations::Destroy; end
+
+  class DestroyAll < BaseOperations::DestroyAll; end
 
   class ReadAll
     def self.call(*args)

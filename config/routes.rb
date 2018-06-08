@@ -56,6 +56,7 @@ Rails.application.routes.draw do
       end
     end
     resources :stories_bulk_destroy, only: [:create]
+    resources :stories_bulk_update, only: [:create]
   end
 
   resources :project_boards, only: :show do
