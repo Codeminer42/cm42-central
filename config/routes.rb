@@ -36,7 +36,7 @@ Rails.application.routes.draw do
     resources :users, only: [:create]
     resources :api_tokens, only: [:create, :destroy]
     member do
-      post :unarchive
+      post :unarchiving, to: :unarchive, as: :unarchive
     end
   end
 
@@ -67,7 +67,7 @@ Rails.application.routes.draw do
       get 'iterations' => 'iterations#show'
     end
   end
-  
+
   namespace :beta do
     resources :projects, only: :show
     resources :project_boards, only: :show
