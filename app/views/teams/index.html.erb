@@ -11,7 +11,7 @@
       </h4>
     </div>
 
-    <div class="teams">
+    <div class="teams teams--not-archived">
       <% if @teams.any? %>
         <%= render @teams.not_archived %>
       <% else %>
@@ -33,7 +33,7 @@
       </h4>
     </div>
 
-    <div class="teams">
+    <div class="teams teams--archived">
       <% if @teams.any? %>
         <%= render @teams.archived %>
       <% else %>

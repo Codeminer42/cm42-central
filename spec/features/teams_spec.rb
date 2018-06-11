@@ -83,7 +83,10 @@ describe 'Teams' do
     end
 
     describe 'archiving teams' do
+      let(:team_name) { user.teams.first.name }
+
       it 'successfully archive the team', js: true do
+
         click_button 'Teams'
         click_link   'Settings'
         click_button 'Archive Team'
@@ -100,16 +103,14 @@ describe 'Teams' do
         page.uncheck('send_email')
         click_button  'OK'
 
-        within('#main > .container') do
-          within('div:nth-child(3) .teams')  do
-            expect(page).to have_css('div.col-md-4.col-xs-12', count: 1)
-          end
-        end
+        expect(find('.teams--archived')).to have_text(team_name)
+        expect(find('.teams--not-archived')).not_to have_text(team_name)
       end
     end
 
     describe 'uncharving teams' do
       let!(:user) { create :user, :with_archived_team_and_is_admin }
+      let(:team_name) { user.teams.first.name }
 
       it 'successfully uncharving the team' do
         visit teams_path
@@ -124,11 +125,8 @@ describe 'Teams' do
 
         click_link 'Unarchive'
 
-        within('#main > .container') do
-          within('div:nth-child(2) .teams')  do
-            expect(page).to have_css('div.col-md-4.col-xs-12', count: 1)
-          end
-        end
+        expect(find('.teams--not-archived')).to have_text(team_name)
+        expect(find('.teams--archived')).not_to have_text(team_name)
       end
     end
   end
