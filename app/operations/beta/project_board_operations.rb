@@ -14,16 +14,16 @@ module Beta
 
       def run
         users = project.users
-        stories = project.stories
 
-        project_board = ::ProjectBoard.new(
+        project_board_params = stories_and_past_iterations.merge(
           project: project,
           users: users,
-          stories: stories,
           current_user: @current_user,
           current_flow: @current_flow,
           default_flow: default_flow
         )
+
+        project_board = ::ProjectBoard.new(project_board_params)
 
         OpenStruct.new(success?: true, data: project_board)
       rescue ActiveRecord::RecordNotFound => e
@@ -37,6 +37,12 @@ module Beta
           .friendly
           .preload(:users, stories: %i[notes document_files tasks])
           .find(@project_id)
+      end
+
+      def stories_and_past_iterations
+        read_all_response = ::StoryOperations::ReadAll.call(project: project)
+        read_all_response[:stories] = read_all_response.delete(:active_stories)
+        read_all_response
       end
 
       def default_flow
