@@ -14,7 +14,6 @@ module Beta
 
       def run
         users = project.users
-        stories = project.stories
 
         project_board_params = stories_and_past_iterations.merge(
           project: project,
