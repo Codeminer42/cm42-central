@@ -4,15 +4,26 @@ const initialState = {
   stories: [],
 };
 
+const orderByAcceptedAt = (stories) => {
+  const orderedItems = [...stories];
+
+  orderedItems.sort(function(a,b){
+    return new Date(a.acceptedAt) - new Date(b.acceptedAt);
+  });
+
+  return orderedItems;
+}
+
 const done = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.COLUMN_DONE:
-      return {
-        stories: [
-          ...state.stories,
-          action.data,
-        ]
-      };
+      const stories = [
+        ...state.stories,
+        action.data,
+      ];
+
+      return { stories: orderByAcceptedAt(stories) }
+
     default:
       return state;
   }
