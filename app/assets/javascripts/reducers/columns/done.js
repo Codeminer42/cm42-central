@@ -1,21 +1,14 @@
 import actionTypes from 'actions/actionTypes';
+import * as Story from 'models/beta/story';
 
 const initialState = {
   stories: [],
 };
 
-const compareAccepted = (a, b ) => {
-  if (a.acceptedAt > b.acceptedAt) return 1;
-
-  if (a.acceptedAt < b.acceptedAt) return -1;
-
-  return 0;
-}
-
 const orderByAcceptedAt = (stories) => {
   const orderedItems = [...stories];
 
-  orderedItems.sort(compareAccepted);
+  orderedItems.sort(Story.compareAcceptedAt);
 
   return orderedItems;
 }
