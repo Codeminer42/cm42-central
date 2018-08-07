@@ -1,16 +1,14 @@
 import actionTypes from 'actions/actionTypes';
+import * as Story from 'models/beta/story';
 
 const initialState = {
   stories: [],
 };
 
-
 const orderByPosition = (items) => {
   const orderedItems = [...items];
 
-  orderedItems.sort((a, b) => {
-    return parseFloat(a.position) - parseFloat(b.position)
-  });
+  orderedItems.sort(Story.comparePosition);
 
   return orderedItems;
 }

@@ -1,4 +1,3 @@
-import moment from 'moment';
 import reducer from 'reducers/columns/backlog';
 import actionTypes from 'actions/actionTypes';
 

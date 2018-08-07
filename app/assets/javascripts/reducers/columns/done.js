@@ -4,12 +4,18 @@ const initialState = {
   stories: [],
 };
 
+const compareAccepted = (a, b ) => {
+  if (a.acceptedAt > b.acceptedAt) return 1;
+
+  if (a.acceptedAt < b.acceptedAt) return -1;
+
+  return 0;
+}
+
 const orderByAcceptedAt = (stories) => {
   const orderedItems = [...stories];
 
-  orderedItems.sort(function(a,b){
-    return new Date(a.acceptedAt) - new Date(b.acceptedAt);
-  });
+  orderedItems.sort(compareAccepted);
 
   return orderedItems;
 }

@@ -1,4 +1,3 @@
-import moment from 'moment';
 import reducer from 'reducers/columns/chillyBin';
 import actionTypes from 'actions/actionTypes';
 

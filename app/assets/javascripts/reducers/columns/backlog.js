@@ -1,4 +1,5 @@
 import actionTypes from 'actions/actionTypes';
+import * as Story from 'models/beta/story';
 
 const initialState = {
   stories: [],
@@ -8,13 +9,10 @@ const filterByState = state => story => {
   return story.state === state;
 }
 
-
 const orderByState = (stories) => {
   const ordered = [...stories];
 
-  ordered.sort((a, b) => {
-    return parseFloat(a.position) - parseFloat(b.position);
-  });
+  ordered.sort(Story.comparePosition);
 
   const acceptedStories = ordered.filter(filterByState('accepted'));
   const deliveredStories = ordered.filter(filterByState('delivered'));
