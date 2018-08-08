@@ -49,7 +49,7 @@ describe('Story model', function() {
 
   describe('compareAcceptedAt', () => {
 
-    describe('when date A is bigger then B', () => {
+    describe('when date A is more recent then B', () => {
       it("return 1", () => {
         const storyA = {
           acceptedAt: "2018-08-07T16:36:20.811Z"
@@ -63,7 +63,7 @@ describe('Story model', function() {
       });
     });
 
-    describe('when date A is lower then B', () => {
+    describe('when date A is older then B', () => {
       it("return -1", () => {
         const storyA = {
           acceptedAt: "2018-08-07T12:36:20.811Z"
@@ -88,6 +88,98 @@ describe('Story model', function() {
         }
 
         expect(Story.compareAcceptedAt(storyA, storyB)).toEqual(0)
+      });
+    });
+
+  });
+
+  describe('compareStarteddAt', () => {
+
+    describe('when date A is more recent then B', () => {
+      it("return 1", () => {
+        const storyA = {
+          startedAt: "2018-08-07T16:36:20.811Z"
+        };
+
+        const storyB = {
+          startedAt: "2018-08-06T16:36:20.811Z"
+        }
+
+        expect(Story.compareStartedAt(storyA, storyB)).toEqual(1)
+      });
+    });
+
+    describe('when date A is older then B', () => {
+      it("return -1", () => {
+        const storyA = {
+          startedAt: "2018-08-07T12:36:20.811Z"
+        };
+
+        const storyB = {
+          startedAt: "2018-08-07T16:36:20.811Z"
+        }
+
+        expect(Story.compareStartedAt(storyA, storyB)).toEqual(-1)
+      });
+    });
+
+    describe('when date A is equal B', () => {
+      it("return 0", () => {
+        const storyA = {
+          startedAt: "2018-08-07T12:36:20.811Z"
+        };
+
+        const storyB = {
+          startedAt: "2018-08-07T12:36:20.811Z"
+        }
+
+        expect(Story.compareStartedAt(storyA, storyB)).toEqual(0)
+      });
+    });
+
+  });
+
+  describe('compareDeliveredAt', () => {
+
+    describe('when date A is more recent then B', () => {
+      it("return 1", () => {
+        const storyA = {
+          deliveredAt: "2018-08-07T16:36:20.811Z"
+        };
+
+        const storyB = {
+          deliveredAt: "2018-08-06T16:36:20.811Z"
+        }
+
+        expect(Story.compareDeliveredAt(storyA, storyB)).toEqual(1)
+      });
+    });
+
+    describe('when date A is older then B', () => {
+      it("return -1", () => {
+        const storyA = {
+          deliveredAt: "2018-08-07T12:36:20.811Z"
+        };
+
+        const storyB = {
+          deliveredAt: "2018-08-07T16:36:20.811Z"
+        }
+
+        expect(Story.compareDeliveredAt(storyA, storyB)).toEqual(-1)
+      });
+    });
+
+    describe('when date A is equal B', () => {
+      it("return 0", () => {
+        const storyA = {
+          deliveredAt: "2018-08-07T12:36:20.811Z"
+        };
+
+        const storyB = {
+          deliveredAt: "2018-08-07T12:36:20.811Z"
+        }
+
+        expect(Story.compareDeliveredAt(storyA, storyB)).toEqual(0)
       });
     });
 

@@ -13,7 +13,8 @@ describe('Backlog Column reducer', () => {
         {
           id: 1,
           position: '1.5',
-          state: 'accepted'
+          state: 'accepted',
+          acceptedAt: '2018-08-06T16:36:20.811Z'
         },
         {
           id: 3,
@@ -23,7 +24,8 @@ describe('Backlog Column reducer', () => {
         {
           id: 4,
           position:'7.5',
-          state: 'started'
+          state: 'started',
+          startedAt: '2018-08-06T16:36:20.811Z'
         },
         {
           id: 5,
@@ -33,7 +35,8 @@ describe('Backlog Column reducer', () => {
         {
           id: 6,
           position: '4.9',
-          state: 'delivered'
+          state: 'delivered',
+          deliveredAt: '2018-08-06T16:36:20.811Z'
         }
       ]
     }
@@ -103,29 +106,243 @@ describe('Backlog Column reducer', () => {
     });
 
     describe("when the story states are the same", () => {
-      it("return ordered by position", () => {
-        const newStory = {
-          id : 80,
-          position: '59.2',
-          state: 'finished'
-        };
+      describe("accepted stories", () => {
+        describe("when the acceptedAt of the new story is older then the others", () => {
+          it("return accepted ordered by acceptedAt", () => {
+            const newStory = {
+              id : 80,
+              position: '59.2',
+              state: 'accepted',
+              acceptedAt: '2018-08-03T16:36:20.811Z'
+            };
 
-        const initialState = createInitialStateWithStories();
-        const action = createAction(newStory);
+            const initialState = createInitialStateWithStories();
+            const action = createAction(newStory);
 
-        const state = reducer(initialState, action);
+            const state = reducer(initialState, action);
 
-        expect(state.stories[0].state).toEqual('accepted');
-        expect(state.stories[1].state).toEqual('delivered');
-        expect(state.stories[2].state).toEqual('rejected');
-        expect(state.stories[3].state).toEqual('finished');
-        expect(state.stories[4].state).toEqual('finished');
-        expect(state.stories[4].position).toEqual(newStory.position);
-        expect(state.stories[5].state).toEqual('started');
-        expect(state.stories[6].state).toEqual('unstarted');
+            expect(state.stories[0].state).toEqual('accepted');
+            expect(state.stories[1].state).toEqual('accepted');
+            expect(state.stories[0].id).toEqual(newStory.id);
 
+          });
+        });
+
+        describe("when the acceptedAt of the new story is more recent then the others", () => {
+          it("return accepted ordered by acceptedAt", () => {
+            const newStory = {
+              id : 80,
+              position: '59.2',
+              state: 'accepted',
+              acceptedAt: '2018-08-10T16:36:20.811Z'
+            };
+
+            const initialState = createInitialStateWithStories();
+            const action = createAction(newStory);
+
+            const state = reducer(initialState, action);
+
+            expect(state.stories[0].state).toEqual('accepted');
+            expect(state.stories[1].state).toEqual('accepted');
+            expect(state.stories[1].id).toEqual(newStory.id);
+
+          });
+        });
+      });
+
+      describe("delivered stories", () => {
+        describe("when the deliveredAt of the new story is older then the others", () => {
+          it("return delivered ordered by deliveredAt", () => {
+            const newStory = {
+              id : 80,
+              position: '59.2',
+              state: 'delivered',
+              deliveredAt: '2018-08-03T16:36:20.811Z'
+            };
+
+            const initialState = createInitialStateWithStories();
+            const action = createAction(newStory);
+
+            const state = reducer(initialState, action);
+
+            expect(state.stories[1].state).toEqual('delivered');
+            expect(state.stories[2].state).toEqual('delivered');
+            expect(state.stories[1].id).toEqual(newStory.id);
+
+          });
+        });
+
+        describe("when the deliveredAt of the new story is more recent then the others", () => {
+          it("return delivered ordered by deliveredAt", () => {
+            const newStory = {
+              id : 80,
+              position: '59.2',
+              state: 'delivered',
+              deliveredAt: '2018-08-20T16:36:20.811Z'
+            };
+
+            const initialState = createInitialStateWithStories();
+            const action = createAction(newStory);
+
+            const state = reducer(initialState, action);
+            expect(state.stories[1].state).toEqual('delivered');
+            expect(state.stories[2].state).toEqual('delivered');
+            expect(state.stories[2].id).toEqual(newStory.id);
+
+          });
+        });
+      });
+
+      describe("started stories", () => {
+        describe("when the startedAt of the new story is older then the others", () => {
+          it("return accepted ordered by startedAt", () => {
+            const newStory = {
+              id : 80,
+              position: '59.2',
+              state: 'started',
+              startedAt: '2018-08-03T16:36:20.811Z'
+            };
+
+            const initialState = createInitialStateWithStories();
+            const action = createAction(newStory);
+
+            const state = reducer(initialState, action);
+
+            expect(state.stories[4].state).toEqual('started');
+            expect(state.stories[5].state).toEqual('started');
+            expect(state.stories[4].id).toEqual(newStory.id);
+
+          });
+        });
+
+        describe("when the startedAt of the new story is more recent then the others", () => {
+          it("return started ordered by startedAt", () => {
+            const newStory = {
+              id : 80,
+              position: '59.2',
+              state: 'started',
+              startedAt: '2018-08-20T16:36:20.811Z'
+            };
+
+            const initialState = createInitialStateWithStories();
+            const action = createAction(newStory);
+
+            const state = reducer(initialState, action);
+            expect(state.stories[4].state).toEqual('started');
+            expect(state.stories[5].state).toEqual('started');
+            expect(state.stories[5].id).toEqual(newStory.id);
+
+          });
+        });
+      });
+
+      describe("rejected, finished, unstarted stories ordered by position", () => {
+        describe("when the new history has the higher position", () => {
+          it("return rejected ordered by position", () => {
+            const newStory = {
+              id : 80,
+              position: '59.2',
+              state: 'rejected'
+            };
+
+            const initialState = createInitialStateWithStories();
+            const action = createAction(newStory);
+
+            const state = reducer(initialState, action);
+
+            expect(state.stories[2].state).toEqual('rejected');
+            expect(state.stories[3].state).toEqual('rejected');
+            expect(state.stories[3].id).toEqual(newStory.id);
+          });
+
+          it("return finished ordered by position", () => {
+            const newStory = {
+              id : 80,
+              position: '59.2',
+              state: 'finished'
+            };
+
+            const initialState = createInitialStateWithStories();
+            const action = createAction(newStory);
+
+            const state = reducer(initialState, action);
+
+            expect(state.stories[3].state).toEqual('finished');
+            expect(state.stories[4].state).toEqual('finished');
+            expect(state.stories[4].id).toEqual(newStory.id);
+          });
+
+          it("return unstarted ordered by position", () => {
+            const newStory = {
+              id : 80,
+              position: '59.2',
+              state: 'unstarted'
+            };
+
+            const initialState = createInitialStateWithStories();
+            const action = createAction(newStory);
+
+            const state = reducer(initialState, action);
+
+            expect(state.stories[5].state).toEqual('unstarted');
+            expect(state.stories[6].state).toEqual('unstarted');
+            expect(state.stories[6].id).toEqual(newStory.id);
+          });
+        });
+
+        describe("when the new history has the lower position", () => {
+          it("return rejected ordered by position", () => {
+            const newStory = {
+              id : 80,
+              position: '1.0',
+              state: 'rejected'
+            };
+
+            const initialState = createInitialStateWithStories();
+            const action = createAction(newStory);
+
+            const state = reducer(initialState, action);
+
+            expect(state.stories[2].state).toEqual('rejected');
+            expect(state.stories[3].state).toEqual('rejected');
+            expect(state.stories[2].id).toEqual(newStory.id);
+          });
+
+          it("return finished ordered by position", () => {
+            const newStory = {
+              id : 80,
+              position: '1',
+              state: 'finished'
+            };
+
+            const initialState = createInitialStateWithStories();
+            const action = createAction(newStory);
+
+            const state = reducer(initialState, action);
+
+            expect(state.stories[3].state).toEqual('finished');
+            expect(state.stories[4].state).toEqual('finished');
+            expect(state.stories[3].id).toEqual(newStory.id);
+          });
+
+          it("return unstarted ordered by position", () => {
+            const newStory = {
+              id : 80,
+              position: '1',
+              state: 'unstarted'
+            };
+
+            const initialState = createInitialStateWithStories();
+            const action = createAction(newStory);
+
+            const state = reducer(initialState, action);
+
+            expect(state.stories[5].state).toEqual('unstarted');
+            expect(state.stories[6].state).toEqual('unstarted');
+            expect(state.stories[5].id).toEqual(newStory.id);
+          });
+        });
       });
     });
   });
-
 });
