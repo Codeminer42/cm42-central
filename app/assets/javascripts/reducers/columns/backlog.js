@@ -14,12 +14,22 @@ const orderByState = (stories) => {
 
   ordered.sort(Story.comparePosition);
 
-  const acceptedStories = ordered.filter(filterByState('accepted'));
-  const deliveredStories = ordered.filter(filterByState('delivered'));
+  const acceptedStories = ordered
+                            .filter(filterByState('accepted'))
+                            .sort(Story.compareAcceptedAt);
+
+  const deliveredStories = ordered
+                             .filter(filterByState('delivered'))
+                             .sort(Story.compareDeliveredAt);
+
+  const startedStories = ordered
+                           .filter(filterByState('started'))
+                           .sort(Story.compareStartedAt);
+
   const rejectedStories = ordered.filter(filterByState('rejected'));
   const finishedStories = ordered.filter(filterByState('finished'));
-  const startedStories = ordered.filter(filterByState('started'));
   const unstartedStories = ordered.filter(filterByState('unstarted'));
+
 
   return [
     ...acceptedStories,

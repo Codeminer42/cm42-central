@@ -18,3 +18,10 @@ export const compareAcceptedAt = (a, b) => {
   return compareValues(a.acceptedAt, b.acceptedAt);
 }
 
+export const compareDeliveredAt = (a, b) => {
+  return compareValues(a.deliveredAt, b.deliveredAt);
+}
+
+export const compareStartedAt = (a, b) => {
+  return compareValues(a.startedAt, b.startedAt);
+}
