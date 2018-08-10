@@ -1,5 +1,6 @@
 import actionTypes from 'actions/actionTypes';
 import * as Story from 'models/beta/story';
+import _ from 'underscore';
 
 const initialState = {
   stories: [],
@@ -30,6 +31,8 @@ const orderByState = (stories) => {
   const finishedStories = ordered.filter(filterByState('finished'));
   const unstartedStories = ordered.filter(filterByState('unstarted'));
 
+  const unestimatedUnstartedStories = unstartedStories.filter(Story.filterUnestimatedFeatures);
+  const estimatedUnstartedStories = _.reject(unstartedStories, Story.filterUnestimatedFeatures)
 
   return [
     ...acceptedStories,
@@ -37,7 +40,8 @@ const orderByState = (stories) => {
     ...rejectedStories,
     ...finishedStories,
     ...startedStories,
-    ...unstartedStories
+    ...estimatedUnstartedStories,
+    ...unestimatedUnstartedStories
   ];
 }
 
