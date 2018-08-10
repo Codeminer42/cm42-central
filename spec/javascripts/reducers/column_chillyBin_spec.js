@@ -7,11 +7,14 @@ describe('Chilly Bin Column reducer', () => {
       stories: [
         {
           id: 4,
-          position: '8'
+          position: '8',
+          storyType: 'feature',
+          estimate: 5
         },
         {
           id: 7,
-          position: '6.0'
+          position: '6.0',
+          estimate: 3
         }
       ]
     }
@@ -94,6 +97,22 @@ describe('Chilly Bin Column reducer', () => {
         expect(state.stories[1].id).toEqual(initialState.stories[1].id);
         expect(state.stories[2].id).toEqual(initialState.stories[0].id);
       });
+
+      it("return unestimated features last", () => {
+        const newStory = {
+          id : 5,
+          position: '1.2',
+          storyType: 'feature',
+          estimate: null
+        };
+
+        const initialState = createInitialStateWithStories();
+        const action = createAction(newStory);
+
+        const state = reducer(initialState, action);
+
+        expect(state.stories[2].id).toEqual(newStory.id);;
+      });
     });
 
     describe("when the new history has the higher position", () => {
@@ -112,6 +131,22 @@ describe('Chilly Bin Column reducer', () => {
         expect(state.stories[0].id).toEqual(initialState.stories[1].id);
         expect(state.stories[1].id).toEqual(initialState.stories[0].id);
         expect(state.stories[2].id).toEqual(newStory.id);
+      });
+
+      it("return unestimated features last", () => {
+        const newStory = {
+          id : 5,
+          position: '9.2',
+          storyType: 'feature',
+          estimate: null
+        };
+
+        const initialState = createInitialStateWithStories();
+        const action = createAction(newStory);
+
+        const state = reducer(initialState, action);
+
+        expect(state.stories[2].id).toEqual(newStory.id);;
       });
     });
 
@@ -132,9 +167,23 @@ describe('Chilly Bin Column reducer', () => {
         expect(state.stories[1].id).toEqual(newStory.id);
         expect(state.stories[2].id).toEqual(initialState.stories[0].id);
       });
+
+      it("return unestimated features last", () => {
+        const newStory = {
+          id : 5,
+          position: '7.2',
+          storyType: 'feature',
+          estimate: null
+        };
+
+        const initialState = createInitialStateWithStories();
+        const action = createAction(newStory);
+
+        const state = reducer(initialState, action);
+
+        expect(state.stories[2].id).toEqual(newStory.id);;
+      });
     });
-
-
   });
 
 });
