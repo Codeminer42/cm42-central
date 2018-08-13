@@ -8,35 +8,41 @@ describe('Backlog Column reducer', () => {
         {
           id: 2,
           position: '4.5',
-          state: 'rejected'
+          state: 'rejected',
+          estimate: 1
         },
         {
           id: 1,
           position: '1.5',
           state: 'accepted',
-          acceptedAt: '2018-08-06T16:36:20.811Z'
+          acceptedAt: '2018-08-06T16:36:20.811Z',
+          estimate: 1
         },
         {
           id: 3,
           position: '3.2',
-          state: 'unstarted'
+          state: 'unstarted',
+          estimate: 1
         },
         {
           id: 4,
           position:'7.5',
           state: 'started',
-          startedAt: '2018-08-06T16:36:20.811Z'
+          startedAt: '2018-08-06T16:36:20.811Z',
+          estimate: 1
         },
         {
           id: 5,
           position: '3.7',
-          state: 'finished'
+          state: 'finished',
+          estimate: 1
         },
         {
           id: 6,
           position: '4.9',
           state: 'delivered',
-          deliveredAt: '2018-08-06T16:36:20.811Z'
+          deliveredAt: '2018-08-06T16:36:20.811Z',
+          estimate: 1
         }
       ]
     }
@@ -276,7 +282,26 @@ describe('Backlog Column reducer', () => {
             const newStory = {
               id : 80,
               position: '59.2',
-              state: 'unstarted'
+              state: 'unstarted',
+              estimate: 1
+            };
+
+            const initialState = createInitialStateWithStories();
+            const action = createAction(newStory);
+
+            const state = reducer(initialState, action);
+
+            expect(state.stories[5].state).toEqual('unstarted');
+            expect(state.stories[6].state).toEqual('unstarted');
+            expect(state.stories[6].id).toEqual(newStory.id);
+          });
+
+          it("return unestimated unstarted features last", () => {
+            const newStory = {
+              id : 80,
+              position: '59.2',
+              state: 'unstarted',
+              estimate: null
             };
 
             const initialState = createInitialStateWithStories();
@@ -329,7 +354,8 @@ describe('Backlog Column reducer', () => {
             const newStory = {
               id : 80,
               position: '1',
-              state: 'unstarted'
+              state: 'unstarted',
+              estimate: 1
             };
 
             const initialState = createInitialStateWithStories();
@@ -340,6 +366,25 @@ describe('Backlog Column reducer', () => {
             expect(state.stories[5].state).toEqual('unstarted');
             expect(state.stories[6].state).toEqual('unstarted');
             expect(state.stories[5].id).toEqual(newStory.id);
+          });
+
+          it("return unestimated unstarted features last", () => {
+            const newStory = {
+              id : 80,
+              position: '1',
+              state: 'unstarted',
+              storyType: 'feature',
+              estimate: null
+            };
+
+            const initialState = createInitialStateWithStories();
+            const action = createAction(newStory);
+
+            const state = reducer(initialState, action);
+
+            expect(state.stories[5].state).toEqual('unstarted');
+            expect(state.stories[6].state).toEqual('unstarted');
+            expect(state.stories[6].id).toEqual(newStory.id);
           });
         });
       });

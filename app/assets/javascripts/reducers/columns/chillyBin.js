@@ -1,18 +1,25 @@
 import actionTypes from 'actions/actionTypes';
 import * as Story from 'models/beta/story';
+import _ from 'underscore';
 
 const initialState = {
   stories: [],
 };
 
-const orderByPosition = (items) => {
-  const orderedItems = [...items];
+const orderByUnestimatedFeatures = (stories) => {
+  const ordered = [...stories];
 
-  orderedItems.sort(Story.comparePosition);
+  ordered.sort(Story.comparePosition);
 
-  return orderedItems;
+  const partitionedFeatures = _.partition(ordered, Story.isUnestimatedFeature);
+  const unestimatedStories = partitionedFeatures[0];
+  const estimatedStories = partitionedFeatures[1];
+
+  return [
+    ...estimatedStories,
+    ...unestimatedStories
+  ];
 }
-
 
 const chillyBin = (state = initialState, action) => {
   switch (action.type) {
@@ -22,7 +29,7 @@ const chillyBin = (state = initialState, action) => {
         action.data,
       ];
 
-      return { stories: orderByPosition(stories) }
+      return { stories: orderByUnestimatedFeatures(stories) }
     default:
       return state;
   }

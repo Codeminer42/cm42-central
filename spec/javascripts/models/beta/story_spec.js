@@ -183,5 +183,31 @@ describe('Story model', function() {
       });
     });
 
+    describe('is unestimated feature', () => {
+      it('return a story if it is a feature and is unestimated', () => {
+        const stories = [
+          {
+            id : 10,
+            storyType: 'feature',
+            estimate: null,
+          },
+          {
+            id : 20,
+            storyType: 'bug',
+            estimate: null,
+          },
+          {
+            id : 30,
+            storyType: 'feature',
+            estimate: 2,
+          },
+        ];
+
+        const unestimated = stories.filter(Story.isUnestimatedFeature);
+
+        expect(unestimated.length).toEqual(1);
+        expect(unestimated[0].id).toEqual(10);
+      });
+    });
   });
 })
