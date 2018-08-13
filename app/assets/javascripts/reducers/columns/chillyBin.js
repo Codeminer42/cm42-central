@@ -11,8 +11,9 @@ const orderByUnestimatedFeatures = (stories) => {
 
   ordered.sort(Story.comparePosition);
 
-  const unestimatedStories = ordered.filter(Story.filterUnestimatedFeatures);
-  const estimatedStories = _.reject(ordered, Story.filterUnestimatedFeatures);
+  const partitionedFeatures = _.partition(ordered, Story.isUnestimatedFeature);
+  const unestimatedStories = partitionedFeatures[0];
+  const estimatedStories = partitionedFeatures[1];
 
   return [
     ...estimatedStories,

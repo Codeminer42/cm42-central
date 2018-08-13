@@ -183,7 +183,7 @@ describe('Story model', function() {
       });
     });
 
-    describe('filter unestimated features', () => {
+    describe('is unestimated feature', () => {
       it('return a story if it is a feature and is unestimated', () => {
         const stories = [
           {
@@ -203,7 +203,7 @@ describe('Story model', function() {
           },
         ];
 
-        const unestimated = stories.filter(Story.filterUnestimatedFeatures);
+        const unestimated = stories.filter(Story.isUnestimatedFeature);
 
         expect(unestimated.length).toEqual(1);
         expect(unestimated[0].id).toEqual(10);

@@ -31,8 +31,9 @@ const orderByState = (stories) => {
   const finishedStories = ordered.filter(filterByState('finished'));
   const unstartedStories = ordered.filter(filterByState('unstarted'));
 
-  const unestimatedUnstartedStories = unstartedStories.filter(Story.filterUnestimatedFeatures);
-  const estimatedUnstartedStories = _.reject(unstartedStories, Story.filterUnestimatedFeatures)
+  const partitionedFeatures = _.partition(unstartedStories, Story.isUnestimatedFeature);
+  const unestimatedUnstartedStories = partitionedFeatures[0];
+  const estimatedUnstartedStories = partitionedFeatures[1];
 
   return [
     ...acceptedStories,
