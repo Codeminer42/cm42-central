@@ -10,7 +10,7 @@ RSpec.describe 'Story document', type: :request do
     before do
       post user_session_path, user: { email: user.email, password: 'password' }
     end
-  
+
     context 'update documents' do
       let(:attachments) do
         [
@@ -41,15 +41,16 @@ RSpec.describe 'Story document', type: :request do
             "values ('#{a.values.join("', '")}', 'documents', #{story.id}, 'Story')"
           )
         end
+        allow(Pusher).to receive(:trigger)
       end
 
       it 'should delete all documents (resilient against deep_munge rails/rails#13420)' do
         expect(story.documents.count).to eq(2)
         params = { story: { documents: [] } }.to_json
         headers = { 'CONTENT_TYPE' => 'application/json' }
-        
+
         put project_story_path(project_id: project.id, id: story.id), params, headers
-        
+
         story.reload
         expect(story.documents.count).to eq(0)
       end

@@ -7,6 +7,13 @@ var ProjectSearchView = require('views/project_search_view');
 var ProjectVelocityView = require('views/project_velocity_view');
 
 import TourController from 'controllers/tour/TourController';
+import Pusher from 'pusher-js';
+
+var pusherApiKey = process.env.PUSHER_APP_KEY;
+var pusherCluster = process.env.PUSHER_APP_CLUSTER;
+var boardSocket = new Pusher(pusherApiKey,{
+  cluster: pusherCluster,
+  encrypted: true });
 
 require('./global_listeners');
 
@@ -41,9 +48,10 @@ var Central = module.exports = {
 
       $(window).resize(view.scaleToViewport);
 
-      setInterval(function() {
+      var channel = boardSocket.subscribe('project-board-' + project.id);
+      channel.bind('notify_changes', function(_data) {
         project.fetch();
-      }, 10 * 1000); // every 10 seconds
+      });
 
       window.projectView = view;
     });

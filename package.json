@@ -54,6 +54,7 @@
     "postcss-loader": "^2.0.6",
     "postcss-smart-import": "^0.7.4",
     "precss": "^2.0.0",
+    "pusher-js": "^4.3.0",
     "rails-erb-loader": "^5.0.2",
     "react": "^15.4.2",
     "react-color": "^2.11",

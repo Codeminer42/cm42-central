@@ -137,10 +137,12 @@ describe StoriesController do
 
         it 'should keep the same 2 documents (the put will delete and reinsert the documents)' do
           VCR.use_cassette('cloudinary_upload') do
-            expect do
-              xhr :put, :update, project_id: project.id, id: story.id, story: story_params
-            end.to change { story.reload; story.documents.count }.by(0)
-            expect(response).to be_success
+            VCR.use_cassette('pusher_notification', match_requests_on: [:host, :path]) do
+              expect do
+                xhr :put, :update, project_id: project.id, id: story.id, story: story_params
+              end.to change { story.reload; story.documents.count }.by(0)
+              expect(response).to be_success
+            end
           end
         end
 
@@ -190,9 +192,11 @@ describe StoriesController do
 
       it 'should create the new story and associate the attachments' do
         VCR.use_cassette('cloudinary_upload_new_story') do
-          expect do
-            xhr :post, :create, received_params
-          end.to change { Story.count }.by(1)
+          VCR.use_cassette('pusher_notification', match_requests_on: [:host, :path]) do
+            expect do
+              xhr :post, :create, received_params
+            end.to change { Story.count }.by(1)
+          end
         end
       end
     end

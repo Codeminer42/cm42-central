@@ -11,7 +11,7 @@ describe StoryOperations do
   let(:project)     { Project.first }
   let(:story)       { project.stories.build(story_params) }
 
-  describe '::Create' do
+  describe '::Create', vcr: { match_requests_on: [:host, :path] } do
     subject { -> { StoryOperations::Create.call(story, user) } }
 
     context 'with valid params' do
@@ -45,6 +45,14 @@ describe StoryOperations do
         expect(Notifications).to receive(:story_mention)
           .with(story, [username_user.email]).and_return(mailer)
         expect(mailer).to receive(:deliver_later)
+
+        subject.call
+      end
+    end
+
+    context "::PusherNotification" do
+      it "notifies the pusher that the board has changes" do
+        expect(PusherNotificationWorker).to receive(:perform_async)
 
         subject.call
       end
@@ -107,14 +115,16 @@ describe StoryOperations do
 
     it 'must record the documents attributes changes' do
       VCR.use_cassette('cloudinary_upload_activity') do
-        subject.call
+        VCR.use_cassette('pusher_notification', match_requests_on: [:host, :path]) do
+          subject.call
+        end
       end
       expect(Activity.last.subject_changes['documents_attributes'])
         .to eq([['hello2.jpg', 'hello.jpg'], ['hello2.jpg', 'hello3.jpg']])
     end
   end
 
-  describe '::Update' do
+  describe '::Update', vcr: { match_requests_on: [:host, :path] } do
     before do
       story.save!
     end
@@ -134,6 +144,14 @@ describe StoryOperations do
       it "sets the project start date if it's newer than the accepted story" do
         story.project.update_attribute(:start_date, Date.current + 2.days)
         expect(subject.call.project.start_date).to eq(story.accepted_at.to_date)
+      end
+    end
+
+    context "::PusherNotification" do
+      it "notifies the pusher that the board has changes" do
+        expect(PusherNotificationWorker).to receive(:perform_async)
+
+        subject.call
       end
     end
 
@@ -366,6 +384,22 @@ describe StoryOperations do
     end
   end
 
+  describe "::Destroy" do
+    before do
+      story.save!
+    end
+
+    subject { -> { StoryOperations::Destroy.call(story, user) } }
+
+    context "::PusherNotification" do
+      it "notifies the pusher that the board has changes" do
+        expect(PusherNotificationWorker).to receive(:perform_async)
+
+        subject.call
+      end
+    end
+  end
+
   describe '::ReadAll' do
     def expect_past_iteration_attrs(subject_past_iteration, past_iteration)
       expect(subject_past_iteration.start_date).to eq(past_iteration.start_date)
@@ -451,7 +485,7 @@ describe StoryOperations do
     end
   end
 
-  describe '::UpdateAll' do
+  describe '::UpdateAll', vcr: { match_requests_on: [:host, :path] } do
     let(:user_1)    { create(:user, :with_team) }
     let(:user_2)    { create(:user, :with_team) }
     let(:user_3)    { create(:user, :with_team) }

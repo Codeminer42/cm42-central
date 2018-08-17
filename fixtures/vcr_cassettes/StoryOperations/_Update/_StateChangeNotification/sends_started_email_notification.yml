@@ -1,0 +1,39 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api-us2.pusher.com/apps/575361/events?auth_key=35987e52c6a36f8d0305&auth_signature=1160ae645300957f879615b541208bb2930cfd8e721509cf6ece5281887d9078&auth_timestamp=1534281641&auth_version=1.0&body_md5=8cb4966cdd4f210438d4a388191a6c43
+    body:
+      encoding: UTF-8
+      string: '{"name":"notify_changes","channels":["project-board-5"],"data":"{\"message\":\"project
+        updated\"}"}'
+    headers:
+      User-Agent:
+      - HTTPClient/1.0 (2.8.2.4, ruby 2.3.1 (2016-04-26))
+      Accept:
+      - "*/*"
+      Date:
+      - Tue, 14 Aug 2018 21:20:41 GMT
+      X-Pusher-Library:
+      - pusher-http-ruby 1.3.1
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/html;charset=utf-8
+      Server:
+      - thin
+      Content-Length:
+      - '2'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: "{}"
+    http_version: 
+  recorded_at: Tue, 14 Aug 2018 21:20:41 GMT
+recorded_with: VCR 3.0.3
