@@ -90,7 +90,7 @@ end
 
 group :development do
   gem 'letter_opener'
-  gem 'letter_opener_web', '~> 1.2.0'
+  gem 'letter_opener_web', '~> 1.3.4'
   gem "better_errors"
   gem "binding_of_caller"
   gem "bullet"
