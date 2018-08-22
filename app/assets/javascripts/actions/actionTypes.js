@@ -1,4 +1,4 @@
-import keyMirror from 'keymirror';
+import keyMirror from "keymirror";
 
 export default keyMirror({
   REQUEST_PROJECT_BOARD: null,
@@ -10,5 +10,5 @@ export default keyMirror({
   COLUMN_CHILLY_BIN: null,
   COLUMN_BACKLOG: null,
   COLUMN_IN_PROGRESS: null,
-  COLUMN_DONE: null,
+  COLUMN_DONE: null
 });
