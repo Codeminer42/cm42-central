@@ -195,7 +195,7 @@ GEM
     formtastic (3.1.4)
       actionpack (>= 3.2.13)
     formtastic_i18n (0.6.0)
-    friendly_id (5.1.0)
+    friendly_id (5.2.4)
       activerecord (>= 4.0.0)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
@@ -229,7 +229,7 @@ GEM
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     httpclient (2.8.2.4)
-    i18n (0.9.1)
+    i18n (0.9.5)
       concurrent-ruby (~> 1.0)
     i18n-js (3.0.0.rc14)
       i18n (~> 0.6, >= 0.6.6)
@@ -274,7 +274,7 @@ GEM
     mime-types-data (3.2016.0521)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
-    minitest (5.10.3)
+    minitest (5.11.3)
     moneta (0.8.1)
     multi_json (1.12.1)
     multi_xml (0.5.5)
@@ -464,7 +464,7 @@ GEM
     tilt (2.0.5)
     timecop (0.8.1)
     transitions (0.1.13)
-    tzinfo (1.2.4)
+    tzinfo (1.2.5)
       thread_safe (~> 0.1)
     uglifier (3.0.2)
       execjs (>= 0.3.0, < 3)
@@ -529,7 +529,7 @@ DEPENDENCIES
   dotenv-rails
   factory_girl_rails
   foreman
-  friendly_id (~> 5.1.0)
+  friendly_id (~> 5.2.4)
   grape
   grape-entity
   grape-swagger
