@@ -6,3 +6,10 @@ export const status = {
   FINISHED: "finished",
   UNSTARTED: "unstarted"
 };
+
+export const storyTypes = {
+  BUG: "bug",
+  CHORE: "chore",
+  FEATURE: "feature",
+  RELEASE: "release"
+};
