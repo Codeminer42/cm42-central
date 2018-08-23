@@ -30,4 +30,16 @@ describe ProjectsHelper do
       end
     end
   end
+
+  describe '#velocity_strategy_options' do
+    subject(:options) { helper.velocity_strategy_options }
+
+    it 'returns an array containing translated options to use in a select' do
+      (1..4).each do |iteration|
+        expect(options).to include(
+          [I18n.t('n velocity strategy', count: iteration), iteration]
+        )
+      end
+    end
+  end
 end

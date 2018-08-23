@@ -16,6 +16,12 @@ RSpec.describe Entities::Project do
   it { expect(subject[:volatility]).to be_nil }
   it { expect(subject[:mail_reports]).to be_truthy }
 
+  it do
+    expect(
+      subject[:velocity_strategy]
+    ).to eq(project.velocity_strategy)
+  end
+
   context 'when call it with full type' do
     subject { described_class.represent(project, type: :full).as_json }
 

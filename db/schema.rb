@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170914172941) do
+ActiveRecord::Schema.define(version: 20180823124914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -170,6 +170,7 @@ ActiveRecord::Schema.define(version: 20170914172941) do
     t.boolean  "disallow_join",                   default: true,        null: false
     t.integer  "tag_group_id"
     t.boolean  "mail_reports",                    default: true
+    t.integer  "velocity_strategy",               default: 3
   end
 
   add_index "projects", ["slug"], name: "index_projects_on_slug", unique: true, using: :btree
