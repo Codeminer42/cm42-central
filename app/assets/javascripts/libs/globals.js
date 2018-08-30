@@ -6,4 +6,4 @@ var Markdown = require('vendor/Markdown.Converter');
 window.md = new Markdown.Converter();
 
 window.Chart = require('chart.js');
-window.Chartkick = require('chartkick');
+window.Chartkick = require('chartkick').default;
