@@ -41,7 +41,7 @@ const createSprint = (sprintNumber = 0, startDate = 0, isFiller = false) => ({
 
 const createFillerSprints = (size, initialNumber, project) => {
   let fillerSprints = [];
-  for (let i = 1; i <= size; i++) {
+  for (let i = 0; i < size; i++) {
     const sprintNumber = initialNumber + i;
     const sprint = createSprint(
       sprintNumber,
