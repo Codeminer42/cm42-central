@@ -56,17 +56,16 @@ const createFillerSprints = (size, initialNumber, project) => {
 const lastRealSprintIndex = sprints => {
   const realSprints =
     sprints.length && sprints.filter(sprint => sprint && !sprint.isFiller);
-  const index = realSprints.length > 0 ? realSprints.length - 1 : 0;
+  const index = realSprints.length && realSprints.length - 1;
   return sprints.indexOf(realSprints[index]);
 };
 
+const hasSpaceForStory = (sprintPoints, storyPoints, velocity) =>
+  sprintPoints + storyPoints <= velocity || !sprintPoints || !storyPoints;
+
 const canTakeStory = (sprint, storyPoints, velocity) => {
   if (sprint && !sprint.isFiller) {
-    return (
-      sprint.points + storyPoints <= velocity ||
-      sprint.points === 0 ||
-      storyPoints === 0
-    );
+    return hasSpaceForStory(sprint.points, storyPoints, velocity);
   }
   return false;
 };
@@ -75,12 +74,25 @@ const calculateOverflow = (storyPoints, velocity) => {
   return Math.ceil((storyPoints - velocity) / velocity);
 };
 
+const handleOverflow = (project, sprints, storyPoints, initialSprintNumber) => {
+  const overflow = calculateOverflow(storyPoints, project.defaultVelocity);
+  const hasOverflown = overflow > 0;
+  const currentSprintNumber = sprints.length + initialSprintNumber;
+  if (hasOverflown) {
+    return (sprints = [
+      ...sprints,
+      ...createFillerSprints(overflow, currentSprintNumber, project)
+    ]);
+  }
+  return sprints;
+};
+
 const addStoryToSprint = (project, sprints, index, story) => {
   if (!sprints[index]) {
-    const currentSprintNumber = sprints.length + getCurrentIteration(project);
+    const sprintNumber = sprints.length + getCurrentIteration(project);
     sprints[index] = createSprint(
-      currentSprintNumber,
-      getDateForIterationNumber(currentSprintNumber, project)
+      sprintNumber,
+      getDateForIterationNumber(sprintNumber, project)
     );
   }
 
@@ -95,12 +107,12 @@ export const reduceToSprints = (stories = [], project, initialSprintNumber) => {
   return stories.reduce((sprints, story) => {
     const isUnstarted = Story.isUnstarted(story);
     const storyPoints = Story.getPoints(story);
-    const sprintIndex = sprints.length > 0 ? sprints.length - 1 : 0;
+    const sprintIndex = sprints.length && sprints.length - 1;
     const realSprintIndex = lastRealSprintIndex(sprints);
-    const currentSprintNumber = sprints.length + initialSprintNumber;
+    const firstSprintIndex = 0;
 
     if (!isUnstarted) {
-      return addStoryToSprint(project, sprints, 0, story);
+      return addStoryToSprint(project, sprints, firstSprintIndex, story);
     }
 
     const hasSpace = canTakeStory(
@@ -113,17 +125,7 @@ export const reduceToSprints = (stories = [], project, initialSprintNumber) => {
       return addStoryToSprint(project, sprints, realSprintIndex, story);
     }
 
-    const overflow = calculateOverflow(storyPoints, project.defaultVelocity);
-    const hasOverflown = overflow > 0;
-
     sprints = addStoryToSprint(project, sprints, sprintIndex + 1, story);
-    if (hasOverflown) {
-      sprints = [
-        ...sprints,
-        ...createFillerSprints(overflow, currentSprintNumber, project)
-      ];
-    }
-
-    return sprints;
+    return handleOverflow(project, sprints, storyPoints, initialSprintNumber);
   }, []);
 };
