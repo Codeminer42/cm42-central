@@ -41,13 +41,11 @@ const createSprint = (sprintNumber = 0, startDate = 0, isFiller = false) => ({
 
 const createFillerSprints = (size, initialNumber, project) => {
   let fillerSprints = [];
-  for (let i = 1; i <= size + 1; i++) {
+  for (let i = 1; i <= size; i++) {
     const sprintNumber = initialNumber + i;
     const sprint = createSprint(
       sprintNumber,
       getDateForIterationNumber(sprintNumber, project),
-      0,
-      0,
       true
     );
     fillerSprints.push(sprint);
@@ -55,9 +53,20 @@ const createFillerSprints = (size, initialNumber, project) => {
   return fillerSprints;
 };
 
+const lastRealSprintIndex = sprints => {
+  const realSprints =
+    sprints.length && sprints.filter(sprint => sprint && !sprint.isFiller);
+  const index = realSprints.length > 0 ? realSprints.length - 1 : 0;
+  return sprints.indexOf(realSprints[index]);
+};
+
 const canTakeStory = (sprint, storyPoints, velocity) => {
-  if (sprint && !sprint.isVoid) {
-    return sprint.points + storyPoints <= velocity || sprint.points === 0;
+  if (sprint && !sprint.isFiller) {
+    return (
+      sprint.points + storyPoints <= velocity ||
+      sprint.points === 0 ||
+      storyPoints === 0
+    );
   }
   return false;
 };
@@ -87,6 +96,7 @@ export const reduceToSprints = (stories = [], project, initialSprintNumber) => {
     const isUnstarted = Story.isUnstarted(story);
     const storyPoints = Story.getPoints(story);
     const sprintIndex = sprints.length > 0 ? sprints.length - 1 : 0;
+    const realSprintIndex = lastRealSprintIndex(sprints);
     const currentSprintNumber = sprints.length + initialSprintNumber;
 
     if (!isUnstarted) {
@@ -94,33 +104,26 @@ export const reduceToSprints = (stories = [], project, initialSprintNumber) => {
     }
 
     const hasSpace = canTakeStory(
-      sprints[sprintIndex],
+      sprints[realSprintIndex],
       storyPoints,
       project.defaultVelocity
     );
 
     if (hasSpace) {
-      return addStoryToSprint(project, sprints, sprintIndex, story);
+      return addStoryToSprint(project, sprints, realSprintIndex, story);
     }
 
-    const newSprints = addStoryToSprint(
-      project,
-      sprints,
-      sprintIndex + 1,
-      story
-    );
     const overflow = calculateOverflow(storyPoints, project.defaultVelocity);
     const hasOverflown = overflow > 0;
 
+    sprints = addStoryToSprint(project, sprints, sprintIndex + 1, story);
     if (hasOverflown) {
-      const fillerSprints = createFillerSprints(
-        overflow,
-        currentSprintNumber,
-        project
-      );
-      return [...newSprints, ...fillerSprints];
+      sprints = [
+        ...sprints,
+        ...createFillerSprints(overflow, currentSprintNumber, project)
+      ];
     }
 
-    return [...newSprints];
+    return sprints;
   }, []);
 };

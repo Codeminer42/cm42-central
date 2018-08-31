@@ -38,7 +38,7 @@ class Sprint extends Component {
         <div className="Sprint__header" onClick={this.toggleSprint}>
           {number} - {startDate}
           <span className="Sprint__points">
-            {completedPoints && `${completedPoints} / `}
+            {completedPoints > 0 && `${completedPoints} / `}
             {points}
           </span>
         </div>
