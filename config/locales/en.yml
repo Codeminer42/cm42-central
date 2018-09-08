@@ -401,7 +401,7 @@ en:
       text: "You can create as many projects as you want clicking this button"
     project_activity:
       title: "Project Activity"
-      text: "Every time you change something in the Project or its Story they will be audited and the details of the changes will be visible to every team member from this Activity timeline box. <br> <strong>Pro tip</strong>: you shouldn\'t change a Story after the team started working on it, you must add a new Story."
+      text: "Every time you change something in the Project or its Story they will be audited and the details of the changes will be visible to every team member from this Activity timeline box. <br> <strong>Pro tip</strong>: you shouldn't change a Story after the team started working on it, you must add a new Story."
     create_story:
       title: "Create Story"
       text: "Click this button to create new Stories. A Story can be the description of a new feature or a bug report, for example. New stories will be created first at the Chilly Bin box."
@@ -416,7 +416,7 @@ en:
       text: "This is where stories that must be worked on right now will reside. Central will automatically pick up the top stories from the Backlog to fit the team's current Velocity"
     done:
       title: "Done"
-      text: "After a story is delivered and approved, it is sorted out at the bottom of this column. A delivered story can\'t be modified and this column is here to show you everything that has already been finished and approved"
+      text: "After a story is delivered and approved, it is sorted out at the bottom of this column. A delivered story can't be modified and this column is here to show you everything that has already been finished and approved"
     project_velocity:
       title: "Project Velocity"
       text: "All stories are estimated by \"points\". The average of points delivered by a team during an Iteration is the Velocity. The estimated end date of a Project is the total amount of points in the Backlog divided by the Velocity. Here you can simulate adding a new member by slightly increasing the estimated Velocity to see the effects on the future Iteration dates"
