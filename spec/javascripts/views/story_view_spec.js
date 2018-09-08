@@ -37,6 +37,7 @@ describe('StoryView', function() {
       accept: function()  { this.set({state: "accepted"}); },
       reject: function()  { this.set({state: "rejected"}); },
       hasDetails: function() { return true; },
+      sortUpdate: sinon.spy(),
       events: OriginalStory.prototype.events,
       humanAttributeName: sinon.stub(),
       setAcceptedAt: sinon.spy(),
@@ -330,92 +331,43 @@ describe('StoryView', function() {
       this.story.collection.project.columnsAfter = sinon.stub();
     });
 
-    it("sets state to unstarted if dropped on the backlog column", function() {
-
-      this.story.set({'state':'unscheduled'});
-
-      var html = $('<td id="backlog"><div id="story-1"></div></td>');
-      var ev = {target: html.find('#story-1')};
-
-      this.view.sortUpdate(ev);
-
-      expect(this.story.get('state')).toEqual("unstarted");
-    });
-
-    it("sets state to unstarted if dropped on the in_progress column", function() {
-
-      this.story.set({'state':'unscheduled'});
-
-      var html = $('<td id="in_progress"><div id="story-1"></div></td>');
-      var ev = {target: html.find('#story-1')};
-
-      this.view.sortUpdate(ev);
-
-      expect(this.story.get('state')).toEqual("unstarted");
-    });
-
-    it("doesn't change state if not unscheduled and dropped on the in_progress column", function() {
-
-      this.story.set({'state':'finished'});
-
-      var html = $('<td id="in_progress"><div id="story-1"></div></td>');
-      var ev = {target: html.find('#story-1')};
-
-      this.view.sortUpdate(ev);
-
-      expect(this.story.get('state')).toEqual("finished");
-    });
-
-    it("sets state to unscheduled if dropped on the chilly_bin column", function() {
-
-      this.story.set({'state':'unstarted'});
-
-      var html = $('<td id="chilly_bin"><div id="story-1"></div></td>');
-      var ev = {target: html.find('#story-1')};
-
-      this.view.sortUpdate(ev);
-
-      expect(this.story.get('state')).toEqual("unscheduled");
-    });
-
     it("should move after the previous story in the column", function() {
       var html = $('<div id="story-1" data-story-id="1" class="story"></div><div id="story-2" data-story-id="2" class="story"></div>');
       var ev = {target: html[1]};
+      var column = $(ev.target).parent().attr('id');
 
-      this.story.moveAfter = sinon.spy();
       this.view.sortUpdate(ev);
 
-      expect(this.story.moveAfter).toHaveBeenCalledWith(1);
+      expect(this.story.sortUpdate).toHaveBeenCalledWith(column, 1);
     });
 
     it("should move before the next story in the column", function() {
       var html = $('<div id="story-1" data-story-id="1" class="story"></div><div id="story-2" data-story-id="2" class="story"></div>');
       var ev = {target: html[0]};
+      var column = $(ev.target).parent().attr('id');
 
-      this.story.moveBefore = sinon.spy();
       this.view.sortUpdate(ev);
 
-      expect(this.story.moveBefore).toHaveBeenCalledWith(2);
+      expect(this.story.sortUpdate).toHaveBeenCalledWith(column, undefined, 2);
     });
 
     it("should move before the next story in the column", function() {
       var html = $('<div id="foo"></div><div id="story-1" data-story-id="1" class="story"></div><div id="story-2" data-story-id="2" class="story"></div>');
       var ev = {target: html[1]};
+      var column = $(ev.target).parent().attr('id');
 
-      this.story.moveBefore = sinon.spy();
       this.view.sortUpdate(ev);
 
-      expect(this.story.moveBefore).toHaveBeenCalledWith(2);
+      expect(this.story.sortUpdate).toHaveBeenCalledWith(column, undefined, 2);
     });
 
     it("should move into an empty chilly bin", function() {
       var html = $('<td id="backlog"><div id="story-1" data-story-id="1"></div></td><td id="chilly_bin"><div id="story-2" data-story-id="2"></div></td>');
       var ev = {target: html.find('#story-2')};
 
-      this.story.moveAfter = sinon.spy();
       this.view.sortUpdate(ev);
 
-      expect(this.story.get('state')).toEqual('unscheduled');
+      expect(this.story.sortUpdate).toHaveBeenCalledWith('chilly_bin');
     });
 
   });

@@ -1,6 +1,5 @@
 var Story = require('models/story');
 var StoryCollection = require('collections/story_collection');
-
 describe('StoryCollection', function() {
 
   beforeEach(function() {
@@ -12,6 +11,7 @@ describe('StoryCollection', function() {
     this.stories = new StoryCollection();
     this.stories.url = '/foo';
     this.stories.add([this.story3, this.story2, this.story1]);
+
   });
 
   describe('position', function() {
@@ -22,34 +22,24 @@ describe('StoryCollection', function() {
       expect(this.stories.at(2)).toBe(this.story3);
     });
 
-    it('should move between 2 other stories', function() {
-
-      expect(this.stories.at(2)).toBe(this.story3);
-
-      this.story3.moveBetween(1,2);
-      expect(this.story3.position()).toEqual(15.0);
-      expect(this.stories.at(1).id).toEqual(this.story3.id);
-    });
-
     it('should move after another story', function() {
-
       expect(this.stories.at(2)).toBe(this.story3);
 
-      this.story3.moveAfter(1);
+      this.story3.move(1);
       expect(this.story3.position()).toEqual(15.0);
       expect(this.stories.at(1).id).toEqual(this.story3.id);
     });
 
     it('should move after the last story', function() {
       expect(this.stories.at(2)).toBe(this.story3);
-      this.story1.moveAfter(3);
+      this.story1.move(3);
       expect(this.story1.position()).toEqual(31.0);
       expect(this.stories.at(2).id).toEqual(this.story1.id);
     });
 
     it('should move before the first story', function() {
       expect(this.stories.at(0)).toBe(this.story1);
-      this.story3.moveBefore(1);
+      this.story3.move(undefined, 1);
       expect(this.story3.position()).toEqual(5.0);
       expect(this.stories.at(0).id).toEqual(this.story3.id);
     });
@@ -58,7 +48,7 @@ describe('StoryCollection', function() {
 
       expect(this.stories.at(2)).toBe(this.story3);
 
-      this.story3.moveBefore(2);
+      this.story3.move(undefined, 2);
       expect(this.story3.position()).toEqual(15.0);
       expect(this.stories.at(1).id).toEqual(this.story3.id);
     });
@@ -100,7 +90,7 @@ describe('StoryCollection', function() {
       this.stories.at(1).column = '#backlog';
       this.stories.at(2).column = '#done';
     });
-    
+
     it('should return the story before a given story in a given column', function() {
       expect(this.stories.previousOnColumn(this.story2)).toBe(this.story1);
     });
@@ -114,9 +104,7 @@ describe('StoryCollection', function() {
         expect(this.stories.nextOnColumn(this.story2)).toBeUndefined();
         expect(this.stories.previousOnColumn(this.story1)).toBeUndefined();
         expect(this.stories.previousOnColumn(this.story3)).toBeUndefined();
-      }
-    ); 
-
+      });
   });
 
   describe("columns", function() {
@@ -135,6 +123,96 @@ describe('StoryCollection', function() {
         .toEqual([this.story3,this.story2,this.story1]);
     });
 
+  });
+
+  describe("story sorting", function() {
+    beforeEach(function(){
+      jasmine.Ajax.install();
+    });
+
+    afterEach(function() {
+      jasmine.Ajax.uninstall();
+    });
+
+    xdescribe("when the positions become to have too many decimal places", function() {
+      beforeEach(function() {
+        this.story1.set({position: 1});
+        this.story2.set({position: 2.52654664795});
+        this.story3.sortUpdate(this.story3.column, this.story1.id, this.story2.id);
+        this.story3.checkPosition();
+      });
+
+      it("should make a request sort the entire column", function() {
+        const request = jasmine.Ajax.requests.mostRecent();
+        expect(request.url).toBe('/foo/sort');
+        expect(request.method).toBe('PUT');
+        expect(request.data()).toMatch(/[this.story1.id, this.story3.id, this.story2.id]/);
+      });
+
+    });
+
+    describe("when the position has more than 5 decimal places", function() {
+      beforeEach(function() {
+        this.story1.set({position: 5.55555});
+        this.story2.set({position: 5.55555 });
+        this.story3.set({position: 5.55555 });
+        this.story1.column = this.story2.column = this.story3.column = '#chilly_bin';
+        this.stories.roundPosition(this.story2.id, this.story3.id);
+        this.stories.roundPosition(this.story1.id, this.story2.id);
+
+      });
+
+      it("should correct the position one by one if collides", function() {
+        expect(this.story1.position()).toEqual(5.55575);
+        expect(this.story2.position()).toEqual(5.55565);
+        expect(this.story3.position()).toEqual(5.55555);
+      });
+    });
+
+    describe("when the positions has more than 5 decimal places", function() {
+      beforeEach(function() {
+        this.story1.set({position: 5.55555});
+        this.story2.set({position: 5.55555 });
+        this.story3.set({position: 5.55554 });
+        this.story1.column = this.story2.column = this.story3.column = '#done';
+        this.stories.roundPosition(this.story2.id, this.story3.id);
+        this.stories.roundPosition(this.story1.id, this.story2.id);
+      });
+
+      it("should check the position even if previous story doesn't collide", function() {
+        expect(this.story1.position()).toEqual(5.55565);
+        expect(this.story2.position()).toEqual(5.55555);
+        expect(this.story3.position()).toEqual(5.55554);
+      });
+    });
+
+    describe("when the positions has more than 5 decimal places", function() {
+      beforeEach(function() {
+        this.story1.set({position: 5.55555});
+        this.story2.set({position: 5.55545});
+        this.story3.set({position: 5.55540});
+        this.stories.roundPosition(this.story2.id, this.story3.id);
+        this.stories.roundPosition(this.story1.id, this.story2.id);
+      });
+
+      it("shouldn't change anything if it's not needed", function() {
+        expect(this.story1.position()).toEqual(5.55555);
+        expect(this.story2.position()).toEqual(5.55545);
+        expect(this.story3.position()).toEqual(5.55540);
+      });
+    });
+
+    describe("when the new position is valid", function() {
+      beforeEach(function() {
+        this.story3.sortUpdate(this.story3.column, this.story1.id, this.story2.id);
+      });
+
+      it("should not make a request to sort the entire column", function() {
+        expect(this.story3.position()).toEqual(15.0);
+        const request = jasmine.Ajax.requests.mostRecent();
+        expect(request.url).not.toBe('foo/sort');
+      });
+    });
   });
 
   describe("labels", function() {

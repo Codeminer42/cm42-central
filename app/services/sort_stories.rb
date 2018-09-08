@@ -10,8 +10,6 @@ class SortStories
     @stories.map { |story| update_position(story) }.sort_by(&:position)
   end
 
-  private
-
   def update_position(story)
     story.tap { |s| s.update_attributes position: position_for(story) }
   end
