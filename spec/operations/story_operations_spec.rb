@@ -403,6 +403,7 @@ describe StoryOperations do
       expect(subject_past_iteration.start_date).to eq(past_iteration.start_date)
       expect(subject_past_iteration.end_date).to eq(past_iteration.end_date)
       expect(subject_past_iteration.points).to eq(past_iteration.points)
+      expect(subject_past_iteration.stories).to eq(past_iteration.stories)
       expect(subject_past_iteration.iteration_number).to eq(1)
     end
 
@@ -416,7 +417,7 @@ describe StoryOperations do
       iteration_end = ((project.created_at + project.iteration_length * 7.days) - 1.day).to_date
       Iterations::PastIteration.new(start_date: iteration_start,
                                     end_date: iteration_end,
-                                    project: project)
+                                    stories: [done_story])
     end
 
     subject      { StoryOperations::ReadAll }

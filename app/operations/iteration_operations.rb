@@ -12,16 +12,29 @@ module IterationOperations
 
     def run
       {
-        stories: stories
+        stories: past_iteration.stories
       }
     end
 
     private
 
+    attr_reader :project, :start_date, :end_date
+
+    def past_iteration
+      Iterations::PastIteration.new(
+        start_date: start_date,
+        end_date: end_date,
+        stories: stories
+      )
+    end
+
     def stories
-      Iterations::PastIteration.new(start_date: @start_date,
-                                    end_date: @end_date,
-                                    project: @project).stories
+      @stories ||= begin
+        project
+          .stories
+          .with_dependencies
+          .where('accepted_at >= ? AND accepted_at <= ?', start_date, end_date)
+      end
     end
   end
 end

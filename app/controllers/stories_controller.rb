@@ -95,7 +95,7 @@ class StoriesController < ApplicationController
     elsif params[:label]
       StorySearch.labels(policy_scope(Story), params[:label])
     else
-      StoryOperations::ReadAll.call(project: @project)
+      @project.stories.with_dependencies
     end
   end
 

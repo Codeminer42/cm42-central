@@ -1,23 +1,15 @@
 module Iterations
   class PastIteration
-    attr_reader :start_date, :end_date, :points, :iteration_number
+    include Virtus.model
 
-    def initialize(start_date:, end_date:, project:, iteration_number: nil)
-      @start_date = start_date
-      @end_date = end_date
-      @project = project
-      @points = points
-      @iteration_number = iteration_number
-    end
+    attribute :start_date, DateTime
+    attribute :end_date, DateTime
+    attribute :iteration_number, Integer
+    attribute :stories, Array[Story]
+    attribute :points, Integer
 
     def points
-      @points ||= stories.sum(:estimate)
-    end
-
-    def stories
-      @stories ||= @project.stories.where(
-        'accepted_at >= ? AND accepted_at <= ?', @start_date, @end_date
-      )
+      @points ||= stories.to_a.map(&:estimate).compact.sum
     end
   end
 end
