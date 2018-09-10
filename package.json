@@ -83,6 +83,7 @@
     "babel-plugin-istanbul": "^3.1.2",
     "coveralls": "^2.11.14",
     "enzyme": "^2.7.1",
+    "es6-symbol": "^3.1.1",
     "eslint": "^3.19.0",
     "eslint-config-react-app": "^1.0.4",
     "eslint-plugin-backbone": "^2.0.2",

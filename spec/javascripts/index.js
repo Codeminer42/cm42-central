@@ -1,3 +1,4 @@
+require('es6-symbol/implement');
 require('libs');
 require('./extra/jasmine-sinon');
 require('./extra/jasmine-jquery');
