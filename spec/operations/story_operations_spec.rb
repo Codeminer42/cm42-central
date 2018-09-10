@@ -389,13 +389,11 @@ describe StoryOperations do
       story.save!
     end
 
-    subject { -> { StoryOperations::Destroy.call(story, user) } }
-
     context "::PusherNotification" do
       it "notifies the pusher that the board has changes" do
         expect(PusherNotificationWorker).to receive(:perform_async)
 
-        subject.call
+        StoryOperations::Destroy.call(story, user)
       end
     end
   end

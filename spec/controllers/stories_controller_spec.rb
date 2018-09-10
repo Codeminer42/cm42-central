@@ -140,7 +140,15 @@ describe StoriesController do
             VCR.use_cassette('pusher_notification', match_requests_on: [:host, :path]) do
               expect do
                 xhr :put, :update, project_id: project.id, id: story.id, story: story_params
-              end.to change { story.reload; story.documents.count }.by(0)
+              end.not_to change { story.reload; story.documents.count }
+            end
+          end
+        end
+
+        it 'should respond with success' do
+          VCR.use_cassette('cloudinary_upload_2') do
+            VCR.use_cassette('pusher_notification_2', match_requests_on: [:host, :path]) do
+              xhr :put, :update, project_id: project.id, id: story.id, story: story_params
               expect(response).to be_success
             end
           end

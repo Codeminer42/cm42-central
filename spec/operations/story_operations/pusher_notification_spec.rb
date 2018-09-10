@@ -15,9 +15,8 @@ describe StoryOperations::PusherNotification do
     { title: 'Test Story', requested_by: user, state: 'unstarted', accepted_at: nil }
   end
 
-  let!(:membership) { create(:membership) }
-  let(:user)        { User.first }
-  let(:project)     { Project.first }
+  let(:user)        { create(:user) }
+  let(:project)     { create(:project) }
   let(:model)       { project.stories.build(story_params) }
   let(:channel_name) { "project-board-#{project.id}" }
 
