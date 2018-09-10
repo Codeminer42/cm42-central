@@ -31,6 +31,7 @@
     "coffee-script": "^1.12.6",
     "compression-webpack-plugin": "^0.4.0",
     "css-loader": "^0.28.4",
+    "dotenv": "^6.0.0",
     "ejs-compiled-loader": "^2.1.1",
     "extract-text-webpack-plugin": "^2.1.2",
     "file-loader": "^0.11.2",
