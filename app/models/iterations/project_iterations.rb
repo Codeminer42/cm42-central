@@ -1,5 +1,7 @@
 module Iterations
   class ProjectIterations
+    DAYS_IN_A_WEEK = 7
+
     def initialize(project:)
       @project = project
     end
@@ -48,7 +50,7 @@ module Iterations
     end
 
     def iteration_length_in_days
-      project.iteration_length * 7
+      project.iteration_length * DAYS_IN_A_WEEK
     end
 
     def project_start_date
