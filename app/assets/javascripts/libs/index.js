@@ -1,3 +1,4 @@
+require('es6-symbol/implement');
 require('./globals');
 require('./cloudinary');
 require('./jquery_plugins');
