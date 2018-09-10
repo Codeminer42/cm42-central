@@ -7,6 +7,7 @@ var ProjectSearchView = require('views/project_search_view');
 var ProjectVelocityView = require('views/project_velocity_view');
 
 import TourController from 'controllers/tour/TourController';
+import { subscribeToProjectChanges } from './pusherSockets';
 
 require('./global_listeners');
 
@@ -41,9 +42,9 @@ var Central = module.exports = {
 
       $(window).resize(view.scaleToViewport);
 
-      setInterval(function() {
+      subscribeToProjectChanges(project, () => {
         project.fetch();
-      }, 10 * 1000); // every 10 seconds
+      });
 
       window.projectView = view;
     });

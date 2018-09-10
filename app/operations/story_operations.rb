@@ -1,15 +1,18 @@
 require 'story_operations/member_notification'
 require 'story_operations/state_change_notification'
 require 'story_operations/legacy_fixes'
+require 'story_operations/pusher_notification'
 
 module StoryOperations
   class Create < BaseOperations::Create
     include MemberNotification
+    include PusherNotification
 
     def after_save
       model.changesets.create!
 
       notify_users
+      notify_changes
     end
   end
 
@@ -17,6 +20,7 @@ module StoryOperations
     include MemberNotification
     include StateChangeNotification
     include LegacyFixes
+    include PusherNotification
 
     def before_save
       model.documents_attributes_was = model.documents_attributes
@@ -27,6 +31,7 @@ module StoryOperations
       apply_fixes
       notify_state_changed
       notify_users
+      notify_changes
     end
 
     private
@@ -51,7 +56,13 @@ module StoryOperations
 
   class UpdateAll < BaseOperations::UpdateAll; end
 
-  class Destroy < BaseOperations::Destroy; end
+  class Destroy < BaseOperations::Destroy
+    include PusherNotification
+
+    def after_save
+      notify_changes
+    end
+  end
 
   class DestroyAll < BaseOperations::DestroyAll; end
 

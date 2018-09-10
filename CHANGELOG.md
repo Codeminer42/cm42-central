@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 - New endpoint to update batch stories
+- Replace polling with Pusher to fetch project updates
 
 ## [1.19.0] 2018-05-25
 ### Added

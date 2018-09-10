@@ -57,6 +57,7 @@ gem 'sinatra', require: nil
 gem 'uglifier', '>= 2.5.3'
 gem 'user_impersonate2', require: 'user_impersonate'
 gem 'webpacker'
+gem 'pusher'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-jquery.gritter'
