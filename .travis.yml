@@ -10,7 +10,8 @@ addons:
     packages:
       - chromium-chromedriver
   artifacts:
-    working_dir: ./tmp/capybara
+    paths:
+      - $(ls ./tmp/capybara | tr "\n" ":")
 env:
   - "DB=postgresql"
 before_install:
