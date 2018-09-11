@@ -5,10 +5,11 @@ services:
   - redis-server
 sudo: required
 addons:
-  chrome: stable
   apt:
+    sources:
+      - google-chrome
     packages:
-      - chromium-chromedriver
+      - google-chrome-stable
 env:
   - "DB=postgresql"
 before_install:
