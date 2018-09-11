@@ -11,7 +11,7 @@ addons:
       - chromium-chromedriver
   artifacts:
     paths:
-      - $(ls ./tmp/capybara | tr "\n" ":")
+      - $(ls -d -1 $PWD/tmp/capybara/* | tr "\n" ":")
 env:
   - "DB=postgresql"
 before_install:
