@@ -3,7 +3,7 @@ cache: bundler
 services:
   - postgresql
   - redis-server
-sudo: false
+sudo: required
 addons:
   chrome: stable
   apt:
