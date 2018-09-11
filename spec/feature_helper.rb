@@ -35,4 +35,8 @@ RSpec.configure do |config|
   def story_element(story, parent: page)
     parent.find(story_selector(story))
   end
+
+  def trigger(selector, event_type)
+    page.execute_script("$('#{selector}').trigger('#{event_type}')")
+  end
 end

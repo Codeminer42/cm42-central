@@ -54,7 +54,7 @@ describe 'Keycuts' do
     end
 
     it 'toggles columns (<shift> b|c|d|p)', js: true do
-      find('#sidebar-toggle').trigger 'click'
+      trigger '#sidebar-toggle', 'click'
 
       send_keys 'B'
       expect(page).to have_css('.hide_backlog.pressed')

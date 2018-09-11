@@ -33,7 +33,6 @@
     "css-loader": "^0.28.4",
     "dotenv": "^6.0.0",
     "ejs-compiled-loader": "^2.1.1",
-    "es6-symbol": "^3.1.1",
     "extract-text-webpack-plugin": "^2.1.2",
     "file-loader": "^0.11.2",
     "glob": "^7.1.2",

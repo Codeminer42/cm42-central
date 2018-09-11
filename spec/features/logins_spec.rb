@@ -118,7 +118,7 @@ describe 'Logins' do
 
     it 'logs out the user' do
       visit root_path
-      find('.user-dropdown').trigger 'click'
+      trigger '.user-dropdown', 'click'
       click_on 'Log out'
 
       expect(page).to have_selector('span', text: 'Log in')

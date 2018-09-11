@@ -17,7 +17,7 @@ describe 'Tasks' do
       visit project_path(project)
 
       within('#in_progress .story') do
-        find('.story-title').trigger('click')
+        trigger '#in_progress .story .story-title', 'click'
         fill_in 'task', with: 'Adding a new task'
         click_on 'Add task'
       end
@@ -32,13 +32,13 @@ describe 'Tasks' do
       visit project_path(project)
 
       within('#in_progress .story') do
-        find('.story-title').trigger('click')
+        trigger '#in_progress .story .story-title', 'click'
         within('.tasklist') do
-          find('.delete-btn').trigger('click')
+          trigger '#in_progress .story .tasklist .delete-btn', 'click'
         end
       end
 
-      expect(find('#in_progress .story .tasklist')).not_to have_content('Delete me please')
+      expect(find('#in_progress .story .tasklist', visible: false)).not_to have_content('Delete me please')
     end
   end
 
@@ -49,7 +49,7 @@ describe 'Tasks' do
       visit project_path(project)
 
       within('#in_progress .story.accepted') do
-        find('.story-title').trigger('click')
+        trigger '#in_progress .story.accepted .story-title', 'click'
       end
 
       expect(page).not_to have_css('.task_form ')
