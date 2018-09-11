@@ -3,12 +3,9 @@ cache: bundler
 services:
   - postgresql
   - redis-server
-sudo: false
+sudo: required
 addons:
   chrome: stable
-  apt:
-    packages:
-      - chromium-chromedriver
 env:
   - "DB=postgresql"
 before_install:
