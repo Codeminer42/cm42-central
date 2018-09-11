@@ -9,6 +9,8 @@ addons:
   apt:
     packages:
       - chromium-chromedriver
+  artifacts:
+    working_dir: ./tmp/capybara
 env:
   - "DB=postgresql"
 before_install:
