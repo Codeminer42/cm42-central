@@ -16,7 +16,8 @@ module Iterations
 
     def stories
       @stories ||= @project.stories.where(
-        'accepted_at >= ? AND accepted_at <= ?', @start_date, @end_date
+        'accepted_at >= ? AND accepted_at <= ?',
+        @start_date.beginning_of_day, @end_date.end_of_day
       )
     end
   end
