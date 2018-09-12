@@ -9,12 +9,10 @@ Capybara.register_driver :chrome do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
 
-Capybara.javascript_driver = :chrome
-
 Capybara::Screenshot.register_driver :chrome do |driver, path|
   driver.save_screenshot(path)
 end
 
-Capybara.default_max_wait_time = 100
-
 Capybara.javascript_driver = :chrome
+
+Capybara.default_max_wait_time = 100
