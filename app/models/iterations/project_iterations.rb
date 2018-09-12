@@ -30,7 +30,7 @@ module Iterations
 
     def stories_from(start_at, end_at)
       stories.select do |story|
-        story.accepted_at >= start_at && story.accepted_at <= end_at
+        story.accepted_at.to_date >= start_at && story.accepted_at.to_date <= end_at
       end
     end
 
@@ -58,11 +58,12 @@ module Iterations
     end
 
     def start_date(iteration_number)
-      project_start_date + (iteration_number * iteration_length_in_days)
+      iteration_days = (iteration_number * iteration_length_in_days)
+      (project_start_date + iteration_days)
     end
 
     def end_date(start_date)
-      start_date + iteration_length_in_days - 1
+      (start_date + (iteration_length_in_days - 1))
     end
 
     def days_since_project_start

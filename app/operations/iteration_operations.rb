@@ -33,7 +33,11 @@ module IterationOperations
         project
           .stories
           .with_dependencies
-          .where('accepted_at >= ? AND accepted_at <= ?', start_date, end_date)
+          .where(
+            'accepted_at >= ? AND accepted_at <= ?',
+            start_date.beginning_of_day,
+            end_date.end_of_day
+          )
       end
     end
   end
