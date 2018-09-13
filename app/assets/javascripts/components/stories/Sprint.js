@@ -19,9 +19,7 @@ const defaultProps = {
 class Sprint extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isClosed: true
-    };
+    this.state = { isClosed: false };
     this.toggleSprint = this.toggleSprint.bind(this);
   }
 
@@ -31,10 +29,9 @@ class Sprint extends Component {
 
   render() {
     const { number, startDate, points, completedPoints, stories } = this.props;
-    const { isClosed } = this.state;
-    const { closedStyle } = isClosed ? "Sprint--closed" : "";
+    const closedStyle = this.state.isClosed && "Sprint__body--is-collapsed";
     return (
-      <div className={`Sprint ${closedStyle}`}>
+      <div className="Sprint">
         <div className="Sprint__header" onClick={this.toggleSprint}>
           {number} - {startDate}
           <span className="Sprint__points">
@@ -42,7 +39,7 @@ class Sprint extends Component {
             {points}
           </span>
         </div>
-        <div className="Sprint__body">
+        <div className={`Sprint__body ${closedStyle}`}>
           {stories && <Stories stories={stories} />}
         </div>
       </div>
