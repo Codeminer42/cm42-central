@@ -64,9 +64,9 @@ describe("iteration", function() {
     });
     describe("with empty array of stories", function() {
       it("should return an empty array of sprints", function() {
-        this.stories = [];
+        const stories = [];
         sprints = Iteration.reduceToSprints(
-          this.stories,
+          stories,
           this.project,
           this.initialSprintNumber
         );
@@ -93,7 +93,7 @@ describe("iteration", function() {
           }
         ];
 
-        sprints = Iteration.reduceToSprints(
+        const sprints = Iteration.reduceToSprints(
           stories,
           this.project,
           this.initialSprintNumber
@@ -152,7 +152,7 @@ describe("iteration", function() {
           }
         ];
 
-        sprints = Iteration.reduceToSprints(
+        const sprints = Iteration.reduceToSprints(
           stories,
           this.project,
           this.initialSprintNumber

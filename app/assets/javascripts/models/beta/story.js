@@ -28,7 +28,7 @@ export const compareStartedAt = (a, b) => {
 };
 
 export const isUnestimatedFeature = story => {
-  return story.estimate === null && story.storyType === "feature";
+  return story.estimate === null && story.storyType === storyTypes.FEATURE;
 };
 
 export const isFeature = story => {

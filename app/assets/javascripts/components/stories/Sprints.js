@@ -18,7 +18,7 @@ const renderSprints = sprints => {
     (sprint, index) =>
       sprint ? (
         <Sprint
-          key={index}
+          key={sprint.number}
           number={sprint.number}
           startDate={sprint.startDate}
           stories={sprint.stories}
@@ -43,7 +43,6 @@ const Sprints = ({ stories, project }) => {
 };
 
 Sprint.propTypes = propTypes;
-
 Sprint.defaultProps = defaultProps;
 
 export default Sprints;
