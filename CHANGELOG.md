@@ -1,13 +1,16 @@
 # Changelog
 
 ## [Unreleased]
+
+## [1.20.0] 2018-09-14
 ### Added
 - New endpoint to update batch stories
 - Replace polling with Pusher to fetch project updates
 
 ### Fixed
 - StoryOperations reading refactored to optimize queries and performance
-- Fixes the project export process, to properly generate the downloadable CSV file 
+- Fixes the project export process, to properly generate the downloadable CSV file
+- Fixes the rendering of charts 
 
 ## [1.19.0] 2018-05-25
 ### Added
@@ -282,7 +285,7 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.19.0...HEAD
+[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.20.0...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
@@ -309,3 +312,4 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [1.17.0]: https://github.com/Codeminer42/cm42-central/tree/v1.17.0
 [1.18.0]: https://github.com/Codeminer42/cm42-central/tree/v1.18.0
 [1.19.0]: https://github.com/Codeminer42/cm42-central/tree/v1.19.0
+[1.20.0]: https://github.com/Codeminer42/cm42-central/tree/v1.20.0
