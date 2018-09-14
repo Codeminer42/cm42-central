@@ -1,5 +1,7 @@
 module Iterations
   class ProjectIterations
+    DAYS_IN_A_WEEK = 7
+
     def initialize(project:)
       @project = project
     end
@@ -10,35 +12,58 @@ module Iterations
 
     def past_iterations
       (0...length).map do |iteration_number|
-        start_date = start_date(iteration_number)
-        end_date = end_date(start_date)
-        PastIteration.new(start_date: start_date,
-                          end_date: end_date,
-                          project: @project,
-                          iteration_number: iteration_number + 1)
+        start_at = start_date(iteration_number)
+        end_at = end_date(start_at)
+
+        PastIteration.new(
+          start_date: start_at,
+          end_date: end_at,
+          stories: stories_from(start_at, end_at),
+          iteration_number: iteration_number + 1
+        )
       end
     end
 
     private
+
+    attr_reader :project
+
+    def stories_from(start_at, end_at)
+      stories.select do |story|
+        story.accepted_at.to_date >= start_at && story.accepted_at.to_date <= end_at
+      end
+    end
+
+    def stories
+      @stories ||= begin
+        project
+          .stories
+          .with_dependencies
+          .where(state: 'accepted')
+          .where.not(accepted_at: nil)
+          .order(:accepted_at)
+      end
+    end
 
     def length
       (days_since_project_start / iteration_length_in_days).floor
     end
 
     def iteration_length_in_days
-      @project.iteration_length * 7
+      project.iteration_length * DAYS_IN_A_WEEK
     end
 
     def project_start_date
-      @project.start_date
+      project.start_date
     end
 
     def start_date(iteration_number)
-      project_start_date + (iteration_number * iteration_length_in_days)
+      iteration_days = (iteration_number * iteration_length_in_days)
+      (project_start_date + iteration_days)
     end
 
     def end_date(start_date)
-      start_date + iteration_length_in_days - 1
+      (start_date + (iteration_length_in_days - 1))
     end
 
     def days_since_project_start

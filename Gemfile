@@ -40,6 +40,7 @@ gem 'jquery-atwho-rails'
 gem 'jquery-ui-rails'
 gem 'kaminari'
 gem 'material_icons'
+gem 'newrelic_rpm'
 gem 'pg'
 gem 'pg_search'
 gem 'platform-api'
@@ -66,35 +67,34 @@ end
 group :production do
   gem 'kgio'
   gem 'letsencrypt-rails-heroku'
-  gem 'newrelic_rpm'
   gem 'rack-cache'
   gem 'rack-timeout'
   gem 'rails_12factor'
 end
 
 group :test do
-  gem 'rspec-rails'
-  gem 'rspec-its'
-  gem 'rspec-activemodel-mocks'
-  gem 'shoulda-matchers'
   gem 'capybara'
-  gem 'poltergeist'
   gem 'capybara-screenshot'
+  gem 'codeclimate-test-reporter', require: nil
   gem 'database_cleaner'
   gem 'factory_girl_rails'
-  gem 'codeclimate-test-reporter', require: nil
+  gem 'poltergeist'
+  gem 'rspec-activemodel-mocks'
+  gem 'rspec-its'
+  gem 'rspec-rails'
+  gem 'shoulda-matchers'
+  gem 'simplecov'
+  gem 'timecop'
   gem 'vcr'
   gem 'webmock'
-  gem 'timecop'
-  gem 'simplecov'
 end
 
 group :development do
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'bullet'
   gem 'letter_opener'
   gem 'letter_opener_web', '~> 1.3.4'
-  gem "better_errors"
-  gem "binding_of_caller"
-  gem "bullet"
   gem 'rubocop', '0.49.1'
 end
 

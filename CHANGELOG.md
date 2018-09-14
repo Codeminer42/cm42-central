@@ -1,8 +1,13 @@
 # Changelog
 
 ## [Unreleased]
+### Added
 - New endpoint to update batch stories
 - Replace polling with Pusher to fetch project updates
+
+### Fixed
+- StoryOperations reading refactored to optimize queries and performance
+- Fixes the project export process, to properly generate the downloadable CSV file 
 
 ## [1.19.0] 2018-05-25
 ### Added

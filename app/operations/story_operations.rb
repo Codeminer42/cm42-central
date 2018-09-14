@@ -67,34 +67,39 @@ module StoryOperations
   class DestroyAll < BaseOperations::DestroyAll; end
 
   class ReadAll
+    delegate :past_iterations, :current_iteration_start, to: :iterations
+
     def self.call(*args)
       new(*args).run
     end
 
     def initialize(project:)
-      @story_scope = project.stories.with_dependencies
       @project = project
-      @iterations = Iterations::ProjectIterations.new(project: project)
     end
 
     def run
       {
         active_stories: active_stories,
-        past_iterations: @iterations.past_iterations
+        past_iterations: past_iterations
       }
     end
 
     private
 
+    attr_reader :project
+
     def active_stories
-      order(@story_scope.where("state != 'accepted' OR
-        accepted_at >= ?", @iterations.current_iteration_start))
+      @active_stories ||= begin
+        project
+          .stories
+          .with_dependencies
+          .where("state != 'accepted' OR accepted_at >= ?", current_iteration_start)
+          .order('updated_at DESC')
+      end
     end
 
-    def order(query)
-      query.order('updated_at DESC').tap do |relation|
-        relation.limit(ENV['STORIES_CEILING']) if ENV['STORIES_CEILING']
-      end
+    def iterations
+      @iterations ||= Iterations::ProjectIterations.new(project: project)
     end
   end
 end
