@@ -42,7 +42,7 @@ Some of the improvements we added since the end of 2015:
   - [ ] more markdown javascript to assets
   - [ ] needs more testing and tweaking for tablets
   - [ ] Backbone code needs more refactoring and cleanup (specially moving the render from story_view to an EJS template)
-  - [ ] (low priority) replace the polling system for a websockets channel and listener
+  - [x] (low priority) replace the polling system for a websockets channel and listener
 - [x] Improved UI
   - [x] A little bit better icon set (Material Icons)
   - [x] Textarea in Story editing can now auto-resize
