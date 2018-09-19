@@ -16,6 +16,7 @@ const defaultProps = {
   points: 0,
   stories: []
 };
+
 class Sprint extends Component {
   constructor(props) {
     super(props);

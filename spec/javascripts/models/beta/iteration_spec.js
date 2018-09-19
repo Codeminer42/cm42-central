@@ -62,6 +62,7 @@ describe("iteration", function() {
       };
       this.initialSprintNumber = Iteration.getCurrentIteration(this.project);
     });
+
     describe("with empty array of stories", function() {
       it("should return an empty array of sprints", function() {
         const stories = [];
@@ -75,7 +76,7 @@ describe("iteration", function() {
     });
 
     describe("with 2 unstarted features with 1 point", function() {
-      it("should return an array with 2 items", function() {
+      it("should return an array with 1 item", function() {
         const stories = [
           {
             id: 1,
@@ -92,13 +93,73 @@ describe("iteration", function() {
             storyType: "feature"
           }
         ];
-
+        
         const sprints = Iteration.reduceToSprints(
           stories,
           this.project,
           this.initialSprintNumber
         );
-        expect(sprints.length).toEqual(2);
+       
+        expect(sprints.length).toEqual(1);
+      });
+    });
+
+    describe("with 3 unstarted features with 2, 5 and 1 points and velocity 3", function() {
+      it("should return an array with 3 items", function() {
+        const stories = [
+          {
+            id: 1,
+            position: "1",
+            state: "unstarted",
+            estimate: 2,
+            storyType: "feature"
+          },
+          {
+            id: 2,
+            position: "2",
+            state: "unstarted",
+            estimate: 5,
+            storyType: "feature"
+          },
+          {
+            id: 3,
+            position: "3",
+            state: "unstarted",
+            estimate: 1,
+            storyType: "feature"
+          }
+        ];
+
+        this.project.defaultVelocity = 3;
+        const sprints = Iteration.reduceToSprints(
+          stories,
+          this.project,
+          this.initialSprintNumber
+        );
+        
+        expect(sprints.length).toEqual(3);
+      });
+    });
+
+    describe("with 1 unstarted features with 8 points and velocity 3", function() {
+      it("should return an array with 3 items", function() {
+        const stories = [
+          {
+            id: 1,
+            position: "1",
+            state: "unstarted",
+            estimate: 8,
+            storyType: "feature"
+          },
+        ];
+        this.project.defaultVelocity = 3;
+        const sprints = Iteration.reduceToSprints(
+          stories,
+          this.project,
+          this.initialSprintNumber
+        );
+
+        expect(sprints.length).toEqual(3);
       });
     });
 

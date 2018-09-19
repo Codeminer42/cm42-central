@@ -37,10 +37,6 @@ describe("<Sprints />", () => {
     wrapper = shallow(<Sprints {...props} />);
   });
 
-  it('renders a <div> with class ".Sprints"', () => {
-    expect(wrapper.find("div.Sprints")).toHaveLength(1);
-  });
-
   it("renders one <Sprint> components", () => {
     expect(wrapper.find("Sprint")).toHaveLength(1);
   });
