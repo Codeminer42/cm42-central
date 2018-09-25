@@ -43,7 +43,7 @@ describe("iteration", function() {
     });
 
     describe("when a story was acceped a week ago", function() {
-      it("should return 1", function() {
+      it("should return 2", function() {
         const sprintNumber = Iteration.getIterationForStory(
           { state: "accepted", acceptedAt: "2018-04-24T16:00:00" },
           { startDate: "2018-04-10T16:00:00", iterationLength: 2 }
@@ -66,7 +66,7 @@ describe("iteration", function() {
     describe("with empty array of stories", function() {
       it("should return an empty array of sprints", function() {
         const stories = [];
-        sprints = Iteration.reduceToSprints(
+        sprints = Iteration.groupBySprints(
           stories,
           this.project,
           this.initialSprintNumber
@@ -94,7 +94,7 @@ describe("iteration", function() {
           }
         ];
         
-        const sprints = Iteration.reduceToSprints(
+        const sprints = Iteration.groupBySprints(
           stories,
           this.project,
           this.initialSprintNumber
@@ -131,7 +131,7 @@ describe("iteration", function() {
         ];
 
         this.project.defaultVelocity = 3;
-        const sprints = Iteration.reduceToSprints(
+        const sprints = Iteration.groupBySprints(
           stories,
           this.project,
           this.initialSprintNumber
@@ -153,7 +153,7 @@ describe("iteration", function() {
           },
         ];
         this.project.defaultVelocity = 3;
-        const sprints = Iteration.reduceToSprints(
+        const sprints = Iteration.groupBySprints(
           stories,
           this.project,
           this.initialSprintNumber
@@ -213,7 +213,7 @@ describe("iteration", function() {
           }
         ];
 
-        const sprints = Iteration.reduceToSprints(
+        const sprints = Iteration.groupBySprints(
           stories,
           this.project,
           this.initialSprintNumber

@@ -31,7 +31,7 @@ const renderSprints = sprints => {
 
 const Sprints = ({ stories, project }) => {
   const currentSprintNumber = Iteration.getCurrentIteration(project) || 0;
-  const sprints = Iteration.reduceToSprints(
+  const sprints = Iteration.groupBySprints(
     stories,
     project,
     currentSprintNumber
