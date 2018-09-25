@@ -1,5 +1,5 @@
-import React from 'react';
-import StoryItem from '../story/StoryItem'
+import React from "react";
+import StoryItem from "../story/StoryItem";
 
 const Stories = ({ stories }) => {
   if (!stories.length) {
@@ -9,10 +9,7 @@ const Stories = ({ stories }) => {
   return (
     <div>
       {stories.map(story => (
-        <StoryItem
-          key={story.id}
-          {...story}
-        />
+        <StoryItem key={story.id} {...story} />
       ))}
     </div>
   );

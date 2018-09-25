@@ -5,6 +5,7 @@ db/*.sqlite3
 *.log
 tmp/
 .rvmrc
+.ruby-version
 .sass-cache/
 *.DS_Store
 config/deploy.rb
