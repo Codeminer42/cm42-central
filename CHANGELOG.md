@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Removed
+- Remove Velocity / Volatility from ProjectCard to optimize performance
 
 ## [1.20.0] 2018-09-14
 ### Added
