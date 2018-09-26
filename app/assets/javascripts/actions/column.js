@@ -6,9 +6,10 @@ const setStoryChillyBin = payload => ({
   data: payload
 });
 
-const setStoryBacklog = payload => ({
+const setStoryBacklog = (payload, project) => ({
   type: actionTypes.COLUMN_BACKLOG,
-  data: payload
+  data: payload,
+  project: project
 });
 
 const setStoryDone = payload => ({
@@ -21,7 +22,7 @@ export const getColumnType = (story, project) => {
     return setStoryChillyBin(story);
   }
   if (isBacklog(story, project)) {
-    return setStoryBacklog(story);
+    return setStoryBacklog(story, project);
   }
   return setStoryDone(story);
 };

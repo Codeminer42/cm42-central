@@ -1,16 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Sprint from "./Sprint";
-import * as Iteration from "models/beta/iteration";
 
 const propTypes = {
   stories: PropTypes.array,
-  project: PropTypes.object
+  project: PropTypes.object,
+  sprints: PropTypes.array,
 };
 
 const defaultProps = {
   stories: [],
-  project: {}
+  project: {},
+  sprints: [],
 };
 
 const renderSprints = sprints => {
@@ -29,14 +30,7 @@ const renderSprints = sprints => {
   );
 };
 
-const Sprints = ({ stories, project }) => {
-  const currentSprintNumber = Iteration.getCurrentIteration(project) || 0;
-  const sprints = Iteration.groupBySprints(
-    stories,
-    project,
-    currentSprintNumber
-  );
-
+const Sprints = ({ stories, sprints }) => {
   if (!stories.length) return null;
 
   return <div className="Sprints">{renderSprints(sprints)}</div>;

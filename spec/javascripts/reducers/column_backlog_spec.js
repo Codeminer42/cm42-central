@@ -44,20 +44,36 @@ describe('Backlog Column reducer', () => {
           deliveredAt: '2018-08-06T16:36:20.811Z',
           estimate: 1
         }
+      ],
+      sprints: [
+        {
+          completedPoints: 0,
+          isFiller: false,
+          number: 1,
+          points: 1,
+          remainingPoints: 1,
+          stories: [],
+        }
       ]
     }
   }
 
   function createEmptyInitialstate() {
     return {
-      stories: []
+      stories: [],
+      sprints: [],
     }
   }
 
   function createAction(data) {
     return {
       type: actionTypes.COLUMN_BACKLOG,
-      data
+      data,
+      project: {
+        startDate: "2018-09-03T16:00:00",
+        iterationLength: 1,
+        defaultVelocity: 2,
+      },
     }
   }
 
