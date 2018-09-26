@@ -13,8 +13,6 @@ class ProjectSerializer
 
   def initialize(attrs = {})
     self.name = attrs.truncate_name
-    self.velocity = attrs.velocity
-    self.volatility = attrs.volatility
     self.slug = attrs.slug
     self.path_to = attrs.path_to
     self.archived_at = attrs.archived_date

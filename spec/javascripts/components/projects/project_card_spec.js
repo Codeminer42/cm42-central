@@ -147,26 +147,6 @@ describe('<ProjectCard />', () => {
 
     describe('#panelBody', () => {
       describe('not archived', () => {
-        it('should contain velocity information', () => {
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(wrapper.contains(
-            <div className="col-md-6 col-xs-6 counter">
-              <span className="counter-description">{ I18n.t('velocity') }</span>
-              <span className="counter-value">10</span>
-            </div>
-          )).toBe(true);
-        });
-
-        it('should contain volatility information', () => {
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(wrapper.contains(
-            <div className="col-md-6 col-xs-6 counter">
-              <span className="counter-description">{ I18n.t('volatility') }</span>
-              <span className="counter-value">0%</span>
-            </div>
-          )).toBe(true);
-        });
-
         it('should contain users avatar', () => {
           const wrapper = shallow(<ProjectCard {...defaultProps} />);
           expect(wrapper.contains(

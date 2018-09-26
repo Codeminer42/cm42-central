@@ -97,16 +97,6 @@ export default class ProjectCard extends React.Component {
     if (joined) {
       return(
         <div className="panel-body">
-          <div className="col-md-6 col-xs-6 counter">
-            <span className="counter-description">{ I18n.t('velocity') }</span>
-            <span className="counter-value">{ project.get('velocity') }</span>
-          </div>
-
-          <div className="col-md-6 col-xs-6 counter">
-            <span className="counter-description">{ I18n.t('volatility') }</span>
-            <span className="counter-value">{ project.get('volatility') }</span>
-          </div>
-
           <div className="col-md-12 members">
             <ul className="member-list">
               { this.renderUsersAvatar() }
