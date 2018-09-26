@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [1.20.1] 2018-09-26
 ### Removed
 - Remove Velocity / Volatility from ProjectCard to optimize performance
 
@@ -287,7 +289,7 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.20.0...HEAD
+[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.20.1...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
@@ -315,3 +317,4 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [1.18.0]: https://github.com/Codeminer42/cm42-central/tree/v1.18.0
 [1.19.0]: https://github.com/Codeminer42/cm42-central/tree/v1.19.0
 [1.20.0]: https://github.com/Codeminer42/cm42-central/tree/v1.20.0
+[1.20.1]: https://github.com/Codeminer42/cm42-central/tree/v1.20.1
