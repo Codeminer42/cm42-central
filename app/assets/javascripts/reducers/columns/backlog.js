@@ -5,7 +5,8 @@ import _ from "underscore";
 import * as Iteration from "models/beta/iteration";
 
 const initialState = {
-  stories: []
+  stories: [],
+  sprints: [],
 };
 
 const filterByState = state => story => {

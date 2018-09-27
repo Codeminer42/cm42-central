@@ -66,12 +66,13 @@ describe("<Sprints />", () => {
     expect(wrapper.find("Sprint")).toHaveLength(1);
   });
 
-  describe("when no stories are passed as props", () => {
+  describe("when no sprints are passed as props", () => {
     beforeEach(() => {
       props = createProps();
-      props.stories = [];
+      props.sprints = [];
       wrapper = shallow(<Sprints {...props} />);
     });
+    
     it("does not render any <Sprint> component", () => {
       expect(wrapper.find("Sprint")).toHaveLength(0);
     });

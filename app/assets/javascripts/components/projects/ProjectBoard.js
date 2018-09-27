@@ -24,7 +24,6 @@ class ProjectBoard extends React.Component {
           title={`${I18n.t("projects.show.backlog")} /
           ${I18n.t("projects.show.in_progress")}`}>
           <Sprints
-            stories={this.props.columns.backlog.stories}
             sprints={this.props.columns.backlog.sprints}
           />
         </Column>

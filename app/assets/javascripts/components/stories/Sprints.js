@@ -30,8 +30,8 @@ const renderSprints = sprints => {
   );
 };
 
-const Sprints = ({ stories, sprints }) => {
-  if (!stories.length) return null;
+const Sprints = ({ sprints }) => {
+  if (!sprints.length) return null;
 
   return <div className="Sprints">{renderSprints(sprints)}</div>;
 };
