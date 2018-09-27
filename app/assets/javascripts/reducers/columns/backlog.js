@@ -58,17 +58,17 @@ const groupStoriesInSprints = (stories, project) => {
     stories,
     project,
     currentSprintNumber
-  )
+  );
 };
 
 const backlog = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.COLUMN_BACKLOG:
       const stories = [...state.stories, action.data];
-
+      const orderedStories = orderByState(stories);
       return {
-        stories: orderByState(stories),
-        sprints: groupStoriesInSprints(stories, action.project)
+        stories: orderedStories,
+        sprints: groupStoriesInSprints(orderedStories, action.project)
       };
     default:
       return state;

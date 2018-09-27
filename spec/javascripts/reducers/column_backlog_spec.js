@@ -45,16 +45,6 @@ describe('Backlog Column reducer', () => {
           estimate: 1
         }
       ],
-      sprints: [
-        {
-          completedPoints: 0,
-          isFiller: false,
-          number: 1,
-          points: 1,
-          remainingPoints: 1,
-          stories: [],
-        }
-      ]
     }
   }
 
@@ -96,7 +86,6 @@ describe('Backlog Column reducer', () => {
 
 
   describe("when there are stories on the initial state", () => {
-
     it("return the new story with the others", () => {
       const newStory = {
         id : 80,
@@ -127,6 +116,58 @@ describe('Backlog Column reducer', () => {
       expect(state.stories[5].state).toEqual('unstarted');
     });
 
+    describe("when stories are grouped by sprints", () => {
+      const stories = [
+        {
+          id: 1,
+          position: '1.0',
+          state: 'unstarted',
+          estimate: 2,
+          storyType: "feature",
+        },
+        {
+          id: 2,
+          position: '2.0',
+          state: 'unstarted',
+          estimate: 2,
+          storyType: "feature",
+        },
+        {
+          id: 3,
+          position: '4.0',
+          state: 'delivered',
+          estimate: 2,
+          storyType: "feature",
+        },
+        {
+          id: 4,
+          position: '4.0',
+          state: 'finished',
+          estimate: 2,
+          storyType: "feature",
+        },
+      ];
+      const action = createAction(stories);
+      let state;
+      
+      beforeEach(() => {
+        state = reducer({ stories: stories, sprints: [] }, action);
+      });
+      
+      it("creates 3 sprints", () => {
+        expect(state.sprints.length).toEqual(3);
+      });
+
+      it("adds 2 stories to current sprint", () => {
+        expect(state.sprints[0].stories.length).toEqual(2);
+      });
+
+      it("stories grouped in current sprint are ordered by state", () => {
+        expect(state.sprints[0].stories[0].state).toEqual('delivered');
+        expect(state.sprints[0].stories[1].state).toEqual('finished');
+      });
+    });
+
     describe("when the story states are the same", () => {
       describe("accepted stories", () => {
         describe("when the acceptedAt of the new story is older then the others", () => {
@@ -146,7 +187,6 @@ describe('Backlog Column reducer', () => {
             expect(state.stories[0].state).toEqual('accepted');
             expect(state.stories[1].state).toEqual('accepted');
             expect(state.stories[0].id).toEqual(newStory.id);
-
           });
         });
 
@@ -167,7 +207,6 @@ describe('Backlog Column reducer', () => {
             expect(state.stories[0].state).toEqual('accepted');
             expect(state.stories[1].state).toEqual('accepted');
             expect(state.stories[1].id).toEqual(newStory.id);
-
           });
         });
       });
@@ -190,7 +229,6 @@ describe('Backlog Column reducer', () => {
             expect(state.stories[1].state).toEqual('delivered');
             expect(state.stories[2].state).toEqual('delivered');
             expect(state.stories[1].id).toEqual(newStory.id);
-
           });
         });
 
@@ -210,7 +248,6 @@ describe('Backlog Column reducer', () => {
             expect(state.stories[1].state).toEqual('delivered');
             expect(state.stories[2].state).toEqual('delivered');
             expect(state.stories[2].id).toEqual(newStory.id);
-
           });
         });
       });
@@ -233,7 +270,6 @@ describe('Backlog Column reducer', () => {
             expect(state.stories[4].state).toEqual('started');
             expect(state.stories[5].state).toEqual('started');
             expect(state.stories[4].id).toEqual(newStory.id);
-
           });
         });
 
@@ -253,7 +289,6 @@ describe('Backlog Column reducer', () => {
             expect(state.stories[4].state).toEqual('started');
             expect(state.stories[5].state).toEqual('started');
             expect(state.stories[5].id).toEqual(newStory.id);
-
           });
         });
       });
