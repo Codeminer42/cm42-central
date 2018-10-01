@@ -132,72 +132,54 @@ describe('Done Column reducer', () => {
   });
 
   describe("when we are receiving sprints from project", () => {
+    const data = { 
+      pastIterations: [
+        {
+          endDate: '2018/09/19',
+          iterationNumber: 1,
+          number: 1,
+          points: 10,
+          startDate: '2018/09/13',
+          stories: []
+        },
+        {
+          endDate: '2018/09/26',
+          iterationNumber: 2,
+          number: 2,
+          points: 10,
+          startDate: '2018/09/20',
+          stories: [],
+        },
+      ]
+    };
+    const initialState = createEmptyInitialstate();
+    const action = createReceiveAction(data);
+    let state;
+
+    beforeEach(() => {
+      state = reducer(initialState, action);
+    });
+    
     it("return an array with 2 sprints", () => {
-      const data = { 
-        pastIterations: [
-          {
-            endDate: '2018/09/19',
-            iterationNumber: 1,
-            number: 1,
-            points: 10,
-            startDate: '2018/09/13',
-            stories: []
-          },
-          {
-            endDate: '2018/09/26',
-            iterationNumber: 2,
-            number: 2,
-            points: 10,
-            startDate: '2018/09/20',
-            stories: [],
-          },
-        ]
-      };
-      
-      const initialState = createEmptyInitialstate();
-      const action = createReceiveAction(data);
-
-      const state = reducer(initialState, action);
-
       expect(state.sprints.length).toEqual(2);
     });
 
-    it("return an array with 2 sprints", () => {
-      const data = { 
-        pastIterations: [
-          {
-            endDate: '2018/09/19',
-            iterationNumber: 1,
-            number: 1,
-            points: 10,
-            startDate: '2018/09/13',
-            stories: []
-          },
-          {
-            endDate: '2018/09/26',
-            iterationNumber: 2,
-            number: 2,
-            points: 10,
-            startDate: '2018/09/20',
-            stories: [],
-          },
-          {
-            endDate: '2018/09/30',
-            iterationNumber: 3,
-            number: 3,
-            points: 5,
-            startDate: '2018/09/24',
-            stories: [],
-          },
-        ]
-      };
+    it("return sprints with correct number key", () => {
+      expect(state.sprints[0].number).toEqual(1);
+      expect(state.sprints[1].number).toEqual(2);
+    });
+
+    it("return sprints with formatted startDate and endDate", () => {
+      expect(state.sprints[0].startDate).toEqual("Thu Sep 13th 2018");
+      expect(state.sprints[0].endDate).toEqual("Wed Sep 19th 2018");
       
-      const initialState = createEmptyInitialstate();
-      const action = createReceiveAction(data);
+      expect(state.sprints[1].startDate).toEqual("Thu Sep 20th 2018");
+      expect(state.sprints[1].endDate).toEqual("Wed Sep 26th 2018");
+    });
 
-      const state = reducer(initialState, action);
-
-      expect(state.sprints.length).toEqual(3);
+    it("return sprints with stories empty", () => {
+      expect(state.sprints[0].stories).toEqual([]);
+      expect(state.sprints[1].stories).toEqual([]);
     });
   });
 });
