@@ -1,4 +1,5 @@
 require('libs');
+require('./polyfills/objectAssign');
 require('./extra/jasmine-sinon');
 require('./extra/jasmine-jquery');
 

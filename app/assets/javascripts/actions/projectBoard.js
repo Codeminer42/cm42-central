@@ -18,9 +18,9 @@ const errorRequestProjectBoard = error => ({
   error: error
 });
 
-const receiveProject = project => ({
+const receiveProject = data => ({
   type: actionTypes.RECEIVE_PROJECT,
-  data: project
+  data
 });
 
 export const fetchProjectBoard = projectId => {
@@ -28,8 +28,8 @@ export const fetchProjectBoard = projectId => {
     dispatch(requestProjectBoard());
 
     ProjectBoard.get(projectId)
-      .then(({ project, users, stories }) => {
-        dispatch(receiveProject(project));
+      .then(({ project, users, stories, pastIterations }) => {
+        dispatch(receiveProject({ project, pastIterations }));
         dispatch(receiveUsers(users));
         dispatch(receiveStories(stories));
         dispatch(receiveProjectBoard(projectId));
