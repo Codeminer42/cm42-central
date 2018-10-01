@@ -53,7 +53,7 @@ class TeamsController < ApplicationController
   # GET /teams/1/edit
   def edit
     @team = current_team
-    @user_teams = current_user.teams.not_archived.by_name
+    @user_teams = current_user.teams.not_archived.ordered_by_name
 
     authorize @team
   end

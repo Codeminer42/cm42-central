@@ -16,5 +16,5 @@ class Team < ApplicationRecord
     ::FriendlyId::Disabler.disabled? ? (id && id.to_s) : super
   end
 
-  scope :by_name, -> { order(:name) }
+  scope :ordered_by_name, -> { order(:name) }
 end

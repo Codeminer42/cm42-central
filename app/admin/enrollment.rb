@@ -49,7 +49,7 @@ ActiveAdmin.register Enrollment do
       f.input :user, as: :select,
                      collection: User.order(:name).all
       f.input :team, as: :select,
-                     collection: Team.by_name.all
+                     collection: Team.ordered_by_name.all
       f.input :is_admin, as: :select
     end
     f.actions
