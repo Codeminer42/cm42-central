@@ -111,19 +111,13 @@ describe Notifications do
   end
 
   describe '#archived_team' do
-    let(:team) { build(:team) }
-    let(:user) { double('user') }
-    let(:mail) { described_class.archived_team(team) }
     let(:users_emails) { ['user1@codeminer42.com', 'user2@codeminer42.com'] }
+    let(:users) { class_double(User, pluck: users_emails) }
+    let(:team) { build(:team, name: "Team1") }
+    let(:mail) { described_class.archived_team(team) }
 
     before do
-      allow(team).to receive(:users).and_return(user)
-      allow(team).to receive(:name).and_return('Team1')
-      allow(user).to receive(:pluck).with(:email).and_return(users_emails)
-    end
-
-    it 'delivery the email' do
-      expect{ mail.deliver_now }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      allow(team).to receive(:users).and_return(users)
     end
 
     it 'delivery to all team members' do

@@ -150,11 +150,39 @@ describe TeamsController, type: :controller do
       end
 
       describe '#destroy' do
+        let(:user) { create :user, :with_team_and_is_admin }
+        let(:team) { user.teams.first }
+
         specify do
           delete :destroy, id: 'xyz'
           expect(assigns[:team].archived_at).to_not be_nil
           expect(session[:current_team_slug]).to be_nil
           expect(response).to redirect_to(teams_path)
+        end
+
+        describe 'when the flag send_email: true' do
+          it 'sends email to team members' do
+            message_delivery = instance_double(ActionMailer::MessageDelivery)
+            allow(Notifications).to receive(:archived_team).with(team).and_return(message_delivery)
+
+            expect(message_delivery).to receive(:deliver_later)
+
+            delete :destroy, id: team.id, send_email: true
+          end
+
+          it 'increases the number of send mails' do
+            expect do
+              delete :destroy, id: team.id, send_email: true
+            end.to change { ActionMailer::Base.deliveries.count }.by(1)
+          end
+        end
+
+        describe 'when the flag send_email: false' do
+          it 'not increases the number of send mails' do
+            expect do
+              delete :destroy, id: team.id
+            end.not_to change { ActionMailer::Base.deliveries.count }
+          end
         end
       end
     end
