@@ -109,4 +109,29 @@ describe Notifications do
       expect(subject.body.encoded).to match('Note User added the following comment to the story')
     end
   end
+
+  describe '#archived_team' do
+    let(:team) { build(:team) }
+    let(:user) { double('user') }
+    let(:mail) { described_class.archived_team(team) }
+    let(:users_emails) { ['user1@codeminer42.com', 'user2@codeminer42.com'] }
+
+    before do
+      allow(team).to receive(:users).and_return(user)
+      allow(team).to receive(:name).and_return('Team1')
+      allow(user).to receive(:pluck).with(:email).and_return(users_emails)
+    end
+
+    it 'delivery the email' do
+      expect{ mail.deliver_now }.to change { ActionMailer::Base.deliveries.count }.by(1)
+    end
+
+    it 'delivery to all team members' do
+      expect(mail.to).to eq(users_emails)
+    end
+
+    it 'have the right subject' do
+      expect(mail.subject).to eq("The team <#{team.name}> you're member of was archived")
+    end
+  end
 end
