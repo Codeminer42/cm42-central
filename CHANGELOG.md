@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- changed pusherSockets.js to allow empty pusher env vars
+
 ## [1.20.1] 2018-09-26
 ### Removed
 - Remove Velocity / Volatility from ProjectCard to optimize performance
@@ -14,7 +16,7 @@
 ### Fixed
 - StoryOperations reading refactored to optimize queries and performance
 - Fixes the project export process, to properly generate the downloadable CSV file
-- Fixes the rendering of charts 
+- Fixes the rendering of charts
 
 ## [1.19.0] 2018-05-25
 ### Added
