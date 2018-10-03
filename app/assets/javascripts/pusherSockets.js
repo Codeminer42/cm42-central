@@ -1,19 +1,25 @@
 import Pusher from 'pusher-js';
 
-const pusherArgsRegex = /\/\/ws-(.*)\.pusher.*\/(.*)$/;
-
-const pusherUrl = process.env.PUSHER_SOCKET_URL;
-
-const [
-  _, // whole match
-  pusherCluster,
-  pusherApiKey
-] = pusherUrl.match(pusherArgsRegex);
+const matchPusherUrl = url => {
+  const pusherArgsRegex = /\/\/ws-(.*)\.pusher.*\/(.*)$/;
+  return url.match(pusherArgsRegex);
+};
 
 export const subscribeToProjectChanges = (project, callback) => {
-  const socket = getProjectSocket();
+  const pusherUrl = process.env.PUSHER_SOCKET_URL;
+  const [
+    _,
+    pusherCluster,
+    pusherApiKey
+  ] = matchPusherUrl(pusherUrl) || [];
 
-  if(!socket) {
+  if (!pusherApiKey || !pusherCluster) {
+    return;
+  }
+
+  const socket = getProjectSocket(pusherApiKey, pusherCluster);
+
+  if (!socket) {
     return;
   }
 
@@ -22,20 +28,14 @@ export const subscribeToProjectChanges = (project, callback) => {
   channel.bind('notify_changes', callback);
 };
 
-let projectSocket;
-
-const getProjectSocket = () => {
-  if(!projectSocket) {
-    try {
-      projectSocket = new Pusher(pusherApiKey, {
-        cluster: pusherCluster,
-        encrypted: true
-      });
-    } catch(error) {
-      console.error(error);
-      return;
-    }
+const getProjectSocket = (apiKey, apiCluster) => {
+  try {
+    return new Pusher(apiKey, {
+      cluster: apiCluster,
+      encrypted: true
+    });
+  } catch (error) {
+    console.error(error);
+    return;
   }
-
-  return projectSocket;
-}
+};
