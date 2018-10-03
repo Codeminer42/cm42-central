@@ -227,6 +227,8 @@ pt-BR:
     join: "Juntar-se ao projeto"
     unjoin: "Sair do projeto"
     mine: "Meus projetos"
+    share project: "Compartilhar Projeto"
+    transfer project: "Transferir Projeto"
     not_member_of: "Projetos de que não sou membro"
     you_are_not_a_member: "Você não é membro destes projetos, mas você pode"
     to_view_more_join: "Para ver mais, junte-se ao projeto"
@@ -320,7 +322,7 @@ pt-BR:
         process_explanation: "O sistema vai tentar igualar quaisquer nomes de usuário encontrados no CSV com os membros de seu projeto. Certifique-se de registrar membros com os nomes corretos antes de importar, se você quer que eles sejam associados corretamente."
         bottom_line: "Nota: Você também pode usar um arquivo exportado de outro sistema (Pivotal Tracker)."
     no_projects_found: "Oops! Parece que esta equipe não tem nenhum projeto."
-    no_recent_activity: "Oops! Essa equipe não possui atividade recent."
+    no_recent_activity: "Oops! Essa equipe não possui atividade recente."
     search_tooltip:
       title: 'Operandos de busca'
       syntax: 'Sintaxe: Os termos de busca devem ser seguidos de vírgula'
@@ -349,6 +351,7 @@ pt-BR:
     admin_off: Torne apenas Membro
 
   teams:
+    edit team: 'Editar Equipe'
     create: 'Criar nova Equipe'
     update: 'Atualizar Equipe'
     switch: 'Mudar para outra Equipe'
@@ -369,7 +372,7 @@ pt-BR:
 
   admin:
     users:
-      edit user: "Editar Usuário"
+      edit user: "Editar Membro"
       index:
         are you sure you want to delete this user: "Tem certeza de que deseja excluir este usuário? Esta ação não pode ser desfeita."
         are you sure you want to remove administration rights from this user: "Tem certeza de que deseja remover direitos de administração deste usuário?"
@@ -378,9 +381,9 @@ pt-BR:
         remove from project confirmation: "Tem certeza de que deseja excluir o usuário deste projeto?"
 
   registrations:
-    edit:
+    form:
       leave_blank_if_you_dont_want_to_change_it: "Deixe em branco se você não quiser mudá-lo"
-      notify_me_when_my_stories_are: "Notifique-me quando minhas histórias são"
+      notify_me_when_my_stories_are: "Notifique-me quando minhas histórias forem"
       we_need_your_current_password_to_confirm_your_changes: "Nós precisamos de sua senha atual para confirmar as alterações."
 
   time:
