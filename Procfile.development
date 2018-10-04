@@ -1,4 +1,4 @@
 web: bundle exec rails server -b 0.0.0.0
 worker: bundle exec sidekiq -C config/sidekiq.yml
 webpack: ./bin/webpack-dev-server
-pusherfake: pusher-fake -i ${PUSHER_APP:-123456} --socket-host ${PUSHER_WS_HOST:-127.0.0.1} --socket-port ${PUSHER_WS_PORT:-45449} --web-host ${PUSHER_HOST:-127.0.0.1} --web-port ${PUSHER_PORT:-8888} -k ${PUSHER_APP_KEY:-centralappkey} -s ${PUSHER_APP_SECRET:-centralappsecret}
+pusherfake: pusher-fake -i ${PUSHER_APP_ID:-123456} --socket-host 0.0.0.0 --socket-port ${PUSHER_WS_PORT:-45449} --web-host 0.0.0.0 --web-port ${PUSHER_PORT:-8888} -k ${PUSHER_APP_KEY:-centralakey} -s ${PUSHER_APP_SECRET:-centralsecret}

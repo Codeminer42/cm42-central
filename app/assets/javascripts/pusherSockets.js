@@ -30,10 +30,18 @@ export const subscribeToProjectChanges = (project, callback) => {
 
 const getProjectSocket = (apiKey, apiCluster) => {
   try {
-    return new Pusher(apiKey, {
-      cluster: apiCluster,
-      encrypted: true
-    });
+    return (window._railsEnv)
+      ? new Pusher(apiKey,{
+        cluster: apiCluster,
+        wsHost: process.env.PUSHER_WS_HOST,
+        wsPort: process.env.PUSHER_WS_PORT,
+        encrypted: false,
+        disableStats: true
+      })
+      : new Pusher(apiKey, {
+        cluster: apiCluster,
+        encrypted: true
+      });
   } catch (error) {
     console.error(error);
     return;
