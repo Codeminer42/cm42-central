@@ -210,6 +210,8 @@ es:
   projects:
     new project:        "Nuevo Proyecto"
     edit project:       "Editar Proyecto"
+    transfer project: "Transferir el Proyecto"
+    share project: "Compartir el Proyecto"
     project_members: "Miembros del Proyecto"
     available_users: "Miembros disponibles"
     select: "Seleccionar proyecto"
@@ -348,7 +350,7 @@ es:
     new_instruction: |
       <p>Si usted no tiene una cuenta registrada, puede inscribirse en primer lugar.</p>
       <p>El primer usuario que acceda a este nuevo equipo será el administrador.</p>
-    members: "Gestionar los Miembros del Equipo"
+    members: "Gestionar Miembros del Equipo"
 
   admin:
     users:
@@ -361,7 +363,7 @@ es:
         remove from project confirmation: "¿Estas seguro de querer borrar este usuario del proyecto?"
 
   registrations:
-    edit:
+    form:
       leave_blank_if_you_dont_want_to_change_it: "Dejar en blanco si no quieres cambiarlo"
       notify_me_when_my_stories_are: "Notificame cuando mis historias estan"
       we_need_your_current_password_to_confirm_your_changes: "Necesitamos tu password para confirmar tus cambios"
