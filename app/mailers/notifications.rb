@@ -30,6 +30,7 @@ class Notifications < ActionMailer::Base
     @team = team
 
     mail to: @team.users.pluck(:email),
+         from: ENV["MAILER_SENDER"],
          subject: "The team <#{@team.name}> you're member of was archived"
   end
 
