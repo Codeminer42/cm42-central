@@ -101,5 +101,7 @@ end
 group :development, :test do
   gem 'pry-rails'
   gem 'pry-remote'
+  gem "pusher-fake", "~> 1.10"
   gem 'quiet_assets'
 end
+
