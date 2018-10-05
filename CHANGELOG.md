@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+### Added
+- Option to archive teams
+
+### Fixed
+- Fixed locale change when accessing user edit page
+
 ## [1.20.1] 2018-09-26
 ### Removed
 - Remove Velocity / Volatility from ProjectCard to optimize performance
