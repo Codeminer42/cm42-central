@@ -24,7 +24,7 @@ ActiveAdmin.register ApiToken do
   form do |f|
     f.inputs 'API Token Details' do
       f.input :team, as: :select,
-                     collection: Team.order(:name).all
+                     collection: Team.ordered_by_name.all
     end
     f.actions
   end

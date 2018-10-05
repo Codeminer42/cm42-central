@@ -30,4 +30,18 @@ module TeamOperations
       model.update_attributes!(archived_at: Time.current)
     end
   end
+
+  class Unarchive
+    def self.call(*args)
+      new(*args).run
+    end
+
+    def initialize(model)
+      @model = model
+    end
+
+    def run
+      @model.update_attributes!(archived_at: nil)
+    end
+  end
 end

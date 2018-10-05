@@ -2,7 +2,14 @@
 
 ## [Unreleased]
 
-- changed pusherSockets.js to allow empty pusher env vars
+### Added
+- Option to archive teams
+
+### Fixed
+- Fixed locale change when accessing user edit page
+
+### Changed
+- pusherSockets.js to allow empty pusher env vars
 
 ## [1.20.1] 2018-09-26
 ### Removed

@@ -26,6 +26,14 @@ class Notifications < ActionMailer::Base
          subject: "[#{@story.project.name}] New mention on '#{@story.title}'"
   end
 
+  def archived_team(team)
+    @team = team
+
+    mail to: @team.users.pluck(:email),
+         from: ENV['MAILER_SENDER'],
+         subject: "The team <#{@team.name}> was archived"
+  end
+
   class MailParams < Struct.new(:story, :actor)
     def started
       {

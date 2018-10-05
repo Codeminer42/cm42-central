@@ -1,5 +1,5 @@
 class TeamsController < ApplicationController
-  skip_before_action :check_team_presence, only: %i[index switch new create]
+  skip_before_action :check_team_presence, only: %i[index switch new create unarchive]
   skip_after_action :verify_policy_scoped, only: :index
 
   def index
@@ -53,7 +53,7 @@ class TeamsController < ApplicationController
   # GET /teams/1/edit
   def edit
     @team = current_team
-    @user_teams = current_user.teams.order(:name)
+    @user_teams = current_user.teams.not_archived.ordered_by_name
 
     authorize @team
   end
@@ -90,7 +90,7 @@ class TeamsController < ApplicationController
 
         format.html do
           flash[:notice] = t('teams.team_was_successfully_updated')
-          render action: 'edit'
+          redirect_to edit_team_path(@team)
         end
         format.xml  { head :ok }
       else
@@ -107,11 +107,29 @@ class TeamsController < ApplicationController
     authorize @team
 
     TeamOperations::Destroy.call(@team, current_user)
-    session[:current_team_slug] = nil
+    unselect_slug
+    send_notification
 
     respond_to do |format|
-      format.html { redirect_to root_path }
-      format.xml  { head :ok }
+      format.html do
+        flash[:notice] = t('teams.successfully_archived')
+        redirect_to teams_path
+      end
+    end
+  end
+
+  def unarchive
+    archived_team = Team.find_by(id: params[:id])
+    authorize archived_team, :update?
+    unarchived_team = TeamOperations::Unarchive.call(archived_team)
+
+    respond_to do |format|
+      if unarchived_team
+        format.html do
+          flash[:notice] = t('teams.successfully_unarchived')
+          redirect_to teams_path
+        end
+      end
     end
   end
 
@@ -142,5 +160,13 @@ class TeamsController < ApplicationController
     return true unless show_recaptcha?
 
     verify_recaptcha
+  end
+
+  def unselect_slug
+    session[:current_team_slug] = nil if @team.slug == session[:current_team_slug]
+  end
+
+  def send_notification
+    Notifications.archived_team(@team).deliver_later if params[:send_email]
   end
 end

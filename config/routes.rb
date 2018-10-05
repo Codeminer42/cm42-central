@@ -35,6 +35,9 @@ Rails.application.routes.draw do
     post 'create_enrollment' => 'teams#create_enrollment'
     resources :users, only: [:create]
     resources :api_tokens, only: [:create, :destroy]
+    member do
+      post :unarchiving, action: :unarchive, as: :unarchive
+    end
   end
 
   resources :projects do
@@ -64,7 +67,7 @@ Rails.application.routes.draw do
       get 'iterations' => 'iterations#show'
     end
   end
-  
+
   namespace :beta do
     resources :projects, only: :show
     resources :project_boards, only: :show

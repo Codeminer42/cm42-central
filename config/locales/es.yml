@@ -210,6 +210,8 @@ es:
   projects:
     new project:        "Nuevo Proyecto"
     edit project:       "Editar Proyecto"
+    transfer project: "Transferir el Proyecto"
+    share project: "Compartir el Proyecto"
     project_members: "Miembros del Proyecto"
     available_users: "Miembros disponibles"
     select: "Seleccionar proyecto"
@@ -333,15 +335,22 @@ es:
     update: 'Actualizar Equipo'
     switch: 'Cambiar a otro Equipo'
     select: "Seleccionar Equipo"
+    archived: 'Equipos archivados'
+    archive: 'Archivar Equipo'
+    unarchive: 'Desarchivar'
     team was successfully created: 'El equipo ha sido creado con éxito'
     team_was_successfully_updated: 'El equipo ha sido actualizado correctamente'
+    successfully_archived: 'El equipo ha sido archivado con éxito'
+    successfully_unarchived: 'El equipo ha sido desarchivado con éxito'
+    send_email_about_archiving_team: 'Enviar correo electrónico sobre el archivo del equipo'
+    are_you_sure_to_archive_team: '¿Está seguro de que desea archivar este equipo?'
     user_not_found: 'Usuario no encontrado'
     user_is_already_in_this_team: 'El usuario ya está en este equipo.'
     no_teams_found: "Oops! No está inscrito a un equipo aún."
     new_instruction: |
       <p>Si usted no tiene una cuenta registrada, puede inscribirse en primer lugar.</p>
       <p>El primer usuario que acceda a este nuevo equipo será el administrador.</p>
-    members: "Gestionar los Miembros del Equipo"
+    members: "Gestionar Miembros del Equipo"
 
   admin:
     users:
@@ -354,7 +363,7 @@ es:
         remove from project confirmation: "¿Estas seguro de querer borrar este usuario del proyecto?"
 
   registrations:
-    edit:
+    form:
       leave_blank_if_you_dont_want_to_change_it: "Dejar en blanco si no quieres cambiarlo"
       notify_me_when_my_stories_are: "Notificame cuando mis historias estan"
       we_need_your_current_password_to_confirm_your_changes: "Necesitamos tu password para confirmar tus cambios"

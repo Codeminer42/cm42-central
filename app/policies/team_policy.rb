@@ -31,6 +31,10 @@ class TeamPolicy < ApplicationPolicy
     manage_users?
   end
 
+  def admin?
+    root? || @record.is_admin?(current_user)
+  end
+
   class Scope < Scope
     def resolve
       if root?
