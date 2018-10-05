@@ -2,9 +2,11 @@ import actionTypes from "actions/actionTypes";
 import { status } from "libs/beta/constants";
 import * as Story from "models/beta/story";
 import _ from "underscore";
+import * as Iteration from "models/beta/iteration";
 
 const initialState = {
-  stories: []
+  stories: [],
+  sprints: [],
 };
 
 const filterByState = state => story => {
@@ -38,7 +40,7 @@ const orderByState = stories => {
   );
   const unestimatedUnstartedStories = partitionedFeatures[0];
   const estimatedUnstartedStories = partitionedFeatures[1];
-
+  
   return [
     ...acceptedStories,
     ...deliveredStories,
@@ -50,13 +52,24 @@ const orderByState = stories => {
   ];
 };
 
+const groupStoriesInSprints = (stories, project) => {
+  const currentSprintNumber = Iteration.getCurrentIteration(project) || 0;
+
+  return Iteration.groupBySprints(
+    stories,
+    project,
+    currentSprintNumber
+  );
+};
+
 const backlog = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.COLUMN_BACKLOG:
       const stories = [...state.stories, action.data];
-
+      const orderedStories = orderByState(stories);
       return {
-        stories: orderByState(stories)
+        stories: orderedStories,
+        sprints: groupStoriesInSprints(orderedStories, action.project)
       };
     default:
       return state;

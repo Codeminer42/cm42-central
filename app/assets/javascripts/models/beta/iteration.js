@@ -90,8 +90,10 @@ const addStoryToSprint = (project, sprints, index, story) => {
     }
   }
   fillRemainingPoints(
-    sprints, Story.getPoints(story),
-    index, project.defaultVelocity,
+    sprints, 
+    Story.getPoints(story),
+    index, 
+    project.defaultVelocity,
     previousFillerSprintsQuantity
   );
 
