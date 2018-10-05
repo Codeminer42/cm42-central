@@ -30,8 +30,8 @@ class Notifications < ActionMailer::Base
     @team = team
 
     mail to: @team.users.pluck(:email),
-         from: ENV["MAILER_SENDER"],
-         subject: "The team <#{@team.name}> you're member of was archived"
+         from: ENV['MAILER_SENDER'],
+         subject: "The team <#{@team.name}> was archived"
   end
 
   class MailParams < Struct.new(:story, :actor)

@@ -113,7 +113,7 @@ describe Notifications do
   describe '#archived_team' do
     let(:users_emails) { ['user1@codeminer42.com', 'user2@codeminer42.com'] }
     let(:users) { class_double(User, pluck: users_emails) }
-    let(:team) { build(:team, name: "Team1") }
+    let(:team) { build(:team, name: 'Team1') }
     let(:mail) { described_class.archived_team(team) }
 
     before do
@@ -125,7 +125,7 @@ describe Notifications do
     end
 
     it 'have the right subject' do
-      expect(mail.subject).to eq("The team <#{team.name}> you're member of was archived")
+      expect(mail.subject).to eq("The team <#{team.name}> was archived")
     end
   end
 end
