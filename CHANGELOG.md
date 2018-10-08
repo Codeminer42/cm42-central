@@ -10,6 +10,7 @@
 - Fixed locale change when accessing user edit page
 - Fixed Project delete
 - Fixed `story-description` and `.note` by adding to sortable column canceled elements/nodes
+- Fix calculation of first sprint size
 
 
 ### Changed
