@@ -4,6 +4,7 @@
 
 ### Added
 - Option to archive teams
+- Added pusher-fake to the project
 
 ### Fixed
 - Fixed locale change when accessing user edit page
