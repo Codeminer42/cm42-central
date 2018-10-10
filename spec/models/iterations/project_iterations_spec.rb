@@ -23,6 +23,13 @@ module Iterations
         let(:story) { create(:story, :done, :with_project) }
         let(:project) { story.project }
 
+        before do
+          project.start_date = Time.current.days_ago(14)
+          project.iteration_start_day = Time.current.days_ago(16).wday
+          # first iteration goes 16.days_ago -- 10.days_ago
+          # second iteration goes 9.days_ago -- 3.days_ago
+        end
+
         it 'all past iterations must start in the iteration_start_day' do
           project.start_date = Time.current.days_ago(14)
           project.iteration_start_day = Time.current.days_ago(16).wday
@@ -33,8 +40,8 @@ module Iterations
         end
 
         it 'considers the length of the first iteration to calculate the second iteration stories' do
-          project.start_date -= 21.days
-          story.accepted_at -= 17.days
+          story.accepted_at = Time.current.days_ago(7)
+          story.save
 
           second_iteration = subject.past_iterations[1]
           expect(second_iteration.stories).to include(story)
@@ -42,10 +49,6 @@ module Iterations
 
         context 'when story is accepted in the last day of iteration' do
           before do
-            project.start_date = Time.current.days_ago(14)
-            project.iteration_start_day = Time.current.days_ago(16).wday 
-            # first iteration goes 16.days_ago -- 10.days_ago
-
             story.accepted_at = Time.current.days_ago(10)
             story.save
           end
