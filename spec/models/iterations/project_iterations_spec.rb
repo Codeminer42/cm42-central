@@ -41,7 +41,7 @@ module Iterations
 
         it 'considers the length of the first iteration to calculate the second iteration stories' do
           story.accepted_at = Time.current.days_ago(7)
-          story.save
+          story.save!
 
           second_iteration = subject.past_iterations[1]
           expect(second_iteration.stories).to include(story)
@@ -50,7 +50,7 @@ module Iterations
         context 'when story is accepted in the last day of iteration' do
           before do
             story.accepted_at = Time.current.days_ago(10)
-            story.save
+            story.save!
           end
 
           it 'should be in the first iteration' do
