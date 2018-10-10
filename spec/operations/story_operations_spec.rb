@@ -11,7 +11,7 @@ describe StoryOperations do
   let(:project)     { Project.first }
   let(:story)       { project.stories.build(story_params) }
 
-  describe '::Create', vcr: { match_requests_on: [:host, :path] } do
+  describe '::Create' do
     subject { -> { StoryOperations::Create.call(story, user) } }
 
     context 'with valid params' do
@@ -115,9 +115,7 @@ describe StoryOperations do
 
     it 'must record the documents attributes changes' do
       VCR.use_cassette('cloudinary_upload_activity') do
-        VCR.use_cassette('pusher_notification', match_requests_on: [:host, :path]) do
-          subject.call
-        end
+        subject.call
       end
       expect(Activity.last.subject_changes['documents_attributes'])
         .to eq([['hello2.jpg', 'hello.jpg'], ['hello2.jpg', 'hello3.jpg']])
@@ -484,7 +482,7 @@ describe StoryOperations do
     end
   end
 
-  describe '::UpdateAll', vcr: { match_requests_on: [:host, :path] } do
+  describe '::UpdateAll' do
     let(:user_1)    { create(:user, :with_team) }
     let(:user_2)    { create(:user, :with_team) }
     let(:user_3)    { create(:user, :with_team) }
