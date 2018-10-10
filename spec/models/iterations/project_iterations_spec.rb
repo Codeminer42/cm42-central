@@ -24,10 +24,8 @@ module Iterations
         let(:project) { story.project }
 
         it 'all past iterations must start in the iteration_start_day' do
-          interation_start_day = 0
-          project.iteration_start_day = interation_start_day
-          project.start_date += interation_start_day + 1
-          project.start_date -= 3.weeks
+          project.start_date = Time.current.days_ago(14)
+          project.iteration_start_day = Time.current.days_ago(16).wday
 
           past_iterations_start_date = subject.past_iterations.map{ |iteration| iteration.start_date.wday }
 
@@ -40,6 +38,27 @@ module Iterations
 
           second_iteration = subject.past_iterations[1]
           expect(second_iteration.stories).to include(story)
+        end
+
+        context 'when story is accepted in the last day of iteration' do
+          before do
+            project.start_date = Time.current.days_ago(14)
+            project.iteration_start_day = Time.current.days_ago(16).wday 
+            # first iteration goes 16.days_ago -- 10.days_ago
+
+            story.accepted_at = Time.current.days_ago(10)
+            story.save
+          end
+
+          it 'should be in the first iteration' do
+            first_iteration = subject.past_iterations[0]
+            expect(first_iteration.stories).to include(story)
+          end
+
+          it "shouldn't be in the first iteration" do
+            second_iteration = subject.past_iterations[1]
+            expect(second_iteration.stories).not_to include(story)
+          end
         end
       end
     end
