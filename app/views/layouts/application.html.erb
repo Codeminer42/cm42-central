@@ -118,7 +118,7 @@
   </div>
 </div>
 <script>
-  window._railsEnv = <%= Rails.env.development? || Rails.env.test? %>;
+  window._railsEnv = "<%= Rails.env %>";
 </script>
 <%= javascript_pack_tag 'app' %>
 <%= javascript_include_tag 'i18n/translations' %>
