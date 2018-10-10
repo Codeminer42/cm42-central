@@ -51,6 +51,7 @@ module.exports = Backbone.View.extend({
     this.storyColumn().sortable({
       opacity: 0.6,
       items: ".story:not(.accepted)",
+      cancel: ".story-description, .note, .form-control",
       connectWith: this.data.connect,
       update: function(ev, ui) {
         ui.item.trigger("sortupdate", ev, ui);
