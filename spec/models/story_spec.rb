@@ -47,6 +47,10 @@ describe Story do
       expect { subject.destroy }.to raise_error(ActiveRecord::ReadOnlyRecord)
     end
 
+    it 'can destroy accepted story when deleting the project' do
+      expect { subject.project.destroy }.not_to raise_error
+    end
+
     context 'with attachments' do
       let(:attachments) do
         [

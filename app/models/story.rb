@@ -61,6 +61,7 @@ class Story < ApplicationRecord
   end
 
   def readonly?
+    return false if destroyed_by_association
     !accepted_at_changed? && accepted_at.present?
   end
 
