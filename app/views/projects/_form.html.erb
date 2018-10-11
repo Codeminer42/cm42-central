@@ -64,19 +64,16 @@
     <% end %>
 
     <% if policy(@project).destroy? %>
-      <%= link_to t('delete'), @project,
-        data: {confirm: t('projects.index.are you sure you want to delete this project')},
-        method: :delete,
-        class: 'btn btn-danger btn-form' %>
+      <span id="delete-project-confirm" type="button" class='btn btn-danger btn-form' data-toggle="modal" data-target="#delete-confirmation-modal">
+        <%= t('delete') %>
+      </span>
     <% end %>
   </div>
 <% end %>
 
-<!-- Modal -->
+<!-- Tag Group Modal -->
 <div class="modal fade" id="tag-group-modal" role="dialog">
   <div class="modal-dialog">
-
-    <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -88,4 +85,9 @@
       </div>
     </div>
   </div>
+</div>
+
+<!-- Project Delete Modal -->
+<div class="modal fade" id="delete-confirmation-modal" role="dialog">
+  <%= render 'delete_confirmation' %>
 </div>
