@@ -467,7 +467,7 @@ describe StoryOperations do
     end
 
     context 'when the project started a month ago' do
-      let(:project) { create(:project, :with_month_ago, users: [user], teams: [current_team]) }
+      let(:project) { create(:project, :created_one_month_ago, users: [user], teams: [current_team]) }
       let(:iteration_length)         { project.iteration_length * 7 }
       let(:days_since_project_start) { (Date.current - project.start_date).to_i }
       let(:number_of_iterations)     { days_since_project_start / iteration_length }
