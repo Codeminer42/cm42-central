@@ -246,7 +246,7 @@ describe ProjectsController do
 
         describe '#destroy' do
           specify do
-            delete :destroy, id: project.id
+            delete :destroy, id: project.id, name_confirmation: project.name
             expect(response).to redirect_to(projects_url)
           end
         end

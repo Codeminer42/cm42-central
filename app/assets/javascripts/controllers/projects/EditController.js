@@ -3,7 +3,7 @@ import TagGroupsController from 'controllers/tag_groups/TagGroupsController';
 export default () => {
   TagGroupsController();
   
-  const nameConfirmation = $('#project-name-confirmation')
+  const nameConfirmation = $('#name_confirmation')
   const projectDeleteLink = $('#project-delete')
 
   nameConfirmation.keyup(() => {

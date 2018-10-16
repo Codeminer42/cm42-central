@@ -9,19 +9,22 @@
       <p> <%= t('projects.delete_confirmation') %></p>
       
       <div class="form-group">
-        <input type='textfield' class='form-control auth-form-control' data-project-name="<%=@project.name%>" id='project-name-confirmation'/>
-      </div>
-
-      <div class="form-group">
-        <div class="clearfix">
-          <div class="btn-group actions pull-right clearfix">
-            <%= button_to t('delete'), @project,
-              disabled: true,
-              method: :delete,
-              id: 'project-delete',
-              class: 'btn btn-danger btn-form' %>
+        <%= form_tag(@project, method: :delete) do %>
+          <div class="form-group">
+            <%= text_field_tag 'name_confirmation', nil, class: 'form-control auth-form-control', data: {'project-name': @project.name}, autocomplete: 'off' %>
           </div>
-        </div>
+          
+          <div class="form-group">
+            <div class="clearfix">
+              <div class="btn-group actions pull-right clearfix">    
+                <%= submit_tag t('delete') ,
+                  id: 'project-delete',
+                  disabled: true,
+                  class: 'btn btn-danger btn-form'%>
+              </div>
+            </div>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
