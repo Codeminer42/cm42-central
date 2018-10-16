@@ -46,7 +46,7 @@ module Iterations
     end
 
     def missing_days_from_first_sprint
-      project.start_date.wday - project.iteration_start_day
+      (project.start_date.wday - project.iteration_start_day) % DAYS_IN_A_WEEK
     end
 
     def first_iteration_start_date
