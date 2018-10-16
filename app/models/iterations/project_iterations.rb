@@ -7,13 +7,18 @@ module Iterations
     end
 
     def current_iteration_start
-      first_iteration_start_date + (number_of_iterations * iteration_length_in_days)
+      first_iteration_expected_start_date + (number_of_iterations * iteration_length_in_days)
     end
 
     def past_iterations
+      start_at = project.start_date
+      end_at = iteration_end_date(first_iteration_expected_start_date)
+
       (0...number_of_iterations).map do |iteration_number|
-        start_at = iteration_start_date(iteration_number)
-        end_at = iteration_end_date(start_at)
+        if iteration_number != 0
+          start_at = iteration_start_date(iteration_number)
+          end_at = iteration_end_date(start_at)
+        end
 
         PastIteration.new(
           start_date: start_at,
@@ -49,7 +54,7 @@ module Iterations
       (project.start_date.wday - project.iteration_start_day) % DAYS_IN_A_WEEK
     end
 
-    def first_iteration_start_date
+    def first_iteration_expected_start_date
       project.start_date - missing_days_from_first_sprint
     end
 
@@ -63,7 +68,7 @@ module Iterations
 
     def iteration_start_date(iteration_number)
       iteration_days = iteration_number * iteration_length_in_days
-      first_iteration_start_date + iteration_days
+      first_iteration_expected_start_date + iteration_days
     end
 
     def iteration_end_date(start_date)
@@ -71,7 +76,7 @@ module Iterations
     end
 
     def days_since_first_iteration_start
-      Date.current - first_iteration_start_date
+      Date.current - first_iteration_expected_start_date
     end
   end
 end
