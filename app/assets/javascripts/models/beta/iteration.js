@@ -110,10 +110,10 @@ const fillRemainingPoints = (sprints, storyPoints, index, velocity, previousFill
   }
 };
 
-const createFirstSprint = (sprints, project) => {
+const createFirstSprint = (sprints, project, initialSprintNumber) => {
   sprints.push(createSprint(
-    0,
-    getDateForIterationNumber(0, project),
+    initialSprintNumber,
+    getDateForIterationNumber(initialSprintNumber, project),
     undefined,
     project.defaultVelocity,
   ));
@@ -150,7 +150,7 @@ export const groupBySprints = (stories = [], project, initialSprintNumber) => {
     );
 
     if (sprints.length === 0) {
-      createFirstSprint(sprints, project);
+      createFirstSprint(sprints, project, initialSprintNumber);
     }
 
     if (isFromSprintInProgress) {
