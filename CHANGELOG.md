@@ -5,6 +5,7 @@
 ### Added
 - Option to archive teams
 - Added pusher-fake to the project
+- Field velocity_strategy to projects
 
 ### Fixed
 - Fixed locale change when accessing user edit page
