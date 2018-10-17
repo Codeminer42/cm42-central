@@ -14,7 +14,6 @@ module Attachinary
       options
     end
   end
-
   module ViewHelpers
     prepend ViewHelpersExtension
   end

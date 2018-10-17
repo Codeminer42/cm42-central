@@ -4,7 +4,6 @@ ActionController::Renderers.add :csv do |stories, options|
 
   filename = options[:filename] || 'export.csv'
 
-
   # Calculate the number of Notes headers that will be required, and append
   # this many "Note" headers to the CSV
   headers = Story.csv_headers
