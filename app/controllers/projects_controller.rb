@@ -95,18 +95,12 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1
   # DELETE /projects/1.xml
   def destroy
-    respond_to do |format|
-      if valid_name_confirmation?
-        ProjectOperations::Destroy.call(@project, current_user)
+    if valid_name_confirmation?
+      ProjectOperations::Destroy.call(@project, current_user)
 
-        format.html { redirect_to(projects_url) }
-        format.xml  { head :ok }
-      else
-        format.html do
-          redirect_to(edit_project_path, alert: t('projects.confirmation_invalid'))
-        end
-        format.xml { render xml: t('projects.confirmation_invalid'), status: :bad_request }
-      end
+      redirect_to(projects_url)
+    else
+      redirect_to(edit_project_path, alert: t('projects.confirmation_invalid'))
     end
   end
 

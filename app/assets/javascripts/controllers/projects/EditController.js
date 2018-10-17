@@ -11,7 +11,7 @@ export default () => {
   })
     
   function verifyProjectName() {
-    if (nameConfirmation.data('project-name') == nameConfirmation.val()){
+    if (nameConfirmation.data('project-name') === nameConfirmation.val()){
       projectDeleteLink.attr("disabled", false)
     } else {
       projectDeleteLink.attr("disabled", true)
