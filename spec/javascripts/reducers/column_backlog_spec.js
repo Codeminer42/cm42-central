@@ -1,7 +1,19 @@
 import reducer from 'reducers/columns/backlog';
 import actionTypes from 'actions/actionTypes';
+import moment from 'moment';
 
 describe('Backlog Column reducer', () => {
+  let project;
+
+  beforeEach(() => {
+    project = {
+      startDate: moment(new Date()).subtract(3, 'weeks').format(),
+      iterationLength: 1,
+      defaultVelocity: 2,
+      iterationStartDay: 1,
+    }
+  });
+
   function createInitialStateWithStories() {
     return {
       stories: [
@@ -59,11 +71,7 @@ describe('Backlog Column reducer', () => {
     return {
       type: actionTypes.COLUMN_BACKLOG,
       data,
-      project: {
-        startDate: "2018-09-03T16:00:00",
-        iterationLength: 1,
-        defaultVelocity: 2,
-      },
+      project,
     }
   }
 
@@ -117,6 +125,8 @@ describe('Backlog Column reducer', () => {
     });
 
     describe("when stories are grouped by sprints", () => {
+      let state;
+      let action;
       const stories = [
         {
           id: 1,
@@ -147,10 +157,10 @@ describe('Backlog Column reducer', () => {
           storyType: "feature",
         },
       ];
-      const action = createAction(stories);
-      let state;
       
       beforeEach(() => {
+        action = createAction(stories);
+        
         state = reducer({ stories: stories, sprints: [] }, action);
       });
       
@@ -165,6 +175,23 @@ describe('Backlog Column reducer', () => {
       it("stories grouped in current sprint are ordered by state", () => {
         expect(state.sprints[0].stories[0].state).toEqual('delivered');
         expect(state.sprints[0].stories[1].state).toEqual('finished');
+      });
+
+      describe("when project has started 3 weeks ago", () => {
+        it("first sprint number should be 4", () => {
+          expect(state.sprints[0].number).toEqual(4);
+        })
+      });
+
+      describe("when project startDate is today", () => {
+        it("sprint number should be 1", () => {
+          project.startDate = new Date();
+
+          action = createAction(stories);
+          state = reducer({ stories: stories, sprints: [] }, action);
+         
+          expect(state.sprints[0].number).toEqual(1);
+        });
       });
     });
 

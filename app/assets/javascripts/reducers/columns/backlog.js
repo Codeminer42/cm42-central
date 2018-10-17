@@ -53,7 +53,7 @@ const orderByState = stories => {
 };
 
 const groupStoriesInSprints = (stories, project) => {
-  const currentSprintNumber = Iteration.getCurrentIteration(project) || 0;
+  const currentSprintNumber = Iteration.getCurrentIteration(project) || 1;
 
   return Iteration.groupBySprints(
     stories,

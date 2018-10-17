@@ -14,10 +14,18 @@ const getIterationForDate = (date, project) => {
 };
 
 export const getDateForIterationNumber = (iterationNumber, project) => {
-  return moment(new Date(project.startDate))
-    .startOf("isoWeek")
-    .add(iterationNumber, "weeks")
-    .format("ddd MMM Do Y");
+  let startDate;
+  let momentDate = moment(project.startDate);
+ 
+  if (iterationNumber === 1) {
+    startDate = moment(project.startDate);
+  } else {
+    let missingDaysFromFirstSprint = (momentDate.isoWeekday() - project.iterationStartDay) % 7;
+    let iterationDays = (iterationNumber - 1) * (project.iterationLength * 7)
+    startDate = (momentDate.subtract(missingDaysFromFirstSprint, 'days')).add(iterationDays, 'days');
+  }
+
+  return startDate.format("ddd MMM Do Y");
 };
 
 export const getCurrentIteration = project =>
@@ -30,7 +38,7 @@ export const getIterationForStory = (story, project) => {
 };
 
 const createSprint = (sprintNumber = 0, startDate = 0, isFiller = false, velocity) => ({
-  number: sprintNumber + 1,
+  number: sprintNumber,
   startDate: startDate,
   points: 0,
   completedPoints: null,
@@ -49,7 +57,7 @@ const createFillerSprints = (size, initialNumber, project) => {
       project.defaultVelocity
     );
     return sprint;
-  })
+  });
 };
 
 const canTakeStory = (sprint, storyPoints) => {
@@ -82,6 +90,7 @@ const addStoryToSprint = (project, sprints, index, story) => {
   const lastValidSprintIndex = sprints.length - 2;
 
   let previousFillerSprintsQuantity = 0;
+
   for (let i = lastValidSprintIndex; i >= 0; i--) {
     if (sprints[i].isFiller) {
       previousFillerSprintsQuantity++;
@@ -89,6 +98,7 @@ const addStoryToSprint = (project, sprints, index, story) => {
       break;
     }
   }
+  
   fillRemainingPoints(
     sprints, 
     Story.getPoints(story),
@@ -126,7 +136,7 @@ const addToSprintFromBacklog = (sprints, project, story) => {
   if (hasSpace) {
     return addStoryToSprint(project, sprints, sprintIndex, story);
   }
-  
+
   sprints[sprintIndex + 1] = createSprint(
     sprints.length + getCurrentIteration(project),
     getDateForIterationNumber(sprints.length + getCurrentIteration(project), project),
@@ -156,7 +166,7 @@ export const groupBySprints = (stories = [], project, initialSprintNumber) => {
     if (isFromSprintInProgress) {
       return addStoryToSprint(project, sprints, firstSprintIndex, story);
     }
-
+    
     return addToSprintFromBacklog(sprints, project, story);
   }, []);
 };
