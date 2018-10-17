@@ -256,11 +256,26 @@ describe 'Projects' do
           team.ownerships.create(project: project, is_owner: true)
         end
 
-        it 'deletes a project' do
+        before(:each) do
           visit edit_project_path(project)
+          find('#delete-project-confirm').click
+        end
+
+        it 'shows delete confirmation modal' do
+          expect(page).to have_css('#delete-confirmation-modal') 
+        end
+
+        it 'deletes a project', js: true do
+          fill_in 'name_confirmation',	with: project.name
           click_on 'Delete'
 
           expect(Project.count).to eq(0)
+        end
+
+        it 'disable button when project name is invalid' do
+          fill_in 'name_confirmation',	with: "wrong#{project.name}"
+
+          expect(page).to have_button('Delete', disabled: true)
         end
       end
 
