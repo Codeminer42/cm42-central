@@ -136,6 +136,10 @@ en:
     one: '1 week'
     other: '%{count} weeks'
 
+  n velocity strategy:
+    one:    'Average of 1 iteration'
+    other:  'Average of %{count} iterations'
+
   keycuts:
     keyboard_shortcuts: Keyboard shortcuts
     help: Help (this)
@@ -178,6 +182,7 @@ en:
         default_velocity:     'Default velocity'
         archived:             'Archived'
         mail_reports:         'Send reports via mail'
+        velocity_strategy:    'Velocity strategy'
       story:
         title:                'Title'
         description:          'Description'

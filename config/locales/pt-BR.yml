@@ -133,6 +133,10 @@ pt-BR:
     one: '1 semana'
     other: '%{count} semanas'
 
+  n velocity strategy:
+    one:    'Média de 1 iteração'
+    other:  'Média de %{count} iterações'
+
   keycuts:
     keyboard_shortcuts: Atalhos de teclado
     help: Ajuda (this)
@@ -175,6 +179,7 @@ pt-BR:
         default_velocity:     'Velocidade padrão'
         archived:             'Arquivado'
         mail_reports:         'Enviar relatórios por email'
+        velocity_strategy:    'Estratégia de velocidade'
       story:
         title:                'Título'
         description:          'Descrição'

@@ -6,6 +6,7 @@ class Entities::Project < Entities::BaseEntity
   expose :iteration_start_day
   expose :iteration_length
   expose :default_velocity
+  expose :velocity_strategy
   expose :velocity, if: { type: :full }
   expose :volatility, if: { type: :full }
   expose :teams, using: Entities::Team

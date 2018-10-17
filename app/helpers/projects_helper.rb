@@ -107,4 +107,12 @@ module ProjectsHelper
   def inverse_story_flow
     'pressed' if @story_flow[:current].eql?(@story_flow[:default])
   end
+
+  # Returns an array of valid velocity strategy options suitable for use in
+  # a select helper.
+  def velocity_strategy_options
+    (1..4).collect do |iterations|
+      [I18n.t('n velocity strategy', count: iterations), iterations]
+    end
+  end
 end

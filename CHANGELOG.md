@@ -6,11 +6,13 @@
 - Option to archive teams
 - Added pusher-fake to the project
 - Project delete confirmation
+- Field velocity_strategy to projects
 
 ### Fixed
 - Fixed locale change when accessing user edit page
 - Fixed Project delete
 - Fixed `story-description` and `.note` by adding to sortable column canceled elements/nodes
+- Fix calculation of first sprint size
 
 
 ### Changed

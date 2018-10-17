@@ -7,13 +7,18 @@ module Iterations
     end
 
     def current_iteration_start
-      project_start_date + (length * iteration_length_in_days)
+      first_iteration_expected_start_date + (number_of_iterations * iteration_length_in_days)
     end
 
     def past_iterations
-      (0...length).map do |iteration_number|
-        start_at = start_date(iteration_number)
-        end_at = end_date(start_at)
+      start_at = project.start_date
+      end_at = iteration_end_date(first_iteration_expected_start_date)
+
+      (0...number_of_iterations).map do |iteration_number|
+        if iteration_number != 0
+          start_at = iteration_start_date(iteration_number)
+          end_at = iteration_end_date(start_at)
+        end
 
         PastIteration.new(
           start_date: start_at,
@@ -45,29 +50,33 @@ module Iterations
       end
     end
 
-    def length
-      (days_since_project_start / iteration_length_in_days).floor
+    def missing_days_from_first_sprint
+      (project.start_date.wday - project.iteration_start_day) % DAYS_IN_A_WEEK
+    end
+
+    def first_iteration_expected_start_date
+      project.start_date - missing_days_from_first_sprint
+    end
+
+    def number_of_iterations
+      (days_since_first_iteration_start / iteration_length_in_days).floor
     end
 
     def iteration_length_in_days
       project.iteration_length * DAYS_IN_A_WEEK
     end
 
-    def project_start_date
-      project.start_date
+    def iteration_start_date(iteration_number)
+      iteration_days = iteration_number * iteration_length_in_days
+      first_iteration_expected_start_date + iteration_days
     end
 
-    def start_date(iteration_number)
-      iteration_days = (iteration_number * iteration_length_in_days)
-      (project_start_date + iteration_days)
+    def iteration_end_date(start_date)
+      start_date + (iteration_length_in_days - 1)
     end
 
-    def end_date(start_date)
-      (start_date + (iteration_length_in_days - 1))
-    end
-
-    def days_since_project_start
-      Date.current - project_start_date
+    def days_since_first_iteration_start
+      Date.current - first_iteration_expected_start_date
     end
   end
 end
