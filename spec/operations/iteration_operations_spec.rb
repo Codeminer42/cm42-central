@@ -17,6 +17,18 @@ describe IterationOperations do
       it 'returns done stories' do
         expect(result[:stories]).to eq(stories)
       end
+
+      it 'return story accepted in the end of the day of the last day' do
+        story = create(:story, :done, accepted_at: end_date.end_of_day, project: project, requested_by: user)
+
+        expect(result[:stories]).to include(story)
+      end
+
+      it 'return story accepted in the beginning of the day in the first day' do
+        story = create(:story, :done, accepted_at: start_date.beginning_of_day, project: project, requested_by: user)
+
+        expect(result[:stories]).to include(story)
+      end
     end
   end
 end

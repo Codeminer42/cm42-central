@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Fixed
+- Fix stories in the done sprints
 
 ## [1.21.0] 2018-10-15
 ### Added
