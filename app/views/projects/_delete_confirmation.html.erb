@@ -5,13 +5,13 @@
         <h4 class="modal-title"><%= t('projects.delete project') %></h4>
     </div>
     <div class="modal-body">
-      <p> <%= t('projects.index.are you sure you want to delete this project_html', project_name: @project.name) %></p>
+      <p> <%= t('projects.index.are you sure you want to delete this project_html', project_name: project.name) %></p>
       <p> <%= t('projects.delete_confirmation') %></p>
       
       <div class="form-group">
-        <%= form_tag(@project, method: :delete) do %>
+        <%= form_tag(project, method: :delete) do %>
           <div class="form-group">
-            <%= text_field_tag 'name_confirmation', nil, class: 'form-control auth-form-control', data: {'project-name': @project.name}, autocomplete: 'off' %>
+            <%= text_field_tag 'name_confirmation', nil, class: 'form-control auth-form-control', data: {'project-name': project.name}, autocomplete: 'off' %>
           </div>
           
           <div class="form-group">

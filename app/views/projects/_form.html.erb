@@ -1,5 +1,5 @@
-<%= form_for(@project) do |f| %>
-  <%= render 'form_errors', object: @project if @project.errors.any? %>
+<%= form_for(project) do |f| %>
+  <%= render 'form_errors', object: project if project.errors.any? %>
 
   <div class="form-group">
     <%= f.label :name, class: 'control-label' %>
@@ -65,14 +65,14 @@
   <div class="btn-group actions pull-right clearfix">
     <%= f.submit nil, class: 'btn btn-primary btn-form' %>
 
-    <% if policy(@project).archive? %>
-      <%= link_to t('projects.archive'), [:archive, @project],
+    <% if policy(project).archive? %>
+      <%= link_to t('projects.archive'), [:archive, project],
         data: {confirm: t('projects.index.are you sure you want to archive this project')},
         method: :patch,
         class: 'btn btn-warning btn-form' %>
     <% end %>
 
-    <% if policy(@project).destroy? %>
+    <% if policy(project).destroy? %>
       <span id="delete-project-confirm" type="button" class='btn btn-danger btn-form' data-toggle="modal" data-target="#delete-confirmation-modal">
         <%= t('delete') %>
       </span>
@@ -98,5 +98,5 @@
 
 <!-- Project Delete Modal -->
 <div class="modal fade" id="delete-confirmation-modal" role="dialog">
-  <%= render 'delete_confirmation' %>
+  <%= render partial: 'delete_confirmation', locals: {project: project} %>
 </div>

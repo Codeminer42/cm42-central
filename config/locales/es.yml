@@ -210,7 +210,7 @@ es:
   projects:
     new project:        "Nuevo Proyecto"
     edit project:       "Editar Proyecto"
-    delete project: "Borrar Proyeto"
+    delete project: "Borrar Proyecto"
     transfer project: "Transferir el Proyecto"
     share project: "Compartir el Proyecto"
     project_members: "Miembros del Proyecto"
