@@ -24,14 +24,14 @@ describe Note do
     end
   end
 
-  describe '#to_s' do
+  describe '#to_csv' do
     before do
       subject.note = 'Test note'
       subject.created_at = 'Nov 3, 2011'
       allow(user).to receive_messages(name: 'user')
     end
 
-    its(:to_s) { should == 'Test note (user - Nov 03, 2011)' }
+    its(:to_csv) { should == 'Test note (user - Nov 03, 2011)' }
   end
 
   describe '#readonly?' do

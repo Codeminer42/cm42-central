@@ -22,6 +22,14 @@ describe Task do
     end
   end
 
+  describe '#to_csv' do
+    subject(:task) { build :task, story: story, name: 'task_test', done: true }
+    
+    it 'return a array with name and status from task' do
+      expect(task.to_csv).to eq([task.name, 'completed'])
+    end
+  end
+
   describe '#readonly?' do
     let(:user) { create(:user) }
     let(:project) { create(:project) }
