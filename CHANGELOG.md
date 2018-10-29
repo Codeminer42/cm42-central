@@ -10,6 +10,7 @@
 ### Added
 - Option to archive teams
 - Added pusher-fake to the project
+- Project delete confirmation
 - Field velocity_strategy to projects
 
 ### Fixed

@@ -13,7 +13,7 @@
   <div class="col-xs-12 col-sm-5 col-sm-offset-2">
     <div class="panel card">
       <div class="panel-body">
-        <%= render 'form' %>
+        <%= render partial: 'form' , locals: { project: @project } %>
       </div>
     </div>
   </div>

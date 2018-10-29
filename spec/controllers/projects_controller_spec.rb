@@ -245,9 +245,18 @@ describe ProjectsController do
         end
 
         describe '#destroy' do
-          specify do
-            delete :destroy, id: project.id
-            expect(response).to redirect_to(projects_url)
+          context 'when project name_confirmation is invalid' do
+            specify do
+              delete :destroy, id: project.id, name_confirmation: "wrong#{project.name}"
+              expect(response).to redirect_to(edit_project_path)
+            end
+          end
+
+          context 'when project name_confirmation is valid' do
+            specify do
+              delete :destroy, id: project.id, name_confirmation: project.name
+              expect(response).to redirect_to(projects_url)
+            end
           end
         end
 

@@ -224,6 +224,7 @@ en:
   projects:
     new project:     "New Project"
     edit project:    "Edit Project"
+    delete project:  "Delete Project"
     project_members: "Project Members"
     available_users: "Available Members"
     select: "Select project"
@@ -272,6 +273,8 @@ en:
     sharing: "Teams with access to this Project"
     invalid_action: "Can't perform this action or Team not found"
 
+    confirmation_invalid: 'Invalid name confirmation, try again.'
+    delete_confirmation: 'Please type in the name of the project to confirm.'
     transfer_sure: "Are you sure you want to transfer ownership? This action is not reversible."
 
     project was successfully archived: "Project was successfully archived"
@@ -290,7 +293,7 @@ en:
 
     index:
       listing projects: "Listing Projects"
-      are you sure you want to delete this project: "Are you sure you want to delete this project?  This action cannot be undone."
+      are you sure you want to delete this project_html: "Are you sure you want to delete this project?  This action <b>cannot</b> be undone. This will permanently delete the project <b>%{project_name}</b> and all his stories."
       are you sure you want to archive this project: "Are you sure you want to archive this project?"
       are you sure you want to unshare this project: "Are you sure you want to unshare this project?"
       the iteration starts on x with length of x weeks:
