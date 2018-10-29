@@ -11,9 +11,10 @@ export const subscribeToProjectChanges = (project, callback) => {
     _,
     pusherCluster,
     pusherApiKey
-  ] = matchPusherUrl(pusherUrl) || [];
+  ] = matchPusherUrl(pusherUrl || '') || [];
 
   if (!pusherApiKey || !pusherCluster) {
+    setInterval(callback, 10 * 1000); // every 10 seconds
     return;
   }
 
