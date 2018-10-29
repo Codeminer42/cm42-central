@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Fixed
+- Fix pusher missing api key
 
 ## [1.21.1] 2018-10-18
 ### Fixed
