@@ -5,5 +5,8 @@ class Task < ApplicationRecord
 
   before_destroy { |record| raise ActiveRecord::ReadOnlyRecord if record.readonly? }
 
-  delegate :readonly?, to: :story
+  def readonly?
+    return false if destroyed_by_association
+    story.readonly?
+  end
 end
