@@ -6,12 +6,12 @@ const matchPusherUrl = url => {
 };
 
 export const subscribeToProjectChanges = (project, callback) => {
-  const pusherUrl = process.env.PUSHER_SOCKET_URL;
+  const pusherUrl = process.env.PUSHER_SOCKET_URL || '';
   const [
     _,
     pusherCluster,
     pusherApiKey
-  ] = matchPusherUrl(pusherUrl || '') || [];
+  ] = matchPusherUrl(pusherUrl) || [];
 
   if (!pusherApiKey || !pusherCluster) {
     setInterval(callback, 10 * 1000); // every 10 seconds
