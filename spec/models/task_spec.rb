@@ -23,10 +23,18 @@ describe Task do
   end
 
   describe '#to_csv' do
-    subject(:task) { build :task, story: story, name: 'task_test', done: true }
-    
-    it 'return a array with name and status from task' do
-      expect(task.to_csv).to eq([task.name, 'completed'])
+    context 'task completed' do
+      let(:task) { build :task, story: story, name: 'task_test', done: true }
+      subject { task.to_csv }
+
+      it { is_expected.to contain_exactly(task.name, 'completed') }
+    end
+
+    context 'task not completed' do
+      let(:task) { build :task, story: story, name: 'task_test', done: false }
+      subject { task.to_csv }
+
+      it { is_expected.to contain_exactly(task.name, 'not_completed') }
     end
   end
 

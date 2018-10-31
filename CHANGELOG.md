@@ -1,6 +1,13 @@
 # Changelog
 
 ## [Unreleased]
+### Fixed
+- Imports notes of stories
+
+### Added
+- Imports/exports of stories 
+  - Documents
+  - Tasks
 
 ## [1.21.0] 2018-10-15
 ### Added

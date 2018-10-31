@@ -31,7 +31,9 @@ describe Note do
       allow(user).to receive_messages(name: 'user')
     end
 
-    its(:to_csv) { should == 'Test note (user - Nov 03, 2011)' }
+    it 'should have the format "task_name (user_name - date)"' do
+      expect(subject.to_csv).to eq('Test note (user - Nov 03, 2011)')
+    end
   end
 
   describe '#readonly?' do

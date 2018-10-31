@@ -23,7 +23,7 @@ ActionController::Renderers.add :csv do |stories, options|
 end
 
 def extra_headers(number_of_extra_columns)
-  [ Array.new(number_of_extra_columns[:notes], "Note"),
-    Array.new(number_of_extra_columns[:documents], "Document"),
-    Array.new(number_of_extra_columns[:tasks], ["Task", "Task Status"]).flatten ].flatten
+  [Array.new(number_of_extra_columns[:notes], "Note"),
+   Array.new(number_of_extra_columns[:documents], "Document"),
+   Array.new(number_of_extra_columns[:tasks], ["Task", "Task Status"]).flatten].flatten
 end
