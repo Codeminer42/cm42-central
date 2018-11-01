@@ -14,10 +14,6 @@ class Task < ApplicationRecord
   private
 
   def status
-    if done
-      'completed'
-    else
-      'not_completed'
-    end
+    done ? 'completed' : 'not_completed'
   end
 end

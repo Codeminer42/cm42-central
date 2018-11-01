@@ -95,11 +95,12 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1
   # DELETE /projects/1.xml
   def destroy
-    ProjectOperations::Destroy.call(@project, current_user)
+    if valid_name_confirmation?
+      ProjectOperations::Destroy.call(@project, current_user)
 
-    respond_to do |format|
-      format.html { redirect_to(projects_url) }
-      format.xml  { head :ok }
+      redirect_to(projects_url)
+    else
+      redirect_to(edit_project_path, alert: t('projects.confirmation_invalid'))
     end
   end
 
@@ -254,6 +255,10 @@ class ProjectsController < ApplicationController
   end
 
   private
+
+  def valid_name_confirmation?
+    params[:name_confirmation] == @project.name
+  end
 
   def projects_unjoined
     current_team.projects.not_archived.joinable_except(policy_scope(Project))

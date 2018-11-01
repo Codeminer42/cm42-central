@@ -226,6 +226,7 @@ pt-BR:
   projects:
     new project:        "Novo Projeto"
     edit project:       "Editar Projeto"
+    delete project:     "Apagar Projeto"
     project_members: "Membros do projeto"
     available_users: "Membros disponíveis"
     select: "Selecionar projeto"
@@ -276,6 +277,8 @@ pt-BR:
     sharing: "Equipes com acesso a este projeto"
     invalid_action: "Não é possível executar esta ação ou Equipe não encontrada"
 
+    confirmation_invalid: 'Confirmação inválida, tente novamente.'
+    delete_confirmation: 'Por favor digite o nome do projeto para confirmar.'
     transfer_sure: "Tem certeza de que deseja transferir a propriedade? Esta ação não é reversível."
 
     project was successfully archived: "Projeto foi arquivado com sucesso"
@@ -294,7 +297,7 @@ pt-BR:
 
     index:
       listing projects: "Listando Projetos"
-      are you sure you want to delete this project: "Tem certeza de que deseja excluir este projeto? Esta ação não pode ser desfeita."
+      are you sure you want to delete this project_html: "Tem certeza de que deseja excluir este projeto? Esta ação <b>não pode</b> ser desfeita. Isso irá apagar permanentemente o projeto <b>%{project_name}</b> e todas suas histórias."
       are you sure you want to archive this project: "Tem certeza de que deseja arquivar este projeto?"
       are you sure you want to unshare this project: "Tem certeza de que remover o acesso ao projeto para esta equipe?"
       the iteration starts on x with length of x weeks:

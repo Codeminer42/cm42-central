@@ -31,7 +31,7 @@ describe Note do
       allow(user).to receive_messages(name: 'user')
     end
 
-    it 'should have the format "task_name (user_name - date)"' do
+    it 'gets formated task "task_name (user_name - date)"' do
       expect(subject.to_csv).to eq('Test note (user - Nov 03, 2011)')
     end
   end

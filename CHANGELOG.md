@@ -9,10 +9,15 @@
   - Documents
   - Tasks
 
+## [1.21.1] 2018-10-18
+### Fixed
+- Fix stories in the done sprints
+
 ## [1.21.0] 2018-10-15
 ### Added
 - Option to archive teams
 - Added pusher-fake to the project
+- Project delete confirmation
 - Field velocity_strategy to projects
 
 ### Fixed
@@ -311,7 +316,7 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.21.0...HEAD
+[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.21.1...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
@@ -341,3 +346,4 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [1.20.0]: https://github.com/Codeminer42/cm42-central/tree/v1.20.0
 [1.20.1]: https://github.com/Codeminer42/cm42-central/tree/v1.20.1
 [1.21.0]: https://github.com/Codeminer42/cm42-central/tree/v1.21.0
+[1.21.1]: https://github.com/Codeminer42/cm42-central/tree/v1.21.1

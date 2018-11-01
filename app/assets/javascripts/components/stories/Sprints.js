@@ -3,14 +3,10 @@ import PropTypes from "prop-types";
 import Sprint from "./Sprint";
 
 const propTypes = {
-  stories: PropTypes.array,
-  project: PropTypes.object,
   sprints: PropTypes.array,
 };
 
 const defaultProps = {
-  stories: [],
-  project: {},
   sprints: [],
 };
 
