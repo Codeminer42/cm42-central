@@ -28,6 +28,38 @@ describe Story do
     end
   end
 
+  describe 'scopes' do
+    let!(:user) { create(:user, :with_team) }
+
+    let!(:project) do
+      create(:project,
+              users: [user],
+              teams: [user.teams.first])
+    end
+
+    let!(:story) { create(:story, :done, project: project, requested_by: user) }
+
+    context '.accepted' do
+      it 'must include story' do
+        expect(Story.accepted).to include(story)
+      end
+    end
+
+    context '.accepted_between()' do
+      let(:start_date) { Time.current.days_ago(16) }
+      let(:end_date) { Time.current.days_ago(14) }
+
+      before do
+        story.accepted_at = Time.current.days_ago(15)
+        story.save!
+      end
+
+      it 'must include story' do
+        expect(Story.accepted_between(start_date, end_date)).to include(story)
+      end
+    end
+  end
+
   describe '#readonly?' do
     subject { create :story, :with_project }
 
