@@ -11,7 +11,16 @@ import {
   isRelease,
 } from '../../rules/story';
 
-const StoryPoints = () => (
+const StateAction = {
+  started: ["finish"],
+  finished: ["deliver"],
+  delivered: ["accept","reject"],
+  rejected: ["restart"],
+  accepted: [],
+  unstarted: ["start"]
+};
+
+export const StoryPoints = () => (
   <div>
     <span className="Story__estimate">1</span>
     <span className="Story__estimate">2</span>
@@ -19,24 +28,37 @@ const StoryPoints = () => (
     <span className="Story__estimate">5</span>
     <span className="Story__estimate">8</span>
   </div>
-)
+);
 
-const StateActions = ({ storyType, estimate }) => (
+export const StateActions = ({ storyType, estimate, state }) => (
   <div className='Story__actions'>
     {
       isStoryNotEstimated(storyType, estimate)
         ? <StoryPoints />
-        : <ButtonStart />
+        : StoryActionFor(state).map((stateAction) => <StateButton action={stateAction} key={stateAction} />)
     }
   </div>
-)
-StateActions.propTypes = {
-  storyType : PropTypes.string.isRequired
-}
-
-const ButtonStart = () => (
-  <button type="button" className="Story__btn Story__btn--start">start</button>
 );
+
+const StoryActionFor = (state) => StateAction[state] || StateAction.unstarted;  
+
+StateActions.propTypes = {
+  storyType: PropTypes.string.isRequired,
+  estimate: PropTypes.number,
+  state: PropTypes.string.isRequired
+};
+
+StateActions.defaultProp = {
+  estimate: '-',
+};
+
+export const StateButton = ({ action }) => (
+  <button type="button" className={`Story__btn Story__btn--${action}`}>{action}</button>
+);
+
+StateButton.propTypes = {
+  action: PropTypes.string.isRequired
+};
 
 const StoryEstimate = ({ estimate }) => (
   <span className='Story__estimated'>{estimateRule(estimate)}</span>
@@ -109,12 +131,12 @@ const classNameStory = (storyType, estimate) => classname (
   }
 );
 
-const StoryItem = ({ title, storyType, estimate, labels }) => (
+const StoryItem = ({ title, storyType, estimate, labels, state }) => (
   <div className={classNameStory(storyType, estimate)}>
     <StoryIcon storyType={storyType} />
     <StoryEstimate estimate={estimate} />
     <StoryInfo title={title} labels={labels} storyType={storyType} estimate={estimate} />
-    <StateActions storyType={storyType} estimate={estimate}/>
+    <StateActions storyType={storyType} estimate={estimate} state={state}/>
   </div>
 );
 
@@ -124,10 +146,11 @@ StoryItem.propTypes = {
   description: PropTypes.string,
   storyType: PropTypes.string.isRequired,
   labels: PropTypes.any,
+  state: PropTypes.string.isRequired,
 };
 
 StoryItem.defaultProps = {
   description: '',
-}
+};
 
-export default StoryItem
+export default StoryItem;
