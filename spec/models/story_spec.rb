@@ -40,8 +40,15 @@ describe Story do
     let!(:story) { create(:story, :done, project: project, requested_by: user) }
 
     context '.accepted' do
-      it 'must include story' do
+      it 'include accepted story' do
         expect(Story.accepted).to include(story)
+      end
+
+      it 'not include non accepted story' do
+        story.accepted_at = nil
+        story.save!
+
+        expect(Story.accepted).not_to include(story)
       end
     end
 
@@ -49,13 +56,25 @@ describe Story do
       let(:start_date) { Time.current.days_ago(16) }
       let(:end_date) { Time.current.days_ago(14) }
 
-      before do
-        story.accepted_at = Time.current.days_ago(15)
+      it 'include story accepted beetween start_date and end_date' do
+        story.accepted_at = start_date + 2.days
         story.save!
+
+        expect(Story.accepted_between(start_date, end_date)).to include(story)
       end
 
-      it 'must include story' do
-        expect(Story.accepted_between(start_date, end_date)).to include(story)
+      it 'not include story accepted before start_date' do
+        story.accepted_at = start_date - 1.day
+        story.save!
+
+        expect(Story.accepted_between(start_date, end_date)).not_to include(story)
+      end
+
+      it 'not include story accepted after end_date' do
+        story.accepted_at = end_date + 1.day
+        story.save!
+
+        expect(Story.accepted_between(start_date, end_date)).not_to include(story)
       end
     end
   end
