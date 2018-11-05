@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Fixed
 - Imports notes of stories
+- Fix project delete when tasks or notes are readonly
 
 ### Added
 - Imports/exports of stories 

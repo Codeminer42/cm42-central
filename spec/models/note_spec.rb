@@ -56,28 +56,30 @@ describe Note do
   describe '#readonly?' do
     let(:user) { create(:user) }
     let(:project) { create(:project) }
+    let(:story) { create(:story, project: project, requested_by: user) }
+    let(:note) { create(:note, user: user, story: story) }
 
     before do
       project.users << user
-      project.suppress_notifications = true
-      @story = create(:story, project: project, requested_by: user)
-      @note = create(:note, user: user, story: @story)
-
-      @story.update_attribute(:state, 'accepted')
+      story.update_attribute(:state, 'accepted')
     end
 
     it "can't modify a note from a readonly story" do
-      expect { @note.update_attribute(:note, 'new note') }
+      expect { note.update_attribute(:note, 'new note') }
         .to raise_error(ActiveRecord::ReadOnlyRecord)
     end
 
     it "can't let the note from an accepted story to be destroyed" do
-      expect { @note.destroy }.to raise_error(ActiveRecord::ReadOnlyRecord)
+      expect { note.destroy }.to raise_error(ActiveRecord::ReadOnlyRecord)
     end
 
     it "can't add more notes to an accepted story" do
-      expect { @story.notes.create(note: 'test', user: user) }
+      expect { story.notes.create(note: 'test', user: user) }
         .to raise_error(ActiveRecord::ReadOnlyRecord)
+    end
+
+    it 'can destroy read_only note when deleting the project' do
+      expect { project.destroy }.not_to raise_error
     end
   end
 end

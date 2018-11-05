@@ -5,6 +5,11 @@ class Note < ApplicationRecord
   before_save :cache_user_name
   before_destroy { |record| raise ActiveRecord::ReadOnlyRecord if record.readonly? }
 
+  def readonly?
+    return false if destroyed_by_association
+    story.readonly?
+  end
+
   validates :note, presence: true
 
   delegate :project, to: :story
@@ -20,8 +25,6 @@ class Note < ApplicationRecord
 
     "#{note} (#{user_name} - #{created_date})"
   end
-
-  delegate :readonly?, to: :story
 
   private
 
