@@ -685,7 +685,7 @@ describe('StoryView', function() {
       this.view.canEdit = sinon.stub().returns(true);
       this.view.render();
 
-      expect(this.view.$('.story_estimate')).toBeDisabled();
+      expect(this.view.$('.story_estimate').is(':disabled')).toEqual(true);;
     });
   });
 
