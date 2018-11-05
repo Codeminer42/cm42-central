@@ -415,7 +415,8 @@ describe StoryOperations do
       iteration_end = ((project.created_at + project.iteration_length * 7.days) - 1.day).to_date
       Iterations::PastIteration.new(start_date: iteration_start,
                                     end_date: iteration_end,
-                                    stories: [done_story])
+                                    stories: [],
+                                    points: done_story.estimate)
     end
 
     subject      { StoryOperations::ReadAll }
