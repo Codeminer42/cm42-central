@@ -104,12 +104,28 @@ const StoryLabels = ({ labels }) => {
   );
 };
 
-const StoryInfo = ({ storyType ,title, labels, estimate }) => (
+export const StoryTitle = ({ title, ownedByInitials, ownedByName }) => (
+  <div className="Story__title">
+    {title}
+    <abbr
+      className="Story__initials"
+      title={ownedByName}
+    >
+      {ownedByInitials}
+    </abbr>
+  </div>
+);
+
+StoryTitle.propTypes = {
+  title: PropTypes.string.isRequired,
+  ownedByName: PropTypes.string,
+  ownedByInitials: PropTypes.string,
+};
+
+const StoryInfo = ({ title, labels, ownedByName, ownedByInitials }) => (
   <div className="Story__info">
     <StoryLabels labels={labels} />
-    <div className="Story__title">
-      {title}
-    </div>
+    <StoryTitle title={title} ownedByInitials={ownedByInitials} ownedByName={ownedByName} />
   </div>
 );
 
@@ -131,11 +147,11 @@ const classNameStory = (storyType, estimate) => classname (
   }
 );
 
-const StoryItem = ({ title, storyType, estimate, labels, state }) => (
+const StoryItem = ({ title, storyType, estimate, labels, state, ownedByInitials, ownedByName }) => (
   <div className={classNameStory(storyType, estimate)}>
     <StoryIcon storyType={storyType} />
     <StoryEstimate estimate={estimate} />
-    <StoryInfo title={title} labels={labels} storyType={storyType} estimate={estimate} />
+    <StoryInfo title={title} labels={labels} ownedByInitials={ownedByInitials} ownedByName={ownedByName} />
     <StateActions storyType={storyType} estimate={estimate} state={state}/>
   </div>
 );
@@ -147,6 +163,8 @@ StoryItem.propTypes = {
   storyType: PropTypes.string.isRequired,
   labels: PropTypes.any,
   state: PropTypes.string.isRequired,
+  ownedByInitials: PropTypes.string,
+  ownedByName: PropTypes.string,
 };
 
 StoryItem.defaultProps = {
