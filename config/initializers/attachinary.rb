@@ -7,7 +7,7 @@ module Attachinary
     end
 
     def to_csv 
-      attributes.except("id","attachinariable_id","created_at", "updated_at")
+      attributes.except(:id,:attachinariable_id,:created_at, :updated_at)
     end
   end
 
