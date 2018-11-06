@@ -22,7 +22,7 @@ module Iterations
           story.accepted_at = accepted_date
           story.save!
 
-          expect(iteration.stories).to include(story)
+          expect(iteration.points).to eq(story.estimate)
         end
       end
 
@@ -88,16 +88,17 @@ module Iterations
             project.iteration_start_day = Time.current.days_ago(16).wday
 
             # first iteration goes 14.days_ago -- 10.days_ago
+            story.estimate = 2
             story.accepted_at = Time.current.days_ago(10)
             story.save!
           end
 
-          it 'should be in the first iteration' do
-            expect(first_iteration.stories).to include(story)
+          it 'first iteration points must be equal to story estimate' do
+            expect(first_iteration.points).to eq(story.estimate)
           end
 
-          it "shouldn't be in the first iteration" do
-            expect(second_iteration.stories).not_to include(story)
+          it 'second iteration points must be equal to zero' do
+            expect(second_iteration.points).to eq(0)
           end
         end
 
@@ -174,6 +175,54 @@ module Iterations
                 let(:iteration) { second_iteration }
               end
             end
+          end
+        end
+      end
+
+      context 'Iteration points' do
+        let!(:user) { create(:user, :with_team) }
+        let!(:project) do
+          create(:project,
+                  start_date: Time.current.days_ago(21),
+                  users: [user],
+                  teams: [user.teams.first])
+        end
+
+        let!(:stories) do
+          create_list(:story, 4,
+                      accepted_at: Time.current.days_ago(21),
+                      state: 'accepted',
+                      project: project,
+                      estimate: 8,
+                      requested_by: user)
+        end
+
+        subject { described_class.new(project: project) }
+        let(:first_iteration) { subject.past_iterations[0] }
+        let(:second_iteration) { subject.past_iterations[1] }
+
+        context 'when four stories are in the first iteration' do
+          it 'first iteration should sum 32 points' do
+            expect(first_iteration.points).to eq(32)
+          end
+
+          it 'second iteration should sum 0 points' do
+            expect(second_iteration.points).to eq(0)
+          end
+        end
+
+        context 'when three stories are in the first iteration' do
+          before do
+            stories[0].accepted_at += 8.days
+            stories[0].save!
+          end
+
+          it 'first iteration should sum 24 points' do
+            expect(first_iteration.points).to eq(24)
+          end
+
+          it 'second iteration should sum 8 points' do
+            expect(second_iteration.points).to eq(8)
           end
         end
       end

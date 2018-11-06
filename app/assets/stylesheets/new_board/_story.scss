@@ -94,35 +94,32 @@
   }
 
   &__btn {
-    display: inline-block;
-    margin-bottom: 0;
-    font-weight: normal;
-    text-align: center;
-    vertical-align: middle;
-    touch-action: manipulation;
-    cursor: pointer;
-    background-image: none;
-    border: 1px solid transparent;
-    white-space: nowrap;
-    font-size: 14px;
-    line-height: 1.5;
-    border-radius: 4px;
-    -webkit-user-select: none;
-    user-select: none;
-    padding: 1px 5px;
-    font-size: 12px;
+    @extend .btn;
+    @extend .btn-xs;
+    font-size: 11px;
+    display: inline;
 
     &--start {
-      color: $story-btn-start-color;
-      background-color: $white;
-      border-color: $story-btn-start-border-color;
-
-      &:hover,
-      &:active {
-        color: $story-btn-start-color;
-        background-color: $story-btn-start-hover-background-color;
-        border-color: $story-btn-start-hover-border-color;
-      }
+      @extend .btn-default;
+    }
+    &--finish {
+      @extend .btn-primary;
+    }
+    &--deliver{
+      @extend .btn-warning;
+    }
+    &--accept{
+      @extend .btn-success;
+    }
+    &--reject{
+      @extend .btn-danger;
+    }
+    &--restart{
+      @extend .btn-danger;
+      background-image: sprite-url($icons-sprites);
+      background-position: sprite-position($icons-sprites, redo, 0, 2px);
+      background-repeat: no-repeat;
+      padding-left: 20px;
     }
   }
 }

@@ -4,6 +4,7 @@ module Iterations
 
     def initialize(project:)
       @project = project
+      @stories = project_accepted_stories
     end
 
     def current_iteration_start
@@ -23,31 +24,32 @@ module Iterations
         PastIteration.new(
           start_date: start_at,
           end_date: end_at,
-          stories: stories_from(start_at, end_at),
-          iteration_number: iteration_number + 1
+          iteration_number: iteration_number + 1,
+          points: points_of_stories_between(start_at, end_at)
         )
       end
     end
 
     private
 
-    attr_reader :project
+    attr_reader :project, :stories
 
-    def stories_from(start_at, end_at)
+    def points_of_stories_between(start_at, end_at)
+      stories_between(start_at, end_at).to_a.map(&:estimate).compact.sum
+    end
+
+    def stories_between(start_at, end_at)
       stories.select do |story|
-        story.accepted_at.to_date >= start_at && story.accepted_at.to_date <= end_at
+        story.accepted_at.to_date.between?(start_at, end_at)
       end
     end
 
-    def stories
-      @stories ||= begin
-        project
-          .stories
-          .with_dependencies
-          .where(state: 'accepted')
-          .where.not(accepted_at: nil)
-          .order(:accepted_at)
-      end
+    def project_accepted_stories
+      project
+        .stories
+        .with_dependencies
+        .accepted
+        .order(:accepted_at)
     end
 
     def missing_days_from_first_sprint

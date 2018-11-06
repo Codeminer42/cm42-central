@@ -12,7 +12,7 @@ ActiveRecord::Base.transaction do
   project = Project.create!(
     name: 'Test Project',
     users: [user],
-    start_date: Time.current.months_ago(1)
+    start_date: Time.current.months_ago(2)
   )
 
   project.stories.create!(
@@ -60,6 +60,20 @@ ActiveRecord::Base.transaction do
       started_at: Time.current.weeks_ago(n + 1),
       requested_by: user,
       estimate: 3,
+      labels: 'features'
+    )
+  end
+
+  60.times do |n|
+    random_date = [*1...6].sample
+    project.stories.create!(
+      title: "Story #{n}",
+      story_type: 'feature',
+      state: 'accepted',
+      accepted_at:  Time.current.weeks_ago(random_date),
+      started_at: Time.current.weeks_ago(random_date + 1),
+      requested_by: user,
+      estimate: [*1...4].sample,
       labels: 'features'
     )
   end

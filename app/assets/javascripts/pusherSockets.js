@@ -6,7 +6,7 @@ const matchPusherUrl = url => {
 };
 
 export const subscribeToProjectChanges = (project, callback) => {
-  const pusherUrl = process.env.PUSHER_SOCKET_URL;
+  const pusherUrl = process.env.PUSHER_SOCKET_URL || '';
   const [
     _,
     pusherCluster,
@@ -14,6 +14,7 @@ export const subscribeToProjectChanges = (project, callback) => {
   ] = matchPusherUrl(pusherUrl) || [];
 
   if (!pusherApiKey || !pusherCluster) {
+    setInterval(callback, 10 * 1000); // every 10 seconds
     return;
   }
 

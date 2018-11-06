@@ -9,6 +9,8 @@
 - Imports/exports of stories 
   - Documents
   - Tasks
+- Fix pusher missing api key
+- Fix project delete when tasks or notes are readonly
 
 ## [1.21.1] 2018-10-18
 ### Fixed
