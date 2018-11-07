@@ -49,6 +49,10 @@
 
   &__title {
     flex: 1;
+
+    abbr {
+      border: none;
+    }
   }
 
   &__actions {
@@ -121,5 +125,11 @@
       background-repeat: no-repeat;
       padding-left: 20px;
     }
+  }
+
+  &__initials {
+    color: green;
+    font-weight: bold;
+    margin-left: 0.2em;
   }
 }
