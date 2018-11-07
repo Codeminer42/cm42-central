@@ -1,6 +1,9 @@
 import React from 'react';
 import classname from 'classnames';
 import PropTypes from 'prop-types';
+import StoryDescriptionIcon from './StoryDescriptionIcon'
+import Popover from 'components/jquery_wrappers/Popover.js';
+import Markdown from '../Markdown'
 import {
   classIconRule,
   iconRule,
@@ -53,7 +56,7 @@ StateActions.defaultProp = {
 };
 
 export const StateButton = ({ action }) => (
-  <button type="button" className={`Story__btn Story__btn--${action}`}>{action}</button>
+  <button type="button" className={`Story__btn Story__btn--${action}`}>{ I18n.translate('story.events.' + action) }</button>
 );
 
 StateButton.propTypes = {
@@ -147,10 +150,54 @@ const classNameStory = (storyType, estimate) => classname (
   }
 );
 
-const StoryItem = ({ title, storyType, estimate, labels, state, ownedByInitials, ownedByName }) => (
+const StoryItem = ({
+  title,
+  storyType,
+  estimate,
+  labels, state,
+  description,
+  ownedByInitials,
+  ownedByName,
+  requestedByName,
+  createdAt,
+  notes
+}) => (
   <div className={classNameStory(storyType, estimate)}>
-    <StoryIcon storyType={storyType} />
-    <StoryEstimate estimate={estimate} />
+    <div className={'Story__icons-block'}>
+      <StoryIcon storyType={storyType} />
+      <StoryEstimate estimate={estimate} />
+      <Popover
+        delay={200}
+        trigger="hover"
+        title={title}
+        renderContent={({ ref }) => (
+          <div className={'popover__content'} ref={ref}>
+            <div className={'popover__content__subtitle'}>
+              { I18n.translate('requested by user on date', { 
+                    user: requestedByName, 
+                    date: moment(createdAt).format('DD MM YYYY, h:mm a')
+                  }) 
+              }
+
+              <div className={'text-right'}>
+                { I18n.translate('story.type.' + storyType) }
+              </div>
+            </div>
+            
+            <h1 className={'popover__content__title'}>{ I18n.translate('description') }</h1>
+            <Markdown source={description}/>
+          </div>
+        )}
+      >
+        {
+          ({ ref }) => (
+            <bold ref={ref}>
+              <StoryDescriptionIcon description={description}/>
+            </bold>
+          )
+        }
+      </Popover>
+    </div>
     <StoryInfo title={title} labels={labels} ownedByInitials={ownedByInitials} ownedByName={ownedByName} />
     <StateActions storyType={storyType} estimate={estimate} state={state}/>
   </div>
@@ -165,6 +212,9 @@ StoryItem.propTypes = {
   state: PropTypes.string.isRequired,
   ownedByInitials: PropTypes.string,
   ownedByName: PropTypes.string,
+  requestedByName: PropTypes.string,
+  createdAt: PropTypes.string,
+  notes: PropTypes.array,
 };
 
 StoryItem.defaultProps = {

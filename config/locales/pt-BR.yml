@@ -18,6 +18,7 @@ pt-BR:
   velocity: "Velocidade"
   volatility: "Volatilidade"
   standard_deviation: "Desvio Padrão"
+  description: "Descrição"
   notes:    "Notas"
   tasks:    "Tarefas"
   close:    "Fechar"

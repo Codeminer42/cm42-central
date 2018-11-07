@@ -51,6 +51,7 @@ es:
   cancel: "Cancelar"
   add: "Agregar"
   remove: "Eliminar"
+  description: "Descripción"
   add user: "Agregar usuario"
   add new member: "Agregar un nuevo miembro"
   all users: "Todos los usuarios"

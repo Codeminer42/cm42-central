@@ -15,7 +15,7 @@ describe('<StateButton />', () => {
       action: 'start'
     };
     const wrapper = shallow(<StateButton {...props} />);
-    expect(wrapper.text()).toEqual(props.action);
+    expect(wrapper.text()).toEqual(I18n.translate('story.events.' + props.action));
     expect(wrapper).toHaveClassName(`Story__btn Story__btn--${props.action}`);
   });
 });
