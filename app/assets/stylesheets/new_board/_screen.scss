@@ -2,11 +2,18 @@
     height:100%;
 }
 
-.markdown{
+.markdown-wrapper {
   background: $white;
   border-left: 4px solid $lightgrey-17;
   margin-top: 5px;
   padding: 10px;
+
+  &__text-right {
+    float: right;
+    vertical-align: top;
+    color: $darkgrey-8;
+    font-size: 0.75em;
+  }
 }
 
 .popover {
@@ -24,7 +31,7 @@
       padding: 0 2px;
       margin: 5px 0 5px;
 
-      .text-right{
+      .text-right {
         margin-left: 10px;
         float: right;
         vertical-align: top;

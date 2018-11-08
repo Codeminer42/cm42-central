@@ -9,7 +9,7 @@ beforeEach(() => {
 
 describe('<StoryDescriptionIcon />', () => {
   describe('When description is null',() => {
-    it("renders nothing", () => {
+    it('renders nothing', () => {
       const props = {
         description: null
       };
@@ -18,9 +18,9 @@ describe('<StoryDescriptionIcon />', () => {
     });
   });
   describe('When description exists',() => {
-    it("renders the description icon", () => {
+    it('renders the description icon', () => {
       const props = {
-        description: "Story Description"
+        description: 'Story Description'
       };
       const wrapper = shallow(<StoryDescriptionIcon {...props} />);
       expect(wrapper).toHaveClassName('Story__description-icon');

@@ -1,4 +1,5 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class Popover extends Component {
   constructor(props) {
@@ -46,7 +47,13 @@ export default class Popover extends Component {
       </div>
     );
   }
-}
+};
+
+Popover.propTypes = {
+  title: PropTypes.string.isRequired,
+  trigger: PropTypes.string.isRequired,
+  delay: PropTypes.number
+};
 
 Popover.defaultProps = {
   delay: 0

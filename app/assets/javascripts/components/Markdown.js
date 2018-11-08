@@ -1,17 +1,25 @@
 import React from 'react';
 import Parser from 'html-react-parser';
 import memoize from 'memoizee';
+import PropTypes from 'prop-types';
 
 const Markdown = ({ source }) => {
   const descriptionHTML = window.md.makeHtml(source);
-  source = Parser(descriptionHTML);
+  const descriptionComponent = Parser(descriptionHTML);
 
-  if (source) {
+  if( source ){
     return (
-      <div className={'markdown'}>{source}</div>
+      <div className='Markdown'>{ descriptionComponent }</div>
     );
   }
+
   return null;
 }
 
-export default memoize(Markdown);
+Markdown.propTypes = {
+  source: PropTypes.string
+};
+
+const MemoizedMarkdown = memoize(Markdown);
+MemoizedMarkdown.displayName = 'Markdown';
+export default MemoizedMarkdown;
