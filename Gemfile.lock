@@ -1,6 +1,7 @@
 GIT
   remote: https://github.com/Codeminer42/cm42-central-support.git
-  revision: babced080b5694484b198f8384632f98ca7fb494
+  revision: 0fed21bb1e43bc8051f1a3393e042d9a0dab36da
+  branch: fix/csv-export-attachments
   specs:
     central-support (0.9.3)
       activerecord (>= 3.2)
@@ -614,4 +615,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.16.4
+   1.16.6
