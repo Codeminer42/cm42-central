@@ -2,9 +2,9 @@
 # assumption that that is what we get passed.
 ActionController::Renderers.add :csv do |stories, options|
   number_of_extra_columns = {}
-  number_of_extra_columns[:notes] = stories.map{|story| story.notes.length}.max
-  number_of_extra_columns[:documents] = stories.map{|story| story.documents.length}.max
-  number_of_extra_columns[:tasks] = stories.map{|story| story.tasks.length}.max
+  number_of_extra_columns[:notes] = stories.map{ |story| story.notes.length }.max
+  number_of_extra_columns[:documents] = stories.map{ |story| story.documents.length }.max
+  number_of_extra_columns[:tasks] = stories.map{ |story| story.tasks.length }.max
   
   filename = options[:filename] || 'export.csv'
   headers = Story.csv_headers.dup
@@ -23,7 +23,9 @@ ActionController::Renderers.add :csv do |stories, options|
 end
 
 def extra_headers(number_of_extra_columns)
-  [Array.new(number_of_extra_columns[:notes], "Note"),
-   Array.new(number_of_extra_columns[:documents], "Document"),
-   Array.new(number_of_extra_columns[:tasks], ["Task", "Task Status"]).flatten].flatten
+  [
+    Array.new(number_of_extra_columns[:notes], "Note"),
+    Array.new(number_of_extra_columns[:documents], "Document"),
+    Array.new(number_of_extra_columns[:tasks], ["Task", "Task Status"]).flatten
+  ].flatten
 end

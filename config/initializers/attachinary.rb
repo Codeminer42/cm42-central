@@ -6,8 +6,8 @@ module Attachinary
       super(only: [:id, :public_id, :format, :version, :resource_type], methods: [:path])
     end
 
-    def to_csv 
-      attributes.except(:id,:attachinariable_id,:created_at, :updated_at)
+    def to_csv
+      attributes.except("id", "attachinariable_id", "created_at", "updated_at").to_json
     end
   end
 
