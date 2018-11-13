@@ -5,8 +5,15 @@ class Task < ApplicationRecord
 
   before_destroy { |record| raise ActiveRecord::ReadOnlyRecord if record.readonly? }
 
-  def readonly?
-    return false if destroyed_by_association
-    story.readonly?
+  delegate :readonly?, to: :story
+
+  def to_csv
+    [name, status]
+  end
+
+  private
+
+  def status
+    done ? 'completed' : 'not_completed'
   end
 end

@@ -24,14 +24,33 @@ describe Note do
     end
   end
 
-  describe '#to_s' do
-    before do
-      subject.note = 'Test note'
-      subject.created_at = 'Nov 3, 2011'
-      allow(user).to receive_messages(name: 'user')
+  describe '#to_csv' do
+    context 'When Note has a user' do
+      let(:note) do
+        build_stubbed(
+          :note,
+          user: user,
+          note: 'Test note',
+          created_at: 'Nov 3, 2011'
+        )
+      end
+
+      before { allow(user).to receive_messages(name: 'user') }
+
+      subject { note.to_csv }
+      it { is_expected.to eq('Test note (user - Nov 03, 2011)') }
     end
 
-    its(:to_s) { should == 'Test note (user - Nov 03, 2011)' }
+    context 'When Note does not have a user' do
+      let(:user_name) { I18n.t('author unknown') }
+      let(:note) do
+        build_stubbed(:note, :without_user, note: 'Test note', created_at: 'Nov 3, 2011')
+      end
+
+      subject { note.to_csv }
+      it { is_expected.to eq("Test note (#{user_name} - Nov 03, 2011)") }
+    end
+
   end
 
   describe '#readonly?' do

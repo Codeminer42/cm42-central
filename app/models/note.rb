@@ -19,7 +19,7 @@ class Note < ApplicationRecord
     super(methods: ['errors'])
   end
 
-  def to_s
+  def to_csv
     user_name = user ? user.name : I18n.t('author unknown')
     created_date = I18n.l created_at, format: :note_date
 

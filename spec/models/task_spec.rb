@@ -22,6 +22,22 @@ describe Task do
     end
   end
 
+  describe '#to_csv' do
+    context 'task completed' do
+      let(:task) { build :task, story: story, name: 'task_test', done: true }
+      subject { task.to_csv }
+
+      it { is_expected.to contain_exactly(task.name, 'completed') }
+    end
+
+    context 'task not completed' do
+      let(:task) { build :task, story: story, name: 'task_test', done: false }
+      subject { task.to_csv }
+
+      it { is_expected.to contain_exactly(task.name, 'not_completed') }
+    end
+  end
+
   describe '#readonly?' do
     let(:user) { create(:user) }
     let(:project) { create(:project) }

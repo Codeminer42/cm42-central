@@ -2,9 +2,17 @@
 
 ## [Unreleased]
 ### Fixed
+- Fix imports notes of stories
+- Fix project delete when tasks or notes are readonly
+- Fix exporting unnecessary fields from documents and done to export in JSON
 - Fix pusher missing api key
 - Fix project delete when tasks or notes are readonly
 
+### Added
+- Added supports to upload libre office formats
+- Imports/exports of stories 
+  - Documents
+  - Tasks
 
 ## [1.21.1] 2018-10-18
 ### Fixed
