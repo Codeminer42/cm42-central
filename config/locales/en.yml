@@ -22,6 +22,7 @@ en:
   velocity: "Velocity"
   volatility: "Volatility"
   standard_deviation: "Standard Deviation"
+  description: "Description"
   notes:    "Notes"
   tasks:    "Tasks"
   close:    "Close"

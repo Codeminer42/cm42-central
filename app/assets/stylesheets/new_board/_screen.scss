@@ -1,3 +1,41 @@
 .full-heigth {
     height:100%;
 }
+
+.markdown-wrapper {
+  background: $white;
+  border-left: 4px solid $lightgrey-17;
+  margin-top: 5px;
+  padding: 10px;
+
+  &__text-right {
+    float: right;
+    vertical-align: top;
+    color: $darkgrey-8;
+    font-size: 0.75em;
+  }
+}
+
+.popover {
+  &__content {
+    padding: 5px 5px 0 5px;
+    word-wrap: break-word;
+
+    &__title {
+      font-size: 13px;
+    }
+
+    &__subtitle {
+      color: $darkgrey-8;
+      font-size: 0.85em;
+      padding: 0 2px;
+      margin: 5px 0 5px;
+
+      .text-right {
+        margin-left: 10px;
+        float: right;
+        vertical-align: top;
+      }
+    }
+  }
+}

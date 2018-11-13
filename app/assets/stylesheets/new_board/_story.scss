@@ -7,6 +7,7 @@
   border-top: 1px solid $story-border-top-color;
   min-height: 37px;
   cursor: move;
+  align-items: center;
   font-size: 12px;
 
   &:hover {
@@ -32,12 +33,26 @@
     }
   }
 
+  &__description-icon {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    margin-left: 5px;
+  }
+
   &__info {
     flex: 1;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-left: 15px;
+    align-self: flex-start;
+    margin-left: 10px;
+  }
+
+  &__icons-block{
+    display: flex;
+    justify-content: flex-start;
+    width: 60px;
   }
 
   &__icon {
@@ -48,7 +63,9 @@
   }
 
   &__title {
+    word-break: break-all;
     flex: 1;
+    margin-right: 10px;
 
     abbr {
       border: none;
@@ -61,6 +78,7 @@
   }
 
   &__estimated {
+    padding: 2px 3px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -74,6 +92,7 @@
   }
 
   &__estimate {
+    padding: 2px 3px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -130,6 +149,6 @@
   &__initials {
     color: green;
     font-weight: bold;
-    margin-left: 0.2em;
+    margin-left: 1em;
   }
 }

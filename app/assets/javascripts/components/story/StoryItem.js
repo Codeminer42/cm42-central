@@ -1,6 +1,8 @@
 import React from 'react';
 import classname from 'classnames';
 import PropTypes from 'prop-types';
+import StoryPopover from './StoryPopover';
+import StoryDescriptionIcon from './StoryDescriptionIcon'
 import {
   classIconRule,
   iconRule,
@@ -53,7 +55,9 @@ StateActions.defaultProp = {
 };
 
 export const StateButton = ({ action }) => (
-  <button type="button" className={`Story__btn Story__btn--${action}`}>{action}</button>
+  <button type="button" className={`Story__btn Story__btn--${action}`}>
+    { I18n.translate('story.events.' + action) }
+  </button>
 );
 
 StateButton.propTypes = {
@@ -147,10 +151,35 @@ const classNameStory = (storyType, estimate) => classname (
   }
 );
 
-const StoryItem = ({ title, storyType, estimate, labels, state, ownedByInitials, ownedByName }) => (
+const StoryItem = ({
+  title,
+  storyType,
+  estimate,
+  labels,
+  state,
+  description,
+  ownedByInitials,
+  ownedByName,
+  requestedByName,
+  createdAt,
+  notes
+}) => (
   <div className={classNameStory(storyType, estimate)}>
-    <StoryIcon storyType={storyType} />
-    <StoryEstimate estimate={estimate} />
+    <StoryPopover
+      description={description}
+      notes={notes}
+      createdAt={createdAt}
+      title={title}
+      storyType={storyType}
+      requestedByName={requestedByName}
+    >
+      <div className='Story__icons-block'>
+        <StoryIcon storyType={storyType} />
+        <StoryEstimate estimate={estimate} />
+        <StoryDescriptionIcon description={description}/>
+      </div>
+    </StoryPopover>
+
     <StoryInfo title={title} labels={labels} ownedByInitials={ownedByInitials} ownedByName={ownedByName} />
     <StateActions storyType={storyType} estimate={estimate} state={state}/>
   </div>
@@ -165,6 +194,9 @@ StoryItem.propTypes = {
   state: PropTypes.string.isRequired,
   ownedByInitials: PropTypes.string,
   ownedByName: PropTypes.string,
+  requestedByName: PropTypes.string,
+  createdAt: PropTypes.string,
+  notes: PropTypes.array,
 };
 
 StoryItem.defaultProps = {

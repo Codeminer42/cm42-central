@@ -32,7 +32,9 @@ class StoryDescription extends React.Component {
     const { name, isNew, editingDescription } = this.props;
     return (
       <div>
-        <label htmlFor={name}>{ I18n.t('activerecord.attributes.story.description') }</label>
+        <label htmlFor={name}>
+          { I18n.t('activerecord.attributes.story.description') }
+        </label>
         <br />
         { (isNew || editingDescription) ? this.editDescription() : this.descriptionContent() }
       </div>
