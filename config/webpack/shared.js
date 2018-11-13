@@ -102,6 +102,7 @@ module.exports = {
       actions: path.join(__dirname, '../..', 'app/assets/javascripts/actions'),
       central: path.join(__dirname, '../..', 'app/assets/javascripts/central'),
       store: path.join(__dirname, '../..', 'app/assets/javascripts/store'),
+      rules: path.join(__dirname, '../..', 'app/assets/javascripts/rules'),
       gritter: 'gritter/js/jquery.gritter.min.js'
     }
   },
