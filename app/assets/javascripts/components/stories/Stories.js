@@ -9,7 +9,7 @@ const Stories = ({ stories }) => {
   return (
     <div>
       {stories.map(story => (
-        <StoryItem key={story.id} {...story} />
+        <StoryItem key={story.id} story={story} />
       ))}
     </div>
   );
