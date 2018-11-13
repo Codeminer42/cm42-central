@@ -1,7 +1,7 @@
 import React from 'react';
 import classname from 'classnames';
 import PropTypes from 'prop-types';
-import CollapsedStory from './CollapsedStory';
+import CollapsedStory from './CollapsedStory/CollapsedStory';
 
 const StoryItem = ({ story }) => (
   <CollapsedStory story={story} />

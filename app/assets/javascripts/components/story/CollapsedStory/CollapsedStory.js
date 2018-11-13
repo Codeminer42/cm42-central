@@ -1,8 +1,10 @@
 import React from 'react';
 import classname from 'classnames';
 import PropTypes from 'prop-types';
-import StoryPopover from './StoryPopover';
-import StoryDescriptionIcon from './StoryDescriptionIcon'
+import StoryPopover from '../StoryPopover';
+import StoryDescriptionIcon from '../StoryDescriptionIcon'
+import CollapsedStoryStateButton from './CollapsedStoryStateButton'
+
 import {
   classIconRule,
   iconRule,
@@ -11,12 +13,12 @@ import {
   estimateRule,
   labelSplit,
   isRelease,
-} from '../../rules/story';
+} from '../../../rules/story';
 
 const StateAction = {
   started: ["finish"],
   finished: ["deliver"],
-  delivered: ["accept","reject"],
+  delivered: ["accept", "reject"],
   rejected: ["restart"],
   accepted: [],
   unstarted: ["start"]
@@ -37,12 +39,14 @@ export const StateActions = ({ storyType, estimate, state }) => (
     {
       isStoryNotEstimated(storyType, estimate)
         ? <StoryPoints />
-        : StoryActionFor(state).map((stateAction) => <StateButton action={stateAction} key={stateAction} />)
+        : StoryActionFor(state).map((stateAction) =>
+          <CollapsedStoryStateButton action={stateAction} key={stateAction} />
+        )
     }
   </div>
 );
 
-const StoryActionFor = (state) => StateAction[state] || StateAction.unstarted;  
+const StoryActionFor = (state) => StateAction[state] || StateAction.unstarted;
 
 StateActions.propTypes = {
   storyType: PropTypes.string.isRequired,
@@ -52,16 +56,6 @@ StateActions.propTypes = {
 
 StateActions.defaultProp = {
   estimate: '-',
-};
-
-export const StateButton = ({ action }) => (
-  <button type="button" className={`Story__btn Story__btn--${action}`}>
-    { I18n.translate('story.events.' + action) }
-  </button>
-);
-
-StateButton.propTypes = {
-  action: PropTypes.string.isRequired
 };
 
 const StoryEstimate = ({ estimate }) => (
@@ -142,12 +136,12 @@ StoryInfo.defaultProps = {
   labels: '',
 };
 
-const classNameStory = (storyType, estimate) => classname (
+const classNameStory = (storyType, estimate) => classname(
   'Story',
   {
     'Story--unestimated': isStoryNotEstimated(storyType, estimate),
     'Story--estimated': !isStoryNotEstimated(storyType, estimate),
-    'Story--release' : isRelease(storyType)
+    'Story--release': isRelease(storyType)
   }
 );
 
@@ -164,7 +158,7 @@ const CollapsedStory = ({ story }) => (
       <div className='Story__icons-block'>
         <StoryIcon storyType={story.storyType} />
         <StoryEstimate estimate={story.estimate} />
-        <StoryDescriptionIcon description={story.description}/>
+        <StoryDescriptionIcon description={story.description} />
       </div>
     </StoryPopover>
 
@@ -172,7 +166,7 @@ const CollapsedStory = ({ story }) => (
       title={story.title}
       labels={story.labels}
       ownedByInitials={story.ownedByInitials}
-      ownedByName={story.ownedByName} 
+      ownedByName={story.ownedByName}
     />
     <StateActions
       storyType={story.storyType}
