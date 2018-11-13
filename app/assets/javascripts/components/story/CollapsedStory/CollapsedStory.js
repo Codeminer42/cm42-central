@@ -2,15 +2,14 @@ import React from 'react';
 import classname from 'classnames';
 import PropTypes from 'prop-types';
 import StoryPopover from '../StoryPopover';
-import StoryDescriptionIcon from '../StoryDescriptionIcon'
-import CollapsedStoryStateButton from './CollapsedStoryStateButton'
-
+import StoryDescriptionIcon from '../StoryDescriptionIcon';
+import CollapsedStoryStateButton from './CollapsedStoryStateButton';
+import CollapsedStoryEstimate from './CollapsedStoryEstimate';
 import {
   classIconRule,
   iconRule,
   isStoryNotEstimated,
   IsShow,
-  estimateRule,
   labelSplit,
   isRelease,
 } from '../../../rules/story';
@@ -55,18 +54,6 @@ StateActions.propTypes = {
 };
 
 StateActions.defaultProp = {
-  estimate: '-',
-};
-
-const StoryEstimate = ({ estimate }) => (
-  <span className='Story__estimated'>{estimateRule(estimate)}</span>
-);
-
-StoryEstimate.propTypes = {
-  estimate: PropTypes.number,
-};
-
-StoryEstimate.defaultProp = {
   estimate: '-',
 };
 
@@ -157,7 +144,7 @@ const CollapsedStory = ({ story }) => (
     >
       <div className='Story__icons-block'>
         <StoryIcon storyType={story.storyType} />
-        <StoryEstimate estimate={story.estimate} />
+        <CollapsedStoryEstimate estimate={story.estimate} />
         <StoryDescriptionIcon description={story.description} />
       </div>
     </StoryPopover>
