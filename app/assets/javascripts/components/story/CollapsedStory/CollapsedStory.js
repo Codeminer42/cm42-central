@@ -5,6 +5,8 @@ import StoryPopover from '../StoryPopover';
 import StoryDescriptionIcon from '../StoryDescriptionIcon';
 import CollapsedStoryStateButton from './CollapsedStoryStateButton';
 import CollapsedStoryEstimate from './CollapsedStoryEstimate';
+import CollapsedStoryPoints from './CollapsedStoryPoints';
+
 import {
   classIconRule,
   iconRule,
@@ -23,21 +25,12 @@ const StateAction = {
   unstarted: ["start"]
 };
 
-export const StoryPoints = () => (
-  <div>
-    <span className="Story__estimate">1</span>
-    <span className="Story__estimate">2</span>
-    <span className="Story__estimate">3</span>
-    <span className="Story__estimate">5</span>
-    <span className="Story__estimate">8</span>
-  </div>
-);
 
 export const StateActions = ({ storyType, estimate, state }) => (
   <div className='Story__actions'>
     {
       isStoryNotEstimated(storyType, estimate)
-        ? <StoryPoints />
+        ? <CollapsedStoryPoints />
         : StoryActionFor(state).map((stateAction) =>
           <CollapsedStoryStateButton action={stateAction} key={stateAction} />
         )

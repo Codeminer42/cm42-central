@@ -1,9 +1,7 @@
 import jasmineEnzyme from 'jasmine-enzyme';
 import React from 'react';
 import { shallow } from 'enzyme';
-import  {
-  CollapsedStoryStateButton
-} from 'components/story/CollapsedStory/CollapsedStoryStateButton';
+import CollapsedStoryStateButton from 'components/story/CollapsedStory/CollapsedStoryStateButton';
 
 beforeEach(() => {
   jasmineEnzyme();
