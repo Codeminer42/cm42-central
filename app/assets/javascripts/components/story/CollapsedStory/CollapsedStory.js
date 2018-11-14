@@ -6,10 +6,9 @@ import StoryDescriptionIcon from '../StoryDescriptionIcon';
 import CollapsedStoryStateButton from './CollapsedStoryStateButton';
 import CollapsedStoryEstimate from './CollapsedStoryEstimate';
 import CollapsedStoryPoints from './CollapsedStoryPoints';
-
+import CollapsedStoryIcon from './CollapsedStoryIcon';
 import {
   classIconRule,
-  iconRule,
   isStoryNotEstimated,
   IsShow,
   labelSplit,
@@ -48,16 +47,6 @@ StateActions.propTypes = {
 
 StateActions.defaultProp = {
   estimate: '-',
-};
-
-const StoryIcon = ({ storyType }) => (
-  <span className='Story__icon'>
-    <i className={`mi md-${classIconRule(storyType)} md-16`}>{iconRule(storyType)}</i>
-  </span>
-);
-
-StoryIcon.propTypes = {
-  storyType: PropTypes.string.isRequired,
 };
 
 const StoryLabel = ({ label }) => (
@@ -136,7 +125,7 @@ const CollapsedStory = ({ story }) => (
       requestedByName={story.requestedByName}
     >
       <div className='Story__icons-block'>
-        <StoryIcon storyType={story.storyType} />
+        <CollapsedStoryIcon storyType={story.storyType} />
         <CollapsedStoryEstimate estimate={story.estimate} />
         <StoryDescriptionIcon description={story.description} />
       </div>

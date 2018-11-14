@@ -3,11 +3,13 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import StoryDescriptionIcon from 'components/story/StoryDescriptionIcon';
 
-beforeEach(() => {
-  jasmineEnzyme();
-});
 
 describe('<StoryDescriptionIcon />', () => {
+
+  beforeEach(() => {
+    jasmineEnzyme();
+  });
+
   describe('When description is null',() => {
     it('renders nothing', () => {
       const props = {
