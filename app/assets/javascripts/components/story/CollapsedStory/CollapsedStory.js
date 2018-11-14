@@ -9,7 +9,6 @@ import CollapsedStoryInfo from './CollapsedStoryInfo';
 import CollapsedStoryIcon from './CollapsedStoryIcon';
 
 import {
-  classIconRule,
   isStoryNotEstimated,
   isRelease,
 } from '../../../rules/story';
