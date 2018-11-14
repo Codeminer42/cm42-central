@@ -2,15 +2,12 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import CollapsedStoryPoints from 'components/story/CollapsedStory/CollapsedStoryPoints';
 import CollapsedStoryStateActions from 'components/story/CollapsedStory/CollapsedStoryStateActions';
+import storyFactory from '../../../support/factories/storyFactory';
 
 describe('<CollapsedStoryStateActions />', () => {
   describe('When estimate is null', () => {
     it("renders <CollapsedStoryPoints /> component", () => {
-      const props = {
-        storyType: "feature",
-        estimate: null,
-        state: "started"
-      };
+      const props = storyFactory({estimate: null});
       const wrapper = shallow(<CollapsedStoryStateActions {...props} />);
       expect(wrapper.find(CollapsedStoryPoints)).toExist();
     });
@@ -27,12 +24,8 @@ describe('<CollapsedStoryStateActions />', () => {
     states.forEach(({ state, actions }) => {
       describe(`When state = ${state}`, () => {
         it('renders the <CollapsedStoryStateButton /> component', () => {
-          const wrapper = shallow(
-            <CollapsedStoryStateActions
-              state={state}
-              estimate={1}
-              storyType="feature"
-            />);
+          const props = storyFactory({state: state})
+          const wrapper = shallow(<CollapsedStoryStateActions {...props} />);
 
           actions.forEach((action) => {
             expect(wrapper.find(`CollapsedStoryStateButton[action="${action}"]`)).toExist();
@@ -42,7 +35,8 @@ describe('<CollapsedStoryStateActions />', () => {
     });
     describe("When state =  'accepted' ", () => {
       it('Doesnt render <CollapsedStoryStateButton /> component', () => {
-        const wrapper = shallow(<CollapsedStoryStateActions state='accepted' estimate={1} storyType="feature" />);
+        const props = storyFactory({state: 'accepted'})
+        const wrapper = shallow(<CollapsedStoryStateActions {...props} />);
         expect(wrapper.find('CollapsedStoryStateButton')).not.toExist();
       });
     });

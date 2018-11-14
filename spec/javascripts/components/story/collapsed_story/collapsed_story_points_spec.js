@@ -5,7 +5,6 @@ import CollapsedStoryPoints from 'components/story/CollapsedStory/CollapsedStory
 describe('<CollapsedStoryPoints />', () => {
   it("renders <CollapsedStoryPoints /> component", () => {
     const wrapper = shallow(<CollapsedStoryPoints />);
-    console.log(wrapper.debug())
     const text = wrapper.text()
     expect(text).toContain('1');
     expect(text).toContain('2');

@@ -4,6 +4,8 @@ import moment from 'moment';
 import StoryPopover, {
   StoryPopoverContent
 } from 'components/story/StoryPopover';
+import storyFactory from '../../support/factories/storyFactory';
+
 
 describe("<StoryPopover />",() => {
 
@@ -16,38 +18,12 @@ describe("<StoryPopover />",() => {
   });
 
   it("renders the popover",() => {
-    const props = {
-      title: 'title',
-      description: 'description',
-      storyType: 'feature',
-      requestedByName: 'Foo Bar',
-      createdAt: '2018/10/26 15:08:51 -0300',
-      notes: []
-    };
+    const props = storyFactory();
     const wrapper = shallow(<StoryPopover {...props} />);
     expect(wrapper.find("Popover")).toHaveProp('title', props.title);
   });
   it("renders the popover content",() => {
-    const props = {
-      description: "description",
-      storyType: 'feature',
-      requestedByName: 'Foo Bar',
-      createdAt: '2018/10/26 15:08:51 -0300',
-      notes: [
-        {
-          id: 1,
-          note: 'This is note 1',
-          userName: 'Foo Bar',
-          createdAt: '2018/10/26 15:08:51 -0200'
-        },
-        {
-          id: 2,
-          note: 'This is note 2',
-          userName: 'Foo Bar',
-          createdAt: '2018/10/26 15:08:51 -0200'
-        }
-      ]
-    };
+    const props = storyFactory();
     const wrapper = shallow(<StoryPopoverContent {...props} />);
 
     expect(I18n.translate).toHaveBeenCalledWith('requested by user on date', {
