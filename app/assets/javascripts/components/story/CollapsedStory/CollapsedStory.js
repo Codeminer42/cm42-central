@@ -6,23 +6,13 @@ import StoryDescriptionIcon from '../StoryDescriptionIcon';
 import CollapsedStoryEstimate from './CollapsedStoryEstimate';
 import CollapsedStoryStateActions from './CollapsedStoryStateActions';
 import CollapsedStoryInfo from './CollapsedStoryInfo';
+import CollapsedStoryIcon from './CollapsedStoryIcon';
 
 import {
   classIconRule,
-  iconRule,
   isStoryNotEstimated,
   isRelease,
 } from '../../../rules/story';
-
-const StoryIcon = ({ storyType }) => (
-  <span className='Story__icon'>
-    <i className={`mi md-${classIconRule(storyType)} md-16`}>{iconRule(storyType)}</i>
-  </span>
-);
-
-StoryIcon.propTypes = {
-  storyType: PropTypes.string.isRequired,
-};
 
 const classNameStory = (storyType, estimate) => classname(
   'Story',
@@ -44,7 +34,7 @@ const CollapsedStory = ({ story }) => (
       requestedByName={story.requestedByName}
     >
       <div className='Story__icons-block'>
-        <StoryIcon storyType={story.storyType} />
+        <CollapsedStoryIcon storyType={story.storyType} />
         <CollapsedStoryEstimate estimate={story.estimate} />
         <StoryDescriptionIcon description={story.description} />
       </div>
