@@ -3,52 +3,16 @@ import classname from 'classnames';
 import PropTypes from 'prop-types';
 import StoryPopover from '../StoryPopover';
 import StoryDescriptionIcon from '../StoryDescriptionIcon';
-import CollapsedStoryStateButton from './CollapsedStoryStateButton';
 import CollapsedStoryEstimate from './CollapsedStoryEstimate';
-import CollapsedStoryPoints from './CollapsedStoryPoints';
+import CollapsedStoryStateActions from './CollapsedStoryStateActions';
 
 import {
   classIconRule,
   iconRule,
   isStoryNotEstimated,
-  IsShow,
   labelSplit,
   isRelease,
 } from '../../../rules/story';
-
-const StateAction = {
-  started: ["finish"],
-  finished: ["deliver"],
-  delivered: ["accept", "reject"],
-  rejected: ["restart"],
-  accepted: [],
-  unstarted: ["start"]
-};
-
-
-export const StateActions = ({ storyType, estimate, state }) => (
-  <div className='Story__actions'>
-    {
-      isStoryNotEstimated(storyType, estimate)
-        ? <CollapsedStoryPoints />
-        : StoryActionFor(state).map((stateAction) =>
-          <CollapsedStoryStateButton action={stateAction} key={stateAction} />
-        )
-    }
-  </div>
-);
-
-const StoryActionFor = (state) => StateAction[state] || StateAction.unstarted;
-
-StateActions.propTypes = {
-  storyType: PropTypes.string.isRequired,
-  estimate: PropTypes.number,
-  state: PropTypes.string.isRequired
-};
-
-StateActions.defaultProp = {
-  estimate: '-',
-};
 
 const StoryIcon = ({ storyType }) => (
   <span className='Story__icon'>
@@ -148,7 +112,7 @@ const CollapsedStory = ({ story }) => (
       ownedByInitials={story.ownedByInitials}
       ownedByName={story.ownedByName}
     />
-    <StateActions
+    <CollapsedStoryStateActions
       storyType={story.storyType}
       estimate={story.estimate}
       state={story.state}
