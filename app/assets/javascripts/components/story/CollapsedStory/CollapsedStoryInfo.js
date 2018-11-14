@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import CollapsedStoryTitle from './CollapsedStoryTitle'
 import { labelSplit } from '../../../rules/story';
 
 const CollapsedStoryInfo = ({ title, labels, ownedByName, ownedByInitials }) => (
   <div className="Story__info">
     <StoryLabels labels={labels} />
-    <StoryTitle title={title} ownedByInitials={ownedByInitials} ownedByName={ownedByName} />
+    <CollapsedStoryTitle title={title} ownedByInitials={ownedByInitials} ownedByName={ownedByName} />
   </div>
 );
 
@@ -39,24 +40,5 @@ const StoryLabels = ({ labels }) => {
     </span>
   );
 };
-
-export const StoryTitle = ({ title, ownedByInitials, ownedByName }) => (
-  <div className="Story__title">
-    {title}
-    <abbr
-      className="Story__initials"
-      title={ownedByName}
-    >
-      {ownedByInitials}
-    </abbr>
-  </div>
-);
-
-StoryTitle.propTypes = {
-  title: PropTypes.string.isRequired,
-  ownedByName: PropTypes.string,
-  ownedByInitials: PropTypes.string,
-};
-
 
 export default CollapsedStoryInfo;

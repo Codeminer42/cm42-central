@@ -1,17 +1,15 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import StoryItem, {
-  StoryTitle
-} from 'components/story/StoryItem';
+import CollapsedStoryTitle from 'components/story/CollapsedStory/CollapsedStoryTitle';
 
-describe("<StoryTitle />",() => {
+describe("<CollapsedStoryTitle />",() => {
   it("renders the title of the story",() => {
     const props = {
       title: "title",
       ownedByInitials: "FB",
       ownedByName: "Foo Bar"
     };
-    const wrapper = shallow(<StoryTitle {...props} />);
+    const wrapper = shallow(<CollapsedStoryTitle {...props} />);
 
     expect(wrapper.find(`.Story__title`).text()).toContain(`${props.title}`);
   });
@@ -21,7 +19,7 @@ describe("<StoryTitle />",() => {
       ownedByInitials: "FB",
       ownedByName: "Foo Bar"
     };
-    const wrapper = shallow(<StoryTitle {...props} />);
+    const wrapper = shallow(<CollapsedStoryTitle {...props} />);
 
     expect(wrapper.find(`.Story__title`).text()).toContain(`${props.ownedByInitials}`);
     expect(wrapper.find(`.Story__initials`).props().title).toEqual(`${props.ownedByName}`);
