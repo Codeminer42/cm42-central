@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CollapsedStoryPoints from './CollapsedStoryPoints';
 import CollapsedStoryStateButton from './CollapsedStoryStateButton';
-import { isStoryNotEstimated } from '../../../rules/story';
+import { isStoryNotEstimated } from '../../../models/beta/story';
 
 const StoryActionFor = (state) => StateAction[state] || StateAction.unstarted;
 

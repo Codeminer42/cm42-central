@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { labelSplit } from '../../../rules/story';
+
+const labelSplit = (labels) => labels.split(',');
 
 const StoryLabel = ( { label } ) => (
   <a href="#" className="Story__label" title={label}>{label}</a>

@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import CollapsedStory from './CollapsedStory/CollapsedStory';
 
 const StoryItem = ({ story }) => (
-  <CollapsedStory story={story} />
+  <div className='Story--collapsed' >
+    <CollapsedStory story={story} />
+  </div>
 );
 
 StoryItem.propTypes = {

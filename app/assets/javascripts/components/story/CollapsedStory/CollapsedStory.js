@@ -6,12 +6,12 @@ import StoryDescriptionIcon from '../StoryDescriptionIcon';
 import CollapsedStoryEstimate from './CollapsedStoryEstimate';
 import CollapsedStoryStateActions from './CollapsedStoryStateActions';
 import CollapsedStoryInfo from './CollapsedStoryInfo';
-import CollapsedStoryIcon from './CollapsedStoryIcon';
+import StoryIcon from '../StoryIcon';
 
 import {
   isStoryNotEstimated,
   isRelease,
-} from '../../../rules/story';
+} from '../../../models/beta/story';
 
 const classNameStory = (storyType, estimate) => classname(
   'Story',
@@ -26,7 +26,7 @@ const CollapsedStory = ({ story }) => (
   <div className={classNameStory(story.storyType, story.estimate)}>
     <StoryPopover story={story}>
       <div className='Story__icons-block'>
-        <CollapsedStoryIcon storyType={story.storyType} />
+        <StoryIcon storyType={story.storyType} />
         <CollapsedStoryEstimate estimate={story.estimate} />
         <StoryDescriptionIcon description={story.description} />
       </div>
