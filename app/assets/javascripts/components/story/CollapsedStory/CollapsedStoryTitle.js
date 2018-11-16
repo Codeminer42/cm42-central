@@ -1,22 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const CollapsedStoryTitle = ({ title, ownedByInitials, ownedByName }) => (
+const CollapsedStoryTitle = ({ story }) => (
   <div className="Story__title">
-    {title}
+    {story.title}
     <abbr
       className="Story__initials"
-      title={ownedByName}
+      title={story.ownedByName}
     >
-      {ownedByInitials}
+      {story.ownedByInitials}
     </abbr>
   </div>
 );
 
 CollapsedStoryTitle.propTypes = {
-  title: PropTypes.string.isRequired,
-  ownedByName: PropTypes.string,
-  ownedByInitials: PropTypes.string,
+  story: PropTypes.object.isRequired,
 };
 
 

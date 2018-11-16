@@ -19,12 +19,12 @@ describe("<StoryPopover />",() => {
 
   it("renders the popover",() => {
     const props = storyFactory();
-    const wrapper = shallow(<StoryPopover {...props} />);
+    const wrapper = shallow(<StoryPopover story={props} />);
     expect(wrapper.find("Popover")).toHaveProp('title', props.title);
   });
   it("renders the popover content",() => {
     const props = storyFactory();
-    const wrapper = shallow(<StoryPopoverContent {...props} />);
+    const wrapper = shallow(<StoryPopoverContent story={props} />);
 
     expect(I18n.translate).toHaveBeenCalledWith('requested by user on date', {
       user: props.requestedByName,

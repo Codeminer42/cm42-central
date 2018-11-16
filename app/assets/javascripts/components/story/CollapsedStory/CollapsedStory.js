@@ -24,14 +24,7 @@ const classNameStory = (storyType, estimate) => classname(
 
 const CollapsedStory = ({ story }) => (
   <div className={classNameStory(story.storyType, story.estimate)}>
-    <StoryPopover
-      description={story.description}
-      notes={story.notes}
-      createdAt={story.createdAt}
-      title={story.title}
-      storyType={story.storyType}
-      requestedByName={story.requestedByName}
-    >
+    <StoryPopover story={story}>
       <div className='Story__icons-block'>
         <CollapsedStoryIcon storyType={story.storyType} />
         <CollapsedStoryEstimate estimate={story.estimate} />
@@ -39,17 +32,9 @@ const CollapsedStory = ({ story }) => (
       </div>
     </StoryPopover>
 
-    <CollapsedStoryInfo
-      title={story.title}
-      labels={story.labels}
-      ownedByInitials={story.ownedByInitials}
-      ownedByName={story.ownedByName}
-    />
-    <CollapsedStoryStateActions
-      storyType={story.storyType}
-      estimate={story.estimate}
-      state={story.state}
-    />
+    <CollapsedStoryInfo story={story}/>
+
+    <CollapsedStoryStateActions story={story}/>
   </div>
 );
 

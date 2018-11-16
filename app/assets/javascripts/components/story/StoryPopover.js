@@ -4,46 +4,46 @@ import moment from 'moment';
 import Markdown from '../Markdown';
 import Popover from 'components/jquery_wrappers/Popover.js';
 
-export const StoryPopoverContent = ({ description, notes, createdAt, storyType, requestedByName }) => (
+export const StoryPopoverContent = ({ story }) => (
   <div className='popover__content'>
     <div className='popover__content__subtitle'>
       {
         I18n.translate('requested by user on date', {
-          user: requestedByName,
-          date: moment(createdAt).format('DD MM YYYY, h:mm a')
+          user: story.requestedByName,
+          date: moment(story.createdAt).format('DD MM YYYY, h:mm a')
         })
       }
 
       <div className='text-right'>
-        { I18n.translate(`story.type.${storyType}`) }
+        {I18n.translate(`story.type.${story.storyType}`)}
       </div>
     </div>
 
     {
-      Boolean(description) && (
+      Boolean(story.description) && (
         <div>
           <h1 className='popover__content__title'>
-            { I18n.translate('description') }
+            {I18n.translate('description')}
           </h1>
-          
+
           <div className='markdown-wrapper'>
-            <Markdown source={description} />
+            <Markdown source={story.description} />
           </div>
         </div>
       )}
 
     {
-      Boolean(notes.length) && (
+      Boolean(story.notes.length) && (
         <div>
           <h1 className='popover__content__title'>
-            { I18n.translate('notes') }
+            {I18n.translate('notes')}
           </h1>
-          
-          {notes.map(({ note, id, userName, createdAt }) => 
+
+          { story.notes.map(({ note, id, userName, createdAt }) =>
             <div className='markdown-wrapper' key={id}>
               <Markdown source={note} />
               <div className='markdown-wrapper__text-right' data-test-id={id}>
-                { `${userName} - ${createdAt}` }
+                {`${userName} - ${createdAt}`}
               </div>
             </div>
           )}
@@ -52,48 +52,29 @@ export const StoryPopoverContent = ({ description, notes, createdAt, storyType, 
   </div>
 )
 
-const StoryPopover = ({
-  description,
-  notes,
-  createdAt,
-  title,
-  storyType,
-  requestedByName,
-  children }) => (
-
-    <Popover
-      delay={200}
-      trigger="hover"
-      title={title}
-      renderContent={({ ref }) => (
-        <div ref={ref}>
-          <StoryPopoverContent
-            description={description}
-            notes={notes}
-            createdAt={createdAt}
-            storyType={storyType}
-            requestedByName={requestedByName}
-          />
-        </div>
-      )}
-    >
-      {
-        ({ ref }) => (
-          <bold ref={ref}>
-            { children }
-          </bold>
-        )
-      }
-    </Popover>
-  );
+const StoryPopover = ({ story, children }) => (
+  <Popover
+    delay={200}
+    trigger="hover"
+    title={story.title}
+    renderContent={({ ref }) => (
+      <div ref={ref}>
+        <StoryPopoverContent story={story}/>
+      </div>
+    )}
+  >
+    {
+      ({ ref }) => (
+        <bold ref={ref}>
+          { children }
+        </bold>
+      )
+    }
+  </Popover>
+);
 
 StoryPopover.propTypes = {
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string,
-  storyType: PropTypes.string.isRequired,
-  requestedByName: PropTypes.string,
-  createdAt: PropTypes.string,
-  notes: PropTypes.array,
+  story: PropTypes.object.isRequired
 };
 
 export default StoryPopover;

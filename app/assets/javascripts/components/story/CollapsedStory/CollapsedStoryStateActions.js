@@ -15,12 +15,12 @@ const StateAction = {
   unstarted: ["start"]
 };
 
-const CollapsedStoryStateActions = ({ storyType, estimate, state }) => (
+const CollapsedStoryStateActions = ({ story }) => (
   <div className='Story__actions'>
     {
-      isStoryNotEstimated(storyType, estimate) ?
+      isStoryNotEstimated(story.storyType, story.estimate) ?
         <CollapsedStoryPoints />
-        : StoryActionFor(state).map((stateAction) =>
+        : StoryActionFor(story.state).map((stateAction) =>
           <CollapsedStoryStateButton action={stateAction} key={stateAction} />
         )
     }
@@ -28,13 +28,8 @@ const CollapsedStoryStateActions = ({ storyType, estimate, state }) => (
 );
 
 CollapsedStoryStateActions.propTypes = {
-  storyType: PropTypes.string.isRequired,
-  estimate: PropTypes.number,
-  state: PropTypes.string.isRequired
+  story: PropTypes.object.isRequired,
 };
 
-CollapsedStoryStateActions.defaultProp = {
-  estimate: '-',
-};
 
 export default CollapsedStoryStateActions;
