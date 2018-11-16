@@ -7,20 +7,19 @@ import CollapsedStoryEstimate from './CollapsedStoryEstimate';
 import CollapsedStoryStateActions from './CollapsedStoryStateActions';
 import CollapsedStoryInfo from './CollapsedStoryInfo';
 import StoryIcon from '../StoryIcon';
+import * as StoryModel from '../../../models/beta/story';
 
-import {
-  isStoryNotEstimated,
-  isRelease,
-} from '../../../models/beta/story';
+const classNameStory = (storyType, estimate) => {
 
-const classNameStory = (storyType, estimate) => classname(
-  'Story',
-  {
-    'Story--unestimated': isStoryNotEstimated(storyType, estimate),
-    'Story--estimated': !isStoryNotEstimated(storyType, estimate),
-    'Story--release': isRelease(storyType)
-  }
-);
+  const isStoryNotEstimated = StoryModel.isStoryNotEstimated(storyType, estimate);
+  const isRelease = StoryModel.isRelease(storyType);
+
+  return classname('Story', {
+    'Story--unestimated': isStoryNotEstimated,
+    'Story--estimated': !isStoryNotEstimated,
+    'Story--release': isRelease
+  });
+};
 
 const CollapsedStory = ({ story }) => (
   <div className={classNameStory(story.storyType, story.estimate)}>

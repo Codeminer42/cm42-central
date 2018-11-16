@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import moment from 'moment';
 import StoryPopover, {
   StoryPopoverContent
@@ -7,7 +7,7 @@ import StoryPopover, {
 import storyFactory from '../../support/factories/storyFactory';
 
 
-describe("<StoryPopover />",() => {
+describe("<StoryPopover />", () => {
 
   beforeEach(function() {
     sinon.stub(I18n, 'translate');
