@@ -13,6 +13,7 @@ describe('<CollapsedStoryStateActions />', () => {
       expect(wrapper.find(CollapsedStoryPoints)).toExist();
     });
   });
+
   describe('When estimate is not null', () => {
     const states = [
       { state: "started", actions: ["finish"] },
@@ -22,10 +23,11 @@ describe('<CollapsedStoryStateActions />', () => {
       { state: "unstarted", actions: ["start"] },
       { state: "", actions: ["start"] }
     ];
+
     states.forEach(({ state, actions }) => {
       describe(`When state = ${state}`, () => {
         it('renders the <CollapsedStoryStateButton /> component', () => {
-          const props = storyFactory({state: state})
+          const props = storyFactory({state})
           const wrapper = shallow(<CollapsedStoryStateActions story={props} />);
 
           actions.forEach((action) => {
@@ -34,8 +36,9 @@ describe('<CollapsedStoryStateActions />', () => {
         });
       });
     });
+
     describe("When state =  'accepted' ", () => {
-      it('Doesnt render <CollapsedStoryStateButton /> component', () => {
+      it('Doesn\'t render <CollapsedStoryStateButton /> component', () => {
         const props = storyFactory({state: 'accepted'})
         const wrapper = shallow(<CollapsedStoryStateActions story={props} />);
 

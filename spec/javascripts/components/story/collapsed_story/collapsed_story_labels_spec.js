@@ -7,7 +7,7 @@ import storyFactory from '../../../support/factories/storyFactory';
 describe('<CollapsedStoryLabels />', () => {
   it("renders <CollapsedStoryLabels /> when labels", () => {
     const labels = 'feature'
-    const props = storyFactory({labels: labels});
+    const props = storyFactory({labels});
 
     const wrapper = shallow(<CollapsedStoryLabels story={props} />);
     expect(wrapper).toHaveClassName('Story__labels');
@@ -15,7 +15,7 @@ describe('<CollapsedStoryLabels />', () => {
 
   it("render all <StoryLabel />", () => {
     const labels = 'feature,bug'
-    const props = storyFactory({labels: labels});
+    const props = storyFactory({labels});
 
     const wrapper = shallow(<CollapsedStoryLabels story={props} />);
 
