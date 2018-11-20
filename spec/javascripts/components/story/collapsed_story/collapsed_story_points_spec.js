@@ -1,12 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import StoryItem, {
-  StoryPoints,
-} from 'components/story/StoryItem';
+import CollapsedStoryPoints from 'components/story/CollapsedStory/CollapsedStoryPoints';
 
-describe('<StoryPoints />', () => {
-  it("renders <StoryPoints /> component", () => {
-    const wrapper = shallow(<StoryPoints />);
+describe('<CollapsedStoryPoints />', () => {
+  it("renders <CollapsedStoryPoints /> component", () => {
+    const wrapper = shallow(<CollapsedStoryPoints />);
     const text = wrapper.text()
     expect(text).toContain('1');
     expect(text).toContain('2');

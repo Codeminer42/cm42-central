@@ -1,11 +1,13 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import moment from 'moment';
 import StoryPopover, {
   StoryPopoverContent
 } from 'components/story/StoryPopover';
+import storyFactory from '../../support/factories/storyFactory';
 
-describe("<StoryPopover />",() => {
+
+describe("<StoryPopover />", () => {
 
   beforeEach(function() {
     sinon.stub(I18n, 'translate');
@@ -16,39 +18,13 @@ describe("<StoryPopover />",() => {
   });
 
   it("renders the popover",() => {
-    const props = {
-      title: 'title',
-      description: 'description',
-      storyType: 'feature',
-      requestedByName: 'Foo Bar',
-      createdAt: '2018/10/26 15:08:51 -0300',
-      notes: []
-    };
-    const wrapper = shallow(<StoryPopover {...props} />);
+    const props = storyFactory();
+    const wrapper = shallow(<StoryPopover story={props} />);
     expect(wrapper.find("Popover")).toHaveProp('title', props.title);
   });
   it("renders the popover content",() => {
-    const props = {
-      description: "description",
-      storyType: 'feature',
-      requestedByName: 'Foo Bar',
-      createdAt: '2018/10/26 15:08:51 -0300',
-      notes: [
-        {
-          id: 1,
-          note: 'This is note 1',
-          userName: 'Foo Bar',
-          createdAt: '2018/10/26 15:08:51 -0200'
-        },
-        {
-          id: 2,
-          note: 'This is note 2',
-          userName: 'Foo Bar',
-          createdAt: '2018/10/26 15:08:51 -0200'
-        }
-      ]
-    };
-    const wrapper = shallow(<StoryPopoverContent {...props} />);
+    const props = storyFactory();
+    const wrapper = shallow(<StoryPopoverContent story={props} />);
 
     expect(I18n.translate).toHaveBeenCalledWith('requested by user on date', {
       user: props.requestedByName,
