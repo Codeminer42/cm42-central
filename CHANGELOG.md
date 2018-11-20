@@ -15,6 +15,9 @@
   - Tasks
 - Added Popover when Story is collapsed in board V2
 
+### Changed
+- Change estimate button to dinamic values when story is collapsed in board V2
+
 ## [1.21.1] 2018-10-18
 ### Fixed
 - Fix stories in the done sprints

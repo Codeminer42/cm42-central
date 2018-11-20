@@ -1,16 +1,16 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import CollapsedStoryPoints from 'components/story/CollapsedStory/CollapsedStoryPoints';
+import CollapsedStoryEstimateButton from 'components/story/CollapsedStory/CollapsedStoryEstimateButton';
 import CollapsedStoryStateActions from 'components/story/CollapsedStory/CollapsedStoryStateActions';
 import storyFactory from '../../../support/factories/storyFactory';
 
 describe('<CollapsedStoryStateActions />', () => {
   describe('When estimate is null', () => {
-    it("renders <CollapsedStoryPoints /> component", () => {
+    it("renders <CollapsedStoryEstimateButton /> component", () => {
       const props = storyFactory({estimate: null});
       const wrapper = shallow(<CollapsedStoryStateActions story={props} />);
       
-      expect(wrapper.find(CollapsedStoryPoints)).toExist();
+      expect(wrapper.find(CollapsedStoryEstimateButton)).toExist();
     });
   });
 

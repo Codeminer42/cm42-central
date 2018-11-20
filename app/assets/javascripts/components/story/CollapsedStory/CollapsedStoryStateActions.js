@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CollapsedStoryPoints from './CollapsedStoryPoints';
+import CollapsedStoryEstimateButton from './CollapsedStoryEstimateButton';
 import CollapsedStoryStateButton from './CollapsedStoryStateButton';
 import { isStoryNotEstimated } from '../../../models/beta/story';
 
@@ -16,10 +16,10 @@ const StateAction = {
 };
 
 const CollapsedStoryStateActions = ({ story }) => (
-  <div className='Story__actions'>
+  <div className='Story__actions'> 
     {
       isStoryNotEstimated(story.storyType, story.estimate) ?
-        <CollapsedStoryPoints />
+        <CollapsedStoryEstimateButton />
         : StoryActionFor(story.state).map((stateAction) =>
           <CollapsedStoryStateButton action={stateAction} key={stateAction} />
         )
@@ -28,7 +28,7 @@ const CollapsedStoryStateActions = ({ story }) => (
 );
 
 CollapsedStoryStateActions.propTypes = {
-  story: PropTypes.object.isRequired,
+  story: PropTypes.object.isRequired
 };
 
 

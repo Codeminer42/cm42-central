@@ -93,8 +93,12 @@
         font-style: normal;
       }
 
+      &__estimate-box{
+        display: inline
+      }
+
       &__estimate {
-        padding: 2px 3px;
+        padding: 2px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
