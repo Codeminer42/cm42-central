@@ -12,10 +12,10 @@ export const CollapsedStoryEstimateButton = (props) => (
       ))
     }
   </div>
-)
+);
 
 CollapsedStoryEstimateButton.propTypes = {
-  project: PropTypes.object,
+  project: PropTypes.object
 };
 
 const mapStateToProps = ({ project }) => ({ project });
