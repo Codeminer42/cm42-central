@@ -19,7 +19,7 @@ describe('<CollapsedStory />', () => {
       const props = storyFactory({storyType: 'feature', estimate: null});
       const wrapper = shallow(<CollapsedStory story={props} />);
 
-      expect(wrapper).toHaveClassName('Story--unestimated');
+      expect(wrapper.prop('className')).toContain('Story--unestimated');
     });
   });
   

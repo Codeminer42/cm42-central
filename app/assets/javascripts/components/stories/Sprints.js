@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Sprint from "./Sprint";
 
 const propTypes = {
-  sprints: PropTypes.array,
+  sprints: PropTypes.array
 };
 
 const defaultProps = {
