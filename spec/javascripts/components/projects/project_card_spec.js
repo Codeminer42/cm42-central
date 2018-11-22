@@ -206,8 +206,8 @@ describe('<ProjectCard />', () => {
 
       const wrapper = shallow(<ProjectCard {...defaultProps} />);
       expect(wrapper.contains(
-        <div className="panel-heading">
-          <span href="/projects/foobar" className="card-title">Foobar</span>
+        <div className="panel-heading card-heading">
+          <span className="card-title">Foobar</span>
         </div>
       )).toBe(true);
     });
