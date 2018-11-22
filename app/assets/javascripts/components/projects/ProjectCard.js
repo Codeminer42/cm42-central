@@ -1,11 +1,16 @@
 import React from 'react';
 
 export default class ProjectCard extends React.Component {
+  decodeHTML(html) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+  };
 
   renderTag(project) {
     if (!project.get('tag_name')) { return; }
 
-    let style = {
+    const style = {
       backgroundColor: project.get('tag_bg_color'),
       color: project.get('tag_fore_color')
     };
@@ -17,14 +22,20 @@ export default class ProjectCard extends React.Component {
     );
   }
 
+  projectName(){
+    return this.decodeHTML(this.props.project.get('name')); 
+  }
+
   panelHeading() {
     const { project, joined } = this.props;
 
     if (joined) {
       return(
         <div className="panel-heading card-heading">
-          <div>
-            <a href={ project.get('path_to').project } className="card-title project-title">{ project.get('name') }</a>
+          <div className="project-card-header-container">
+            <a href={ project.get('path_to').project } className="card-title project-title">
+              { this.projectName() }              
+            </a>
             { this.renderTag(project) }
           </div>
           <div className="icons pull-right">
@@ -85,8 +96,10 @@ export default class ProjectCard extends React.Component {
     }
 
     return(
-      <div className="panel-heading">
-        <span href={ project.get('path_to').project } className="card-title">{ project.get('name') }</span>
+      <div className="panel-heading card-heading">
+        <span className="card-title">
+          { this.projectName() }
+        </span>
       </div>
     );
   }
