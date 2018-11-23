@@ -8,6 +8,6 @@ describe('<CollapsedStoryEstimate />', () => {
     const props = storyFactory();
     const wrapper = shallow(<CollapsedStoryEstimate {...props} />);
 
-    expect(wrapper.find('.Story__estimated').text()).toContain(props.estimate);
+    expect(wrapper.find('.Story__estimated-value').text()).toContain(props.estimate);
   });
 });

@@ -10,7 +10,7 @@ describe('<CollapsedStory />', () => {
       const props = storyFactory({storyType: 'feature', estimate: 1});
       const wrapper = shallow(<CollapsedStory story={props} />);
 
-      expect(wrapper).toHaveClassName('Story--estimated');
+      expect(wrapper).toHaveClassName('estimated');
     });
   });
   
@@ -19,7 +19,7 @@ describe('<CollapsedStory />', () => {
       const props = storyFactory({storyType: 'feature', estimate: null});
       const wrapper = shallow(<CollapsedStory story={props} />);
 
-      expect(wrapper.prop('className')).toContain('Story--unestimated');
+      expect(wrapper.prop('className')).toContain('unestimated');
     });
   });
   
@@ -28,7 +28,7 @@ describe('<CollapsedStory />', () => {
       const props = storyFactory({storyType: 'release'});
       const wrapper = shallow(<CollapsedStory story={props} />);
 
-      expect(wrapper).toHaveClassName('Story--release');
+      expect(wrapper).toHaveClassName('release');
     });
   });
   

@@ -14,15 +14,15 @@ const classNameStory = (storyType, estimate) => {
   const isStoryNotEstimated = StoryModel.isStoryNotEstimated(storyType, estimate);
   const isRelease = StoryModel.isRelease(storyType);
 
-  return classname('Story', {
-    'Story--unestimated': isStoryNotEstimated,
-    'Story--estimated': !isStoryNotEstimated,
-    'Story--release': isRelease
+  return classname({
+    'release': isRelease,
+    'unestimated': isStoryNotEstimated,
+    'estimated': !isStoryNotEstimated
   });
 };
 
 const CollapsedStory = ({ story }) => (
-  <div className={classNameStory(story.storyType, story.estimate)}>
+  <div className={`Story Story--collapsed ${classNameStory(story.storyType, story.estimate)}`} >
     <StoryPopover story={story}>
       <div className='Story__icons-block'>
         <StoryIcon storyType={story.storyType} />
