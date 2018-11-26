@@ -158,5 +158,10 @@
         background-color: $blue-3;
       }
     }
+
+    &--expanded {
+      background-color: $butter-2;
+      color: $aluminium-6;
+    }
   }
 }

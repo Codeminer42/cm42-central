@@ -6,6 +6,7 @@ import ExpandedStory from './ExpandedStory'
 const StoryItem = ({ story }) => (
   <div className='story-container'>
     <CollapsedStory story={story} />
+    <ExpandedStory story={story} />
   </div>
 );
 
