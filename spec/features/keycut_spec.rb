@@ -39,6 +39,7 @@ describe 'Keycuts' do
 
     it 'adds story (a)', js: true do
       wait_page_load
+      click_on 'Chilly Bin'
       send_keys 'a'
       expect(page).to have_css('.story.feature.unscheduled.unestimated.editing')
     end
