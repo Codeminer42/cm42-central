@@ -1,13 +1,13 @@
 .story-container {
   .Story {
     padding: 7px 8px;
+    border-bottom: 1px solid $story-border-bottom-color;
+    border-top: 1px solid $story-border-top-color;
 
     &--collapsed {
       display: flex;
       justify-content: space-between;
       background-color: $story-background-color;
-      border-bottom: 1px solid $story-border-bottom-color;
-      border-top: 1px solid $story-border-top-color;
       min-height: 37px;
       cursor: move;
       align-items: center;
@@ -150,7 +150,7 @@
       border-top-color: $blue-5;
       border-bottom-color: $blue-3;
 
-      a {
+      abbr {
         color: $white;
       }
 
@@ -162,6 +162,18 @@
     &--expanded {
       background-color: $butter-2;
       color: $aluminium-6;
+      
+      .Story{
+        &__controls {
+          @extend .btn-group;
+          
+          input {
+            @extend .btn;
+            @extend .btn-default;
+            @extend .btn-xs;
+          }
+        }
+      }
     }
   }
 }
