@@ -1,6 +1,7 @@
 import actionTypes from 'actions/actionTypes';
 import * as Story from 'models/beta/story';
 import _ from 'underscore';
+import { collapseStory } from '../story'
 
 const initialState = {
   stories: [],
@@ -30,6 +31,11 @@ const chillyBin = (state = initialState, action) => {
       ];
 
       return { stories: orderByUnestimatedFeatures(stories) }
+    case actionTypes.TOGGLE_STORY:
+      return {
+        ...state,
+        stories: collapseStory(state.stories, action.id)
+      };
     default:
       return state;
   }

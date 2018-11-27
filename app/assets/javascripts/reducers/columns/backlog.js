@@ -3,6 +3,7 @@ import { status } from "libs/beta/constants";
 import * as Story from "models/beta/story";
 import _ from "underscore";
 import * as Iteration from "models/beta/iteration";
+import { collapseStory } from '../story'
 
 const initialState = {
   stories: [],
@@ -40,7 +41,7 @@ const orderByState = stories => {
   );
   const unestimatedUnstartedStories = partitionedFeatures[0];
   const estimatedUnstartedStories = partitionedFeatures[1];
-  
+
   return [
     ...acceptedStories,
     ...deliveredStories,
@@ -70,6 +71,18 @@ const backlog = (state = initialState, action) => {
       return {
         stories: orderedStories,
         sprints: groupStoriesInSprints(orderedStories, action.project)
+      };
+    case actionTypes.TOGGLE_STORY:
+      const sprints = state.sprints.map((sprint) => {
+        return {
+          ...sprint,
+          stories: collapseStory(sprint.stories, action.id)
+        }
+      })
+
+      return {
+        ...state,
+        sprints
       };
     default:
       return state;
