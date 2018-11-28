@@ -21,10 +21,10 @@ const done = (state = initialState, action) => {
     case actionTypes.COLUMN_DONE:
       const stories = [
         ...state.stories,
-        action.data,
+        action.data
       ];
      
-      return { stories: orderByAcceptedAt(stories) };
+      return {  ...state, stories: orderByAcceptedAt(stories) };
     case actionTypes.RECEIVE_PROJECT:
       const sprints = action.data.pastIterations.map((sprint, index) => ({
         ...sprint,
@@ -34,7 +34,7 @@ const done = (state = initialState, action) => {
         stories: [],
       }));
     
-      return { sprints };
+      return { ...state, sprints };
     case actionTypes.TOGGLE_STORY:
       return {
         ...state,
