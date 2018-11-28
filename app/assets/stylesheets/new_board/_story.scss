@@ -33,7 +33,7 @@
           margin: 0 10px;
         }
 
-        &__icons-block{
+        &__icons-block {
           display: flex;
           width: 60px;
         }
@@ -72,7 +72,7 @@
           font-style: normal;
         }
 
-        &__estimate-box{
+        &__estimate-box {
           display: inline
         }
 
@@ -113,13 +113,13 @@
           &--finish {
             @extend .btn-primary;
           }
-          &--deliver{
+          &--deliver {
             @extend .btn-warning;
           }
-          &--accept{
+          &--accept {
             @extend .btn-success;
           }
-          &--reject{
+          &--reject {
             @extend .btn-danger;
           }
           &--restart{
@@ -142,6 +142,7 @@
 
     &--collapsed.unestimated {
       font-style: italic;
+      background-color: $lightyellow-1;
     }
 
     &--collapsed.release {
@@ -163,7 +164,7 @@
       background-color: $butter-2;
       color: $aluminium-6;
       
-      .Story{
+      .Story {
         &__controls {
           @extend .btn-group;
           

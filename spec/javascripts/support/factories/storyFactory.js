@@ -33,6 +33,7 @@ const storyFactory = (storyAttrs) => ({
   ],
   documents: [],
   tasks: [],
+  collapsed: true,
   ...storyAttrs
 });
 

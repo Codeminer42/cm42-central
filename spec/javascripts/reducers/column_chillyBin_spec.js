@@ -2,41 +2,81 @@ import reducer from 'reducers/columns/chillyBin';
 import actionTypes from 'actions/actionTypes';
 
 describe('Chilly Bin Column reducer', () => {
+
+  const storiesArray = [
+    {
+      id: 4,
+      position: '8',
+      storyType: 'feature',
+      estimate: 5,
+      collapsed: true
+    },
+    {
+      id: 7,
+      position: '6.0',
+      estimate: 3,
+      collapsed: true
+    }
+  ];
+
+  function toggleStoryAction(id) {
+    return {
+      type: actionTypes.TOGGLE_STORY,
+      id
+    }
+  };
+
   function createInitialStateWithStories() {
     return {
-      stories: [
-        {
-          id: 4,
-          position: '8',
-          storyType: 'feature',
-          estimate: 5
-        },
-        {
-          id: 7,
-          position: '6.0',
-          estimate: 3
-        }
-      ]
+      stories: storiesArray
     }
-  }
+  };
 
   function createEmptyInitialstate() {
     return {
       stories: []
     }
-  }
+  };
 
   function createAction(data) {
     return {
       type: actionTypes.COLUMN_CHILLY_BIN,
       data
     }
-  }
+  };
+
+  describe("Toggle a story", () => {
+    it("expand a story", () => {
+      const initialState = createInitialStateWithStories();
+      const story = initialState.stories[0];
+      story.collapsed = true;
+
+      const action = toggleStoryAction(story.id);
+      const state = reducer(initialState, action);
+
+      const expandedStory = state.stories[0];
+
+      expect(expandedStory.collapsed).toEqual(false);
+    });
+
+    it("collapse a story", () => {
+      const initialState = createInitialStateWithStories();
+      const story = initialState.stories[0];
+      story.collapsed = false;
+
+      const action = toggleStoryAction(story.id);
+      const state = reducer(initialState, action);
+
+      const expandedStory = state.stories[0];
+
+      expect(expandedStory.collapsed).toEqual(true);
+    });
+  });  
 
   describe("when the initial state is empty", () => {
     it("return the new story with the others", () => {
       const newStory = {
-        id : 80,
+        id: 80,
         position: '59.2'
       };
 
@@ -49,12 +89,10 @@ describe('Chilly Bin Column reducer', () => {
     });
   });
 
-
   describe("when there are stories on the initial state", () => {
-
     it("return the new story with the others", () => {
       const newStory = {
-        id : 80,
+        id: 80,
         position: '59.2'
       };
 
@@ -68,7 +106,7 @@ describe('Chilly Bin Column reducer', () => {
 
     it("return no error if the position is NaN", () => {
       const newStory = {
-        id : 80,
+        id: 80,
         position: 'abc'
       };
 
@@ -84,7 +122,7 @@ describe('Chilly Bin Column reducer', () => {
 
       it("return stories ordered by position in ascending order", () => {
         const newStory = {
-          id : 5,
+          id: 5,
           position: '5.2'
         };
 
@@ -100,7 +138,7 @@ describe('Chilly Bin Column reducer', () => {
 
       it("return unestimated features last", () => {
         const newStory = {
-          id : 5,
+          id: 5,
           position: '1.2',
           storyType: 'feature',
           estimate: null
@@ -119,7 +157,7 @@ describe('Chilly Bin Column reducer', () => {
 
       it("return stories ordered by position in ascending order", () => {
         const newStory = {
-          id : 5,
+          id: 5,
           position: '9.2'
         };
 
@@ -135,7 +173,7 @@ describe('Chilly Bin Column reducer', () => {
 
       it("return unestimated features last", () => {
         const newStory = {
-          id : 5,
+          id: 5,
           position: '9.2',
           storyType: 'feature',
           estimate: null
@@ -154,7 +192,7 @@ describe('Chilly Bin Column reducer', () => {
 
       it("return stories ordered by position in ascending order", () => {
         const newStory = {
-          id : 5,
+          id: 5,
           position: '7.2'
         };
 
@@ -170,7 +208,7 @@ describe('Chilly Bin Column reducer', () => {
 
       it("return unestimated features last", () => {
         const newStory = {
-          id : 5,
+          id: 5,
           position: '7.2',
           storyType: 'feature',
           estimate: null

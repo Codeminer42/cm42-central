@@ -2,58 +2,76 @@ import reducer from 'reducers/columns/backlog';
 import actionTypes from 'actions/actionTypes';
 
 describe('Backlog Column reducer', () => {
+  const storiesArray = [
+    {
+      id: 2,
+      position: '4.5',
+      state: 'rejected',
+      estimate: 1,
+      collapsed: true
+    },
+    {
+      id: 1,
+      position: '1.5',
+      state: 'accepted',
+      acceptedAt: '2018-08-06T16:36:20.811Z',
+      estimate: 1,
+      collapsed: true
+    },
+    {
+      id: 3,
+      position: '3.2',
+      state: 'unstarted',
+      estimate: 1,
+      collapsed: true
+    },
+    {
+      id: 4,
+      position: '7.5',
+      state: 'started',
+      startedAt: '2018-08-06T16:36:20.811Z',
+      estimate: 1,
+      collapsed: true
+    },
+    {
+      id: 5,
+      position: '3.7',
+      state: 'finished',
+      estimate: 1,
+      collapsed: true
+    },
+    {
+      id: 6,
+      position: '4.9',
+      state: 'delivered',
+      deliveredAt: '2018-08-06T16:36:20.811Z',
+      estimate: 1,
+      collapsed: true
+    }
+  ];
+
   function createInitialStateWithStories() {
     return {
-      stories: [
-        {
-          id: 2,
-          position: '4.5',
-          state: 'rejected',
-          estimate: 1
-        },
-        {
-          id: 1,
-          position: '1.5',
-          state: 'accepted',
-          acceptedAt: '2018-08-06T16:36:20.811Z',
-          estimate: 1
-        },
-        {
-          id: 3,
-          position: '3.2',
-          state: 'unstarted',
-          estimate: 1
-        },
-        {
-          id: 4,
-          position:'7.5',
-          state: 'started',
-          startedAt: '2018-08-06T16:36:20.811Z',
-          estimate: 1
-        },
-        {
-          id: 5,
-          position: '3.7',
-          state: 'finished',
-          estimate: 1
-        },
-        {
-          id: 6,
-          position: '4.9',
-          state: 'delivered',
-          deliveredAt: '2018-08-06T16:36:20.811Z',
-          estimate: 1
-        }
-      ],
+      stories: storiesArray,
     }
-  }
+  };
+
+  function createInitialStateWithSprints() {
+    return {
+      sprints: [
+        {
+          stories: storiesArray
+        }
+      ]
+    }
+  };
 
   function createEmptyInitialstate() {
     return {
       stories: [],
       sprints: [],
     }
-  }
+  };
 
   function createAction(data) {
     return {
@@ -65,12 +83,47 @@ describe('Backlog Column reducer', () => {
         defaultVelocity: 2,
       },
     }
-  }
+  };
+
+  function toggleStoryAction(id) {
+    return {
+      type: actionTypes.TOGGLE_STORY,
+      id
+    }
+  };
+
+  describe("Toggle a story", () => {
+    it("expand", () => {
+      const initialState = createInitialStateWithSprints();
+      const story = initialState.sprints[0].stories[0];
+      story.collapsed = true;
+
+      const action = toggleStoryAction(story.id);
+      const state = reducer(initialState, action);
+
+      const expandedStory = state.sprints[0].stories[0];
+
+      expect(expandedStory.collapsed).toEqual(false);
+    });
+
+    it("collapse", () => {
+      const initialState = createInitialStateWithSprints();
+      const story = initialState.sprints[0].stories[0];
+      story.collapsed = false;
+
+      const action = toggleStoryAction(story.id);
+      const state = reducer(initialState, action);
+
+      const expandedStory = state.sprints[0].stories[0];
+
+      expect(expandedStory.collapsed).toEqual(true);
+    });
+  });
 
   describe("when the initial state is empty", () => {
     it("return the new story with the others", () => {
       const newStory = {
-        id : 80,
+        id: 80,
         position: '59.2',
         state: 'delivered'
       };
@@ -84,11 +137,10 @@ describe('Backlog Column reducer', () => {
     });
   });
 
-
   describe("when there are stories on the initial state", () => {
     it("return the new story with the others", () => {
       const newStory = {
-        id : 80,
+        id: 80,
         position: '59.2',
         state: 'delivered'
       };
@@ -149,11 +201,11 @@ describe('Backlog Column reducer', () => {
       ];
       const action = createAction(stories);
       let state;
-      
+
       beforeEach(() => {
         state = reducer({ stories: stories, sprints: [] }, action);
       });
-      
+
       it("creates 3 sprints", () => {
         expect(state.sprints.length).toEqual(3);
       });
@@ -173,7 +225,7 @@ describe('Backlog Column reducer', () => {
         describe("when the acceptedAt of the new story is older then the others", () => {
           it("return accepted ordered by acceptedAt", () => {
             const newStory = {
-              id : 80,
+              id: 80,
               position: '59.2',
               state: 'accepted',
               acceptedAt: '2018-08-03T16:36:20.811Z'
@@ -193,7 +245,7 @@ describe('Backlog Column reducer', () => {
         describe("when the acceptedAt of the new story is more recent then the others", () => {
           it("return accepted ordered by acceptedAt", () => {
             const newStory = {
-              id : 80,
+              id: 80,
               position: '59.2',
               state: 'accepted',
               acceptedAt: '2018-08-10T16:36:20.811Z'
@@ -215,7 +267,7 @@ describe('Backlog Column reducer', () => {
         describe("when the deliveredAt of the new story is older then the others", () => {
           it("return delivered ordered by deliveredAt", () => {
             const newStory = {
-              id : 80,
+              id: 80,
               position: '59.2',
               state: 'delivered',
               deliveredAt: '2018-08-03T16:36:20.811Z'
@@ -235,7 +287,7 @@ describe('Backlog Column reducer', () => {
         describe("when the deliveredAt of the new story is more recent then the others", () => {
           it("return delivered ordered by deliveredAt", () => {
             const newStory = {
-              id : 80,
+              id: 80,
               position: '59.2',
               state: 'delivered',
               deliveredAt: '2018-08-20T16:36:20.811Z'
@@ -256,7 +308,7 @@ describe('Backlog Column reducer', () => {
         describe("when the startedAt of the new story is older then the others", () => {
           it("return accepted ordered by startedAt", () => {
             const newStory = {
-              id : 80,
+              id: 80,
               position: '59.2',
               state: 'started',
               startedAt: '2018-08-03T16:36:20.811Z'
@@ -276,7 +328,7 @@ describe('Backlog Column reducer', () => {
         describe("when the startedAt of the new story is more recent then the others", () => {
           it("return started ordered by startedAt", () => {
             const newStory = {
-              id : 80,
+              id: 80,
               position: '59.2',
               state: 'started',
               startedAt: '2018-08-20T16:36:20.811Z'
@@ -297,7 +349,7 @@ describe('Backlog Column reducer', () => {
         describe("when the new history has the higher position", () => {
           it("return rejected ordered by position", () => {
             const newStory = {
-              id : 80,
+              id: 80,
               position: '59.2',
               state: 'rejected'
             };
@@ -314,7 +366,7 @@ describe('Backlog Column reducer', () => {
 
           it("return finished ordered by position", () => {
             const newStory = {
-              id : 80,
+              id: 80,
               position: '59.2',
               state: 'finished'
             };
@@ -331,7 +383,7 @@ describe('Backlog Column reducer', () => {
 
           it("return unstarted ordered by position", () => {
             const newStory = {
-              id : 80,
+              id: 80,
               position: '59.2',
               state: 'unstarted',
               estimate: 1
@@ -349,7 +401,7 @@ describe('Backlog Column reducer', () => {
 
           it("return unestimated unstarted features last", () => {
             const newStory = {
-              id : 80,
+              id: 80,
               position: '59.2',
               state: 'unstarted',
               estimate: null
@@ -369,7 +421,7 @@ describe('Backlog Column reducer', () => {
         describe("when the new history has the lower position", () => {
           it("return rejected ordered by position", () => {
             const newStory = {
-              id : 80,
+              id: 80,
               position: '1.0',
               state: 'rejected'
             };
@@ -386,7 +438,7 @@ describe('Backlog Column reducer', () => {
 
           it("return finished ordered by position", () => {
             const newStory = {
-              id : 80,
+              id: 80,
               position: '1',
               state: 'finished'
             };
@@ -403,7 +455,7 @@ describe('Backlog Column reducer', () => {
 
           it("return unstarted ordered by position", () => {
             const newStory = {
-              id : 80,
+              id: 80,
               position: '1',
               state: 'unstarted',
               estimate: 1
@@ -421,7 +473,7 @@ describe('Backlog Column reducer', () => {
 
           it("return unestimated unstarted features last", () => {
             const newStory = {
-              id : 80,
+              id: 80,
               position: '1',
               state: 'unstarted',
               storyType: 'feature',
