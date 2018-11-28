@@ -412,7 +412,7 @@ GEM
     rgb_utils (0.1.2)
       activesupport (>= 3.2)
       virtus (~> 1.0)
-    rollbar (2.13.3)
+    rollbar (2.18.0)
       multi_json
     rspec-activemodel-mocks (1.0.3)
       activemodel (>= 3.0)
@@ -592,7 +592,7 @@ DEPENDENCIES
   rails_12factor
   recaptcha
   rgb_utils
-  rollbar
+  rollbar (~> 2.18)
   rspec-activemodel-mocks
   rspec-its
   rspec-rails
