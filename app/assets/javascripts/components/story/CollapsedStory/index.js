@@ -22,7 +22,8 @@ const classNameStory = (storyType, estimate) => {
 };
 
 export const CollapsedStory = (props) => {
-  const { onToggle, story } = props
+  const { onToggle, story } = props;
+  
   return (
     <div
       className={`Story Story--collapsed ${classNameStory(story.storyType, story.estimate)}`}
@@ -40,8 +41,8 @@ export const CollapsedStory = (props) => {
 
       <CollapsedStoryStateActions story={story} />
     </div>
-  )
-}
+  );
+};
 
 CollapsedStory.propTypes = {
   story: PropTypes.object.isRequired

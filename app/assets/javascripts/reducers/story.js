@@ -8,4 +8,4 @@ export const collapseStory = (stories, id) => {
       collapsed: !story.collapsed
     };
   });
-}      
+};      

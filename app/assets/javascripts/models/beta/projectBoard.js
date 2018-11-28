@@ -15,4 +15,4 @@ export function get(projectId) {
           collapsed: true
         }))
       }));
-}
+};

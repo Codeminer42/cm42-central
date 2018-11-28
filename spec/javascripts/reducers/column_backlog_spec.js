@@ -81,7 +81,7 @@ describe('Backlog Column reducer', () => {
         startDate: "2018-09-03T16:00:00",
         iterationLength: 1,
         defaultVelocity: 2,
-      },
+      }
     }
   };
 

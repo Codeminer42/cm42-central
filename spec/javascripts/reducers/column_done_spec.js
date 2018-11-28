@@ -15,7 +15,7 @@ describe('Done Column reducer', () => {
       id: 1,
       acceptedAt: '2018-08-06T19:10:43.319Z'
     }
-  ]
+  ];
 
   const createInitialStateWithStories = () => {
     return {
@@ -31,7 +31,7 @@ describe('Done Column reducer', () => {
         }
       ]
     }
-  }
+  };
 
   const createEmptyInitialstate = () => {
     return {

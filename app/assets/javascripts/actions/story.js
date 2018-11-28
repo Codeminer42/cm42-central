@@ -8,4 +8,4 @@ export const receiveStories = (stories) => ({
 export const toggleStory = (id) => ({
   type: actionTypes.TOGGLE_STORY,
   id
-})
+});

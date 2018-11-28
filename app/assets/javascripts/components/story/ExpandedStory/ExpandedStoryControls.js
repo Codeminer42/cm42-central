@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ExpandedStoryControls = (props) => {
-  const { onCancel } = props
+  const { onCancel } = props;
 
   return (
     <div className="form-group Story__controls">

@@ -1,7 +1,7 @@
 import actionTypes from 'actions/actionTypes';
 import * as Story from 'models/beta/story';
 import moment from "moment";
-import { collapseStory } from '../story'
+import { collapseStory } from '../story';
 
 const initialState = {
   stories: [],
@@ -14,7 +14,7 @@ const orderByAcceptedAt = (stories) => {
   orderedItems.sort(Story.compareAcceptedAt);
 
   return orderedItems;
-}
+};
 
 const done = (state = initialState, action) => {
   switch (action.type) {
@@ -23,8 +23,8 @@ const done = (state = initialState, action) => {
         ...state.stories,
         action.data
       ];
-     
-      return {  ...state, stories: orderByAcceptedAt(stories) };
+
+      return { ...state, stories: orderByAcceptedAt(stories) };
     case actionTypes.RECEIVE_PROJECT:
       const sprints = action.data.pastIterations.map((sprint, index) => ({
         ...sprint,
@@ -33,7 +33,7 @@ const done = (state = initialState, action) => {
         endDate: moment(sprint.endDate).format("ddd MMM Do Y"),
         stories: [],
       }));
-    
+
       return { ...state, sprints };
     case actionTypes.TOGGLE_STORY:
       return {
@@ -43,8 +43,7 @@ const done = (state = initialState, action) => {
             ...sprint,
             stories: collapseStory(sprint.stories, action.id)
           }
-        })
-        )
+        }))
       };
     default:
       return state;

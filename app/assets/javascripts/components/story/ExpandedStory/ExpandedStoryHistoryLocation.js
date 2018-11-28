@@ -10,7 +10,7 @@ class ExpandedStoryHistoryLocation extends React.Component {
   }
 
   render() {
-    const { story } = this.props
+    const { story } = this.props;
 
     return (
       <div className="col-xs-12 form-group input-group input-group-sm">
@@ -49,8 +49,8 @@ class ExpandedStoryHistoryLocation extends React.Component {
           </button>
         </span>
       </div>
-    )
-  }
-}
+    );
+  };
+};
 
 export default ExpandedStoryHistoryLocation;

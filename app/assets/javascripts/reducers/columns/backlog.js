@@ -3,7 +3,7 @@ import { status } from "libs/beta/constants";
 import * as Story from "models/beta/story";
 import _ from "underscore";
 import * as Iteration from "models/beta/iteration";
-import { collapseStory } from '../story'
+import { collapseStory } from '../story';
 
 const initialState = {
   stories: [],
@@ -77,8 +77,8 @@ const backlog = (state = initialState, action) => {
         return {
           ...sprint,
           stories: collapseStory(sprint.stories, action.id)
-        }
-      })
+        };
+      });
 
       return {
         ...state,

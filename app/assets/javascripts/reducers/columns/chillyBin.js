@@ -1,7 +1,7 @@
 import actionTypes from 'actions/actionTypes';
 import * as Story from 'models/beta/story';
 import _ from 'underscore';
-import { collapseStory } from '../story'
+import { collapseStory } from '../story';
 
 const initialState = {
   stories: [],
