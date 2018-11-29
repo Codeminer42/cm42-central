@@ -1,5 +1,6 @@
 import reducer from 'reducers/columns/done';
 import actionTypes from 'actions/actionTypes';
+import { toggleStory } from 'actions/story';
 
 describe('Done Column reducer', () => {
   const storiesArray = [
@@ -47,13 +48,6 @@ describe('Done Column reducer', () => {
     }
   };
 
-  function toggleStoryAction(id) {
-    return {
-      type: actionTypes.TOGGLE_STORY,
-      id
-    }
-  };
-
   const createReceiveAction = (data) => {
     return {
       type: actionTypes.RECEIVE_PROJECT,
@@ -77,31 +71,35 @@ describe('Done Column reducer', () => {
     });
   });
 
-  describe("Toggle a story", () => {
-    it("expand a story", () => {
-      const initialState = createInitialStateWithSprints();
-      const story = initialState.sprints[0].stories[0];
-      story.collapsed = true;
+  describe("Toggle story", () => {
+    describe("When story is collapsed", () => {
+      it("expand story", () => {
+        const initialState = createInitialStateWithSprints();
+        const story = initialState.sprints[0].stories[0];
+        story.collapsed = true;
 
-      const action = toggleStoryAction(story.id);
-      const state = reducer(initialState, action);
+        const action = toggleStory(story.id);
+        const state = reducer(initialState, action);
 
-      const expandedStory = state.sprints[0].stories[0];
+        const expandedStory = state.sprints[0].stories[0];
 
-      expect(expandedStory.collapsed).toEqual(false);
+        expect(expandedStory.collapsed).toEqual(false);
+      });
     });
 
-    it("collapse a story", () => {
-      const initialState = createInitialStateWithSprints();
-      const story = initialState.sprints[0].stories[0];
-      story.collapsed = false;
+    describe("When story is expanded", () => {
+      it("collapse story", () => {
+        const initialState = createInitialStateWithSprints();
+        const story = initialState.sprints[0].stories[0];
+        story.collapsed = false;
 
-      const action = toggleStoryAction(story.id);
-      const state = reducer(initialState, action);
+        const action = toggleStory(story.id);
+        const state = reducer(initialState, action);
 
-      const expandedStory = state.sprints[0].stories[0];
+        const expandedStory = state.sprints[0].stories[0];
 
-      expect(expandedStory.collapsed).toEqual(true);
+        expect(expandedStory.collapsed).toEqual(true);
+      });
     });
   });
 

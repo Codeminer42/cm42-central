@@ -5,8 +5,8 @@ import storyFactory from '../../../support/factories/storyFactory';
 
 describe('<ExpandedStory />', () => {
   it('renders children components', () => {
-    const props = storyFactory();
-    const wrapper = shallow(<ExpandedStory story={props} />);
+    const story = storyFactory();
+    const wrapper = shallow(<ExpandedStory story={story} />);
 
     expect(wrapper.find('ExpandedStoryControls')).toExist();
     expect(wrapper.find('ExpandedStoryHistoryLocation')).toExist();

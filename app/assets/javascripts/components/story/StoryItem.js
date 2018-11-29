@@ -14,8 +14,8 @@ export const StoryItem = (props) => {
         story.collapsed ? (
           <CollapsedStory story={story} onToggle={() => toggleStory(story.id)} />
         ) : (
-            <ExpandedStory story={story} onToggle={() => toggleStory(story.id)} />
-          )
+          <ExpandedStory story={story} onToggle={() => toggleStory(story.id)} />
+        )
       }
     </div>
   );

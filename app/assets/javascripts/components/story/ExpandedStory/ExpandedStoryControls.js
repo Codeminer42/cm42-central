@@ -5,7 +5,7 @@ const ExpandedStoryControls = (props) => {
 
   return (
     <div className="form-group Story__controls">
-      <input className="cancel" onClick={onCancel} type="button" value="Cancel" />
+      <input className="cancel" onClick={onCancel} type="button" value={I18n.translate('cancel')} />
     </div>
   );
 };

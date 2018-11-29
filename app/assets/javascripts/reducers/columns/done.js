@@ -1,7 +1,7 @@
 import actionTypes from 'actions/actionTypes';
 import * as Story from 'models/beta/story';
 import moment from "moment";
-import { collapseStory } from '../story';
+import { toggleStories } from '../story';
 
 const initialState = {
   stories: [],
@@ -41,7 +41,7 @@ const done = (state = initialState, action) => {
         sprints: (state.sprints.map((sprint) => {
           return {
             ...sprint,
-            stories: collapseStory(sprint.stories, action.id)
+            stories: toggleStories(sprint.stories, action.id)
           }
         }))
       };
