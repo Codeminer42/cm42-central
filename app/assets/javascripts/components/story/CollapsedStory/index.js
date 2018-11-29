@@ -15,9 +15,9 @@ const classNameStory = (storyType, estimate) => {
   const isRelease = StoryModel.isRelease(storyType);
 
   return classname({
-    'release': isRelease,
-    'unestimated': isStoryNotEstimated,
-    'estimated': !isStoryNotEstimated
+    'Story--release': isRelease,
+    'Story--unestimated': isStoryNotEstimated,
+    'Story--estimated': !isStoryNotEstimated
   });
 };
 

@@ -6,29 +6,29 @@ import storyFactory from '../../../support/factories/storyFactory';
 describe('<CollapsedStory />', () => {
   
   describe('when estimate isn\'t null', () => {
-    it('renders the component with estimated className', () => {
+    it('renders the component with Story--estimated className', () => {
       const props = storyFactory({storyType: 'feature', estimate: 1});
       const wrapper = shallow(<CollapsedStory story={props} />);
 
-      expect(wrapper).toHaveClassName('estimated');
+      expect(wrapper).toHaveClassName('Story--estimated');
     });
   });
   
   describe('when estimate is null', () => {
-    it('renders the component with unestimated className', () => {
+    it('renders the component with Story--unestimated className', () => {
       const props = storyFactory({storyType: 'feature', estimate: null});
       const wrapper = shallow(<CollapsedStory story={props} />);
 
-      expect(wrapper.prop('className')).toContain('unestimated');
+      expect(wrapper.prop('className')).toContain('Story--unestimated');
     });
   });
   
   describe('when storyType = release', () => {
-    it('renders the component with release className', () => {
+    it('renders the component with Story--release className', () => {
       const props = storyFactory({storyType: 'release'});
       const wrapper = shallow(<CollapsedStory story={props} />);
 
-      expect(wrapper).toHaveClassName('release');
+      expect(wrapper).toHaveClassName('Story--release');
     });
   });
   

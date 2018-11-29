@@ -17,6 +17,25 @@
         background-color: $story-hover-background-color;
       }
 
+      &.Story--unestimated {
+        font-style: italic;
+      }
+
+      &.Story--release {
+        color: $white;
+        background-color: $blue-4;
+        border-top-color: $blue-5;
+        border-bottom-color: $blue-3;
+  
+        abbr {
+          color: $white;
+        }
+  
+        &:hover {
+          background-color: $blue-3;
+        }
+      }
+
       .Story {
         &__description-icon {
           display: flex;
@@ -137,26 +156,6 @@
           margin-left: 1em;
           font-style: normal;
         }
-      }
-    }
-
-    &--collapsed.unestimated {
-      font-style: italic;
-      background-color: $lightyellow-1;
-    }
-
-    &--collapsed.release {
-      color: $white;
-      background-color: $blue-4;
-      border-top-color: $blue-5;
-      border-bottom-color: $blue-3;
-
-      abbr {
-        color: $white;
-      }
-
-      &:hover {
-        background-color: $blue-3;
       }
     }
 
