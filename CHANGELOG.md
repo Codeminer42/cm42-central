@@ -1,22 +1,34 @@
 # Changelog
 
 ## [Unreleased]
-### Fixed
-- Fix imports notes of stories
-- Fix project delete when tasks or notes are readonly
-- Fix exporting unnecessary fields from documents and done to export in JSON
-- Fix pusher missing api key
-- Fix project delete when tasks or notes are readonly
 
+## [1.22.0] 2018-11-30
 ### Added
 - Added supports to upload libre office formats
 - Imports/exports of stories 
   - Documents
   - Tasks
 - Added Popover when Story is collapsed in board V2
+- Resouce to expand/collapse a story in board V2
+- Button to copy story url to clipboard in board V2
 
 ### Changed
 - Change estimate button to dynamic values when story is collapsed in board V2
+
+### Fixed
+- Fix imports notes of stories
+- Fix project delete when tasks or notes are readonly
+- Fix exporting unnecessary fields from documents and done to export in JSON
+- Fix pusher missing api key
+- Special character in project title
+
+### Security
+- Updated rails from 4.2.7.1 to 4.2.11 (CVE-2018-16476)
+- Updated rack from 1.6.10 to 1.6.11 (CVE-2018-16471)
+- Updated loofah from 2.2.2 to 2.2.3 (CVE-2018-16468)
+- Updated nokogiri from 1.8.4 to 1.8.5 (CVE-2018-14404
+and CVE-2018-14567)
+- Update gem rollbar from 2.13.3 to 2.18.0
 
 ## [1.21.1] 2018-10-18
 ### Fixed
@@ -325,7 +337,7 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.21.1...HEAD
+[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.22.0...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
@@ -356,3 +368,4 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [1.20.1]: https://github.com/Codeminer42/cm42-central/tree/v1.20.1
 [1.21.0]: https://github.com/Codeminer42/cm42-central/tree/v1.21.0
 [1.21.1]: https://github.com/Codeminer42/cm42-central/tree/v1.21.1
+[1.22.0]: https://github.com/Codeminer42/cm42-central/tree/v1.22.0
