@@ -160,10 +160,21 @@
     }
 
     &--expanded {
+      padding: 8px 10px;
       background-color: $butter-2;
       color: $aluminium-6;
-      
+
       .Story {
+        &__section-title {
+          font-size: 12px;
+          font-weight: bold;
+          margin: 5px 0;
+        }
+
+        &__section {
+          margin: 5px 0;          
+        }
+
         &__controls {
           @extend .btn-group;
           
