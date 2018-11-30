@@ -11,7 +11,8 @@ export function get(projectId) {
         ...projectBoard,
         stories: projectBoard.stories.map((story) => ({
           ...story,
-          notes: story.notes.map((note) => (note.note))
+          notes: story.notes.map((note) => (note.note)),
+          collapsed: true
         }))
       }));
-}
+};

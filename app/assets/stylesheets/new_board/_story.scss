@@ -1,12 +1,13 @@
-.Story {
-  &--collapsed {
-    .Story {
+.story-container {
+  .Story {
+    padding: 7px 8px;
+    border-bottom: 1px solid $story-border-bottom-color;
+    border-top: 1px solid $story-border-top-color;
+
+    &--collapsed {
       display: flex;
       justify-content: space-between;
-      padding: 7px 8px;
       background-color: $story-background-color;
-      border-bottom: 1px solid $story-border-bottom-color;
-      border-top: 1px solid $story-border-top-color;
       min-height: 37px;
       cursor: move;
       align-items: center;
@@ -16,146 +17,162 @@
         background-color: $story-hover-background-color;
       }
 
-      &--unestimated {
+      &.Story--unestimated {
         font-style: italic;
       }
 
-      &--release {
+      &.Story--release {
         color: $white;
         background-color: $blue-4;
         border-top-color: $blue-5;
         border-bottom-color: $blue-3;
-
-        a {
+  
+        abbr {
           color: $white;
         }
-
+  
         &:hover {
           background-color: $blue-3;
         }
       }
 
-      &__description-icon {
-        display: flex;
-        justify-content: start;
-        align-items: center;
-        margin-left: 5px;
-      }
+      .Story {
+        &__description-icon {
+          display: flex;
+          justify-content: start;
+          align-items: center;
+          margin-left: 5px;
+        }
 
-      &__info {
-        flex: 1;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        align-self: flex-start;
-        margin-left: 10px;
-      }
+        &__info {
+          flex: 1;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin: 0 10px;
+        }
 
-      &__icons-block{
-        display: flex;
-        justify-content: flex-start;
-        width: 60px;
-      }
+        &__icons-block {
+          display: flex;
+          width: 60px;
+        }
 
-      &__icon {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        margin-right: 5px;
-      }
+        &__icon {
+          display: flex;
+          align-items: center;
+          margin-right: 5px;
+        }
 
-      &__title {
-        word-break: break-all;
-        flex: 1;
-        margin-right: 10px;
+        &__title {
+          word-break: break-all;
+          flex: 1;
 
-        abbr {
-          border: none;
+          abbr {
+            border: none;
+          }
+        }
+
+        &__actions {
+          display: flex;
+          align-items: center;
+        }
+
+        &__estimated-value {
+          padding: 2px 3px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          background: $estimated-background-color;
+          margin-right: 1px;
+          border: 1px solid $estimated-border-color;
+          border-radius: 3px;
+          line-height: 1;
+          min-width: 15px;
+          font-style: normal;
+        }
+
+        &__estimate-box {
+          display: inline
+        }
+
+        &__estimate {
+          padding: 2px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 1px;
+          line-height: 1;
+          font-weight: bold;
+          color: $estimate-background-color;
+          cursor: pointer;
+          font-style: normal;
+        }
+
+        &__label {
+          padding-right: 3px;
+          color: $story-label-color;
+          text-decoration: none;
+        }
+
+        &__labels {
+          color: $story-labels-color;
+          font-size: 84%;
+          margin: 0;
+        }
+
+        &__btn {
+          @extend .btn;
+          @extend .btn-xs;
+          font-size: 11px;
+          display: inline;
+
+          &--start {
+            @extend .btn-default;
+          }
+          &--finish {
+            @extend .btn-primary;
+          }
+          &--deliver {
+            @extend .btn-warning;
+          }
+          &--accept {
+            @extend .btn-success;
+          }
+          &--reject {
+            @extend .btn-danger;
+          }
+          &--restart{
+            @extend .btn-danger;
+            background-image: sprite-url($icons-sprites);
+            background-position: sprite-position($icons-sprites, redo, 0, 2px);
+            background-repeat: no-repeat;
+            padding-left: 20px;
+          }
+        }
+
+        &__initials {
+          color: green;
+          font-weight: bold;
+          margin-left: 1em;
+          font-style: normal;
         }
       }
+    }
 
-      &__actions {
-        display: flex;
-        align-items: center;
-      }
-
-      &__estimated {
-        padding: 2px 3px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background: $estimated-background-color;
-        margin-right: 1px;
-        border: 1px solid $estimated-border-color;
-        border-radius: 3px;
-        line-height: 1;
-        min-width: 15px;
-        font-style: normal;
-      }
-
-      &__estimate-box{
-        display: inline
-      }
-
-      &__estimate {
-        padding: 2px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 1px;
-        line-height: 1;
-        font-weight: bold;
-        color: $estimate-background-color;
-        cursor: pointer;
-        font-style: normal;
-      }
-
-      &__label {
-        padding-right: 3px;
-        color: $story-label-color;
-        text-decoration: none;
-      }
-
-      &__labels {
-        color: $story-labels-color;
-        font-size: 84%;
-        margin: 0;
-      }
-
-      &__btn {
-        @extend .btn;
-        @extend .btn-xs;
-        font-size: 11px;
-        display: inline;
-
-        &--start {
-          @extend .btn-default;
+    &--expanded {
+      background-color: $butter-2;
+      color: $aluminium-6;
+      
+      .Story {
+        &__controls {
+          @extend .btn-group;
+          
+          input {
+            @extend .btn;
+            @extend .btn-default;
+            @extend .btn-xs;
+          }
         }
-        &--finish {
-          @extend .btn-primary;
-        }
-        &--deliver{
-          @extend .btn-warning;
-        }
-        &--accept{
-          @extend .btn-success;
-        }
-        &--reject{
-          @extend .btn-danger;
-        }
-        &--restart{
-          @extend .btn-danger;
-          background-image: sprite-url($icons-sprites);
-          background-position: sprite-position($icons-sprites, redo, 0, 2px);
-          background-repeat: no-repeat;
-          padding-left: 20px;
-        }
-      }
-
-      &__initials {
-        color: green;
-        font-weight: bold;
-        margin-left: 1em;
       }
     }
   }

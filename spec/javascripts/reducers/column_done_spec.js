@@ -1,21 +1,34 @@
 import reducer from 'reducers/columns/done';
 import actionTypes from 'actions/actionTypes';
+import { toggleStory } from 'actions/story';
 
 describe('Done Column reducer', () => {
+  const storiesArray = [
+    {
+      id: 4,
+      acceptedAt: '2018-08-05T19:40:43.319Z'
+    },
+    {
+      id: 7,
+      acceptedAt: '2018-08-06T19:40:43.319Z'
+    },
+    {
+      id: 1,
+      acceptedAt: '2018-08-06T19:10:43.319Z'
+    }
+  ];
+
   const createInitialStateWithStories = () => {
     return {
-      stories: [
+      stories: storiesArray
+    }
+  };
+
+  function createInitialStateWithSprints() {
+    return {
+      sprints: [
         {
-          id: 4,
-          acceptedAt: '2018-08-05T19:40:43.319Z'
-        },
-        {
-          id: 7,
-          acceptedAt: '2018-08-06T19:40:43.319Z'
-        },
-        {
-          id: 1,
-          acceptedAt: '2018-08-06T19:10:43.319Z'
+          stories: storiesArray
         }
       ]
     }
@@ -45,7 +58,7 @@ describe('Done Column reducer', () => {
   describe("when the initial state is empty", () => {
     it("return the new story", () => {
       const newStory = {
-        id : 80,
+        id: 80,
         acceptedAt: '2018-08-04T19:10:43.319Z'
       };
 
@@ -58,10 +71,42 @@ describe('Done Column reducer', () => {
     });
   });
 
+  describe("Toggle story", () => {
+    describe("When story is collapsed", () => {
+      it("expand story", () => {
+        const initialState = createInitialStateWithSprints();
+        const story = initialState.sprints[0].stories[0];
+        story.collapsed = true;
+
+        const action = toggleStory(story.id);
+        const state = reducer(initialState, action);
+
+        const expandedStory = state.sprints[0].stories[0];
+
+        expect(expandedStory.collapsed).toEqual(false);
+      });
+    });
+
+    describe("When story is expanded", () => {
+      it("collapse story", () => {
+        const initialState = createInitialStateWithSprints();
+        const story = initialState.sprints[0].stories[0];
+        story.collapsed = false;
+
+        const action = toggleStory(story.id);
+        const state = reducer(initialState, action);
+
+        const expandedStory = state.sprints[0].stories[0];
+
+        expect(expandedStory.collapsed).toEqual(true);
+      });
+    });
+  });
+
   describe("when there are stories on the initial state", () => {
     it("return the new story with the others", () => {
       const newStory = {
-        id : 80,
+        id: 80,
         acceptedAt: '2018-08-04T19:10:43.319Z'
       };
 
@@ -76,7 +121,7 @@ describe('Done Column reducer', () => {
     describe("when the new history has the lower date", () => {
       it("return stories ordered by date in ascending order", () => {
         const newStory = {
-          id : 80,
+          id: 80,
           acceptedAt: '2018-08-04T19:10:43.319Z'
         };
 
@@ -93,9 +138,9 @@ describe('Done Column reducer', () => {
     });
 
     describe("when the new history has the higher date", () => {
-       it("return stories ordered by date in ascending order", () => {
+      it("return stories ordered by date in ascending order", () => {
         const newStory = {
-          id : 80,
+          id: 80,
           acceptedAt: '2018-08-10T19:10:43.319Z'
         };
 
@@ -113,7 +158,7 @@ describe('Done Column reducer', () => {
 
     describe("when the new history has the date in the middle", () => {
       it("return stories ordered by date in ascending order", () => {
-        const newStory =  {
+        const newStory = {
           id: 80,
           acceptedAt: '2018-08-05T22:40:43.319Z'
         };
@@ -132,7 +177,7 @@ describe('Done Column reducer', () => {
   });
 
   describe("when we are receiving sprints from project", () => {
-    const data = { 
+    const data = {
       pastIterations: [
         {
           endDate: '2018/09/19',
@@ -159,7 +204,7 @@ describe('Done Column reducer', () => {
     beforeEach(() => {
       state = reducer(initialState, action);
     });
-    
+
     it("return an array with 2 sprints", () => {
       expect(state.sprints.length).toEqual(2);
     });
@@ -172,7 +217,7 @@ describe('Done Column reducer', () => {
     it("return sprints with formatted startDate and endDate", () => {
       expect(state.sprints[0].startDate).toEqual("Thu Sep 13th 2018");
       expect(state.sprints[0].endDate).toEqual("Wed Sep 19th 2018");
-      
+
       expect(state.sprints[1].startDate).toEqual("Thu Sep 20th 2018");
       expect(state.sprints[1].endDate).toEqual("Wed Sep 26th 2018");
     });

@@ -1,15 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CollapsedStory from './CollapsedStory';
+import ExpandedStory from './ExpandedStory';
+import { connect } from 'react-redux';
+import { toggleStory } from '../../actions/story';
 
-const StoryItem = ({ story }) => (
-  <div className='Story--collapsed' >
-    <CollapsedStory story={story} />
-  </div>
-);
+export const StoryItem = (props) => {
+  const { story, toggleStory } = props;
+
+  return (
+    <div className='story-container'>
+      {
+        story.collapsed ? (
+          <CollapsedStory story={story} onToggle={() => toggleStory(story.id)} />
+        ) : (
+          <ExpandedStory story={story} onToggle={() => toggleStory(story.id)} />
+        )
+      }
+    </div>
+  );
+};
 
 StoryItem.propTypes = {
   story: PropTypes.object.isRequired
 };
 
-export default StoryItem;
+export default connect(
+  null,
+  { toggleStory }
+)(StoryItem);

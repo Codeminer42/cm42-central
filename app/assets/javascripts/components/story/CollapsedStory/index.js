@@ -14,28 +14,35 @@ const classNameStory = (storyType, estimate) => {
   const isStoryNotEstimated = StoryModel.isStoryNotEstimated(storyType, estimate);
   const isRelease = StoryModel.isRelease(storyType);
 
-  return classname('Story', {
+  return classname({
+    'Story--release': isRelease,
     'Story--unestimated': isStoryNotEstimated,
-    'Story--estimated': !isStoryNotEstimated,
-    'Story--release': isRelease
+    'Story--estimated': !isStoryNotEstimated
   });
 };
 
-const CollapsedStory = ({ story }) => (
-  <div className={classNameStory(story.storyType, story.estimate)}>
-    <StoryPopover story={story}>
-      <div className='Story__icons-block'>
-        <StoryIcon storyType={story.storyType} />
-        <CollapsedStoryEstimate estimate={story.estimate} />
-        <StoryDescriptionIcon description={story.description} />
-      </div>
-    </StoryPopover>
+export const CollapsedStory = (props) => {
+  const { onToggle, story } = props;
+  
+  return (
+    <div
+      className={`Story Story--collapsed ${classNameStory(story.storyType, story.estimate)}`}
+      onClick={onToggle}
+    >
+      <StoryPopover story={story}>
+        <div className='Story__icons-block'>
+          <StoryIcon storyType={story.storyType} />
+          <CollapsedStoryEstimate estimate={story.estimate} />
+          <StoryDescriptionIcon description={story.description} />
+        </div>
+      </StoryPopover>
 
-    <CollapsedStoryInfo story={story}/>
+      <CollapsedStoryInfo story={story} />
 
-    <CollapsedStoryStateActions story={story}/>
-  </div>
-);
+      <CollapsedStoryStateActions story={story} />
+    </div>
+  );
+};
 
 CollapsedStory.propTypes = {
   story: PropTypes.object.isRequired
