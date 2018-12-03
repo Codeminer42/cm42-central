@@ -1,23 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-const storyTypes = ['feature', 'bug', 'release', 'chore']
+const storyTypes = ['feature', 'bug', 'release', 'chore'];
 
-export const ExpandedStoryType = (props) => {
-  const { project } = props;
-
+const ExpandedStoryType = ({ story }) => {
   return (
-    <div></div>
-  )
-}
+    <div className="Story__section">
+      <div className="Story__section-title">
+        { I18n.translate('activerecord.attributes.story.story_type') }
+      </div>
 
-ExpandedStoryType.propTypes = {
-  project: PropTypes.object
+      <select defaultValue={story.storyType} className="form-control input-sm">
+        {
+          storyTypes.map((value) => (
+            <option value={value} key={value}>
+              { value }
+            </option>
+          ))
+        }
+      </select>
+    </div>
+  )
 };
 
-const mapStateToProps = ({ project }) => ({ project });
+ExpandedStoryType.propTypes = {
+  story: PropTypes.object
+};
 
-export default connect(
-  mapStateToProps,
-  null
-)(ExpandedStoryType);
+export default ExpandedStoryType;
