@@ -3,7 +3,6 @@ import { status } from "libs/beta/constants";
 import * as Story from "models/beta/story";
 import _ from "underscore";
 import * as Iteration from "models/beta/iteration";
-import { toggleStories } from '../story';
 
 const initialState = {
   stories: [],
@@ -71,18 +70,6 @@ const backlog = (state = initialState, action) => {
       return {
         stories: orderedStories,
         sprints: groupStoriesInSprints(orderedStories, action.project)
-      };
-    case actionTypes.TOGGLE_STORY:
-      const sprints = state.sprints.map((sprint) => {
-        return {
-          ...sprint,
-          stories: toggleStories(sprint.stories, action.id)
-        };
-      });
-
-      return {
-        ...state,
-        sprints
       };
     default:
       return state;

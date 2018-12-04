@@ -1,7 +1,6 @@
 import actionTypes from 'actions/actionTypes';
 import * as Story from 'models/beta/story';
 import moment from "moment";
-import { toggleStories } from '../story';
 
 const initialState = {
   stories: [],
@@ -35,16 +34,6 @@ const done = (state = initialState, action) => {
       }));
 
       return { ...state, sprints };
-    case actionTypes.TOGGLE_STORY:
-      return {
-        ...state,
-        sprints: (state.sprints.map((sprint) => {
-          return {
-            ...sprint,
-            stories: toggleStories(sprint.stories, action.id)
-          }
-        }))
-      };
     default:
       return state;
   }

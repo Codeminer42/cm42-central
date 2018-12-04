@@ -1,7 +1,6 @@
 import actionTypes from 'actions/actionTypes';
 import * as Story from 'models/beta/story';
 import _ from 'underscore';
-import { toggleStories } from '../story';
 
 const initialState = {
   stories: [],
@@ -31,11 +30,6 @@ const chillyBin = (state = initialState, action) => {
       ];
 
       return { stories: orderByUnestimatedFeatures(stories) }
-    case actionTypes.TOGGLE_STORY:
-      return {
-        ...state,
-        stories: toggleStories(state.stories, action.id)
-      };
     default:
       return state;
   }
