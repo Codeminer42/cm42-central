@@ -7,6 +7,7 @@ export default keyMirror({
   RECEIVE_PROJECT: null,
   RECEIVE_USERS: null,
   RECEIVE_STORIES: null,
+  RECEIVE_PAST_ITERATIONS: null,
   COLUMN_CHILLY_BIN: null,
   COLUMN_BACKLOG: null,
   COLUMN_IN_PROGRESS: null,

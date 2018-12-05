@@ -1,8 +1,8 @@
 import * as ProjectBoard from "models/beta/projectBoard";
 import actionTypes from "./actionTypes";
-import { classifyStories } from "./column";
 import { receiveUsers } from "./user";
 import { receiveStories } from "./story";
+import { receivePastIterations } from "./pastIterations";
 
 const requestProjectBoard = () => ({
   type: actionTypes.REQUEST_PROJECT_BOARD
@@ -29,11 +29,11 @@ export const fetchProjectBoard = projectId => {
 
     ProjectBoard.get(projectId)
       .then(({ project, users, stories, pastIterations }) => {
-        dispatch(receiveProject({ project, pastIterations }));
+        dispatch(receiveProject({ project }));
+        dispatch(receivePastIterations(pastIterations));
         dispatch(receiveUsers(users));
         dispatch(receiveStories(stories));
         dispatch(receiveProjectBoard(projectId));
-        classifyStories(dispatch, stories, project);
       })
       .catch(error => dispatch(errorRequestProjectBoard(error)));
   };
