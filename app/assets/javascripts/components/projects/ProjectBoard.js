@@ -4,6 +4,8 @@ import { fetchProjectBoard } from "actions/projectBoard";
 import Column from "../Columns/ColumnItem";
 import Stories from "../stories/Stories";
 import Sprints from "../stories/Sprints";
+import { getColumns } from "../../selectors/columns";
+import actionTypes from "../../actions/actionTypes";
 
 class ProjectBoard extends React.Component {
   componentWillMount() {
@@ -18,21 +20,21 @@ class ProjectBoard extends React.Component {
     return (
       <div className="ProjectBoard">
         <Column title={I18n.t("projects.show.chilly_bin")}>
-          <Stories stories={this.props.columns.chillyBin.stories} />
+          <Stories stories={this.props.chillyBinStories} />
         </Column>
-        
+
         <Column
           title={`${I18n.t("projects.show.backlog")} /
           ${I18n.t("projects.show.in_progress")}`}>
           <Sprints
-            sprints={this.props.columns.backlog.sprints}
+            sprints={this.props.backlogSprints}
           />
         </Column>
 
-        <Column 
+        <Column
           title={I18n.t("projects.show.done")}>
           <Sprints
-            sprints={this.props.columns.done.sprints}
+            sprints={this.props.doneSprints}
           />
         </Column>
       </div>
@@ -45,13 +47,24 @@ const mapStateToProps = ({
   project,
   users,
   stories,
-  columns
+  pastIterations
 }) => ({
   projectBoard,
   project,
   users,
-  stories,
-  columns
+  chillyBinStories: getColumns({
+    column: actionTypes.COLUMN_CHILLY_BIN,
+    stories
+  }),
+  backlogSprints: getColumns({
+    column: actionTypes.COLUMN_BACKLOG,
+    stories,
+    project
+  }),
+  doneSprints: getColumns({
+    column: actionTypes.COLUMN_DONE,
+    pastIterations
+  })
 });
 
 const mapDispatchToProps = {
