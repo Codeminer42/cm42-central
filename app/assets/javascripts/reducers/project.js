@@ -5,7 +5,7 @@ const initialState = {};
 const projectReducer = (state = initialState, action) => {
   switch(action.type) {
   case actionTypes.RECEIVE_PROJECT:
-    return action.data.project;
+    return action.data;
   default:
     return state;
   }

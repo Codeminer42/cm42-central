@@ -29,7 +29,7 @@ export const fetchProjectBoard = projectId => {
 
     ProjectBoard.get(projectId)
       .then(({ project, users, stories, pastIterations }) => {
-        dispatch(receiveProject({ project }));
+        dispatch(receiveProject(project));
         dispatch(receivePastIterations(pastIterations));
         dispatch(receiveUsers(users));
         dispatch(receiveStories(stories));
