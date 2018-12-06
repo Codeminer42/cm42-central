@@ -8,7 +8,7 @@ const pastIterationsReducer = (state = initialState, action) => {
       return action.data;
     default:
       return state;
-  }
+  };
 };
 
 export default pastIterationsReducer;

@@ -11,7 +11,7 @@ const storiesReducer = (state = initialState, action) => {
       return toggleStories(state, action.id);
     default:
       return state;
-  }
+  };
 };
 
 export default storiesReducer;
