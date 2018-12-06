@@ -35,6 +35,10 @@ export const isFeature = story => {
   return story.storyType === storyTypes.FEATURE;
 };
 
+export const isUnscheduled = story => {
+  return story.state === status.UNSCHEDULED;
+};
+
 export const isUnstarted = story => {
   return story.state === status.UNSTARTED;
 };

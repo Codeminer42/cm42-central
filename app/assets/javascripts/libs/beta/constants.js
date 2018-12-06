@@ -4,7 +4,8 @@ export const status = {
   STARTED: "started",
   REJECTED: "rejected",
   FINISHED: "finished",
-  UNSTARTED: "unstarted"
+  UNSTARTED: "unstarted",
+  UNSCHEDULED: "unscheduled",
 };
 
 export const storyTypes = {

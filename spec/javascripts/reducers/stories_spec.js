@@ -1,22 +1,26 @@
 import reducer from 'reducers/stories';
 import { toggleStory } from 'actions/story';
 
-const storiesArray = [
-  {
-    id: 1,
-    collapsed: true
-  },
-  {
-    id: 2,
-    collapsed: true
-  },
-  {
-    id: 3,
-    collapsed: true
-  }
-];
-
 describe('Stories reducer', () => {
+  let storiesArray;
+  
+  beforeEach(() => {
+    storiesArray = [
+      {
+        id: 1,
+        collapsed: true
+      },
+      {
+        id: 2,
+        collapsed: true
+      },
+      {
+        id: 3,
+        collapsed: true
+      }
+    ];
+  });
+
   describe("Toggle story", () => {
     describe("When story is collapsed", () => {
       it("expand story", () => {

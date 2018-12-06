@@ -5,7 +5,7 @@ import Column from "../Columns/ColumnItem";
 import Stories from "../stories/Stories";
 import Sprints from "../stories/Sprints";
 import { getColumns } from "../../selectors/columns";
-import actionTypes from "../../actions/actionTypes";
+import * as Columns from '../../models/beta/column';
 
 class ProjectBoard extends React.Component {
   componentWillMount() {
@@ -53,16 +53,16 @@ const mapStateToProps = ({
   project,
   users,
   chillyBinStories: getColumns({
-    column: actionTypes.COLUMN_CHILLY_BIN,
+    column: Columns.CHILLY_BIN,
     stories
   }),
   backlogSprints: getColumns({
-    column: actionTypes.COLUMN_BACKLOG,
+    column: Columns.BACKLOG,
     stories,
     project
   }),
   doneSprints: getColumns({
-    column: actionTypes.COLUMN_DONE,
+    column: Columns.DONE,
     pastIterations
   })
 });

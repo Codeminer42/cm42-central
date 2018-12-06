@@ -10,4 +10,4 @@ export const mountPastIterations = (pastIterations) => {
   }));
 
   return sprints;
-}
+};

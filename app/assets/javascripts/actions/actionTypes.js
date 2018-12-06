@@ -8,9 +8,5 @@ export default keyMirror({
   RECEIVE_USERS: null,
   RECEIVE_STORIES: null,
   RECEIVE_PAST_ITERATIONS: null,
-  COLUMN_CHILLY_BIN: null,
-  COLUMN_BACKLOG: null,
-  COLUMN_IN_PROGRESS: null,
-  COLUMN_DONE: null,
   TOGGLE_STORY: null
 });

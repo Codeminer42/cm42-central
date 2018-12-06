@@ -59,7 +59,7 @@ describe('Backlog selector functions', () => {
   });
 
   describe('when stories have the same state', () => {
-    describe('Story state is accepted', () => {
+    describe('All stories are accepted', () => {
       it('sort by acceptedAt', () => {
         const newStory = storyFactory({
           id: 0,
@@ -81,7 +81,7 @@ describe('Backlog selector functions', () => {
       });
     });
 
-    describe('Story state is delivered', () => {
+    describe('All stories are delivered', () => {
       it('sort by deliveredAt', () => {
         const newStory = storyFactory({
           id: 0,
@@ -103,7 +103,7 @@ describe('Backlog selector functions', () => {
       });
     });
 
-    describe('Story state is started', () => {
+    describe('All stories are started', () => {
       it('sort by startedAt', () => {
         const newStory = storyFactory({
           id: 0,
@@ -125,7 +125,7 @@ describe('Backlog selector functions', () => {
       });
     });
 
-    describe('Story state is rejected, finished, unstarted', () => {
+    describe('All stories are rejected, finished or unstarted', () => {
       const storyStates = ['rejected', 'finished', 'unstarted'];
       
       it('sort by position', () => {

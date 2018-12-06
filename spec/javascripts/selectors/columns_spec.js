@@ -1,6 +1,6 @@
 import storyFactory from '../support/factories/storyFactory';
 import { getColumns } from '../../../app/assets/javascripts/selectors/columns';
-import actionTypes from '../../../app/assets/javascripts/actions/actionTypes';
+import * as Column from '../../../app/assets/javascripts/models/beta/column';
 import moment from 'moment';
 
 describe('Columns Selector', () => {
@@ -11,12 +11,16 @@ describe('Columns Selector', () => {
   const currentSprintDate = moment();
   const previousSprintDate = moment().subtract(1, 'weeks');
 
-  const storiesArray = [unscheduledStory, startedStory, deliveredStory];
+  let storiesArray; 
+  
+  beforeEach(() => {
+    storiesArray = [unscheduledStory, startedStory, deliveredStory];
+  });
 
   describe('CHILLY_BIN', () => {
     it('return only unschedule stories', () => {
       const chillyBinStories = getColumns({
-        column: actionTypes.COLUMN_CHILLY_BIN,
+        column: Column.CHILLY_BIN,
         stories: storiesArray
       });
 
@@ -39,7 +43,7 @@ describe('Columns Selector', () => {
       storiesArray.push(storyAcceptedCurrentSprint);
 
       const backlogSprints = getColumns({
-        column: actionTypes.COLUMN_BACKLOG,
+        column: Column.BACKLOG,
         project,
         stories: storiesArray
       });
@@ -49,7 +53,7 @@ describe('Columns Selector', () => {
 
     it('do not return unschedule stories', () => {
       const backlogSprints = getColumns({
-        column: actionTypes.COLUMN_BACKLOG,
+        column: Column.BACKLOG,
         project,
         stories: storiesArray
       });
@@ -71,7 +75,7 @@ describe('Columns Selector', () => {
       const endDate = moment(pastIterations[0].endDate).format("ddd MMM Do Y");
 
       const doneSprints = getColumns({
-        column: actionTypes.COLUMN_DONE,
+        column: Column.DONE,
         pastIterations
       });
 
