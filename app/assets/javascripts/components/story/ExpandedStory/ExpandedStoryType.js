@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 const storyTypes = ['feature', 'bug', 'release', 'chore'];
 
 const ExpandedStoryType = ({ story }) => {
@@ -19,7 +20,7 @@ const ExpandedStoryType = ({ story }) => {
         }
       </select>
     </div>
-  )
+  );
 };
 
 ExpandedStoryType.propTypes = {

@@ -24,7 +24,7 @@ export const ExpandedStoryEstimate = (props) => {
         }
       </select>
     </div>
-  )
+  );
 };
 
 ExpandedStoryEstimate.propTypes = {
