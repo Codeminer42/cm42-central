@@ -10,6 +10,7 @@ end
 gem 'rails', '4.2.11'
 
 gem 'activeadmin', '~> 1.0.0.pre4'
+gem 'activejob', '>= 4.2.11'
 gem 'api-pagination'
 gem 'attachinary'
 gem 'autoprefixer-rails'
