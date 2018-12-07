@@ -818,7 +818,7 @@ describe('StoryView', function() {
       });
 
       it('destroy button', function() {
-        var destroy = $storyControls.find('.submit');
+        var destroy = $storyControls.find('.destroy');
 
         expect(destroy.disabled).toBeFalsy();
       });
@@ -890,6 +890,16 @@ describe('StoryView', function() {
         this.view.render();
 
         expect(this.view.$el.html()).not.toContain('data-story-state-buttons');
+      });
+
+      it('does not show save or delete buttons', function() {
+        var $storyControls;
+        this.view.canEdit = sinon.stub().returns(true);
+        this.view.render();
+        this.story.set({ state: 'accepted' });
+        $storyControls = this.view.$el.find('.story-controls');
+
+        expect($storyControls).not.toContainElement('.submit')
       });
     });
   });
