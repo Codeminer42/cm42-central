@@ -6,11 +6,11 @@ export const toggleStories = (stories, id) => {
       return story;
     }
 
-    const previousState = !story.collapsed ? null : story;
+    const editing = !story.collapsed ? null : story;
 
     return {
       ...story,
-      _previousState: previousState,
+      _editing: editing,
       collapsed: !story.collapsed
     };
   });
@@ -22,9 +22,12 @@ export const editStory = (stories, id, newAttributes) => {
       return story;
     };
 
-    const newStory = { ...story, ...newAttributes };
+    const newStory = { ...story._editing, ...newAttributes };
     newStory.estimate = !isFeature(newStory) ? null : newStory.estimate;
 
-    return newStory;
+    return {
+      ...story,
+      _editing: newStory
+    };
   });
 };      

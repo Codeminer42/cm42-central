@@ -9,20 +9,26 @@ describe('Stories reducer', () => {
       {
         id: 1,
         collapsed: true,
-        storyType: 'feature',
-        estimate: 1
+        _editing: {
+          storyType: 'feature',
+          estimate: 1,
+        }
       },
       {
         id: 2,
         collapsed: true,
-        storyType: 'feature',
-        estimate: 1
+        _editing: {
+          storyType: 'feature',
+          estimate: 1,
+        }
       },
       {
         id: 3,
         collapsed: true,
-        storyType: 'feature',
-        estimate: 1
+        _editing: {
+          storyType: 'feature',
+          estimate: 1,
+        }
       }
     ];
   });
@@ -63,27 +69,27 @@ describe('Stories reducer', () => {
     it("change story type", () => {
       const initialState = storiesArray;
       const story = storiesArray[0];
-      story.storyType = 'feature';
+      story._editing.storyType = 'feature';
 
-      const action = editStory(story.id, {storyType: 'bug'});
+      const action = editStory(story.id, { storyType: 'bug' });
       const storiesState = reducer(initialState, action);
 
       const changedStory = storiesState[0];
 
-      expect(changedStory.storyType).toEqual('bug');
+      expect(changedStory._editing.storyType).toEqual('bug');
     });
 
     it("change story estimate", () => {
       const initialState = storiesArray;
       const story = storiesArray[0];
-      story.estimate = 1;
+      story._editing.estimate = 1;
 
-      const action = editStory(story.id, {estimate: 2});
+      const action = editStory(story.id, { estimate: 2 });
       const storiesState = reducer(initialState, action);
 
       const changedStory = storiesState[0];
 
-      expect(changedStory.estimate).toEqual(2);
+      expect(changedStory._editing.estimate).toEqual(2);
     });
   });
 });
