@@ -4,10 +4,10 @@ import { ExpandedStoryEstimate } from 'components/story/ExpandedStory/ExpandedSt
 
 describe('<ExpandedStoryEstimate />', () => {
   it("renders component with 'Fibonacci' point scale in select", () => {
-    const project = { pointValues: ['1','2','3','5','8'] };
+    const project = { pointValues: ['1', '2', '3', '5', '8'] };
     const story = { estimate: null };
 
-    const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story}/>);
+    const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story} />);
     const select = wrapper.find('select').text();
 
     project.pointValues.forEach((value) => {
@@ -16,10 +16,10 @@ describe('<ExpandedStoryEstimate />', () => {
   });
 
   it("renders component with 'Powers of two' point scale in select", () => {
-    const project = { pointValues: ['1','2','4','8'] };
+    const project = { pointValues: ['1', '2', '4', '8'] };
     const story = { estimate: null };
 
-    const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story}/>);
+    const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story} />);
     const select = wrapper.find('select').text();
 
     project.pointValues.forEach((value) => {
@@ -40,41 +40,43 @@ describe('<ExpandedStoryEstimate />', () => {
   });
 
   describe("When story.estimate is not null", () => {
-    it("sets the select defaultValue as story.estimate", () => {
-      const project = { pointValues: ['1','2','3','5','8'] };
+    const pointValues = ['1', '2', '3', '5', '8'];
 
-      project.pointValues.forEach((value) => {
+    pointValues.forEach((value) => {
+      it(`sets the select defaultValue as ${value}`, () => {
+        const project = { pointValues };
+
         const story = { estimate: value };
-        const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story}/>);
+        const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story} />);
         const select = wrapper.find('select');
 
-        expect(select.props().defaultValue).toBe(value);
+        expect(select.prop('defaultValue')).toBe(value);
       });
     });
   });
 
   describe("When story.estimate is null", () => {
     it("sets the select defaultValue as null", () => {
-      const project = { pointValues: ['1','2','3','4','5'] };
+      const project = { pointValues: ['1', '2', '3', '4', '5'] };
       const story = { estimate: null };
 
-      const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story}/>);
+      const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story} />);
       const select = wrapper.find('select');
 
-      expect(select.props().defaultValue).toBe(null);
+      expect(select.prop('defaultValue')).toBe(null);
     });
   });
 
   describe("When change storyType", () => {
-    describe("to a type that is not a feature", () =>{
+    describe("to a type that is not a feature", () => {
       const notFeatureTypes = ['bug', 'release', 'chore'];
 
-      it("disables estimate select", () =>{
-        const project = { pointValues: ['1','2','3','4','5'] };
+      it("disables estimate select", () => {
+        const project = { pointValues: ['1', '2', '3', '4', '5'] };
 
         notFeatureTypes.forEach((type) => {
           const story = { storyType: type };
-          const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story}/>);
+          const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story} />);
 
           const select = wrapper.find('select');
 
@@ -83,14 +85,14 @@ describe('<ExpandedStoryEstimate />', () => {
       });
     });
 
-    describe("to a feature", () =>{
-      it("not disable estimate select", () =>{
-        const project = { pointValues: ['1','2','3','4','5'] };
+    describe("to a feature", () => {
+      it("doesn't disable estimate select", () => {
+        const project = { pointValues: ['1', '2', '3', '4', '5'] };
         const story = { storyType: 'bug' };
-        
-        const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story}/>);
+
+        const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story} />);
         const select = wrapper.find('select');
-        
+
         expect(select.props().disabled).toBe(true);
       });
     });

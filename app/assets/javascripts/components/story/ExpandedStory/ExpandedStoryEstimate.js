@@ -4,14 +4,8 @@ import { connect } from 'react-redux';
 import { isFeature } from '../../../models/beta/story';
 
 export class ExpandedStoryEstimate extends React.Component {
-  editStory(event) {
-    const newValue = event.target.value;
-    
-    this.props.onEdit({ estimate: newValue });
-  };
-
   render() {
-    const { project, story } = this.props;
+    const { project, story, onEdit } = this.props;
 
     return (
       <div className="Story__section">
@@ -22,7 +16,7 @@ export class ExpandedStoryEstimate extends React.Component {
         <select
           defaultValue={story.estimate}
           className="form-control input-sm"
-          onChange={(event) => this.editStory(event)}
+          onChange={(event) => onEdit({ estimate: parseInt(event.target.value) })}
           disabled={!isFeature(story)}
         >
           <option value=''>
@@ -49,6 +43,5 @@ ExpandedStoryEstimate.propTypes = {
 const mapStateToProps = ({ project }) => ({ project });
 
 export default connect(
-  mapStateToProps,
-  null
+  mapStateToProps
 )(ExpandedStoryEstimate);

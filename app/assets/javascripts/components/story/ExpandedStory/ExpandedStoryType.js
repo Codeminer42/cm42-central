@@ -3,14 +3,8 @@ import PropTypes from 'prop-types';
 import { types } from '../../../models/beta/story'; 
 
 export class ExpandedStoryType extends React.Component {
-  editStory(event) {
-    const newValue = event.target.value;
-
-    this.props.onEdit({ storyType: newValue });
-  };
-
   render() {
-    const { story } = this.props;
+    const { story, onEdit } = this.props;
 
     return (
       <div className="Story__section">
@@ -21,7 +15,7 @@ export class ExpandedStoryType extends React.Component {
         <select
           defaultValue={story.storyType}
           className="form-control input-sm"
-          onChange={(event) => this.editStory(event)}
+          onChange={(event) => onEdit({ storyType: event.target.value })}
         >
           {
             types.map((value) => (

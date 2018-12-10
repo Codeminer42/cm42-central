@@ -14,7 +14,7 @@ export const ExpandedStory = (props) => {
     <div className="Story Story--expanded">
       <ExpandedStoryControls onCancel={onToggle} />
       <ExpandedStoryHistoryLocation story={story} />
-      <div className="Story__inline-block">
+      <div className="Story__flex">
         <ExpandedStoryEstimate story={story}
           onEdit={(newAttributes) => editStory(story.id, newAttributes)}
         />

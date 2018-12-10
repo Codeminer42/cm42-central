@@ -1,17 +1,17 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import ExpandedStoryType from 'components/story/ExpandedStory/ExpandedStoryType';
+import { types } from 'models/beta/story';
 
-describe('<ExpandedStoryEstimate />', () => {
-  it("sets defaultValue as story.storyType in select", () => {
-    const storyTypes = ['feature', 'bug', 'release', 'chore'];
+describe('<ExpandedStoryType />', () => {
+  types.forEach((type) => {
+    it(`sets defaultValue as ${type} in select`, () => {
 
-    storyTypes.forEach((type) => {
       const story = { storyType: type };
       const wrapper = shallow(<ExpandedStoryType story={story} />);
       const select = wrapper.find('select');
 
-      expect(select.props().defaultValue).toBe(type);
+      expect(select.prop('defaultValue')).toBe(type);
     });
   });
 });
