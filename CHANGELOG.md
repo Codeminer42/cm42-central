@@ -1,6 +1,12 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Select to Story Type in board V2
+- Select to Story Estimate in board V2
+
+### Fix
+- Refactor Redux flow to remove stories duplication in board V2
 
 ## [1.22.0] 2018-11-30
 ### Added
