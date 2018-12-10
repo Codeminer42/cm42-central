@@ -7,7 +7,7 @@ import ExpandedStoryType from './ExpandedStoryType';
 import { editStory } from '../../../actions/story';
 import { connect } from 'react-redux';
 
-const ExpandedStory = (props) => {
+export const ExpandedStory = (props) => {
   const { story, onToggle, editStory } = props;
 
   return (
@@ -18,7 +18,7 @@ const ExpandedStory = (props) => {
         <ExpandedStoryEstimate story={story}
           onEdit={(newAttributes) => editStory(story.id, newAttributes)}
         />
-        
+
         <ExpandedStoryType story={story}
           onEdit={(newAttributes) => editStory(story.id, newAttributes)}
         />

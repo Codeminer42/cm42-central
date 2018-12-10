@@ -64,4 +64,35 @@ describe('<ExpandedStoryEstimate />', () => {
       expect(select.props().defaultValue).toBe(null);
     });
   });
+
+  describe("When change storyType", () => {
+    describe("to a type that is not a feature", () =>{
+      const notFeatureTypes = ['bug', 'release', 'chore'];
+
+      it("disables estimate select", () =>{
+        const project = { pointValues: ['1','2','3','4','5'] };
+
+        notFeatureTypes.forEach((type) => {
+          const story = { storyType: type };
+          const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story}/>);
+
+          const select = wrapper.find('select');
+
+          expect(select.props().disabled).toBe(true);
+        });
+      });
+    });
+
+    describe("to a feature", () =>{
+      it("not disable estimate select", () =>{
+        const project = { pointValues: ['1','2','3','4','5'] };
+        const story = { storyType: 'bug' };
+        
+        const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story}/>);
+        const select = wrapper.find('select');
+        
+        expect(select.props().disabled).toBe(true);
+      });
+    });
+  });
 });

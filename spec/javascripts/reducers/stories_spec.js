@@ -1,22 +1,28 @@
 import reducer from 'reducers/stories';
-import { toggleStory } from 'actions/story';
+import { toggleStory, editStory } from 'actions/story';
 
 describe('Stories reducer', () => {
   let storiesArray;
-  
+
   beforeEach(() => {
     storiesArray = [
       {
         id: 1,
-        collapsed: true
+        collapsed: true,
+        storyType: 'feature',
+        estimate: 1
       },
       {
         id: 2,
-        collapsed: true
+        collapsed: true,
+        storyType: 'feature',
+        estimate: 1
       },
       {
         id: 3,
-        collapsed: true
+        collapsed: true,
+        storyType: 'feature',
+        estimate: 1
       }
     ];
   });
@@ -50,6 +56,34 @@ describe('Stories reducer', () => {
 
         expect(collasedStory.collapsed).toEqual(true);
       });
+    });
+  });
+
+  describe("Edit a story", () => {
+    it("change story type", () => {
+      const initialState = storiesArray;
+      const story = storiesArray[0];
+      story.storyType = 'feature';
+
+      const action = editStory(story.id, {storyType: 'bug'});
+      const storiesState = reducer(initialState, action);
+
+      const changedStory = storiesState[0];
+
+      expect(changedStory.storyType).toEqual('bug');
+    });
+
+    it("change story estimate", () => {
+      const initialState = storiesArray;
+      const story = storiesArray[0];
+      story.estimate = 1;
+
+      const action = editStory(story.id, {estimate: 2});
+      const storiesState = reducer(initialState, action);
+
+      const changedStory = storiesState[0];
+
+      expect(changedStory.estimate).toEqual(2);
     });
   });
 });
