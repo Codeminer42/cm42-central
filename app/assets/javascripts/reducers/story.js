@@ -13,3 +13,16 @@ export const toggleStories = (stories, id) => {
     };
   });
 };      
+
+export const editStory = (stories, id, newAttributes) => {
+  return stories.map((story) => {
+    if (story.id !== id) {
+      return story;
+    };
+
+    return {
+      ...story,
+      ...newAttributes 
+    };
+  });
+};      

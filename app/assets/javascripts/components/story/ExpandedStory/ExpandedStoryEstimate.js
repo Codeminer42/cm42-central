@@ -1,30 +1,44 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { isFeature } from '../../../models/beta/story';
 
-export const ExpandedStoryEstimate = (props) => {
-  const { project, story } = props;
+export class ExpandedStoryEstimate extends React.Component {
+  editStory(event) {
+    const newValue = event.target.value;
+    
+    this.props.onEdit({ estimate: newValue });
+  };
 
-  return (
-    <div className="Story__section">
-      <div className="Story__section-title">
-        { I18n.translate('activerecord.attributes.story.estimate') }
+  render() {
+    const { project, story } = this.props;
+
+    return (
+      <div className="Story__section">
+        <div className="Story__section-title">
+          { I18n.translate('activerecord.attributes.story.estimate') }
+        </div>
+
+        <select
+          defaultValue={story.estimate}
+          className="form-control input-sm"
+          onChange={(event) => this.editStory(event)}
+          disabled={!isFeature(story)}
+        >
+          <option value=''>
+            { I18n.translate('story.no_estimate') }
+          </option>
+          {
+            project.pointValues.map((value) => (
+              <option value={value} key={value}>
+                { value }
+              </option>
+            ))
+          }
+        </select>
       </div>
-
-      <select defaultValue={story.estimate} className="form-control input-sm">
-        <option value=''>
-          { I18n.translate('story.no_estimate') }
-        </option>
-        {
-          project.pointValues.map((value) => (
-            <option value={value} key={value}>
-              { value }
-            </option>
-          ))
-        }
-      </select>
-    </div>
-  );
+    );
+  };
 };
 
 ExpandedStoryEstimate.propTypes = {
