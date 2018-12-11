@@ -61,7 +61,6 @@ class ProjectsController < ApplicationController
     @project = policy_scope(Project).new(allowed_params)
     authorize @project
     @project.users << current_user
-
     respond_to do |format|
       if ProjectOperations::Create.call(@project, current_user)
         current_team.ownerships.create(project: @project, is_owner: true)

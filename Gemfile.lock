@@ -1,10 +1,11 @@
 GIT
   remote: https://github.com/Codeminer42/cm42-central-support.git
-  revision: af414e8fd5c85eea6c4017aa83cb11d3d3c9b418
+  revision: d6e7f3100ecf37f53baa7444a3f288ffdbe5d731
+  branch: origin/updating-rails
   specs:
-    central-support (0.9.3)
-      activerecord (>= 3.2)
-      activesupport (>= 3.2)
+    central-support (0.9.4)
+      activerecord (>= 5.1)
+      activesupport (>= 5.1)
       enumerize (~> 2.0)
       transitions (~> 0.1.9)
 
@@ -201,10 +202,10 @@ GEM
     eventmachine (1.2.7)
     excon (0.62.0)
     execjs (2.7.0)
-    factory_girl (4.9.0)
+    factory_bot (4.11.1)
       activesupport (>= 3.0.0)
-    factory_girl_rails (4.9.0)
-      factory_girl (~> 4.9.0)
+    factory_bot_rails (4.11.1)
+      factory_bot (~> 4.11.1)
       railties (>= 3.0.0)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
@@ -256,6 +257,7 @@ GEM
       has_scope (~> 0.6)
       railties (>= 4.2, < 5.3)
       responders
+    jaro_winkler (1.5.1)
     jquery-atwho-rails (1.5.4)
     jquery-rails (4.3.3)
       rails-dom-testing (>= 1, < 3)
@@ -384,6 +386,10 @@ GEM
     rails-assets-jquery (3.3.1)
     rails-assets-jquery.gritter (1.7.4)
       rails-assets-jquery (>= 1.8.2)
+    rails-controller-testing (1.0.4)
+      actionpack (>= 5.0.1.x)
+      actionview (>= 5.0.1.x)
+      activesupport (>= 5.0.1.x)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
@@ -403,8 +409,7 @@ GEM
       method_source
       rake (>= 0.8.7)
       thor (>= 0.19.0, < 2.0)
-    rainbow (2.2.2)
-      rake
+    rainbow (3.0.0)
     rake (12.3.2)
     ransack (2.1.1)
       actionpack (>= 5.0)
@@ -454,13 +459,16 @@ GEM
       rspec-mocks (~> 3.8.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
-    rubocop (0.49.1)
+    rubocop (0.59.1)
+      jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
-      parser (>= 2.3.3.1, < 3.0)
+      parser (>= 2.5, != 2.5.1.1)
       powerpack (~> 0.1)
-      rainbow (>= 1.99.1, < 3.0)
+      rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
+    rubocop-rspec (1.30.0)
+      rubocop (>= 0.58.0)
     ruby-progressbar (1.10.0)
     safe_yaml (1.0.4)
     sass (3.4.25)
@@ -570,7 +578,7 @@ DEPENDENCIES
   devise-i18n
   differ
   dotenv-rails
-  factory_girl_rails
+  factory_bot_rails
   foreman
   friendly_id (~> 5.2.4)
   grape
@@ -601,8 +609,9 @@ DEPENDENCIES
   rack-cache
   rack-cors
   rack-timeout
-  rails (= 5.2.1)
+  rails (~> 5.2.1)
   rails-assets-jquery.gritter!
+  rails-controller-testing
   rails-i18n
   rails_12factor
   recaptcha
@@ -611,7 +620,8 @@ DEPENDENCIES
   rspec-activemodel-mocks
   rspec-its
   rspec-rails
-  rubocop (= 0.49.1)
+  rubocop (= 0.59.1)
+  rubocop-rspec
   sass-rails
   shoulda-matchers
   sidekiq
@@ -629,4 +639,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.6
+   1.17.2

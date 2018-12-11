@@ -14,7 +14,7 @@ describe MembershipsController do
     let(:user_params) { { email: 'foo@bar.com' } }
 
     it 'redirects to the project members url path' do
-      post :create, project_id: project.id, user: user_params
+      post :create, params: { project_id: project.id, user: user_params }
 
       expect(response).to redirect_to(project_users_url(project))
     end
@@ -25,7 +25,7 @@ describe MembershipsController do
       context 'but its already enrolled to the project' do
         it 'displays a message that the user is already enrolled to the project' do
           project.users << new_member
-          post :create, project_id: project.id, user: user_params
+          post :create, params: { project_id: project.id, user: user_params }
 
           expect(flash[:alert]).to eq 'foo@bar.com is already a member of this project'
         end
@@ -33,13 +33,13 @@ describe MembershipsController do
 
       context 'and the user is not enrolled to the project yet' do
         it 'displays a message that the user was added to the project' do
-          post :create, project_id: project.id, user: user_params
+          post :create, params: { project_id: project.id, user: user_params }
 
           expect(flash[:notice]).to eq('foo@bar.com was added to this project')
         end
 
         it 'enrolls the user to the project' do
-          post :create, project_id: project.id, user: user_params
+          post :create, params: { project_id: project.id, user: user_params }
 
           expect(project.users).to include(new_member)
         end
@@ -48,7 +48,7 @@ describe MembershipsController do
 
     context 'when the user does not exist' do
       it 'displays that the user is not found' do
-        post :create, project_id: project.id, user: user_params
+        post :create, params: { project_id: project.id, user: user_params }
 
         expect(flash[:alert]).to eq(I18n.t('teams.user_not_found'))
       end

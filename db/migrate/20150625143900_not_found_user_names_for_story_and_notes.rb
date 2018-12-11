@@ -1,4 +1,4 @@
-class NotFoundUserNamesForStoryAndNotes < ActiveRecord::Migration
+class NotFoundUserNamesForStoryAndNotes < ActiveRecord::Migration[4.2]
   def change
     add_column :stories, :requested_by_name, :string
     add_column :stories, :owned_by_name, :string

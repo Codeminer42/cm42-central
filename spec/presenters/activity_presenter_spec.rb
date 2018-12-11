@@ -68,12 +68,13 @@ describe ActivityPresenter do
       it 'describes new values in story' do
         story.estimate = 2
         story.description = 'new description'
+        story.save
         activity.subject = story
         activity.save
         expect(subject.description).to eq(
           "#{user_name} updated Story ##{story.id} - " \
           "'<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>' " \
-          "changing estimate to '2', description to 'new description'"
+          "changing description to 'new description', estimate to '2'"
         )
       end
 
@@ -82,6 +83,7 @@ describe ActivityPresenter do
         project.save
 
         project.start_date = Date.parse('2016-08-30').in_time_zone
+        project.save
         activity.subject = project
         activity.save
         expect(subject.description).to eq(
@@ -95,6 +97,7 @@ describe ActivityPresenter do
         note.save
 
         note.note = 'new note'
+        note.save
         activity.subject = note
         activity.save
         expect(subject.description).to eq(
@@ -115,14 +118,16 @@ describe ActivityPresenter do
         story.estimate = 4
         story.description = 'new description'
         story.state = 'started'
+        story.project.point_scale = 'linear'
+        story.save
         activity.subject = story
         activity.save
         expect(subject.description).to eq(
           "#{user_name} updated Story ##{story.id} - " \
           "'<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>' " \
-          "changing estimate from '2' to '4', description to " \
-          "'<del class=\"differ\">old</del><ins class=\"differ\">new</ins> description', " \
-          'state moved forward to started'
+          "changing description to " \
+          "'<del class=\"differ\">old</del><ins class=\"differ\">new</ins> description', estimate from '2' to '4', " \
+          "state moved forward to started, started_at to '#{story.started_at}'"
         )
       end
 
@@ -132,6 +137,7 @@ describe ActivityPresenter do
 
         project.name = 'New Project'
         project.start_date = Date.parse('2016-08-30').in_time_zone
+        project.save
         activity.subject = project
         activity.save
         expect(subject.description).to eq(
@@ -143,6 +149,7 @@ describe ActivityPresenter do
 
       it 'describes changes in note' do
         note.note = 'new note'
+        note.save
         activity.subject = note
         activity.save
         expect(subject.description).to eq(
@@ -160,8 +167,8 @@ describe ActivityPresenter do
           ]
         }
 
-        expect(story).to receive(:changes).and_return(documents_changes)
-        expect(story).to receive(:changed?).and_return(true)
+        expect(story).to receive(:saved_changes).and_return(documents_changes)
+        expect(story).to receive(:saved_changes?).and_return(true)
         activity.subject = story
         activity.save
         expect(subject.description).to eq(

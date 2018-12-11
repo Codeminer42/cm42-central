@@ -7,7 +7,7 @@ describe StoryChangesNotificationsChecker do
   let(:story) do
     double(
       :story,
-      state_changed?: true,
+      state_previously_changed?: true,
       suppress_notifications: false,
       acting_user: user,
       state: 'started',
@@ -26,7 +26,7 @@ describe StoryChangesNotificationsChecker do
 
     context 'when state has not changed' do
       it 'should not notify' do
-        allow(story).to receive(:state_changed?).and_return(false)
+        allow(story).to receive(:state_previously_changed?).and_return(false)
         expect(subject.can_notify?).to be false
       end
     end

@@ -3,7 +3,7 @@ require 'rails_helper'
 describe ChangesetsController do
   context 'when logged out' do
     it 'redirects to the login page' do
-      xhr :get, :index, project_id: 42
+      get :index, xhr:true, params: { project_id: 42 }
       expect(response.status).to eq(401)
     end
   end
@@ -25,8 +25,8 @@ describe ChangesetsController do
 
     describe '#index' do
       specify do
-        xhr :get, :index, project_id: project.id
-        expect(response).to be_success
+        get :index, xhr: true, params: { project_id: project.id }
+        expect(response).to be_successful
         expect(assigns[:project]).to eq(project)
         expect(assigns[:changesets].count).to eq(2)
         expect(response.content_type).to eq('application/json')
@@ -40,12 +40,12 @@ describe ChangesetsController do
       end
 
       it 'scopes on :to parameter' do
-        xhr :get, :index, project_id: project.id, to: @changeset2.id
+        get :index, xhr: true, params: { project_id: project.id, to: @changeset2.id }
         expect(assigns[:changesets]).to eq([@changeset1, @changeset2])
       end
 
       it 'scopes on :from parameter' do
-        xhr :get, :index, project_id: project.id, from: @changeset1.id
+        get :index, xhr: true, params: { project_id: project.id, from: @changeset1.id }
         expect(assigns[:changesets]).to eq([@changeset2])
       end
     end

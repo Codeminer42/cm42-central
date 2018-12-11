@@ -1,7 +1,7 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :activity do |a|
     a.association :project
     a.association :user
-    action 'create'
+    action { 'create' }
   end
 end

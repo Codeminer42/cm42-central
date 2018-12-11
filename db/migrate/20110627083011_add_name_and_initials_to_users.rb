@@ -1,4 +1,4 @@
-class AddNameAndInitialsToUsers < ActiveRecord::Migration
+class AddNameAndInitialsToUsers < ActiveRecord::Migration[4.2]
   def self.up
     add_column :users, :name, :string
     add_column :users, :initials, :string

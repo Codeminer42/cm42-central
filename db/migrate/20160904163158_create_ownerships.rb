@@ -1,4 +1,4 @@
-class CreateOwnerships < ActiveRecord::Migration
+class CreateOwnerships < ActiveRecord::Migration[4.2]
   def up
     create_table :ownerships do |t|
       t.integer :team_id, null: false

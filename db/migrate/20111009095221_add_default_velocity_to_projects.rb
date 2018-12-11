@@ -1,4 +1,4 @@
-class AddDefaultVelocityToProjects < ActiveRecord::Migration
+class AddDefaultVelocityToProjects < ActiveRecord::Migration[4.2]
   def self.up
     add_column :projects, :default_velocity, :integer, default: 10
   end

@@ -33,7 +33,7 @@ describe StoriesBulkUpdateController do
     context 'when receive an array of story ids' do
       context 'when set valid attributes' do
         before do
-          post :create, params
+          post :create, params: params
         end
 
         it 'updates the story requester' do
@@ -59,7 +59,7 @@ describe StoriesBulkUpdateController do
 
       context 'when set invalid owner' do
         before do
-          post :create, params.merge(owned_by_id: user_4)
+          post :create, params: params.merge(owned_by_id: user_4)
         end
 
         it 'responds with 422' do
@@ -75,7 +75,7 @@ describe StoriesBulkUpdateController do
 
       context 'when stories are not found' do
         before do
-          post :create, params.merge(story_ids: nil)
+          post :create, params: params.merge(story_ids: nil)
         end
 
         it 'returns a message' do

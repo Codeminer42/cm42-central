@@ -10,7 +10,7 @@ describe Admin::UsersController do
     end
     %w[edit update destroy].each do |action|
       specify do
-        get action, id: 42
+        get action, params: { id: 42 }
         expect(response).to redirect_to(new_user_session_url)
       end
     end
@@ -28,7 +28,7 @@ describe Admin::UsersController do
       describe '#index' do
         specify do
           get :index
-          expect(response).to be_success
+          expect(response).to be_successful
           expect(assigns[:users]).to eq([user])
         end
       end
@@ -37,8 +37,8 @@ describe Admin::UsersController do
     describe 'member actions' do
       describe '#edit' do
         specify do
-          get :edit, id: user.id
-          expect(response).to be_success
+          get :edit, params: { id: user.id }
+          expect(response).to be_successful
           expect(assigns[:user]).to eq(user)
         end
       end
@@ -49,13 +49,13 @@ describe Admin::UsersController do
         end
 
         specify do
-          put :update, id: user.id, user: {}
+          put :update, params: { id: user.id, user: {} }
           expect(assigns[:user]).to eq(user)
         end
 
         context 'when update succeeds' do
           specify do
-            put :update, id: user.id, user: {}
+            put :update, params: { id: user.id, user: {} }
             expect(response).to redirect_to(admin_users_path)
           end
         end
@@ -66,7 +66,7 @@ describe Admin::UsersController do
           end
 
           specify do
-            put :update, id: user.id, user: {}
+            put :update, params: { id: user.id, user: {} }
             expect(response).to redirect_to(admin_users_path)
           end
         end
@@ -74,20 +74,20 @@ describe Admin::UsersController do
 
       describe '#enrollment' do
         specify do
-          patch :enrollment, id: user.id, is_admin: true
+          patch :enrollment, params: { id: user.id, is_admin: true }
           expect(assigns[:user]).to eq(user)
         end
 
         context 'when update succeeds' do
           specify do
-            patch :enrollment, id: user.id, is_admin: true
+            patch :enrollment, params: { id: user.id, is_admin: true }
             expect(response).to redirect_to(admin_users_path)
           end
         end
 
         context 'when update fails' do
           specify do
-            patch :enrollment, id: user.id, is_admin: true
+            patch :enrollment, params: { id: user.id, is_admin: true }
             expect(response).to redirect_to(admin_users_path)
           end
         end
@@ -95,7 +95,7 @@ describe Admin::UsersController do
 
       describe '#destroy' do
         specify do
-          expect { delete :destroy, id: user.id }.to change { Enrollment.count }.by(-1)
+          expect { delete :destroy, params: { id: user.id } }.to change { Enrollment.count }.by(-1)
           expect(response).to redirect_to(admin_users_path)
         end
       end
@@ -114,7 +114,7 @@ describe Admin::UsersController do
       describe '#index' do
         specify do
           get :index
-          expect(response).to be_success
+          expect(response).to be_successful
           expect(assigns[:users]).to eq([])
         end
       end
@@ -122,7 +122,7 @@ describe Admin::UsersController do
       describe 'member actions' do
         describe '#edit' do
           specify do
-            get :edit, id: user.id
+            get :edit, params: { id: user.id }
             expect(response).to redirect_to(root_path)
             expect(flash[:alert]).to eq(I18n.t('not_found'))
           end
@@ -130,7 +130,7 @@ describe Admin::UsersController do
 
         describe '#update' do
           specify do
-            put :update, id: user.id, user: {}
+            put :update, params: { id: user.id, user: {} }
             expect(response).to redirect_to(root_path)
             expect(flash[:alert]).to eq(I18n.t('not_found'))
           end
@@ -138,7 +138,7 @@ describe Admin::UsersController do
 
         describe '#enrollment' do
           specify do
-            patch :enrollment, id: user.id, is_admin: true
+            patch :enrollment, params: { id: user.id, is_admin: true }
             expect(response).to redirect_to(root_path)
             expect(flash[:alert]).to eq(I18n.t('not_found'))
           end
@@ -146,7 +146,7 @@ describe Admin::UsersController do
 
         describe '#destroy' do
           specify do
-            delete :destroy, id: user.id
+            delete :destroy, params: { id: user.id }
             expect(response).to redirect_to(root_path)
             expect(flash[:alert]).to eq(I18n.t('not_found'))
           end

@@ -20,7 +20,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.js { render :refresh_user_list }
-      format.html { redirect_to :back }
+      format.html { redirect_back fallback_location: root_path }
     end
   end
 
@@ -33,7 +33,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.js { render :refresh_user_list }
-      format.html { redirect_to :back }
+      format.html { redirect_back fallback_location: root_path }
     end
   end
 

@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '5.2.1'
+gem 'rails', '~>5.2.1'
 
 gem 'activeadmin'
 gem 'api-pagination'
@@ -73,11 +73,12 @@ group :production do
 end
 
 group :test do
+  gem 'rails-controller-testing'
   gem 'capybara'
   gem 'capybara-screenshot'
   gem 'codeclimate-test-reporter', require: nil
   gem 'database_cleaner'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'poltergeist'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-its'
@@ -95,13 +96,13 @@ group :development do
   gem 'bullet'
   gem 'letter_opener'
   gem 'letter_opener_web'
-  gem 'rubocop', '0.49.1'
+  gem 'rubocop', '0.59.1'
+  gem 'rubocop-rspec'
 end
 
 group :development, :test do
   gem 'pry-rails'
   gem 'pry-remote'
   gem "pusher-fake", "~> 1.10"
-  #gem 'quiet_assets'
 end
 
