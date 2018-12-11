@@ -58,3 +58,5 @@ export const getCompletedPoints = story => {
 export const isStoryNotEstimated = (storyType, estimate) => storyType === 'feature' && !estimate;
 
 export const isRelease = (storyType) => storyType === 'release';
+
+export const types = ['feature', 'bug', 'release', 'chore'];

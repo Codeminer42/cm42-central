@@ -9,3 +9,9 @@ export const toggleStory = (id) => ({
   type: actionTypes.TOGGLE_STORY,
   id
 });
+
+export const editStory = (id, newAttributes) => ({
+  type: actionTypes.EDIT_STORY,
+  id,
+  newAttributes
+});
