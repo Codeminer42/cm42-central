@@ -585,7 +585,7 @@ module.exports = FormView.extend({
       <StoryControls
         onClickSave={this.clickSave}
         onClickCancel={this.cancelEdit}
-        disableChanges={!this.isLoaded()}
+        disableChanges={this.disabledChanges()}
       />,
       this.$('[data-story-controls]').get(0)
     );
@@ -1127,6 +1127,11 @@ module.exports = FormView.extend({
     const projectStories = this.model.collection.project.projectBoard.stories;
     const isLoaded = !!projectStories.get(this.model.get('id')) || !this.model.get('id');
     return isLoaded;
+  },
+
+  disabledChanges: function() {
+    const disabledChanges = !this.isLoaded() || this.model.get('state') === 'accepted';
+    return disabledChanges;
   },
 
   isLoadedSearchResult: function() {
