@@ -1,4 +1,5 @@
 import { status, storyTypes } from "libs/beta/constants";
+import axios from 'axios';
 
 const compareValues = (a, b) => {
   if (a > b) return 1;
@@ -60,3 +61,10 @@ export const isStoryNotEstimated = (storyType, estimate) => storyType === 'featu
 export const isRelease = (storyType) => storyType === 'release';
 
 export const types = ['feature', 'bug', 'release', 'chore'];
+
+export function put(story, projectId) {
+  console.log(story.id, projectId)
+  return axios
+    .put(`/projects/${projectId}/stories/${story.id}`, story, {withCredentials: true})
+    .then(({ data }) => console.log(data));
+};
