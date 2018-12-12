@@ -11,9 +11,20 @@ export const toggleStory = (id) => ({
   id
 });
 
+export const updateStorySuccess = (story) => ({
+  type: actionTypes.UPDATE_STORY_SUCCESS,
+  story
+})
+
 export const updateStory = (story, projectId) => {
   return (dispatch) => {
-    Stories.put(story, projectId);
+    if (story._editing._isDirty) {
+      Stories.update(story._editing, projectId)
+        .then(({ story }) => {
+          dispatch(updateStorySuccess(story))
+        });
+    }
+    dispatch(toggleStory(story.id))
   }
 };
 

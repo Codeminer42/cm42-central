@@ -10,7 +10,10 @@ export const toggleStories = (stories, id) => {
 
     return {
       ...story,
-      _editing: editing,
+      _editing: {
+        ...editing,
+        _isDirty: false
+      },
       collapsed: !story.collapsed
     };
   });
@@ -27,7 +30,23 @@ export const editStory = (stories, id, newAttributes) => {
 
     return {
       ...story,
-      _editing: newStory
+      _editing: {
+        ...newStory,
+        _isDirty: true
+      }
     };
   });
-};      
+};
+
+export const updateStory = (stories, id, newAttributes) => {
+  return stories.map((story) => {
+    if (story.id !== id) {
+      return story;
+    };
+
+    return {
+      ...story,
+      ...newAttributes
+    }
+  })
+}

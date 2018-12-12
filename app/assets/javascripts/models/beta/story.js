@@ -1,5 +1,6 @@
 import { status, storyTypes } from "libs/beta/constants";
-import axios from 'axios';
+import httpService from '../../services/httpService';
+import changeCase from'change-object-case';
 
 const compareValues = (a, b) => {
   if (a > b) return 1;
@@ -62,9 +63,11 @@ export const isRelease = (storyType) => storyType === 'release';
 
 export const types = ['feature', 'bug', 'release', 'chore'];
 
-export function put(story, projectId) {
-  console.log(story.id, projectId)
-  return axios
-    .put(`/projects/${projectId}/stories/${story.id}`, story, {withCredentials: true})
-    .then(({ data }) => console.log(data));
+export function update(story, projectId) {
+  const newStory = changeCase.snakeKeys(story);
+
+  return httpService
+    .put(`/projects/${projectId}/stories/${story.id}`, newStory)
+    .then(({ data }) => changeCase.camelKeys(data, {recursive: true, arrayRecursive: true}))
+    .then((story) =>  story)
 };
