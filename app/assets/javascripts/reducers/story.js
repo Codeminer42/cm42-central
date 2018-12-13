@@ -4,7 +4,7 @@ export const toggleStories = (stories, id) => {
   return stories.map((story) => {
     if (story.id !== id) {
       return story;
-    }
+    };
 
     const editing = !story.collapsed ? null : story;
 
@@ -47,6 +47,6 @@ export const updateStory = (stories, id, newAttributes) => {
     return {
       ...story,
       ...newAttributes
-    }
-  })
-}
+    };
+  });
+};

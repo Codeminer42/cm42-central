@@ -1,5 +1,4 @@
 import actionTypes from './actionTypes';
-import * as Stories from "models/beta/story";
 
 export const receiveStories = (stories) => ({
   type: actionTypes.RECEIVE_STORIES,
@@ -17,10 +16,10 @@ export const updateStorySuccess = (story) => ({
 })
 
 export const updateStory = (story, projectId) => {
-  return (dispatch) => {
+  return (dispatch , getState, { Story }) => {
     if (story._editing._isDirty) {
-      Stories.update(story._editing, projectId)
-        .then(({ story }) => {
+      Story.update(story._editing, projectId)
+        .then(( story ) => {
           dispatch(updateStorySuccess(story))
         });
     }

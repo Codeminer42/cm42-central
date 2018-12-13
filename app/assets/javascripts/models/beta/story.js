@@ -1,6 +1,6 @@
 import { status, storyTypes } from "libs/beta/constants";
 import httpService from '../../services/httpService';
-import changeCase from'change-object-case';
+import changeCase from 'change-object-case';
 
 const compareValues = (a, b) => {
   if (a > b) return 1;
@@ -68,6 +68,9 @@ export function update(story, projectId) {
 
   return httpService
     .put(`/projects/${projectId}/stories/${story.id}`, newStory)
-    .then(({ data }) => changeCase.camelKeys(data, {recursive: true, arrayRecursive: true}))
-    .then((story) =>  story)
+    .then(({ data }) => changeCase.camelKeys(data, { recursive: true, arrayRecursive: true }))
+    .then(({ story }) => ({
+      ...story,
+      notes: story.notes.map((note) => (note.note))
+    }))
 };
