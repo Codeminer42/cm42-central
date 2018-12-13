@@ -1,5 +1,5 @@
 import actionTypes from 'actions/actionTypes';
-import { toggleStories, editStory, updateStory } from './story';
+import { toggleStory, editStory, updateStory } from 'models/beta/story'
 
 const initialState = [];
 
@@ -8,13 +8,31 @@ const storiesReducer = (state = initialState, action) => {
     case actionTypes.RECEIVE_STORIES:
       return action.data;
     case actionTypes.TOGGLE_STORY:
-      return toggleStories(state, action.id);
+      return state.map(
+        updateIfSameId(action.id, (story) => {
+          return toggleStory(story);
+        }));
     case actionTypes.EDIT_STORY:
-      return editStory(state, action.id, action.newAttributes);
+      return state.map(
+        updateIfSameId(action.id, (story) => {
+          return editStory(story, action.newAttributes);
+        }));
     case actionTypes.UPDATE_STORY_SUCCESS:
-      return updateStory(state, action.story.id, action.story);
+      return state.map(
+        updateIfSameId(action.story.id, (story) => {
+          return updateStory(story, action.story);
+        }));
     default:
       return state;
+  };
+};
+
+const updateIfSameId = (id, update) => {
+  return (model) => {
+    if (model.id !== id) {
+      return model;
+    };
+    return update(model);
   };
 };
 

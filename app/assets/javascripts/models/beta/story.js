@@ -72,5 +72,42 @@ export function update(story, projectId) {
     .then(({ story }) => ({
       ...story,
       notes: story.notes.map((note) => (note.note))
-    }))
+    }));
+};
+
+export const updateStory = (story, newAttributes) => {
+  return {
+    ...story,
+    ...newAttributes
+  };
+};
+
+export const toggleStory = (story) => {
+  const editing = !story.collapsed ? null : story;
+
+  return {
+    ...story,
+    _editing: {
+      ...editing,
+      _isDirty: false
+    },
+    collapsed: !story.collapsed
+  };
+};
+
+export const editStory = (story, newAttributes) => {
+  const newStory = {
+    ...story._editing,
+    ...newAttributes
+  };
+  
+  newStory.estimate = !isFeature(newStory) ? null : newStory.estimate;
+
+  return {
+    ...story,
+    _editing: {
+      ...newStory,
+      _isDirty: true
+    }
+  };
 };
