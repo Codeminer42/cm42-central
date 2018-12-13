@@ -1,9 +1,8 @@
-import axios from 'axios';
+import httpService from '../../services/httpService';
 import changeCase from'change-object-case';
 
-
 export function get(projectId) {
-  return axios
+  return httpService
     .get(`/beta/project_boards/${projectId}`)
     .then(({ data }) => changeCase.camelKeys(data, {recursive: true, arrayRecursive: true}))
     // This was necessary because the backend wasn't sending the notes on the stories in the right format,
