@@ -1,6 +1,6 @@
 import * as Story from 'models/beta/story';
 
-describe('Story model', function() {
+describe('Story model', function () {
   describe('comparePosition', () => {
 
     describe('when position A is bigger then B', () => {
@@ -187,17 +187,17 @@ describe('Story model', function() {
       it('return a story if it is a feature and is unestimated', () => {
         const stories = [
           {
-            id : 10,
+            id: 10,
             storyType: 'feature',
             estimate: null,
           },
           {
-            id : 20,
+            id: 20,
             storyType: 'bug',
             estimate: null,
           },
           {
-            id : 30,
+            id: 30,
             storyType: 'feature',
             estimate: 2,
           },
@@ -210,4 +210,79 @@ describe('Story model', function() {
       });
     });
   });
-})
+
+  describe("toggleStory", () => {
+    describe("When story is collapsed", () => {
+      it("expand story", () => {
+        const story = { collapsed: true }
+
+        const expandedStory = Story.toggleStory(story);
+
+        expect(expandedStory.collapsed).toEqual(false);
+      });
+    });
+
+    describe("When story is expanded", () => {
+      it("collapse story", () => {
+        const story = { collapsed: false }
+
+        const collapsedStory = Story.toggleStory(story);
+
+        expect(collapsedStory.collapsed).toEqual(true);
+      });
+    });
+  });
+
+  describe("editStory", () => {
+    it("change story type", () => {
+      const story = { _editing: { storyType: 'bug' } }
+      const newAttributes = { storyType: 'feature' }
+
+      const changedStory = Story.editStory(story, newAttributes);
+
+      expect(changedStory._editing.storyType).toEqual(newAttributes.storyType);
+    });
+
+    const notFeatureTypes = ['bug', 'release', 'chore'];
+
+    notFeatureTypes.forEach(type => {
+      it(`change story estimate to null when storyType is ${type}`, () => {
+        const story = { _editing: { storyType: 'feature' } }
+        const newAttributes = { storyType: type }
+
+        const changedStory = Story.editStory(story, newAttributes);
+
+        expect(changedStory._editing.estimate).toEqual(null);
+      });
+    })
+
+    it("change story estimate", () => {
+      const story = { _editing: { estimate: 1, storyType: 'feature' } }
+      const newAttributes = { estimate: 2 }
+
+      const changedStory = Story.editStory(story, newAttributes);
+
+      expect(changedStory._editing.estimate).toEqual(newAttributes.estimate);
+    });
+  });
+
+  describe("updateStory", () => {
+    it("update story type", () => {
+      const story = { storyType: 'bug' }
+      const newAttributes = { storyType: 'feature' }
+
+      const changedStory = Story.updateStory(story, newAttributes);
+
+      expect(changedStory.storyType).toEqual(newAttributes.storyType);
+    });
+
+    it("update story estimate", () => {
+      const story = { estimate: 1 }
+      const newAttributes = { estimate: 2 }
+
+      const changedStory = Story.updateStory(story, newAttributes);
+
+      expect(changedStory.estimate).toEqual(newAttributes.estimate);
+    });
+  });
+});

@@ -8,13 +8,13 @@ const ExpandedStoryControls = (props) => {
       <input className="save"
         onClick={onSave}
         type="button"
-        value={I18n.translate('save')}
+        value={I18n.t('save')}
       />
 
       <input className="cancel"
         onClick={onCancel}
         type="button"
-        value={I18n.translate('cancel')}
+        value={I18n.t('cancel')}
       />
     </div>
   );
