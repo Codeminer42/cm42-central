@@ -239,7 +239,7 @@ describe('StoryView', function() {
       this.view.clickSave(this.e);
       expect(this.server.responses.length).toEqual(1);
       expect(this.server.responses[0].method).toEqual("PUT");
-      expect(this.server.responses[0].url).toEqual("/path/to/story");
+      expect("/path/to/story").toMatch(this.server.responses[0].url);
 
       this.server.respond();
 
