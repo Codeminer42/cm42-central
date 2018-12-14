@@ -107,6 +107,7 @@
     "karma-webpack": "^1.8.0",
     "react-addons-test-utils": "^15.4.2",
     "react-test-renderer": "^15.5.4",
-    "sinon": "^2.0.0"
+    "sinon": "^2.0.0",
+    "es6-promise": "^4.2.5"
   }
 }
