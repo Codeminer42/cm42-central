@@ -10,8 +10,7 @@ class Beta::ProjectBoardsController < ApplicationController
       current_flow: cookies[:current_flow],
       projects_scope: policy_scope(Project)
     )
-
-    render json: result.data.as_json(root: false)
+    render json: Beta::ProjectBoardSerializer.serialize(result.data)
   end
 
   private
