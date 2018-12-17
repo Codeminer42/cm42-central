@@ -1,4 +1,5 @@
 const storyFactory = (storyAttrs) => ({
+  id: 42,
   title: 'title',
   description: 'description',
   estimate: 1,

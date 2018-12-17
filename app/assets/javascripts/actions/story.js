@@ -18,12 +18,13 @@ export const updateStorySuccess = (story) => ({
 export const updateStory = (story, projectId) => {
   return (dispatch , getState, { Story }) => {
     if (story._editing._isDirty) {
-      Story.update(story._editing, projectId)
+      return Story.update(story._editing, projectId)
         .then(( story ) => {
-          dispatch(updateStorySuccess(story))
+          dispatch(updateStorySuccess(story));
+          dispatch(toggleStory(story.id));
         });
     }
-    dispatch(toggleStory(story.id))
+    return dispatch(toggleStory(story.id))
   }
 };
 
