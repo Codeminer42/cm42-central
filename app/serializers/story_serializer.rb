@@ -31,7 +31,7 @@ class StorySerializer
       errors: story.errors,
       notes: notes,
       documents: story.documents,
-      tasks: story.tasks
+      tasks: tasks
     }
   end
 
@@ -41,5 +41,9 @@ class StorySerializer
 
   def notes
     story.notes.map { |note| NoteSerializer.serialize(note) }
+  end
+
+  def tasks
+    story.tasks.map { |task| TaskSerializer.serialize(task) }
   end
 end
