@@ -245,10 +245,10 @@ describe('Story model', function () {
   describe('editStory', () => {
     it('change story type and sets _isDirty to true', () => {
       const story = {
-        estimate: null,
+        estimate: '',
         _editing: {
           storyType: 'bug',
-          estimate: null
+          estimate: ''
         }
       };
       const newAttributes = { storyType: 'feature' };
@@ -256,10 +256,10 @@ describe('Story model', function () {
       const changedStory = Story.editStory(story, newAttributes);
 
       expect(changedStory).toEqual({
-        estimate: null,
+        estimate: '',
         _editing: {
           storyType: newAttributes.storyType,
-          estimate: null,
+          estimate: '',
           _isDirty: true
         }
       });
@@ -277,7 +277,7 @@ describe('Story model', function () {
         expect(changedStory).toEqual({
           _editing: {
             storyType: type,
-            estimate: null,
+            estimate: '',
             _isDirty: true
           }
         });

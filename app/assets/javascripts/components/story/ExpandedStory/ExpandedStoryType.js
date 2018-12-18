@@ -12,7 +12,7 @@ export const ExpandedStoryType = (props) => {
       </div>
 
       <select
-        defaultValue={story.storyType}
+        value={story._editing.storyType}
         className="form-control input-sm"
         onChange={(event) => onEdit({ storyType: event.target.value })}
       >

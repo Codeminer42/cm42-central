@@ -5,7 +5,6 @@
 - Select to Story Type in board V2
 - Select to Story Estimate in board V2
 - Save option to Story in board V2
-- Package: es6-promise: 4.2.5
 
 ### Fix
 - Refactor Redux flow to remove stories duplication in board V2

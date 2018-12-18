@@ -11,6 +11,7 @@ export function get(projectId) {
         ...projectBoard,
         stories: projectBoard.stories.map((story) => ({
           ...story,
+          estimate: story.estimate || '',
           notes: story.notes.map((note) => (note.note)),
           collapsed: true
         }))

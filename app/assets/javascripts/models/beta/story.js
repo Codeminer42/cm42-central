@@ -71,6 +71,7 @@ export function update(story, projectId) {
     .then(({ data }) => changeCase.camelKeys(data, { recursive: true, arrayRecursive: true }))
     .then(({ story }) => ({
       ...story,
+      estimate: story.estimate || '',
       notes: story.notes.map((note) => (note.note))
     }));
 };
@@ -98,7 +99,7 @@ export const editStory = (story, newAttributes) => {
     ...newAttributes
   };
 
-  newStory.estimate = isFeature(newStory) ? newStory.estimate : null;
+  newStory.estimate = isFeature(newStory) ? newStory.estimate : '';
 
   return {
     ...story,

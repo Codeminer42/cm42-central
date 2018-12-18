@@ -46,14 +46,16 @@ describe('<ExpandedStoryEstimate />', () => {
       it(`sets the select defaultValue as ${value}`, () => {
         const project = { pointValues };
         const story = {
-          estimate: value,
-          _editing: { storyType: 'feature' }
+          _editing: {
+            storyType: 'feature',
+            estimate: value
+          }
         };
 
         const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story} />);
         const select = wrapper.find('select');
 
-        expect(select.prop('defaultValue')).toBe(value);
+        expect(select.prop('value')).toBe(value);
       });
     });
   });
@@ -61,12 +63,17 @@ describe('<ExpandedStoryEstimate />', () => {
   describe("When story.estimate is null", () => {
     it("sets the select defaultValue as null", () => {
       const project = { pointValues: ['1', '2', '3', '4', '5'] };
-      const story = { estimate: null, _editing: { storyType: 'bug' } };
+      const story = {
+        _editing: {
+          estimate: '',
+          storyType: 'bug'
+        }
+      };
 
       const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story} />);
       const select = wrapper.find('select');
 
-      expect(select.prop('defaultValue')).toBe(null);
+      expect(select.prop('value')).toBe('');
     });
   });
 
