@@ -9,9 +9,7 @@ const storiesReducer = (state = initialState, action) => {
       return action.data;
     case actionTypes.TOGGLE_STORY:
       return state.map(
-        updateIfSameId(action.id, (story) => {
-          return toggleStory(story);
-        }));
+        updateIfSameId(action.id, toggleStory));
     case actionTypes.EDIT_STORY:
       return state.map(
         updateIfSameId(action.id, (story) => {

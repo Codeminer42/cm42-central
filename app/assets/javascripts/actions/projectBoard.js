@@ -23,7 +23,7 @@ const receiveProject = data => ({
 });
 
 export const fetchProjectBoard = projectId => {
-  return (dispatch , getState, { ProjectBoard }) => {
+  return (dispatch, getState, { ProjectBoard }) => {
     dispatch(requestProjectBoard());
 
     ProjectBoard.get(projectId)

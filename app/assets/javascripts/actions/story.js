@@ -13,10 +13,10 @@ export const toggleStory = (id) => ({
 export const updateStorySuccess = (story) => ({
   type: actionTypes.UPDATE_STORY_SUCCESS,
   story
-})
+});
 
 export const updateStory = (story, projectId) => {
-  return (dispatch , getState, { Story }) => {
+  return (dispatch, getState, { Story }) => {
     if (story._editing._isDirty) {
       return Story.update(story._editing, projectId)
         .then(( story ) => {
@@ -24,8 +24,8 @@ export const updateStory = (story, projectId) => {
           dispatch(toggleStory(story.id));
         });
     }
-    return dispatch(toggleStory(story.id))
-  }
+    return dispatch(toggleStory(story.id));
+  };
 };
 
 export const editStory = (id, newAttributes) => ({
