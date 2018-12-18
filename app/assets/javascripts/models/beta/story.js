@@ -83,14 +83,11 @@ export const updateStory = (story, newAttributes) => {
 };
 
 export const toggleStory = (story) => {
-  const editing = !story.collapsed ? null : story;
+  const editing = story.collapsed ? { ...story, _isDirty: false } : null;
 
   return {
     ...story,
-    _editing: {
-      ...editing,
-      _isDirty: false
-    },
+    _editing: editing,
     collapsed: !story.collapsed
   };
 };
@@ -100,8 +97,8 @@ export const editStory = (story, newAttributes) => {
     ...story._editing,
     ...newAttributes
   };
-  
-  newStory.estimate = !isFeature(newStory) ? null : newStory.estimate;
+
+  newStory.estimate = isFeature(newStory) ? newStory.estimate : null;
 
   return {
     ...story,

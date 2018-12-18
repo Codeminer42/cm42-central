@@ -34,7 +34,7 @@ describe('updateStory', () => {
         ...story,
         _isDirty: false
       }
-    }
+    };
 
     const FakeStory = {
       update: sinon.stub().resolves(story)
@@ -57,7 +57,7 @@ describe('updateStory', () => {
         ...story,
         _isDirty: true
       }
-    }
+    };
 
     const FakeStory = {
       update: sinon.stub().resolves(story)

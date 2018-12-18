@@ -211,78 +211,116 @@ describe('Story model', function () {
     });
   });
 
-  describe("toggleStory", () => {
-    describe("When story is collapsed", () => {
-      it("expand story", () => {
-        const story = { collapsed: true }
+  describe('toggleStory', () => {
+    describe('When story is collapsed', () => {
+      it('sets collapsed to false and copies the previous state to a _editing field', () => {
+        const story = { collapsed: true };
 
         const expandedStory = Story.toggleStory(story);
 
-        expect(expandedStory.collapsed).toEqual(false);
+        expect(expandedStory).toEqual({
+          collapsed: false,
+          _editing: {
+            collapsed: true,
+            _isDirty: false
+          }
+        });
       });
     });
 
-    describe("When story is expanded", () => {
-      it("collapse story", () => {
-        const story = { collapsed: false }
+    describe('When story is expanded', () => {
+      it('sets collapsed to true and sets _editing field to null', () => {
+        const story = { collapsed: false };
 
         const collapsedStory = Story.toggleStory(story);
 
-        expect(collapsedStory.collapsed).toEqual(true);
+        expect(collapsedStory).toEqual({
+          collapsed: true,
+          _editing: null
+        });
       });
     });
   });
 
-  describe("editStory", () => {
-    it("change story type", () => {
-      const story = { _editing: { storyType: 'bug' } }
-      const newAttributes = { storyType: 'feature' }
+  describe('editStory', () => {
+    it('change story type and sets _isDirty to true', () => {
+      const story = {
+        estimate: null,
+        _editing: {
+          storyType: 'bug',
+          estimate: null
+        }
+      };
+      const newAttributes = { storyType: 'feature' };
 
       const changedStory = Story.editStory(story, newAttributes);
 
-      expect(changedStory._editing.storyType).toEqual(newAttributes.storyType);
+      expect(changedStory).toEqual({
+        estimate: null,
+        _editing: {
+          storyType: newAttributes.storyType,
+          estimate: null,
+          _isDirty: true
+        }
+      });
     });
 
     const notFeatureTypes = ['bug', 'release', 'chore'];
 
     notFeatureTypes.forEach(type => {
-      it(`change story estimate to null when storyType is ${type}`, () => {
-        const story = { _editing: { storyType: 'feature' } }
-        const newAttributes = { storyType: type }
+      it(`change story estimate to null when storyType is ${type} and sets _isDirty to true`, () => {
+        const story = { _editing: { storyType: 'feature' } };
+        const newAttributes = { storyType: type };
 
         const changedStory = Story.editStory(story, newAttributes);
 
-        expect(changedStory._editing.estimate).toEqual(null);
+        expect(changedStory).toEqual({
+          _editing: {
+            storyType: type,
+            estimate: null,
+            _isDirty: true
+          }
+        });
       });
     })
 
-    it("change story estimate", () => {
-      const story = { _editing: { estimate: 1, storyType: 'feature' } }
-      const newAttributes = { estimate: 2 }
+    it('change story estimate and sets _isDirty to true', () => {
+      const story = { _editing: { estimate: 1, storyType: 'feature' } };
+      const newAttributes = { estimate: 2 };
 
       const changedStory = Story.editStory(story, newAttributes);
 
-      expect(changedStory._editing.estimate).toEqual(newAttributes.estimate);
+      expect(changedStory).toEqual({
+        _editing: {
+          storyType: 'feature',
+          estimate: newAttributes.estimate,
+          _isDirty: true
+        }
+      });
     });
   });
 
-  describe("updateStory", () => {
-    it("update story type", () => {
-      const story = { storyType: 'bug' }
-      const newAttributes = { storyType: 'feature' }
+  describe('updateStory', () => {
+    it('update story type', () => {
+      const story = { storyType: 'bug' };
+      const newAttributes = { storyType: 'feature' };
 
       const changedStory = Story.updateStory(story, newAttributes);
 
-      expect(changedStory.storyType).toEqual(newAttributes.storyType);
+      expect(changedStory).toEqual({
+        storyType: newAttributes.storyType
+      });
     });
 
-    it("update story estimate", () => {
-      const story = { estimate: 1 }
-      const newAttributes = { estimate: 2 }
+    it('update story estimate', () => {
+      const story = { estimate: 1 };
+      const newAttributes = { estimate: 2 };
 
       const changedStory = Story.updateStory(story, newAttributes);
 
-      expect(changedStory.estimate).toEqual(newAttributes.estimate);
+      expect(changedStory).toEqual({
+        estimate: newAttributes.estimate
+      });
     });
   });
 });
