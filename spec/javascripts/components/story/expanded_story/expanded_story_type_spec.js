@@ -7,11 +7,11 @@ describe('<ExpandedStoryType />', () => {
   types.forEach((type) => {
     it(`sets defaultValue as ${type} in select`, () => {
 
-      const story = { storyType: type };
+      const story = { _editing:{ storyType: type }};
       const wrapper = shallow(<ExpandedStoryType story={story} />);
       const select = wrapper.find('select');
 
-      expect(select.prop('defaultValue')).toBe(type);
+      expect(select.prop('value')).toBe(type);
     });
   });
 });

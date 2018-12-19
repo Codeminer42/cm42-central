@@ -6,6 +6,8 @@ import projectBoard from 'reducers/projectBoard';
 import users from 'reducers/users';
 import stories from 'reducers/stories';
 import pastIterations from 'reducers/pastIterations';
+import * as Story from '../models/beta/story';
+import * as ProjectBoard from '../models/beta/projectBoard';
 
 const reducer = combineReducers({
   project,
@@ -15,6 +17,9 @@ const reducer = combineReducers({
   pastIterations
 });
 
-const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
+const store = createStore(
+  reducer,
+  composeWithDevTools(applyMiddleware(thunk.withExtraArgument({ Story, ProjectBoard })))
+);
 
 export default store;

@@ -4,9 +4,16 @@
 ### Added
 - Select to Story Type in board V2
 - Select to Story Estimate in board V2
+- Save option to Story in board V2
 
 ### Fix
 - Refactor Redux flow to remove stories duplication in board V2
+
+### Change
+- Package: camelcase-object-deep: 1.0.7 to change-object-case: 0.2.0
+
+### Update
+- Package: sinon: 1.17.5 to 2.0.0
 
 ## [1.22.0] 2018-11-30
 ### Added

@@ -4,15 +4,19 @@ import ExpandedStoryHistoryLocation from './ExpandedStoryHistoryLocation';
 import ExpandedStoryControls from './ExpandedStoryControls';
 import ExpandedStoryEstimate from './ExpandedStoryEstimate';
 import ExpandedStoryType from './ExpandedStoryType';
-import { editStory } from '../../../actions/story';
+import { editStory, updateStory } from '../../../actions/story';
 import { connect } from 'react-redux';
 
 export const ExpandedStory = (props) => {
-  const { story, onToggle, editStory } = props;
+  const { story, onToggle, editStory, updateStory, project } = props;
 
   return (
     <div className="Story Story--expanded">
-      <ExpandedStoryControls onCancel={onToggle} />
+      <ExpandedStoryControls
+        onCancel={onToggle}
+        onSave={() => updateStory(story, project.id)}
+      />
+
       <ExpandedStoryHistoryLocation story={story} />
       <div className="Story__flex">
         <ExpandedStoryEstimate story={story}
@@ -31,7 +35,12 @@ ExpandedStory.propTypes = {
   story: PropTypes.object.isRequired
 };
 
+const mapStateToProps = ({ project }) => ({ project });
+
 export default connect(
-  null,
-  { editStory }
+  mapStateToProps,
+  {
+    editStory,
+    updateStory
+  }
 )(ExpandedStory);

@@ -1,4 +1,3 @@
-import * as ProjectBoard from "models/beta/projectBoard";
 import actionTypes from "./actionTypes";
 import { receiveUsers } from "./user";
 import { receiveStories } from "./story";
@@ -24,7 +23,7 @@ const receiveProject = data => ({
 });
 
 export const fetchProjectBoard = projectId => {
-  return dispatch => {
+  return (dispatch, getState, { ProjectBoard }) => {
     dispatch(requestProjectBoard());
 
     ProjectBoard.get(projectId)

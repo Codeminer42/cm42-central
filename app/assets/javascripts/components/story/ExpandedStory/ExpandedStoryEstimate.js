@@ -13,7 +13,7 @@ export const ExpandedStoryEstimate = (props) => {
       </div>
 
       <select
-        defaultValue={story.estimate}
+        value={story._editing.estimate}
         className="form-control input-sm"
         onChange={(event) => onEdit({ estimate: parseInt(event.target.value) })}
         disabled={!isFeature(story._editing)}

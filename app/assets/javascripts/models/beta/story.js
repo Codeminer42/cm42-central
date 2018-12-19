@@ -1,4 +1,6 @@
 import { status, storyTypes } from "libs/beta/constants";
+import httpService from '../../services/httpService';
+import changeCase from 'change-object-case';
 
 const compareValues = (a, b) => {
   if (a > b) return 1;
@@ -60,3 +62,49 @@ export const isStoryNotEstimated = (storyType, estimate) => storyType === 'featu
 export const isRelease = (storyType) => storyType === 'release';
 
 export const types = ['feature', 'bug', 'release', 'chore'];
+
+export function update(story, projectId) {
+  const newStory = changeCase.snakeKeys(story);
+
+  return httpService
+    .put(`/projects/${projectId}/stories/${story.id}`, newStory)
+    .then(({ data }) => changeCase.camelKeys(data, { recursive: true, arrayRecursive: true }))
+    .then(({ story }) => ({
+      ...story,
+      estimate: story.estimate || ''
+    }));
+};
+
+export const updateStory = (story, newAttributes) => {
+  return {
+    ...story,
+    ...newAttributes
+  };
+};
+
+export const toggleStory = (story) => {
+  const editing = story.collapsed ? { ...story, _isDirty: false } : null;
+
+  return {
+    ...story,
+    _editing: editing,
+    collapsed: !story.collapsed
+  };
+};
+
+export const editStory = (story, newAttributes) => {
+  const newStory = {
+    ...story._editing,
+    ...newAttributes
+  };
+
+  newStory.estimate = isFeature(newStory) ? newStory.estimate : '';
+
+  return {
+    ...story,
+    _editing: {
+      ...newStory,
+      _isDirty: true
+    }
+  };
+};
