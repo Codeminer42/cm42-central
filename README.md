@@ -91,8 +91,7 @@ Installation
 ------------
 
 First up, your system will need the
-[prerequisites for running Ruby on Rails installed](http://rubyonrails.org/download)
-
+[prerequisites for running Ruby on Rails installed](https://guides.rubyonrails.org/getting_started.html)
 Once you have these:
 
     # Checkout the project
