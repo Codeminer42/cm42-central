@@ -26,7 +26,7 @@ class ExpandedStoryHistoryLocation extends React.Component {
           </Clipboard>
 
           <Clipboard
-            data-clipboard-text={story.id}
+            data-clipboard-text={`#${story.id}`}
             component="button"
             className="btn btn-default btn-clipboard-id btn-clipboard"
             button-title={I18n.t('story.events.copy_id')}
