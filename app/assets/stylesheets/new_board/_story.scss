@@ -176,7 +176,20 @@
         }
 
         &__section {
-          margin: 5px 5px 5px 0;          
+          margin: 5px 5px 5px 0;
+          
+          .edit-description-button {
+            font-size: 12px;
+            border-radius: 5px;
+            background-color: $lightgrey-12;
+            border-color: $darkgrey-11;
+            border-width: 1px;
+            outline: none;
+          }
+
+          .edit-description-text {
+            resize: vertical;
+          }
         }
 
         &__controls {
