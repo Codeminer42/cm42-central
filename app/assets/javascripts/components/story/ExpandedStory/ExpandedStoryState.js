@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as Story from '../../../models/beta/story';
 
-const ExpandedStoryState = (props) => {
-  const { story, onEdit } = props;
-
+const ExpandedStoryState = ({ story, onEdit }) => {
   return (
     <div className="Story__section">
       <div className="Story__section-title">
@@ -29,7 +27,8 @@ const ExpandedStoryState = (props) => {
 };
 
 ExpandedStoryState.propTypes = {
-  story: PropTypes.object
+  story: PropTypes.object.isRequired,
+  onEdit: PropTypes.func.isRequired
 };
 
 export default ExpandedStoryState;

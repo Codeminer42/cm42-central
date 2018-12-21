@@ -5,9 +5,11 @@ import { states } from '../../../../../app/assets/javascripts/models/beta/story'
 
 describe('<ExpandedStoryState />', () => {
   it('renders component title', () => {
+    const onEditSpy = sinon.spy();
+
     const story = { state: 'started', _editing: { state: 'started' } };
 
-    const wrapper = shallow(<ExpandedStoryState story={story} />);
+    const wrapper = shallow(<ExpandedStoryState story={story} onEdit={onEditSpy} />);
 
     expect(wrapper.text()).toContain(I18n.t('activerecord.attributes.story.state'));
   });
@@ -15,11 +17,13 @@ describe('<ExpandedStoryState />', () => {
   describe("states at select", () => {
     states.map(state => {
       it(`sets select value as ${state}`, () => {
+        const onEditSpy = sinon.spy();
+
         const story = {
           _editing: { state: state }
         };
 
-        const wrapper = shallow(<ExpandedStoryState story={story} />);
+        const wrapper = shallow(<ExpandedStoryState story={story} onEdit={onEditSpy} />);
         const select = wrapper.find('select');
 
         expect(select.prop('value')).toBe(state);
@@ -27,13 +31,13 @@ describe('<ExpandedStoryState />', () => {
     });
   });
 
-  describe('onChange', () => {
-    it('calls onEdit with story description on textarea change', () => {
+  describe('when the user selects a state', () => {
+    it('triggers the edit callback passing the story state', () => {
       const state = states[0];
       const change = states[1];
 
       const story = {
-       _editing: { state }
+        _editing: { state }
       };
 
       const onEdit = sinon.spy();
