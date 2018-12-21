@@ -35,7 +35,7 @@ describe('<ExpandedStoryDescription />', () => {
     });
   });
 
-  describe('changeFields', () => {
+  describe('toggleField', () => {
     it('change editing state from false to true', () => {
       const story = { description: null, _editing: { description: null } };
 
@@ -77,7 +77,7 @@ describe('<ExpandedStoryDescription />', () => {
       content.simulate('click');
 
       const textarea = wrapper.find('textarea');
-      const change = story._editing.description + ' changed';
+      const change = `${story._editing.description} changed`;
 
       textarea.simulate('change', { target: { value: change } });
 

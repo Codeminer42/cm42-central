@@ -10,10 +10,10 @@ class ExpandedStoryDescription extends React.Component {
       editing: false
     };
 
-    this.changeField = this.changeField.bind(this);
+    this.toggleField = this.toggleField.bind(this);
   };
 
-  changeField() {
+  toggleField() {
     this.setState({ editing: !this.state.editing });
   };
 
@@ -45,34 +45,29 @@ class ExpandedStoryDescription extends React.Component {
     );
   };
 
-  renderContent() {
+  render() {
     const { story } = this.props;
 
-    if (this.state.editing) {
-      return this.descriptionTextArea(story._editing.description || '')
-    };
-
-    return (
-      <div onClick={this.changeField} className='story-description-content'>
-        {
-          story.description ?
-            this.descriptionContent(story.description)
-            :
-            this.editButton()
-        }
-      </div>
-    );
-  };
-
-  render() {
     return (
       <div className="Story__section">
         <div className="Story__section-title">
           { I18n.t('activerecord.attributes.story.description') }
         </div>
 
-        { this.renderContent() }
-
+        {
+          this.state.editing
+            ? (
+              this.descriptionTextArea(story._editing.description || '')
+            ) : (
+              <div onClick={this.toggleField} className='story-description-content'>
+                {
+                  story.description
+                    ? this.descriptionContent(story.description)
+                    : this.editButton()
+                }
+              </div>
+            )
+        }
       </div>
     );
   };

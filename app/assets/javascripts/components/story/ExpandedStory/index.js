@@ -29,7 +29,8 @@ export const ExpandedStory = (props) => {
         />
       </div>
 
-      <ExpandedStoryDescription story={story}
+      <ExpandedStoryDescription
+        story={story}
         onEdit={(newAttributes) => editStory(story.id, newAttributes)}
       />
     </div>
