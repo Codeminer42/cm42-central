@@ -4,6 +4,7 @@ import ExpandedStoryHistoryLocation from './ExpandedStoryHistoryLocation';
 import ExpandedStoryControls from './ExpandedStoryControls';
 import ExpandedStoryEstimate from './ExpandedStoryEstimate';
 import ExpandedStoryType from './ExpandedStoryType';
+import ExpandedStoryDescription from './ExpandedStoryDescription';
 import { editStory, updateStory } from '../../../actions/story';
 import { connect } from 'react-redux';
 
@@ -27,6 +28,11 @@ export const ExpandedStory = (props) => {
           onEdit={(newAttributes) => editStory(story.id, newAttributes)}
         />
       </div>
+
+      <ExpandedStoryDescription
+        story={story}
+        onEdit={(newAttributes) => editStory(story.id, newAttributes)}
+      />
     </div>
   );
 };
