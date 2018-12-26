@@ -15,6 +15,17 @@ export const updateStorySuccess = (story) => ({
   story
 });
 
+export const deleteStorySucess = (id) => ({
+  type: actionTypes.DELETE_STORY_SUCCESS,
+  id
+});
+
+export const editStory = (id, newAttributes) => ({
+  type: actionTypes.EDIT_STORY,
+  id,
+  newAttributes
+});
+
 export const updateStory = (story, projectId) => {
   return (dispatch, getState, { Story }) => {
     if (story._editing._isDirty) {
@@ -28,8 +39,12 @@ export const updateStory = (story, projectId) => {
   };
 };
 
-export const editStory = (id, newAttributes) => ({
-  type: actionTypes.EDIT_STORY,
-  id,
-  newAttributes
-});
+export const deleteStory = (storyId, projectId) => {
+  return (dispatch, getState, { Story }) => {
+    return Story.deleteStory(storyId, projectId)
+      .then(dispatch(deleteStorySucess(storyId)))
+      .catch(error => {
+        // TODO: dispatch an action to notify user
+      });
+  };
+};

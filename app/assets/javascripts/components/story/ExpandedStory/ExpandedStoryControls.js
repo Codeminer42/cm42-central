@@ -1,14 +1,20 @@
 import React from 'react';
 
-const ExpandedStoryControls = (props) => {
-  const { onCancel, onSave } = props;
-
+const ExpandedStoryControls = ({ onCancel, onSave, onDelete, readOnly }) => {
   return (
     <div className="form-group Story__controls">
       <input className="save"
         onClick={onSave}
         type="button"
         value={I18n.t('save')}
+        disabled={readOnly}
+      />
+
+      <input className="delete"
+        onClick={onDelete}
+        type="button"
+        value={I18n.t('delete')}
+        disabled={readOnly}
       />
 
       <input className="cancel"

@@ -75,6 +75,11 @@ export function update(story, projectId) {
     }));
 };
 
+export function deleteStory(storyId, projectId) {
+  return httpService
+    .delete(`/projects/${projectId}/stories/${storyId}`)
+};
+
 export const updateStory = (story, newAttributes) => {
   return {
     ...story,
