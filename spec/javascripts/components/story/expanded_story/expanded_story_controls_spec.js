@@ -10,7 +10,7 @@ describe('<ExpandedStoryControls />', () => {
 
     controls.map(control => {
       expect(wrapper.find(`.${control}`).prop('value')).toBe(I18n.t(control))
-    })
+    });
   });
 
   describe('when the user click on save', () => {
@@ -31,7 +31,15 @@ describe('<ExpandedStoryControls />', () => {
   });
 
   describe('when the user click on delete', () => {
-    it('triggers the delete callback', () => {
+    beforeEach(function() {
+      sinon.stub(window, 'confirm').returns(true);
+    });
+
+    afterEach(function() {
+      window.confirm.restore();
+    });
+
+    it('triggers the delete callback after confirm', () => {
       const onDelete = sinon.spy();
 
       const wrapper = shallow(
