@@ -16,12 +16,18 @@ class ProjectPolicy < ApplicationPolicy
     true
   end
 
+  def archive?
+    !record.archived && import?
+  end
+
+  def unarchive?
+    record.archived && import?
+  end
+
   alias archived? update?
   alias import_upload? import?
-  alias archive? import?
-  alias unarchive? archive?
-  alias destroy? archive?
-  alias share? archive?
+  alias destroy? import?
+  alias share? import?
   alias unshare? share?
   alias transfer? share?
   alias ownership? share?

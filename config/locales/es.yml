@@ -284,6 +284,7 @@ es:
       listing projects: "Listado de Proyectos"
       are you sure you want to delete this project_html: "¿Estás seguro de quieres borrar este proyecto? Esta acción <b>no se puede</b> deshacer. Esto eliminará permanentemente el proyecto <b>%{project_name}</b> y todas sus historias."
       are you sure you want to archive this project: "¿Está seguro de que desea archivar este proyecto?"
+      are you sure you want to unarchive this project: "¿Está seguro de que desea desarchivar este proyecto?"
       are you sure you want to unshare this project: "¿Está seguro de que desea quitar el acceso al proyecto a este equipo?"
       the iteration starts on x with length of x weeks:
         one:    "Las iteraciones empiezan en %{day} con una duración de 1 semana"

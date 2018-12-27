@@ -90,7 +90,7 @@ ActiveRecord::Base.transaction do
 
   team = Team.create! name: 'Default'
   team.enrollments.create! user: user, is_admin: true
-  team.projects << project
+  team.ownerships.create(project: project, is_owner: true)
 
   AdminUser.create!(
     email: 'admin@example.com',

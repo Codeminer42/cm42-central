@@ -16,4 +16,8 @@ FactoryGirl.define do
     start_date { Time.current.months_ago(1) }
     iteration_start_day { Time.current.months_ago(1).wday }
   end
+
+  trait :archived do
+    archived_at { Time.current }
+  end
 end

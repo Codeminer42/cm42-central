@@ -214,7 +214,7 @@ class ProjectsController < ApplicationController
       if @project
         format.html do
           redirect_to(
-            @project,
+            @project.archived ? projects_path : @project,
             notice: t("projects.project was successfully #{archive ? 'archived' : 'unarchived'}")
           )
         end
