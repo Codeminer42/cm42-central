@@ -66,6 +66,7 @@ es:
   reset_tour: "Resetear excursión"
   reset_tour_success: "La excursión se restableció correctamente"
   reset_tour_fail: "Ha ocurrido un error, por favor intente otra vez"
+  story destroy confirm: "¿Estás seguro de que quieres destruir esta historia?"
   stories_destroy_success: "Las historias fueron destruidas con éxito"
   stories_destroy_fail: "Las historias no se pudieron destruir debido a algunos errores de validación"
   update_stories_successfully: "Las historias se actualizaron con éxito"
@@ -322,7 +323,7 @@ es:
       example: 'Ejemplo: title: %{story}, requester: foo bar, created_at: 2017/10/30'
       properties: 'Propiedades'
       people: 'Personas'
-  
+
   tag_group:
     new tag_group: "Nuevo Grupo"
     color: "Color"
@@ -331,7 +332,7 @@ es:
     actions: "Acciones"
     bg_color: "Color de Fondo"
     tag_groups: "Grupo de Etiquetas"
-  
+
   users:
     You are not authorized to perform this action: "Usted no está autorizado para realizar esta acción."
     is already a member of this project: "%{email} ya es un miembro de este proyecto"

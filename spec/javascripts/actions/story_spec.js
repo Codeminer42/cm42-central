@@ -73,3 +73,36 @@ describe('updateStory', () => {
     });
   });
 });
+
+describe('deleteStory', () => {
+  const storyId = 420;
+  const projectId = 42;
+
+  it('Calls Story.deleteStory with projectId and storyId', (done) => {
+    const FakeStory = {
+      deleteStory: sinon.stub().resolves({})
+    };
+
+    const fakeDispatch = sinon.stub().resolves({});
+
+    Story.deleteStory(storyId, projectId)(fakeDispatch, null, { Story: FakeStory }).then(() => {
+      expect(FakeStory.deleteStory).toHaveBeenCalledWith(storyId, projectId);
+
+      done();
+    });
+  });
+
+  it('dispatch deleteStorySuccess', (done) => {
+    const FakeStory = {
+      deleteStory: sinon.stub().resolves({})
+    };
+
+    const fakeDispatch = sinon.stub().resolves({});
+
+    Story.deleteStory(storyId, projectId)(fakeDispatch, null, { Story: FakeStory }).then(() => {
+      expect(fakeDispatch).toHaveBeenCalledWith(Story.deleteStorySuccess(storyId));
+
+      done();
+    });
+  });
+});

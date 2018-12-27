@@ -11,7 +11,11 @@ const ExpandedStoryControls = ({ onCancel, onSave, onDelete, readOnly }) => {
       />
 
       <input className="delete"
-        onClick={onDelete}
+        onClick={() => {
+          if (window.confirm(I18n.t('story destroy confirm'))){
+            onDelete();
+          }
+        }}
         type="button"
         value={I18n.t('delete')}
         disabled={readOnly}

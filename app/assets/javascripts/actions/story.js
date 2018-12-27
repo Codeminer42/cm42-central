@@ -15,7 +15,7 @@ export const updateStorySuccess = (story) => ({
   story
 });
 
-export const deleteStorySucess = (id) => ({
+export const deleteStorySuccess = (id) => ({
   type: actionTypes.DELETE_STORY_SUCCESS,
   id
 });
@@ -42,9 +42,10 @@ export const updateStory = (story, projectId) => {
 export const deleteStory = (storyId, projectId) => {
   return (dispatch, getState, { Story }) => {
     return Story.deleteStory(storyId, projectId)
-      .then(dispatch(deleteStorySucess(storyId)))
+      .then(dispatch(deleteStorySuccess(storyId)))
       .catch(error => {
-        // TODO: dispatch an action to notify user
+        // TODO: dispatch an action to notify user on error
+        alert(error.message);
       });
   };
 };

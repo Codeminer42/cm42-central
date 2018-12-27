@@ -67,6 +67,7 @@ pt-BR:
   reset_tour: "Resetar tour"
   reset_tour_success: "A tour foi resetada com sucesso"
   reset_tour_fail: "Ocorreu um erro, por favor tente novamente"
+  story destroy confirm: "Você tem certeza que quer excluir esta história?"
   stories_destroy_success: "As histórias foram destruídas com sucesso"
   stories_destroy_fail: "As histórias não puderam ser destruídas por alguns erros de validação"
   update_stories_successfully: "As histórias foram atualizadas com sucesso"
