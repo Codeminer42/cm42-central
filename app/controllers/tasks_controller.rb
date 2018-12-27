@@ -23,8 +23,7 @@ class TasksController < ApplicationController
     @task = policy_scope(Task).find(params[:id])
     authorize @task
     @task.update_attributes(allowed_params)
-
-    head :ok
+    render json: @task
   end
 
   private

@@ -78,7 +78,7 @@ describe TasksController do
         expect(assigns[:project]).to eq(project)
         expect(assigns[:story]).to eq(story)
         expect(assigns[:task]).to eq(task)
-        expect(response.body).to be_blank
+        expect(response.body).not_to be_blank
       end
     end
   end
