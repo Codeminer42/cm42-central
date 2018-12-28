@@ -8,7 +8,7 @@ describe('<ExpandedStoryControls />', () => {
   it('renders all the control buttons', () => {
     const wrapper = shallow(<ExpandedStoryControls readOnly={false} />);
 
-    controls.map(control => {
+    controls.forEach(control => {
       expect(wrapper.find(`.${control}`).prop('value')).toBe(I18n.t(control))
     });
   });

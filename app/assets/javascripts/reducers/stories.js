@@ -21,10 +21,9 @@ const storiesReducer = (state = initialState, action) => {
           return updateStory(story, action.story);
         }));
     case actionTypes.DELETE_STORY_SUCCESS:
-    return state.map(
-      updateIfSameId(action.id, () => {
-        return () => null;
-      }));
+      return state.filter(
+        story => story.id !== action.id
+      );
     default:
       return state;
   };
