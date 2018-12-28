@@ -1,5 +1,6 @@
 import actionTypes from 'actions/actionTypes';
-import { toggleStory, editStory, updateStory } from 'models/beta/story'
+import { toggleStory, editStory, updateStory } from 'models/beta/story';
+import { deleteNoteSuccess } from 'models/beta/note';
 
 const initialState = [];
 
@@ -19,6 +20,11 @@ const storiesReducer = (state = initialState, action) => {
       return state.map(
         updateIfSameId(action.story.id, (story) => {
           return updateStory(story, action.story);
+        }));
+    case actionTypes.DELETE_NOTE:
+      return state.map(
+        updateIfSameId(action.storyId, (story) => {
+          return deleteNoteSuccess(story, action.noteId)
         }));
     default:
       return state;

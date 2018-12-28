@@ -8,6 +8,7 @@ import stories from 'reducers/stories';
 import pastIterations from 'reducers/pastIterations';
 import * as Story from '../models/beta/story';
 import * as ProjectBoard from '../models/beta/projectBoard';
+import * as Note from '../models/beta/note';
 
 const reducer = combineReducers({
   project,
@@ -18,8 +19,13 @@ const reducer = combineReducers({
 });
 
 const store = createStore(
-  reducer,
-  composeWithDevTools(applyMiddleware(thunk.withExtraArgument({ Story, ProjectBoard })))
+  reducer, composeWithDevTools(
+    applyMiddleware(
+      thunk.withExtraArgument(
+        { Story, ProjectBoard, Note }
+      )
+    )
+  )
 );
 
 export default store;

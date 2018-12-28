@@ -11,5 +11,6 @@ export default keyMirror({
   TOGGLE_STORY: null,
   EDIT_STORY: null,
   UPDATE_STORY: null,
-  UPDATE_STORY_SUCCESS: null
+  UPDATE_STORY_SUCCESS: null,
+  DELETE_NOTE: null
 });
