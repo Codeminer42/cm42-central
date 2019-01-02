@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Markdown from '../../Markdown';
+import NotesList from '../note/NotesList';
 
 class ExpandedStoryNotes extends React.Component {
   constructor(props) {
@@ -65,36 +65,6 @@ class ExpandedStoryNotes extends React.Component {
     );
   };
 };
-
-const NotesList = ({ notes, onDelete }) => (
-  <div>
-    {
-      notes.map(note => (
-        <Note
-          key={note.id}
-          note={note}
-          onDelete={() => onDelete(note.id)}
-        />
-      ))
-    }
-  </div>
-);
-
-const Note = ({ note, onDelete }) => (
-  <div className='markdown-wrapper'>
-    <Markdown source={note.note} />
-
-    <div className='markdown-wrapper__text-right'>
-      {`${note.userName} - ${note.createdAt} `}
-      <span
-        className='delete-note-button'
-        onClick={onDelete}
-      >
-        {I18n.t('delete')}
-      </span>
-    </div>
-  </div>
-);
 
 ExpandedStoryNotes.propTypes = {
   story: PropTypes.object.isRequired,
