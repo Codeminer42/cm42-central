@@ -178,6 +178,37 @@
         &__section {
           margin: 5px 5px 5px 0;
 
+          &__notes {
+            .delete-note-button {
+              margin-left: 5px;
+              color: $link-primary;
+              text-decoration: none;
+
+              &:hover, &:focus {
+                color: $link-hover;
+                cursor: pointer;
+                text-decoration: underline;
+                outline: 0;
+              }
+            }
+
+            .create-note-button {
+              margin-bottom: 5px;
+              text-align: right;
+
+              input {
+                @extend .btn;
+                @extend .btn-default;
+                @extend .btn-xs;
+              }
+            }
+
+            .create-note-text {
+              resize: vertical;
+              margin: 10px 0;
+            }
+          }
+
           .edit-description-button {
             font-size: 12px;
             border-radius: 5px;
@@ -189,19 +220,6 @@
 
           .edit-description-text {
             resize: vertical;
-          }
-
-          .delete-note-button {
-            margin-left: 5px;
-            color: $link-primary;
-            text-decoration: none;
-
-            &:hover, &:focus {
-              color: $link-hover;
-              cursor: pointer;
-              text-decoration: underline;
-              outline: 0;
-            }
           }
         }
 

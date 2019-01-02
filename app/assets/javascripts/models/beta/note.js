@@ -1,11 +1,30 @@
 import httpService from '../../services/httpService';
+import changeCase from 'change-object-case';
 
-export const deleteNote = (projectId, storyId, noteId) => {
+export const destroy = (projectId, storyId, noteId) => {
   return httpService
     .delete(`/projects/${projectId}/stories/${storyId}/notes/${noteId}`)
+    .catch(error => console.error(error))
 };
 
-export const deleteNoteSuccess = (story, noteId) => {
+export const post = (projectId, storyId, note) => {
+  return httpService
+    .post(`/projects/${projectId}/stories/${storyId}/notes`, { note })
+    .then(({ data }) => changeCase.camelKeys(data, { recursive: true, arrayRecursive: true }))
+    .catch(error => console.error(error))
+};
+
+export const addNote = (story, note) => {
+  return {
+    ...story,
+    notes: [
+      ...story.notes,
+      note
+    ]
+  }
+}
+
+export const deleteNote = (story, noteId) => {
   return {
     ...story,
     notes: story.notes.filter(note => note.id !== noteId)

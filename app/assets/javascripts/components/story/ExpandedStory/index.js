@@ -7,10 +7,18 @@ import ExpandedStoryType from './ExpandedStoryType';
 import ExpandedStoryDescription from './ExpandedStoryDescription';
 import ExpandedStoryNotes from './ExpandedStoryNotes';
 import { editStory, updateStory } from '../../../actions/story';
+import { deleteNote, createNote } from '../../../actions/note';
 import { connect } from 'react-redux';
 
-export const ExpandedStory = (props) => {
-  const { story, onToggle, editStory, updateStory, project } = props;
+export const ExpandedStory = ({
+  story,
+  onToggle,
+  editStory,
+  updateStory,
+  project,
+  deleteNote,
+  createNote
+}) => {
 
   return (
     <div className="Story Story--expanded">
@@ -38,6 +46,8 @@ export const ExpandedStory = (props) => {
       <ExpandedStoryNotes
         story={story}
         projectId={project.id}
+        onDelete={(noteId) => deleteNote(project.id, story.id, noteId)}
+        onCreate={(note) => createNote(project.id, story.id, { note })}
       />
     </div>
   );
@@ -53,6 +63,8 @@ export default connect(
   mapStateToProps,
   {
     editStory,
-    updateStory
+    updateStory,
+    deleteNote,
+    createNote
   }
 )(ExpandedStory);

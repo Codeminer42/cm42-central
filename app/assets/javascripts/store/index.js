@@ -10,6 +10,8 @@ import * as Story from '../models/beta/story';
 import * as ProjectBoard from '../models/beta/projectBoard';
 import * as Note from '../models/beta/note';
 
+const dependencies = { Story, ProjectBoard, Note };
+
 const reducer = combineReducers({
   project,
   projectBoard,
@@ -21,9 +23,7 @@ const reducer = combineReducers({
 const store = createStore(
   reducer, composeWithDevTools(
     applyMiddleware(
-      thunk.withExtraArgument(
-        { Story, ProjectBoard, Note }
-      )
+      thunk.withExtraArgument(dependencies)
     )
   )
 );

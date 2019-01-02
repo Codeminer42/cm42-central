@@ -1,25 +1,69 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Markdown from '../../Markdown';
-import { deleteNote } from '../../../actions/note';
-import { connect } from 'react-redux';
 
 class ExpandedStoryNotes extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      value: ''
+    }
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSave = this.handleSave.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({ value: event.target.value })
+  }
+
+  handleSave() {
+    const { onCreate } = this.props;
+
+    onCreate(this.state.value);
+    this.setState({ value: '' });
+  }
+
+  notesForm() {
+    return (
+      <div>
+        <textarea
+          className="form-control input-sm create-note-text"
+          value={this.state.value}
+          onChange={(event) => this.handleChange(event)}
+        />
+
+        <div className='create-note-button'>
+          <input
+            type='button'
+            value={I18n.t('add note')}
+            onClick={() => this.handleSave()}
+          />
+        </div>
+      </div>
+    );
+  };
+
   render() {
-    const { story, projectId, deleteNote } = this.props;
+    const { story, onDelete } = this.props;
+
     return (
       <div className="Story__section">
         <div className="Story__section-title">
           {I18n.translate('story.notes')}
         </div>
+        <div className="Story__section__notes">
+          <NotesList
+            onDelete={(noteId) => onDelete(noteId)}
+            notes={story.notes}
+          />
 
-        <NotesList
-          onDelete={(noteId) => deleteNote(projectId, story.id, noteId)}
-          notes={story.notes}
-        />
+          { this.notesForm() }
+        </div>
       </div>
     );
-  }
+  };
 };
 
 const NotesList = ({ notes, onDelete }) => (
@@ -38,7 +82,7 @@ const NotesList = ({ notes, onDelete }) => (
 
 const Note = ({ note, onDelete }) => (
   <div className='markdown-wrapper'>
-    <Markdown source={note.note || ''} />
+    <Markdown source={note.note} />
 
     <div className='markdown-wrapper__text-right'>
       {`${note.userName} - ${note.createdAt} `}
@@ -53,10 +97,9 @@ const Note = ({ note, onDelete }) => (
 );
 
 ExpandedStoryNotes.propTypes = {
-  story: PropTypes.object.isRequired
+  story: PropTypes.object.isRequired,
+  onCreate: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired
 };
 
-export default connect(
-  null,
-  { deleteNote }
-)(ExpandedStoryNotes);
+export default ExpandedStoryNotes;

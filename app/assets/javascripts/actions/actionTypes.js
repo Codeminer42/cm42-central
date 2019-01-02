@@ -12,5 +12,6 @@ export default keyMirror({
   EDIT_STORY: null,
   UPDATE_STORY: null,
   UPDATE_STORY_SUCCESS: null,
+  ADD_NOTE: null,
   DELETE_NOTE: null
 });
