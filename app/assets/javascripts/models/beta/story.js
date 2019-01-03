@@ -63,8 +63,11 @@ export const isRelease = (storyType) => storyType === 'release';
 
 export const types = ['feature', 'bug', 'release', 'chore'];
 
-export const states = ['unscheduled', 'unstarted', 'started', 'finished', 'delivered',
-  'accepted', 'rejected'];
+export const states = [
+  'unscheduled', 'unstarted', 'started',
+  'finished', 'delivered', 'accepted',
+  'rejected'
+];
 
 export function update(story, projectId) {
   const newStory = changeCase.snakeKeys(story);

@@ -15,7 +15,7 @@ describe('<ExpandedStoryState />', () => {
   });
 
   describe("states at select", () => {
-    states.map(state => {
+    states.forEach(state => {
       it(`sets select value as ${state}`, () => {
         const onEditSpy = sinon.spy();
 
