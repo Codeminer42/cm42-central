@@ -5,7 +5,7 @@ describe('updateStory', () => {
   const story = storyFactory();
   const projectId = 42;
 
-  it('Calls Story.update with story._editing and projectId', (done) => {
+  it('calls Story.update with story._editing and projectId', (done) => {
     const editedStory = {
       ...story,
       _editing: {
@@ -78,7 +78,7 @@ describe('deleteStory', () => {
   const storyId = 420;
   const projectId = 42;
 
-  it('Calls Story.deleteStory with projectId and storyId', (done) => {
+  it('calls Story.deleteStory with projectId and storyId', (done) => {
     const FakeStory = {
       deleteStory: sinon.stub().resolves({})
     };

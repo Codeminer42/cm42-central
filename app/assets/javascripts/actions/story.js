@@ -41,7 +41,7 @@ export const updateStory = (story, projectId) =>
 export const deleteStory = (storyId, projectId) =>
   (dispatch, getState, { Story }) =>
     Story.deleteStory(storyId, projectId)
-      .then(dispatch(deleteStorySuccess(storyId)))
+      .then(() => dispatch(deleteStorySuccess(storyId)))
       .catch(
         error => {
           // TODO: dispatch an action to notify user on error
