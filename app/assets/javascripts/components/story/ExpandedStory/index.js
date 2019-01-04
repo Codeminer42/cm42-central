@@ -5,6 +5,7 @@ import ExpandedStoryControls from './ExpandedStoryControls';
 import ExpandedStoryEstimate from './ExpandedStoryEstimate';
 import ExpandedStoryType from './ExpandedStoryType';
 import ExpandedStoryDescription from './ExpandedStoryDescription';
+import ExpandedStoryState from './ExpandedStoryState';
 import ExpandedStoryTitle from './ExpandedStoryTitle';
 import { editStory, updateStory } from '../../../actions/story';
 import { connect } from 'react-redux';
@@ -34,6 +35,11 @@ export const ExpandedStory = (props) => {
           onEdit={(newAttributes) => editStory(story.id, newAttributes)}
         />
       </div>
+
+      <ExpandedStoryState
+        story={story}
+        onEdit={(newAttributes) => editStory(story.id, newAttributes)}
+      />
 
       <ExpandedStoryDescription
         story={story}

@@ -5,6 +5,7 @@
 - Select to Story Type in board V2
 - Select to Story Estimate in board V2
 - Save option to Story in board V2
+- Select to Story State in board V2
 
 ### Fix
 - Refactor Redux flow to remove stories duplication in board V2
@@ -18,7 +19,7 @@
 ## [1.22.0] 2018-11-30
 ### Added
 - Added supports to upload libre office formats
-- Imports/exports of stories 
+- Imports/exports of stories
   - Documents
   - Tasks
 - Added Popover when Story is collapsed in board V2
