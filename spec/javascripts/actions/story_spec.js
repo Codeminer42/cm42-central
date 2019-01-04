@@ -5,7 +5,7 @@ describe('updateStory', () => {
   const story = storyFactory();
   const projectId = 42;
 
-  it('Calls Story.update with story._editing and projectId', (done) => {
+  it('calls Story.update with story._editing and projectId', (done) => {
     const editedStory = {
       ...story,
       _editing: {
@@ -68,6 +68,39 @@ describe('updateStory', () => {
     Story.updateStory(editedStory, projectId)(fakeDispatch, null, { Story: FakeStory }).then(() => {
       expect(fakeDispatch).toHaveBeenCalledWith(Story.toggleStory(editedStory.id));
       expect(fakeDispatch).toHaveBeenCalledWith(Story.updateStorySuccess(story));
+
+      done();
+    });
+  });
+});
+
+describe('deleteStory', () => {
+  const storyId = 420;
+  const projectId = 42;
+
+  it('calls Story.deleteStory with projectId and storyId', (done) => {
+    const FakeStory = {
+      deleteStory: sinon.stub().resolves({})
+    };
+
+    const fakeDispatch = sinon.stub().resolves({});
+
+    Story.deleteStory(storyId, projectId)(fakeDispatch, null, { Story: FakeStory }).then(() => {
+      expect(FakeStory.deleteStory).toHaveBeenCalledWith(storyId, projectId);
+
+      done();
+    });
+  });
+
+  it('dispatch deleteStorySuccess', (done) => {
+    const FakeStory = {
+      deleteStory: sinon.stub().resolves({})
+    };
+
+    const fakeDispatch = sinon.stub().resolves({});
+
+    Story.deleteStory(storyId, projectId)(fakeDispatch, null, { Story: FakeStory }).then(() => {
+      expect(fakeDispatch).toHaveBeenCalledWith(Story.deleteStorySuccess(storyId));
 
       done();
     });

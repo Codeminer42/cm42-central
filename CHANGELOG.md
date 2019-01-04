@@ -5,6 +5,7 @@
 - Select to Story Type in board V2
 - Select to Story Estimate in board V2
 - Save option to Story in board V2
+- Delete option to Story in board V2
 - Select to Story State in board V2
 
 ### Fix

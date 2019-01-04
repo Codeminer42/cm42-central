@@ -69,7 +69,7 @@ export const states = [
   'rejected'
 ];
 
-export function update(story, projectId) {
+export const update = (story, projectId) => {
   const newStory = changeCase.snakeKeys(story);
 
   return httpService
@@ -79,6 +79,11 @@ export function update(story, projectId) {
       ...story,
       estimate: story.estimate || ''
     }));
+};
+
+export const deleteStory = (storyId, projectId) => {
+  return httpService
+    .delete(`/projects/${projectId}/stories/${storyId}`)
 };
 
 export const updateStory = (story, newAttributes) => {
