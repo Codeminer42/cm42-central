@@ -237,7 +237,7 @@ GEM
     has_scope (0.7.2)
       actionpack (>= 4.1)
       activesupport (>= 4.1)
-    hashdiff (0.3.7)
+    hashdiff (0.3.8)
     heroics (0.0.25)
       erubis (~> 2.0)
       excon
@@ -534,7 +534,7 @@ GEM
       equalizer (~> 0.0, >= 0.0.9)
     warden (1.2.8)
       rack (>= 2.0.6)
-    webmock (3.4.2)
+    webmock (3.5.1)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
@@ -636,7 +636,7 @@ DEPENDENCIES
   webpacker
 
 RUBY VERSION
-   ruby 2.5.1p57
+   ruby 2.6.0p0
 
 BUNDLED WITH
    1.17.2
