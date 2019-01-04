@@ -63,7 +63,13 @@ export const isRelease = (storyType) => storyType === 'release';
 
 export const types = ['feature', 'bug', 'release', 'chore'];
 
-export function update(story, projectId) {
+export const states = [
+  'unscheduled', 'unstarted', 'started',
+  'finished', 'delivered', 'accepted',
+  'rejected'
+];
+
+export const update = (story, projectId) => {
   const newStory = changeCase.snakeKeys(story);
 
   return httpService
@@ -73,6 +79,11 @@ export function update(story, projectId) {
       ...story,
       estimate: story.estimate || ''
     }));
+};
+
+export const deleteStory = (storyId, projectId) => {
+  return httpService
+    .delete(`/projects/${projectId}/stories/${storyId}`)
 };
 
 export const updateStory = (story, newAttributes) => {

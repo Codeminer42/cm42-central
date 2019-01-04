@@ -15,21 +15,36 @@ export const updateStorySuccess = (story) => ({
   story
 });
 
-export const updateStory = (story, projectId) => {
-  return (dispatch, getState, { Story }) => {
-    if (story._editing._isDirty) {
-      return Story.update(story._editing, projectId)
-        .then(( story ) => {
-          dispatch(updateStorySuccess(story));
-          dispatch(toggleStory(story.id));
-        });
-    }
-    return dispatch(toggleStory(story.id));
-  };
-};
+export const deleteStorySuccess = (id) => ({
+  type: actionTypes.DELETE_STORY_SUCCESS,
+  id
+});
 
 export const editStory = (id, newAttributes) => ({
   type: actionTypes.EDIT_STORY,
   id,
   newAttributes
 });
+
+export const updateStory = (story, projectId) =>
+  (dispatch, getState, { Story }) => {
+    if (story._editing._isDirty) {
+      return Story.update(story._editing, projectId)
+        .then((story) => {
+          dispatch(updateStorySuccess(story));
+          dispatch(toggleStory(story.id));
+        });
+    }
+    return dispatch(toggleStory(story.id));
+  };
+
+export const deleteStory = (storyId, projectId) =>
+  (dispatch, getState, { Story }) =>
+    Story.deleteStory(storyId, projectId)
+      .then(() => dispatch(deleteStorySuccess(storyId)))
+      .catch(
+        error => {
+          // TODO: dispatch an action to notify user on error
+          alert(error.message);
+        }
+      );

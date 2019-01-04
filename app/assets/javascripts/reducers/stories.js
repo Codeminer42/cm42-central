@@ -21,6 +21,10 @@ const storiesReducer = (state = initialState, action) => {
         updateIfSameId(action.story.id, (story) => {
           return updateStory(story, action.story);
         }));
+    case actionTypes.DELETE_STORY_SUCCESS:
+      return state.filter(
+        story => story.id !== action.id
+      );
     case actionTypes.ADD_NOTE:
       return state.map(
         updateIfSameId(action.storyId, (story) => {
