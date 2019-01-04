@@ -12,18 +12,18 @@ class ExpandedStoryNotes extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
-  }
+  };
 
   handleChange(event) {
     this.setState({ value: event.target.value })
-  }
+  };
 
   handleSave() {
     const { onCreate } = this.props;
 
     onCreate(this.state.value);
     this.setState({ value: '' });
-  }
+  };
 
   notesForm() {
     return (

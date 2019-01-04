@@ -22,10 +22,10 @@ const storiesReducer = (state = initialState, action) => {
           return updateStory(story, action.story);
         }));
     case actionTypes.ADD_NOTE:
-    return state.map(
-      updateIfSameId(action.storyId, (story) => {
-        return Note.addNote(story, action.note)
-      }));
+      return state.map(
+        updateIfSameId(action.storyId, (story) => {
+          return Note.addNote(story, action.note)
+        }));
     case actionTypes.DELETE_NOTE:
       return state.map(
         updateIfSameId(action.storyId, (story) => {
