@@ -378,6 +378,9 @@ pt-BR:
     user_not_found: 'Usuário não encontrado'
     user_is_already_in_this_team: 'O usuário já esta nessa equipe.'
     no_teams_found: "Oops! Você ainda não está inscrito em uma equipe."
+    new_instruction: |
+      <p>Se você não estiver cadastrado ainda, cadastre-se antes.</p>
+      <p>O primeiro usuário a registrar-se neste time será o administrador.</p>
     members: "Gerenciar Membros da Equipe"
 
   admin:

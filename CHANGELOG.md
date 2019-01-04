@@ -6,6 +6,7 @@
 - Select to Story Estimate in board V2
 - Save option to Story in board V2
 - Delete option to Story in board V2
+- Select to Story State in board V2
 
 ### Fix
 - Refactor Redux flow to remove stories duplication in board V2

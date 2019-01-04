@@ -5,6 +5,8 @@ import ExpandedStoryControls from './ExpandedStoryControls';
 import ExpandedStoryEstimate from './ExpandedStoryEstimate';
 import ExpandedStoryType from './ExpandedStoryType';
 import ExpandedStoryDescription from './ExpandedStoryDescription';
+import ExpandedStoryState from './ExpandedStoryState';
+import ExpandedStoryTitle from './ExpandedStoryTitle';
 import { editStory, updateStory, deleteStory } from '../../../actions/story';
 import { connect } from 'react-redux';
 import * as Story from '../../../models/beta/story';
@@ -18,8 +20,13 @@ export const ExpandedStory = ({ story, onToggle, editStory, updateStory, project
         onDelete={() => deleteStory(story.id, project.id)}
         readOnly={Story.isAccepted(story)}
       />
-
       <ExpandedStoryHistoryLocation story={story} />
+
+      <ExpandedStoryTitle
+        story={story}
+        onEdit={(newTitle) => editStory(story.id, { title: newTitle })}
+      />
+
       <div className="Story__flex">
         <ExpandedStoryEstimate story={story}
           onEdit={(newAttributes) => editStory(story.id, newAttributes)}
@@ -29,6 +36,11 @@ export const ExpandedStory = ({ story, onToggle, editStory, updateStory, project
           onEdit={(newAttributes) => editStory(story.id, newAttributes)}
         />
       </div>
+
+      <ExpandedStoryState
+        story={story}
+        onEdit={(newAttributes) => editStory(story.id, newAttributes)}
+      />
 
       <ExpandedStoryDescription
         story={story}
