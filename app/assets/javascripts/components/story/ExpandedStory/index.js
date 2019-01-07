@@ -7,6 +7,7 @@ import ExpandedStoryType from './ExpandedStoryType';
 import ExpandedStoryDescription from './ExpandedStoryDescription';
 import ExpandedStoryState from './ExpandedStoryState';
 import ExpandedStoryTitle from './ExpandedStoryTitle';
+import ExpandedStoryLabels from './ExpandedStoryLabels';
 import { editStory, updateStory, deleteStory } from '../../../actions/story';
 import { connect } from 'react-redux';
 import * as Story from '../../../models/beta/story';
@@ -40,6 +41,11 @@ export const ExpandedStory = ({ story, onToggle, editStory, updateStory, project
       <ExpandedStoryState
         story={story}
         onEdit={(newAttributes) => editStory(story.id, newAttributes)}
+      />
+
+      <ExpandedStoryLabels
+        labels={story.labels}
+        onEdit={(value) => editStory(story.id, { labels: value })}
       />
 
       <ExpandedStoryDescription
