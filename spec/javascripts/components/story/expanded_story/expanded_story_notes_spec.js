@@ -36,10 +36,10 @@ describe('<ExpandedStoryNotes />', () => {
       />
     );
 
-    expect(wrapper.exists('.create-note-text')).toBe(true);
-    expect(wrapper.exists('.create-note-button')).toBe(true);
-    expect(wrapper.exists('.Story__section__notes')).toBe(true);
-    expect(wrapper.exists('NotesList')).toBe(true);
+    expect(wrapper.find('.create-note-text')).toExist();
+    expect(wrapper.find('.create-note-button')).toExist();
+    expect(wrapper.find('.Story__section__notes')).toExist();
+    expect(wrapper.find('NotesList')).toExist();
   });
 
   describe('when user create a new note', () => {

@@ -15,7 +15,7 @@ export const createNoteSuccess = (storyId, note) => ({
 export const deleteNote = (projectId, storyId, noteId) =>
   (dispatch, getState, { Note }) =>
     Note.destroy(projectId, storyId, noteId)
-      .then(dispatch(deleteNoteSuccess(storyId, noteId)));
+      .then(() => dispatch(deleteNoteSuccess(storyId, noteId)));
 
 export const createNote = (projectId, storyId, note) =>
   (dispatch, getState, { Note }) =>

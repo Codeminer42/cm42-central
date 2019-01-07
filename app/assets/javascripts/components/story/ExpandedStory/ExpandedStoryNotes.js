@@ -8,7 +8,7 @@ class ExpandedStoryNotes extends React.Component {
 
     this.state = {
       value: ''
-    }
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
@@ -16,14 +16,14 @@ class ExpandedStoryNotes extends React.Component {
 
   handleChange(event) {
     this.setState({ value: event.target.value })
-  };
+  }
 
   handleSave() {
     const { onCreate } = this.props;
 
     onCreate(this.state.value);
     this.setState({ value: '' });
-  };
+  }
 
   notesForm() {
     return (
@@ -31,19 +31,19 @@ class ExpandedStoryNotes extends React.Component {
         <textarea
           className="form-control input-sm create-note-text"
           value={this.state.value}
-          onChange={(event) => this.handleChange(event)}
+          onChange={this.handleChange}
         />
 
         <div className='create-note-button'>
           <input
             type='button'
             value={I18n.t('add note')}
-            onClick={() => this.handleSave()}
+            onClick={this.handleSave}
           />
         </div>
       </div>
     );
-  };
+  }
 
   render() {
     const { story, onDelete } = this.props;
@@ -55,7 +55,7 @@ class ExpandedStoryNotes extends React.Component {
         </div>
         <div className="Story__section__notes">
           <NotesList
-            onDelete={(noteId) => onDelete(noteId)}
+            onDelete={onDelete}
             notes={story.notes}
           />
 
@@ -63,7 +63,7 @@ class ExpandedStoryNotes extends React.Component {
         </div>
       </div>
     );
-  };
+  }
 };
 
 ExpandedStoryNotes.propTypes = {

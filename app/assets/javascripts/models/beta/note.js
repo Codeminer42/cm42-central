@@ -6,7 +6,6 @@ export const destroy = (projectId, storyId, noteId) =>
     .delete(`/projects/${projectId}/stories/${storyId}/notes/${noteId}`)
     .catch(error => console.error(error));
 
-
 export const post = (projectId, storyId, note) =>
   httpService
     .post(`/projects/${projectId}/stories/${storyId}/notes`, { note })
