@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactTags from 'react-tag-autocomplete';
 
-
 class ExpandedStoryLabels extends React.Component {
   constructor(props) {
     super(props);
@@ -15,15 +14,17 @@ class ExpandedStoryLabels extends React.Component {
   }
 
   splitTags(tags) {
-    return (
-      tags.split(',')
+    if (tags) {
+      return tags.split(',')
         .map((tag, index) => (
           {
             id: index,
             name: tag
           }
         ))
-    );
+    }
+
+    return [];
   };
 
   joinTags(tags) {
@@ -64,6 +65,11 @@ class ExpandedStoryLabels extends React.Component {
             tags={this.state.tags}
             handleDelete={this.handleDelete}
             handleAddition={this.handleAddition}
+            allowNew={true}
+            placeholder={I18n.t('add new label')}
+            allowBackspace={false}
+            addOnBlur={true}
+            delimiterChars={[' ']}
             autoresize={false} />
         }
       </div>
