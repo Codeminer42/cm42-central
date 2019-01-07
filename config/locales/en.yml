@@ -296,6 +296,9 @@ en:
     integrations: "Integrations"
     integrations_new: "Add a new integration"
     integrations_remove_sure: "Are you sure you want to remove '%{kind}' integration from this project?"
+    integrations_gitlab_url_placeholder: "Your gitlab repository API link"
+    integrations_gitlab_token_placeholder: "The project admin's private token"
+    integrations_gitlab_secret_key_placeholder: "The secret key from the gitlab integration"
 
     index:
       listing projects: "Listing Projects"

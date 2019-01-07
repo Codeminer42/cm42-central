@@ -300,6 +300,9 @@ pt-BR:
     integrations: "Integrações"
     integrations_new: "Adicionar uma nova integração"
     integrations_remove_sure: "Tem certeza de que deseja remover integração '%{kind} deste projeto?"
+    integrations_gitlab_url_placeholder: "O link para o API do seu repositorio do gitlab."
+    integrations_gitlab_token_placeholder: "O token privado do responsavel pelo projeto."
+    integrations_gitlab_secret_key_placeholder: "A chave secreta da integração do gitlab"
 
     index:
       listing projects: "Listando Projetos"

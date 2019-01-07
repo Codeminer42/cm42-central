@@ -5,16 +5,6 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rspec/rails'
 
 # Add additional requires below this line. Rails is not loaded until this point!
-require 'vcr'
-require 'webmock'
-
-VCR.configure do |config|
-  config.cassette_library_dir = 'fixtures/vcr_cassettes'
-  config.hook_into :webmock # or :fakeweb
-  config.ignore_localhost = true
-  config.default_cassette_options = { record: :new_episodes }
-  config.configure_rspec_metadata!
-end
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are

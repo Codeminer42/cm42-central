@@ -1,0 +1,27 @@
+<%= form.fields_for :data, OpenStruct.new(form.object.data) do |p| %>
+  <div class="form-group">
+    <%= p.label :integration_url %>
+    <%= p.text_field :api_url,
+                     placeholder: t('projects.integrations_gitlab_url_placeholder'),
+                     class: "form-control auth-form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= p.label :private_token %>
+    <%= p.text_field :private_token,
+                     class: "form-control auth-form-control",
+                     placeholder: t('projects.integrations_gitlab_token_placeholder')%>
+  </div>
+
+  <div class="form-group">
+    <%= p.label :secret_key %>
+    <%= p.text_field :secret_key,
+                     class: "form-control auth-form-control",
+                     placeholder: t('projects.integrations_gitlab_secret_key_placeholder')%>
+  </div>
+
+  <div class="form-group">
+    <%= p.label :repository_id %>
+    <%= p.text_field :project_id, class: "form-control auth-form-control" %>
+  </div>
+<% end %>
