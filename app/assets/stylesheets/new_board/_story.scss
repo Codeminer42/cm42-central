@@ -26,11 +26,11 @@
         background-color: $blue-4;
         border-top-color: $blue-5;
         border-bottom-color: $blue-3;
-  
+
         abbr {
           color: $white;
         }
-  
+
         &:hover {
           background-color: $blue-3;
         }
@@ -177,7 +177,38 @@
 
         &__section {
           margin: 5px 5px 5px 0;
-          
+
+          &__notes {
+            .delete-note-button {
+              margin-left: 5px;
+              color: $link-primary;
+              text-decoration: none;
+
+              &:hover, &:focus {
+                color: $link-hover;
+                cursor: pointer;
+                text-decoration: underline;
+                outline: 0;
+              }
+            }
+
+            .create-note-button {
+              margin-bottom: 5px;
+              text-align: right;
+
+              input {
+                @extend .btn;
+                @extend .btn-default;
+                @extend .btn-xs;
+              }
+            }
+
+            .create-note-text {
+              resize: vertical;
+              margin: 10px 0;
+            }
+          }
+
           .edit-description-button {
             font-size: 12px;
             border-radius: 5px;
@@ -194,7 +225,7 @@
 
         &__controls {
           @extend .btn-group;
-          
+
           input {
             @extend .btn;
             @extend .btn-default;

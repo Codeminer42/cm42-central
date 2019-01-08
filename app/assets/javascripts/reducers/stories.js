@@ -1,5 +1,6 @@
 import actionTypes from 'actions/actionTypes';
-import { toggleStory, editStory, updateStory } from 'models/beta/story'
+import { toggleStory, editStory, updateStory } from 'models/beta/story';
+import * as Note from 'models/beta/note';
 
 const initialState = [];
 
@@ -24,6 +25,16 @@ const storiesReducer = (state = initialState, action) => {
       return state.filter(
         story => story.id !== action.id
       );
+    case actionTypes.ADD_NOTE:
+      return state.map(
+        updateIfSameId(action.storyId, (story) => {
+          return Note.addNote(story, action.note)
+        }));
+    case actionTypes.DELETE_NOTE:
+      return state.map(
+        updateIfSameId(action.storyId, (story) => {
+          return Note.deleteNote(story, action.noteId)
+        }));
     default:
       return state;
   };
