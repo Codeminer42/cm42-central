@@ -53,8 +53,8 @@ describe 'Projects' do
           let(:project) { create :project, users: [user], teams: [current_team] }
 
           scenario 'there is no button' do
-            expect(page).not_to have_selector(:link_or_button, 'Archive')
-            expect(page).not_to have_selector(:link_or_button, 'Unarchive')
+            expect(page).not_to have_link('Archive')
+            expect(page).not_to have_link('Unarchive')
           end
         end
 
@@ -62,8 +62,8 @@ describe 'Projects' do
           let(:project) { create :project, :archived, users: [user], teams: [current_team] }
 
           scenario 'there is no button' do
-            expect(page).not_to have_selector(:link_or_button, 'Archive')
-            expect(page).not_to have_selector(:link_or_button, 'Unarchive')
+            expect(page).not_to have_link('Archive')
+            expect(page).not_to have_link('Unarchive')
           end
         end
       end
