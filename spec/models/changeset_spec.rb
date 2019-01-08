@@ -52,10 +52,4 @@ describe Changeset do
       its(:project) { should == project }
     end
   end
-
-  describe '.since' do
-    specify do
-      expect(Changeset.since(234).where_values.first).to eq('id > 234')
-    end
-  end
 end

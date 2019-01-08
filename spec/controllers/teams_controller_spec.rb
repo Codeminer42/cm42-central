@@ -14,7 +14,7 @@ describe TeamsController, type: :controller do
 
     %w[edit update destroy].each do |action|
       specify do
-        get action, id: 42
+        get action, params: { id: 42 }
         expect(response).to redirect_to(new_user_session_url)
       end
     end
@@ -25,13 +25,13 @@ describe TeamsController, type: :controller do
       before { sign_in user }
 
       specify do
-        post :create, team: team_params
+        post :create, params: { team: team_params }
         expect(assigns[:team].name).to eq(team_params['name'])
       end
 
       context 'when save succeeds' do
         specify do
-          post :create, team: team_params
+          post :create, params: { team: team_params }
           expect(response).to redirect_to(root_path)
           expect(flash[:notice]).to eq(I18n.t('teams.team was successfully created'))
         end
@@ -39,8 +39,8 @@ describe TeamsController, type: :controller do
 
       context 'when save fails' do
         specify do
-          post :create, team: { name: nil }
-          expect(response).to be_success
+          post :create, params: { team: { name: nil } }
+          expect(response).to be_successful
           expect(response).to render_template('new')
         end
       end
@@ -56,7 +56,7 @@ describe TeamsController, type: :controller do
 
       describe '#switch' do
         it 'must set the current_team_slug session' do
-          get :switch, team_slug: team.slug
+          get :switch, params: { team_slug: team.slug }
           expect(session[:current_team_slug]).to eq(team.slug)
         end
       end
@@ -65,8 +65,8 @@ describe TeamsController, type: :controller do
         before { create_list :user, 2, teams: [team] }
 
         it 'only list users this team to manage' do
-          get :manage_users, team_id: team.slug
-          expect(response).to be_success
+          get :manage_users, params: { team_id: team.slug }
+          expect(response).to be_successful
           expect(assigns[:users].count).to eq(3)
         end
       end
@@ -79,7 +79,7 @@ describe TeamsController, type: :controller do
           context 'when the user is not in the current team' do
             let!(:normal_user_without_team) { create :user, email: 'sample@example.com' }
             it 'should return successfully associate in current team' do
-              post :create_enrollment, team_id: team.slug, user: values
+              post :create_enrollment, params: { team_id: team.slug, user: values }
 
               expect(response).to redirect_to(team_new_enrollment_path)
               expect(flash[:notice]).to eq(I18n.t('teams.team_was_successfully_updated'))
@@ -89,7 +89,7 @@ describe TeamsController, type: :controller do
           context 'when the user is in the current team' do
             let(:normal_user_with_team) { create :user, teams: [team], email: 'sample@example.com' }
             it 'should return that user is already in this team ' do
-              post :create_enrollment, team_id: normal_user_with_team.teams.first.slug, user: values
+              post :create_enrollment, params: { team_id: normal_user_with_team.teams.first.slug, user: values }
 
               expect(response).to redirect_to(team_new_enrollment_path)
               expect(flash[:notice]).to eq(I18n.t('teams.user_is_already_in_this_team'))
@@ -98,7 +98,7 @@ describe TeamsController, type: :controller do
 
           context 'when the user does not exist' do
             it 'should not find a user to associate' do
-              post :create_enrollment, team_id: team.slug, user: values
+              post :create_enrollment, params: { team_id: team.slug, user: values }
 
               expect(response).to redirect_to(team_new_enrollment_path)
               expect(flash[:notice]).to eq(I18n.t('teams.user_not_found'))
@@ -109,8 +109,8 @@ describe TeamsController, type: :controller do
 
       describe '#edit' do
         specify do
-          get :edit, id: 'xyz'
-          expect(response).to be_success
+          get :edit, params: { id: 'xyz' }
+          expect(response).to be_successful
           expect(assigns[:team]).to eq(team)
         end
       end
@@ -120,13 +120,13 @@ describe TeamsController, type: :controller do
         let(:team_params) { { name: 'New Team Name' } }
 
         specify do
-          put :update, id: team, team: team_params
+          put :update, params: { id: team, team: team_params }
           expect(assigns[:team].name).to eq('New Team Name')
         end
 
         context 'when update succeeds' do
           specify do
-            put :update, id: team, team: team_params
+            put :update, params: { id: team, team: team_params }
             expect(response).to redirect_to(edit_team_path(team))
           end
         end
@@ -134,15 +134,15 @@ describe TeamsController, type: :controller do
         context 'when update fails' do
           before { create :team, name: 'Team Hello' }
           specify do
-            put :update, id: 'xyz', team: { name: 'Team Hello' }
-            expect(response).to be_success
+            put :update, params: { id: 'xyz', team: { name: 'Team Hello' } }
+            expect(response).to be_successful
             expect(response).to render_template('edit')
           end
 
           context 'when name is empty' do
             specify do
-              put :update, id: 'xyz', team: { name: '' }
-              expect(response).to be_success
+              put :update, params: { id: 'xyz', team: { name: '' } }
+              expect(response).to be_successful
               expect(response).to render_template('edit')
             end
           end
@@ -154,7 +154,7 @@ describe TeamsController, type: :controller do
         let(:team) { user.teams.first }
 
         specify do
-          delete :destroy, id: 'xyz'
+          delete :destroy, params: { id: 'xyz' }
           expect(assigns[:team].archived_at).to_not be_nil
           expect(session[:current_team_slug]).to be_nil
           expect(response).to redirect_to(teams_path)
@@ -167,12 +167,12 @@ describe TeamsController, type: :controller do
 
             expect(message_delivery).to receive(:deliver_later)
 
-            delete :destroy, id: team.id, send_email: true
+            delete :destroy, params: { id: team.id, send_email: true }
           end
 
           it 'increases the number of send mails' do
             expect do
-              delete :destroy, id: team.id, send_email: true
+              delete :destroy, params: { id: team.id, send_email: true }
             end.to change { ActionMailer::Base.deliveries.count }.by(1)
           end
         end
@@ -180,7 +180,7 @@ describe TeamsController, type: :controller do
         describe 'when the flag send_email: false' do
           it 'not increases the number of send mails' do
             expect do
-              delete :destroy, id: team.id
+              delete :destroy, params: { id: team.id }
             end.not_to change { ActionMailer::Base.deliveries.count }
           end
         end
@@ -198,24 +198,24 @@ describe TeamsController, type: :controller do
 
       describe '#edit' do
         specify do
-          get :edit, id: 'xyz'
-          expect(response).to_not be_success
+          get :edit, params: { id: 'xyz' }
+          expect(response).to_not be_successful
           expect(response).to redirect_to(root_path)
         end
       end
 
       describe '#update' do
         specify do
-          put :update, id: 'xyz', team: { name: 'New Team Test' }
-          expect(response).to_not be_success
+          put :update, params: { id: 'xyz', team: { name: 'New Team Test' } }
+          expect(response).to_not be_successful
           expect(response).to redirect_to(root_path)
         end
       end
 
       describe '#destroy' do
         specify do
-          delete :destroy, id: 'xyz'
-          expect(response).to_not be_success
+          delete :destroy, params: { id: 'xyz' }
+          expect(response).to_not be_successful
           expect(response).to redirect_to(root_path)
         end
       end

@@ -37,7 +37,7 @@ describe 'Logins' do
         visit root_path
         fill_in 'Email',    with: 'user@example.com'
         fill_in 'Password', with: 'password'
-        click_button 'Sign in'
+        click_button 'Log in'
 
         expect(page).to have_selector('.user-dropdown', text: 'Test User')
       end
@@ -52,7 +52,7 @@ describe 'Logins' do
         visit root_path
         fill_in 'Email',    with: 'user@example.com'
         fill_in 'Password', with: 'password'
-        click_button 'Sign in'
+        click_button 'Log in'
 
         expect(page).to have_selector('span', text: I18n.t('teams.switch')) &
                         have_selector('.user-dropdown', text: 'Test User')
@@ -67,7 +67,7 @@ describe 'Logins' do
         fill_in 'Email', with: 'user@example.com'
         fill_in 'Password', with: 'password'
 
-        click_button 'Sign in'
+        click_button 'Log in'
 
         expect(page)
           .to have_selector('span', text: I18n.t('teams.switch')) &
@@ -86,7 +86,7 @@ describe 'Logins' do
 
           fill_in 'Email',     with: 'user@example.com'
           fill_in 'Password',  with: 'password'
-          click_button 'Sign in'
+          click_button 'Log in'
           expect(page).to have_selector('h2', text: I18n.t('authy_register_title', scope: 'devise'))
         end
       end
@@ -102,7 +102,7 @@ describe 'Logins' do
 
           fill_in 'Email',     with: 'user@example.com'
           fill_in 'Password',  with: 'password'
-          click_button 'Sign in'
+          click_button 'Log in'
 
           expect(page)
             .to have_selector('legend', text: I18n.t('submit_token_title', scope: 'devise'))

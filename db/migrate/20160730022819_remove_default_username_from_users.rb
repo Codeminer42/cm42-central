@@ -1,4 +1,4 @@
-class RemoveDefaultUsernameFromUsers < ActiveRecord::Migration
+class RemoveDefaultUsernameFromUsers < ActiveRecord::Migration[4.2]
   # User with nil username will receive their emails as username:
   # eg:
   #   user.test@gmail.com => user.test

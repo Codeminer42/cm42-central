@@ -63,10 +63,10 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def devise_params
-    devise_parameter_sanitizer.for(:sign_up) do |u|
+    devise_parameter_sanitizer.permit(:sign_up) do |u|
       u.permit(:email, :name, :initials, :username, :team_slug)
     end
-    devise_parameter_sanitizer.for(:account_update) do |u|
+    devise_parameter_sanitizer.permit(:account_update) do |u|
       u.permit(:email, :password, :password_confirmation, :remember_me,
                :name, :initials, :username, :email_delivery, :email_acceptance,
                :email_rejection, :locale, :time_zone, :current_password)

@@ -10,7 +10,7 @@ class StoryChangesNotificationsChecker
   private
 
   def changed?
-    story.state_changed?
+    story.state_previously_changed?
   end
 
   def notifications_enabled?

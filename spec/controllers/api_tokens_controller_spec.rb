@@ -7,14 +7,14 @@ describe ApiTokensController, type: :controller do
   context 'when not logged in' do
     context '#create' do
       specify do
-        xhr :post, :create, request_params
+        post :create, xhr: true, params: request_params
         is_expected.to respond_with 401
       end
     end
 
     context '#destroy' do
       specify do
-        xhr :delete, :destroy, request_params.merge(id: 1)
+        delete :destroy, xhr: true, params: request_params.merge(id: 1)
         is_expected.to respond_with 401
       end
     end
@@ -28,7 +28,7 @@ describe ApiTokensController, type: :controller do
 
     describe '#create' do
       specify do
-        xhr :post, :create, request_params
+        post :create, xhr: true, params: request_params
         expect(response).to redirect_to(edit_team_path(user.teams.first))
       end
     end
@@ -37,7 +37,7 @@ describe ApiTokensController, type: :controller do
       let!(:api_token) { user.teams.first.api_tokens.create }
 
       specify do
-        xhr :delete, :destroy, request_params.merge(id: api_token.id)
+        delete :destroy,xhr: true, params: request_params.merge(id: api_token.id)
         expect(response).to redirect_to(edit_team_path(user.teams.first))
       end
     end

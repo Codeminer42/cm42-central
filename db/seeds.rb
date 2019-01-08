@@ -7,7 +7,7 @@ ActiveRecord::Base.transaction do
     password: 'asdfasdf'
   )
 
-  user.confirm!
+  user.confirm
 
   project = Project.create!(
     name: 'Test Project',

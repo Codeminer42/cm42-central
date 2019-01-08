@@ -1,4 +1,4 @@
-class AddUsernameToUsers < ActiveRecord::Migration
+class AddUsernameToUsers < ActiveRecord::Migration[4.2]
   def self.up
     add_column :users, :username, :string, null: false, default: ''
   end

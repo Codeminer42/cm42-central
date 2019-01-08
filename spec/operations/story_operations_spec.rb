@@ -50,8 +50,8 @@ describe StoryOperations do
       end
     end
 
-    context "::PusherNotification" do
-      it "notifies the pusher that the board has changes" do
+    context '::PusherNotification' do
+      it 'notifies the pusher that the board has changes' do
         expect(PusherNotificationWorker).to receive(:perform_async)
 
         subject.call
@@ -117,12 +117,12 @@ describe StoryOperations do
       VCR.use_cassette('cloudinary_upload_activity') do
         subject.call
       end
-      expect(Activity.last.subject_changes['documents_attributes'])
-        .to eq([['hello2.jpg', 'hello.jpg'], ['hello2.jpg', 'hello3.jpg']])
+      expect(Activity.last.subject_changes['documents_attributes']).to eq([%w[hello2.jpg hello.jpg],
+                                                                           %w[hello2.jpg hello3.jpg]])
     end
   end
 
-  describe '::Update', vcr: { match_requests_on: [:host, :path] } do
+  describe '::Update', vcr: { match_requests_on: %i[host path] } do
     before do
       story.save!
     end
@@ -145,8 +145,8 @@ describe StoryOperations do
       end
     end
 
-    context "::PusherNotification" do
-      it "notifies the pusher that the board has changes" do
+    context '::PusherNotification' do
+      it 'notifies the pusher that the board has changes' do
         expect(PusherNotificationWorker).to receive(:perform_async)
 
         subject.call
@@ -382,13 +382,13 @@ describe StoryOperations do
     end
   end
 
-  describe "::Destroy" do
+  describe '::Destroy' do
     before do
       story.save!
     end
 
-    context "::PusherNotification" do
-      it "notifies the pusher that the board has changes" do
+    context '::PusherNotification' do
+      it 'notifies the pusher that the board has changes' do
         expect(PusherNotificationWorker).to receive(:perform_async)
 
         StoryOperations::Destroy.call(story, user)

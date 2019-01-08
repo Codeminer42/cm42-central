@@ -40,7 +40,7 @@ module UserImpersonate
 
   ImpersonateController.class_eval do
     # Ignore user authentication and Pundit authorization
-    skip_before_filter :authenticate_user!
-    skip_after_filter :verify_authorized
+    skip_before_action :authenticate_user!
+    skip_after_action :verify_authorized
   end
 end

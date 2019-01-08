@@ -6,7 +6,7 @@ describe Stories::ActivitiesController do
 
   context 'when logged out' do
     specify do
-      get :index, project_id: story.project.id, story_id: story.id
+      get :index, params: { project_id: story.project.id, story_id: story.id }
       expect(response).to redirect_to(new_user_session_url)
     end
   end
@@ -22,11 +22,11 @@ describe Stories::ActivitiesController do
 
     describe '#index' do
       before do
-        xhr :get, :index, project_id: story.project.slug, story_id: story.id
+        get :index, xhr: true, params: { project_id: story.project.slug, story_id: story.id }
       end
 
       it 'returns a successful response' do
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'returns all the activities from a Story' do

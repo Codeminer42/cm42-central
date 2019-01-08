@@ -41,5 +41,7 @@ module Fulcrum
     end
 
     config.assets.paths << Rails.root.join('node_modules')
+    config.paths.add Rails.root.join('lib').to_s, eager_load: true
+    config.active_job.queue_adapter = :sidekiq
   end
 end

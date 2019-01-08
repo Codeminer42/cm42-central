@@ -1,4 +1,4 @@
-class CreateEnrollments < ActiveRecord::Migration
+class CreateEnrollments < ActiveRecord::Migration[4.2]
   def up
     create_table :enrollments do |t|
       t.integer :team_id, null: false

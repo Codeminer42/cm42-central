@@ -76,7 +76,7 @@ class Story < ApplicationRecord
   # Set the project start date to today if the project start date is nil
   # and the state is changing to any state other than 'unstarted' or 'unscheduled'
   def fix_project_start_date
-    return unless state_changed?
+    return unless state_previously_changed?
     return unless project && !project.start_date && !%w[unstarted unscheduled].include?(state)
     project.start_date = Date.current
   end
@@ -84,7 +84,7 @@ class Story < ApplicationRecord
   # If a story's 'accepted at' date is prior to the project start date,
   # the project start date should be moved back accordingly
   def fix_story_accepted_at
-    return unless accepted_at_changed? && accepted_at && accepted_at < project.start_date
+    return unless accepted_at_previously_changed? && accepted_at && accepted_at < project.start_date
     project.start_date = accepted_at
   end
 
@@ -93,5 +93,15 @@ class Story < ApplicationRecord
 
     date = Chronic.parse(val)
     self[:release_date] = date
+  end
+
+  def saved_changes
+    return super unless Array(documents_attributes_was) != documents_attributes
+
+    super.merge(documents_attributes: [documents_attributes_was, documents_attributes])
+  end
+
+  def saved_changes?
+    documents_attributes_was != documents_attributes || super
   end
 end

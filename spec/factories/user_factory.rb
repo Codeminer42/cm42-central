@@ -1,14 +1,14 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :user do |u|
     u.sequence(:name) { |n| "User #{n}" }
     u.sequence(:username) { |n| "username #{n}" }
     u.sequence(:initials) { |n| "U#{n}" }
     u.sequence(:email) { |n| "user#{n}@example.com" }
-    u.password 'password'
-    u.password_confirmation 'password'
-    u.locale 'en'
-    u.time_zone 'Brasilia'
-    u.finished_tour true
+    u.password { 'password' }
+    u.password_confirmation { 'password' }
+    u.locale { 'en' }
+    u.time_zone { 'Brasilia' }
+    u.finished_tour { true }
     u.after(:build, &:confirm)
 
     trait :with_team do

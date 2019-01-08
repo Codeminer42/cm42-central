@@ -1,6 +1,6 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :story do |s|
-    s.title 'Test story'
+    s.title { 'Test story' }
     s.association :requested_by, factory: :user
 
     trait :with_project do
@@ -14,15 +14,15 @@ FactoryGirl.define do
     end
 
     trait :done do
-      title 'Done story'
-      state 'accepted'
-      estimate 8
+      title { 'Done story' }
+      state { 'accepted' }
+      estimate { 8 }
       accepted_at { Time.current.days_ago(10) }
     end
 
     trait :active do
-      title 'Active story'
-      state 'started'
+      title { 'Active story' }
+      state { 'started' }
       started_at { Time.current.days_ago(2) }
     end
   end

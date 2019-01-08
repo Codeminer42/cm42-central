@@ -1,4 +1,4 @@
-class AddNotifyPreference < ActiveRecord::Migration
+class AddNotifyPreference < ActiveRecord::Migration[4.2]
   def self.up
     add_column :users, :email_delivery, :boolean, default: true
     add_column :users, :email_acceptance, :boolean, default: true
