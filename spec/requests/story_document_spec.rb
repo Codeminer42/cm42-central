@@ -8,7 +8,7 @@ RSpec.describe 'Story document', type: :request do
     end
 
     before do
-      post user_session_path, user: { email: user.email, password: 'password' }
+      post user_session_path, params: { user: { email: user.email, password: 'password' } }
     end
 
     context 'update documents' do
@@ -46,10 +46,9 @@ RSpec.describe 'Story document', type: :request do
 
       it 'should delete all documents (resilient against deep_munge rails/rails#13420)' do
         expect(story.documents.count).to eq(2)
-        params = { story: { documents: [] } }.to_json
-        headers = { 'CONTENT_TYPE' => 'application/json' }
+        params = { story: { documents: [] } }
 
-        put project_story_path(project_id: project.id, id: story.id), params, headers
+        put project_story_path(project_id: project.id, id: story.id), xhr: true, params: params
 
         story.reload
         expect(story.documents.count).to eq(0)

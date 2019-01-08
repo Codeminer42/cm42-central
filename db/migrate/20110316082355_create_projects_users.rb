@@ -1,4 +1,4 @@
-class CreateProjectsUsers < ActiveRecord::Migration
+class CreateProjectsUsers < ActiveRecord::Migration[4.2]
   def self.up
     create_table :projects_users, id: false do |t|
       t.references :project

@@ -3,16 +3,16 @@ require 'rails_helper'
 shared_examples_for '#index' do
   context 'as html' do
     specify do
-      get :index, project_id: project.id
-      expect(response).to be_success
+      get :index, params: { project_id: project.id }
+      expect(response).to be_successful
       expect(assigns[:project]).to eq(project)
     end
   end
 
   context 'as json' do
     specify do
-      xhr :get, :index, project_id: project.id, format: :json
-      expect(response).to be_success
+      get :index, xhr: true, params: { project_id: project.id, format: :json }
+      expect(response).to be_successful
       expect(response.body).to eq(project.users.to_json)
     end
   end
@@ -25,18 +25,18 @@ describe UsersController do
     let(:team) { create(:team) }
 
     specify do
-      get :index, project_id: project.id
+      get :index, params: { project_id: project.id }
       expect(response).to redirect_to(new_user_session_url)
     end
 
     specify do
-      get :create, team_id: team.id
+      get :create, params: {  team_id: team.id }
       expect(response).to redirect_to(new_user_session_url)
     end
 
     %w[destroy].each do |action|
       specify do
-        get action, id: 42, project_id: project.id
+        get action, params: {  id: 42, project_id: project.id }
         expect(response).to redirect_to(new_user_session_url)
       end
     end
@@ -83,7 +83,7 @@ describe UsersController do
           let(:created_user) { User.find_by(email: 'foo@bar.com') }
 
           before do
-            post :create, team_id: current_team.id, user: valid_params
+            post :create, params: { team_id: current_team.id, user: valid_params }
           end
 
           it 'displays a successful message' do
@@ -97,7 +97,7 @@ describe UsersController do
 
         context 'when there are invalid params' do
           it 'displays a message that the user was not created' do
-            post :create, team_id: current_team.id, user: invalid_params
+            post :create, params: {  team_id: current_team.id, user: invalid_params }
 
             expect(flash[:alert]).to eq 'User was not created'
           end
@@ -111,15 +111,15 @@ describe UsersController do
 
         context 'himself' do
           specify do
-            delete :destroy, project_id: project.id, id: user.id
-            expect(response).to redirect_to(:back)
+            delete :destroy, params: { project_id: project.id, id: user.id }
+            expect(response).to redirect_to(root_url)
           end
         end
 
         context 'another user' do
           specify do
-            delete :destroy, project_id: project.id, id: another_user.id
-            expect(response).to redirect_to(:back)
+            delete :destroy, params: { project_id: project.id, id: another_user.id }
+            expect(response).to redirect_to(root_url)
           end
         end
       end
@@ -153,7 +153,7 @@ describe UsersController do
         end
 
         specify do
-          post :create, team_id: current_team.id, user: user_params
+          post :create, params: { team_id: current_team.id, user: user_params }
           expect(flash[:error]).to eq(I18n.t('users.You are not authorized to perform this action'))
           expect(response).to redirect_to(root_path)
         end
@@ -164,7 +164,7 @@ describe UsersController do
           end
 
           specify do
-            post :create, team_id: current_team.id, user: user_params
+            post :create, params: { team_id: current_team.id, user: user_params }
             expect(flash[:error])
               .to eq(I18n.t('users.You are not authorized to perform this action'))
             expect(response).to redirect_to(root_path)
@@ -178,16 +178,16 @@ describe UsersController do
         context 'himself' do
           before do
             request.env['HTTP_REFERER'] = root_url
-            delete :destroy, project_id: project.id, id: user.id
+            delete :destroy, params: { project_id: project.id, id: user.id }
           end
 
-          it { expect(response).to redirect_to(:back) }
+          it { expect(response).to redirect_to(root_url) }
           it { expect(flash[:notice]).to eq('foobar@example.com was removed from this project') }
         end
 
         context 'another user' do
           specify do
-            delete :destroy, project_id: project.id, id: another_user.id
+            delete :destroy, params: { project_id: project.id, id: another_user.id }
             expect(flash[:error])
               .to eq(I18n.t('users.You are not authorized to perform this action'))
             expect(response).to redirect_to(root_path)

@@ -1,4 +1,4 @@
-class AddKeys < ActiveRecord::Migration
+class AddKeys < ActiveRecord::Migration[4.2]
   def up
     # clean up
     Story.where("project_id not in (?)", Project.all.pluck(:id)).delete_all

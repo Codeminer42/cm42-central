@@ -9,21 +9,21 @@ describe TasksController do
   context 'when not logged in' do
     context '#create' do
       specify do
-        xhr :post, :create, request_params
+        post :create, xhr: true, params: request_params
         is_expected.to respond_with 401
       end
     end
 
     context '#destroy' do
       specify do
-        xhr :delete, :destroy, request_params.merge(id: 1)
+        delete :destroy, xhr: true, params: request_params.merge(id: 1)
         is_expected.to respond_with 401
       end
     end
 
     context '#update' do
       specify do
-        xhr :put, :update, request_params.merge(id: 1, done: true)
+        put :update, xhr: true, params: request_params.merge(id: 1, done: true)
         is_expected.to respond_with 401
       end
     end
@@ -37,10 +37,10 @@ describe TasksController do
 
     describe '#create' do
       specify do
-        xhr :post, :create, request_params.merge(task: { name: 'task name' })
+        post :create, xhr: true, params: request_params.merge(task: { name: 'task name' })
 
         task = assigns[:task]
-        expect(response).to be_success
+        expect(response).to be_successful
         expect(assigns[:project]).to eq(project)
         expect(assigns[:story]).to eq(story)
         expect(task).to_not be_nil
@@ -50,7 +50,7 @@ describe TasksController do
 
       context 'when save fails' do
         specify do
-          xhr :post, :create, request_params.merge(task: { name: '' })
+          post :create, xhr: true, params: request_params.merge(task: { name: '' })
           is_expected.to respond_with 422
         end
       end
@@ -60,8 +60,8 @@ describe TasksController do
       specify do
         task = create(:task, story: story)
 
-        xhr :delete, :destroy, request_params.merge(id: task.id)
-        expect(response).to be_success
+        delete :destroy, xhr: true, params: request_params.merge(id: task.id)
+        expect(response).to be_successful
         expect(assigns[:project]).to eq(project)
         expect(assigns[:story]).to eq(story)
         expect(assigns[:task]).to eq(task)
@@ -73,8 +73,8 @@ describe TasksController do
       specify do
         task = create(:task, story: story)
 
-        xhr :put, :update, request_params.merge(id: task.id, task: { done: true })
-        expect(response).to be_success
+        put :update, xhr: true, params: request_params.merge(id: task.id, task: { done: true })
+        expect(response).to be_successful
         expect(assigns[:project]).to eq(project)
         expect(assigns[:story]).to eq(story)
         expect(assigns[:task]).to eq(task)

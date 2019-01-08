@@ -4,10 +4,10 @@ import memoize from 'memoizee';
 import PropTypes from 'prop-types';
 
 const Markdown = ({ source }) => {
-  const descriptionHTML = window.md.makeHtml(source);
-  const descriptionComponent = Parser(descriptionHTML);
+  if (source) {
+    const descriptionHTML = window.md.makeHtml(source);
+    const descriptionComponent = Parser(descriptionHTML);
 
-  if( source ){
     return (
       <div className='Markdown'>{ descriptionComponent }</div>
     );

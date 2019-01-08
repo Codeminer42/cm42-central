@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :changeset do |c|
     c.association :story
     c.association :project

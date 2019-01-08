@@ -16,7 +16,7 @@ RSpec.describe V1::Projects do
 
     before(:each) do
       create_list :project, 4, teams: [team]
-      get '/api/v1/projects', per_page: 2, api_key: api_token.token
+      get '/api/v1/projects', params: { per_page: 2, api_key: api_token.token}
     end
 
     it 'returns 2 projects' do
@@ -45,7 +45,7 @@ RSpec.describe V1::Projects do
     let(:project) { create :project }
 
     before(:each) do
-      get "/api/v1/projects/#{project.slug}", per_page: 2, api_key: api_token.token
+      get "/api/v1/projects/#{project.slug}", params: { per_page: 2, api_key: api_token.token }
     end
 
     it 'returns the project' do
@@ -127,7 +127,7 @@ RSpec.describe V1::Projects do
       allow_any_instance_of(Project).to receive(:iteration_service)
         .and_return(iteration)
 
-      get "/api/v1/projects/#{project.slug}/analysis", since: 1, api_key: api_token.token
+      get "/api/v1/projects/#{project.slug}/analysis", params: { since: 1, api_key: api_token.token }
     end
 
     it 'returns the project with analysis' do
@@ -204,7 +204,7 @@ RSpec.describe V1::Projects do
 
     context 'filtering by page' do
       before(:each) do
-        get "/api/v1/projects/#{project.slug}/stories", per_page: 3, api_key: api_token.token
+        get "/api/v1/projects/#{project.slug}/stories", params: { per_page: 3, api_key: api_token.token }
       end
 
       it 'returns 3 project stories' do
@@ -214,7 +214,7 @@ RSpec.describe V1::Projects do
 
     context 'filtering by done state' do
       before(:each) do
-        get "/api/v1/projects/#{project.slug}/stories", state: :done, api_key: api_token.token
+        get "/api/v1/projects/#{project.slug}/stories", params: { state: :done, api_key: api_token.token }
       end
 
       it 'returns 4 done project stories' do
@@ -225,8 +225,10 @@ RSpec.describe V1::Projects do
     context 'filtering by in progress state' do
       before(:each) do
         get "/api/v1/projects/#{project.slug}/stories",
+          params: {
             state: :in_progress,
             api_key: api_token.token
+          }
       end
 
       it 'returns 3 in progress project stories' do
@@ -237,8 +239,10 @@ RSpec.describe V1::Projects do
     context 'filtering by backlog state' do
       before(:each) do
         get "/api/v1/projects/#{project.slug}/stories",
+          params: {
             state: :backlog,
             api_key: api_token.token
+          }
       end
 
       it 'returns 4 backlog project stories' do
@@ -249,8 +253,10 @@ RSpec.describe V1::Projects do
     context 'filtering by chilly bin state' do
       before(:each) do
         get "/api/v1/projects/#{project.slug}/stories",
+          params: {
             state: :chilly_bin,
             api_key: api_token.token
+          }
       end
 
       it 'returns 5 chilly bin project stories' do
@@ -261,8 +267,10 @@ RSpec.describe V1::Projects do
     context 'filtering by an invalid state' do
       before(:each) do
         get "/api/v1/projects/#{project.slug}/stories",
+          params: {
             state: :foo,
             api_key: api_token.token
+          }
       end
 
       it 'returns an error' do
@@ -274,8 +282,10 @@ RSpec.describe V1::Projects do
     context 'filtering by created at' do
       before(:each) do
         get "/api/v1/projects/#{project.slug}/stories",
+          params: {
             created_at: 12.days.ago,
             api_key: api_token.token
+          }
       end
 
       it 'returns 2 project stories' do
@@ -286,9 +296,11 @@ RSpec.describe V1::Projects do
     context 'filtering by accepted at' do
       before(:each) do
         get "/api/v1/projects/#{project.slug}/stories",
+          params: {
             accepted_at: 5.days.ago,
             state: :done,
             api_key: api_token.token
+          }
       end
 
       it 'returns 2 project stories' do
@@ -301,8 +313,10 @@ RSpec.describe V1::Projects do
 
       before(:each) do
         get "/api/v1/projects/#{project.slug}/stories",
+          params: {
             state: :done,
             api_key: api_token.token
+          }
       end
 
       it 'returns a authorization error' do
@@ -316,8 +330,10 @@ RSpec.describe V1::Projects do
 
       before(:each) do
         get "/api/v1/projects/#{project.slug}/stories",
+          params: {
             state: :done,
             api_key: api_token.token
+          }
       end
 
       it 'returns a authorization error' do
@@ -332,8 +348,10 @@ RSpec.describe V1::Projects do
 
     before(:each) do
       get "/api/v1/projects/#{project.slug}/users",
+        params: {
           per_page: 2,
           api_key: api_token.token
+        }
     end
 
     it 'returns 2 project users' do
@@ -364,8 +382,11 @@ RSpec.describe V1::Projects do
     it 'updates mail_reports into project' do
       expect do
         put "/api/v1/projects/#{project.slug}",
-               project: { mail_reports: false },
-               api_key: api_token.token; project.reload
+          params: {
+            project: { mail_reports: false },
+            api_key: api_token.token
+          }
+        project.reload
       end.to change(project, :mail_reports).to(false)
     end
   end

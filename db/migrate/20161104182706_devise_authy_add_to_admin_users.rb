@@ -1,4 +1,4 @@
-class DeviseAuthyAddToAdminUsers < ActiveRecord::Migration
+class DeviseAuthyAddToAdminUsers < ActiveRecord::Migration[4.2]
   def self.up
     change_table :admin_users do |t|
       t.string    :authy_id

@@ -1,4 +1,4 @@
-class RemoveIsAdminFromUser < ActiveRecord::Migration
+class RemoveIsAdminFromUser < ActiveRecord::Migration[4.2]
   def up
     remove_column :users, :is_admin
   end

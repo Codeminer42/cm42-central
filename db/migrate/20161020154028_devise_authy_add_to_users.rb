@@ -1,4 +1,4 @@
-class DeviseAuthyAddToUsers < ActiveRecord::Migration
+class DeviseAuthyAddToUsers < ActiveRecord::Migration[4.2]
   def self.up
     change_table :users do |t|
       t.string    :authy_id

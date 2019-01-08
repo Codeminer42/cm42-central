@@ -9,13 +9,13 @@ describe IntegrationsController do
   context 'when logged out' do
     %w[index create].each do |action|
       specify do
-        get action, project_id: project.id
+        get action, params: { project_id: project.id }
         expect(response).to redirect_to(new_user_session_url)
       end
     end
     %w[destroy].each do |action|
       specify do
-        get action, id: 42, project_id: project.id
+        get action, params: { id: 42, project_id: project.id }
         expect(response).to redirect_to(new_user_session_url)
       end
     end
@@ -33,8 +33,8 @@ describe IntegrationsController do
           before { integration.save }
 
           specify do
-            get :index, project_id: project.id
-            expect(response).to be_success
+            get :index, params: { project_id: project.id }
+            expect(response).to be_successful
             expect(assigns[:project]).to eq(project)
             expect(assigns[:integrations][0]).to eq(integration)
           end
@@ -42,8 +42,8 @@ describe IntegrationsController do
 
         context 'as html with no integrations' do
           specify do
-            get :index, project_id: project.id
-            expect(response).to be_success
+            get :index, params: { project_id: project.id }
+            expect(response).to be_successful
             expect(assigns[:project]).to eq(project)
             expect(assigns[:integrations].count).to eq(3)
             expect(assigns[:integrations].first.kind).to eq('discord')
@@ -54,8 +54,8 @@ describe IntegrationsController do
           before { integration.save }
 
           specify do
-            xhr :get, :index, project_id: project.id, format: :json
-            expect(response).to be_success
+            get :index, xhr: true, params: { project_id: project.id, format: :json}
+            expect(response).to be_successful
             expect(JSON.parse(response.body).first['integration']['data']).to eql(integration.data)
           end
         end
@@ -71,7 +71,7 @@ describe IntegrationsController do
 
         specify do
           expect do
-            post :create, project_id: project.id, integration: integration_params
+            post :create, params: { project_id: project.id, integration: integration_params }
           end.to change { Integration.count }.by(1)
 
           expect(assigns[:project]).to eq(project)
@@ -83,12 +83,12 @@ describe IntegrationsController do
         context 'when integration does not exist' do
           context 'when save fails' do
             before do
-              integration_params[:kind] = nil
+              integration_params[:data] = nil
             end
 
             specify do
               expect do
-                post :create, project_id: project.id, integration: integration_params
+                post :create, params: { project_id: project.id, integration: integration_params }
               end.to change { Integration.count }.by(0)
               expect(response).to render_template('index')
             end
@@ -99,7 +99,7 @@ describe IntegrationsController do
 
             specify do
               expect do
-                post :create, project_id: project.id, integration: integration_params
+                post :create, params: { project_id: project.id, integration: integration_params }
               end.to change { Integration.count }.by(0)
               expect(response).to render_template('index')
             end
@@ -107,7 +107,7 @@ describe IntegrationsController do
 
           context 'when save succeeds' do
             specify do
-              post :create, project_id: project.id, integration: integration_params
+              post :create, params: { project_id: project.id, integration: integration_params }
               expect(flash[:notice]).to eq("#{integration.kind} was added to this project")
             end
           end
@@ -118,7 +118,7 @@ describe IntegrationsController do
 
           specify do
             expect do
-              post :create, project_id: project.id, integration: integration_params
+              post :create, params: { project_id: project.id, integration: integration_params }
             end.to change { Integration.count }.by(0)
             expect(flash[:alert])
               .to eq("#{integration.kind} is already configured for this project")
@@ -132,7 +132,7 @@ describe IntegrationsController do
 
       describe '#destroy' do
         specify do
-          delete :destroy, project_id: project.id, id: integration.id
+          delete :destroy, params: { project_id: project.id, id: integration.id }
           expect(response).to redirect_to(project_integrations_url(project))
         end
       end

@@ -149,7 +149,7 @@ describe Story do
   describe '#fix_project_start_date' do
     let(:project)         { create(:project, start_date: nil) }
     let(:story_params)    { { title: 'Test Story', state: 'started', accepted_at: nil } }
-    let(:story)           { project.stories.build(story_params) }
+    let(:story)           { project.stories.create(story_params) }
 
     it 'sets the project start_date to current' do
       expect { story.fix_project_start_date }
@@ -197,7 +197,7 @@ describe Story do
   describe '#fix_story_accepted_at' do
     let(:project)      { create(:project, start_date: Date.today) }
     let(:story_params) { { title: 'Test Story', state: 'accepted', accepted_at: Date.yesterday } }
-    let(:story)        { project.stories.build(story_params) }
+    let(:story)        { project.stories.create(story_params) }
 
     it 'sets the project start_date to the same as story.accepted_at' do
       expect { story.fix_story_accepted_at }

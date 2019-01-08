@@ -287,7 +287,7 @@ module ActiveAdmin::FriendlyIdDisabler
 end
 
 ActiveAdmin::BaseController.class_eval do
-  skip_before_filter :authenticate_user!
+  skip_before_action :authenticate_user!
 
   include ActiveAdmin::FriendlyIdDisabler
 end

@@ -18,7 +18,7 @@ describe StoriesBulkDestroyController do
 
     context 'when receive an array of story ids' do
       before do
-        post :create, project_id: project.id, story_ids: [story_1.id, story_2.id]
+        post :create, params: { project_id: project.id, story_ids: [story_1.id, story_2.id] }
       end
 
       it 'destroys stories' do
@@ -39,7 +39,7 @@ describe StoriesBulkDestroyController do
     context 'when bulk destroy fails' do
       before do
         allow(StoryOperations::DestroyAll).to receive(:call).and_return(false)
-        post :create, project_id: project.id, story_ids: [story_1.id, story_2.id]
+        post :create, params: { project_id: project.id, story_ids: [story_1.id, story_2.id] }
       end
 
       it 'responds with 422' do

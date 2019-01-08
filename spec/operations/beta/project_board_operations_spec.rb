@@ -20,7 +20,7 @@ describe Beta::ProjectBoardOperations do
       it 'returns all the project board data' do
         result = Beta::ProjectBoardOperations::Read.call(project.id, user)
 
-        expect(result).to be_success
+        expect(result).to be_successful
 
         expect(result.data.project).to eq project
         expect(result.data.users).to match [user]
@@ -36,7 +36,7 @@ describe Beta::ProjectBoardOperations do
       it 'returns a failed response with the error' do
         result = Beta::ProjectBoardOperations::Read.call(0, nil)
 
-        expect(result).not_to be_success
+        expect(result).not_to be_successful
         expect(result.error).to be_a ActiveRecord::RecordNotFound
       end
     end

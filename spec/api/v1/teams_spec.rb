@@ -4,7 +4,7 @@ RSpec.describe V1::Teams do
   let(:api_token) { create :api_token }
 
   describe '#GET /api/v1/teams' do
-    subject { get '/api/v1/teams', per_page: 2, api_key: api_token.token }
+    subject { get '/api/v1/teams', params: { per_page: 2, api_key: api_token.token } }
 
     before do
       create_list :team, 4
@@ -41,7 +41,7 @@ RSpec.describe V1::Teams do
   describe '#GET /api/v1/teams/{slug}' do
     let(:team) { create :team }
 
-    subject { get "/api/v1/teams/#{team.slug}", per_page: 2, api_key: api_token.token }
+    subject { get "/api/v1/teams/#{team.slug}", params: { per_page: 2, api_key: api_token.token } }
 
     it 'returns the team' do
       expected = Entities::Team.new(team, type: :full).as_json
@@ -86,7 +86,7 @@ RSpec.describe V1::Teams do
     end
 
     subject do
-      get "/api/v1/teams/#{team.slug}/projects", per_page: 3, api_key: api_token.token
+      get "/api/v1/teams/#{team.slug}/projects", params: { per_page: 3, api_key: api_token.token }
     end
 
     it 'returns 3 team projects' do
@@ -129,7 +129,7 @@ RSpec.describe V1::Teams do
       team.save
     end
 
-    subject { get "/api/v1/teams/#{team.slug}/users", per_page: 2, api_key: api_token.token }
+    subject { get "/api/v1/teams/#{team.slug}/users", params: { per_page: 2, api_key: api_token.token } }
 
     it 'returns 2 team users' do
       subject

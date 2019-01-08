@@ -8,7 +8,7 @@ describe ConfirmationsController do
   describe '#show' do
     context 'when token is invalid' do
       specify do
-        get :show, confirmation_token: 'abc'
+        get :show, params: { confirmation_token: 'abc' }
         expect(response).to redirect_to(new_user_confirmation_path)
       end
     end
@@ -22,7 +22,7 @@ describe ConfirmationsController do
       end
 
       specify do
-        get :show, confirmation_token: 'abc'
+        get :show, params: { confirmation_token: 'abc' }
         expect(response).to redirect_to(edit_user_password_path(
                                           reset_password_token: user.reset_password_token
         ))
@@ -33,25 +33,25 @@ describe ConfirmationsController do
   describe '#new' do
     specify do
       get :new
-      expect(response).to be_success
+      expect(response).to be_successful
     end
   end
 
   describe '#create' do
     context 'when user is invalid' do
       specify do
-        post :create, user: {}
-        expect(response).to be_success
+        post :create, params: { user: { name: nil } }
+        expect(response).to be_successful
       end
     end
 
     context 'when user is valid' do
       before do
-        allow(User).to receive(:send_confirmation_instructions).with({}).and_return(user)
+        allow(User).to receive(:send_confirmation_instructions).with(nil).and_return(user)
       end
 
       specify do
-        post :create, user: {}
+        post :create, params: { user: {} }
         expect(response).to redirect_to(new_user_session_path)
       end
     end

@@ -1,15 +1,15 @@
 source 'https://rubygems.org'
 
-ruby '2.3.1'
+ruby '2.6.0'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '4.2.11'
+gem 'rails', '~>5.2.1'
 
-gem 'activeadmin', '~> 1.0.0.pre4'
+gem 'activeadmin'
 gem 'api-pagination'
 gem 'attachinary'
 gem 'autoprefixer-rails'
@@ -22,9 +22,9 @@ gem 'coffee-rails'
 gem 'compass-rails'
 gem 'configuration'
 gem 'dalli'
-gem 'devise', '~> 3.5.4'
+gem 'devise'
 gem 'devise-async'
-gem 'devise-authy'
+gem 'devise-authy', '~> 1.10.0'
 gem 'devise-i18n'
 gem 'differ'
 gem 'dotenv-rails'
@@ -73,11 +73,12 @@ group :production do
 end
 
 group :test do
+  gem 'rails-controller-testing'
   gem 'capybara'
   gem 'capybara-screenshot'
   gem 'codeclimate-test-reporter', require: nil
   gem 'database_cleaner'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'poltergeist'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-its'
@@ -94,14 +95,14 @@ group :development do
   gem 'binding_of_caller'
   gem 'bullet'
   gem 'letter_opener'
-  gem 'letter_opener_web', '~> 1.3.4'
-  gem 'rubocop', '0.49.1'
+  gem 'letter_opener_web'
+  gem 'rubocop', '0.59.1'
+  gem 'rubocop-rspec'
 end
 
 group :development, :test do
   gem 'pry-rails'
   gem 'pry-remote'
   gem "pusher-fake", "~> 1.10"
-  gem 'quiet_assets'
 end
 

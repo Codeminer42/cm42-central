@@ -52,9 +52,7 @@ module BaseOperations
 
     def operate!
       model.attributes = params
-      changes = model.changed_attributes
       model.save!
-      model.instance_variable_set('@changed_attributes', changes)
     end
   end
 
