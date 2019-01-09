@@ -1,6 +1,7 @@
 import { status, storyTypes } from "libs/beta/constants";
 import httpService from '../../services/httpService';
 import changeCase from 'change-object-case';
+import * as Label from './label';
 
 const compareValues = (a, b) => {
   if (a > b) return 1;
@@ -70,15 +71,12 @@ export const states = [
 ];
 
 export const update = (story, projectId) => {
-  const newStory = changeCase.snakeKeys(story);
+  const newStory = changeCase.snakeKeys(serialize(story));
 
   return httpService
     .put(`/projects/${projectId}/stories/${story.id}`, newStory)
     .then(({ data }) => changeCase.camelKeys(data, { recursive: true, arrayRecursive: true }))
-    .then(({ story }) => ({
-      ...story,
-      estimate: story.estimate || ''
-    }));
+    .then(({ story }) => deserialize(story));
 };
 
 export const deleteStory = (storyId, projectId) => {
@@ -119,3 +117,15 @@ export const editStory = (story, newAttributes) => {
     }
   };
 };
+
+export const deserialize = (story) => ({
+  ...story,
+  labels: Label.splitLabels(story.labels),
+  estimate: story.estimate || '',
+  collapsed: true
+});
+
+export const serialize = (story) => ({
+  ...story,
+  labels: Label.joinLabels(story.labels)
+})

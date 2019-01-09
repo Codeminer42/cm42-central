@@ -2,9 +2,12 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import ExpandedStoryLabels from 'components/story/ExpandedStory/ExpandedStoryLabels';
 
-fdescribe('<ExpandedStoryLabels />', () => {
+describe('<ExpandedStoryLabels />', () => {
   it('renders component title', () => {
-    const labels = 'front,back';
+    const labels = [
+      { id: 0, name: 'front' },
+      { id: 1, name: 'back' }
+    ];
 
     const wrapper = shallow(<ExpandedStoryLabels labels={labels} />);
 
@@ -13,16 +16,14 @@ fdescribe('<ExpandedStoryLabels />', () => {
 
   describe('<ReactTags />', () => {
     it('renders with the right tags prop', () => {
-      const labels = 'front,back';
-
-      const expectedTags = [
+      const labels = [
         { id: 0, name: 'front' },
         { id: 1, name: 'back' }
       ];
 
       const wrapper = shallow(<ExpandedStoryLabels labels={labels} />);
 
-      expect(wrapper.find('ReactTags').prop('tags')).toEqual(expectedTags);
+      expect(wrapper.find('ReactTags').prop('tags')).toEqual(labels);
     });
   });
 });

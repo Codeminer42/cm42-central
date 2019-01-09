@@ -11,7 +11,7 @@ const storyFactory = (storyAttrs) => ({
   createdAt: '2018/10/26 15:08:51 -0300',
   updatedAt: '2018/11/08 15:24:06 -0200',
   position: '1.0',
-  labels: 'features',
+  labels: [],
   requestedByName: 'Foo Bar',
   ownedByName: 'Foo Bar',
   ownedByInitials: 'FB',

@@ -1,36 +1,17 @@
 import React from 'react';
 import ReactTags from 'react-tag-autocomplete';
+import PropTypes from 'prop-types';
 
 class ExpandedStoryLabels extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      tags: this.splitTags(props.labels)
+      tags: props.labels
     }
 
     this.handleAddition = this.handleAddition.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
-  }
-
-  splitTags(tags) {
-    if (tags) {
-      return tags.split(',')
-        .map((tag, index) => (
-          {
-            id: index,
-            name: tag
-          }
-        ))
-    }
-
-    return [];
-  };
-
-  joinTags(tags) {
-    return (
-      tags.map(tag => tag.name).join(',')
-    );
   }
 
   handleDelete(index) {
@@ -39,7 +20,7 @@ class ExpandedStoryLabels extends React.Component {
 
     this.setState(
       { tags }, () => {
-        onEdit(this.joinTags(this.state.tags))
+        onEdit(this.state.tags)
       }
     );
   }
@@ -49,7 +30,7 @@ class ExpandedStoryLabels extends React.Component {
 
     this.setState(
       { tags: [...this.state.tags, tag] }, () => {
-        onEdit(this.joinTags(this.state.tags))
+        onEdit(this.state.tags)
       }
     );
   }
@@ -75,6 +56,11 @@ class ExpandedStoryLabels extends React.Component {
       </div>
     );
   }
+};
+
+ExpandedStoryLabels.propTypes = {
+  labels: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onEdit: PropTypes.func.isRequired
 };
 
 export default ExpandedStoryLabels;

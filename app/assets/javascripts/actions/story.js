@@ -32,7 +32,6 @@ export const updateStory = (story, projectId) =>
       return Story.update(story._editing, projectId)
         .then((story) => {
           dispatch(updateStorySuccess(story));
-          dispatch(toggleStory(story.id));
         });
     }
     return dispatch(toggleStory(story.id));

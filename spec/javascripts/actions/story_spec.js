@@ -50,7 +50,7 @@ describe('updateStory', () => {
     });
   });
 
-  it('dispatch toggleStory and updateStorySuccess when _isDirty', (done) => {
+  it('dispatch updateStorySuccess when _isDirty', (done) => {
     const editedStory = {
       ...story,
       _editing: {
@@ -66,7 +66,6 @@ describe('updateStory', () => {
     const fakeDispatch = sinon.stub().resolves({});
 
     Story.updateStory(editedStory, projectId)(fakeDispatch, null, { Story: FakeStory }).then(() => {
-      expect(fakeDispatch).toHaveBeenCalledWith(Story.toggleStory(editedStory.id));
       expect(fakeDispatch).toHaveBeenCalledWith(Story.updateStorySuccess(story));
 
       done();
