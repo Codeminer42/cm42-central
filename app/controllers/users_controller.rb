@@ -26,6 +26,7 @@ class UsersController < ApplicationController
 
   def destroy
     @user = policy_scope(User).find(params[:id])
+    RemoveStoriesFromUserService.call(@user, @project)
     authorize @user
     @current_team_users = current_team_users
     policy_scope(User).delete(@user)
