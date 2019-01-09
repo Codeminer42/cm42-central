@@ -79,14 +79,14 @@
   margin: 4px -1px;
   padding: 0;
   list-style: none;
-  background: white;
-  border: 1px solid #D1D1D1;
+  background: $white;
+  border: 1px solid $lightgrey-19;
   border-radius: 2px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .react-tags__suggestions li {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid $lightgrey-13;
   padding: 6px 8px;
 }
 
@@ -98,11 +98,11 @@
 
 .react-tags__suggestions li:hover {
   cursor: pointer;
-  background: #eee;
+  background: $lightgrey-8;
 }
 
 .react-tags__suggestions li.is-active {
-  background: #b7cfe0;
+  background: $lightgrey-15;
 }
 
 .react-tags__suggestions li.is-disabled {

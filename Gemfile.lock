@@ -1,7 +1,6 @@
 GIT
   remote: https://github.com/Codeminer42/cm42-central-support.git
-  revision: d6e7f3100ecf37f53baa7444a3f288ffdbe5d731
-  branch: origin/updating-rails
+  revision: ec28820f522ed192d67e3b9960af18a9786e8035
   specs:
     central-support (0.9.4)
       activerecord (>= 5.1)
