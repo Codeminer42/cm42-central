@@ -14,6 +14,7 @@
 
 ### Change
 - Package: camelcase-object-deep: 1.0.7 to change-object-case: 0.2.0
+- Due to the update of the recaptcha gem, changed recaptcha's variable names from `PUBLIC_KEY` and `PRIVATE_KEY` to `SITE_KEY` and `SECRET_KEY` respectively.
 
 ### Update
 - Package: sinon: 1.17.5 to 2.0.0
