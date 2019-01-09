@@ -21,13 +21,8 @@ class BurnUpCalculator
     ]
   end
 
-  def total_backlog_points
-    stories = service_full.instance_variable_get('@stories')
-    stories.map(&:estimate).compact.sum
-  end
-
   def points_per_day
-    @points_per_day ||= total_backlog_points.to_f / service_full.group_by_day.keys.size
+    @points_per_day ||= @total_backlog_points.to_f / service_full.group_by_day.keys.size
   end
 
   def calculate_points
