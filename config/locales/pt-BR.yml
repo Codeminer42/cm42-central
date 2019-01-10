@@ -54,6 +54,7 @@ pt-BR:
   remove: "Remover"
   add user: "Adicionar usuário"
   add new member: "Adicionar um novo membro"
+  add new label: "Adicionar uma nova etiqueta"
   all users: "Todos os usuários"
   search user: "Procurar usuário"
   remove user confirm: "Tem certeza de que deseja remover %{email} deste projeto?"

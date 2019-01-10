@@ -54,6 +54,7 @@ es:
   description: "Descripción"
   add user: "Agregar usuario"
   add new member: "Agregar un nuevo miembro"
+  add new label: "Agregar una nueva etiqueta"
   all users: "Todos los usuarios"
   search user: "Búsqueda de usuario"
   remove user confirm: "¿Está seguro que desea eliminar %{email} de este proyecto?"

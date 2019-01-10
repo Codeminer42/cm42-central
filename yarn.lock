@@ -7387,6 +7387,11 @@ react-redux@^5.0.6:
     loose-envify "^1.1.0"
     prop-types "^15.6.0"
 
+react-tag-autocomplete@^5.8.0:
+  version "5.8.0"
+  resolved "https://registry.yarnpkg.com/react-tag-autocomplete/-/react-tag-autocomplete-5.8.0.tgz#af7ffea38915d3312976b01fc4b34b6c7d5159f7"
+  integrity sha512-1svOlZ6oQWH9ekGxd8sQgwvEg4lpwarcyH0rluWQ290xQ/nY8PNeIvF6VSZwWpTv+1zCkfjzqyO95TnXcwp+YQ==
+
 react-test-renderer@^15.5.4:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-15.6.2.tgz#d0333434fc2c438092696ca770da5ed48037efa8"

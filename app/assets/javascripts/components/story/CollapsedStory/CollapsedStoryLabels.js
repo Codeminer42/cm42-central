@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
-const labelSplit = (labels) => labels.split(',');
+import * as Labels from '../../../models/beta/label';
 
 const StoryLabel = ( { label } ) => (
   <a href="#" className="Story__label" title={label}>{label}</a>
@@ -18,7 +17,7 @@ const CollapsedStoryLabels = ({ story }) => {
 
   return (
     <span className='Story__labels'>
-      {labelSplit(story.labels).map(label => (
+      {Labels.getNames(story.labels).map(label => (
         <StoryLabel key={label} label={label} />
       ))}
     </span>
