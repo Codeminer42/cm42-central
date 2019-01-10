@@ -92,16 +92,8 @@ module ProjectsHelper
     @backlog_date.last.to_date.to_s(:short)
   end
 
-  def total_backlog_points
-    stories = @service.instance_variable_get('@stories')
-    stories.each do |story|
-      story.delete if story[:state] == "accepted"
-    end
-    stories.map(&:estimate).compact.sum
-  end
-
   def calculate_and_render_burn_up!
-    @group_by_day = BurnUpCalculator.call(@project)
+    @report_data = BurnUpCalculator.call(@project)
   end
 
   def burn_down_data

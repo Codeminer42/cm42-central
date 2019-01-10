@@ -70,7 +70,7 @@
       <div class="panel-body">
         <% calculate_and_render_burn_up! %>
 
-        <p><%= t('projects.reports.burn_up.backlog_points_html', count: total_backlog_points) %></p>
+        <p><%= t('projects.reports.burn_up.backlog_points_html', count: @report_data[:total_backlog_points]) %></p>
         <p>
           <%= t('projects.reports.burn_up.remaining_time',
                 velocity: @service.velocity,
@@ -89,7 +89,7 @@
           </p>
         <% end %>
 
-        <p><%= area_chart @group_by_day, max: total_backlog_points, xtitle: t('day'), ytitle: t('accepted_points') %></p>
+        <p><%= area_chart @report_data[:group_by_day], max: @report_data[:total_backlog_points], xtitle: t('day'), ytitle: t('accepted_points') %></p>
       </div>
     </div>
 
