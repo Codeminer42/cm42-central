@@ -19,6 +19,7 @@ export const ExpandedStory = ({
   onToggle,
   editStory,
   updateStory,
+  deleteStory,
   project,
   deleteNote,
   createNote
