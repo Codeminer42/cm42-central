@@ -44,12 +44,12 @@
       "value": "production",
       "required": true
     },
-    "RECAPTCHA_PRIVATE_KEY": {
-      "description": "Create a Recaptcha account and copy the private key here",
+    "RECAPTCHA_SECRET_KEY": {
+      "description": "Create a Recaptcha account and copy the secret key here",
       "required": true
     },
-    "RECAPTCHA_PUBLIC_KEY": {
-      "description": "Create a Recaptcha account and copy the public key here",
+    "RECAPTCHA_SITE_KEY": {
+      "description": "Create a Recaptcha account and copy the site key here",
       "required": true
     },
     "SECRET_KEY_BASE": {

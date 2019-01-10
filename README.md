@@ -206,7 +206,7 @@ to the previous section for instructions. Then:
     $ heroku config:set CDN_URL=http://xpto.cloudfront.net
 
     # Google Recaptcha keys
-    $ heroku config:set RECAPTCHA_PUBLIC_KEY=xyz RECAPTCHA_PRIVATE_KEY=xyz
+    $ heroku config:set RECAPTCHA_SITE_KEY=xyz RECAPTCHA_SECRET_KEY=xyz
 
     # Add postgresql
     $ heroku addons:create heroku-postgresql:hobby-dev
