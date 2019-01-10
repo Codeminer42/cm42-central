@@ -13,7 +13,7 @@ export const splitLabels = (labels) => {
 };
 
 export const joinLabels = (labels) =>
-  labels.map(label => label.name).join(',');
+  getNames(labels).join(',');
 
 export const getNames = (labels) =>
   labels.map(label => label.name);

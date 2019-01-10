@@ -50,7 +50,7 @@ class ExpandedStoryLabels extends React.Component {
             placeholder={I18n.t('add new label')}
             allowBackspace={false}
             addOnBlur={true}
-            delimiterChars={[' ']}
+            delimiterChars={[',',' ']}
             autoresize={false} />
         }
       </div>
