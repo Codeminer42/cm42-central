@@ -6,13 +6,14 @@ describe Beta::ProjectBoardOperations do
       let(:project) do
         create(:project, :with_past_iteration, users: [user], teams: [user.teams.first])
       end
+      let(:stories){create_list(:story, 5, labels: '', project: project, requested_by: user)}
       let(:user) { create(:user, :with_team) }
 
       before do
         allow(StoryOperations::ReadAll)
           .to receive(:call).with(project: project)
           .and_return(
-            active_stories: 'Active Stories',
+            active_stories: stories,
             past_iterations: 'Past Iterations'
           )
       end
@@ -27,8 +28,25 @@ describe Beta::ProjectBoardOperations do
         expect(result.data.current_user).to eq user
         expect(result.data.current_flow).to be_nil
         expect(result.data.default_flow).to eq Fulcrum::Application.config.fulcrum.column_order
-        expect(result.data.stories).to eq 'Active Stories'
+        expect(result.data.stories).to eq stories
         expect(result.data.past_iterations).to eq 'Past Iterations'
+        expect(result.data.project_labels).to eq ''
+      end
+
+      describe 'project_labels' do
+        before do
+          stories[0].update! labels: 'front,back'
+          stories[1].update! labels: 'front'
+          stories[2].update! labels: 'bug,back'
+        end
+
+        let(:expected_labels) { 'front,back,bug' }
+
+        it 'return a string with uniq labels' do
+          result = Beta::ProjectBoardOperations::Read.call(project.id, user)
+
+          expect(result.data.project_labels).to eq expected_labels
+        end
       end
     end
 

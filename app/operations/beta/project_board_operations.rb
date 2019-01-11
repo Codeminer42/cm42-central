@@ -34,8 +34,8 @@ module Beta
       private
 
       def project_labels
-        @project.stories.map(&:labels)
-          .join(',').split(',').uniq.join(',')
+        labels = @project.stories.map(&:labels).reject(&:empty?)
+        labels.join(',').split(',').uniq.join(',')
       end
 
       def project
