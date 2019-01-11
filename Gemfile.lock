@@ -362,7 +362,7 @@ GEM
     rack-cache (1.8.0)
       rack (>= 0.4)
     rack-cors (1.0.2)
-    rack-protection (2.0.4)
+    rack-protection (2.0.5)
       rack
     rack-proxy (0.6.5)
       rack
@@ -492,10 +492,10 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
-    sinatra (2.0.4)
+    sinatra (2.0.5)
       mustermann (~> 1.0)
       rack (~> 2.0)
-      rack-protection (= 2.0.4)
+      rack-protection (= 2.0.5)
       tilt (~> 2.0)
     slop (3.6.0)
     sprockets (3.7.2)
