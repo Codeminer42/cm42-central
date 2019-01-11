@@ -11,6 +11,7 @@ import ExpandedStoryTitle from './ExpandedStoryTitle';
 import ExpandedStoryLabels from './ExpandedStoryLabels';
 import { deleteNote, createNote } from '../../../actions/note';
 import { editStory, updateStory, deleteStory } from '../../../actions/story';
+import { addLabel } from '../../../actions/labels';
 import { connect } from 'react-redux';
 import * as Story from '../../../models/beta/story';
 
@@ -22,7 +23,8 @@ export const ExpandedStory = ({
   deleteStory,
   project,
   deleteNote,
-  createNote
+  createNote,
+  addLabel
 }) => {
 
   return (
@@ -56,7 +58,9 @@ export const ExpandedStory = ({
       />
 
       <ExpandedStoryLabels
+        addLabel={addLabel}
         labels={story.labels}
+        projectLabels={project.projectLabels}
         onEdit={(value) => editStory(story.id, { labels: value })}
       />
 
@@ -88,6 +92,7 @@ export default connect(
     updateStory,
     deleteStory,
     deleteNote,
-    createNote
+    createNote,
+    addLabel
   }
 )(ExpandedStory);

@@ -26,16 +26,19 @@ class ExpandedStoryLabels extends React.Component {
   }
 
   handleAddition(tag) {
-    const { onEdit } = this.props;
+    const { onEdit, addLabel } = this.props;
 
     this.setState(
       { tags: [...this.state.tags, tag] }, () => {
-        onEdit(this.state.tags)
+        onEdit(this.state.tags);
+        addLabel(tag);
       }
     );
   }
 
   render() {
+    const { projectLabels } = this.props;
+
     return (
       <div className="Story__section">
         <div className="Story__section-title">
@@ -45,6 +48,7 @@ class ExpandedStoryLabels extends React.Component {
           <ReactTags
             tags={this.state.tags}
             handleDelete={this.handleDelete}
+            suggestions={projectLabels}
             handleAddition={this.handleAddition}
             allowNew={true}
             placeholder={I18n.t('add new label')}
