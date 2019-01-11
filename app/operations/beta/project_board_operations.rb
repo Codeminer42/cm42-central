@@ -20,7 +20,8 @@ module Beta
           users: users,
           current_user: @current_user,
           current_flow: @current_flow,
-          default_flow: default_flow
+          default_flow: default_flow,
+          project_labels: project_labels
         )
 
         project_board = ::ProjectBoard.new(project_board_params)
@@ -31,6 +32,11 @@ module Beta
       end
 
       private
+
+      def project_labels
+        @project.stories.map(&:labels)
+          .join(',').split(',').uniq.join(',')
+      end
 
       def project
         @project ||= @projects_scope
