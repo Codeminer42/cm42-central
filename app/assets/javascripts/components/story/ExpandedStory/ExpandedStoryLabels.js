@@ -7,7 +7,7 @@ class ExpandedStoryLabels extends React.Component {
     super(props);
 
     this.state = {
-      tags: props.labels
+      labels: props.labels
     }
 
     this.handleAddition = this.handleAddition.bind(this);
@@ -16,22 +16,22 @@ class ExpandedStoryLabels extends React.Component {
 
   handleDelete(index) {
     const { onEdit } = this.props;
-    const tags = this.state.tags.filter((tag, tagIndex) => tagIndex !== index);
+    const labels = this.state.labels.filter((label, labelIndex) => labelIndex !== index);
 
     this.setState(
-      { tags }, () => {
-        onEdit(this.state.tags)
+      { labels }, () => {
+        onEdit(this.state.labels)
       }
     );
   }
 
-  handleAddition(tag) {
+  handleAddition(label) {
     const { onEdit, addLabel } = this.props;
 
     this.setState(
-      { tags: [...this.state.tags, tag] }, () => {
-        onEdit(this.state.tags);
-        addLabel(tag);
+      { labels: [...this.state.labels, label] }, () => {
+        onEdit(this.state.labels);
+        addLabel(label);
       }
     );
   }
@@ -46,7 +46,7 @@ class ExpandedStoryLabels extends React.Component {
         </div>
         {
           <ReactTags
-            tags={this.state.tags}
+            tags={this.state.labels}
             handleDelete={this.handleDelete}
             suggestions={projectLabels}
             handleAddition={this.handleAddition}
@@ -64,7 +64,9 @@ class ExpandedStoryLabels extends React.Component {
 
 ExpandedStoryLabels.propTypes = {
   labels: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onEdit: PropTypes.func.isRequired
+  onEdit: PropTypes.func.isRequired,
+  addLabel: PropTypes.func.isRequired,
+  projectLabels:PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default ExpandedStoryLabels;

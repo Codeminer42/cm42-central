@@ -2,14 +2,14 @@ import * as Label from './label';
 
 export const deserialize = (board) => ({
   ...board.project,
-  projectLabels: Label.splitLabels(board.projectLabels)
+  labels: Label.splitLabels(board.labels)
 });
 
 export const addLabel = (project, label) => (
   {
     ...project,
-    projectLabels: [
-      ...project.projectLabels,
+    labels: [
+      ...project.labels,
       label
     ]
   }

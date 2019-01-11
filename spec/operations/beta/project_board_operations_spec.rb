@@ -6,7 +6,7 @@ describe Beta::ProjectBoardOperations do
       let(:project) do
         create(:project, :with_past_iteration, users: [user], teams: [user.teams.first])
       end
-      let(:stories){create_list(:story, 5, labels: '', project: project, requested_by: user)}
+      let(:stories){ create_list(:story, 5, labels: '', project: project, requested_by: user) }
       let(:user) { create(:user, :with_team) }
 
       before do
@@ -30,7 +30,7 @@ describe Beta::ProjectBoardOperations do
         expect(result.data.default_flow).to eq Fulcrum::Application.config.fulcrum.column_order
         expect(result.data.stories).to eq stories
         expect(result.data.past_iterations).to eq 'Past Iterations'
-        expect(result.data.project_labels).to eq ''
+        expect(result.data.labels).to eq ''
       end
 
       describe 'project_labels' do
@@ -45,7 +45,7 @@ describe Beta::ProjectBoardOperations do
         it 'return a string with uniq labels' do
           result = Beta::ProjectBoardOperations::Read.call(project.id, user)
 
-          expect(result.data.project_labels).to eq expected_labels
+          expect(result.data.labels).to eq expected_labels
         end
       end
     end

@@ -8,5 +8,5 @@ class ProjectBoard
   attr_accessor :current_user
   attr_accessor :current_flow
   attr_accessor :default_flow
-  attr_accessor :project_labels
+  attr_accessor :labels
 end

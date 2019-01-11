@@ -60,7 +60,7 @@ export const ExpandedStory = ({
       <ExpandedStoryLabels
         addLabel={addLabel}
         labels={story.labels}
-        projectLabels={project.projectLabels}
+        projectLabels={project.labels}
         onEdit={(value) => editStory(story.id, { labels: value })}
       />
 
