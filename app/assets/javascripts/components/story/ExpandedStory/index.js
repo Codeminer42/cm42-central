@@ -9,6 +9,7 @@ import ExpandedStoryNotes from './ExpandedStoryNotes';
 import ExpandedStoryState from './ExpandedStoryState';
 import ExpandedStoryTitle from './ExpandedStoryTitle';
 import ExpandedStoryLabels from './ExpandedStoryLabels';
+import ExpandedStoryAttachments from './ExpandedStoryAttachments';
 import ExpandedStoryTask from './ExpandedStoryTask';
 import { editStory, updateStory, deleteStory } from '../../../actions/story';
 import { createTask, deleteTask, toggleTask } from '../../../actions/task';
@@ -88,6 +89,10 @@ export const ExpandedStory = ({
       <ExpandedStoryDescription
         story={story}
         onEdit={(newAttributes) => editStory(story.id, newAttributes)}
+      />
+
+      <ExpandedStoryAttachments
+        story={story}
       />
 
       <ExpandedStoryNotes
