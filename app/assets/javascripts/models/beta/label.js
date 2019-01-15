@@ -1,3 +1,5 @@
+import _ from 'underscore';
+
 export const splitLabels = (labels) => {
   if (labels) {
     return labels.split(',')
@@ -11,6 +13,9 @@ export const splitLabels = (labels) => {
 
   return [];
 };
+
+export const uniqueLabels = (labels) =>
+  _.uniq(labels,label => label.name);
 
 export const joinLabels = (labels) =>
   getNames(labels).join(',');

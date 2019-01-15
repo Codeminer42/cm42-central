@@ -5,7 +5,7 @@ import storyFactory from '../../../support/factories/storyFactory';
 
 describe('<ExpandedStory />', () => {
   it('renders children components', () => {
-    const story = storyFactory();
+    const story = storyFactory({_editing: storyFactory()});
     const project = { id: 42 };
     const wrapper = shallow(<ExpandedStory story={story} project={project} />);
 

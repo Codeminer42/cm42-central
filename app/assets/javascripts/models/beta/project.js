@@ -5,12 +5,10 @@ export const deserialize = (board) => ({
   labels: Label.splitLabels(board.labels)
 });
 
-export const addLabel = (project, label) => (
-  {
-    ...project,
-    labels: [
-      ...project.labels,
-      label
-    ]
-  }
-);
+export const addLabel = (project, label) => ({
+  ...project,
+  labels: Label.uniqueLabels([
+    ...project.labels,
+    label
+  ])
+});

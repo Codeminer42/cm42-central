@@ -6,7 +6,11 @@ describe Beta::ProjectBoardOperations do
       let(:project) do
         create(:project, :with_past_iteration, users: [user], teams: [user.teams.first])
       end
-      let(:stories){ create_list(:story, 5, labels: '', project: project, requested_by: user) }
+
+      let(:stories) do
+        create_list(:story, 5, labels: '', project: project, requested_by: user)
+      end
+
       let(:user) { create(:user, :with_team) }
 
       before do
