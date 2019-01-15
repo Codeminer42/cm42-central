@@ -45,6 +45,28 @@ describe 'Projects' do
           expect(user.projects.count).to eq(0)
         end
       end
+
+      describe 'archivement' do
+        before { visit edit_project_path(project) }
+
+        context 'with a non archived project' do
+          let(:project) { create :project, users: [user], teams: [current_team] }
+
+          scenario 'there is no button' do
+            expect(page).not_to have_link('Archive')
+            expect(page).not_to have_link('Unarchive')
+          end
+        end
+
+        context 'with an archived project' do
+          let(:project) { create :project, :archived, users: [user], teams: [current_team] }
+
+          scenario 'there is no button' do
+            expect(page).not_to have_link('Archive')
+            expect(page).not_to have_link('Unarchive')
+          end
+        end
+      end
     end
 
     context 'as admin' do
@@ -104,11 +126,11 @@ describe 'Projects' do
       describe 'edit project' do
         let!(:project) do
           create :project,  name: 'Test Project',
-                            users: [user],
-                            teams: [user.teams.first]
+                            users: [user]
         end
 
         before do
+          team.ownerships.create(project: project, is_owner: true)
           team.tag_groups << tag_group
         end
 
@@ -262,7 +284,7 @@ describe 'Projects' do
         end
 
         it 'shows delete confirmation modal' do
-          expect(page).to have_css('#delete-confirmation-modal') 
+          expect(page).to have_css('#delete-confirmation-modal')
         end
 
         it 'deletes a project', js: true do
@@ -319,6 +341,33 @@ describe 'Projects' do
           end
 
           expect(page).to have_text(I18n.t('projects.project was successfully transferred'))
+        end
+      end
+
+      describe 'archivement' do
+        before do
+          team.ownerships.create(project: project, is_owner: true)
+          visit edit_project_path(project)
+        end
+
+        context 'when project is not archived' do
+          let(:project) { create :project, users: [user] }
+
+          scenario 'archives a project' do
+            click_on 'Archive'
+
+            expect(page).to have_text('Project was successfully archived')
+          end
+        end
+
+        context 'when project is archived' do
+          let(:project) { create :project, :archived, users: [user] }
+
+          scenario 'unarchives a project' do
+            click_on 'Unarchive'
+
+            expect(page).to have_text('Project was successfully reinstated')
+          end
         end
       end
     end

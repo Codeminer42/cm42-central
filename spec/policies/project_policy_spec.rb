@@ -27,8 +27,6 @@ describe ProjectPolicy do
       %i[
         import
         import_upload
-        archive
-        unarchive
         destroy
         share
         unshare
@@ -36,6 +34,18 @@ describe ProjectPolicy do
         ownership
       ].each do |action|
         it { should permit(action) }
+      end
+
+      context 'when project is not archived' do
+        it { is_expected.to permit(:archive) }
+        it { is_expected.not_to permit(:unarchive) }
+      end
+
+      context 'when project is archived' do
+        let(:project) { create :project, :archived }
+
+        it { is_expected.not_to permit(:archive) }
+        it { is_expected.to permit(:unarchive) }
       end
     end
   end
