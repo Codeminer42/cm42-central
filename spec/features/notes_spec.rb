@@ -49,19 +49,6 @@ describe 'Notes' do
       sleep 0.5
       expect(find('#in_progress .story .notelist')).not_to have_content('Delete me please')
     end
-
-    it 'does not save an invalid note', js: true do
-      visit project_path(project)
-
-      within('#in_progress .story') do
-        find('.story-title').trigger('click')
-        fill_in 'note', with: nil
-        click_on 'Add note'
-      end
-
-      sleep 0.5
-      expect(page).to have_no_css('.note')
-    end
   end
 
   describe 'on a disabled story' do
