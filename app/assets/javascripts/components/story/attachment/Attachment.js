@@ -24,7 +24,7 @@ class Attachment extends React.Component {
   }
 
   render() {
-    const { link } = this.props;
+    const { link, children } = this.props;
 
     return (
       <div className='attachment'>
@@ -32,8 +32,9 @@ class Attachment extends React.Component {
           href={link}
           target="blank"
         >
-          {this.renderAttachmentContent()}
+          { this.renderAttachmentContent() }
         </a>
+        { children }
       </div>
     );
   }

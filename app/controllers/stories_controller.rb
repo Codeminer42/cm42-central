@@ -1,6 +1,8 @@
 class StoriesController < ApplicationController
   include ActionView::Helpers::TextHelper
 
+  wrap_parameters format: [:json], include: :documents if respond_to?(:wrap_parameters)
+
   before_action :set_project
 
   def index

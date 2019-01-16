@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import * as AttachmentUrl from '../../../models/beta/attachmentUrl';
 import AttachmentsList from '../attachment/AttachmentList';
 
-const ExpandedStoryAttachments = ({ story }) =>
+const ExpandedStoryAttachments = ({ story, onDelete }) =>
   <div className="Story__section">
     <div className="Story__section-title">
       {I18n.t('story.attachments')}
@@ -11,8 +11,9 @@ const ExpandedStoryAttachments = ({ story }) =>
 
     <div className="Story__section__attachments">
       <AttachmentsList
-        files={story.documents}
+        files={story._editing.documents}
         publicLink={AttachmentUrl.cloudnaryPublicLink()}
+        onDelete={onDelete}
       />
     </div>
   </div>

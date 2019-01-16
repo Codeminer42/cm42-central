@@ -71,7 +71,7 @@ export const states = [
 ];
 
 export const update = (story, projectId) => {
-  const newStory = changeCase.snakeKeys(serialize(story));
+  const newStory = changeCase.snakeKeys(serialize(story), { recursive: true, arrayRecursive: true });
 
   return httpService
     .put(`/projects/${projectId}/stories/${story.id}`, newStory)
