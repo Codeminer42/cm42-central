@@ -18,17 +18,17 @@ class AttachmentsList extends React.Component {
   }
 
   render() {
-    const { files, publicLink } = this.props
+    const { files, cloudName } = this.props
 
     return (
       <div>
         {
           files.map(file => {
-            const link = `http://res.cloudinary.com/${publicLink}/${file.resourceType}/upload/${file.path}`
+            const link = `http://res.cloudinary.com/${cloudName}/${file.resourceType}/upload/${file.path}`
 
             return <Attachment
               id={file.id}
-              key={file.id}
+              key={file.publicId}
               link={link}
               publicId={file.publicId}
               type={file.resourceType}
@@ -47,7 +47,7 @@ class AttachmentsList extends React.Component {
 
 AttachmentsList.PropTypes = {
   files: PropTypes.arrayOf(PropTypes.object).isRequired,
-  publicLink: PropTypes.string.isRequired,
+  cloudName: PropTypes.string.isRequired,
   onEdit: PropTypes.func.isRequired
 }
 

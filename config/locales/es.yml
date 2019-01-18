@@ -72,6 +72,8 @@ es:
   stories_destroy_fail: "Las historias no se pudieron destruir debido a algunos errores de validación"
   update_stories_successfully: "Las historias se actualizaron con éxito"
   stories_not_found: "Historias no encontradas"
+  upload new file: "Arrastre el archivo aquí, o haga clic para agregar."
+  reject new file: "Tipo de archivo no soportado."
 
   story:
     state:
