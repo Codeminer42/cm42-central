@@ -9,7 +9,7 @@ describe('<SelectUser />', () => {
         { id: 1, name: 'foo' },
         { id: 2, name: 'bar' }
       ],
-      userId: 1,
+      selectedUserId: 1,
       onEdit: sinon.spy(),
       ...propOverrides
     };
@@ -37,20 +37,20 @@ describe('<SelectUser />', () => {
   });
 
   describe('Select value', () => {
-    it('sets the select value as userId when userId is present', () => {
-      const userId = 1;
-      const { select } = setup({ userId });
+    it('sets the select value as selectedUserId when selectedUserId is present', () => {
+      const selectedUserId = 1;
+      const { select } = setup({ selectedUserId });
 
-      select.simulate('change', { target: { value: userId } });
+      select.simulate('change', { target: { value: selectedUserId } });
 
-      expect(select.props().value).toEqual(userId);
+      expect(select.props().value).toEqual(selectedUserId);
     });
 
-    it(`sets the select value as '' when userId is not present`, () => {
-      const userId = null;
-      const { select } = setup({ userId });
+    it(`sets the select value as '' when selectedUserId is not present`, () => {
+      const selectedUserId = null;
+      const { select } = setup({ selectedUserId });
 
-      select.simulate('change', { target: { value: userId } });
+      select.simulate('change', { target: { value: selectedUserId } });
 
       expect(select.props().value).toEqual('');
     });

@@ -2,30 +2,46 @@ require 'rails_helper'
 
 describe RemoveStoriesFromUserService do
   describe '.call' do
-    let(:user) { build_stubbed(:user) }
-    let(:project) { build_stubbed(:project) }
+    let(:user) { create :user }
+
+    let(:project) do
+      create :project, users: [user]
+    end
 
     context 'When story.requested_by_id equals to the user id' do
-      let(:story) { instance_spy(Story, requested_by_id: user.id) }
+      let(:story) do
+        create(:story, requested_by_id: user.id, project: project)
+      end
 
-      before { allow(project).to receive(:stories).and_return([story]) }
+      before do
+        project.stories << story
+      end
 
       it 'unassociate the stories that user requests' do
         described_class.call(user, project)
+        story.reload
 
-        expect(story).to have_received(:update!).with(requested_by_id: nil, requested_by_name: nil)
+        expect(story.requested_by_id).to be nil
       end
     end
 
     context 'When story.owned_by_id equals to the user id' do
-      let(:story) { instance_spy(Story, owned_by_id: user.id) }
+      let(:story) do
+        create(:story,
+          owned_by_id: user.id,
+          requested_by_id: user.id,
+          project: project)
+      end
 
-      before { allow(project).to receive(:stories).and_return([story]) }
+      before do
+        project.stories << story
+      end
 
       it 'unassociate the stories that user owned' do
         described_class.call(user, project)
+        story.reload
 
-        expect(story).to have_received(:update!).with(owned_by_id: nil, owned_by_name: nil)
+        expect(story.owned_by_id).to be nil
       end
     end
   end

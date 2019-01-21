@@ -60,7 +60,7 @@ export const ExpandedStory = ({
         <ExpandedStoryRequestedBy
           story={story}
           users={users}
-          onEdit={(userId) => editStory(story.id, { RequestedById: userId })}
+          onEdit={(userId) => editStory(story.id, { requestedById: userId })}
         />
 
         <ExpandedStoryOwnedBy

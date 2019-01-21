@@ -9,7 +9,8 @@ class RemoveStoriesFromUserService
   end
 
   def call
-    project.stories.each do |story|
+    project.stories.where(requested_by_id: user.id)
+           .or(project.stories.where(owned_by_id: user.id)).each do |story|
       story.update!(requested_by_id: nil, requested_by_name: nil) if story.requested_by_id == user.id
       story.update!(owned_by_id: nil, owned_by_name: nil) if story.owned_by_id == user.id
     end

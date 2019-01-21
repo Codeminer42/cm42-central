@@ -9,7 +9,7 @@ export default ExpandedStoryRequestBy = ({ users, story, onEdit }) => (
     </div>
     <SelectUser
       users={users}
-      userId={story._editing.requestedById}
+      selectedUserId={story._editing.requestedById}
       onEdit={onEdit}
     />
   </div>

@@ -9,7 +9,7 @@ export default ExpandedStoryOwnedBy = ({ users, story, onEdit }) => (
     </div>
     <SelectUser
       users={users}
-      userId={story._editing.ownedById}
+      selectedUserId={story._editing.ownedById}
       onEdit={onEdit}
     />
   </div>

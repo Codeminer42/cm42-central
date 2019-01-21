@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default SelectUser = ({ userId, onEdit, users }) => (
+export default SelectUser = ({ selectedUserId, onEdit, users }) => (
   <select
-    value={userId || ''}
+    value={selectedUserId || ''}
     className="form-control input-sm"
     onChange={(event) => onEdit(event.target.value)}
   >
@@ -24,10 +24,10 @@ export default SelectUser = ({ userId, onEdit, users }) => (
 );
 
 SelectUser.PropTypes = {
-  userId: PropTypes.number.isRequired,
+  selectedUserId: PropTypes.number.isRequired,
   onEdit: PropTypes.func.isRequired,
   users: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    inamed: PropTypes.string.isRequired
+    name: PropTypes.string.isRequired
   })
 };
