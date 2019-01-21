@@ -11,14 +11,15 @@ import ExpandedStoryTitle from './ExpandedStoryTitle';
 import ExpandedStoryLabels from './ExpandedStoryLabels';
 import ExpandedStoryAttachments from './ExpandedStoryAttachments';
 import ExpandedStoryTask from './ExpandedStoryTask';
+import ExpandedStoryRequestedBy from './ExpandedStoryRequestedBy';
+import ExpandedStoryOwnedBy from './ExpandedStoryOwnedBy';
 import { editStory, updateStory, deleteStory } from '../../../actions/story';
 import { createTask, deleteTask, toggleTask } from '../../../actions/task';
 import { deleteNote, createNote } from '../../../actions/note';
 import { addLabel, removeLabel } from '../../../actions/labels';
+import { addAttachment, removeAttachment } from '../../../actions/attachment';
 import { connect } from 'react-redux';
 import * as Story from '../../../models/beta/story';
-import ExpandedStoryRequestedBy from './ExpandedStoryRequestedBy';
-import ExpandedStoryOwnedBy from './ExpandedStoryOwnedBy';
 
 export const ExpandedStory = ({
   story,
@@ -34,13 +35,15 @@ export const ExpandedStory = ({
   deleteNote,
   createNote,
   addLabel,
-  removeLabel
+  removeLabel,
+  addAttachment,
+  removeAttachment
 }) => {
   return (
     <div className="Story Story--expanded">
       <ExpandedStoryControls
         onCancel={onToggle}
-        onSave={() => updateStory(story, project.id)}
+        onSave={() => updateStory(story.id, project.id)}
         onDelete={() => deleteStory(story.id, project.id)}
         readOnly={Story.isAccepted(story)}
       />
@@ -93,7 +96,8 @@ export const ExpandedStory = ({
 
       <ExpandedStoryAttachments
         story={story}
-        onDelete={(value) => editStory(story.id, { documents: value })}
+        onAdd={(attachment) => addAttachment(story.id, project.id, attachment)}
+        onDelete={(documentId) => removeAttachment(story.id, documentId)}
       />
 
       <ExpandedStoryNotes
@@ -131,6 +135,8 @@ export default connect(
     deleteNote,
     createNote,
     addLabel,
-    removeLabel
+    removeLabel,
+    addAttachment,
+    removeAttachment
   }
 )(ExpandedStory);

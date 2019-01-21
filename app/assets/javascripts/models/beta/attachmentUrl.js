@@ -10,3 +10,7 @@ export const uploadPreset = () =>
 export const uploadUrl = () => {
   return `https://api.cloudinary.com/v1_1/${cloudName()}/upload`
 }
+
+export const getFileLink = (resourceType, path) => {
+  return `http://res.cloudinary.com/${cloudName()}/${resourceType}/upload/${path}`
+}

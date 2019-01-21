@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
-import * as AttachmentUrl from '../../../models/beta/attachmentUrl';
 import AttachmentsList from '../attachment/AttachmentList';
-import { upload } from '../../../models/beta/fileUpload';
+import { upload, acceptedMimeTypes } from '../../../models/beta/fileUpload';
 
 class ExpandedStoryAttachments extends React.Component {
   constructor(props) {
@@ -12,6 +11,27 @@ class ExpandedStoryAttachments extends React.Component {
     this.state = {
       loading: false
     }
+
+    this.onFileDrop = this.onFileDrop.bind(this);
+  }
+
+  onFileDrop(files) {
+    const newFile = files[0];
+    const { onAdd } = this.props;
+
+    this.setState({ loading: true },
+      () => {
+        upload(newFile)
+          .then(attachment =>
+            onAdd(attachment)
+          )
+          .then(() => this.setState({ loading: false }))
+          .catch((error) => {
+            console.error(error);
+            this.setState({ loading: false });
+          })
+      }
+    )
   }
 
   dropzoneClassName({ isDragActive, isDragReject }) {
@@ -19,10 +39,10 @@ class ExpandedStoryAttachments extends React.Component {
     if (this.state.loading) {
       return `${className}--loading`
     }
-    else if (isDragReject) {
+    if (isDragReject) {
       return `${className}--reject`
     }
-    else if (isDragActive) {
+    if (isDragActive) {
       return `${className}--drag`
     }
 
@@ -30,8 +50,7 @@ class ExpandedStoryAttachments extends React.Component {
   }
 
   render() {
-    const { story, onEdit } = this.props;
-
+    const { story, onDelete } = this.props;
     return (
       <div className="Story__section">
         <div className="Story__section-title">
@@ -39,7 +58,11 @@ class ExpandedStoryAttachments extends React.Component {
         </div>
 
         <div className="Story__section__attachments">
-          <Dropzone disabled={this.state.loading}>
+          <Dropzone
+            onDrop={this.onFileDrop}
+            accept={acceptedMimeTypes()}
+            disabled={this.state.loading}
+          >
             {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {
               const className = this.dropzoneClassName({ isDragActive, isDragReject })
 
@@ -62,8 +85,7 @@ class ExpandedStoryAttachments extends React.Component {
 
           <AttachmentsList
             files={story._editing.documents}
-            cloudName={AttachmentUrl.cloudName()}
-            onDelete={onEdit}
+            onDelete={onDelete}
           />
         </div>
       </div>
@@ -72,7 +94,9 @@ class ExpandedStoryAttachments extends React.Component {
 }
 
 ExpandedStoryAttachments.PropTypes = {
-  story: PropTypes.object.isRequired
+  story: PropTypes.object.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onAdd: PropTypes.func.isRequired
 };
 
 export default ExpandedStoryAttachments;

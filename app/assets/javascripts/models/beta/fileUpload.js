@@ -18,6 +18,29 @@ export const upload = (file) => {
     .catch(err => {
       console.error(err)
 
-      throw(err)
+      throw (err)
     })
 }
+
+export const acceptedMimeTypes = () => [
+  "text/*",
+  "image/jpeg",
+  "image/png",
+  "image/psd",
+  "image/vnd.adobe.photoshop",
+  "application/x-photoshop",
+  "application/photoshop",
+  "application/psd",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/msword",
+  "application/vnd.ms-excel",
+  "application/pdf",
+  "application/vnd.oasis.opendocument.text",
+  "application/vnd.oasis.opendocument.text-master",
+  "application/vnd.oasis.opendocument.spreadsheet",
+  "application/vnd.oasis.opendocument.graphics",
+  "application/vnd.oasis.opendocument.presentation",
+  "application/vnd.oasis.opendocument.database"
+];
+
