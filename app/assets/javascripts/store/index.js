@@ -11,7 +11,7 @@ import * as Task from '../models/beta/task'
 import * as ProjectBoard from '../models/beta/projectBoard';
 import * as Note from '../models/beta/note';
 
-const dependencies = { Story, ProjectBoard, Note };
+const dependencies = { Story, ProjectBoard, Note, Task };
 
 const reducer = combineReducers({
   project,
@@ -22,8 +22,11 @@ const reducer = combineReducers({
 });
 
 const store = createStore(
-  reducer,
-  composeWithDevTools(applyMiddleware(thunk.withExtraArgument({ Story, ProjectBoard, Task })))
+  reducer, composeWithDevTools(
+    applyMiddleware(
+      thunk.withExtraArgument(dependencies)
+    )
+  )
 );
 
 export default store;

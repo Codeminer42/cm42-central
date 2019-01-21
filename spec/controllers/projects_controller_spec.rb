@@ -236,7 +236,7 @@ describe ProjectsController do
 
         describe '#archive' do
           specify do
-            patch :archive, id: project.id
+            patch :archive, params: { id: project.id }
             expect(assigns[:project].archived_at).not_to be_nil
             expect(response).to redirect_to(projects_url)
           end

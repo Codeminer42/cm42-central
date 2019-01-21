@@ -26,16 +26,6 @@ describe('<ExpandedStoryTask />', () => {
     expect(wrapper.text()).toContain(I18n.t('story.tasks'));
   });
 
-  it('renders component content', () => {
-    const { wrapper } = setup();
-
-    expect(wrapper.find('.Story__list-task')).toExist();
-    expect(wrapper.find('.Story__task-form')).toExist();
-    expect(wrapper.find('.Story__add-task-button')).toExist();
-    expect(wrapper.find('.form-control.input-sm')).toExist();
-    expect(wrapper.find('TasksList')).toExist();
-  });
-
   describe('onHandleSubmit', () => {
     it('calls onSave with a task', () => {
       const task = 'New Task';
