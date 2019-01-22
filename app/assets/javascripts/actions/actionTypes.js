@@ -12,6 +12,9 @@ export default keyMirror({
   EDIT_STORY: null,
   UPDATE_STORY: null,
   UPDATE_STORY_SUCCESS: null,
+  ADD_TASK: null,
+  REMOVE_TASK: null,
+  TOGGLE_TASK: null,
   DELETE_STORY_SUCCESS: null,
   ADD_NOTE: null,
   DELETE_NOTE: null
