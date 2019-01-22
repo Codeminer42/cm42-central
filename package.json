@@ -86,6 +86,7 @@
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "babel-plugin-istanbul": "^3.1.2",
+    "core-js": "^2.6.3",
     "coveralls": "^2.11.14",
     "enzyme": "^2.7.1",
     "es6-promise": "^4.2.5",
