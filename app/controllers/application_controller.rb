@@ -18,12 +18,6 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def non_xhr_javascript_response?
-    unless request.get?
-      content_type =~ %r(\Atext/javascript) && !request.xhr?
-    end
-  end
-
   def render_404
     respond_to do |format|
       format.html do

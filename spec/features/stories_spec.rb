@@ -120,12 +120,12 @@ describe 'Stories' do
         click_on 'start'
       end
 
-      sleep 0.5
+      wait_for_ajax
       within('#in_progress .story') do
         click_on 'finish'
-        sleep 0.5
+        wait_for_ajax
         click_on 'deliver'
-        sleep 0.5
+        wait_for_ajax
 
         accept_confirm do
           click_on 'accept'

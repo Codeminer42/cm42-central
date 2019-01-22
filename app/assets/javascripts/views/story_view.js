@@ -16,6 +16,7 @@ import StoryEstimateButtons from 'components/story/StoryEstimateButtons';
 import AttachmentOptions from 'models/attachmentOptions'
 import httpService from '../services/httpService';
 import changeCase from 'change-object-case';
+import axios from 'axios';
 var Clipboard = require('clipboard');
 
 var executeAttachinary = require('libs/execute_attachinary');
@@ -273,7 +274,7 @@ module.exports = FormView.extend({
 
   expandedStoryDetail: function(e) {
     var that = this;
-    return httpService
+    return axios
       .get(`/projects/${this.model.collection.project.id}/stories/${this.model.id}`)
       .then(({ data }) => changeCase.camelKeys(data, {recursive: true, arrayRecursive: true}))
       .then(({ story }) => {
