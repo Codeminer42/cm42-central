@@ -1,6 +1,6 @@
 require 'feature_helper'
 
-describe 'Notes' do
+describe 'Notes', type: :feature do
   before(:each) do
     # FIXME: - Having to set this really high for the 'adds a note to a story
     # spec'.  Need to work on making it more responsive.
@@ -13,6 +13,7 @@ describe 'Notes' do
 
   let!(:story) do
     create :story,  title: 'Test Story',
+                    description: 'Test description',
                     state: 'started',
                     project: project,
                     requested_by: user
@@ -23,12 +24,13 @@ describe 'Notes' do
       visit project_path(project)
 
       within('#in_progress .story') do
-        find('.story-title').trigger('click')
+        find('.story-title').click
+
         fill_in 'note', with: 'Adding a new note'
         click_on 'Add note'
       end
 
-      sleep 0.5
+      wait_for_ajax
       expect(find('#in_progress .story .notelist .note')).to have_content('Adding a new note')
     end
 
@@ -40,14 +42,11 @@ describe 'Notes' do
       visit project_path(project)
 
       within('#in_progress .story') do
-        find('.story-title').trigger('click')
-        within('.notelist') do
-          find('.delete-btn').trigger('click')
-        end
+        find('.story-title').click
+        find('.delete-btn').click
       end
 
-      sleep 0.5
-      expect(find('#in_progress .story .notelist')).not_to have_content('Delete me please')
+      expect(find('#in_progress .story')).not_to have_content('Delete me please')
     end
   end
 
@@ -57,7 +56,7 @@ describe 'Notes' do
       visit project_path(project)
 
       within('#in_progress .story.accepted') do
-        find('.story-title').trigger('click')
+        find('.story-title').click
       end
 
       expect(page).not_to have_css('.note_form ')

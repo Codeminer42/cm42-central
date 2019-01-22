@@ -1,6 +1,6 @@
 require 'feature_helper'
 
-describe 'Logins' do
+describe 'Logins', js: true do
   let!(:user) do
     create :user, :with_team_and_is_admin,
            email: 'user@example.com',
@@ -80,7 +80,7 @@ describe 'Logins' do
       context "when account wasn't enabled yet" do
         before { user.update authy_enabled: true }
 
-        it 'redirects to enable authy page', js: true do
+        it 'redirects to enable authy page' do
           visit root_path
           expect(page).to have_selector('span', text: 'Log in')
 
@@ -96,7 +96,7 @@ describe 'Logins' do
           user.update authy_enabled: true, authy_id: '12345', last_sign_in_with_authy: Time.current
         end
 
-        it 'redirects to verify token page', js: true do
+        it 'redirects to verify token page' do
           visit root_path
           expect(page).to have_selector('span', text: 'Log in')
 
@@ -111,14 +111,14 @@ describe 'Logins' do
     end
   end
 
-  describe 'successful logout', js: true do
+  describe 'successful logout' do
     before do
       sign_in user
     end
 
     it 'logs out the user' do
       visit root_path
-      find('.user-dropdown').trigger 'click'
+      find('.user-dropdown').click
       click_on 'Log out'
 
       expect(page).to have_selector('span', text: 'Log in')

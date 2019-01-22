@@ -14,6 +14,8 @@ import StoryAttachment from 'components/story/StoryAttachment';
 import StoryStateButtons from 'components/story/StoryStateButtons';
 import StoryEstimateButtons from 'components/story/StoryEstimateButtons';
 import AttachmentOptions from 'models/attachmentOptions'
+import httpService from '../services/httpService';
+import changeCase from 'change-object-case';
 var Clipboard = require('clipboard');
 
 var executeAttachinary = require('libs/execute_attachinary');
@@ -254,11 +256,30 @@ module.exports = FormView.extend({
     this.$el.appendTo(this.model.get('column'));
   },
 
+  shouldRequest: function(e) {
+    if (!(this.model.attributes.isFetched)) {
+      this.expandedStoryDetail(e);
+    }
+  },
+
   startEdit: function(e) {
     if (this.eventShouldExpandStory(e)) {
       this.model.set({editing: true, editingDescription: false, clickFromSearchResult: this.$el.hasClass('searchResult')});
+      this.shouldRequest(e)
       this.removeHoverbox();
+      this.render();
     }
+  },
+
+  expandedStoryDetail: function(e) {
+    var that = this;
+    return httpService
+      .get(`/projects/${this.model.collection.project.id}/stories/${this.model.id}`)
+      .then(({ data }) => changeCase.camelKeys(data, {recursive: true, arrayRecursive: true}))
+      .then(({ story }) => {
+        that.model.set(story)
+        that.model.set({isFetched: true})
+      })
   },
 
   openEpic: function(e) {

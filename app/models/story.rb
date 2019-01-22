@@ -62,10 +62,16 @@ class Story < ApplicationRecord
     state position id labels
   ].freeze
 
-  JSON_METHODS = %w[errors notes documents tasks].freeze
+  JSON_METHODS = %w[errors].freeze
+  JSON_METHODS_WITH_DEPENDENCIES = %w[errors notes documents tasks].freeze
 
   def as_json(options = {})
-    super(**options, only: JSON_ATTRIBUTES, methods: JSON_METHODS)
+    default_options = { only: JSON_ATTRIBUTES, methods: JSON_METHODS }
+    super(default_options.merge(options))
+  end
+
+  def as_json_with_dependencies(options = {})
+    as_json(**options, methods: JSON_METHODS_WITH_DEPENDENCIES)
   end
 
   def readonly?

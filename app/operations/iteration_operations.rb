@@ -32,7 +32,6 @@ module IterationOperations
       @stories ||= begin
         project
           .stories
-          .with_dependencies
           .accepted_between(start_date, end_date)
       end
     end

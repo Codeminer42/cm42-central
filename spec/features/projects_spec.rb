@@ -1,6 +1,6 @@
 require 'feature_helper'
 
-describe 'Projects' do
+describe 'Projects', js: true do
   context 'when logged in' do
     context 'as non-admin' do
       let(:user) { create :user, :with_team }
@@ -14,7 +14,7 @@ describe 'Projects' do
           sign_in user
         end
 
-        it 'joins a project', js: true do
+        it 'joins a project' do
           visit projects_path
 
           within '.project-item' do
@@ -33,7 +33,7 @@ describe 'Projects' do
           sign_in user
         end
 
-        it 'leaves a project', js: true do
+        it 'leaves a project' do
           visit projects_path
 
           within '.project-item' do
@@ -73,7 +73,7 @@ describe 'Projects' do
           visit projects_path
         end
 
-        it 'shows the project list', js: true do
+        it 'shows the project list' do
           expect(page).to have_selector('.navbar', text: 'New Project')
           expect(page).to have_selector('.navbar', text: 'Tag Groups')
 
@@ -84,13 +84,13 @@ describe 'Projects' do
           expect(page).not_to have_selector('h1', text: 'Archived Project')
         end
 
-        it 'shows the tag name of each project if it has', js: true do
+        it 'shows the tag name of each project if it has' do
           expect(page).to have_selector('small', text: 'MY-TAG')
         end
       end
 
       describe 'create project' do
-        it 'creates a project', js: true do
+        it 'creates a project' do
           visit projects_path
           click_on 'New Project'
 
@@ -112,7 +112,7 @@ describe 'Projects' do
           team.tag_groups << tag_group
         end
 
-        it 'edits a project', js: true do
+        it 'edits a project' do
           visit projects_path
 
           within('.project-item') do
@@ -189,7 +189,7 @@ describe 'Projects' do
           end
         end
 
-        it 'shows form errors', js: true do
+        it 'shows form errors' do
           visit projects_path
 
           within('.project-item') do
@@ -205,7 +205,7 @@ describe 'Projects' do
         end
 
         describe 'modal' do
-          it 'creates a new tag group', js: true do
+          it 'creates a new tag group' do
             visit projects_path
 
             within('.project-item') do
@@ -228,7 +228,7 @@ describe 'Projects' do
             )
           end
 
-          it 'shows form errors', js: true do
+          it 'shows form errors' do
             visit projects_path
 
             within('.project-item') do
@@ -262,10 +262,10 @@ describe 'Projects' do
         end
 
         it 'shows delete confirmation modal' do
-          expect(page).to have_css('#delete-confirmation-modal') 
+          expect(page).to have_css('#delete-confirmation-modal')
         end
 
-        it 'deletes a project', js: true do
+        it 'deletes a project' do
           fill_in 'name_confirmation',	with: project.name
           click_on 'Delete'
 
@@ -304,7 +304,9 @@ describe 'Projects' do
           expect(another_team_elem.text).to eq(another_team.name)
 
           within('.share-project') do
-            click_on 'Unshare'
+            accept_alert do
+              click_on 'Unshare'
+            end
 
             expect(page).to_not have_selector('.share-project table')
           end
@@ -315,7 +317,9 @@ describe 'Projects' do
 
           within('.transfer-project') do
             fill_in 'Slug', with: another_team.slug
-            click_on 'Transfer'
+            accept_alert do
+              click_on 'Transfer'
+            end
           end
 
           expect(page).to have_text(I18n.t('projects.project was successfully transferred'))

@@ -58,6 +58,10 @@ RSpec.configure do |config|
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
 
+  config.verbose_retry = true
+  config.default_retry_count = 2
+  config.exceptions_to_retry = [Net::ReadTimeout]
+
   config.include Devise::TestHelpers,           type: :controller
   config.include IntegrationHelpers,            type: :feature
 end

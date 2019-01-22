@@ -78,7 +78,8 @@ group :test do
   gem 'codeclimate-test-reporter', require: nil
   gem 'database_cleaner'
   gem 'factory_girl_rails'
-  gem 'poltergeist'
+  gem "selenium-webdriver"
+  gem 'rspec-retry'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-its'
   gem 'rspec-rails'
@@ -100,8 +101,9 @@ end
 
 group :development, :test do
   gem 'pry-rails'
+  gem 'pry'
   gem 'pry-remote'
+  gem 'pry-nav'
   gem "pusher-fake", "~> 1.10"
   gem 'quiet_assets'
 end
-

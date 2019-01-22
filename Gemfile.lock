@@ -98,20 +98,21 @@ GEM
     bullet (5.7.6)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11.0)
-    capybara (2.10.1)
+    capybara (2.18.0)
       addressable
-      mime-types (>= 1.16)
+      mini_mime (>= 0.1.3)
       nokogiri (>= 1.3.3)
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
-      xpath (~> 2.0)
+      xpath (>= 2.0, < 4.0)
     capybara-screenshot (1.0.14)
       capybara (>= 1.0, < 3)
       launchy
     chartkick (2.1.1)
+    childprocess (0.9.0)
+      ffi (~> 1.0, >= 1.0.11)
     chronic (0.10.2)
     chunky_png (1.3.7)
-    cliver (0.3.2)
     cloudinary (1.1.7)
       aws_cf_signer
       rest-client
@@ -281,11 +282,11 @@ GEM
     material_icons (2.2.0)
       railties (>= 3.2)
     method_source (0.8.2)
-    mime-types (3.1)
+    mime-types (3.2.2)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2016.0521)
+    mime-types-data (3.2018.0812)
     mini_mime (1.0.1)
-    mini_portile2 (2.3.0)
+    mini_portile2 (2.4.0)
     minitest (5.11.3)
     moneta (0.8.1)
     multi_json (1.13.1)
@@ -295,8 +296,8 @@ GEM
       mustermann (~> 1.0.0)
     netrc (0.11.0)
     newrelic_rpm (3.17.0.325)
-    nokogiri (1.8.5)
-      mini_portile2 (~> 2.3.0)
+    nokogiri (1.10.0)
+      mini_portile2 (~> 2.4.0)
     orm_adapter (0.5.0)
     parallel (1.12.0)
     parser (2.4.0.2)
@@ -309,10 +310,6 @@ GEM
     platform-api (2.1.0)
       heroics (~> 0.0.23)
       moneta (~> 0.8.1)
-    poltergeist (1.11.0)
-      capybara (~> 2.1)
-      cliver (~> 0.3.1)
-      websocket-driver (>= 0.2.0)
     polyamorous (1.3.1)
       activerecord (>= 3.0)
     powerpack (0.1.1)
@@ -320,6 +317,8 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-nav (0.2.4)
+      pry (>= 0.9.10, < 0.11.0)
     pry-rails (0.3.4)
       pry (>= 0.9.10)
     pry-remote (0.1.8)
@@ -436,6 +435,8 @@ GEM
       rspec-expectations (~> 3.5.0)
       rspec-mocks (~> 3.5.0)
       rspec-support (~> 3.5.0)
+    rspec-retry (0.6.1)
+      rspec-core (> 3.3)
     rspec-support (3.5.0)
     rubocop (0.49.1)
       parallel (~> 1.10)
@@ -445,6 +446,7 @@ GEM
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.9.0)
+    rubyzip (1.2.2)
     safe_yaml (1.0.4)
     sass (3.4.22)
     sass-rails (5.0.6)
@@ -453,6 +455,9 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
+    selenium-webdriver (3.141.0)
+      childprocess (~> 0.5)
+      rubyzip (~> 1.2, >= 1.2.2)
     shoulda-matchers (3.1.2)
       activesupport (>= 4.0.0)
     sidekiq (4.2.5)
@@ -517,11 +522,8 @@ GEM
       activesupport (>= 4.2)
       multi_json (~> 1.2)
       railties (>= 4.2)
-    websocket-driver (0.6.4)
-      websocket-extensions (>= 0.1.0)
-    websocket-extensions (0.1.2)
-    xpath (2.0.0)
-      nokogiri (~> 1.3)
+    xpath (3.2.0)
+      nokogiri (~> 1.8)
 
 PLATFORMS
   ruby
@@ -574,7 +576,8 @@ DEPENDENCIES
   pg
   pg_search
   platform-api
-  poltergeist
+  pry
+  pry-nav
   pry-rails
   pry-remote
   puma
@@ -595,8 +598,10 @@ DEPENDENCIES
   rspec-activemodel-mocks
   rspec-its
   rspec-rails
+  rspec-retry
   rubocop (= 0.49.1)
   sass-rails
+  selenium-webdriver
   shoulda-matchers
   sidekiq
   sidekiq_mailer

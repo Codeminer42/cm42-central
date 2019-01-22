@@ -39,7 +39,6 @@ describe 'Keycuts' do
 
     it 'adds story (a)', js: true do
       wait_page_load
-      click_on 'Chilly Bin'
       send_keys 'a'
       expect(page).to have_css('.story.feature.unscheduled.unestimated.editing')
     end
@@ -55,8 +54,6 @@ describe 'Keycuts' do
     end
 
     it 'toggles columns (<shift> b|c|d|p)', js: true do
-      find('#sidebar-toggle').trigger 'click'
-
       send_keys 'B'
       expect(page).to have_css('.hide_backlog.pressed')
       send_keys 'B'

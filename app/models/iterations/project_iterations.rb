@@ -47,7 +47,6 @@ module Iterations
     def project_accepted_stories
       project
         .stories
-        .with_dependencies
         .accepted
         .order(:accepted_at)
     end

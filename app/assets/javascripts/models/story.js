@@ -9,7 +9,8 @@ var Story = module.exports = Backbone.Model.extend({
     documents: [],
     state: "unscheduled",
     story_type: "feature",
-    isVisible: true
+    isVisible: true,
+    isFetched: false
   },
 
   name: 'story',

@@ -44,6 +44,7 @@ describe('StoryView', function() {
       views: [],
       clickFromSearchResult: false,
       isSearchResult: false,
+      isFetched: false,
     });
     this.story = new Story({id: '999', title: 'Story'});
     this.new_story = new Story({title: 'New Story'});
@@ -131,7 +132,7 @@ describe('StoryView', function() {
       it('sets the model attributes correctly', function() {
         this.view.startEdit(this.e);
         expect(this.view.model.set).toHaveBeenCalledWith({
-          editing: true, editingDescription: false, clickFromSearchResult: false
+          isFetched: true, editing: true, editingDescription: false, clickFromSearchResult: false
         });
       });
 

@@ -22,7 +22,22 @@ describe Story do
           title accepted_at created_at release_date updated_at delivered_at description
           project_id story_type owned_by_id requested_by_id
           requested_by_name owned_by_name owned_by_initials estimate
-          state position id errors labels notes tasks documents
+          state position id errors labels
+        ].sort
+      )
+    end
+  end
+
+  describe '#as_json_with_dependencies' do
+    before { subject.id = 42 }
+
+    specify do
+      expect(subject.as_json_with_dependencies['story'].keys.sort).to eq(
+        %w[
+          title accepted_at created_at release_date updated_at delivered_at description
+          project_id story_type owned_by_id requested_by_id
+          requested_by_name owned_by_name owned_by_initials estimate
+          state position id errors labels documents tasks notes
         ].sort
       )
     end

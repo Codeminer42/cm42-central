@@ -32,7 +32,7 @@ describe 'Registrations' do
             .and_return(valid_response)
         end
 
-        it 'redirects to edit page with "disabled 2FA" flash message' do
+        it 'redirects to edit page with "disabled 2FA" flash message', js:true do
           fill_in 'authy-token', with: token
           find('.authy-form .btn').click
 
@@ -40,7 +40,7 @@ describe 'Registrations' do
           expect(page).to have_content(I18n.t('devise.devise_authy.user.disabled'))
         end
 
-        it 'removes Authy info from user' do
+        it 'removes Authy info from user', js: true do
           fill_in 'authy-token', with: token
           find('.authy-form .btn').click
 

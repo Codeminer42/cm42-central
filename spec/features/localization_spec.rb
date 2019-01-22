@@ -1,6 +1,6 @@
 require 'feature_helper'
 
-describe 'localization' do
+describe 'localization', js: true do
   before(:each) do
     sign_in user
   end
