@@ -1,5 +1,4 @@
-import { addAttachment, removeAttachment } from '../../../app/assets/javascripts/actions/attachment';
-import { editStory } from '../../../app/assets/javascripts/actions/story';
+import { addAttachment, addAttachmentToStory } from '../../../app/assets/javascripts/actions/attachment';
 import storyFactory from '../support/factories/storyFactory';
 
 describe('addAttachment', () => {
@@ -10,44 +9,23 @@ describe('addAttachment', () => {
     story = { ...storyFactory(), _editing: storyFactory() };
   });
 
-  it('dispatch editStory with the new attachment', () => {
+  it('dispatch addAttachmentToStory with the new attachment and update story', () => {
     const newAttachment = { id: 1 }
+
+    const FakeStory = {
+      update: sinon.stub().resolves(story)
+    };
 
     const fakeDispatch = sinon.stub();
 
     const fakeGetState = sinon.stub();
     fakeGetState.returns({ stories: [story] });
 
-    const documents = [
-      ...story.documents,
-      newAttachment
-    ]
+    addAttachment(story.id, projectId, newAttachment)(fakeDispatch, fakeGetState, {Story: FakeStory});
 
-    addAttachment(story.id, projectId, newAttachment)(fakeDispatch, fakeGetState);
-
-    expect(fakeDispatch).toHaveBeenCalledWith(editStory(story.id, { documents }));
+    expect(fakeDispatch).toHaveBeenCalledWith(addAttachmentToStory(story.id, newAttachment));
+    expect(FakeStory.update).toHaveBeenCalledWith(story._editing, projectId);
   });
 });
 
-describe('removeAttachment', () => {
-  let story;
-
-  beforeEach(() => {
-    story = { ...storyFactory(), _editing: storyFactory() };
-  });
-
-  it('dispatch editStory without the removed attachment', () => {
-    const newAttachment = { id: 1 }
-    story.documents = [newAttachment];
-
-    const fakeDispatch = sinon.stub();
-
-    const fakeGetState = sinon.stub();
-    fakeGetState.returns({ stories: [story] });
-
-    removeAttachment(story.id, newAttachment.id)(fakeDispatch, fakeGetState);
-
-    expect(fakeDispatch).toHaveBeenCalledWith(editStory(story.id, { documents: [] }));
-  });
-});
 

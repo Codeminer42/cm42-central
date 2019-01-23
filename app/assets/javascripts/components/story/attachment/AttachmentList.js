@@ -4,7 +4,6 @@ import Attachment from './Attachment';
 import * as AttachmentURL from '../../../models/beta/attachmentUrl';
 
 const AttachmentsList = ({ files, onDelete }) =>
-
   <div>
     {
       files.map(file => {
@@ -29,7 +28,8 @@ const AttachmentsList = ({ files, onDelete }) =>
   </div>
 
 AttachmentsList.PropTypes = {
-  files: PropTypes.arrayOf(PropTypes.object).isRequired
+  files: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onDelete: PropTypes.func.isRequired
 }
 
 export default AttachmentsList;

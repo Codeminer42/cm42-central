@@ -1,23 +1,27 @@
-import { editStory, updateStory } from './story';
+import { updateStorySuccess } from './story';
+import actionTypes from './actionTypes';
 
-const deleteAttachment = (documents, id) =>
-  documents.filter(document => document.id !== id);
+export const addAttachmentToStory = (storyId, attachment) => ({
+  type: actionTypes.ADD_ATTACHMENT,
+  storyId,
+  attachment
+});
+
+export const removeAttachment = (storyId, attachmentId) => ({
+  type: actionTypes.DELETE_ATTACHMENT,
+  storyId,
+  attachmentId
+});
 
 export const addAttachment = (storyId, projectId, attachment) =>
-  (dispatch, getState) => {
+  (dispatch, getState, { Story }) => {
+    dispatch(addAttachmentToStory(storyId, attachment));
+
     const { stories } = getState();
     const story = stories.find(story => story.id === storyId);
-    const documents = [...story.documents, attachment];
 
-    dispatch(editStory(storyId, { documents }));
-    dispatch(updateStory(storyId, projectId, false));
+    Story.update(story._editing, projectId, false).then((story) => {
+      dispatch(updateStorySuccess(story));
+    })
   }
 
-export const removeAttachment = (storyId, documentId) =>
-  (dispatch, getState) => {
-    const { stories } = getState();
-    const story = stories.find(story => story.id === storyId);
-    const documents = deleteAttachment(story._editing.documents, documentId);
-
-    dispatch(editStory(storyId, { documents }));
-  }
