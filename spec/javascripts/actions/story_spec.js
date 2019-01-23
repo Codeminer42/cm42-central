@@ -20,7 +20,10 @@ describe('updateStory', () => {
 
     const fakeDispatch = sinon.stub().resolves({});
 
-    Story.updateStory(editedStory, projectId)(fakeDispatch, null, { Story: FakeStory }).then(() => {
+    const fakeGetState = sinon.stub();
+    fakeGetState.returns({ stories: [editedStory] });
+
+    Story.updateStory(editedStory.id, projectId)(fakeDispatch, fakeGetState, { Story: FakeStory }).then(() => {
       expect(FakeStory.update).toHaveBeenCalledWith(editedStory._editing, projectId);
 
       done();
@@ -42,7 +45,10 @@ describe('updateStory', () => {
 
     const fakeDispatch = sinon.stub().resolves({});
 
-    Story.updateStory(editedStory, projectId)(fakeDispatch, null, { Story: FakeStory }).then(() => {
+    const fakeGetState = sinon.stub();
+    fakeGetState.returns({ stories: [editedStory] });
+
+    Story.updateStory(editedStory.id, projectId)(fakeDispatch, fakeGetState, { Story: FakeStory }).then(() => {
       expect(fakeDispatch).toHaveBeenCalledWith(Story.toggleStory(editedStory.id));
       expect(fakeDispatch).not.toHaveBeenCalledWith(Story.updateStorySuccess(story));
 
@@ -65,7 +71,10 @@ describe('updateStory', () => {
 
     const fakeDispatch = sinon.stub().resolves({});
 
-    Story.updateStory(editedStory, projectId)(fakeDispatch, null, { Story: FakeStory }).then(() => {
+    const fakeGetState = sinon.stub();
+    fakeGetState.returns({ stories: [editedStory] });
+
+    Story.updateStory(editedStory.id, projectId)(fakeDispatch, fakeGetState, { Story: FakeStory }).then(() => {
       expect(fakeDispatch).toHaveBeenCalledWith(Story.updateStorySuccess(story));
 
       done();
