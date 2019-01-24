@@ -432,7 +432,7 @@ GEM
     rgb_utils (0.1.2)
       activesupport (>= 3.2)
       virtus (~> 1.0)
-    rollbar (2.18.0)
+    rollbar (2.18.2)
       multi_json
     rspec-activemodel-mocks (1.1.0)
       activemodel (>= 3.0)
