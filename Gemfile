@@ -96,7 +96,7 @@ group :development do
   gem 'bullet'
   gem 'letter_opener'
   gem 'letter_opener_web'
-  gem 'rubocop', '0.59.1'
+  gem 'rubocop', '0.63.1'
   gem 'rubocop-rspec'
 end
 
