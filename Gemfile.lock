@@ -79,7 +79,7 @@ GEM
       rails (>= 3.2)
     authy (2.7.4)
       httpclient (>= 2.5.3.3)
-    autoprefixer-rails (9.4.2)
+    autoprefixer-rails (9.4.6)
       execjs
     aws_cf_signer (0.1.3)
     axiom-types (0.1.1)
