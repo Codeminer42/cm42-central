@@ -14,7 +14,6 @@ import StoryAttachment from 'components/story/StoryAttachment';
 import StoryStateButtons from 'components/story/StoryStateButtons';
 import StoryEstimateButtons from 'components/story/StoryEstimateButtons';
 import AttachmentOptions from 'models/attachmentOptions'
-import httpService from '../services/httpService';
 import changeCase from 'change-object-case';
 import axios from 'axios';
 var Clipboard = require('clipboard');
@@ -257,22 +256,23 @@ module.exports = FormView.extend({
     this.$el.appendTo(this.model.get('column'));
   },
 
-  shouldRequest: function(e) {
-    if (!(this.model.attributes.isFetched)) {
-      this.expandedStoryDetail(e);
+  setStoryDetailRequest: function() {
+    const shouldRequest = !this.model.attributes.isFetched;
+    if (shouldRequest) {
+      this.fetchStoryDetails();
     }
   },
 
   startEdit: function(e) {
     if (this.eventShouldExpandStory(e)) {
       this.model.set({editing: true, editingDescription: false, clickFromSearchResult: this.$el.hasClass('searchResult')});
-      this.shouldRequest(e)
+      this.setStoryDetailRequest();
       this.removeHoverbox();
       this.render();
     }
   },
 
-  expandedStoryDetail: function(e) {
+  fetchStoryDetails: function() {
     var that = this;
     return axios
       .get(`/projects/${this.model.collection.project.id}/stories/${this.model.id}`)
