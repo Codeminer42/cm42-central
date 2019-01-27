@@ -1,7 +1,7 @@
 CM42 Central
 ============
 
-CM42 Central is an application to provide a user story based backlog management
+[CM42 Central](http://www.centralcm42.com/) is an application to provide a user story based backlog management
 system for agile development teams.
 
 [![Code Climate](https://codeclimate.com/github/Codeminer42/cm42-central/badges/gpa.svg)](https://codeclimate.com/github/Codeminer42/cm42-central)
