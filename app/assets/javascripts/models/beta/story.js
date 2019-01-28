@@ -70,13 +70,13 @@ export const states = [
   'rejected'
 ];
 
-export const update = (story, projectId, collapse) => {
+export const update = (story, projectId, options) => {
   const newStory = changeCase.snakeKeys(serialize(story), { recursive: true, arrayRecursive: true });
 
   return httpService
-    .put(`/projects/${projectId}/stories/${story.id}`, newStory)
+    .put(`/projects/${projectId}/stories/${story.id}`, {story: newStory})
     .then(({ data }) => changeCase.camelKeys(data, { recursive: true, arrayRecursive: true }))
-    .then(({ story }) => deserialize(story, collapse));
+    .then(({ story }) => deserialize(story, options));
 };
 
 export const deleteStory = (storyId, projectId) => {
@@ -119,8 +119,9 @@ export const editStory = (story, newAttributes) => {
   };
 };
 
-export const deserialize = (story, collapse) => {
-  const collapsed = collapse === false ? false : true;
+export const deserialize = (story, options) => {
+  options = options || {};
+  const collapsed = options.collapse == undefined ? true : options.collapse;
 
   return {
     ...story,

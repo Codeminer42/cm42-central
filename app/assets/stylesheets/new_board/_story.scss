@@ -236,6 +236,7 @@
             }
 
             .attachments-dropzone--loading {
+              opacity: 0.65;
               background-color: $lightgrey;
               color: $darkgrey-7;
               border: none;

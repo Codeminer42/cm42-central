@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 class Attachment extends React.Component {
   renderAttachmentContent() {
     const { type, link, publicId } = this.props;
-    const imageSrc = link.replace('.pdf', '.png');
+    const imageSrc =  link.replace(/\.pdf$/, '.png');
 
     return (
       <div className={`attachment--${type}`}>

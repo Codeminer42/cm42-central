@@ -76,8 +76,8 @@ en:
   stories_destroy_fail: "Stories couldn't be destroyed due some validation errors"
   update_stories_successfully: "Stories were successfully updated"
   stories_not_found: "Stories not found"
-  upload new file: "Drop files here, or click to upload."
-  reject new file: "Unsupported file type."
+  upload_new_file: "Drop files here, or click to upload."
+  reject_new_file: "Unsupported file type."
 
   story:
     state:

@@ -19,8 +19,9 @@ export const addAttachment = (storyId, projectId, attachment) =>
 
     const { stories } = getState();
     const story = stories.find(story => story.id === storyId);
+    const options = { collapse: false };
 
-    Story.update(story._editing, projectId, false).then((story) => {
+    Story.update(story._editing, projectId, options).then((story) => {
       dispatch(updateStorySuccess(story));
     })
   }

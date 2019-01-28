@@ -15,7 +15,9 @@ class ExpandedStoryAttachments extends React.Component {
     this.onFileDrop = this.onFileDrop.bind(this);
   }
 
-  onFileDrop(files) {
+  onFileDrop(files, rejectedFiles) {
+    if (rejectedFiles.length > 0) return;
+
     const newFile = files[0];
     const { onAdd } = this.props;
 
@@ -62,6 +64,7 @@ class ExpandedStoryAttachments extends React.Component {
             onDrop={this.onFileDrop}
             accept={acceptedMimeTypes()}
             disabled={this.state.loading}
+            multiple={false}
           >
             {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {
               const className = this.dropzoneClassName({ isDragActive, isDragReject })
@@ -75,8 +78,8 @@ class ExpandedStoryAttachments extends React.Component {
                   <i className="mi md-20">cloud_upload</i>
                   <div>
                     {!isDragReject ?
-                      I18n.t('upload new file') :
-                      I18n.t('reject new file')}
+                      I18n.t('upload_new_file') :
+                      I18n.t('reject_new_file')}
                   </div>
                 </div>
               )
