@@ -93,7 +93,7 @@ module ProjectsHelper
   end
 
   def calculate_and_render_burn_up!
-    @group_by_day = BurnUpCalculator.call(@project)
+    @report_data = BurnUpCalculator.call(@project)
   end
 
   def burn_down_data

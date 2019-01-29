@@ -3,8 +3,8 @@ require 'rails_helper'
 describe BurnUpCalculator do
   let(:service_full)  { double(:service_full) }
   let(:project)       { double(:project, name: 'Central') }
-  let(:story1)        { double(:story1, estimate: 3) }
-  let(:story2)        { double(:story2, estimate: 8) }
+  let(:story1)        { double(:story1, estimate: 3, state: 'unstarted', accepted?: false) }
+  let(:story2)        { double(:story2, estimate: 8, state: 'unstarted', accepted?: false) }
   let(:stories)       { [story1, story2] }
 
   let(:yesterday) { Date.current - 1.day }
@@ -28,9 +28,9 @@ describe BurnUpCalculator do
   end
 
   describe '#call' do
-    it 'returns classified points' do
+    it 'returns classified points and the total backlog points' do
       expect(subject).to eq(
-        [
+        group_by_day: [
           {
             name: 'today',
             data: { today => 1 }
@@ -43,7 +43,8 @@ describe BurnUpCalculator do
             name: 'ideal',
             data: { yesterday => 0, today => 3.6666666666666665, tomorrow => 7.333333333333333 }
           }
-        ]
+        ],
+        total_backlog_points: 11
       )
     end
   end
