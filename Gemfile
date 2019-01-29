@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~>5.2.1'
+gem 'rails', '~>5.2.2'
 
 gem 'activeadmin'
 gem 'api-pagination'
@@ -29,7 +29,7 @@ gem 'devise-i18n'
 gem 'differ'
 gem 'dotenv-rails'
 gem 'foreman'
-gem 'friendly_id', '~> 5.2.4'
+gem 'friendly_id', '~> 5.2.5'
 gem 'grape'
 gem 'grape-entity'
 gem 'grape-swagger'
@@ -96,7 +96,7 @@ group :development do
   gem 'bullet'
   gem 'letter_opener'
   gem 'letter_opener_web'
-  gem 'rubocop', '0.59.1'
+  gem 'rubocop', '0.63.1'
   gem 'rubocop-rspec'
 end
 

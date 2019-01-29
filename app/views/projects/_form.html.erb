@@ -66,10 +66,23 @@
     <%= f.submit nil, class: 'btn btn-primary btn-form' %>
 
     <% if policy(project).archive? %>
-      <%= link_to t('projects.archive'), [:archive, project],
-        data: {confirm: t('projects.index.are you sure you want to archive this project')},
+      <%= link_to(
+        t('projects.archive'),
+        [:archive, project],
+        data: { confirm: t('projects.index.are you sure you want to archive this project') },
         method: :patch,
-        class: 'btn btn-warning btn-form' %>
+        class: 'btn btn-warning btn-form'
+      ) %>
+    <% end %>
+
+    <% if policy(project).unarchive? %>
+      <%= link_to(
+        t('projects.unarchive'),
+        [:unarchive, project],
+        data: { confirm: t('projects.index.are you sure you want to unarchive this project') },
+        method: :patch,
+        class: 'btn btn-warning btn-form'
+      ) %>
     <% end %>
 
     <% if policy(project).destroy? %>

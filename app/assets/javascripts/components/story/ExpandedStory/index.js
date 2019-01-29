@@ -9,8 +9,10 @@ import ExpandedStoryNotes from './ExpandedStoryNotes';
 import ExpandedStoryState from './ExpandedStoryState';
 import ExpandedStoryTitle from './ExpandedStoryTitle';
 import ExpandedStoryLabels from './ExpandedStoryLabels';
-import { deleteNote, createNote } from '../../../actions/note';
+import ExpandedStoryTask from './ExpandedStoryTask';
 import { editStory, updateStory, deleteStory } from '../../../actions/story';
+import { createTask, deleteTask, toggleTask } from '../../../actions/task';
+import { deleteNote, createNote } from '../../../actions/note';
 import { addLabel } from '../../../actions/labels';
 import { connect } from 'react-redux';
 import * as Story from '../../../models/beta/story';
@@ -22,11 +24,13 @@ export const ExpandedStory = ({
   updateStory,
   deleteStory,
   project,
+  createTask,
+  deleteTask,
+  toggleTask,
   deleteNote,
   createNote,
   addLabel
 }) => {
-
   return (
     <div className="Story Story--expanded">
       <ExpandedStoryControls
@@ -66,7 +70,9 @@ export const ExpandedStory = ({
 
       <ExpandedStoryDescription
         story={story}
-        onEdit={(newAttributes) => editStory(story.id, newAttributes)}
+        onToggle={(task, status) => toggleTask(project.id, story, task, status)}
+        onDelete={(taskId) => deleteTask(project.id, story.id, taskId)}
+        onSave={(task) => createTask(project.id, story.id, task)}
       />
 
       <ExpandedStoryNotes
@@ -74,6 +80,13 @@ export const ExpandedStory = ({
         projectId={project.id}
         onDelete={(noteId) => deleteNote(project.id, story.id, noteId)}
         onCreate={(note) => createNote(project.id, story.id, { note })}
+      />
+
+      <ExpandedStoryTask
+        story={story}
+        onToggle={ (task, status) => toggleTask(project.id, story, task, status)}
+        onDelete={(taskId) => deleteTask(project.id, story.id, taskId)}
+        onSave={(task) => createTask(project.id, story.id, task)}
       />
     </div>
   );
@@ -90,6 +103,9 @@ export default connect(
   {
     editStory,
     updateStory,
+    createTask,
+    deleteTask,
+    toggleTask,
     deleteStory,
     deleteNote,
     createNote,

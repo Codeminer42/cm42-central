@@ -260,7 +260,7 @@ en:
         title: "Velocity per Member"
       burn_up:
         title: "Burn Up Chart"
-        backlog_points_html: "The current backlog has a total of <strong>%{count} points</strong>. This is without counting the stories in the Chilly Bean!"
+        backlog_points_html: "The current backlog has a total of <strong>%{count} points</strong>. This is without counting the stories in the Chilly Bin!"
         remaining_time: "At the current velocity (%{velocity} points) the existing backlog should only be finished around the iteration %{last_iteration_number} (%{last_iteration_start_date})."
         on_track: "If the velocity keeps up this pace we should be on track to the date above."
         realistic_remaining_time: "But with a standard deviation of %{standard_deviation}, it's more realistic to expect the project to finish around <strong>iteration %{last_iteration_number}</strong> (%{last_iteration_start_date}), if the velocity doesn't increase or the backlog is not simplified."
@@ -298,6 +298,7 @@ en:
       listing projects: "Listing Projects"
       are you sure you want to delete this project_html: "Are you sure you want to delete this project?  This action <b>cannot</b> be undone. This will permanently delete the project <b>%{project_name}</b> and all his stories."
       are you sure you want to archive this project: "Are you sure you want to archive this project?"
+      are you sure you want to unarchive this project: "Are you sure you want to unarchive this project?"
       are you sure you want to unshare this project: "Are you sure you want to unshare this project?"
       the iteration starts on x with length of x weeks:
         one:    "Iterations start on %{day} with a length of 1 week"

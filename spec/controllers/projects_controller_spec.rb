@@ -234,6 +234,14 @@ describe ProjectsController do
           end
         end
 
+        describe '#archive' do
+          specify do
+            patch :archive, params: { id: project.id }
+            expect(assigns[:project].archived_at).not_to be_nil
+            expect(response).to redirect_to(projects_url)
+          end
+        end
+
         describe '#unarchive' do
           before { project.update_attributes(archived_at: Time.current) }
 

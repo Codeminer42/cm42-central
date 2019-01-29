@@ -4,6 +4,36 @@
     border-bottom: 1px solid $story-border-bottom-color;
     border-top: 1px solid $story-border-top-color;
 
+    &__task-form {
+      @extend .clearfix;
+    }
+
+    &__add-task-button {
+      @extend .btn;
+      @extend .btn-default;
+      @extend .btn-xs;
+      @extend .pull-right;
+      margin-top: 10px;
+    }
+
+    &__task label {
+      min-height: 20px;
+      padding-left: 20px;
+      margin-bottom: 1px;
+      font-weight: normal;
+      cursor: pointer;
+    }
+
+    &__task input[type="checkbox"] {
+      position: absolute;
+      margin-left: -20px;
+      margin-top: 4px \9;
+    }
+
+    &__list-task {
+      font-size: 12px;
+    }
+
     &--collapsed {
       display: flex;
       justify-content: space-between;

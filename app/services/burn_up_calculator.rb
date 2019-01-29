@@ -6,7 +6,7 @@ class BurnUpCalculator
 
     calculate_points
 
-    @group_by_day
+    @report_data
   end
 
   private
@@ -14,16 +14,19 @@ class BurnUpCalculator
   attr_reader :service_full
 
   def initialize_group_by_day
-    @group_by_day = [
-      { name: 'today', data: { Date.current => service_full.group_by_day[Date.current] } },
-      { name: 'real',  data: service_full.group_by_day },
-      { name: 'ideal', data: service_full.group_by_day.dup }
-    ]
+    @report_data = {
+      group_by_day: [
+        { name: 'today', data: { Date.current => service_full.group_by_day[Date.current] } },
+        { name: 'real',  data: service_full.group_by_day },
+        { name: 'ideal', data: service_full.group_by_day.dup }
+      ],
+      total_backlog_points: total_backlog_points
+    }
   end
 
   def total_backlog_points
     stories = service_full.instance_variable_get('@stories')
-    stories.map(&:estimate).compact.sum
+    stories.reject(&:accepted?).map(&:estimate).compact.sum
   end
 
   def points_per_day
@@ -35,8 +38,8 @@ class BurnUpCalculator
 
     initialize_group_by_day
 
-    @group_by_day.last[:data].keys.each do |key|
-      @group_by_day.last[:data][key] = initial_points
+    @report_data[:group_by_day].last[:data].keys.each do |key|
+      @report_data[:group_by_day].last[:data][key] = initial_points
       initial_points += points_per_day
     end
   end
