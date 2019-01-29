@@ -34,7 +34,7 @@ module Beta
       private
 
       def project_labels
-        labels = @project.stories.map(&:labels).reject(&:empty?)
+        labels = @project.stories.map(&:labels).reject { |label| label.to_s.empty? }
         labels.join(',').split(',').uniq.join(',')
       end
 

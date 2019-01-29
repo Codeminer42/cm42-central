@@ -14,8 +14,17 @@ export const splitLabels = (labels) => {
   return [];
 };
 
+export const removeLabel = (labels, labelName) =>
+  labels.filter(label => label.name !== labelName);
+
+export const addLabel = (labels, newLabel) =>
+  uniqueLabels([
+    ...labels,
+    newLabel
+  ]);
+
 export const uniqueLabels = (labels) =>
-  _.uniq(labels,label => label.name);
+  _.uniq(labels, label => label.name);
 
 export const joinLabels = (labels) =>
   getNames(labels).join(',');

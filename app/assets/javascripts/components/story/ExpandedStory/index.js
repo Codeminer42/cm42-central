@@ -13,7 +13,7 @@ import ExpandedStoryTask from './ExpandedStoryTask';
 import { editStory, updateStory, deleteStory } from '../../../actions/story';
 import { createTask, deleteTask, toggleTask } from '../../../actions/task';
 import { deleteNote, createNote } from '../../../actions/note';
-import { addLabel } from '../../../actions/labels';
+import { addLabel, removeLabel } from '../../../actions/labels';
 import { connect } from 'react-redux';
 import * as Story from '../../../models/beta/story';
 
@@ -29,7 +29,8 @@ export const ExpandedStory = ({
   toggleTask,
   deleteNote,
   createNote,
-  addLabel
+  addLabel,
+  removeLabel
 }) => {
   return (
     <div className="Story Story--expanded">
@@ -62,9 +63,10 @@ export const ExpandedStory = ({
       />
 
       <ExpandedStoryLabels
-        addLabel={addLabel}
+        onAddLabel={(label) => addLabel(story.id, label)}
         labels={story._editing.labels}
         projectLabels={project.labels}
+        onRemoveLabel={(labelName) => removeLabel(story.id, labelName)}
         onEdit={(value) => editStory(story.id, { labels: value })}
       />
 
@@ -109,6 +111,7 @@ export default connect(
     deleteStory,
     deleteNote,
     createNote,
-    addLabel
+    addLabel,
+    removeLabel
   }
 )(ExpandedStory);

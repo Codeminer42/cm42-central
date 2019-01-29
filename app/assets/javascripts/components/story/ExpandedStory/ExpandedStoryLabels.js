@@ -11,23 +11,19 @@ class ExpandedStoryLabels extends React.Component {
   }
 
   handleDelete(index) {
-    const { onEdit, labels } = this.props;
+    const { labels, onRemoveLabel } = this.props;
 
-    onEdit(labels.filter(
-      (label, labelIndex) =>
-        labelIndex !== index)
+    const label = labels.find(
+      (label, labelIndex) => labelIndex === index
     );
+
+    onRemoveLabel(label.name);
   }
 
   handleAddition(label) {
-    const { onEdit, addLabel, labels } = this.props;
+    const { onAddLabel } = this.props;
 
-    onEdit([
-      ...labels,
-      label
-    ]);
-
-    addLabel(label);
+    onAddLabel(label);
   }
 
   render() {
@@ -58,8 +54,8 @@ class ExpandedStoryLabels extends React.Component {
 
 ExpandedStoryLabels.propTypes = {
   labels: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onEdit: PropTypes.func.isRequired,
-  addLabel: PropTypes.func.isRequired,
+  onAddLabel: PropTypes.func.isRequired,
+  onRemoveLabel: PropTypes.func.isRequired,
   projectLabels: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
