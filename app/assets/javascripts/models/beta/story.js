@@ -108,6 +108,7 @@ export const editStory = (story, newAttributes) => {
   };
 
   newStory.estimate = isFeature(newStory) ? newStory.estimate : '';
+  newStory.labels = Label.uniqueLabels(newStory.labels);
 
   return {
     ...story,

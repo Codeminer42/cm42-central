@@ -3,6 +3,7 @@ import { toggleStory, editStory, updateStory } from 'models/beta/story'
 import * as Note from 'models/beta/note';
 import { updateIfSameId } from '../services/updateIfSameId';
 import * as Task from 'models/beta/task';
+import * as Label from 'models/beta/label';
 
 const initialState = [];
 
@@ -67,6 +68,28 @@ const storiesReducer = (state = initialState, action) => {
         updateIfSameId(action.story.id, (story) => {
           return Task.updateTask(story, action.task);
         }));
+    case actionTypes.ADD_LABEL:
+      return state.map(
+        updateIfSameId(action.storyId, (story) => ({
+          ...story,
+          _editing: {
+            ...story._editing,
+            _isDirty: true,
+            labels: Label.addLabel(story._editing.labels, action.label)
+          }
+        }))
+      );
+    case actionTypes.DELETE_LABEL:
+      return state.map(
+        updateIfSameId(action.storyId, (story) => ({
+          ...story,
+          _editing: {
+            ...story._editing,
+            _isDirty: true,
+            labels: Label.removeLabel(story._editing.labels, action.labelName)
+          }
+        }))
+      );
     default:
       return state;
   };

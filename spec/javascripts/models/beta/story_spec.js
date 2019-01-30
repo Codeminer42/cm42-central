@@ -247,6 +247,7 @@ describe('Story model', function () {
       const story = {
         estimate: '',
         _editing: {
+          labels: [],
           storyType: 'bug',
           estimate: ''
         }
@@ -258,6 +259,7 @@ describe('Story model', function () {
       expect(changedStory).toEqual({
         estimate: '',
         _editing: {
+          labels: [],
           storyType: newAttributes.storyType,
           estimate: '',
           _isDirty: true
@@ -276,6 +278,7 @@ describe('Story model', function () {
 
         expect(changedStory).toEqual({
           _editing: {
+            labels: [],
             storyType: type,
             estimate: '',
             _isDirty: true
@@ -292,6 +295,7 @@ describe('Story model', function () {
 
       expect(changedStory).toEqual({
         _editing: {
+          labels: [],
           storyType: 'feature',
           estimate: newAttributes.estimate,
           _isDirty: true

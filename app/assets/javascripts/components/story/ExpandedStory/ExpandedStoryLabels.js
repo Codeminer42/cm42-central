@@ -6,36 +6,29 @@ class ExpandedStoryLabels extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      tags: props.labels
-    }
-
     this.handleAddition = this.handleAddition.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
 
   handleDelete(index) {
-    const { onEdit } = this.props;
-    const tags = this.state.tags.filter((tag, tagIndex) => tagIndex !== index);
+    const { labels, onRemoveLabel } = this.props;
 
-    this.setState(
-      { tags }, () => {
-        onEdit(this.state.tags)
-      }
+    const label = labels.find(
+      (label, labelIndex) => labelIndex === index
     );
+
+    onRemoveLabel(label.name);
   }
 
-  handleAddition(tag) {
-    const { onEdit } = this.props;
+  handleAddition(label) {
+    const { onAddLabel } = this.props;
 
-    this.setState(
-      { tags: [...this.state.tags, tag] }, () => {
-        onEdit(this.state.tags)
-      }
-    );
+    onAddLabel(label);
   }
 
   render() {
+    const { projectLabels, labels } = this.props;
+
     return (
       <div className="Story__section">
         <div className="Story__section-title">
@@ -43,14 +36,15 @@ class ExpandedStoryLabels extends React.Component {
         </div>
         {
           <ReactTags
-            tags={this.state.tags}
+            tags={labels}
             handleDelete={this.handleDelete}
+            suggestions={projectLabels}
             handleAddition={this.handleAddition}
             allowNew={true}
             placeholder={I18n.t('add new label')}
             allowBackspace={false}
             addOnBlur={true}
-            delimiterChars={[',',' ']}
+            delimiterChars={[',', ' ']}
             autoresize={false} />
         }
       </div>
@@ -60,7 +54,9 @@ class ExpandedStoryLabels extends React.Component {
 
 ExpandedStoryLabels.propTypes = {
   labels: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onEdit: PropTypes.func.isRequired
+  onAddLabel: PropTypes.func.isRequired,
+  onRemoveLabel: PropTypes.func.isRequired,
+  projectLabels: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default ExpandedStoryLabels;
