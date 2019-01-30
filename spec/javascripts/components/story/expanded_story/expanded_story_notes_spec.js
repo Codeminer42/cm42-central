@@ -42,6 +42,24 @@ describe('<ExpandedStoryNotes />', () => {
     expect(wrapper.find('NotesList')).toExist();
   });
 
+  it('disables the add note button if text area is empty', ()=>{
+    const story = { notes: [] };
+
+    const wrapper = shallow(
+      <ExpandedStoryNotes
+        story={story}
+        onCreate={onCreate}
+        onDelete={onDelete}
+      />
+    );
+    
+    const textArea = wrapper.find('.create-note-text');
+    const button = wrapper.find('.create-note-button input');
+
+    textArea.simulate('change', { target: { value: '' } });
+    expect(button.prop('disabled')).toBe(true);
+  });
+
   describe('when user create a new note', () => {
     it('triggers the onCreate callback passing the note', () => {
       const story = {

@@ -784,10 +784,22 @@ module.exports = FormView.extend({
         />,
         $noteForm.get(0)
       );
-
-      $noteForm.find('textarea').atwho({
+      const addNoteButton = $noteForm.find('button')
+      const noteTextArea = $noteForm.find('textarea')
+      
+      addNoteButton.attr('disabled', 'disabled')
+      
+      noteTextArea.atwho({
         at: '@',
         data: window.projectView.usernames()
+      });
+
+      noteTextArea.keyup(function() {
+        if ($.trim(noteTextArea.val())) {
+          addNoteButton.removeAttr('disabled');
+        } else { 
+          addNoteButton.attr('disabled', 'disabled');
+        }    
       });
     }
   },
@@ -839,6 +851,18 @@ module.exports = FormView.extend({
         />,
         $taskForm.get(0)
       );
+      const addTaskButton = $taskForm.find('button')
+      const taskTextArea = $taskForm.find('input')
+
+      addTaskButton.attr('disabled', 'disabled')
+
+      taskTextArea.keyup(function() {
+        if ($.trim(taskTextArea.val())) {
+          addTaskButton.removeAttr('disabled');
+        } else { 
+          addTaskButton.attr('disabled', 'disabled');
+        }    
+      });
     }
   },
 
