@@ -72,9 +72,7 @@ export const ExpandedStory = ({
 
       <ExpandedStoryDescription
         story={story}
-        onToggle={(task, status) => toggleTask(project.id, story, task, status)}
-        onDelete={(taskId) => deleteTask(project.id, story.id, taskId)}
-        onSave={(task) => createTask(project.id, story.id, task)}
+        onEdit={(newAttributes) => editStory(story.id, newAttributes)}
       />
 
       <ExpandedStoryNotes
