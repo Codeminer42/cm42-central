@@ -11,8 +11,13 @@ class RemoveStoriesFromUserService
   def call
     project.stories.where(requested_by_id: user.id)
            .or(project.stories.where(owned_by_id: user.id)).each do |story|
-      story.update!(requested_by_id: nil, requested_by_name: nil) if story.requested_by_id == user.id
-      story.update!(owned_by_id: nil, owned_by_name: nil) if story.owned_by_id == user.id
+
+      requested_by_attrs = user.requested?(story) ? { requested_by_id: nil, requested_by_name: nil } : {}
+      owned_by_attrs = user.owns?(story) ? { owned_by_id: nil, owned_by_name: nil } : {}
+
+      story_attrs = requested_by_attrs.merge(owned_by_attrs)
+
+      story.update!(story_attrs)
     end
   end
 

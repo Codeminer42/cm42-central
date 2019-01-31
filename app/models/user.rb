@@ -72,4 +72,12 @@ class User < ApplicationRecord
       find_by(email: warden_conditions[:email])
     end
   end
+
+  def requested?(story)
+    story.requested_by_id == id
+  end
+
+  def owns?(story)
+    story.owned_by_id == id
+  end
 end
