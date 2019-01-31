@@ -2,23 +2,35 @@
 
 ## [Unreleased]
 ### Added
-- Select to Story Type in board V2
-- Select to Story Estimate in board V2
-- Save option to Story in board V2
-- Notes to Story in board V2
-- Delete option to Story in board V2
-- Select to Story State in board V2
-- Labels to Story in board V2
+- [ V2 ] Story:
+  - Title;
+  - Type;
+  - Requested By;
+  - Owned By;
+  - Estimate;
+  - Description;
+  - State;
+  - Save, Cancel and Delete;
+  - Notes;
+  - Tasks;
+  - Labels;
+
 
 ### Fix
-- Refactor Redux flow to remove stories duplication in board V2
+- [ V2 ] Refactor Redux flow to remove stories duplication
+- Bug on unarchive projects
+- Wrong serialization in JSON
+- Amount of backlog points in reports page
+- Bug on creating two teams with the same name
 
 ### Change
 - Package: camelcase-object-deep: 1.0.7 to change-object-case: 0.2.0
-- Due to the update of the recaptcha gem, changed recaptcha's variable names from `PUBLIC_KEY` and `PRIVATE_KEY` to `SITE_KEY` and `SECRET_KEY` respectively.
+- Due to the update of the recaptcha gem, changed recaptcha's ENV variable names from `PUBLIC_KEY` and `PRIVATE_KEY` to `SITE_KEY` and `SECRET_KEY` respectively.
 
 ### Update
 - Package: sinon: 1.17.5 to 2.0.0
+- Ruby from 2.3.1 to 2.6.0
+- Rails from  4.2.11 to 5.2.1
 
 ## [1.22.0] 2018-11-30
 ### Added
