@@ -16,6 +16,8 @@ import { deleteNote, createNote } from '../../../actions/note';
 import { addLabel, removeLabel } from '../../../actions/labels';
 import { connect } from 'react-redux';
 import * as Story from '../../../models/beta/story';
+import ExpandedStoryRequestedBy from './ExpandedStoryRequestedBy';
+import ExpandedStoryOwnedBy from './ExpandedStoryOwnedBy';
 
 export const ExpandedStory = ({
   story,
@@ -27,6 +29,7 @@ export const ExpandedStory = ({
   createTask,
   deleteTask,
   toggleTask,
+  users,
   deleteNote,
   createNote,
   addLabel,
@@ -56,7 +59,19 @@ export const ExpandedStory = ({
           onEdit={(newAttributes) => editStory(story.id, newAttributes)}
         />
       </div>
+      <div>
+        <ExpandedStoryRequestedBy
+          story={story}
+          users={users}
+          onEdit={(userId) => editStory(story.id, { requestedById: userId })}
+        />
 
+        <ExpandedStoryOwnedBy
+          story={story}
+          users={users}
+          onEdit={(userId) => editStory(story.id, { ownedById: userId })}
+        />
+      </div>
       <ExpandedStoryState
         story={story}
         onEdit={(newAttributes) => editStory(story.id, newAttributes)}
@@ -96,7 +111,7 @@ ExpandedStory.propTypes = {
   story: PropTypes.object.isRequired
 };
 
-const mapStateToProps = ({ project }) => ({ project });
+const mapStateToProps = ({ project, users }) => ({ project, users });
 
 export default connect(
   mapStateToProps,

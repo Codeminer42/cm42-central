@@ -28,7 +28,12 @@ class UsersController < ApplicationController
     @user = policy_scope(User).find(params[:id])
     authorize @user
     @current_team_users = current_team_users
-    policy_scope(User).delete(@user)
+
+    ActiveRecord::Base.transaction do
+      RemoveStoriesFromUserService.call(@user, @project)
+      policy_scope(User).delete(@user)
+    end
+
     flash[:notice] = I18n.t('was removed from this project', scope: 'users', email: @user.email)
 
     respond_to do |format|
