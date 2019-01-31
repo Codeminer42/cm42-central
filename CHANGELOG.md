@@ -1,6 +1,9 @@
 # Changelog
 
 ## [Unreleased]
+
+## [2.0.0] 2019-01-31
+
 ### Added
 - [ V2 ] Story:
   - Title;
@@ -14,7 +17,6 @@
   - Notes;
   - Tasks;
   - Labels;
-
 
 ### Fix
 - [ V2 ] Refactor Redux flow to remove stories duplication
@@ -367,7 +369,7 @@ and CVE-2018-14567)
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v1.22.0...HEAD
+[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v2.0.0...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
@@ -399,3 +401,4 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [1.21.0]: https://github.com/Codeminer42/cm42-central/tree/v1.21.0
 [1.21.1]: https://github.com/Codeminer42/cm42-central/tree/v1.21.1
 [1.22.0]: https://github.com/Codeminer42/cm42-central/tree/v1.22.0
+[2.0.0]: https://github.com/Codeminer42/cm42-central/tree/v2.0.0
