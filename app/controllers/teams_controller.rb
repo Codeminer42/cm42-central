@@ -143,7 +143,7 @@ class TeamsController < ApplicationController
   end
 
   def can_create?
-    check_recaptcha && (@team = TeamOperations::Create.call(@team, current_user))
+    check_recaptcha && TeamOperations::Create.call(@team, current_user)
   end
 
   def add_team_for(user)

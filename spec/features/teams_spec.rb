@@ -7,14 +7,35 @@ describe 'Teams' do
     let!(:user) { create :user, :with_team }
 
     describe 'create team' do
-      it 'should create a new team and set the user as admin' do
+      before do
         visit teams_path
         click_link 'Create new team'
-
+      end
+      
+      it 'should create a new team and set the user as admin' do  
         fill_in 'Team Name', with: 'foobar'
         click_button 'Create new team'
 
         expect(user.teams.last.is_admin?(user)).to be_truthy
+      end
+
+      it 'fails when no team name is set' do
+        fill_in 'Team Name', with: nil
+        click_button 'Create new team'
+
+        expect(page).to have_text("Team Name can't be blank")
+      end
+
+      it 'fails when team name already exists' do
+        fill_in 'Team Name', with: 'foobar'
+        click_button 'Create new team'
+
+        visit teams_path
+        click_link 'Create new team'
+        fill_in 'Team Name', with: 'foobar'
+        click_button 'Create new team'
+
+        expect(page).to have_text('Team Name has already been taken')
       end
     end
   end

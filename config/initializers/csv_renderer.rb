@@ -18,7 +18,7 @@ ActionController::Renderers.add :csv do |stories, options|
     end
   end
 
-  send_data csv_string, type: Mime::CSV, filename: filename
+  send_data csv_string, type: Mime[:csv], filename: filename
 
 end
 
