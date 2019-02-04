@@ -8,10 +8,6 @@
     "postdeploy": "rake db:schema:load db:seed"
   },
   "env": {
-    "CLOUDINARY_UPLOAD_PRESET":{
-      "description": "A cloudinary upload preset to unsigned upload",
-      "required": true
-    },
     "DEVISE_SECRET_KEY": {
       "required": true,
       "generator": "secret"
