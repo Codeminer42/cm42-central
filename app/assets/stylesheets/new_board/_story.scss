@@ -77,8 +77,8 @@
         &__info {
           flex: 1;
           display: flex;
+          flex-direction: column-reverse;
           justify-content: space-between;
-          align-items: center;
           margin: 0 10px;
         }
 
@@ -94,8 +94,9 @@
         }
 
         &__title {
-          word-break: break-all;
+          word-break: break-word;
           flex: 1;
+          text-align: justify;
 
           abbr {
             border: none;
@@ -139,15 +140,17 @@
         }
 
         &__label {
-          padding-right: 3px;
+          text-align: left;
           color: $story-label-color;
           text-decoration: none;
+          font-style: normal;
+          margin-right: 5px;
         }
 
         &__labels {
           color: $story-labels-color;
           font-size: 84%;
-          margin: 0;
+          margin-top: 1px;
         }
 
         &__btn {
