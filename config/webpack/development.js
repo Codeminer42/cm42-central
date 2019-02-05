@@ -6,6 +6,8 @@ const sharedConfig = require('./shared.js')
 const { env, settings, output } = require('./configuration.js')
 
 module.exports = merge(sharedConfig, {
+  mode: "development",
+
   plugins: [
     new ManifestPlugin({
       publicPath: output.manifest.publicPath,
