@@ -135,6 +135,10 @@ es:
     one: '1 semana'
     other: '%{count} semanas'
 
+  n velocity strategy:
+    one:    'Promedio de 1 interacción'
+    other:  'Promedio de %{count} interacciones'
+
   keycuts:
     keyboard_shortcuts: Atajos de teclado
     help: Ayuda
@@ -171,6 +175,7 @@ es:
         default_velocity:     'La velocidad estándar'
         archived:             'Archivado'
         mail_reports:         'Enviar informes por correo electrónico'
+        velocity_strategy:    'Estrategia de velocidad'
       story:
         title:                'Título'
         description:          'Descripción'
