@@ -13,6 +13,10 @@ export const post = (projectId, storyId, note) =>
 export const addNote = (story, note) => (
   {
     ...story,
+    _editing: {
+      ...story._editing,
+      loading: false
+    },
     notes: [
       ...story.notes,
       note
@@ -23,6 +27,10 @@ export const addNote = (story, note) => (
 export const deleteNote = (story, noteId) => (
   {
     ...story,
+    _editing: {
+      ...story._editing,
+      loading: false
+    },
     notes: story.notes.filter(note => note.id !== noteId)
   }
 );

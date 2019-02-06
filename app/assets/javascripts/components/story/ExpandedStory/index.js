@@ -13,7 +13,7 @@ import ExpandedStoryAttachments from './ExpandedStoryAttachments';
 import ExpandedStoryTask from './ExpandedStoryTask';
 import ExpandedStoryRequestedBy from './ExpandedStoryRequestedBy';
 import ExpandedStoryOwnedBy from './ExpandedStoryOwnedBy';
-import { editStory, updateStory, deleteStory } from '../../../actions/story';
+import { editStory, updateStory, deleteStory, setLoadingStory } from '../../../actions/story';
 import { createTask, deleteTask, toggleTask } from '../../../actions/task';
 import { deleteNote, createNote } from '../../../actions/note';
 import { addLabel, removeLabel } from '../../../actions/labels';
@@ -36,11 +36,14 @@ export const ExpandedStory = ({
   createNote,
   addLabel,
   removeLabel,
+  setLoadingStory,
   addAttachment,
   removeAttachment
 }) => {
+  const loading = story._editing.loading ? "Story__enable-loading" : "";
   return (
-    <div className="Story Story--expanded">
+    <div className={`Story Story--expanded ${loading}`} >
+      <div className="Story__loading"></div>
       <ExpandedStoryControls
         onCancel={onToggle}
         onSave={() => updateStory(story.id, project.id)}
@@ -96,6 +99,7 @@ export const ExpandedStory = ({
 
       <ExpandedStoryAttachments
         story={story}
+        onLoading={() => setLoadingStory(story.id)}
         onAdd={(attachment) => addAttachment(story.id, project.id, attachment)}
         onDelete={(documentId) => removeAttachment(story.id, documentId)}
       />
@@ -109,7 +113,7 @@ export const ExpandedStory = ({
 
       <ExpandedStoryTask
         story={story}
-        onToggle={ (task, status) => toggleTask(project.id, story, task, status)}
+        onToggle={(task, status) => toggleTask(project.id, story, task, status)}
         onDelete={(taskId) => deleteTask(project.id, story.id, taskId)}
         onSave={(task) => createTask(project.id, story.id, task)}
       />
@@ -136,6 +140,7 @@ export default connect(
     createNote,
     addLabel,
     removeLabel,
+    setLoadingStory,
     addAttachment,
     removeAttachment
   }

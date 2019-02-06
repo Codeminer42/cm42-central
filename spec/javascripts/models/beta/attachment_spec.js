@@ -20,6 +20,7 @@ describe('Attachment model', () => {
 
       expect(changedStory).toEqual({
         _editing: {
+          loading: false,
           documents: expectedAttachments
         }
       });

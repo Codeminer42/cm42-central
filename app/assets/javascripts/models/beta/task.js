@@ -27,6 +27,10 @@ export const destroy = (projectId, storyId, taskId) => {
 export const addTask = (story, task) => (
   {
     ...story,
+    _editing: {
+      ...story._editing,
+      loading: false
+    },
     tasks: [
       ...story.tasks,
       task
@@ -50,5 +54,9 @@ export const toggleTask = (story, changedTask) => {
 
 export const deleteTask = (taskId, story) => ({
   ...story,
+  _editing: {
+    ...story._editing,
+    loading: false
+  },
   tasks: story.tasks.filter((task) => task.id !== taskId)
 });

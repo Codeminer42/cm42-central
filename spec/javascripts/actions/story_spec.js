@@ -80,6 +80,31 @@ describe('updateStory', () => {
       done();
     });
   });
+
+  it('dispatch setLoadingStory when promise fails', (done) => {
+    const editedStory = {
+      ...story,
+      _editing: {
+        ...story,
+        loading: true,
+        _isDirty: true
+      }
+    };
+
+    const FakeStory = {
+      update: sinon.stub().rejects()
+    };
+
+    const fakeDispatch = sinon.stub().resolves({});
+    const fakeGetState = sinon.stub();
+    fakeGetState.returns({ stories: [editedStory] });
+
+    Story.updateStory(editedStory.id, projectId)(fakeDispatch, fakeGetState, { Story: FakeStory }).then(() => {
+      expect(fakeDispatch).toHaveBeenCalledWith(Story.setLoadingStory(story.id));
+
+      done();
+    });
+  });
 });
 
 describe('deleteStory', () => {
@@ -109,6 +134,20 @@ describe('deleteStory', () => {
 
     Story.deleteStory(storyId, projectId)(fakeDispatch, null, { Story: FakeStory }).then(() => {
       expect(fakeDispatch).toHaveBeenCalledWith(Story.deleteStorySuccess(storyId));
+
+      done();
+    });
+  });
+
+  it('dispatches setLoadingStory when promise fails', (done) => {
+    const FakeStory = {
+      deleteStory: sinon.stub().rejects()
+    };
+
+    const fakeDispatch = sinon.stub().resolves({});
+
+    Story.deleteStory(storyId, projectId)(fakeDispatch, null, { Story: FakeStory }).then(() => {
+      expect(fakeDispatch).toHaveBeenCalledWith(Story.setLoadingStory(storyId));
 
       done();
     });

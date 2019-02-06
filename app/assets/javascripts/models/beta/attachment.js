@@ -21,7 +21,8 @@ export const addAttachment = (story, attachment) => ({
     documents: [
       ...story._editing.documents,
       attachment
-    ]
+    ],
+    loading: false
   }
 });
 

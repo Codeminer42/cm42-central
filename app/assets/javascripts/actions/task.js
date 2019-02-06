@@ -1,4 +1,5 @@
 import actionTypes from './actionTypes';
+import { setLoadingStory } from './story';
 
 export const createTaskSuccess = (task, storyId) => ({
   type: actionTypes.ADD_TASK,
@@ -20,17 +21,23 @@ export const toggleTaskSuccess = (task, story) => ({
 
 export const createTask = (projectId, storyId, task) => {
   return (dispatch, getState, { Task }) => {
+    dispatch(setLoadingStory(storyId))
     return Task.post(projectId, storyId, task)
-      .then((task) => dispatch(createTaskSuccess(task, storyId)))
-      .catch((error) => console.error(error));
+      .then(task => {
+        dispatch(createTaskSuccess(task, storyId))
+      })
+      .catch(() => dispatch(setLoadingStory(storyId)))
   };
 };
 
 export const deleteTask = (projectId, storyId, taskId) => {
   return (dispatch, getState, { Task }) => {
+    dispatch(setLoadingStory(storyId))
     return Task.destroy(projectId, storyId, taskId)
-      .then(() => dispatch(deleteTaskSuccess(taskId, storyId)))
-      .catch((error) => console.error(error));
+      .then(() => {
+        dispatch(deleteTaskSuccess(taskId, storyId))
+      })
+      .catch(() => dispatch(setLoadingStory(storyId)))
   };
 };
 

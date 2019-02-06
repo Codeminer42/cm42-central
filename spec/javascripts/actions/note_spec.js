@@ -1,4 +1,5 @@
 import * as Note from 'actions/note';
+import * as Story from 'actions/story';
 
 describe('Note Actions', () => {
   describe('createNote', () => {
@@ -35,6 +36,21 @@ describe('Note Actions', () => {
           done();
         });
     });
+
+    it('dispatches setLoadingStory when promise fails', (done) => {
+      const FakeNote = {
+        post: sinon.stub().rejects()
+      };
+
+      const fakeDispatch = sinon.stub().resolves({});
+
+      Note.createNote(projectId, storyId, note)(fakeDispatch, null, { Note: FakeNote })
+        .then(() => {
+          expect(fakeDispatch).toHaveBeenCalledWith(Story.setLoadingStory(storyId));
+
+          done();
+        });
+    });
   });
 
   describe('deleteNote', () => {
@@ -67,6 +83,21 @@ describe('Note Actions', () => {
       Note.deleteNote(projectId, storyId, noteId)(fakeDispatch, null, { Note: FakeNote })
         .then(() => {
           expect(fakeDispatch).toHaveBeenCalledWith(Note.deleteNoteSuccess(storyId, noteId));
+
+          done();
+        });
+    });
+
+    it('dispatches setLoadingStory when promise fails', (done) => {
+      const FakeNote = {
+        destroy: sinon.stub().rejects()
+      };
+
+      const fakeDispatch = sinon.stub().resolves({});
+
+      Note.deleteNote(projectId, storyId, noteId)(fakeDispatch, null, { Note: FakeNote })
+        .then(() => {
+          expect(fakeDispatch).toHaveBeenCalledWith(Story.setLoadingStory(storyId));
 
           done();
         });

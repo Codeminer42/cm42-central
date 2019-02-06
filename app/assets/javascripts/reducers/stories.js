@@ -1,5 +1,5 @@
 import actionTypes from 'actions/actionTypes';
-import { toggleStory, editStory, updateStory } from 'models/beta/story'
+import { toggleStory, editStory, updateStory, setLoadingStory } from 'models/beta/story'
 import * as Note from 'models/beta/note';
 import * as Task from 'models/beta/task';
 import * as Label from 'models/beta/label';
@@ -25,6 +25,9 @@ const storiesReducer = (state = initialState, action) => {
         updateIfSameId(action.story.id, (story) => {
           return updateStory(story, action.story);
         }));
+    case actionTypes.SET_LOADING_STORY:
+      return state.map(
+        updateIfSameId(action.id, setLoadingStory));
     case actionTypes.ADD_TASK:
       return state.map(
         updateIfSameId(action.storyId, (story) => {

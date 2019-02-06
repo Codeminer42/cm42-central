@@ -1,4 +1,5 @@
 import * as Task from 'actions/task';
+import * as Story from 'actions/story';
 
 describe('Task Actions', () => {
   describe('AddTask', () => {
@@ -35,6 +36,21 @@ describe('Task Actions', () => {
           done();
         });
     });
+
+    it('dispatch setLoadingStory when promise fails', (done) => {
+      const FakeTask = {
+        post: sinon.stub().rejects()
+      };
+
+      const fakeDispatch = sinon.stub().resolves({});
+
+      Task.createTask(projectId, story.id, task)(fakeDispatch, null, { Task: FakeTask })
+        .then(() => {
+          expect(fakeDispatch).toHaveBeenCalledWith(Story.setLoadingStory(story.id));
+
+          done();
+        });
+    });
   });
 
   describe('deleteTask', () => {
@@ -67,6 +83,21 @@ describe('Task Actions', () => {
       Task.deleteTask(projectId, story.id, task.id)(fakeDispatch, null, { Task: FakeTask })
         .then(() => {
           expect(fakeDispatch).toHaveBeenCalledWith(Task.deleteTaskSuccess(task.id, story.id));
+
+          done();
+        });
+    });
+
+    it('dispatch setLoadingStory when promise fails', (done) => {
+      const FakeTask = {
+        destroy: sinon.stub().rejects()
+      };
+
+      const fakeDispatch = sinon.stub().resolves({});
+
+      Task.deleteTask(projectId, story.id, task)(fakeDispatch, null, { Task: FakeTask })
+        .then(() => {
+          expect(fakeDispatch).toHaveBeenCalledWith(Story.setLoadingStory(story.id));
 
           done();
         });

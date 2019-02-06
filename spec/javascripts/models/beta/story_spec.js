@@ -222,6 +222,7 @@ describe('Story model', function () {
           collapsed: false,
           _editing: {
             collapsed: true,
+            loading: false,
             _isDirty: false
           }
         });
@@ -325,6 +326,24 @@ describe('Story model', function () {
       expect(changedStory).toEqual({
         estimate: newAttributes.estimate
       });
+    });
+  });
+
+  describe('setLoadingStory', () => {
+    it('sets the loading state to true when false', () => {
+      const story = { _editing: { loading: false } }
+
+      const changedStory = Story.setLoadingStory(story);
+      
+      expect(changedStory._editing.loading).toEqual(true);
+    });
+
+    it('sets the loading state to false when true', () => {
+      const story = { _editing: { loading: true } }
+
+      const changedStory = Story.setLoadingStory(story);
+      
+      expect(changedStory._editing.loading).toEqual(false);
     });
   });
 });

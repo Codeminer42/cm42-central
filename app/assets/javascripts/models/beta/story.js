@@ -92,7 +92,7 @@ export const updateStory = (story, newAttributes) => {
 };
 
 export const toggleStory = (story) => {
-  const editing = story.collapsed ? { ...story, _isDirty: false } : null;
+  const editing = story.collapsed ? { ...story, _isDirty: false, loading: false } : null;
 
   return {
     ...story,
@@ -131,6 +131,14 @@ export const deserialize = (story, options) => {
     collapsed
   };
 };
+
+export const setLoadingStory = (story) => ({
+  ...story,
+  _editing: {
+    ...story._editing,
+    loading: !story._editing.loading
+  }
+});
 
 export const serialize = (story) => ({
   ...story,
