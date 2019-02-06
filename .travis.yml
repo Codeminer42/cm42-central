@@ -4,6 +4,14 @@ services:
   - postgresql
   - redis-server
 sudo: false
+addons:
+  chrome: stable
+  apt:
+    packages:
+      - chromium-chromedriver
+  artifacts:
+    paths:
+      - $(ls -d -1 $PWD/tmp/capybara/* | tr "\n" ":")
 env:
   - "DB=postgresql"
 before_install:
@@ -16,6 +24,7 @@ install:
 before_script:
   - "cp config/database.yml.example config/database.yml"
   - "cp .env.sample .env"
+  - ln -s /usr/lib/chromium-browser/chromedriver ~/bin/chromedriver
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - "bundle exec rake --trace fulcrum:setup db:setup"

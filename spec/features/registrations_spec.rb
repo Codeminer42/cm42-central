@@ -24,7 +24,7 @@ describe 'Registrations' do
           .and_return(valid_response)
       end
 
-      context 'and authy was disabled' do
+      context 'and authy was disabled', js: true do
         before do
           allow(Authy::API)
             .to receive(:delete_user)

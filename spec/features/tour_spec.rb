@@ -50,7 +50,7 @@ describe 'Tour' do
   end
 
   context 'when user has finished the tour', js: true do
-    let(:user) { create :user, :with_team, finished_tour: false }
+    let(:user) { create :user, :with_team, finished_tour: true }
     let!(:project) do
       create(:project, name: 'Test Project', users: [user], teams: [user.teams.first])
     end

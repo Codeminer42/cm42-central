@@ -49,7 +49,7 @@ describe 'Stories' do
       end
 
       it 'highlights story on click to save', js: true do
-        story_element(story).trigger('click')
+        story_element(story).click
         expect(story_element(story)).to match_css('.editing')
         click_on 'Save'
         expect(page).not_to have_css('.editing')
@@ -116,17 +116,19 @@ describe 'Stories' do
 
       # Estimate the story
       within(chilly_bin_column.find('.story')) do
-        find('#estimate-1').trigger 'click'
+        find('#estimate-1').click
         click_on 'start'
       end
 
-      sleep 0.5
+      wait_for_ajax
       within('#in_progress .story') do
         click_on 'finish'
-        sleep 0.5
+        wait_for_ajax
         click_on 'deliver'
-        sleep 0.5
-        click_on 'accept'
+        wait_for_ajax
+        accept_confirm do
+          click_on 'accept'
+        end
       end
 
       expect(find('#in_progress .story.accepted .story-title')).to have_content('New story')
@@ -140,7 +142,7 @@ describe 'Stories' do
       wait_spinner
       wait_page_load
 
-      find('.story-title').trigger('click')
+      find('.story-title').click
       find('.toggle-history').click
     end
 
@@ -291,7 +293,7 @@ describe 'Stories' do
     end
 
     it 'clones the story to the chilly bin', js: true do
-      find('.story-title').trigger('click')
+      find('.story-title').click
       find('.clone-story').click
 
       expect(chilly_bin_column).to have_content('Clone Me')
@@ -313,8 +315,10 @@ describe 'Stories' do
       wait_spinner
 
       within(story_selector(story)) do
-        find('.story-title').trigger 'click'
-        click_on 'Delete'
+        find('.story-title').click
+        accept_confirm do
+          click_on 'Delete'
+        end
       end
 
       expect(page).not_to have_css(story_selector(story))
@@ -351,8 +355,10 @@ describe 'Stories' do
       # should return at least one story in the result column
       expect(page).to have_css('.searchResult')
       within(story_selector(story)) do
-        find('.story-title').trigger 'click'
-        click_on 'Delete'
+        find('.story-title').click
+        accept_confirm do
+          click_on 'Delete'
+        end
       end
 
       # when the story is delete in the results column it should also disappear from other columns
@@ -410,7 +416,7 @@ describe 'Stories' do
       page.execute_script("$('#form_search').submit()")
 
       within('#search_results') do
-        find('#locate').trigger 'click'
+        find('#locate').click
       end
 
       expect(story_element(story)[:style]).to match(/background-color/)
@@ -418,7 +424,7 @@ describe 'Stories' do
 
     it 'drags the story to other columns', js: true do
       within('#in_progress .story') do
-        find('#estimate-1').trigger 'click'
+        find('#estimate-1').click
         click_on 'start'
       end
 
@@ -450,7 +456,7 @@ describe 'Stories' do
         'chilly_bin'  => 'Chilly Bin'
       }
 
-      find('#sidebar-toggle').trigger 'click'
+      find('#sidebar-toggle').click
 
       columns.each do |column, button_text|
         selector = "table.stories td.#{column}_column"
@@ -484,7 +490,7 @@ describe 'Stories' do
       selector = 'table.stories td.search_results_column'
       expect(page).not_to have_css(selector)
 
-      find('#sidebar-toggle').trigger 'click'
+      find('#sidebar-toggle').click
 
       # Show the column
       within('#column-toggles') do
@@ -493,7 +499,7 @@ describe 'Stories' do
       expect(page).to have_css(selector)
 
       # close the sidebar
-      find('#sidebar-toggle').trigger 'click'
+      find('#sidebar-toggle').click
 
       # Hide the column with the 'close' button in the column header
       within("#{selector} .column_header") do
@@ -517,7 +523,7 @@ describe 'Stories' do
                      requested_by: user, labels: 'epic2')
     end
 
-    it 'show epic by label', js: true, driver: :poltergeist do
+    it 'show epic by label', js: true do
       visit project_path(project)
       wait_spinner
       wait_page_load
@@ -549,7 +555,7 @@ describe 'Stories' do
       wait_spinner
       wait_page_load
 
-      sleep 0.5
+      wait_for_ajax
       first(:link, 'epic2').click
 
       resultStory = find(story_search_result_selector(story3))

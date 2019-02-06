@@ -18,7 +18,7 @@ describe 'localization' do
   let(:current_user) { user }
 
   describe 'user profile' do
-    it 'lets user change their locale' do
+    it 'lets user change their locale', js: true do
       change_locale_to 'pt-BR'
 
       current_user.reload
@@ -36,7 +36,7 @@ describe 'localization' do
   end
 
   describe 'application' do
-    it 'sets the locale based on the user locale' do
+    it 'sets the locale based on the user locale', js: true do
       change_locale_to 'es'
 
       visit root_path
