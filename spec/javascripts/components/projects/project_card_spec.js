@@ -1,4 +1,3 @@
-import jasmineEnzyme from 'jasmine-enzyme';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
@@ -6,9 +5,9 @@ import ProjectCard from 'components/projects/ProjectCard';
 import User from 'models/user';
 import Project from 'models/project';
 
-const user = new User({'user': { 'id': 1 }});
+const user = new User({ 'user': { 'id': 1 } });
 
-function projectFactory(tag_name){
+const projectFactory = (tag_name) => {
   const defaultObj = {
     'name': 'Foobar',
     'slug': 'foobar',
@@ -23,40 +22,45 @@ function projectFactory(tag_name){
     'archived_at': null,
     'velocity': '10',
     'volatility': "0%",
-    'tag_name' : tag_name,
-    'tag_bg_color' :  "#2075F3",
-    'tag_fore_color' : "#FFFFFF",
+    'tag_name': tag_name,
+    'tag_bg_color': "#2075F3",
+    'tag_fore_color': "#FFFFFF",
     'users_avatar': ["https://secure.gravatar.com/avatar/foobar.png"]
   }
   return new Project(defaultObj)
 }
 
-const defaultProps = {
-  project: projectFactory(),
-  user: user,
-  joined: true,
-  key: 1
-};
-
-const propsWithTag = {
-  project: projectFactory('tag-foo'),
-  user: user,
-  joined: true,
-  key: 1
-};
-
 describe('<ProjectCard />', () => {
-  beforeEach(jasmineEnzyme);
+  let defaultProps;
+  let propsWithTag;
+
+  beforeEach(() => {
+    defaultProps = {
+      project: projectFactory(),
+      user: user,
+      joined: true,
+      key: 1
+    };
+
+    propsWithTag = {
+      project: projectFactory('tag-foo'),
+      user: user,
+      joined: true,
+      key: 1
+    };
+  });
 
   describe('joined', () => {
     it('should have project, user and joined props', () => {
       const wrapper = mount(<ProjectCard {...defaultProps} />);
-      expect(wrapper.props()).toEqual({project: defaultProps.project, user: defaultProps.user, joined: true});
+      expect(wrapper.prop('project')).toBe(defaultProps.project);
+      expect(wrapper.prop('user')).toBe(defaultProps.user);
+      expect(wrapper.prop('joined')).toBe(true);
     });
 
     it('should contain the Project name', () => {
       const wrapper = shallow(<ProjectCard {...defaultProps} />);
-      expect(wrapper.find('.card-title')).toHaveText('Foobar');
+      expect(wrapper.find('.card-title').text()).toContain('Foobar');
     });
 
     describe('#panelHeading', () => {
@@ -67,7 +71,7 @@ describe('<ProjectCard />', () => {
             <a href="/projects/foobar/reports" className="unstyled-link"
               data-toggle="tooltip"
               data-placement="top"
-              data-title={ I18n.t('reports') }
+              data-title={I18n.t('reports')}
             >
               <i className="mi md-20 heading-icon">insert_chart</i>
             </a>
@@ -98,19 +102,24 @@ describe('<ProjectCard />', () => {
 
       describe('.card-tag', () => {
         describe('When there is a tag', () => {
-          const wrapper = mount(<ProjectCard {...propsWithTag} />);
+          let wrapper;
+
+          beforeEach(() => {
+            wrapper = mount(<ProjectCard {...propsWithTag} />);
+          });
+
           it('has the tag name', () => {
             expect(wrapper.find('.card-tag')).toHaveText(defaultProps.project.get("tag_name"));
           });
           it('has the background and foreground defined', () => {
-            const card_style = wrapper.find('.card-tag').getNode();
-            expect(card_style).toHaveCss({'background-color': "rgb(32, 117, 243)", 'color': "rgb(255, 255, 255)"});
+            const card_style = wrapper.find('.card-tag').getDOMNode();
+            expect(card_style).toHaveCss({ 'background-color': "rgb(32, 117, 243)", 'color': "rgb(255, 255, 255)" });
           });
         });
         it('does not have the tag', () => {
           const wrapper = shallow(<ProjectCard {...defaultProps} />);
           expect(wrapper.contains(
-            <small className='card-tag'>{ defaultProps.project.get("tag_name") }</small>
+            <small className='card-tag'>{defaultProps.project.get("tag_name")}</small>
           )).toBe(false);
         });
       });
@@ -127,9 +136,9 @@ describe('<ProjectCard />', () => {
             <a href="/projects/foobar/edit"
               data-toggle="tooltip"
               data-placement="top"
-              data-title={ I18n.t('settings') }
+              data-title={I18n.t('settings')}
             >
-              { I18n.t('settings') }
+              {I18n.t('settings')}
             </a>
           )).toBe(true);
         });
@@ -138,7 +147,7 @@ describe('<ProjectCard />', () => {
           const wrapper = shallow(<ProjectCard {...defaultProps} />);
           expect(wrapper.contains(
             <a href="/projects/foobar/users/1" data-method="delete">
-              { I18n.t('projects.unjoin') }
+              {I18n.t('projects.unjoin')}
             </a>
           )).toBe(true);
         });
@@ -152,7 +161,9 @@ describe('<ProjectCard />', () => {
           expect(wrapper.contains(
             <div className="col-md-12 members">
               <ul className="member-list">
-                <li className="member"><img src="https://secure.gravatar.com/avatar/foobar.png" alt="User avatar" className="identicon" /></li>
+                <li className="member">
+                  <img src="https://secure.gravatar.com/avatar/foobar.png" alt="User avatar" className="identicon" />
+                </li>
               </ul>
             </div>
           )).toBe(true);
@@ -164,7 +175,7 @@ describe('<ProjectCard />', () => {
           const wrapper = shallow(<ProjectCard {...defaultProps} />);
           expect(wrapper.contains(
             <div className="panel-body">
-              <span className="col-md-12 text-center">{ I18n.t('projects.unable_to_join') }</span>
+              <span className="col-md-12 text-center">{I18n.t('projects.unable_to_join')}</span>
             </div>
           )).toBe(false);
         });
@@ -176,7 +187,7 @@ describe('<ProjectCard />', () => {
         it('should contain SELECT PROJECT button', () => {
           const wrapper = shallow(<ProjectCard {...defaultProps} />);
           expect(wrapper.contains(
-            <a href="/projects/foobar" className="card-footer panel-footer">{ I18n.t('projects.select') }</a>
+            <a href="/projects/foobar" className="card-footer panel-footer">{I18n.t('projects.select')}</a>
           )).toBe(true);
         });
       });
@@ -198,7 +209,7 @@ describe('<ProjectCard />', () => {
       defaultProps.joined = false;
 
       const wrapper = mount(<ProjectCard {...defaultProps} />);
-      expect(wrapper.props()).toEqual({project: defaultProps.project, user: defaultProps.user, joined: false});
+      expect(wrapper.props()).toEqual({ project: defaultProps.project, user: defaultProps.user, joined: false });
     });
 
     it('should contain the Project name', () => {
@@ -222,7 +233,7 @@ describe('<ProjectCard />', () => {
             <a href="/projects/foobar/reports" className="unstyled-link"
               data-toggle="tooltip"
               data-placement="top"
-              data-title={ I18n.t('reports') }
+              data-title={I18n.t('reports')}
             >
               <i className="mi md-20 heading-icon">insert_chart</i>
             </a>
@@ -249,7 +260,7 @@ describe('<ProjectCard />', () => {
           const wrapper = shallow(<ProjectCard {...defaultProps} />);
           expect(wrapper.contains(
             <div className="panel-body">
-              <span className="col-md-12 text-center">{ I18n.t('projects.to_view_more_join') }</span>
+              <span className="col-md-12 text-center">{I18n.t('projects.to_view_more_join')}</span>
             </div>
           )).toBe(true);
         });
@@ -263,7 +274,7 @@ describe('<ProjectCard />', () => {
           const wrapper = shallow(<ProjectCard {...defaultProps} />);
           expect(wrapper.contains(
             <div className="panel-body">
-              <span className="col-md-12 text-center">{ I18n.t('projects.unable_to_join') }</span>
+              <span className="col-md-12 text-center">{I18n.t('projects.unable_to_join')}</span>
             </div>
           )).toBe(true);
         });
@@ -278,7 +289,7 @@ describe('<ProjectCard />', () => {
 
           const wrapper = shallow(<ProjectCard {...defaultProps} />);
           expect(wrapper.contains(
-            <a href="/projects/foobar/join" className="card-footer panel-footer">{ I18n.t('projects.join') }</a>
+            <a href="/projects/foobar/join" className="card-footer panel-footer">{I18n.t('projects.join')}</a>
           )).toBe(true);
         });
       });

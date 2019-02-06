@@ -531,8 +531,10 @@ module.exports = FormView.extend({
         const $storyAttachments = $('<div class="story-attachments"></div>');
         $(div).append($storyAttachments);
 
-        clearTimeout(window.executeAttachinaryTimeout);
-        window.executeAttachinaryTimeout = setTimeout(executeAttachinary, 1000);
+        if(process.env.NODE_ENV !== 'test'){
+          clearTimeout(window.executeAttachinaryTimeout);
+          window.executeAttachinaryTimeout = setTimeout(executeAttachinary, 1000);
+        }
       })
     );
   },

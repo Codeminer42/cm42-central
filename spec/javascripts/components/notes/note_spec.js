@@ -1,16 +1,12 @@
-import jasmineEnzyme from 'jasmine-enzyme';
 import React from 'react';
 import { shallow } from 'enzyme';
-
 import NoteComponent from 'components/notes/Note';
-import NoteForm from 'components/notes/NoteForm';
 import Note from 'models/note.js';
 
 describe('<Note />', function() {
   let note;
 
   beforeEach(function() {
-    jasmineEnzyme();
     sinon.stub(I18n, 't');
     sinon.stub(window.md, 'makeHtml');
     note = new Note({note: 'Test Note'});
@@ -46,7 +42,7 @@ describe('<Note />', function() {
       const wrapper = shallow(
         <NoteComponent note={note} disabled={false} />
       );
-      expect(wrapper.find('.delete-note')).toBePresent();
+      expect(wrapper.find('.delete-note')).toExist();
     });
 
   });
@@ -57,7 +53,7 @@ describe('<Note />', function() {
       const wrapper = shallow(
         <NoteComponent note={note} disabled={true} />
       );
-      expect(wrapper.find('.delete-note')).not.toBePresent();
+      expect(wrapper.find('.delete-note')).not.toExist();
     });
 
   });

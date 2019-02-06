@@ -10,7 +10,7 @@ describe('StoryView', function() {
       notice: sinon.stub(),
       noticeSaveError: sinon.stub()
     };
-    window.md = { makeHtml: sinon.stub().returns("") };
+    sinon.stub(window.md, 'makeHtml').returns("");
     var Note = Backbone.Model.extend({
       name: 'note',
       humanAttributeName: sinon.stub()
@@ -56,7 +56,6 @@ describe('StoryView', function() {
       model: this.new_story
     });
 
-    window.I18n = {t: sinon.stub()};
     window.projectView.usernames = sinon.stub();
 
     this.server = sinon.fakeServer.create();
@@ -76,6 +75,7 @@ describe('StoryView', function() {
 
   afterEach(function() {
     this.server.restore();
+    window.md.makeHtml.restore();
   });
 
   describe('class name', function() {

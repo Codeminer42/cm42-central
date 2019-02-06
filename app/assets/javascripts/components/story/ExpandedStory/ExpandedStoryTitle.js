@@ -8,7 +8,7 @@ const ExpandedStoryTitle = (props) => {
   return (
     <div className="Story__section">
       <div className="Story__section-title">
-        {I18n.translate('activerecord.attributes.story.title')}
+        {I18n.t('activerecord.attributes.story.title')}
       </div>
       <input
         value={story._editing.title}

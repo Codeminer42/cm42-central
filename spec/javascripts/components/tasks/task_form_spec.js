@@ -1,27 +1,25 @@
-import jasmineEnzyme from 'jasmine-enzyme';
 import React from 'react';
 import { mount } from 'enzyme';
 
 import TaskForm from 'components/tasks/TaskForm';
 import Task from 'models/task';
 
-describe('<TaskForm />', function() {
+describe('<TaskForm />', function () {
   let task;
 
-  beforeEach(function() {
-    jasmineEnzyme();
-    task = new Task({name: 'Task Test', id: 20});
+  beforeEach(function () {
+    task = new Task({ name: 'Task Test', id: 20 });
     sinon.stub(I18n, 't');
     sinon.stub(task, 'save');
   });
 
-  afterEach(function() {
+  afterEach(function () {
     I18n.t.restore();
     task.save.restore();
   });
 
-  it("should have an onSubmit callback", function() {
-    const onSubmit = sinon.stub().returns($.Deferred());
+  it("should have an onSubmit callback", function () {
+    const onSubmit = sinon.stub().returns(Promise.resolve());
     const wrapper = mount(
       <TaskForm
         task={task}
@@ -32,8 +30,8 @@ describe('<TaskForm />', function() {
     expect(onSubmit).toHaveBeenCalled();
   });
 
-  it("should stop loading when save fails", function() {
-    const onSubmit = sinon.stub().returns($.Deferred().reject());
+  it("should stop loading when save fails", function (done) {
+    const onSubmit = sinon.stub().returns(Promise.reject());
     const wrapper = mount(
       <TaskForm
         task={task}
@@ -41,9 +39,12 @@ describe('<TaskForm />', function() {
       />
     );
     wrapper.find('.add-task').simulate('click');
-    return $.Deferred().resolve().then(() =>
-      expect(wrapper.find('.saving')).toHaveLength(0)
-    );
-  });
 
+    Promise.resolve().then(() => {
+      wrapper.update();
+
+      expect(wrapper.find('.saving').exists()).toBe(false)
+      done()
+    });
+  });
 });

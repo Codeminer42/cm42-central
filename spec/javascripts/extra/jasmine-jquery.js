@@ -422,7 +422,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         }
       },
 
-      toBeEmpty: function () {
+      toExist: function () {
         return {
           compare: function (actual) {
             return { pass: $(actual).is(':empty') }
@@ -497,7 +497,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         }
       },
 
-      toHaveText: function () {
+      toIncludeText: function () {
         return {
           compare: function (actual, text) {
             var actualText = $(actual).text()

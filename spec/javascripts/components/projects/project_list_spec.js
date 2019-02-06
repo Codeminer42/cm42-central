@@ -1,4 +1,3 @@
-import jasmineEnzyme from 'jasmine-enzyme';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import ProjectList from 'components/projects/ProjectList';
@@ -9,7 +8,6 @@ import User from 'models/user';
 describe('<ProjectList />', () => {
   var user, defaultProps;
 
-  beforeEach(jasmineEnzyme);
   beforeEach(() => {
     user = new User({
       "user": {

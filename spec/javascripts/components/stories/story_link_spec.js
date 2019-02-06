@@ -1,10 +1,7 @@
-import jasmineEnzyme from 'jasmine-enzyme';
 import React from 'react';
 import { shallow } from 'enzyme';
 
 import StoryLink from 'components/stories/StoryLink';
-
-import Story from 'models/story.js';
 
 const story = {
   title: 'Story 2',
@@ -24,7 +21,6 @@ story.get.withArgs('story_type').returns('feature');
 describe('<StoryLink />', function() {
 
   beforeEach(function() {
-    jasmineEnzyme();
     sinon.stub(I18n, 't');
     sinon.stub(window.md, 'makeHtml');
     sinon.stub(document, 'getElementById');
@@ -39,7 +35,7 @@ describe('<StoryLink />', function() {
 
   it("should have his id as content", function() {
     const wrapper = shallow( <StoryLink story={story} /> );
-    expect(wrapper.find('.story-link')).toHaveText('#2');
+    expect(wrapper.find('.story-link').text()).toContain('#2');
   });
 
   it("should highlight on click", function() {
@@ -51,6 +47,7 @@ describe('<StoryLink />', function() {
   describe(".story-link-icon", function() {
 
     it("should not exist when story's state is unscheduled", function() {
+      story.get.withArgs('state').returns('unscheduled');
       const wrapper = shallow( <StoryLink story={story} /> );
       expect(wrapper.find('.story-link-icon').length).toBe(0);
     });
@@ -58,7 +55,7 @@ describe('<StoryLink />', function() {
     it("should have a material icon when state is not unscheduled", function() {
       story.get.withArgs('state').returns('accepted');
       const wrapper = shallow( <StoryLink story={story} /> );
-      expect(wrapper.find('.story-link-icon')).toHaveText('done');
+      expect(wrapper.find('.story-link-icon').text()).toContain('done');
     });
 
   });

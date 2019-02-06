@@ -4,7 +4,7 @@ import CollapsedStory from 'components/story/CollapsedStory/index';
 import storyFactory from '../../../support/factories/storyFactory';
 
 describe('<CollapsedStory />', () => {
-  
+
   describe('when estimate isn\'t null', () => {
     it('renders the component with Story--estimated className', () => {
       const props = storyFactory({storyType: 'feature', estimate: 1});
@@ -13,16 +13,16 @@ describe('<CollapsedStory />', () => {
       expect(wrapper).toHaveClassName('Story--estimated');
     });
   });
-  
+
   describe('when estimate is null', () => {
     it('renders the component with Story--unestimated className', () => {
       const props = storyFactory({storyType: 'feature', estimate: null});
       const wrapper = shallow(<CollapsedStory story={props} />);
 
-      expect(wrapper.prop('className')).toContain('Story--unestimated');
+      expect(wrapper).toHaveClassName('Story--unestimated');
     });
   });
-  
+
   describe('when storyType = release', () => {
     it('renders the component with Story--release className', () => {
       const props = storyFactory({storyType: 'release'});
@@ -31,7 +31,7 @@ describe('<CollapsedStory />', () => {
       expect(wrapper).toHaveClassName('Story--release');
     });
   });
-  
+
   it('renders children components', () => {
     const props = storyFactory({storyType: 'feature', estimate: 1});
     const wrapper = shallow(<CollapsedStory story={props} />);

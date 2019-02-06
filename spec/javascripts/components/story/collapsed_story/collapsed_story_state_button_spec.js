@@ -1,11 +1,6 @@
-import jasmineEnzyme from 'jasmine-enzyme';
 import React from 'react';
 import { shallow } from 'enzyme';
 import CollapsedStoryStateButton from 'components/story/CollapsedStory/CollapsedStoryStateButton';
-
-beforeEach(() => {
-  jasmineEnzyme();
-});
 
 describe('<CollapsedStoryStateButton />', () => {
   it("renders <CollapsedStoryStateButton /> with the right content", () => {

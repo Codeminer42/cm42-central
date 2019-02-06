@@ -8,14 +8,14 @@ export const StoryPopoverContent = ({ story }) => (
   <div className='popover__content'>
     <div className='popover__content__subtitle'>
       {
-        I18n.translate('requested by user on date', {
+        I18n.t('requested by user on date', {
           user: story.requestedByName,
           date: moment(story.createdAt).format('DD MM YYYY, h:mm a')
         })
       }
 
       <div className='text-right'>
-        {I18n.translate(`story.type.${story.storyType}`)}
+        {I18n.t(`story.type.${story.storyType}`)}
       </div>
     </div>
 
@@ -23,7 +23,7 @@ export const StoryPopoverContent = ({ story }) => (
       Boolean(story.description) && (
         <div>
           <h1 className='popover__content__title'>
-            {I18n.translate('description')}
+            {I18n.t('description')}
           </h1>
 
           <div className='markdown-wrapper'>
@@ -36,7 +36,7 @@ export const StoryPopoverContent = ({ story }) => (
       Boolean(story.notes.length) && (
         <div>
           <h1 className='popover__content__title'>
-            {I18n.translate('notes')}
+            {I18n.t('notes')}
           </h1>
 
           { story.notes.map(({ note, id, userName, createdAt }) =>
@@ -65,9 +65,9 @@ const StoryPopover = ({ story, children }) => (
   >
     {
       ({ ref }) => (
-        <bold ref={ref}>
+        <div ref={ref}>
           { children }
-        </bold>
+        </div>
       )
     }
   </Popover>

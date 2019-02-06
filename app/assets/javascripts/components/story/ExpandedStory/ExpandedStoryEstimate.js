@@ -9,7 +9,7 @@ export const ExpandedStoryEstimate = (props) => {
   return (
     <div className="Story__section">
       <div className="Story__section-title">
-        { I18n.translate('activerecord.attributes.story.estimate') }
+        { I18n.t('activerecord.attributes.story.estimate') }
       </div>
 
       <select
@@ -19,7 +19,7 @@ export const ExpandedStoryEstimate = (props) => {
         disabled={!isFeature(story._editing)}
       >
         <option value=''>
-          { I18n.translate('story.no_estimate') }
+          { I18n.t('story.no_estimate') }
         </option>
         {
           project.pointValues.map((value) => (

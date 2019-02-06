@@ -1,4 +1,3 @@
-import jasmineEnzyme from "jasmine-enzyme";
 import React from "react";
 import { shallow } from "enzyme";
 import Sprints from "components/stories/Sprints";
@@ -57,7 +56,6 @@ const createProps = () => ({
 
 describe("<Sprints />", () => {
   beforeEach(() => {
-    jasmineEnzyme();
     props = createProps();
     wrapper = shallow(<Sprints {...props} />);
   });
@@ -72,7 +70,7 @@ describe("<Sprints />", () => {
       props.sprints = [];
       wrapper = shallow(<Sprints {...props} />);
     });
-    
+
     it("does not render any <Sprint> component", () => {
       expect(wrapper.find("Sprint")).toHaveLength(0);
     });

@@ -1,4 +1,3 @@
-import jasmineEnzyme from "jasmine-enzyme";
 import React from "react";
 import { shallow } from "enzyme";
 import Sprint from "components/stories/Sprint";
@@ -31,7 +30,6 @@ const createProps = () => ({
 
 describe("<Sprint />", () => {
   beforeEach(() => {
-    jasmineEnzyme();
     props = createProps();
     wrapper = shallow(<Sprint {...props} />);
   });

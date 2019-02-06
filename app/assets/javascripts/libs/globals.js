@@ -7,3 +7,6 @@ window.md = new Markdown.Converter();
 
 window.Chart = require('chart.js');
 window.Chartkick = require('chartkick').default;
+
+window.Map = require('core-js/library/fn/map');
+window.Set = require('core-js/library/fn/set');
