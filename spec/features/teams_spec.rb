@@ -46,7 +46,7 @@ describe 'Teams', js: true do
     describe 'update team' do
       it 'should update a team and set a team logo' do
         VCR.use_cassette('cloudinary_upload_team_logo') do
-          visit edit_team_path(user.teams.last.slug)
+          visit edit_team_path(user.teams.last)
 
           attach_file('Logo', Rails.root.join('spec', 'fixtures', 'blank.jpg'))
           wait_for_ajax
@@ -138,6 +138,7 @@ describe 'Teams', js: true do
         visit teams_path
         sleep 0.5
 
+        sleep 0.5
         click_link 'Unarchive'
 
         expect(page).to have_text(I18n.t('teams.successfully_unarchived'))
@@ -147,6 +148,7 @@ describe 'Teams', js: true do
         visit teams_path
         sleep 0.5
 
+        sleep 0.5
         click_link 'Unarchive'
 
         expect(find('.teams--not-archived')).to have_text(team_name)

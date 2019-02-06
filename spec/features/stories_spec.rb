@@ -114,6 +114,7 @@ describe 'Stories' do
         click_on 'Save'
       end
 
+      wait_for_ajax
       # Estimate the story
       within(chilly_bin_column.find('.story')) do
         find('#estimate-1').click

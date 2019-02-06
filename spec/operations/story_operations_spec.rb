@@ -114,7 +114,7 @@ describe StoryOperations do
     end
 
     it 'must record the documents attributes changes' do
-      VCR.use_cassette('cloudinary_upload_activity') do
+      VCR.use_cassette('cloudinary_upload_activity', match_requests_on: [:host, :path]) do
         subject.call
       end
       expect(Activity.last.subject_changes['documents_attributes']).to eq([%w[hello2.jpg hello.jpg],

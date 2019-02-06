@@ -53,7 +53,6 @@ describe 'Projects' do
           let(:project) { create :project, users: [user], teams: [current_team] }
 
           scenario 'there is no button' do
-
             expect(page).not_to have_link('Archive')
             expect(page).not_to have_link('Unarchive')
           end
