@@ -188,6 +188,7 @@ es:
         requested_by:         'Solicitada por'
         owned_by:             'Propiedad de'
         documents:            'Archivos adjuntos'
+        release_date:         'Fecha de lanzamiento'
       user:
         name:                 'Nombre completo'
         username:             'Nombre de usuario'
