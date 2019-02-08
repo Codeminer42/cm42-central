@@ -4,9 +4,9 @@ var TabNotification = module.exports = {
     var notificationTitle = ' \u2733 ' + title;
 
     if (documentStatus) {
-      this.handleChangeTitle(notificationTitle, '/assets/notification.ico');
+      this.handleChangeTitle(notificationTitle, $('body').data('notificationIconUrl'));
     } else {
-      this.handleChangeTitle(title, '/assets/favicon.ico');
+      this.handleChangeTitle(title, $('body').data('faviconIconUrl'));
     }
   },
 
