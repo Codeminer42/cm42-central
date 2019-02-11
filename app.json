@@ -69,6 +69,12 @@
       "description": "A normal Standard 1X dyno should support up to 3 Puma instances of this App and still have some room left",
       "value": "3",
       "required": true
+    },
+    "CLOUDINARY_URL": {
+      "required": true
+    },
+    "CLOUDINARY_UPLOAD_PRESET": {
+      "required": true
     }
   },
   "formation": {
@@ -80,7 +86,6 @@
     }
   },
   "addons": [
-    "cloudinary",
     "logdna",
     "memcachier",
     "heroku-postgresql",
