@@ -35,19 +35,19 @@ describe("<Sprint />", () => {
   });
 
   it('renders a <div> with class ".Sprint"', () => {
-    expect(wrapper.find("div.Sprint")).toHaveLength(1);
+    expect(wrapper.find("div.Sprint").exists()).toBe(true);
   });
 
   it('renders a div with class ".Sprint__header"', () => {
-    expect(wrapper.find("div.Sprint__header")).toHaveLength(1);
+    expect(wrapper.find("div.Sprint__header").exists()).toBe(true);
   });
 
   it('renders a div with class ".Sprint__body"', () => {
-    expect(wrapper.find("div.Sprint__body")).toHaveLength(1);
+    expect(wrapper.find("div.Sprint__body").exists()).toBe(true);
   });
 
   it("renders a <Stories> components", () => {
-    expect(wrapper.find("Stories")).toHaveLength(1);
+    expect(wrapper.find("Stories").exists()).toBe(true);
   });
 
   describe("when no stories are passed as props", () => {
@@ -57,7 +57,7 @@ describe("<Sprint />", () => {
       wrapper = shallow(<Sprint {...props} />);
     });
     it("does not render any <Stories> component", () => {
-      expect(wrapper.find("Stories")).toHaveLength(0);
+      expect(wrapper.find("Stories").exists()).toBe(false);
     });
   });
 });

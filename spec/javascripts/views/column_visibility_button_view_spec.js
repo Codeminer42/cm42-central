@@ -40,13 +40,13 @@ describe("ColumnVisibilityButtonView", function() {
     it("sets the pressed class when the column is hidden", function() {
       this.columnView.hidden = sinon.stub().returns(true);
       this.view.setClassName();
-      expect(this.view.$el).toHaveClass('pressed');
+      expect(this.view.$el[0]).toHaveClass('pressed');
     });
 
     it("removes the pressed class when the column is visible", function() {
       this.columnView.hidden = sinon.stub().returns(false);
       this.view.setClassName();
-      expect(this.view.$el).not.toHaveClass('pressed');
+      expect(this.view.$el[0]).not.toHaveClass('pressed');
     });
 
     it("is bound to the columnView visibilityChanged event", function() {

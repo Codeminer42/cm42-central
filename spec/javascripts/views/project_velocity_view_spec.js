@@ -100,7 +100,7 @@ describe('ProjectVelocityView', function() {
 
       it("adds the fake class to $el", function() {
         this.subject.setFakeClass(this.model);
-        expect(this.subject.$el).toHaveClass('fake');
+        expect(this.subject.$el[0]).toHaveClass('fake');
       });
 
     });
@@ -113,7 +113,7 @@ describe('ProjectVelocityView', function() {
 
       it("adds the fake class to $el", function() {
         this.subject.setFakeClass(this.model);
-        expect(this.subject.$el).not.toHaveClass('fake');
+        expect(this.subject.$el[0]).not.toHaveClass('fake');
       });
 
     });

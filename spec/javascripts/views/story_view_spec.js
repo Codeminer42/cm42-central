@@ -81,26 +81,26 @@ describe('StoryView', function() {
   describe('class name', function() {
 
     it('should have the story class', function() {
-      expect($(this.view.el)).toHaveClass('story');
+      expect(this.view.$el[0]).toHaveClass('story');
     });
 
     it('should have the story type class', function() {
-      expect($(this.view.el)).toHaveClass('feature');
+      expect(this.view.$el[0]).toHaveClass('feature');
     });
 
     it('should have the unestimated class', function() {
-      expect($(this.view.el)).toHaveClass('unestimated');
+      expect(this.view.$el[0]).toHaveClass('unestimated');
 
       // Should not have the unestimated class if it's been estimated
       sinon.stub(this.view.model, "estimated").returns(true);
       this.view.model.set({estimate: 1});
-      expect($(this.view.el)).not.toHaveClass('unestimated');
+      expect(this.view.$el[0]).not.toHaveClass('unestimated');
     });
 
     it("should have the story state class", function() {
-      expect($(this.view.el)).toHaveClass('unestimated');
+      expect(this.view.$el[0]).toHaveClass('unestimated');
       this.view.model.set({state: 'accepted'});
-      expect($(this.view.el)).toHaveClass('accepted');
+      expect(this.view.$el[0]).toHaveClass('accepted');
     });
 
   });
@@ -109,7 +109,7 @@ describe('StoryView', function() {
 
     it("should have an id", function() {
       expect(this.view.id).toEqual(this.view.model.id);
-      expect($(this.view.el)).toHaveId("story-" + this.view.model.id);
+      expect(this.view.$el.attr('id')).toBe("story-" + this.view.model.id);
     });
 
   });
@@ -897,9 +897,9 @@ describe('StoryView', function() {
         this.view.canEdit = sinon.stub().returns(true);
         this.view.render();
         this.story.set({ state: 'accepted' });
-        $storyControls = this.view.$el.find('.story-controls');
+        $storyControls = this.view.$el[0];
 
-        expect($storyControls).not.toContainElement('.submit')
+        expect($storyControls).not.toContain('.submit');
       });
     });
   });

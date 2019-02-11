@@ -18,7 +18,7 @@ describe('IterationView', function() {
   });
 
   it("should have a class of iteration", function() {
-    expect($(this.view.el)).toHaveClass('iteration');
+    expect(this.view.$el[0]).toHaveClass('iteration');
   });
 
   describe("render", function() {

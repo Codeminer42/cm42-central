@@ -61,7 +61,7 @@ describe("<Sprints />", () => {
   });
 
   it("renders one <Sprint> components", () => {
-    expect(wrapper.find("Sprint")).toHaveLength(1);
+    expect(wrapper.find("Sprint").exists()).toBe(true);
   });
 
   describe("when no sprints are passed as props", () => {
@@ -72,7 +72,7 @@ describe("<Sprints />", () => {
     });
 
     it("does not render any <Sprint> component", () => {
-      expect(wrapper.find("Sprint")).toHaveLength(0);
+      expect(wrapper.find("Sprint").exists()).toBe(false);
     });
   });
 });

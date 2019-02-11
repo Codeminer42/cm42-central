@@ -14,7 +14,7 @@ describe('NoteView', function() {
   });
 
   it("has the note class", function() {
-    expect($(this.view.el)).toHaveClass('note');
+    expect(this.view.$el[0]).toHaveClass('note');
   });
 
   describe("deleteNote", function() {

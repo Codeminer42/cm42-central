@@ -112,8 +112,8 @@ describe('<ProjectCard />', () => {
             expect(wrapper.find('.card-tag')).toHaveText(defaultProps.project.get("tag_name"));
           });
           it('has the background and foreground defined', () => {
-            const card_style = wrapper.find('.card-tag').getDOMNode();
-            expect(card_style).toHaveCss({ 'background-color': "rgb(32, 117, 243)", 'color': "rgb(255, 255, 255)" });
+            const card_tag = wrapper.find('.card-tag');
+            expect(card_tag).toHaveStyle({ backgroundColor: '#2075F3', color: '#FFFFFF' });
           });
         });
         it('does not have the tag', () => {
