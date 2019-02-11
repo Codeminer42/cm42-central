@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Added
+- [ V2 ] Story:
+  - Attachments:
+    - With this change makes it necessary to set unsigned upload in cloudinary and set the ENV `CLOUDINARY_UPLOAD_PRESET`. For help you can see [this](https://cloudinary.com/documentation/upload_images#unsigned_upload) tutorial.
+
 ## [2.0.1] 2019-01-31
 
 ### Fix

@@ -62,6 +62,7 @@
     "react-color": "^2.11",
     "react-datepicker": "^0.46.0",
     "react-dom": "^15.4.2",
+    "react-dropzone": "^8.0.3",
     "react-redux": "^5.0.6",
     "react-tag-autocomplete": "^5.8.0",
     "redux": "^3.7.2",
@@ -85,6 +86,7 @@
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "babel-plugin-istanbul": "^3.1.2",
+    "core-js": "^2.6.3",
     "coveralls": "^2.11.14",
     "enzyme": "^2.7.1",
     "es6-promise": "^4.2.5",

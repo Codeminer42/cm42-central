@@ -26,10 +26,13 @@ export const editStory = (id, newAttributes) => ({
   newAttributes
 });
 
-export const updateStory = (story, projectId) =>
+export const updateStory = (storyId, projectId, options) =>
   (dispatch, getState, { Story }) => {
+    const { stories } = getState();
+    const story = stories.find((story) => story.id === storyId);
+
     if (story._editing._isDirty) {
-      return Story.update(story._editing, projectId)
+      return Story.update(story._editing, projectId, options)
         .then((story) => {
           dispatch(updateStorySuccess(story));
         });
