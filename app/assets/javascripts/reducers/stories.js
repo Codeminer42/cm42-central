@@ -1,9 +1,10 @@
 import actionTypes from 'actions/actionTypes';
 import { toggleStory, editStory, updateStory } from 'models/beta/story'
 import * as Note from 'models/beta/note';
-import { updateIfSameId } from '../services/updateIfSameId';
 import * as Task from 'models/beta/task';
 import * as Label from 'models/beta/label';
+import * as Attachment from 'models/beta/attachment';
+import { updateIfSameId } from '../services/updateIfSameId';
 
 const initialState = [];
 
@@ -90,6 +91,16 @@ const storiesReducer = (state = initialState, action) => {
           }
         }))
       );
+    case actionTypes.ADD_ATTACHMENT:
+      return state.map(
+        updateIfSameId(action.storyId, (story) => {
+          return Attachment.addAttachment(story, action.attachment)
+        }));
+    case actionTypes.DELETE_ATTACHMENT:
+      return state.map(
+        updateIfSameId(action.storyId, (story) => {
+          return Attachment.removeAttachment(story, action.attachmentId)
+        }));
     default:
       return state;
   };

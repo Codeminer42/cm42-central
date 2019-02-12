@@ -20,5 +20,7 @@ export default keyMirror({
   DELETE_NOTE: null,
   ADD_LABEL_TO_PROJECT: null,
   ADD_LABEL: null,
-  DELETE_LABEL: null
+  DELETE_LABEL: null,
+  ADD_ATTACHMENT: null,
+  DELETE_ATTACHMENT: null
 });
