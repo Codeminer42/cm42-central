@@ -2,9 +2,14 @@
 .Column {
   background-color: $darkgrey-11;
   flex: 1;
-  height: 100%;
+  height: auto;
+  min-height: 100vh;
   margin-left: 1px;
   margin-right: 1px;
+
+  &__body {
+    padding-bottom: 80px;
+  }
 
   &__header {
     display: flex;
