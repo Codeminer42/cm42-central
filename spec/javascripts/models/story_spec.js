@@ -1,5 +1,5 @@
-var Story = require('models/story');
-var User = require('models/user');
+import Story from 'models/story';
+import User from 'models/user';
 
 describe('Story', function() {
 

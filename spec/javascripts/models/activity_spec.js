@@ -1,4 +1,4 @@
-var Activity = require('models/activity');
+import Activity from 'models/activity';
 
 describe("Activity", function() {
 

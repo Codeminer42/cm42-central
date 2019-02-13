@@ -33,7 +33,7 @@ describe('<Attachment/>', () => {
 
     it('changes link from .pdf to .png to create a thumbnail', () => {
       attachment.link = 'document.pdf';
-      expectedLink = 'document.png'
+      const expectedLink = 'document.png'
 
       const wrapper = shallow(
         <Attachment

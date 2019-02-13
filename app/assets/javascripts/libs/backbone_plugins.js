@@ -1,4 +1,4 @@
-require('vendor/backbone.rails');
+import 'vendor/backbone.rails';
 
 Backbone.View = (function(View) {
   return View.extend({

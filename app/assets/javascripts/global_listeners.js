@@ -1,5 +1,5 @@
-var executeAttachinary = require('libs/execute_attachinary');
-var KeycutView = require('views/keycut_view');
+import ExecuteAttachinary from './libs/execute_attachinary';
+import KeycutView from './views/keycut_view';
 
 var $navbar = $(".navbar");
 var $navbarToggle = $('.toggle-navbar.more');
@@ -124,7 +124,7 @@ $(function() {
     }
   }
 
-  executeAttachinary();
+  ExecuteAttachinary();
 });
 
 function showNavbar() {

@@ -1,4 +1,4 @@
-const User = module.exports = Backbone.Model.extend({
+const User = Backbone.Model.extend({
   defaults: {},
 
   name: 'user',
@@ -23,3 +23,5 @@ const User = module.exports = Backbone.Model.extend({
       });
   }
 });
+
+export default User;

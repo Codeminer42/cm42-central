@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default SelectUser = ({ selectedUserId, onEdit, users }) => (
+const SelectUser = ({ selectedUserId, onEdit, users }) => (
   <select
     value={selectedUserId || ''}
     className="form-control input-sm"
@@ -34,3 +34,5 @@ SelectUser.propTypes = {
     name: PropTypes.string.isRequired
   }))
 };
+
+export default SelectUser;

@@ -1,4 +1,4 @@
-var TabNotification = require('mixins/tab_notification');
+import TabNotification from 'mixins/tab_notification';
 
 describe('Project Notification', function() {
   var tabNotification = TabNotification;

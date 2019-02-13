@@ -1,4 +1,4 @@
-var NoteView = require('views/note_view');
+import NoteView from 'views/note_view';
 
 describe('NoteView', function() {
 

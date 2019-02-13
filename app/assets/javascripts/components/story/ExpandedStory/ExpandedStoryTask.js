@@ -76,4 +76,4 @@ ExpandedStoryTask.propTypes = {
   onSave: PropTypes.func.isRequired
 };
 
-export default ExpandedStoryTask
+export default ExpandedStoryTask;

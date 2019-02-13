@@ -1,5 +1,5 @@
-var ColumnVisibilityButtonView = require('views/column_visibility_button_view');
-var ColumnView = require('views/column_view');
+import ColumnVisibilityButtonView from 'views/column_visibility_button_view';
+import ColumnView from 'views/column_view';
 
 describe("ColumnVisibilityButtonView", function() {
 

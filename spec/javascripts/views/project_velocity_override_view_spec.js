@@ -1,4 +1,4 @@
-var ProjectVelocityOverrideView = require('views/project_velocity_override_view');
+import ProjectVelocityOverrideView from 'views/project_velocity_override_view';
 
 describe('ProjectVelocityOverrideView', function() {
 

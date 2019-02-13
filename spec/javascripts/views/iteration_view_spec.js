@@ -1,4 +1,4 @@
-var IterationView = require('views/iteration_view');
+import IterationView from 'views/iteration_view';
 
 describe('IterationView', function() {
 

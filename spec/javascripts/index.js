@@ -1,7 +1,7 @@
-require('libs');
-require('./polyfills/objectAssign');
-require('./extra/jasmine-sinon');
-require('es6-promise/auto');
+import 'libs';
+import './polyfills/objectAssign';
+import './extra/jasmine-sinon';
+import 'es6-promise/auto';
 import 'raf/polyfill';
 import 'core-js';
 import './enzyme';
@@ -11,4 +11,4 @@ var context = require.context('.', true, /.+_spec\.js$/);
 
 context.keys().forEach(context);
 
-module.exports = context;
+export default context;

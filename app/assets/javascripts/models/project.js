@@ -1,11 +1,10 @@
-var Cookies = require('js-cookie');
+import Cookies from 'js-cookie';
+import StoryCollection from '../collections/story_collection';
+import UserCollection from '../collections/user_collection';
+import Iteration from '../models/iteration';
+import ProjectBoard from '../models/projectBoard';
 
-var StoryCollection = require('collections/story_collection');
-var UserCollection = require('collections/user_collection');
-var Iteration = require('models/iteration');
-var ProjectBoard = require('models/projectBoard');
-
-module.exports = Backbone.Model.extend({
+const Project = Backbone.Model.extend({
   defaults: {
     default_velocity: 10
   },
@@ -352,3 +351,5 @@ module.exports = Backbone.Model.extend({
 },{
   filters: ['not_archived', 'archived', 'all_projects'],
 });
+
+export default Project;

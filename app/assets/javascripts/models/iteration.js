@@ -1,4 +1,4 @@
-module.exports = Backbone.Model.extend({
+const Iteration = Backbone.Model.extend({
   defaults: {
     name: 'iteration',
     number: 0,
@@ -132,3 +132,5 @@ module.exports = Backbone.Model.extend({
   }
 
 });
+
+export default Iteration;

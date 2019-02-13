@@ -1,4 +1,4 @@
-var FormView = require('views/form_view');
+import FormView from 'views/form_view';
 
 describe('FormView', function() {
 

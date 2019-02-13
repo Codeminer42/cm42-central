@@ -1,4 +1,4 @@
-var Story = require('models/story');
+import Story from '../models/story';
 
 class PastIteration {
   constructor({ startDate, endDate, points, iterationNumber, project }) {
@@ -49,4 +49,5 @@ class PastIteration {
     return this[attr];
   }
 }
-module.exports = PastIteration;
+
+export default PastIteration;

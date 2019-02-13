@@ -1,7 +1,6 @@
-var Cookies = require('js-cookie');
-
-var Project = require('models/project');
-var ProjectBoard = require('models/projectBoard');
+import Cookies from 'js-cookie';
+import Project from 'models/project';
+import ProjectBoard from 'models/projectBoard';
 
 describe('ProjectBoard model', function() {
 

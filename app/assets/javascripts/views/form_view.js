@@ -1,4 +1,4 @@
-module.exports = Backbone.View.extend({
+const FormView = Backbone.View.extend({
   tagName: 'form',
 
   label: function(elem_id, value) {
@@ -95,3 +95,5 @@ module.exports = Backbone.View.extend({
     return jQuery.extend(defaults, opts);
   }
 });
+
+export default FormView;

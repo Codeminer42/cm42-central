@@ -1,6 +1,6 @@
-var Activity = require('models/activity');
+import Activity from '../models/activity';
 
-module.exports = Backbone.Collection.extend({
+const ActivityCollection = Backbone.Collection.extend({
   model: Activity,
 
   comparator: function(activity) {
@@ -11,3 +11,5 @@ module.exports = Backbone.Collection.extend({
     return this.story.url() + '/activities';
   }
 });
+
+export default ActivityCollection;

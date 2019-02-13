@@ -1,10 +1,10 @@
 import 'raf/polyfill';
 import 'libs';
+import 'core-js/shim';
 import ProjectsIndexController from 'controllers/projects/IndexController';
 import ProjectsEditController from 'controllers/projects/EditController';
 import TagGroupsController from 'controllers/tag_groups/TagGroupsController';
-
-import { start as ProjectsShowController } from 'central';
+import ProjectsShowController from 'central';
 import BetaShowProjectBoardController from 'controllers/beta/project_boards/ShowController';
 
 const routes = {

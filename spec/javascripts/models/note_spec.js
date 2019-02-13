@@ -1,4 +1,4 @@
-var Note = require('models/note');
+import Note from 'models/note';
 
 describe("Note", function() {
 

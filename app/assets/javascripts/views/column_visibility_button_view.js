@@ -1,4 +1,4 @@
-module.exports = Backbone.View.extend({
+const ColumnsVisibilityButtonView = Backbone.View.extend({
 
   events: {
     'click': 'toggle'
@@ -53,3 +53,5 @@ module.exports = Backbone.View.extend({
     }
   }
 });
+
+export default ColumnsVisibilityButtonView;

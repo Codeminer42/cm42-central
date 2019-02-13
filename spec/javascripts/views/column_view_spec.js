@@ -1,4 +1,4 @@
-var ColumnView = require('views/column_view');
+import ColumnView from 'views/column_view';
 
 describe("ColumnView", function() {
 

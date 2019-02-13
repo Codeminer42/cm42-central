@@ -1,12 +1,22 @@
-window.$ = window.jQuery = require('jquery');
-window.I18n = require('i18n-js');
-window._ = require('underscore');
+import jQUery from 'jquery';
+import I18nJs from 'i18n-js';
+import Underscore from 'underscore';
+import Markdown from 'vendor/Markdown.Converter';
+import Chart from 'chart.js'
+import Charkick from 'chartkick';
+import CoreJsMap from 'core-js/library/fn/map';
+import CoreJsSet from 'core-js/library/fn/set';
 
-var Markdown = require('vendor/Markdown.Converter');
+window.$ = window.jQuery = jQUery;
+
+window.I18n = I18nJs;
+
+window._ = Underscore;
+
 window.md = new Markdown.Converter();
 
-window.Chart = require('chart.js');
-window.Chartkick = require('chartkick').default;
+window.Chart = Chart;
+window.Chartkick = Charkick;
 
-window.Map = require('core-js/library/fn/map');
-window.Set = require('core-js/library/fn/set');
+window.Map = CoreJsMap;
+window.Set = CoreJsSet;

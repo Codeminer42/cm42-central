@@ -1,4 +1,4 @@
-var Task = require('models/task');
+import Task from 'models/task';
 
 describe("Task", function() {
 

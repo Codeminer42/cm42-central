@@ -1,6 +1,9 @@
-module.exports = Backbone.View.extend({
-  template: require('../templates/column.ejs'),
-  activityTemplate: require('../templates/activity.ejs'),
+import columnTemplate from '../templates/column.ejs';
+import activityTemplate from '../templates/activity.ejs';
+
+const HistoryView = Backbone.View.extend({
+  template: columnTemplate,
+  activityTemplate: activityTemplate,
 
   initialize: function() {
     _.bindAll(this, 'addActivities', 'connectionError');
@@ -90,3 +93,5 @@ module.exports = Backbone.View.extend({
       : str;
   }
 });
+
+export default HistoryView;

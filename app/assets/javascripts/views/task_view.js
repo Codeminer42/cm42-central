@@ -1,8 +1,8 @@
-var FormView = require('./form_view');
+import FormView from './form_view';
+import taskTemplate from 'templates/task.ejs';
 
-module.exports = FormView.extend({
-
-  template: require('templates/task.ejs'),
+const TaskView = FormView.extend({
+  template: taskTemplate,
 
   tagName: 'div',
 
@@ -36,3 +36,5 @@ module.exports = FormView.extend({
   }
 
 });
+
+export default TaskView;

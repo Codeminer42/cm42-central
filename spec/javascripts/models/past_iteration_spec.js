@@ -1,7 +1,6 @@
-var Cookies = require('js-cookie');
-
-var Project = require('models/project');
-var PastIteration = require('models/pastIteration');
+import Cookies from 'js-cookie';
+import Project from 'models/project';
+import PastIteration from 'models/pastIteration';
 
 describe('PastIteration model', function() {
 

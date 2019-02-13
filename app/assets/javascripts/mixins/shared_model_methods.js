@@ -1,5 +1,4 @@
-module.exports = {
-
+const SharedModelMethods = {
   // Returns the translated name of an attribute
   humanAttributeName: function(attribute) {
     attribute = attribute.replace(/_id$/, '');
@@ -25,3 +24,5 @@ module.exports = {
     return (!_.isUndefined(this.get('errors')[field]));
   }
 };
+
+export default SharedModelMethods;

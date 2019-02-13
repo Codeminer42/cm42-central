@@ -1,6 +1,7 @@
-var ProjectVelocityOverrideView = require('./project_velocity_override_view');
+import ProjectVelocityOverrideView from './project_velocity_override_view';
+import projectVelocityTemplate from 'templates/project_velocity.ejs';
 
-module.exports = Backbone.View.extend({
+const ProjectVelocityView = Backbone.View.extend({
 
   className: 'velocity',
 
@@ -15,7 +16,7 @@ module.exports = Backbone.View.extend({
     "click #velocity_value": "editVelocityOverride"
   },
 
-  template: require('templates/project_velocity.ejs'),
+  template: projectVelocityTemplate,
 
   render: function() {
     this.$el.html(this.template({project: this.model}));
@@ -35,3 +36,5 @@ module.exports = Backbone.View.extend({
     }
   }
 });
+
+export default ProjectVelocityView;

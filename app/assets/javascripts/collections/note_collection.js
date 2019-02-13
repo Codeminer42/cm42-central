@@ -1,6 +1,6 @@
-var Note = require('models/note');
+import Note from '../models/note';
 
-module.exports = Backbone.Collection.extend({
+const NoteCollection = Backbone.Collection.extend({
   model: Note,
 
   url: function() {
@@ -13,3 +13,5 @@ module.exports = Backbone.Collection.extend({
     });
   }
 });
+
+export default NoteCollection;

@@ -1,5 +1,5 @@
-var StoryCollection = require('collections/story_collection');
-var PastIteration = require('models/pastIteration')
+import StoryCollection from '../collections/story_collection';
+import PastIteration from '../models/pastIteration';
 
 class ProjectBoard {
   constructor({ project }) {
@@ -24,4 +24,5 @@ class ProjectBoard {
       });
   }
 }
-module.exports = ProjectBoard;
+
+export default ProjectBoard;

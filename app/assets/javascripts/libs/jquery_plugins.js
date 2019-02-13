@@ -1,7 +1,7 @@
-require('jquery-ui-dist/jquery-ui');
-require('jquery-ujs');
-require('gritter');
-require('jquery.scrollto');
-require('vendor/tag-it');
-require('jquery.caret');
-require('vendor/at.js');
+import 'jquery-ui-dist/jquery-ui';
+import 'jquery-ujs';
+import 'gritter';
+import 'jquery.scrollto';
+import 'vendor/tag-it';
+import 'jquery.caret';
+import 'vendor/at.js';

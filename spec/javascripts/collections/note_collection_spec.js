@@ -1,4 +1,4 @@
-var NoteCollection = require('collections/note_collection');
+import NoteCollection from 'collections/note_collection';
 
 describe('NoteCollection', function() {
 
