@@ -11,7 +11,8 @@ class ExpandedStoryLabels extends React.Component {
   }
 
   handleDelete(index) {
-    const { labels, onRemoveLabel } = this.props;
+    const { story, onRemoveLabel } = this.props;
+    const { labels } = story._editing;
 
     const label = labels.find(
       (label, labelIndex) => labelIndex === index
@@ -27,7 +28,8 @@ class ExpandedStoryLabels extends React.Component {
   }
 
   render() {
-    const { projectLabels, labels } = this.props;
+    const { projectLabels, story } = this.props;
+    const { labels } = story._editing;
 
     return (
       <div className="Story__section">
@@ -53,7 +55,7 @@ class ExpandedStoryLabels extends React.Component {
 };
 
 ExpandedStoryLabels.propTypes = {
-  labels: PropTypes.arrayOf(PropTypes.object).isRequired,
+  story: PropTypes.object.isRequired,
   onAddLabel: PropTypes.func.isRequired,
   onRemoveLabel: PropTypes.func.isRequired,
   projectLabels: PropTypes.arrayOf(PropTypes.object).isRequired

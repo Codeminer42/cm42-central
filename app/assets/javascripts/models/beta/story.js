@@ -79,6 +79,15 @@ export const update = (story, projectId, options) => {
     .then(({ story }) => deserialize(story, options));
 };
 
+export const post = (story, projectId) => {
+  const newStory = changeCase.snakeKeys(serialize(story), { recursive: true, arrayRecursive: true });
+
+  return httpService
+    .post(`/projects/${projectId}/stories`, { story: newStory })
+    .then(({ data }) => changeCase.camelKeys(data, { recursive: true, arrayRecursive: true }))
+    .then(({ story }) => deserialize(story));
+};
+
 export const deleteStory = (storyId, projectId) => {
   return httpService
     .delete(`/projects/${projectId}/stories/${storyId}`)
@@ -141,6 +150,7 @@ export const deserialize = (story, options) => {
     labels: Label.splitLabels(story.labels),
     estimate: story.estimate || '',
     documents: story.documents.map(document => document.file),
+    isNew: false,
     collapsed
   };
 };
@@ -159,3 +169,38 @@ export const serialize = (story) => ({
   ...story,
   labels: Label.joinLabels(story.labels)
 });
+
+export const newStory = () => ({
+  ...emptyStory,
+  isNew: true,
+  collapsed: false,
+  _editing: {
+    ...emptyStory
+  }
+});
+
+const emptyStory = {
+  id: null,
+  title: '',
+  description: null,
+  estimate: '',
+  storyType: 'feature',
+  state: 'unscheduled',
+  acceptedAt: null,
+  requestedById: null,
+  ownedById: null,
+  projectId: null,
+  createdAt: '',
+  updatedAt: '',
+  position: '',
+  labels: [],
+  requestedByName: '',
+  ownedByName: null,
+  ownedByInitials: null,
+  releaseDate: null,
+  deliveredAt: null,
+  errors: {},
+  notes: [],
+  documents: [],
+  tasks: [],
+};

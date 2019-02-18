@@ -8,6 +8,8 @@ export default keyMirror({
   RECEIVE_USERS: null,
   RECEIVE_STORIES: null,
   RECEIVE_PAST_ITERATIONS: null,
+  OPEN_NEW_STORY: null,
+  CREATE_NEW_STORY: null,
   TOGGLE_STORY: null,
   EDIT_STORY: null,
   UPDATE_STORY: null,

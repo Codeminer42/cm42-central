@@ -53,8 +53,11 @@ export const ExpandedStory = ({
         onDelete={() => deleteStory(story.id, project.id)}
         readOnly={Story.isAccepted(story)}
       />
-      <ExpandedStoryHistoryLocation story={story} />
-
+      {
+        !story.isNew ?
+          <ExpandedStoryHistoryLocation story={story} />
+          : null
+      }
       <ExpandedStoryTitle
         story={story}
         onEdit={(newTitle) => editStory(story.id, { title: newTitle })}
@@ -89,7 +92,7 @@ export const ExpandedStory = ({
 
       <ExpandedStoryLabels
         onAddLabel={(label) => addLabel(story.id, label)}
-        labels={story._editing.labels}
+        story={story}
         projectLabels={project.labels}
         onRemoveLabel={(labelName) => removeLabel(story.id, labelName)}
         onEdit={(value) => editStory(story.id, { labels: value })}
@@ -100,28 +103,34 @@ export const ExpandedStory = ({
         onEdit={(newAttributes) => editStory(story.id, newAttributes)}
       />
 
-      <ExpandedStoryAttachments
-        story={story}
-        onFailure={(error) => storyFailure(story.id, error)}
-        startLoading={() => setLoadingStory(story.id)}
-        onAdd={(attachment) => addAttachment(story.id, project.id, attachment)}
-        onDelete={(documentId) => removeAttachment(story.id, documentId)}
-      />
+      {
+        !story.isNew ?
+          <div>
+            <ExpandedStoryAttachments
+              story={story}
+              onFailure={(error) => storyFailure(story.id, error)}
+              startLoading={() => setLoadingStory(story.id)}
+              onAdd={(attachment) => addAttachment(story.id, project.id, attachment)}
+              onDelete={(documentId) => removeAttachment(story.id, documentId)}
+            />
 
-      <ExpandedStoryNotes
-        story={story}
-        projectId={project.id}
-        onDelete={(noteId) => deleteNote(project.id, story.id, noteId)}
-        onCreate={(note) => createNote(project.id, story.id, { note })}
-      />
+            <ExpandedStoryNotes
+              story={story}
+              projectId={project.id}
+              onDelete={(noteId) => deleteNote(project.id, story.id, noteId)}
+              onCreate={(note) => createNote(project.id, story.id, { note })}
+            />
 
-      <ExpandedStoryTask
-        story={story}
-        onToggle={(task, status) => toggleTask(project.id, story, task, status)}
-        onDelete={(taskId) => deleteTask(project.id, story.id, taskId)}
-        onSave={(task) => createTask(project.id, story.id, task)}
-      />
-    </div>
+            <ExpandedStoryTask
+              story={story}
+              onToggle={(task, status) => toggleTask(project.id, story, task, status)}
+              onDelete={(taskId) => deleteTask(project.id, story.id, taskId)}
+              onSave={(task) => createTask(project.id, story.id, task)}
+            />
+          </div>
+          : null
+      }
+    </div >
   );
 };
 
