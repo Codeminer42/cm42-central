@@ -1,11 +1,11 @@
 import actionTypes from './actionTypes';
 
-export const openNewStory = () => ({
-  type: actionTypes.OPEN_NEW_STORY
+export const createStory = () => ({
+  type: actionTypes.CREATE_STORY
 });
 
-export const createNewStory = (story) => ({
-  type: actionTypes.CREATE_NEW_STORY,
+export const addStory = (story) => ({
+  type: actionTypes.ADD_STORY,
   story
 });
 
@@ -19,7 +19,7 @@ export const toggleStory = (id) => ({
   id
 });
 
-export const updateStorySuccess = (story) => ({
+export const updateStorySucess = (story) => ({
   type: actionTypes.UPDATE_STORY_SUCCESS,
   story
 });
@@ -46,7 +46,7 @@ export const setLoadingStory = (id) => ({
   id
 });
 
-export const updateStory = (storyId, projectId, options) =>
+export const saveStory = (storyId, projectId, options) =>
   (dispatch, getState, { Story }) => {
     const { stories } = getState();
     const story = stories.find((story) => story.id === storyId);
@@ -54,7 +54,7 @@ export const updateStory = (storyId, projectId, options) =>
     if (story.isNew) {
       return Story.post(story._editing, projectId)
         .then((story) =>
-          dispatch(createNewStory(story))
+          dispatch(addStory(story))
         );
     };
 

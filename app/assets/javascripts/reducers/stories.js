@@ -1,8 +1,8 @@
 import actionTypes from 'actions/actionTypes';
 import {
-  toggleStory, editStory, updateStory,
-  newStory, setLoadingStory, storyFailure
-} from 'models/beta/story'
+  toggleStory, editStory, updateStory, newStory,
+   setLoadingStory, storyFailure, removeEmptyStory
+} from 'models/beta/story';
 import * as Note from 'models/beta/note';
 import * as Task from 'models/beta/task';
 import * as Label from 'models/beta/label';
@@ -15,12 +15,12 @@ const storiesReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.RECEIVE_STORIES:
       return action.data;
-    case actionTypes.OPEN_NEW_STORY:
+    case actionTypes.CREATE_STORY:
       return [
         newStory(),
         ...state,
       ];
-    case actionTypes.CREATE_NEW_STORY:
+    case actionTypes.ADD_STORY:
       const stories = state.filter(story => story.id !== null);
       return [
         action.story,

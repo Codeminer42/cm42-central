@@ -1,7 +1,7 @@
 import * as Story from 'actions/story';
 import storyFactory from '../support/factories/storyFactory';
 
-describe('updateStory', () => {
+describe('saveStory', () => {
   const story = storyFactory();
   const projectId = 42;
 
@@ -23,7 +23,7 @@ describe('updateStory', () => {
     const fakeGetState = sinon.stub();
     fakeGetState.returns({ stories: [editedStory] });
 
-    Story.updateStory(editedStory.id, projectId)(fakeDispatch, fakeGetState, { Story: FakeStory }).then(() => {
+    Story.saveStory(editedStory.id, projectId)(fakeDispatch, fakeGetState, { Story: FakeStory }).then(() => {
       expect(FakeStory.update).toHaveBeenCalledWith(editedStory._editing, projectId);
 
       done();
@@ -48,15 +48,15 @@ describe('updateStory', () => {
     const fakeGetState = sinon.stub();
     fakeGetState.returns({ stories: [editedStory] });
 
-    Story.updateStory(editedStory.id, projectId)(fakeDispatch, fakeGetState, { Story: FakeStory }).then(() => {
+    Story.saveStory(editedStory.id, projectId)(fakeDispatch, fakeGetState, { Story: FakeStory }).then(() => {
       expect(fakeDispatch).toHaveBeenCalledWith(Story.toggleStory(editedStory.id));
-      expect(fakeDispatch).not.toHaveBeenCalledWith(Story.updateStorySuccess(story));
+      expect(fakeDispatch).not.toHaveBeenCalledWith(Story.saveStorySuccess(story));
 
       done();
     });
   });
 
-  it('dispatch updateStorySuccess when _isDirty', (done) => {
+  it('dispatch saveStorySuccess when _isDirty', (done) => {
     const editedStory = {
       ...story,
       _editing: {
@@ -74,8 +74,8 @@ describe('updateStory', () => {
     const fakeGetState = sinon.stub();
     fakeGetState.returns({ stories: [editedStory] });
 
-    Story.updateStory(editedStory.id, projectId)(fakeDispatch, fakeGetState, { Story: FakeStory }).then(() => {
-      expect(fakeDispatch).toHaveBeenCalledWith(Story.updateStorySuccess(story));
+    Story.saveStory(editedStory.id, projectId)(fakeDispatch, fakeGetState, { Story: FakeStory }).then(() => {
+      expect(fakeDispatch).toHaveBeenCalledWith(Story.saveStorySuccess(story));
 
       done();
     });

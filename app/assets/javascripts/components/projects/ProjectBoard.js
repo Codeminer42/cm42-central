@@ -6,6 +6,7 @@ import Stories from "../stories/Stories";
 import Sprints from "../stories/Sprints";
 import { getColumns } from "../../selectors/columns";
 import * as Columns from '../../models/beta/column';
+import { createStory } from '../../actions/story';
 
 class ProjectBoard extends React.Component {
   componentWillMount() {
@@ -19,6 +20,7 @@ class ProjectBoard extends React.Component {
 
     return (
       <div className="ProjectBoard">
+        <button onClick={this.props.createStory}>X</button>
         <Column title={I18n.t("projects.show.chilly_bin")}>
           <Stories stories={this.props.chillyBinStories} />
         </Column>
@@ -68,7 +70,8 @@ const mapStateToProps = ({
 });
 
 const mapDispatchToProps = {
-  fetchProjectBoard
+  fetchProjectBoard,
+  createStory
 };
 
 export default connect(

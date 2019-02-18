@@ -13,7 +13,7 @@ import ExpandedStoryAttachments from './ExpandedStoryAttachments';
 import ExpandedStoryTask from './ExpandedStoryTask';
 import ExpandedStoryRequestedBy from './ExpandedStoryRequestedBy';
 import ExpandedStoryOwnedBy from './ExpandedStoryOwnedBy';
-import { editStory, updateStory, deleteStory, setLoadingStory, storyFailure } from '../../../actions/story';
+import { editStory, saveStory, deleteStory, setLoadingStory, storyFailure } from '../../../actions/story';
 import { createTask, deleteTask, toggleTask } from '../../../actions/task';
 import { deleteNote, createNote } from '../../../actions/note';
 import { addLabel, removeLabel } from '../../../actions/labels';
@@ -25,7 +25,7 @@ export const ExpandedStory = ({
   story,
   onToggle,
   editStory,
-  updateStory,
+  saveStory,
   storyFailure,
   deleteStory,
   project,
@@ -49,7 +49,7 @@ export const ExpandedStory = ({
       <ExpandedStoryControls
         onCancel={onToggle}
         isDirty={story._editing._isDirty}
-        onSave={() => updateStory(story, project.id)}
+        onSave={() => saveStory(story.id, project.id)}
         onDelete={() => deleteStory(story.id, project.id)}
         readOnly={Story.isAccepted(story)}
       />
@@ -144,7 +144,7 @@ export default connect(
   mapStateToProps,
   {
     editStory,
-    updateStory,
+    saveStory,
     storyFailure,
     createTask,
     deleteTask,
