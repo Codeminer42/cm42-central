@@ -150,7 +150,6 @@ export const deserialize = (story, options) => {
     labels: Label.splitLabels(story.labels),
     estimate: story.estimate || '',
     documents: story.documents.map(document => document.file),
-    isNew: false,
     collapsed
   };
 };
@@ -172,12 +171,23 @@ export const serialize = (story) => ({
 
 export const newStory = () => ({
   ...emptyStory,
-  isNew: true,
   collapsed: false,
   _editing: {
     ...emptyStory
   }
 });
+
+export const isNew = (story) =>
+  story.id === null;
+
+export const canSave = (story) =>
+  !isAccepted(story) && story._editing.title !== "";
+
+export const canDelete = (story) =>
+  !isAccepted(story) && !isNew(story);
+
+export const removeEmptyStory = (stories) =>
+  stories.filter(story => story.id !== null);
 
 const emptyStory = {
   id: null,

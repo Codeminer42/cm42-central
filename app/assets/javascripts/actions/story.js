@@ -51,7 +51,7 @@ export const saveStory = (storyId, projectId, options) =>
     const { stories } = getState();
     const story = stories.find((story) => story.id === storyId);
 
-    if (story.isNew) {
+    if (Story.isNew(story)) {
       return Story.post(story._editing, projectId)
         .then((story) =>
           dispatch(addStory(story))

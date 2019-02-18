@@ -51,10 +51,11 @@ export const ExpandedStory = ({
         isDirty={story._editing._isDirty}
         onSave={() => saveStory(story.id, project.id)}
         onDelete={() => deleteStory(story.id, project.id)}
-        readOnly={Story.isAccepted(story)}
+        canSave={Story.canSave(story)}
+        canDelete={Story.canDelete(story)}
       />
       {
-        !story.isNew ?
+        !Story.isNew(story) ?
           <ExpandedStoryHistoryLocation story={story} />
           : null
       }
@@ -104,7 +105,7 @@ export const ExpandedStory = ({
       />
 
       {
-        !story.isNew ?
+        !Story.isNew(story) ?
           <div>
             <ExpandedStoryAttachments
               story={story}

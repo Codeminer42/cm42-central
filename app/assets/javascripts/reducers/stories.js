@@ -21,14 +21,15 @@ const storiesReducer = (state = initialState, action) => {
         ...state,
       ];
     case actionTypes.ADD_STORY:
-      const stories = state.filter(story => story.id !== null);
+      const stories = removeEmptyStory(state);
+
       return [
         action.story,
         ...stories
       ];
     case actionTypes.TOGGLE_STORY:
       if (action.id === null) {
-        return state.filter(story => story.id !== null);
+        return removeEmptyStory(state);
       }
 
       return state.map(

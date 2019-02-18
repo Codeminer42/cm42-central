@@ -15,7 +15,8 @@ describe('saveStory', () => {
     };
 
     const FakeStory = {
-      update: sinon.stub().resolves(story)
+      update: sinon.stub().resolves(story),
+      isNew: sinon.stub().returns(false)
     };
 
     const fakeDispatch = sinon.stub().resolves({});
@@ -40,7 +41,8 @@ describe('saveStory', () => {
     };
 
     const FakeStory = {
-      update: sinon.stub().resolves(story)
+      update: sinon.stub().resolves(story),
+      isNew: sinon.stub().returns(false)
     };
 
     const fakeDispatch = sinon.stub().resolves({});
@@ -66,7 +68,8 @@ describe('saveStory', () => {
     };
 
     const FakeStory = {
-      update: sinon.stub().resolves(story)
+      update: sinon.stub().resolves(story),
+      isNew: sinon.stub().returns(false)
     };
 
     const fakeDispatch = sinon.stub().resolves({});

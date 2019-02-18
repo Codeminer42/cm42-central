@@ -19,7 +19,7 @@ describe('<ExpandedStoryControls />', () => {
 
       const wrapper = shallow(
         <ExpandedStoryControls
-          readOnly={false}
+          canSave={true}
           onSave={onSave}
         />
       );
@@ -44,7 +44,7 @@ describe('<ExpandedStoryControls />', () => {
 
       const wrapper = shallow(
         <ExpandedStoryControls
-          readOnly={false}
+          canDelete={true}
           onDelete={onDelete}
         />
       );
@@ -69,7 +69,8 @@ describe('<ExpandedStoryControls />', () => {
 
       const wrapper = shallow(
         <ExpandedStoryControls
-          readOnly={false}
+          canDelete={true}
+          canSave={true}
           onCancel={handleCancel}
         />
       );
@@ -117,14 +118,66 @@ describe('<ExpandedStoryControls />', () => {
     });
   });
 
-  describe('readOnly', () => {
+  describe('canDelete', () => {
+    describe("when it's false", () => {
+      let wrapper;
+
+      beforeEach(() => {
+        wrapper = shallow(
+          <ExpandedStoryControls
+            canDelete={false}
+            canSave={true}
+          />
+        );
+      });
+
+      it('disable delete button', () => {
+        const button = wrapper.find('.delete');
+
+        expect(button.prop('disabled')).toBe(true);
+      });
+
+      it("don't disable save button ", () => {
+        const button = wrapper.find('.save');
+
+        expect(button.prop('disabled')).toBe(false);
+      });
+
+      it("don't set disable prop to cancel button ", () => {
+        const button = wrapper.find('.cancel');
+
+        expect(button.prop('disabled')).toBe(undefined);
+      });
+    });
+
     describe("when it's true", () => {
       let wrapper;
 
       beforeEach(() => {
         wrapper = shallow(
           <ExpandedStoryControls
-            readOnly={true}
+            canDelete={true}
+          />
+        );
+      });
+
+      it("don't disable delete button", () => {
+        const button = wrapper.find('.delete');
+
+        expect(button.prop('disabled')).toBe(false);
+      });
+    });
+  });
+
+  describe('canSave', () => {
+    describe("when it's false", () => {
+      let wrapper;
+
+      beforeEach(() => {
+        wrapper = shallow(
+          <ExpandedStoryControls
+            canSave={false}
+            canDelete={true}
           />
         );
       });
@@ -135,38 +188,32 @@ describe('<ExpandedStoryControls />', () => {
         expect(button.prop('disabled')).toBe(true);
       });
 
-      it('disable delete button', () => {
+      it("don't disable delete button ", () => {
         const button = wrapper.find('.delete');
 
-        expect(button.prop('disabled')).toBe(true);
+        expect(button.prop('disabled')).toBe(false);
       });
 
-      it("don't set disable prop to cancel button", () => {
+      it("don't set disable prop to cancel button ", () => {
         const button = wrapper.find('.cancel');
 
         expect(button.prop('disabled')).toBe(undefined);
       });
     });
 
-    describe("when it's false", () => {
+    describe("when it's true", () => {
       let wrapper;
 
       beforeEach(() => {
         wrapper = shallow(
           <ExpandedStoryControls
-            readOnly={false}
+            canSave={true}
           />
         );
       });
 
       it("don't disable save button", () => {
         const button = wrapper.find('.save');
-
-        expect(button.prop('disabled')).toBe(false);
-      });
-
-      it("don't disable delete button", () => {
-        const button = wrapper.find('.delete');
 
         expect(button.prop('disabled')).toBe(false);
       });
