@@ -25,6 +25,10 @@ class ExpandedStoryNotes extends React.Component {
     this.setState({ value: '' });
   }
 
+  hasAnEmptyValue() {
+    return !this.state.value.trim()
+  }
+
   notesForm() {
     return (
       <div>
@@ -39,6 +43,7 @@ class ExpandedStoryNotes extends React.Component {
             type='button'
             value={I18n.t('add note')}
             onClick={this.handleSave}
+            disabled={this.hasAnEmptyValue()}
           />
         </div>
       </div>

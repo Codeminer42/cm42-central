@@ -26,6 +26,14 @@ describe('<ExpandedStoryTask />', () => {
     expect(wrapper.text()).toContain(I18n.t('story.tasks'));
   });
 
+  it('disables the add task button if text area is empty', ()=>{
+    const { input } = setup();
+    const { button } = setup();
+
+    input.simulate('change', { target: { value: '' } });
+    expect(button.prop('disabled')).toBe(true);
+  });
+
   describe('onHandleSubmit', () => {
     it('calls onSave with a task', () => {
       const task = 'New Task';

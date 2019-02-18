@@ -28,6 +28,10 @@ class ExpandedStoryTask extends Component {
     });
   }
 
+  hasAnEmptyValue() {
+    return !this.state.task.trim()
+  }
+
   render() {
     const { story, onToggle, onDelete } = this.props;
 
@@ -57,6 +61,7 @@ class ExpandedStoryTask extends Component {
             type='submit'
             className='Story__add-task-button'
             onClick={this.onHandleSubmit}
+            disabled={this.hasAnEmptyValue()}
           >
             {I18n.t('add task')}
           </button>

@@ -441,6 +441,16 @@ describe('StoryView', function() {
       expect(this.view.model.notes.last().isNew()).toBeTruthy();
     });
 
+    describe("when the text area is empty", function() {
+
+      it("disables the add button", function() {
+        this.view.canEdit = sinon.stub().returns(true);
+        this.view.render();
+
+        expect(this.view.$('.add-note').is(':disabled')).toEqual(true);
+      });  
+    })
+
     it("doesn't add a blank note if the story is new", function() {
       var stub = sinon.stub(this.view.model, 'isNew');
       stub.returns(true);
@@ -482,6 +492,13 @@ describe('StoryView', function() {
       this.view.addEmptyTask();
       expect(this.view.model.tasks.length).toEqual(1);
       expect(this.view.model.tasks.last().isNew()).toBeTruthy();
+    });
+
+    it("disables the add button if the input is empty", function() {
+      this.view.canEdit = sinon.stub().returns(true);
+      this.view.render();
+
+      expect(this.view.$('.add-task').is(':disabled')).toEqual(true);
     });
 
     it("doesn't add a blank task if the story is new", function() {
