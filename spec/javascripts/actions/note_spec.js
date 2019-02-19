@@ -37,16 +37,18 @@ describe('Note Actions', () => {
         });
     });
 
-    it('dispatches setLoadingStory when promise fails', (done) => {
+    it('dispatches storyFailure when promise fails', (done) => {
+      const error = { error: "boom" };
+
       const FakeNote = {
-        post: sinon.stub().rejects()
+        post: sinon.stub().rejects(error)
       };
 
       const fakeDispatch = sinon.stub().resolves({});
 
       Note.createNote(projectId, storyId, note)(fakeDispatch, null, { Note: FakeNote })
         .then(() => {
-          expect(fakeDispatch).toHaveBeenCalledWith(Story.setLoadingStory(storyId));
+          expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(storyId, error));
 
           done();
         });
@@ -88,16 +90,18 @@ describe('Note Actions', () => {
         });
     });
 
-    it('dispatches setLoadingStory when promise fails', (done) => {
+    it('dispatches storyFailure when promise fails', (done) => {
+      const error = { error: "boom" };
+
       const FakeNote = {
-        destroy: sinon.stub().rejects()
+        destroy: sinon.stub().rejects(error)
       };
 
       const fakeDispatch = sinon.stub().resolves({});
 
       Note.deleteNote(projectId, storyId, noteId)(fakeDispatch, null, { Note: FakeNote })
         .then(() => {
-          expect(fakeDispatch).toHaveBeenCalledWith(Story.setLoadingStory(storyId));
+          expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(storyId, error));
 
           done();
         });

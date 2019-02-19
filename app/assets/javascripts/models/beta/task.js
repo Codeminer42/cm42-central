@@ -1,6 +1,7 @@
 import httpService from '../../services/httpService';
 import changeCase from 'change-object-case';
 import { updateIfSameId } from '../../services/updateIfSameId';
+import { setLoadingValue } from './story';
 
 export const post = (projectId, storyId, task) => {
   const newTask = {
@@ -24,39 +25,29 @@ export const destroy = (projectId, storyId, taskId) => {
     .delete(`/projects/${projectId}/stories/${storyId}/tasks/${taskId}`);
 };
 
-export const addTask = (story, task) => (
-  {
-    ...story,
-    _editing: {
-      ...story._editing,
-      loading: false
-    },
-    tasks: [
-      ...story.tasks,
-      task
-    ]
-  }
-);
+export const addTask = (story, task) => ({
+  ...story,
+  _editing: setLoadingValue(story._editing, false),
+  tasks: [
+    ...story.tasks,
+    task
+  ]
+});
 
-export const toggleTask = (story, changedTask) => {
-  return {
-    ...story,
-    tasks: story.tasks.map(
-      updateIfSameId(changedTask.id, task => {
-        return {
-          ...task,
-          ...changedTask
-        };
-      }
+export const toggleTask = (story, changedTask) => ({
+  ...story,
+  tasks: story.tasks.map(
+    updateIfSameId(changedTask.id, task => {
+      return {
+        ...task,
+        ...changedTask
+      };
+    }
     ))
-  };
-};
+});
 
 export const deleteTask = (taskId, story) => ({
   ...story,
-  _editing: {
-    ...story._editing,
-    loading: false
-  },
+  _editing: setLoadingValue(story._editing, false),
   tasks: story.tasks.filter((task) => task.id !== taskId)
 });

@@ -19,21 +19,22 @@ class ExpandedStoryAttachments extends React.Component {
     if (rejectedFiles.length > 0) return;
 
     const newFile = files[0];
-    const { onAdd, onLoading } = this.props;
-    
+    const { onAdd, startLoading, onFailure } = this.props;
+
     this.setState({ loading: true },
-      () => { 
-          onLoading();
-          upload(newFile)
-            .then(attachment =>                                                               
-            onAdd(attachment)                                                                                                                                                                                 
+      () => {
+        startLoading();
+        upload(newFile)
+          .then(attachment =>
+            onAdd(attachment)
           )
           .then(() => this.setState({ loading: false }))
-          .catch((error) => { 
+          .catch((error) => {
+            onFailure(error)
             console.error(error);
             this.setState({ loading: false });
           })
-      } 
+      }
     )
   }
 

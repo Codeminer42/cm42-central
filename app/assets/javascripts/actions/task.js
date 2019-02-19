@@ -1,5 +1,5 @@
 import actionTypes from './actionTypes';
-import { setLoadingStory } from './story';
+import { setLoadingStory, storyFailure } from './story';
 
 export const createTaskSuccess = (task, storyId) => ({
   type: actionTypes.ADD_TASK,
@@ -26,7 +26,7 @@ export const createTask = (projectId, storyId, task) => {
       .then(task => {
         dispatch(createTaskSuccess(task, storyId))
       })
-      .catch(() => dispatch(setLoadingStory(storyId)))
+      .catch((error) => dispatch(storyFailure(storyId, error)))
   };
 };
 
@@ -37,7 +37,7 @@ export const deleteTask = (projectId, storyId, taskId) => {
       .then(() => {
         dispatch(deleteTaskSuccess(taskId, storyId))
       })
-      .catch(() => dispatch(setLoadingStory(storyId)))
+      .catch((error) => dispatch(storyFailure(storyId, error)))
   };
 };
 

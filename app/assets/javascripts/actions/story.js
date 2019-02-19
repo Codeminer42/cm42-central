@@ -15,6 +15,12 @@ export const updateStorySuccess = (story) => ({
   story
 });
 
+export const storyFailure = (id, error) => ({
+  type: actionTypes.STORY_FAILURE,
+  id,
+  error
+});
+
 export const deleteStorySuccess = (id) => ({
   type: actionTypes.DELETE_STORY_SUCCESS,
   id
@@ -42,7 +48,7 @@ export const updateStory = (storyId, projectId, options) =>
         .then((story) => {
           dispatch(updateStorySuccess(story))
         })
-        .catch(() => dispatch(setLoadingStory(story.id)))
+        .catch((error) => dispatch(storyFailure(story.id, error)))
     }
     return dispatch(toggleStory(story.id));
   };
@@ -52,9 +58,9 @@ export const deleteStory = (storyId, projectId) =>
     dispatch(setLoadingStory(storyId))
     return Story.deleteStory(storyId, projectId)
       .then(() => dispatch(deleteStorySuccess(storyId)))
-      .catch( (error) => {
-        dispatch(setLoadingStory(storyId))
+      .catch((error) => {
+        dispatch(storyFailure(storyId, error))
         // TODO: dispatch an action to notify user on error
         alert(error.message);
       });
-    }
+  }

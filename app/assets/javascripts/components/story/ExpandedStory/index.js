@@ -13,7 +13,7 @@ import ExpandedStoryAttachments from './ExpandedStoryAttachments';
 import ExpandedStoryTask from './ExpandedStoryTask';
 import ExpandedStoryRequestedBy from './ExpandedStoryRequestedBy';
 import ExpandedStoryOwnedBy from './ExpandedStoryOwnedBy';
-import { editStory, updateStory, deleteStory, setLoadingStory } from '../../../actions/story';
+import { editStory, updateStory, deleteStory, setLoadingStory, storyFailure } from '../../../actions/story';
 import { createTask, deleteTask, toggleTask } from '../../../actions/task';
 import { deleteNote, createNote } from '../../../actions/note';
 import { addLabel, removeLabel } from '../../../actions/labels';
@@ -26,6 +26,7 @@ export const ExpandedStory = ({
   onToggle,
   editStory,
   updateStory,
+  storyFailure,
   deleteStory,
   project,
   createTask,
@@ -41,6 +42,7 @@ export const ExpandedStory = ({
   removeAttachment
 }) => {
   const loading = story._editing.loading ? "Story__enable-loading" : "";
+
   return (
     <div className={`Story Story--expanded ${loading}`} >
       <div className="Story__loading"></div>
@@ -99,7 +101,8 @@ export const ExpandedStory = ({
 
       <ExpandedStoryAttachments
         story={story}
-        onLoading={() => setLoadingStory(story.id)}
+        onFailure={(error) => storyFailure(story.id, error)}
+        startLoading={() => setLoadingStory(story.id)}
         onAdd={(attachment) => addAttachment(story.id, project.id, attachment)}
         onDelete={(documentId) => removeAttachment(story.id, documentId)}
       />
@@ -132,6 +135,7 @@ export default connect(
   {
     editStory,
     updateStory,
+    storyFailure,
     createTask,
     deleteTask,
     toggleTask,

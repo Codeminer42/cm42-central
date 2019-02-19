@@ -74,7 +74,7 @@ export const update = (story, projectId, options) => {
   const newStory = changeCase.snakeKeys(serialize(story), { recursive: true, arrayRecursive: true });
 
   return httpService
-    .put(`/projects/${projectId}/stories/${story.id}`, {story: newStory})
+    .put(`/projects/${projectId}/stories/${story.id}`, { story: newStory })
     .then(({ data }) => changeCase.camelKeys(data, { recursive: true, arrayRecursive: true }))
     .then(({ story }) => deserialize(story, options));
 };
@@ -88,6 +88,19 @@ export const updateStory = (story, newAttributes) => {
   return {
     ...story,
     ...newAttributes
+  };
+};
+
+export const storyFailure = (story, error) => {
+  const errors = error ? [
+    ...story.errors,
+    error
+  ] : story.errors;
+
+  return {
+    ...story,
+    _editing: setLoadingValue(story._editing, false),
+    errors
   };
 };
 
@@ -134,10 +147,12 @@ export const deserialize = (story, options) => {
 
 export const setLoadingStory = (story) => ({
   ...story,
-  _editing: {
-    ...story._editing,
-    loading: !story._editing.loading
-  }
+  _editing: setLoadingValue(story._editing, true)
+});
+
+export const setLoadingValue = (story, loading) => ({
+  ...story,
+  loading
 });
 
 export const serialize = (story) => ({

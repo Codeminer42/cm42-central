@@ -1,3 +1,5 @@
+import { setLoadingValue } from './story';
+
 export const deserialize = ({
   publicId,
   version,
@@ -17,12 +19,11 @@ export const deserialize = ({
 export const addAttachment = (story, attachment) => ({
   ...story,
   _editing: {
-    ...story._editing,
+    ...setLoadingValue(story._editing, false),
     documents: [
       ...story._editing.documents,
       attachment
     ],
-    loading: false
   }
 });
 

@@ -334,16 +334,45 @@ describe('Story model', function () {
       const story = { _editing: { loading: false } }
 
       const changedStory = Story.setLoadingStory(story);
-      
+
       expect(changedStory._editing.loading).toEqual(true);
     });
+  });
 
-    it('sets the loading state to false when true', () => {
-      const story = { _editing: { loading: true } }
+  describe('setLoadingValue', () => {
+    it('sets the loading state to true', () => {
+      const story = { loading: false  };
 
-      const changedStory = Story.setLoadingStory(story);
-      
+      const changedStory = Story.setLoadingValue(story, true);
+
+      expect(changedStory.loading).toEqual(true);
+    });
+
+    it('sets the loading state to false', () => {
+      const story = { loading: true };
+
+      const changedStory = Story.setLoadingValue(story, false);
+
+      expect(changedStory.loading).toEqual(false);
+    });
+  });
+
+  describe('storyFailure', () => {
+    it('sets loading to false', () => {
+      const story = { _editing: { loading: true }, errors: [] }
+
+      const changedStory = Story.storyFailure(story);
+
       expect(changedStory._editing.loading).toEqual(false);
+    });
+
+    it('put error to errors array', () => {
+      const error = "error";
+      const story = { _editing: { loading: true }, errors: [] }
+
+      const changedStory = Story.storyFailure(story, error);
+
+      expect(changedStory.errors).toEqual([error]);
     });
   });
 });

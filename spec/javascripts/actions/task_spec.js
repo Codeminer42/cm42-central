@@ -37,16 +37,18 @@ describe('Task Actions', () => {
         });
     });
 
-    it('dispatch setLoadingStory when promise fails', (done) => {
+    it('dispatches storyFailure when promise fails', (done) => {
+      const error = { error: "boom" };
+
       const FakeTask = {
-        post: sinon.stub().rejects()
+        post: sinon.stub().rejects(error)
       };
 
       const fakeDispatch = sinon.stub().resolves({});
 
       Task.createTask(projectId, story.id, task)(fakeDispatch, null, { Task: FakeTask })
         .then(() => {
-          expect(fakeDispatch).toHaveBeenCalledWith(Story.setLoadingStory(story.id));
+          expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(story.id, error));
 
           done();
         });
@@ -88,16 +90,18 @@ describe('Task Actions', () => {
         });
     });
 
-    it('dispatch setLoadingStory when promise fails', (done) => {
+    it('dispatches storyFailure when promise fails', (done) => {
+      const error = { error: "boom" };
+
       const FakeTask = {
-        destroy: sinon.stub().rejects()
+        destroy: sinon.stub().rejects(error)
       };
 
       const fakeDispatch = sinon.stub().resolves({});
 
       Task.deleteTask(projectId, story.id, task)(fakeDispatch, null, { Task: FakeTask })
         .then(() => {
-          expect(fakeDispatch).toHaveBeenCalledWith(Story.setLoadingStory(story.id));
+          expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(story.id, error));
 
           done();
         });

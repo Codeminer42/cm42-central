@@ -81,7 +81,9 @@ describe('updateStory', () => {
     });
   });
 
-  it('dispatch setLoadingStory when promise fails', (done) => {
+  it('dispatches storyFailure when promise fails', (done) => {
+    const error = { error: "boom" };
+
     const editedStory = {
       ...story,
       _editing: {
@@ -92,7 +94,7 @@ describe('updateStory', () => {
     };
 
     const FakeStory = {
-      update: sinon.stub().rejects()
+      update: sinon.stub().rejects(error)
     };
 
     const fakeDispatch = sinon.stub().resolves({});
@@ -100,7 +102,7 @@ describe('updateStory', () => {
     fakeGetState.returns({ stories: [editedStory] });
 
     Story.updateStory(editedStory.id, projectId)(fakeDispatch, fakeGetState, { Story: FakeStory }).then(() => {
-      expect(fakeDispatch).toHaveBeenCalledWith(Story.setLoadingStory(story.id));
+      expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(editedStory.id, error));
 
       done();
     });
@@ -139,15 +141,17 @@ describe('deleteStory', () => {
     });
   });
 
-  it('dispatches setLoadingStory when promise fails', (done) => {
+  it('dispatches storyFailure when promise fails', (done) => {
+    const error = { error: "boom" };
+
     const FakeStory = {
-      deleteStory: sinon.stub().rejects()
+      deleteStory: sinon.stub().rejects(error)
     };
 
     const fakeDispatch = sinon.stub().resolves({});
 
     Story.deleteStory(storyId, projectId)(fakeDispatch, null, { Story: FakeStory }).then(() => {
-      expect(fakeDispatch).toHaveBeenCalledWith(Story.setLoadingStory(storyId));
+      expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(storyId, error));
 
       done();
     });
