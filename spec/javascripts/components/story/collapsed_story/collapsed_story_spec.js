@@ -1,10 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import CollapsedStory from 'components/story/CollapsedStory/index';
+import { CollapsedStory } from 'components/story/CollapsedStory/index';
 import storyFactory from '../../../support/factories/storyFactory';
 
 describe('<CollapsedStory />', () => {
-  
   describe('when estimate isn\'t null', () => {
     it('renders the component with Story--estimated className', () => {
       const props = storyFactory({storyType: 'feature', estimate: 1});

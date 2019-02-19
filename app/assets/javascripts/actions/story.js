@@ -40,6 +40,20 @@ export const updateStory = (storyId, projectId, options) =>
     return dispatch(toggleStory(story.id));
   };
 
+export const updateCollapsedStory = (storyId, projectId, newAttributes) => 
+  (dispatch, getState, { Story }) => {
+    const { stories } = getState();
+    const story = stories.find((story) => story.id === storyId);
+
+    story._editing = { 
+      ...story,
+      ...newAttributes,
+      _isDirty: true
+    };
+
+    dispatch(updateStory(storyId, projectId))
+  };
+
 export const deleteStory = (storyId, projectId) =>
   (dispatch, getState, { Story }) =>
     Story.deleteStory(storyId, projectId)

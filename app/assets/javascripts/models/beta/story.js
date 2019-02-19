@@ -91,6 +91,15 @@ export const updateStory = (story, newAttributes) => {
   };
 };
 
+export const updateStoryCollapsed = (story, newAttributes) => {
+  const editing = { ...story, _isDirty: true, ...newAttributes }
+
+  return {
+    ...story,
+    _editing: editing
+  }
+};
+
 export const toggleStory = (story) => {
   const editing = story.collapsed ? { ...story, _isDirty: false } : null;
 

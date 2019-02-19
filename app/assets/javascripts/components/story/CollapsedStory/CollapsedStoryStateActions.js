@@ -15,11 +15,15 @@ const StateAction = {
   unstarted: ["start"]
 };
 
-const CollapsedStoryStateActions = ({ story }) => (
-  <div className='Story__actions'> 
+const disableToggle = (e) => {
+  e.stopPropagation();
+}
+
+const CollapsedStoryStateActions = ({ story, setEstimate }) => (
+  <div className='Story__actions' onClick = {(e) => disableToggle(e)}> 
     {
       isStoryNotEstimated(story.storyType, story.estimate) ?
-        <CollapsedStoryEstimateButton />
+        <CollapsedStoryEstimateButton onEdit={setEstimate}/>
         : StoryActionFor(story.state).map((stateAction) =>
           <CollapsedStoryStateButton action={stateAction} key={stateAction} />
         )

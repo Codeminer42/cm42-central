@@ -11,6 +11,7 @@ export default keyMirror({
   TOGGLE_STORY: null,
   EDIT_STORY: null,
   UPDATE_STORY: null,
+  UPDATE_COLLAPSED_STORY: null,
   UPDATE_STORY_SUCCESS: null,
   ADD_TASK: null,
   REMOVE_TASK: null,
