@@ -52,13 +52,13 @@ describe('saveStory', () => {
 
     Story.saveStory(editedStory.id, projectId)(fakeDispatch, fakeGetState, { Story: FakeStory }).then(() => {
       expect(fakeDispatch).toHaveBeenCalledWith(Story.toggleStory(editedStory.id));
-      expect(fakeDispatch).not.toHaveBeenCalledWith(Story.saveStorySuccess(story));
+      expect(fakeDispatch).not.toHaveBeenCalledWith(Story.updateStorySuccess(story));
 
       done();
     });
   });
 
-  it('dispatch saveStorySuccess when _isDirty', (done) => {
+  it('dispatch updateStorySuccess when _isDirty', (done) => {
     const editedStory = {
       ...story,
       _editing: {
@@ -78,7 +78,34 @@ describe('saveStory', () => {
     fakeGetState.returns({ stories: [editedStory] });
 
     Story.saveStory(editedStory.id, projectId)(fakeDispatch, fakeGetState, { Story: FakeStory }).then(() => {
-      expect(fakeDispatch).toHaveBeenCalledWith(Story.saveStorySuccess(story));
+      expect(fakeDispatch).toHaveBeenCalledWith(Story.updateStorySuccess(story));
+
+      done();
+    });
+  });
+
+  it('dispatch only addStory when isNew', (done) => {
+    const editedStory = {
+      ...story,
+      _editing: {
+        ...story
+      }
+    };
+
+    const FakeStory = {
+      post: sinon.stub().resolves(story),
+      isNew: sinon.stub().returns(true)
+    };
+
+    const fakeDispatch = sinon.stub().resolves({});
+
+    const fakeGetState = sinon.stub();
+    fakeGetState.returns({ stories: [editedStory] });
+
+    Story.saveStory(editedStory.id, projectId)(fakeDispatch, fakeGetState, { Story: FakeStory }).then(() => {
+      expect(fakeDispatch).toHaveBeenCalledWith(Story.addStory(story));
+      expect(fakeDispatch).not.toHaveBeenCalledWith(Story.updateStorySuccess(story));
+      expect(fakeDispatch).not.toHaveBeenCalledWith(Story.toggleStory(editedStory.id));
 
       done();
     });

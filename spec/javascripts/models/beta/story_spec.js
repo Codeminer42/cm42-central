@@ -341,7 +341,7 @@ describe('Story model', function () {
 
   describe('setLoadingValue', () => {
     it('sets the loading state to true', () => {
-      const story = { loading: false  };
+      const story = { loading: false };
 
       const changedStory = Story.setLoadingValue(story, true);
 
@@ -373,6 +373,91 @@ describe('Story model', function () {
       const changedStory = Story.storyFailure(story, error);
 
       expect(changedStory.errors).toEqual([error]);
+    });
+  });
+
+  describe('isNew', () => {
+    it('returns true when story id is null', () => {
+      const story = { id: null }
+
+      expect(Story.isNew(story)).toBe(true);
+    });
+
+    it("returns false when story id isn't null", () => {
+      const story = { id: 42 }
+
+      expect(Story.isNew(story)).toBe(false);
+    });
+  });
+
+  describe('canDelete', () => {
+    it("returns true when story isn't accepted and isn't new", () => {
+      const story = { id: 42, state: 'started' };
+
+      expect(Story.canDelete(story)).toBe(true);
+    });
+
+    it('returns false when story is accepted', () => {
+      const story = { id: 42, state: 'accepted' };
+
+      expect(Story.canDelete(story)).toBe(false);
+    });
+
+    it('returns false when story is new', () => {
+      const story = { id: null, state: 'started' };
+
+      expect(Story.canDelete(story)).toBe(false);
+    });
+  });
+
+  describe('canSave', () => {
+    it("returns true when story isn't accepted and the text isn't empty", () => {
+      const story = { state: 'started', _editing: { title: 'title' } };
+
+      expect(Story.canSave(story)).toBe(true);
+    });
+
+    it('returns false when story is accepted', () => {
+      const story = { state: 'accepted', _editing: { title: 'title' } };
+
+      expect(Story.canSave(story)).toBe(false);
+    });
+
+    it('returns false when story title is null', () => {
+      const story = { state: 'started', _editing: { title: "" } };
+
+      expect(Story.canSave(story)).toBe(false);
+    });
+  });
+
+  describe('removeEmptyStory', () => {
+    it('remove a story with null id from a stories array', () => {
+      const stories = [{ id: 1 }, { id: 2 }];
+      const emptyStory = { id: null };
+
+      const storiesWithEmptyStories = [
+        stories[0],
+        emptyStory,
+        stories[1]
+      ];
+
+      expect(Story.removeEmptyStory([...stories, emptyStory])).toEqual(stories);
+      expect(Story.removeEmptyStory([emptyStory, ...stories])).toEqual(stories);
+      expect(Story.removeEmptyStory(storiesWithEmptyStories)).toEqual(stories);
+    });
+  });
+
+  describe('newStory', () => {
+    it('returns a empty story', () => {
+      const story = Story.newStory();
+
+      expect(story.id).toBe(null);
+    });
+
+    it('returns a expanded story', () => {
+      const story = Story.newStory();
+
+      expect(story.collapsed).toBe(false);
     });
   });
 });

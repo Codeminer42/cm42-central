@@ -19,7 +19,7 @@ export const toggleStory = (id) => ({
   id
 });
 
-export const updateStorySucess = (story) => ({
+export const updateStorySuccess = (story) => ({
   type: actionTypes.UPDATE_STORY_SUCCESS,
   story
 });

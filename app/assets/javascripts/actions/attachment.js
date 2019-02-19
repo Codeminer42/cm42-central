@@ -1,4 +1,4 @@
-import { updateStorySucess } from './story';
+import { updateStorySuccess } from './story';
 import actionTypes from './actionTypes';
 
 export const addAttachmentToStory = (storyId, attachment) => ({
@@ -22,7 +22,7 @@ export const addAttachment = (storyId, projectId, attachment) =>
     const options = { collapse: false };
 
     Story.update(story._editing, projectId, options).then((story) => {
-      dispatch(updateStorySucess(story));
+      dispatch(updateStorySuccess(story));
     })
   }
 
