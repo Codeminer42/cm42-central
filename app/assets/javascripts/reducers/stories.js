@@ -1,7 +1,8 @@
 import actionTypes from 'actions/actionTypes';
 import {
   toggleStory, editStory, updateStory, newStory,
-   setLoadingStory, storyFailure, removeEmptyStory
+  setLoadingStory, storyFailure, removeEmptyStory,
+  createNewStory, isNew, isCreating, creatingInAnotherColumn
 } from 'models/beta/story';
 import * as Note from 'models/beta/note';
 import * as Task from 'models/beta/task';
@@ -16,8 +17,32 @@ const storiesReducer = (state = initialState, action) => {
     case actionTypes.RECEIVE_STORIES:
       return action.data;
     case actionTypes.CREATE_STORY:
+      if (isCreating(state)) {
+        const story = state.find(isNew);
+
+        if (!creatingInAnotherColumn(story, action.attributes.state)) {
+          return state;
+        }
+
+        return [
+          {
+            ...editStory(story, action.attributes),
+            ...action.attributes
+          },
+          ...removeEmptyStory(state)
+        ]
+      }
+
+      const newStory = {
+        ...createNewStory(),
+        ...action.attributes
+      }
+
       return [
-        newStory(),
+        {
+          ...newStory,
+          _editing: { ...newStory }
+        },
         ...state,
       ];
     case actionTypes.ADD_STORY:

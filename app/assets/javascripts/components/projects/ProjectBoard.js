@@ -7,6 +7,8 @@ import Sprints from "../stories/Sprints";
 import { getColumns } from "../../selectors/columns";
 import * as Columns from '../../models/beta/column';
 import { createStory } from '../../actions/story';
+import AddStoryButton from '../story/AddStoryButton';
+import * as Story from 'libs/beta/constants';
 
 class ProjectBoard extends React.Component {
   componentWillMount() {
@@ -18,16 +20,32 @@ class ProjectBoard extends React.Component {
       return <b>Loading</b>;
     }
 
+    const { createStory } = this.props;
+
     return (
       <div className="ProjectBoard">
-        <button onClick={this.props.createStory}>X</button>
-        <Column title={I18n.t("projects.show.chilly_bin")}>
+        <Column title={I18n.t("projects.show.chilly_bin")}
+          renderAction={() =>
+            <AddStoryButton
+              onAdd={() => createStory({
+                state: Story.status.UNSCHEDULED
+              })}
+            />
+          }
+        >
           <Stories stories={this.props.chillyBinStories} />
         </Column>
 
         <Column
           title={`${I18n.t("projects.show.backlog")} /
-          ${I18n.t("projects.show.in_progress")}`}>
+          ${I18n.t("projects.show.in_progress")}`}
+          renderAction={() =>
+            <AddStoryButton
+              onAdd={() => createStory({
+                state: Story.status.UNSTARTED
+              })}
+            />}
+        >
           <Sprints
             sprints={this.props.backlogSprints}
           />

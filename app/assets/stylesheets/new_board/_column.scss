@@ -12,6 +12,8 @@
   }
 
   &__header {
+    height: 43px;
+    min-width: 276px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -30,15 +32,20 @@
     margin-bottom: 0;
   }
 
+  &__actions {
+    display: flex;
+    align-items: center;
+  }
+
   &__btn-close {
     outline: 0;
     background: transparent;
     border-width: 0;
-    padding: 4px 11px;
+    padding: 7px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    border-radius: 2px;
+    border-radius: 3px;
 
     &:hover {
         background-color: $column-btn-close-hover;
@@ -46,5 +53,14 @@
     &:active {
         background-color: $column-btn-close-active;
       }
+  }
+
+  &__btn-add-story {
+    background-color: inherit;
+    border: none;
+    align-items: center;
+    font-size: 13px;
+    padding: 4px 10px;
+    margin: 0 5px;
   }
 }

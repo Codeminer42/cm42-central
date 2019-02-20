@@ -1,7 +1,8 @@
 import actionTypes from './actionTypes';
 
-export const createStory = () => ({
-  type: actionTypes.CREATE_STORY
+export const createStory = (attributes) => ({
+  type: actionTypes.CREATE_STORY,
+  attributes
 });
 
 export const addStory = (story) => ({

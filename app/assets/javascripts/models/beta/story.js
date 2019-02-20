@@ -169,16 +169,16 @@ export const serialize = (story) => ({
   labels: Label.joinLabels(story.labels)
 });
 
-export const newStory = () => ({
+export const createNewStory = () => ({
   ...emptyStory,
-  collapsed: false,
-  _editing: {
-    ...emptyStory
-  }
+  collapsed: false
 });
 
 export const isNew = (story) =>
   story.id === null;
+
+export const isnotNew = (story) =>
+  story.id !== null;
 
 export const canSave = (story) =>
   !isAccepted(story) && story._editing.title !== "";
@@ -187,7 +187,13 @@ export const canDelete = (story) =>
   !isAccepted(story) && !isNew(story);
 
 export const removeEmptyStory = (stories) =>
-  stories.filter(story => story.id !== null);
+  stories.filter(isnotNew);
+
+export const isCreating = (stories) =>
+  stories.some(isNew);
+
+export const creatingInAnotherColumn = (story, state) =>
+  story.state !== state;
 
 const emptyStory = {
   id: null,

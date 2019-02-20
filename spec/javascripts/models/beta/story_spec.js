@@ -447,17 +447,47 @@ describe('Story model', function () {
     });
   });
 
-  describe('newStory', () => {
+  describe('createNewStory', () => {
     it('returns a empty story', () => {
-      const story = Story.newStory();
+      const story = Story.createNewStory();
 
       expect(story.id).toBe(null);
     });
 
     it('returns a expanded story', () => {
-      const story = Story.newStory();
+      const story = Story.createNewStory();
 
       expect(story.collapsed).toBe(false);
+    });
+  });
+
+  describe('isCreating', () => {
+    it('returns true when some story is new', () => {
+      const stories = [{ id: 1 }, { id: null }, { id: 3 }]
+
+      expect(Story.isCreating(stories)).toBe(true);
+    });
+
+    it("returns false when don't have a new story", () => {
+      const stories = [{ id: 1 }, { id: 2 }, { id: 3 }]
+
+      expect(Story.isCreating(stories)).toBe(false);
+    });
+  });
+
+  describe('creatingInOtherColumn', () => {
+    it('returns true when newStory changes state', () => {
+      const story = { state: 'unscheduled' };
+      const newState = 'unstarted';
+
+      expect(Story.creatingInAnotherColumn(story, newState)).toBe(true);
+    });
+
+    it("returns false when the story state don't change", () => {
+      const story = { state: 'unscheduled' };
+      const newState = 'unscheduled';
+
+      expect(Story.creatingInAnotherColumn(story, newState)).toBe(false);
     });
   });
 });
