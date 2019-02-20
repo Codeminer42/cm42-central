@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.1.0] 2019-02-20
+
 ### Update
 - Front-End Dependencies
   - Webpack from 2.6.1 to 4.29.1
@@ -17,6 +19,7 @@
 ### Fixed
 - [ V2 ] Board style to permit scrolling
 - Fix alert favicon in production environment
+- Export projects with no stories
 
 ### Added
 - [ V2 ] Story:
@@ -395,7 +398,7 @@ and CVE-2018-14567)
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v2.0.1...HEAD
+[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v2.1.0...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
@@ -429,3 +432,4 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [1.22.0]: https://github.com/Codeminer42/cm42-central/tree/v1.22.0
 [2.0.0]: https://github.com/Codeminer42/cm42-central/tree/v2.0.0
 [2.0.1]: https://github.com/Codeminer42/cm42-central/tree/v2.0.1
+[2.1.0]: https://github.com/Codeminer42/cm42-central/tree/v2.1.0
