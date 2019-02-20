@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default SelectUser = ({ selectedUserId, onEdit, users }) => (
+const SelectUser = ({ selectedUserId, onEdit, users }) => (
   <select
     value={selectedUserId || ''}
     className="form-control input-sm"
@@ -23,11 +23,16 @@ export default SelectUser = ({ selectedUserId, onEdit, users }) => (
   </select>
 );
 
-SelectUser.PropTypes = {
-  selectedUserId: PropTypes.number.isRequired,
+SelectUser.propTypes = {
+  selectedUserId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]),
   onEdit: PropTypes.func.isRequired,
-  users: PropTypes.shape({
+  users: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired
-  })
+  }))
 };
+
+export default SelectUser;

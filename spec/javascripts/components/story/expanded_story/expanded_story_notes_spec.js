@@ -22,10 +22,11 @@ describe('<ExpandedStoryNotes />', () => {
       />
     );
 
-    expect(wrapper.text()).toContain(I18n.t('story.notes'));
+    expect(wrapper.find('.Story__section-title').text())
+      .toContain(I18n.t('story.notes'));
   });
 
-  it('renders component content', ()=>{
+  it('renders component content', () => {
     const story = { notes: [] };
 
     const wrapper = shallow(

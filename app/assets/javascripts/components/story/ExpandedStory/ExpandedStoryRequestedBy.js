@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SelectUser from '../select_user/SelectUser';
 
-export default ExpandedStoryRequestBy = ({ users, story, onEdit }) => (
+const ExpandedStoryRequestBy = ({ users, story, onEdit }) => (
   <div className="Story__section">
     <div className="Story__section-title">
-      { I18n.translate('activerecord.attributes.story.requested_by') }
+      { I18n.t('activerecord.attributes.story.requested_by') }
     </div>
     <SelectUser
       users={users}
@@ -15,12 +15,17 @@ export default ExpandedStoryRequestBy = ({ users, story, onEdit }) => (
   </div>
 );
 
-ExpandedStoryRequestBy.PropTypes = {
+ExpandedStoryRequestBy.propTypes = {
   users: PropTypes.array.isRequired,
   story: PropTypes.shape({
     _editing: PropTypes.shape({
-      requestedById: PropTypes.number.isRequired,
+      requestedById: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+      ]),
     })
   }),
   onEdit: PropTypes.func.isRequired
 }
+
+export default ExpandedStoryRequestBy;

@@ -56,7 +56,7 @@ class ExpandedStoryNotes extends React.Component {
     return (
       <div className="Story__section">
         <div className="Story__section-title">
-          {I18n.translate('story.notes')}
+          {I18n.t('story.notes')}
         </div>
         <div className="Story__section__notes">
           <NotesList

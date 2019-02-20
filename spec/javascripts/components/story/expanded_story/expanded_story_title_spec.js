@@ -28,7 +28,7 @@ describe('<ExpandedStoryTitle />', () => {
 
       const { input } = setup({ story });
 
-      expect(input).toHaveValue(story._editing.title);
+      expect(input.prop('value')).toBe(story._editing.title);
     });
 
     it('calls onEdit with the right params', () => {

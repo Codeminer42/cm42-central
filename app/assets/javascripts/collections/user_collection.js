@@ -1,6 +1,6 @@
-var User = require('models/user');
+import User from '../models/user';
 
-module.exports = Backbone.Collection.extend({
+const UserCollection = Backbone.Collection.extend({
   model: User,
 
   comparator: function(user) {
@@ -13,3 +13,5 @@ module.exports = Backbone.Collection.extend({
     });
   }
 });
+
+export default UserCollection;

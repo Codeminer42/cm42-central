@@ -1,6 +1,6 @@
-var FormView = require('./form_view');
+import FormView from './form_view';
 
-module.exports = FormView.extend({
+const TaskForm = FormView.extend({
 
   tagName: 'div',
 
@@ -63,3 +63,5 @@ module.exports = FormView.extend({
   }
 
 });
+
+export default TaskForm;

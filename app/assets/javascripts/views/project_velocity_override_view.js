@@ -1,4 +1,6 @@
-module.exports = Backbone.View.extend({
+import projectVelocityOverrideTemplate from 'templates/project_velocity_override.ejs';
+
+const ProjectVelocityOverrideView = Backbone.View.extend({
 
   className: 'velocity_override_container',
 
@@ -8,7 +10,7 @@ module.exports = Backbone.View.extend({
     "keydown input[name=override]": "keyCapture"
   },
 
-  template: require('templates/project_velocity_override.ejs'),
+  template: projectVelocityOverrideTemplate,
 
   render: function() {
     this.$el.html(this.template({project: this.model}));
@@ -56,3 +58,5 @@ module.exports = Backbone.View.extend({
     clickOverlay.hide();
   }
 });
+
+export default ProjectVelocityOverrideView;

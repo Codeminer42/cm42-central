@@ -1,6 +1,7 @@
-module.exports = Backbone.View.extend({
+import searchResultBarTemplate from 'templates/search_results_bar.ejs';
 
-  template: require('templates/search_results_bar.ejs'),
+const SearchResultsBarView = Backbone.View.extend({
+  template: searchResultBarTemplate,
 
   className: 'iteration',
 
@@ -19,3 +20,4 @@ module.exports = Backbone.View.extend({
 
 });
 
+export default SearchResultsBarView;

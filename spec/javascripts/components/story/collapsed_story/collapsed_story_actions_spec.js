@@ -9,7 +9,7 @@ describe('<CollapsedStoryStateActions />', () => {
     it("renders <CollapsedStoryEstimateButton /> component", () => {
       const props = storyFactory({estimate: null});
       const wrapper = shallow(<CollapsedStoryStateActions story={props} />);
-      
+
       expect(wrapper.find(CollapsedStoryEstimateButton)).toExist();
     });
   });

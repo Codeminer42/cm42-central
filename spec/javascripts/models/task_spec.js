@@ -1,4 +1,4 @@
-var Task = require('models/task');
+import Task from 'models/task';
 
 describe("Task", function() {
 
@@ -44,12 +44,12 @@ describe("Task", function() {
   describe('humanAttributeName', function() {
 
     beforeEach(function() {
-      I18n = {t: sinon.stub()};
+      sinon.stub(I18n, 't');
       I18n.t.withArgs('foo_bar').returns('Foo bar');
     });
 
     afterEach(function() {
-      sinon.restore(I18n);
+      I18n.t.restore();
     });
 
     it("returns the translated attribute name", function() {

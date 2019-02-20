@@ -1,14 +1,8 @@
-import jasmineEnzyme from 'jasmine-enzyme';
 import React from 'react';
 import { shallow } from 'enzyme';
 import StoryIcon from 'components/story/StoryIcon';
 
 describe('<StoryIcon />', () => {
-  
-  beforeEach(() => {
-    jasmineEnzyme();
-  });
-
   const iconRules = [
     { storyType: 'feature', icon: 'start', className: 'star' },
     { storyType: 'bug', icon: 'bug_report', className: 'bug' },

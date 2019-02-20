@@ -7,7 +7,7 @@ import StoryLink from 'components/stories/StoryLink';
 const editButton = isReadonly => {
   return(
     <input
-      className={!isReadonly && 'edit-description'}
+      className={!isReadonly ? 'edit-description' : ''}
       name="edit-description"
       disabled={isReadonly}
       value={I18n.t('edit')}

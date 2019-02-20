@@ -1,15 +1,10 @@
-import jasmineEnzyme from 'jasmine-enzyme';
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 
 import StoryTasks from 'components/story/StoryTasks';
-import Task from 'components/tasks/Task';
 
 describe('<StoryTasks />', function() {
-  let story;
-
   beforeEach(function() {
-    jasmineEnzyme();
     sinon.stub(I18n, 't');
   });
 
@@ -26,7 +21,7 @@ describe('<StoryTasks />', function() {
     const wrapper = mount(
       <StoryTasks tasks={[task]} disabled={false} />
     );
-    expect(wrapper.find('.task')).toBePresent();
+    expect(wrapper.find('.task')).toExist();
   });
 
   describe("with an empty collection", function() {

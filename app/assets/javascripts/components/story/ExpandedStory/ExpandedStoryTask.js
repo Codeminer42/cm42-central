@@ -40,7 +40,7 @@ class ExpandedStoryTask extends Component {
         <div className="Story__section">
           <div className="Story__section-title">
             <div className="Story__section-title">
-              {I18n.translate('story.tasks')}
+              {I18n.t('story.tasks')}
             </div>
           </div>
         </div>
@@ -81,4 +81,4 @@ ExpandedStoryTask.propTypes = {
   onSave: PropTypes.func.isRequired
 };
 
-export default ExpandedStoryTask
+export default ExpandedStoryTask;

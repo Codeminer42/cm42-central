@@ -1,5 +1,5 @@
-var Story = require('models/story');
-var StoryCollection = require('collections/story_collection');
+import Story from 'models/story';
+import StoryCollection from 'collections/story_collection';
 
 describe('StoryCollection', function() {
 
@@ -100,7 +100,7 @@ describe('StoryCollection', function() {
       this.stories.at(1).column = '#backlog';
       this.stories.at(2).column = '#done';
     });
-    
+
     it('should return the story before a given story in a given column', function() {
       expect(this.stories.previousOnColumn(this.story2)).toBe(this.story1);
     });
@@ -115,7 +115,7 @@ describe('StoryCollection', function() {
         expect(this.stories.previousOnColumn(this.story1)).toBeUndefined();
         expect(this.stories.previousOnColumn(this.story3)).toBeUndefined();
       }
-    ); 
+    );
 
   });
 

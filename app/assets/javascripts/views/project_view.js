@@ -1,13 +1,14 @@
 import AttachmentOptions from 'models/attachmentOptions'
 import StoryAttachment from 'components/story/StoryAttachment';
-var StoryView = require('./story_view');
-var IterationView = require('./iteration_view');
-var ColumnView = require('./column_view');
-var ColumnVisibilityButtonView = require('./column_visibility_button_view');
-var HistoryView = require('./history_view');
+import StoryView from './story_view';
+import IterationView from './iteration_view';
+import ColumnView from './column_view';
+import ColumnVisibilityButtonView from './column_visibility_button_view';
+import HistoryView from './history_view';
+import projectViewTemplate from 'templates/project_view.ejs';
 
-module.exports = Backbone.View.extend({
-  template: require('templates/project_view.ejs'),
+const ProjectView = Backbone.View.extend({
+  template: projectViewTemplate,
   columns: {},
 
   initialize: function() {
@@ -219,3 +220,5 @@ module.exports = Backbone.View.extend({
     });
   }
 });
+
+export default ProjectView;

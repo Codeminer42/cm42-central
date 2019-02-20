@@ -8,7 +8,7 @@ export const ExpandedStoryType = (props) => {
   return (
     <div className="Story__section">
       <div className="Story__section-title">
-        { I18n.translate('activerecord.attributes.story.story_type') }
+        { I18n.t('activerecord.attributes.story.story_type') }
       </div>
 
       <select

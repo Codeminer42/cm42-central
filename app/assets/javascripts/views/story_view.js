@@ -14,19 +14,20 @@ import StoryAttachment from 'components/story/StoryAttachment';
 import StoryStateButtons from 'components/story/StoryStateButtons';
 import StoryEstimateButtons from 'components/story/StoryEstimateButtons';
 import AttachmentOptions from 'models/attachmentOptions'
-var Clipboard = require('clipboard');
-
-var executeAttachinary = require('libs/execute_attachinary');
-
-var FormView = require('./form_view');
-var EpicView = require('./epic_view');
+import Clipboard from 'clipboard';
+import ExecuteAttachinary from '../libs/execute_attachinary';
+import FormView from './form_view';
+import EpicView from './epic_view';
+import storyTemplate from 'templates/story.ejs';
+import alertTemplate from 'templates/alert.ejs';
+import storyHoverTemplate from 'templates/story_hover.ejs';
+import noteTemplate from 'templates/note.ejs';
 
 const LOCAL_STORY_REGEXP = /(?!\s|\b)(#\d+)(?!\w)/g;
 
-module.exports = FormView.extend({
-
-  template: require('templates/story.ejs'),
-  alert: require('templates/alert.ejs'),
+const StoryView = FormView.extend({
+  template: storyTemplate,
+  alert: alertTemplate,
 
   tagName: 'div',
   linkedStories: {},
@@ -531,8 +532,10 @@ module.exports = FormView.extend({
         const $storyAttachments = $('<div class="story-attachments"></div>');
         $(div).append($storyAttachments);
 
-        clearTimeout(window.executeAttachinaryTimeout);
-        window.executeAttachinaryTimeout = setTimeout(executeAttachinary, 1000);
+        if(process.env.NODE_ENV !== 'test') {
+          clearTimeout(window.executeAttachinaryTimeout);
+          window.executeAttachinaryTimeout = setTimeout(ExecuteAttachinary, 1000);
+        }
       })
     );
   },
@@ -1041,9 +1044,9 @@ module.exports = FormView.extend({
         html: true,
         trigger: 'hover',
         title: () => this.model.get("title"),
-        content: () => require('templates/story_hover.ejs')({
+        content: () => storyHoverTemplate({
           story: this.model,
-          noteTemplate: require('templates/note.ejs')
+          noteTemplate: noteTemplate
         })
       });
     }
@@ -1162,3 +1165,5 @@ module.exports = FormView.extend({
     return this.isSearchResult && this.isLoaded();
   }
 });
+
+export default StoryView;

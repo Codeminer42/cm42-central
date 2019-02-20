@@ -2,10 +2,10 @@ import Operands from '../mixins/contextual_serach_operands';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server'
 import SearchTootip from '../components/stories/search_tooltip';
-var SearchResultsBarView = require('./search_results_bar_view');
-var StoryView = require('./story_view');
+import SearchResultsBarView from './search_results_bar_view';
+import StoryView from './story_view';
 
-module.exports = Backbone.View.extend({
+const ProjectSearchView = Backbone.View.extend({
 
   initialize: function() {
     this.appendSearchTooltip();
@@ -117,3 +117,5 @@ module.exports = Backbone.View.extend({
   },
 
 });
+
+export default ProjectSearchView;

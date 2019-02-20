@@ -1,4 +1,3 @@
-import jasmineEnzyme from 'jasmine-enzyme';
 import React from 'react';
 import { mount } from 'enzyme';
 
@@ -9,7 +8,6 @@ describe('<NoteForm />', function() {
   let note;
 
   beforeEach(function() {
-    jasmineEnzyme();
     note = new Note({note: ''});
     sinon.stub(I18n, 't');
     sinon.stub(window.md, 'makeHtml');

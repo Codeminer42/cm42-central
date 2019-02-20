@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Iteration from 'components/stories/Iteration';
 
-module.exports = Backbone.View.extend({
+const IterationView = Backbone.View.extend({
 
 
   className: 'iteration',
@@ -45,3 +45,5 @@ module.exports = Backbone.View.extend({
   }
 
 });
+
+export default IterationView;

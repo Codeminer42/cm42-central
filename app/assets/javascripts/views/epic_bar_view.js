@@ -1,6 +1,7 @@
-module.exports = Backbone.View.extend({
+import epicBarViewTemplate from 'templates/epic_bar.ejs';
 
-  template: require('templates/epic_bar.ejs'),
+const EpicBarView = Backbone.View.extend({
+  template: epicBarViewTemplate,
 
   className: 'iteration',
 
@@ -47,3 +48,5 @@ module.exports = Backbone.View.extend({
     return sum;
   }
 });
+
+export default EpicBarView;

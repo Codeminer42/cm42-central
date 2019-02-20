@@ -6,7 +6,7 @@ const ExpandedStoryState = ({ story, onEdit }) => {
   return (
     <div className="Story__section">
       <div className="Story__section-title">
-        { I18n.translate('activerecord.attributes.story.state') }
+        { I18n.t('activerecord.attributes.story.state') }
       </div>
 
       <select

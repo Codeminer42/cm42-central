@@ -1,5 +1,7 @@
-module.exports = Backbone.View.extend({
-  template: require('templates/keycut_view.ejs'),
+import keycutViewTemplate from 'templates/keycut_view.ejs';
+
+const KeycutView = Backbone.View.extend({
+  template: keycutViewTemplate,
   tagName: 'div',
   id: 'keycut-help',
 
@@ -22,3 +24,5 @@ module.exports = Backbone.View.extend({
     );
   }
 });
+
+export default KeycutView;

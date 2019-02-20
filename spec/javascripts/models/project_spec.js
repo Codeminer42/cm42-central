@@ -1,7 +1,6 @@
-var Cookies = require('js-cookie');
-
-var Project = require('models/project');
-var Iteration = require('models/iteration');
+import Cookies from 'js-cookie';
+import Project from 'models/project';
+import Iteration from 'models/iteration';
 
 describe('Project model', function() {
 
@@ -227,7 +226,7 @@ describe('Project model', function() {
 
       expect(this.project.doneIterations()).toEqual([doneIteration]);
     });
-    
+
   });
 
 

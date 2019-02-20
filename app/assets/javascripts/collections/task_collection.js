@@ -1,6 +1,6 @@
-var Task = require('models/task');
+import Task from '../models/task';
 
-module.exports = Backbone.Collection.extend({
+const TaskCollection = Backbone.Collection.extend({
   model: Task,
 
   url: function() {
@@ -13,3 +13,5 @@ module.exports = Backbone.Collection.extend({
     });
   }
 });
+
+export default TaskCollection;

@@ -1,6 +1,6 @@
-var SharedModelMethods = require('mixins/shared_model_methods');
+import SharedModelMethods from '../mixins/shared_model_methods';
 
-var Task = module.exports = Backbone.Model.extend({
+const Task = Backbone.Model.extend({
   defaults: {
     done: false
   },
@@ -21,3 +21,5 @@ var Task = module.exports = Backbone.Model.extend({
 });
 
 _.defaults(Task.prototype, SharedModelMethods);
+
+export default Task;

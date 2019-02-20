@@ -1,6 +1,6 @@
-var SharedModelMethods = require('mixins/shared_model_methods');
+import SharedModelMethods from '../mixins/shared_model_methods';
 
-var Activity = module.exports = Backbone.Model.extend({
+const Activity = Backbone.Model.extend({
   defaults: {
     name: 'activity',
     date: '',
@@ -42,3 +42,5 @@ var Activity = module.exports = Backbone.Model.extend({
 });
 
 _.defaults(Activity.prototype, SharedModelMethods);
+
+export default Activity;

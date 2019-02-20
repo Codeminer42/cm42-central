@@ -1,4 +1,4 @@
-var TaskCollection = require('collections/task_collection');
+import TaskCollection from 'collections/task_collection';
 
 describe('TaskCollection', function() {
 

@@ -1,6 +1,5 @@
 
 import React from 'react';
-import jasmineEnzyme from 'jasmine-enzyme';
 import { shallow, mount } from 'enzyme';
 
 import Checkbox from 'components/forms/Checkbox';
@@ -12,7 +11,6 @@ describe('<Task />', function() {
   let task;
 
   beforeEach(function() {
-    jasmineEnzyme();
     sinon.stub(I18n, 't');
     task = new Task({name: 'Test Task', id: 5});
   });
@@ -55,7 +53,7 @@ describe('<Task />', function() {
       const wrapper = mount(
         <TaskComponent task={task} disabled={false} />
       );
-      expect(wrapper.find('.delete-btn')).toBePresent();
+      expect(wrapper.find('.delete-btn')).toExist();
     });
 
   });
@@ -66,7 +64,7 @@ describe('<Task />', function() {
       const wrapper = mount(
         <TaskComponent task={task} disabled={true} />
       );
-      expect(wrapper.find('.delete-btn')).not.toBePresent();
+      expect(wrapper.find('.delete-btn')).not.toExist();
     });
 
   });

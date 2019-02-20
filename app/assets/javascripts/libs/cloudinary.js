@@ -1,5 +1,5 @@
-require('cloudinary_js/js/jquery.ui.widget');
-require('cloudinary_js/js/jquery.iframe-transport');
-require('cloudinary_js/js/jquery.fileupload');
-require('cloudinary_js');
+import 'cloudinary_js/js/jquery.ui.widget';
+import 'cloudinary_js/js/jquery.iframe-transport';
+import 'cloudinary_js/js/jquery.fileupload';
+import 'cloudinary_js';
 

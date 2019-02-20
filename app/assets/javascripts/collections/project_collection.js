@@ -1,6 +1,6 @@
 import Project from 'models/project';
 
-export default Backbone.Collection.extend({
+const ProjectCollection = Backbone.Collection.extend({
   model: Project,
   url: '/projects',
 
@@ -22,3 +22,5 @@ export default Backbone.Collection.extend({
     );
   }
 });
+
+export default ProjectCollection;

@@ -1,17 +1,14 @@
-import jasmineEnzyme from 'jasmine-enzyme';
 import React from 'react';
-import { shallow, mount, render } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
 import ProjectSearch from 'components/projects/ProjectSearch';
 import ProjectList from 'components/projects/ProjectList';
-import ProjectCard from 'components/projects/ProjectCard';
 import ProjectCollection from 'collections/project_collection';
 import User from 'models/user';
 
 describe('<ProjectSearch />', () => {
   var defaultProps, projects, user, handleSearch;
 
-  beforeEach(jasmineEnzyme);
   beforeEach(() => {
     user = {
       "user": {
@@ -46,16 +43,16 @@ describe('<ProjectSearch />', () => {
     const wrapper = shallow(<ProjectSearch {...defaultProps} />);
     expect(wrapper.contains([
       <ProjectList
-        title={ I18n.t('projects.mine') }
-        projects={ defaultProps.projects.joined }
-        user={ defaultProps.user }
-        joined={ true }
+        title={I18n.t('projects.mine')}
+        projects={defaultProps.projects.joined}
+        user={defaultProps.user}
+        joined={true}
       />,
       <ProjectList
-        title={ I18n.t('projects.not_member_of') }
-        projects={ defaultProps.projects.unjoined }
-        user={ defaultProps.user }
-        joined={ false }
+        title={I18n.t('projects.not_member_of')}
+        projects={defaultProps.projects.unjoined}
+        user={defaultProps.user}
+        joined={false}
       />
     ])).toBe(true);
   });
@@ -63,27 +60,28 @@ describe('<ProjectSearch />', () => {
   it('should select options', () => {
     const wrapper = mount(<ProjectSearch {...defaultProps} />);
     expect(wrapper.contains([
-      <option key={ 'not_archived' } value={ 'not_archived' }>{ I18n.t('not_archived') }</option>,
-      <option key={ 'archived' } value={ 'archived' }>{ I18n.t('archived') }</option>,
-      <option key={ 'all_projects' } value={ 'all_projects' }>{ I18n.t('all_projects') }</option>
+      <option key={'not_archived'} value={'not_archived'}>{I18n.t('not_archived')}</option>,
+      <option key={'archived'} value={'archived'}>{I18n.t('archived')}</option>,
+      <option key={'all_projects'} value={'all_projects'}>{I18n.t('all_projects')}</option>
     ])).toBe(true);
   });
 
   it('should change the visibleProjects state', () => {
     const wrapper = mount(<ProjectSearch {...defaultProps} />);
+    const select = wrapper.find('select');
 
-    wrapper.find('select').node.value = 'all_projects';
-    wrapper.find('select').simulate('change');
+    select.getDOMNode().value = 'all_projects';
+    select.simulate('change');
 
     expect(wrapper.state('visibleProjects').joined.projects.length).toBe(1);
 
-    wrapper.find('select').node.value = 'archived';
-    wrapper.find('select').simulate('change');
+    select.getDOMNode().value = 'archived';
+    select.simulate('change');
 
     expect(wrapper.state('visibleProjects').joined.projects.length).toBe(0);
 
-    wrapper.find('select').node.value = 'not_archived';
-    wrapper.find('select').simulate('change');
+    select.getDOMNode().value = 'not_archived';
+    select.simulate('change');
 
     expect(wrapper.state('visibleProjects').joined.projects.length).toBe(1);
   });

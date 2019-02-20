@@ -1,5 +1,7 @@
-module.exports = Backbone.View.extend({
-  template: require('templates/column.ejs'),
+import columnTemplate from 'templates/column.ejs';
+
+const ColumnView = Backbone.View.extend({
+  template: columnTemplate,
 
   events: {
     'click a.toggle-title': 'toggleAll',
@@ -64,3 +66,5 @@ module.exports = Backbone.View.extend({
     return this.$el.is(':hidden');
   }
 });
+
+export default ColumnView;

@@ -1,4 +1,4 @@
-var UserCollection = require('collections/user_collection');
+import UserCollection from 'collections/user_collection';
 
 describe('UserCollection', function() {
 

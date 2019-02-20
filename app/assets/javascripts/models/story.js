@@ -1,9 +1,9 @@
-var ActivityCollection = require('collections/activity_collection');
-var NoteCollection = require('collections/note_collection');
-var TaskCollection = require('collections/task_collection');
-var SharedModelMethods = require('mixins/shared_model_methods');
+import ActivityCollection from '../collections/activity_collection';
+import NoteCollection from '../collections/note_collection';
+import TaskCollection from '../collections/task_collection';
+import SharedModelMethods from '../mixins/shared_model_methods';
 
-var Story = module.exports = Backbone.Model.extend({
+const Story = Backbone.Model.extend({
   defaults: {
     events: [],
     documents: [],
@@ -350,3 +350,5 @@ var Story = module.exports = Backbone.Model.extend({
 });
 
 _.defaults(Story.prototype, SharedModelMethods);
+
+export default Story;

@@ -1,6 +1,8 @@
-module.exports = Backbone.View.extend({
+import noteTemplate from 'templates/note.ejs';
 
-  template: require('templates/note.ejs'),
+const NoteView = Backbone.View.extend({
+
+  template: noteTemplate,
 
   tagName: 'div',
 
@@ -21,3 +23,5 @@ module.exports = Backbone.View.extend({
     return false;
   }
 });
+
+export default NoteView;

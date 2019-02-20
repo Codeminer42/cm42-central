@@ -1,6 +1,6 @@
-var Story = require('models/story');
+import Story from '../models/story';
 
-module.exports = Backbone.Collection.extend({
+const StoryCollection = Backbone.Collection.extend({
   model: Story,
 
   initialize: function() {
@@ -111,3 +111,5 @@ module.exports = Backbone.Collection.extend({
     });
   }
 });
+
+export default StoryCollection;

@@ -66,7 +66,7 @@ describe("iteration", function() {
     describe("with empty array of stories", function() {
       it("should return an empty array of sprints", function() {
         const stories = [];
-        sprints = Iteration.groupBySprints(
+        const sprints = Iteration.groupBySprints(
           stories,
           this.project,
           this.initialSprintNumber
@@ -93,13 +93,13 @@ describe("iteration", function() {
             storyType: "feature"
           }
         ];
-        
+
         const sprints = Iteration.groupBySprints(
           stories,
           this.project,
           this.initialSprintNumber
         );
-       
+
         expect(sprints.length).toEqual(1);
       });
     });
@@ -136,7 +136,7 @@ describe("iteration", function() {
           this.project,
           this.initialSprintNumber
         );
-        
+
         expect(sprints.length).toEqual(3);
       });
     });

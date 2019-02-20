@@ -1,4 +1,3 @@
-import jasmineEnzyme from 'jasmine-enzyme';
 import React from 'react';
 import { mount } from 'enzyme';
 
@@ -8,7 +7,6 @@ import StoryLink from 'components/stories/StoryLink';
 describe('<StoryDescription />', function() {
 
   beforeEach(function() {
-    jasmineEnzyme();
     sinon.stub(window.md, 'makeHtml');
     this.story = {id: 5, description: 'Description'};
   });
@@ -56,7 +54,7 @@ describe('<StoryDescription />', function() {
       />
     );
     expect(window.md.makeHtml).toHaveBeenCalledWith('Description <a data-story-id="9"></a>');
-    expect(wrapper.find(StoryLink)).toHaveProp('story', linkedStory);
+    expect(wrapper.find(StoryLink).prop('story')).toBe(linkedStory);
   });
 
   it("should render markdown transformed as html", function () {
@@ -73,7 +71,7 @@ describe('<StoryDescription />', function() {
       />
     );
     expect(window.md.makeHtml).toHaveBeenCalledWith('# Header test');
-    expect(wrapper.find('h1')).toBePresent();
+    expect(wrapper.find('h1')).toExist();
     expect(wrapper.find('h1').text()).toContain('Header test');
   })
 });

@@ -1,6 +1,6 @@
-require('./globals');
-require('./cloudinary');
-require('./jquery_plugins');
-require('./backbone_plugins');
-require('vendor/date.format');
-require('bootstrap-sass');
+import './globals';
+import './cloudinary';
+import './jquery_plugins';
+import './backbone_plugins';
+import 'vendor/date.format';
+import 'bootstrap-sass';

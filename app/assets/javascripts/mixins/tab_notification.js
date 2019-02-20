@@ -1,5 +1,5 @@
 
-var TabNotification = module.exports = {
+const TabNotification = {
   changeTitle: function(title, documentStatus) {
     var notificationTitle = ' \u2733 ' + title;
 
@@ -16,3 +16,5 @@ var TabNotification = module.exports = {
     document.title = title;
   }
 };
+
+export default TabNotification;

@@ -1,10 +1,8 @@
-import jasmineEnzyme from 'jasmine-enzyme';
 import React from 'react';
 import { mount } from 'enzyme';
 import StoryAttachment from 'components/story/StoryAttachment';
 
 describe('<StoryAttachment />', function() {
-
   const ATTACHINARY_OPTIONS = {
     "attachinary":{
       "accessible":true,"accept":["raw","jpg","png","psd","docx","xlsx","doc","xls"],"maximum":10,"single":false,"scope":"documents","plural":"documents","singular":"document","files":[]},
@@ -26,16 +24,12 @@ describe('<StoryAttachment />', function() {
       />,
   );
 
-  beforeEach(function() {
-    jasmineEnzyme();
-  });
-
   it('should render a input', function() {
-    expect(wrapper.find('.attachinary-input')).toBePresent();
+    expect(wrapper.find('.attachinary-input')).toExist();
   });
 
   it('should render a progress bar', function() {
-    expect(wrapper.find('.attachinary_progress_bar')).toBePresent();
+    expect(wrapper.find('.attachinary_progress_bar')).toExist();
   });
 
 });

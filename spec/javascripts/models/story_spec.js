@@ -1,5 +1,5 @@
-var Story = require('models/story');
-var User = require('models/user');
+import Story from 'models/story';
+import User from 'models/user';
 
 describe('Story', function() {
 
@@ -451,10 +451,13 @@ describe('Story', function() {
   });
 
   describe('humanAttributeName', function() {
-
     beforeEach(function() {
-      I18n = {t: sinon.stub()};
+      sinon.stub(I18n, 't');
       I18n.t.withArgs('foo_bar').returns('Foo bar');
+    });
+
+    afterEach(() => {
+      I18n.t.restore();
     });
 
     it("returns the translated attribute name", function() {

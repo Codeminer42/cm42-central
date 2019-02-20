@@ -1,6 +1,7 @@
-var EpicBarView = require('./epic_bar_view');
+import EpicBarView from './epic_bar_view';
+import StoryView from './story_view';
 
-module.exports = Backbone.View.extend({
+const EpicView = Backbone.View.extend({
 
   initialize: function(options) {
     this.options = options;
@@ -14,8 +15,6 @@ module.exports = Backbone.View.extend({
   },
 
   addStory: function(story, column) {
-    var StoryView = require('./story_view');
-
     var view = new StoryView({model: story, isSearchResult: true}).render();
     this.appendViewToColumn(view, column);
     view.setFocus();
@@ -67,3 +66,5 @@ module.exports = Backbone.View.extend({
     });
   },
 });
+
+export default EpicView;

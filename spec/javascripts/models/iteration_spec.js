@@ -1,4 +1,4 @@
-var Iteration = require('models/iteration');
+import Iteration from 'models/iteration';
 
 describe("iteration", function() {
 

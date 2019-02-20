@@ -1,4 +1,4 @@
-var Activity = require('models/activity');
+import Activity from 'models/activity';
 
 describe("Activity", function() {
 
@@ -23,12 +23,12 @@ describe("Activity", function() {
   describe('humanActionName', function() {
 
     beforeEach(function() {
-      I18n = {t: sinon.stub()};
+      sinon.stub(I18n, 't');
       I18n.t.withArgs('update').returns('updated');
     });
 
     afterEach(function() {
-      sinon.restore(I18n);
+      I18n.t.restore();
     });
 
     it("returns the translated action name", function() {

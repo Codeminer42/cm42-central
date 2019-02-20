@@ -1,7 +1,6 @@
-var ProjectVelocityViewInjector = require('inject-loader!views/project_velocity_view');
+import ProjectVelocityViewInjector from 'inject-loader!views/project_velocity_view';
 
 describe('ProjectVelocityView', function() {
-
   beforeEach(function() {
     this.model = {};
     var overrideView = this.overrideView = {};
@@ -14,7 +13,7 @@ describe('ProjectVelocityView', function() {
 
     var ProjectVelocityView = ProjectVelocityViewInjector({
       './project_velocity_override_view': ProjectVelocityOverrideViewStub
-    });
+    }).default;
 
     sinon.stub(ProjectVelocityView.prototype, 'listenTo');
 
@@ -100,7 +99,7 @@ describe('ProjectVelocityView', function() {
 
       it("adds the fake class to $el", function() {
         this.subject.setFakeClass(this.model);
-        expect(this.subject.$el).toHaveClass('fake');
+        expect(this.subject.$el[0]).toHaveClass('fake');
       });
 
     });
@@ -113,7 +112,7 @@ describe('ProjectVelocityView', function() {
 
       it("adds the fake class to $el", function() {
         this.subject.setFakeClass(this.model);
-        expect(this.subject.$el).not.toHaveClass('fake');
+        expect(this.subject.$el[0]).not.toHaveClass('fake');
       });
 
     });
