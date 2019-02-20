@@ -2,10 +2,10 @@
 # assumption that that is what we get passed.
 ActionController::Renderers.add :csv do |stories, options|
   number_of_extra_columns = {}
-  number_of_extra_columns[:notes] = stories.map{ |story| story.notes.length }.max
-  number_of_extra_columns[:documents] = stories.map{ |story| story.documents.length }.max
-  number_of_extra_columns[:tasks] = stories.map{ |story| story.tasks.length }.max
-  
+  number_of_extra_columns[:notes] = stories.map{ |story| story.notes.length }.max || 0
+  number_of_extra_columns[:documents] = stories.map{ |story| story.documents.length }.max || 0
+  number_of_extra_columns[:tasks] = stories.map{ |story| story.tasks.length }.max || 0
+
   filename = options[:filename] || 'export.csv'
   headers = Story.csv_headers.dup
   headers.concat(extra_headers(number_of_extra_columns))
