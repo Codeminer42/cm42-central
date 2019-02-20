@@ -2,6 +2,22 @@
 
 ## [Unreleased]
 
+### Update
+- Front-End Dependencies
+  - Webpack from 2.6.1 to 4.29.1
+  - React from 15.4.2 to 16.8.0
+  - Redux from 3.7.2 to 4.0.1
+  - Babel from 6.25.0 to 7.2.2
+- Test Dependencies
+  - Enzyme from 2.7.1 to 3.8.0
+  - Jasmine from 2.5.1 to 3.3.0
+  - Karma from 1.3.0 to 4.0.0
+  - Sinon from 2.0.0 to 7.2.3
+
+### Fixed
+- [ V2 ] Board style to permit scrolling
+- Fix alert favicon in production environment
+
 ### Added
 - [ V2 ] Story:
   - Attachments:
