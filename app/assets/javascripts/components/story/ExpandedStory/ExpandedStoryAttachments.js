@@ -98,7 +98,7 @@ class ExpandedStoryAttachments extends React.Component {
   }
 }
 
-ExpandedStoryAttachments.PropTypes = {
+ExpandedStoryAttachments.propTypes = {
   story: PropTypes.object.isRequired,
   onDelete: PropTypes.func.isRequired,
   onAdd: PropTypes.func.isRequired

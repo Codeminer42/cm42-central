@@ -27,7 +27,7 @@ const AttachmentsList = ({ files, onDelete }) =>
     }
   </div>
 
-AttachmentsList.PropTypes = {
+AttachmentsList.propTypes = {
   files: PropTypes.arrayOf(PropTypes.object).isRequired,
   onDelete: PropTypes.func.isRequired
 }
