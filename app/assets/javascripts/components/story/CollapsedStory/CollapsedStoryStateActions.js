@@ -15,21 +15,30 @@ const StateAction = {
   unstarted: ["start"]
 };
 
-const CollapsedStoryStateActions = ({ story }) => (
-  <div className='Story__actions'> 
-    {
-      isStoryNotEstimated(story.storyType, story.estimate) ?
-        <CollapsedStoryEstimateButton />
-        : StoryActionFor(story.state).map((stateAction) =>
-          <CollapsedStoryStateButton action={stateAction} key={stateAction} />
-        )
-    }
-  </div>
-);
+class CollapsedStoryStateActions extends React.Component {
+  disableToggle(event) {
+    event.stopPropagation();
+  }
+
+  render() {
+    const { story, onUpdate } = this.props;
+
+    return (
+      <div className='Story__actions' onClick={this.disableToggle}>
+        {
+          isStoryNotEstimated(story.storyType, story.estimate) ?
+            <CollapsedStoryEstimateButton onUpdate={((estimate) => onUpdate({ estimate }))} />
+            : StoryActionFor(story.state).map((stateAction) =>
+              <CollapsedStoryStateButton action={stateAction} key={stateAction} />
+            )
+        }
+      </div>
+    );
+  }
+};
 
 CollapsedStoryStateActions.propTypes = {
   story: PropTypes.object.isRequired
 };
-
 
 export default CollapsedStoryStateActions;

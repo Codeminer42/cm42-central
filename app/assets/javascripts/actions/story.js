@@ -47,6 +47,19 @@ export const setLoadingStory = (id) => ({
   id
 });
 
+export const updateCollapsedStory = (storyId, projectId, newAttributes) =>
+  (dispatch, getState, { Story }) => {
+    const { stories } = getState();
+    const story = stories.find((story) => story.id === storyId);
+
+    const newStory = { ...story, ...newAttributes };
+
+    return Story.update(newStory, projectId)
+      .then((story) => {
+        dispatch(updateStorySuccess(story));
+      });
+  }
+
 export const saveStory = (storyId, projectId, options) =>
   (dispatch, getState, { Story }) => {
     const { stories } = getState();

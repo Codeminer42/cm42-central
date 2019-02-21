@@ -8,9 +8,10 @@ import CollapsedStoryStateActions from './CollapsedStoryStateActions';
 import CollapsedStoryInfo from './CollapsedStoryInfo';
 import StoryIcon from '../StoryIcon';
 import * as StoryModel from '../../../models/beta/story';
+import { updateCollapsedStory } from '../../../actions/story';
+import { connect } from 'react-redux';
 
 const classNameStory = (storyType, estimate) => {
-
   const isStoryNotEstimated = StoryModel.isStoryNotEstimated(storyType, estimate);
   const isRelease = StoryModel.isRelease(storyType);
 
@@ -22,8 +23,8 @@ const classNameStory = (storyType, estimate) => {
 };
 
 export const CollapsedStory = (props) => {
-  const { onToggle, story } = props;
-  
+  const { onToggle, story, updateCollapsedStory, project } = props;
+
   return (
     <div
       className={`Story Story--collapsed ${classNameStory(story.storyType, story.estimate)}`}
@@ -39,7 +40,10 @@ export const CollapsedStory = (props) => {
 
       <CollapsedStoryInfo story={story} />
 
-      <CollapsedStoryStateActions story={story} />
+      <CollapsedStoryStateActions story={story}
+        onUpdate={(newAttributes) =>
+          updateCollapsedStory(story.id, project.id, newAttributes)}
+      />
     </div>
   );
 };
@@ -48,4 +52,7 @@ CollapsedStory.propTypes = {
   story: PropTypes.object.isRequired
 };
 
-export default CollapsedStory;
+export default connect(
+  ({ project }) => ({ project }),
+  { updateCollapsedStory }
+)(CollapsedStory);
