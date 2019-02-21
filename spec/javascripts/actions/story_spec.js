@@ -124,14 +124,15 @@ describe('saveStory', () => {
     };
 
     const FakeStory = {
-      update: sinon.stub().rejects(error)
+      update: sinon.stub().rejects(error),
+      isNew: sinon.stub().returns(false)
     };
 
     const fakeDispatch = sinon.stub().resolves({});
     const fakeGetState = sinon.stub();
     fakeGetState.returns({ stories: [editedStory] });
 
-    Story.updateStory(editedStory.id, projectId)(fakeDispatch, fakeGetState, { Story: FakeStory }).then(() => {
+    Story.saveStory(editedStory.id, projectId)(fakeDispatch, fakeGetState, { Story: FakeStory }).then(() => {
       expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(editedStory.id, error));
 
       done();

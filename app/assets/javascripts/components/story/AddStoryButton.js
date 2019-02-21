@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const AddStoryButton = ({ onAdd }) => (
   <button
@@ -9,5 +10,9 @@ const AddStoryButton = ({ onAdd }) => (
     {I18n.t('add story')}
   </button>
 );
+
+AddStoryButton.propTypes = {
+  onAdd: PropTypes.func.isRequired
+};
 
 export default AddStoryButton;

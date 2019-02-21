@@ -19,7 +19,7 @@ describe('<ExpandedStoryControls />', () => {
 
       const wrapper = shallow(
         <ExpandedStoryControls
-          canSave={true}
+          canSave
           onSave={onSave}
         />
       );
@@ -44,7 +44,7 @@ describe('<ExpandedStoryControls />', () => {
 
       const wrapper = shallow(
         <ExpandedStoryControls
-          canDelete={true}
+          canDelete
           onDelete={onDelete}
         />
       );
@@ -126,7 +126,7 @@ describe('<ExpandedStoryControls />', () => {
         wrapper = shallow(
           <ExpandedStoryControls
             canDelete={false}
-            canSave={true}
+            canSave
           />
         );
       });
@@ -156,7 +156,7 @@ describe('<ExpandedStoryControls />', () => {
       beforeEach(() => {
         wrapper = shallow(
           <ExpandedStoryControls
-            canDelete={true}
+            canDelete
           />
         );
       });
@@ -177,7 +177,7 @@ describe('<ExpandedStoryControls />', () => {
         wrapper = shallow(
           <ExpandedStoryControls
             canSave={false}
-            canDelete={true}
+            canDelete
           />
         );
       });
@@ -207,7 +207,7 @@ describe('<ExpandedStoryControls />', () => {
       beforeEach(() => {
         wrapper = shallow(
           <ExpandedStoryControls
-            canSave={true}
+            canSave
           />
         );
       });

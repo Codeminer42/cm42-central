@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const Column = ({ title, children, renderAction }) => (
   <div className="Column">
@@ -14,6 +15,11 @@ const Column = ({ title, children, renderAction }) => (
     <div className="Column__body">{children}</div>
   </div>
 );
+
+Column.propTypes = {
+  title: PropTypes.string.isRequired,
+  renderAction: PropTypes.func
+}
 
 Column.defaultProps = {
   renderAction: () => null

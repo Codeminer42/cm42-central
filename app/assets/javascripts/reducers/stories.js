@@ -1,8 +1,8 @@
 import actionTypes from 'actions/actionTypes';
 import {
-  toggleStory, editStory, updateStory, newStory,
-  setLoadingStory, storyFailure, removeEmptyStory,
-  createNewStory, isNew, isCreating, creatingInAnotherColumn
+  toggleStory, editStory, updateStory, setLoadingStory,
+  storyFailure, removeEmptyStory, createNewStory,
+  isNew, isCreating, creatingInAnotherColumn
 } from 'models/beta/story';
 import * as Note from 'models/beta/note';
 import * as Task from 'models/beta/task';

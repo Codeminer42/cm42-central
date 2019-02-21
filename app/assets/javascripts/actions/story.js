@@ -56,7 +56,8 @@ export const saveStory = (storyId, projectId, options) =>
       return Story.post(story._editing, projectId)
         .then((story) =>
           dispatch(addStory(story))
-        );
+        )
+        .catch((error) => dispatch(storyFailure(story.id, error)));
     };
 
     if (story._editing._isDirty) {

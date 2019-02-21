@@ -55,7 +55,11 @@ class ExpandedStoryLabels extends React.Component {
 };
 
 ExpandedStoryLabels.propTypes = {
-  story: PropTypes.object.isRequired,
+  story: PropTypes.shape({
+    _editing: PropTypes.shape({
+      labels: PropTypes.array.isRequired
+    })
+  }),
   onAddLabel: PropTypes.func.isRequired,
   onRemoveLabel: PropTypes.func.isRequired,
   projectLabels: PropTypes.arrayOf(PropTypes.object).isRequired
