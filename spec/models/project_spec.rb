@@ -3,6 +3,11 @@ require 'rails_helper'
 describe Project, type: :model do
   subject { build :project }
 
+  describe 'associations' do
+    it { is_expected.to belong_to(:tag_group) }
+    it { is_expected.to have_many(:changesets) }
+  end
+
   describe '#as_json' do
     subject { create :project }
 
@@ -60,6 +65,19 @@ describe Project, type: :model do
       end
 
       its(:last_changeset_id) { should == changeset.id }
+    end
+  end
+
+  context 'friendly_id' do
+    it 'should create a slug' do
+      project = create(:project, name: 'Test Project')
+      expect(project.slug).to eq('test-project')
+    end
+
+    it 'should return a message error when a slug is reserved word' do
+      project = build(:project, name: 'new')
+      expect(project.save).to be_falsey
+      expect(project.errors.messages).to include(friendly_id: ['is reserved'])
     end
   end
 end

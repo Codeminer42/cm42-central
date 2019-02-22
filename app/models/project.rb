@@ -6,7 +6,7 @@ class Project < ApplicationRecord
   include Central::Support::ProjectConcern::CSV::InstanceMethods
 
   extend FriendlyId
-  friendly_id :name, use: :slugged
+  friendly_id :name, use: :slugged, reserved_words: %w[new edit].freeze
 
   MAX_MEMBERS_PER_CARD = 4
 
