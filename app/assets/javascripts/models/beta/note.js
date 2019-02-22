@@ -3,14 +3,12 @@ import changeCase from 'change-object-case';
 
 export const destroy = (projectId, storyId, noteId) =>
   httpService
-    .delete(`/projects/${projectId}/stories/${storyId}/notes/${noteId}`)
-    .catch(error => console.error(error));
+    .delete(`/projects/${projectId}/stories/${storyId}/notes/${noteId}`);
 
 export const post = (projectId, storyId, note) =>
   httpService
     .post(`/projects/${projectId}/stories/${storyId}/notes`, { note })
-    .then(({ data }) => changeCase.camelKeys(data, { recursive: true, arrayRecursive: true }))
-    .catch(error => console.error(error));
+    .then(({ data }) => changeCase.camelKeys(data, { recursive: true, arrayRecursive: true }));
 
 export const addNote = (story, note) => (
   {

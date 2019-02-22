@@ -9,28 +9,19 @@ export const post = (projectId, storyId, task) => {
   }
   return httpService
     .post(`/projects/${projectId}/stories/${storyId}/tasks`, newTask)
-    .then(({ data }) => changeCase.camelKeys(data, { recursive: true, arrayRecursive: true }))
-    .catch((error) => {
-      console.log(error);
-    });
+    .then(({ data }) => changeCase.camelKeys(data, { recursive: true, arrayRecursive: true }));
 };
 
 export const toggle = (projectId, storyId, taskId, status) => {
   const taskStatus = changeCase.snakeKeys(status);
   return httpService
     .put(`/projects/${projectId}/stories/${storyId}/tasks/${taskId}/`, taskStatus)
-    .then(({ data }) => changeCase.camelKeys(data, { recursive: true, arrayRecursive: true }))
-    .catch((error) => {
-      console.log(error);
-    });
+    .then(({ data }) => changeCase.camelKeys(data, { recursive: true, arrayRecursive: true }));
 };
 
 export const destroy = (projectId, storyId, taskId) => {
   return httpService
-    .delete(`/projects/${projectId}/stories/${storyId}/tasks/${taskId}`)
-    .catch((error) => {
-      console.log(error);
-    });
+    .delete(`/projects/${projectId}/stories/${storyId}/tasks/${taskId}`);
 };
 
 export const addTask = (story, task) => (
