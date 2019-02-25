@@ -7,8 +7,8 @@ describe StoryOperations do
   end
 
   let!(:membership) { create(:membership) }
-  let(:user)        { User.first }
-  let(:project)     { Project.first }
+  let(:user)        { membership.user }
+  let(:project)     { membership.project }
   let(:story)       { project.stories.build(story_params) }
 
   describe '::Create' do

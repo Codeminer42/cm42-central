@@ -138,7 +138,6 @@ describe 'Teams', js: true do
         visit teams_path
         sleep 0.5
 
-        sleep 0.5
         click_link 'Unarchive'
 
         expect(page).to have_text(I18n.t('teams.successfully_unarchived'))
@@ -148,7 +147,6 @@ describe 'Teams', js: true do
         visit teams_path
         sleep 0.5
 
-        sleep 0.5
         click_link 'Unarchive'
 
         expect(find('.teams--not-archived')).to have_text(team_name)
