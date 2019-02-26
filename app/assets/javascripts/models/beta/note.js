@@ -1,5 +1,6 @@
 import httpService from '../../services/httpService';
 import changeCase from 'change-object-case';
+import { setLoadingValue } from './story';
 
 export const destroy = (projectId, storyId, noteId) =>
   httpService
@@ -10,19 +11,17 @@ export const post = (projectId, storyId, note) =>
     .post(`/projects/${projectId}/stories/${storyId}/notes`, { note })
     .then(({ data }) => changeCase.camelKeys(data, { recursive: true, arrayRecursive: true }));
 
-export const addNote = (story, note) => (
-  {
-    ...story,
-    notes: [
-      ...story.notes,
-      note
-    ]
-  }
-);
+export const addNote = (story, note) => ({
+  ...story,
+  _editing: setLoadingValue(story._editing, false),
+  notes: [
+    ...story.notes,
+    note
+  ]
+});
 
-export const deleteNote = (story, noteId) => (
-  {
-    ...story,
-    notes: story.notes.filter(note => note.id !== noteId)
-  }
-);
+export const deleteNote = (story, noteId) => ({
+  ...story,
+  _editing: setLoadingValue(story._editing, false),
+  notes: story.notes.filter(note => note.id !== noteId)
+});

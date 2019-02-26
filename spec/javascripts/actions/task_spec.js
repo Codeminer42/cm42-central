@@ -1,4 +1,5 @@
 import * as Task from 'actions/task';
+import * as Story from 'actions/story';
 
 describe('Task Actions', () => {
   describe('AddTask', () => {
@@ -35,6 +36,23 @@ describe('Task Actions', () => {
           done();
         });
     });
+
+    it('dispatches storyFailure when promise fails', (done) => {
+      const error = { error: "boom" };
+
+      const FakeTask = {
+        post: sinon.stub().rejects(error)
+      };
+
+      const fakeDispatch = sinon.stub().resolves({});
+
+      Task.createTask(projectId, story.id, task)(fakeDispatch, null, { Task: FakeTask })
+        .then(() => {
+          expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(story.id, error));
+
+          done();
+        });
+    });
   });
 
   describe('deleteTask', () => {
@@ -67,6 +85,23 @@ describe('Task Actions', () => {
       Task.deleteTask(projectId, story.id, task.id)(fakeDispatch, null, { Task: FakeTask })
         .then(() => {
           expect(fakeDispatch).toHaveBeenCalledWith(Task.deleteTaskSuccess(task.id, story.id));
+
+          done();
+        });
+    });
+
+    it('dispatches storyFailure when promise fails', (done) => {
+      const error = { error: "boom" };
+
+      const FakeTask = {
+        destroy: sinon.stub().rejects(error)
+      };
+
+      const fakeDispatch = sinon.stub().resolves({});
+
+      Task.deleteTask(projectId, story.id, task)(fakeDispatch, null, { Task: FakeTask })
+        .then(() => {
+          expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(story.id, error));
 
           done();
         });

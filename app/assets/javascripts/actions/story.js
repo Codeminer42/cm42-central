@@ -15,6 +15,12 @@ export const updateStorySuccess = (story) => ({
   story
 });
 
+export const storyFailure = (id, error) => ({
+  type: actionTypes.STORY_FAILURE,
+  id,
+  error
+});
+
 export const deleteStorySuccess = (id) => ({
   type: actionTypes.DELETE_STORY_SUCCESS,
   id
@@ -26,27 +32,35 @@ export const editStory = (id, newAttributes) => ({
   newAttributes
 });
 
+export const setLoadingStory = (id) => ({
+  type: actionTypes.SET_LOADING_STORY,
+  id
+});
+
 export const updateStory = (storyId, projectId, options) =>
   (dispatch, getState, { Story }) => {
     const { stories } = getState();
     const story = stories.find((story) => story.id === storyId);
 
     if (story._editing._isDirty) {
+      dispatch(setLoadingStory(story.id))
       return Story.update(story._editing, projectId, options)
         .then((story) => {
-          dispatch(updateStorySuccess(story));
-        });
+          dispatch(updateStorySuccess(story))
+        })
+        .catch((error) => dispatch(storyFailure(story.id, error)))
     }
     return dispatch(toggleStory(story.id));
   };
 
 export const deleteStory = (storyId, projectId) =>
-  (dispatch, getState, { Story }) =>
-    Story.deleteStory(storyId, projectId)
+  (dispatch, getState, { Story }) => {
+    dispatch(setLoadingStory(storyId))
+    return Story.deleteStory(storyId, projectId)
       .then(() => dispatch(deleteStorySuccess(storyId)))
-      .catch(
-        error => {
-          // TODO: dispatch an action to notify user on error
-          alert(error.message);
-        }
-      );
+      .catch((error) => {
+        dispatch(storyFailure(storyId, error))
+        // TODO: dispatch an action to notify user on error
+        alert(error.message);
+      });
+  }
