@@ -28,7 +28,7 @@ describe 'Notes' do
         click_on 'Add note'
       end
 
-      wait_for_ajax
+      wait_spinner
       expect(find('#in_progress .story .notelist .note')).to have_content('Adding a new note')
     end
 
@@ -46,7 +46,7 @@ describe 'Notes' do
         end
       end
 
-      wait_for_ajax
+      wait_spinner
       expect(find('#in_progress .story')).not_to have_content('Delete me please')
     end
   end

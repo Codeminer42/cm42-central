@@ -114,19 +114,18 @@ describe 'Stories' do
         click_on 'Save'
       end
 
-      wait_for_ajax
       # Estimate the story
       within(chilly_bin_column.find('.story')) do
         find('#estimate-1').click
         click_on 'start'
       end
 
-      wait_for_ajax
+      sleep 0.5
       within('#in_progress .story') do
         click_on 'finish'
-        wait_for_ajax
+        sleep 0.5
         click_on 'deliver'
-        wait_for_ajax
+        sleep 0.5
         accept_confirm do
           click_on 'accept'
         end
@@ -556,7 +555,6 @@ describe 'Stories' do
       wait_spinner
       wait_page_load
 
-      wait_for_ajax
       first(:link, 'epic2').click
 
       resultStory = find(story_search_result_selector(story3))

@@ -49,7 +49,7 @@ describe 'Teams', js: true do
           visit edit_team_path(user.teams.last)
 
           attach_file('Logo', Rails.root.join('spec', 'fixtures', 'blank.jpg'))
-          wait_for_ajax
+          wait_spinner
           click_button 'Update Team'
 
           expect(page).to have_text(I18n.t('teams.team_was_successfully_updated'))
