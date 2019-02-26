@@ -11,4 +11,17 @@ describe('<CollapsedStoryStateButton />', () => {
     expect(wrapper.text()).toEqual(I18n.translate('story.events.' + props.action));
     expect(wrapper).toHaveClassName(`Story__btn Story__btn--${props.action}`);
   });
+
+  it('calls onUpdate on click', () => {
+    const action = 'start';
+    const onUpdate = sinon.stub();
+
+    const wrapper = shallow(<CollapsedStoryStateButton
+      action={action}
+      onUpdate={onUpdate}
+    />);
+
+    wrapper.find('button').simulate('click');
+    expect(onUpdate).toHaveBeenCalled();
+  })
 });

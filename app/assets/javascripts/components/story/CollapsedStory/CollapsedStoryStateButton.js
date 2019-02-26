@@ -11,7 +11,8 @@ const CollapsedStoryStateButton = ({ action, onUpdate }) => (
 );
 
 CollapsedStoryStateButton.propTypes = {
-  action: PropTypes.string.isRequired
+  action: PropTypes.string.isRequired,
+  onUpdate: PropTypes.func.isRequired
 };
 
 export default CollapsedStoryStateButton;

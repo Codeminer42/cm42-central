@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import CollapsedStory from 'components/story/CollapsedStory/index';
+import { CollapsedStory } from 'components/story/CollapsedStory/index';
 import storyFactory from '../../../support/factories/storyFactory';
 
 describe('<CollapsedStory />', () => {

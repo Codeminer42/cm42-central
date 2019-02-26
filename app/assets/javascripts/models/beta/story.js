@@ -251,10 +251,6 @@ const emptyStory = {
   documents: [],
   tasks: [],
 };
-export const serialize = (story) => ({
-  ...story,
-  labels: Label.joinLabels(story.labels)
-});
 
 export const storyTransitions = {
   START  : 'start',

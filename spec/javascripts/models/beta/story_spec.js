@@ -511,4 +511,128 @@ describe('Story model', function () {
       expect(newStoryArray).toEqual(expectedArray);
     });
   });
+  describe('getNextState', () => {
+    describe('when the state is unscheduled', () => {
+      const state = 'unscheduled';
+
+      it('returns started when transition is start', () => {
+        const transition = 'start';
+        const expectedState = 'started'
+
+        expect(Story.getNextState(state, transition)).toBe(expectedState);
+      });
+
+      it('returns the same state when transition is invalid', () => {
+        const transition = 'invalidTransition';
+        const expectedState = 'unscheduled'
+
+        expect(Story.getNextState(state, transition)).toBe(expectedState);
+      });
+    });
+
+    describe('when the state is unstarted', () => {
+      const state = 'unstarted';
+
+      it('returns started when transition is start', () => {
+        const transition = 'start';
+        const expectedState = 'started'
+
+        expect(Story.getNextState(state, transition)).toBe(expectedState);
+      });
+
+      it('returns the same state when transition is invalid', () => {
+        const transition = 'invalidTransition';
+        const expectedState = 'unstarted'
+
+        expect(Story.getNextState(state, transition)).toBe(expectedState);
+      });
+    });
+
+    describe('when the state is started', () => {
+      const state = 'started';
+
+      it('returns finished when transition is finish', () => {
+        const transition = 'finish';
+        const expectedState = 'finished'
+
+        expect(Story.getNextState(state, transition)).toBe(expectedState);
+      });
+
+      it('returns the same state when transition is invalid', () => {
+        const transition = 'invalidTransition';
+        const expectedState = 'started'
+
+        expect(Story.getNextState(state, transition)).toBe(expectedState);
+      });
+    });
+
+    describe('when the state is finished', () => {
+      const state = 'finished';
+
+      it('returns delivered when transition is deliver', () => {
+        const transition = 'deliver';
+        const expectedState = 'delivered'
+
+        expect(Story.getNextState(state, transition)).toBe(expectedState);
+      });
+
+      it('returns the same state when transition is invalid', () => {
+        const transition = 'invalidTransition';
+        const expectedState = 'finished'
+
+        expect(Story.getNextState(state, transition)).toBe(expectedState);
+      });
+    });
+
+    describe('when the state is delivered', () => {
+      const state = 'delivered';
+
+      it('returns accepted when transition is accept', () => {
+        const transition = 'accept';
+        const expectedState = 'accepted'
+
+        expect(Story.getNextState(state, transition)).toBe(expectedState);
+      });
+
+      it('returns rejected when transition is reject', () => {
+        const transition = 'reject';
+        const expectedState = 'rejected'
+
+        expect(Story.getNextState(state, transition)).toBe(expectedState);
+      });
+
+      it('returns the same state when transition is invalid', () => {
+        const transition = 'invalidTransition';
+
+        expect(Story.getNextState(state, transition)).toBe(state);
+      });
+    });
+
+    describe('when the state is rejected', () => {
+      const state = 'rejected';
+
+      it('returns started when transition is restart', () => {
+        const transition = 'restart';
+        const expectedState = 'started'
+
+        expect(Story.getNextState(state, transition)).toBe(expectedState);
+      });
+
+      it('returns the same state when transition is invalid', () => {
+        const transition = 'invalidTransition';
+
+        expect(Story.getNextState(state, transition)).toBe(state);
+      });
+    });
+
+    describe("when the state is accepted", () => {
+      const state = 'accepted';
+
+      it('not change state', () => {
+        const transition = 'any';
+
+        expect(Story.getNextState(state, transition)).toBe(state);
+      });
+    });
+  });
 });
