@@ -68,6 +68,7 @@ es:
   reset_tour_success: "La excursión se restableció correctamente"
   reset_tour_fail: "Ha ocurrido un error, por favor intente otra vez"
   story destroy confirm: "¿Estás seguro de que quieres destruir esta historia?"
+  story unsaved changes: "¿Usted tiene cambios no guardados, está seguro de que desea cancelar?"
   stories_destroy_success: "Las historias fueron destruidas con éxito"
   stories_destroy_fail: "Las historias no se pudieron destruir debido a algunos errores de validación"
   update_stories_successfully: "Las historias se actualizaron con éxito"

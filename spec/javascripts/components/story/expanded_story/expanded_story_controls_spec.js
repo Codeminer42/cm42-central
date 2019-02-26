@@ -13,7 +13,7 @@ describe('<ExpandedStoryControls />', () => {
     });
   });
 
-  describe('when the user click on save', () => {
+  describe('when the user clicks on save', () => {
     it('triggers the update callback', () => {
       const onSave = sinon.spy();
 
@@ -30,12 +30,12 @@ describe('<ExpandedStoryControls />', () => {
     });
   });
 
-  describe('when the user click on delete', () => {
-    beforeEach(function() {
+  describe('when the user clicks on delete', () => {
+    beforeEach(() => {
       sinon.stub(window, 'confirm').returns(true);
     });
 
-    afterEach(function() {
+    afterEach(() => {
       window.confirm.restore();
     });
 
@@ -55,20 +55,65 @@ describe('<ExpandedStoryControls />', () => {
     });
   });
 
-  describe('when the user click on cancell', () => {
+  describe('when the user clicks on cancel', () => {
+    beforeEach(() => {
+      sinon.stub(window, 'confirm')
+    });
+
+    afterEach(() => {
+      window.confirm.restore();
+    });
+
     it('triggers the toggle callback', () => {
-      const onCancel = sinon.spy();
+      const handleCancel = sinon.spy();
 
       const wrapper = shallow(
         <ExpandedStoryControls
           readOnly={false}
-          onCancel={onCancel}
+          onCancel={handleCancel}
         />
       );
 
       wrapper.find('.cancel').simulate('click');
 
-      expect(onCancel).toHaveBeenCalled();
+      expect(handleCancel).toHaveBeenCalled();
+    });
+
+    describe('when there is unsaved changes', () => {
+      it('triggers a warning window ', () => {
+        const handleCancel = sinon.spy();
+
+        const wrapper = shallow(
+          <ExpandedStoryControls
+            readOnly={false}
+            isDirty={true}
+            onCancel={handleCancel}
+          />
+        );
+
+        wrapper.find('.cancel').simulate('click');
+
+        expect(window.confirm).toHaveBeenCalled();
+        expect(handleCancel).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('when no changes were made', () => {
+      it('does not trigger a warning window ', () => {
+        const handleCancel = sinon.spy();
+
+        const wrapper = shallow(
+          <ExpandedStoryControls
+            readOnly={false}
+            isDirty={false}
+            onCancel={handleCancel}
+          />
+        );
+
+        wrapper.find('.cancel').simulate('click');
+
+        expect(window.confirm).not.toHaveBeenCalled();
+      });
     });
   });
 

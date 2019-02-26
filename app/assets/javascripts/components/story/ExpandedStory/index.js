@@ -48,7 +48,8 @@ export const ExpandedStory = ({
       <div className="Story__loading"></div>
       <ExpandedStoryControls
         onCancel={onToggle}
-        onSave={() => updateStory(story.id, project.id)}
+        isDirty={story._editing._isDirty}
+        onSave={() => updateStory(story, project.id)}
         onDelete={() => deleteStory(story.id, project.id)}
         readOnly={Story.isAccepted(story)}
       />

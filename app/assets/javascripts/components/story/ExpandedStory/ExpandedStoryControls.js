@@ -1,33 +1,61 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const ExpandedStoryControls = ({ onCancel, onSave, onDelete, readOnly }) => {
-  return (
-    <div className="form-group Story__controls">
-      <input className="save"
-        onClick={onSave}
-        type="button"
-        value={I18n.t('save')}
-        disabled={readOnly}
-      />
+class ExpandedStoryControls extends Component {
+  constructor(props) {
+    super(props);
 
-      <input className="delete"
-        onClick={() => {
-          if (window.confirm(I18n.t('story destroy confirm'))){
-            onDelete();
-          }
-        }}
-        type="button"
-        value={I18n.t('delete')}
-        disabled={readOnly}
-      />
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+  }
 
-      <input className="cancel"
-        onClick={onCancel}
-        type="button"
-        value={I18n.t('cancel')}
-      />
-    </div>
-  );
+  handleDelete() {
+    const { onDelete } = this.props;
+
+    if (window.confirm(I18n.t('story destroy confirm'))){
+      onDelete();
+    }
+  }
+  
+  handleCancel() {
+    const { onCancel, isDirty } = this.props;
+
+    if (isDirty && !this.hasUnsavedChanges()) {
+      return;
+    }
+    onCancel();
+  }
+
+  hasUnsavedChanges() {
+    return window.confirm(I18n.t('story unsaved changes'));
+  }
+
+  render() {
+    const { onSave, readOnly } = this.props;
+
+    return (
+      <div className="form-group Story__controls">
+        <input className="save"
+          onClick={onSave}
+          type="button"
+          value={I18n.t('save')}
+          disabled={readOnly}
+        />
+
+        <input className="delete"
+          onClick={this.handleDelete}
+          type="button"
+          value={I18n.t('delete')}
+          disabled={readOnly}
+        />
+
+        <input className="cancel"
+          onClick={this.handleCancel}
+          type="button"
+          value={I18n.t('cancel')}
+        />
+      </div>
+    );
+  }
 };
 
 export default ExpandedStoryControls;

@@ -72,6 +72,7 @@ en:
   reset_tour_success: "Tour was successfully reset"
   reset_tour_fail: "An error has ocurred, please try again"
   story destroy confirm: "Are you sure you want to destroy this story?"
+  story unsaved changes: "You have unsaved changes, are you sure you want to cancel?"
   stories_destroy_success: "Stories were successfully destroyed"
   stories_destroy_fail: "Stories couldn't be destroyed due some validation errors"
   update_stories_successfully: "Stories were successfully updated"
