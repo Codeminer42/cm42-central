@@ -3,8 +3,8 @@ require 'rails_helper'
 describe TaskOperations do
   describe '::Create' do
     let!(:membership)     { create(:membership) }
-    let(:user)            { User.first }
-    let(:project)         { Project.first }
+    let(:user)            { membership.user }
+    let(:project)         { membership.project }
     let(:story)           { create(:story, project: project, requested_by: user) }
 
     context 'with valid params' do

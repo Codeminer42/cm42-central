@@ -45,7 +45,5 @@ Rails.application.configure do
   # Randomize the order test cases are executed.
   config.active_support.test_order = :random
 
-  config.middleware.use NoAnimations
-
   config.active_job.queue_adapter = :inline
 end

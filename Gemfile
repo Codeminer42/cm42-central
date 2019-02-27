@@ -79,7 +79,8 @@ group :test do
   gem 'codeclimate-test-reporter', require: nil
   gem 'database_cleaner'
   gem 'factory_bot_rails'
-  gem 'poltergeist'
+  gem 'selenium-webdriver'
+  gem 'rspec-retry'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-its'
   gem 'rspec-rails'
@@ -105,4 +106,3 @@ group :development, :test do
   gem 'pry-remote'
   gem "pusher-fake", "~> 1.10"
 end
-

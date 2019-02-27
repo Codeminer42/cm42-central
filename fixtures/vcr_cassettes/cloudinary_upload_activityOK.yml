@@ -2,10 +2,10 @@
 http_interactions:
 - request:
     method: post
-    uri: https://api.cloudinary.com/v1_1/localhost/image/tags
+    uri: https://api.cloudinary.com/v1_1/dgjml2eyw/image/destroy
     body:
       encoding: UTF-8
-      string: timestamp=1550867586&tag=attachinary_tmp&public_ids[]=BrunoPassos2_gvwhs5&command=remove&signature=befab3269d9d6776b36de236e9532b84da94f010&api_key=692495869557314
+      string: timestamp=1550858362&public_id=hello.jpg&signature=5296f39aabe33c81c2fc9052cf1f4a6bdf2b24fb&api_key=692495869557314
     headers:
       Accept:
       - "*/*"
@@ -14,7 +14,7 @@ http_interactions:
       User-Agent:
       - CloudinaryRuby/1.1.7
       Content-Length:
-      - '163'
+      - '115'
       Content-Type:
       - application/x-www-form-urlencoded
   response:
@@ -24,37 +24,40 @@ http_interactions:
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
+      Content-Encoding:
+      - gzip
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 22 Feb 2019 20:33:07 GMT
+      - Fri, 22 Feb 2019 17:59:30 GMT
       Etag:
-      - W/"7bd9202622f9de0e2f09217fcdc4d855"
+      - W/"33747e3f086d5dd0aef7ac1fde8cf595"
       Server:
       - cloudinary
       Status:
       - 200 OK
       X-Request-Id:
-      - 7e7929311cceaa86
+      - 8c85da6281ceea5a
       X-Ua-Compatible:
       - IE=Edge,chrome=1
       X-Xss-Protection:
       - 1; mode=block
       Content-Length:
-      - '17'
+      - '48'
       Connection:
       - keep-alive
     body:
       encoding: ASCII-8BIT
-      string: '{"public_ids":[]}'
+      string: !binary |-
+        H4sIAAAAAAAAA6pWKkotLs0pUbJSyssvUUjLL81LUaoFAAAA//8DAPI2A+8WAAAA
     http_version: 
-  recorded_at: Fri, 22 Feb 2019 20:33:07 GMT
+  recorded_at: Fri, 22 Feb 2019 17:59:30 GMT
 - request:
     method: post
     uri: https://api.cloudinary.com/v1_1/dgjml2eyw/image/tags
     body:
       encoding: UTF-8
-      string: timestamp=1550870280&tag=attachinary_tmp&public_ids[]=BrunoPassos2_gvwhs5&command=remove&signature=dc45d3b70f4899733203af6ec658117f7cc84e46&api_key=692495869557314
+      string: timestamp=1550858370&tag=attachinary_tmp&public_ids[]=hello3.jpg&command=remove&signature=9e5455294de5c5b943a46a4a78a097aa9a1871d5&api_key=692495869557314
     headers:
       Accept:
       - "*/*"
@@ -63,7 +66,7 @@ http_interactions:
       User-Agent:
       - CloudinaryRuby/1.1.7
       Content-Length:
-      - '163'
+      - '154'
       Content-Type:
       - application/x-www-form-urlencoded
   response:
@@ -73,10 +76,12 @@ http_interactions:
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
+      Content-Encoding:
+      - gzip
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 22 Feb 2019 21:18:01 GMT
+      - Fri, 22 Feb 2019 17:59:31 GMT
       Etag:
       - W/"7bd9202622f9de0e2f09217fcdc4d855"
       Server:
@@ -84,18 +89,19 @@ http_interactions:
       Status:
       - 200 OK
       X-Request-Id:
-      - 60e5dd2d144ab265
+      - 03ad69aeea3fc56b
       X-Ua-Compatible:
       - IE=Edge,chrome=1
       X-Xss-Protection:
       - 1; mode=block
-      Transfer-Encoding:
-      - chunked
+      Content-Length:
+      - '43'
       Connection:
       - keep-alive
     body:
       encoding: ASCII-8BIT
-      string: '{"public_ids":[]}'
+      string: !binary |-
+        H4sIAAAAAAAAA6pWKihNyslMjs9MKVayio6tBQAAAP//AwDagr9HEQAAAA==
     http_version: 
-  recorded_at: Fri, 22 Feb 2019 21:18:01 GMT
+  recorded_at: Fri, 22 Feb 2019 17:59:31 GMT
 recorded_with: VCR 4.0.0

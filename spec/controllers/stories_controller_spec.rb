@@ -203,7 +203,7 @@ describe StoriesController do
       end
 
       it 'should create the new story and associate the attachments' do
-        VCR.use_cassette('cloudinary_upload_new_story') do
+        VCR.use_cassette('cloudinary_upload') do
           VCR.use_cassette('pusher_notification', match_requests_on: [:host, :path]) do
             expect do
               post :create, xhr: true, params: received_params

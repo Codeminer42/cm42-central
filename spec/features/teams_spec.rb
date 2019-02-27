@@ -1,6 +1,6 @@
 require 'feature_helper'
 
-describe 'Teams' do
+describe 'Teams', js: true do
   before { sign_in user }
 
   context 'when user is not a team admin' do
@@ -11,8 +11,8 @@ describe 'Teams' do
         visit teams_path
         click_link 'Create new team'
       end
-      
-      it 'should create a new team and set the user as admin' do  
+
+      it 'should create a new team and set the user as admin' do
         fill_in 'Team Name', with: 'foobar'
         click_button 'Create new team'
 
@@ -46,12 +46,13 @@ describe 'Teams' do
     describe 'update team' do
       it 'should update a team and set a team logo' do
         VCR.use_cassette('cloudinary_upload_team_logo') do
-          visit edit_team_path(user.teams.last.slug)
+          visit edit_team_path(user.teams.last)
 
           attach_file('Logo', Rails.root.join('spec', 'fixtures', 'blank.jpg'))
+          wait_spinner
           click_button 'Update Team'
 
-          expect(user.teams.last.logo).not_to be_nil
+          expect(page).to have_text(I18n.t('teams.team_was_successfully_updated'))
         end
       end
     end
@@ -135,6 +136,7 @@ describe 'Teams' do
 
       it 'successfully uncharving the team' do
         visit teams_path
+        sleep 0.5
 
         click_link 'Unarchive'
 
@@ -143,6 +145,7 @@ describe 'Teams' do
 
       it 'moves the archived team to select team section' do
         visit teams_path
+        sleep 0.5
 
         click_link 'Unarchive'
 

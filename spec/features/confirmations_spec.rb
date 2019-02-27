@@ -43,8 +43,8 @@ describe 'Confirmations' do
     expect(page).to have_content('Invalid confirmation token')
   end
 
-  it 'sends new confirmation token' do
-    user = create(:unconfirmed_user, email: 'test@example.com', teams: [team])
+  it 'sends new confirmation token', js: true do
+    user = create(:unconfirmed_user, email: 'test2@example.com', teams: [team])
     visit '/'
     click_link "Didn't receive confirmation instructions?"
 

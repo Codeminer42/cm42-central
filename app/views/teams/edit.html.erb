@@ -60,7 +60,7 @@
       <div class="panel-body">
         <% if session[:current_team_slug] && current_team.try(:logo) %>
           <div class="text-center">
-            <img class="user-image" src="<%= current_team.logo.path %>">
+            <%= team_logo(current_team.logo.path) %>
           </div>
           <hr />
         <% end %>

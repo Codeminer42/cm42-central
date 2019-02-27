@@ -23,12 +23,12 @@ describe 'Notes' do
       visit project_path(project)
 
       within('#in_progress .story') do
-        find('.story-title').trigger('click')
+        find('.story-title').click
         fill_in 'note', with: 'Adding a new note'
         click_on 'Add note'
       end
 
-      sleep 0.5
+      wait_spinner
       expect(find('#in_progress .story .notelist .note')).to have_content('Adding a new note')
     end
 
@@ -40,14 +40,14 @@ describe 'Notes' do
       visit project_path(project)
 
       within('#in_progress .story') do
-        find('.story-title').trigger('click')
+        find('.story-title').click
         within('.notelist') do
-          find('.delete-btn').trigger('click')
+          find('.delete-btn').click
         end
       end
 
-      sleep 0.5
-      expect(find('#in_progress .story .notelist')).not_to have_content('Delete me please')
+      wait_spinner
+      expect(find('#in_progress .story')).not_to have_content('Delete me please')
     end
   end
 
@@ -57,7 +57,7 @@ describe 'Notes' do
       visit project_path(project)
 
       within('#in_progress .story.accepted') do
-        find('.story-title').trigger('click')
+        find('.story-title').click
       end
 
       expect(page).not_to have_css('.note_form ')

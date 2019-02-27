@@ -23,7 +23,9 @@
       <div class="navbar-header">
 
         <% if session[:current_team_slug] && current_team.try(:logo) %>
-          <%= team_logo(current_team.logo.path) %>
+          <a href="/" class="navbar-brand navbar-logo">
+            <%= team_logo(current_team.logo.path) %>
+          </a>
         <% else %>
           <a href="/" class="navbar-brand navbar-logo">
             <%= image_tag 'logo.png', width: 32, height: 32 %>

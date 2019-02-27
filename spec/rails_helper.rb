@@ -12,6 +12,7 @@ VCR.configure do |config|
   config.cassette_library_dir = 'fixtures/vcr_cassettes'
   config.hook_into :webmock # or :fakeweb
   config.ignore_localhost = true
+  config.default_cassette_options = { record: :new_episodes }
   config.configure_rspec_metadata!
 end
 
@@ -57,6 +58,10 @@ RSpec.configure do |config|
   # The different available types are documented in the features, such as in
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
+
+  config.verbose_retry = true
+  config.default_retry_count = 2
+  config.exceptions_to_retry = [Net::ReadTimeout]
 
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include IntegrationHelpers,            type: :feature

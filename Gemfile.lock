@@ -112,9 +112,10 @@ GEM
       capybara (>= 1.0, < 4)
       launchy
     chartkick (3.0.2)
+    childprocess (0.9.0)
+      ffi (~> 1.0, >= 1.0.11)
     chronic (0.10.2)
     chunky_png (1.3.11)
-    cliver (0.3.2)
     cloudinary (1.1.7)
       aws_cf_signer
       rest-client
@@ -328,10 +329,6 @@ GEM
     platform-api (2.2.0)
       heroics (~> 0.0.25)
       moneta (~> 1.0.0)
-    poltergeist (1.18.1)
-      capybara (>= 2.1, < 4)
-      cliver (~> 0.3.1)
-      websocket-driver (>= 0.2.0)
     powerpack (0.1.2)
     pry (0.12.2)
       coderay (~> 1.1.0)
@@ -456,6 +453,8 @@ GEM
       rspec-expectations (~> 3.8.0)
       rspec-mocks (~> 3.8.0)
       rspec-support (~> 3.8.0)
+    rspec-retry (0.6.1)
+      rspec-core (> 3.3)
     rspec-support (3.8.0)
     rubocop (0.63.1)
       jaro_winkler (~> 1.5.1)
@@ -468,6 +467,7 @@ GEM
     rubocop-rspec (1.32.0)
       rubocop (>= 0.60.0)
     ruby-progressbar (1.10.0)
+    rubyzip (1.2.2)
     safe_yaml (1.0.4)
     sass (3.4.25)
     sass-rails (5.0.7)
@@ -479,6 +479,9 @@ GEM
     sassc (2.0.0)
       ffi (~> 1.9.6)
       rake
+    selenium-webdriver (3.141.0)
+      childprocess (~> 0.5)
+      rubyzip (~> 1.2, >= 1.2.2)
     shoulda-matchers (3.1.3)
       activesupport (>= 4.0.0)
     sidekiq (5.2.5)
@@ -601,7 +604,6 @@ DEPENDENCIES
   pg
   pg_search
   platform-api
-  poltergeist
   pry-rails
   pry-remote
   puma
@@ -622,9 +624,11 @@ DEPENDENCIES
   rspec-activemodel-mocks
   rspec-its
   rspec-rails
+  rspec-retry
   rubocop (= 0.63.1)
   rubocop-rspec
   sass-rails
+  selenium-webdriver
   shoulda-matchers
   sidekiq
   sidekiq_mailer
