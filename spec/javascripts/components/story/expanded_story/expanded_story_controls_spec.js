@@ -69,8 +69,6 @@ describe('<ExpandedStoryControls />', () => {
 
       const wrapper = shallow(
         <ExpandedStoryControls
-          canDelete={true}
-          canSave={true}
           onCancel={handleCancel}
         />
       );
@@ -81,12 +79,12 @@ describe('<ExpandedStoryControls />', () => {
     });
 
     describe('when there is unsaved changes', () => {
-      it('triggers a warning window ', () => {
+      it('triggers a warning window', () => {
         const handleCancel = sinon.spy();
 
         const wrapper = shallow(
           <ExpandedStoryControls
-            readOnly={false}
+            canSave={true}
             isDirty={true}
             onCancel={handleCancel}
           />
@@ -105,7 +103,7 @@ describe('<ExpandedStoryControls />', () => {
 
         const wrapper = shallow(
           <ExpandedStoryControls
-            readOnly={false}
+            canSave={true}
             isDirty={false}
             onCancel={handleCancel}
           />

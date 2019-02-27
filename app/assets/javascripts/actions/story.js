@@ -52,6 +52,8 @@ export const saveStory = (storyId, projectId, options) =>
     const { stories } = getState();
     const story = stories.find((story) => story.id === storyId);
 
+    dispatch(setLoadingStory(story.id))
+
     if (Story.isNew(story)) {
       return Story.post(story._editing, projectId)
         .then((story) =>
@@ -61,13 +63,13 @@ export const saveStory = (storyId, projectId, options) =>
     };
 
     if (story._editing._isDirty) {
-      dispatch(setLoadingStory(story.id))
       return Story.update(story._editing, projectId, options)
         .then((story) => {
           dispatch(updateStorySuccess(story))
         })
         .catch((error) => dispatch(storyFailure(story.id, error)))
     }
+
     return dispatch(toggleStory(story.id));
   };
 
