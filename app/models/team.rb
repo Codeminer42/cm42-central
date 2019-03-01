@@ -5,7 +5,7 @@ class Team < ApplicationRecord
   include Central::Support::TeamConcern::DomainValidator
 
   extend FriendlyId
-  friendly_id :name, use: :slugged
+  friendly_id :name, use: :slugged, reserved_words: %w[new edit].freeze
 
   has_attachment :logo, accept: %i[jpg png gif bmp]
 
