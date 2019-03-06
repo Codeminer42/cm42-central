@@ -21,119 +21,134 @@ import { addAttachment, removeAttachment } from '../../../actions/attachment';
 import { connect } from 'react-redux';
 import * as Story from '../../../models/beta/story';
 
-export const ExpandedStory = ({
-  story,
-  onToggle,
-  editStory,
-  saveStory,
-  storyFailure,
-  deleteStory,
-  project,
-  createTask,
-  deleteTask,
-  toggleTask,
-  users,
-  deleteNote,
-  createNote,
-  addLabel,
-  removeLabel,
-  setLoadingStory,
-  addAttachment,
-  removeAttachment
-}) => {
-  const loading = story._editing.loading ? "Story__enable-loading" : "";
+export class ExpandedStory extends React.Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <div className={`Story Story--expanded ${loading}`} >
-      <div className="Story__loading"></div>
-      <ExpandedStoryControls
-        onCancel={onToggle}
-        isDirty={story._editing._isDirty}
-        onSave={() => saveStory(story.id, project.id)}
-        onDelete={() => deleteStory(story.id, project.id)}
-        canSave={Story.canSave(story)}
-        canDelete={Story.canDelete(story)}
-      />
-      {
-        !Story.isNew(story) ?
-          <ExpandedStoryHistoryLocation story={story} />
-          : null
-      }
-      <ExpandedStoryTitle
-        story={story}
-        onEdit={(newTitle) => editStory(story.id, { title: newTitle })}
-      />
+    this.titleRef = React.createRef();
+  }
 
-      <div className="Story__flex">
-        <ExpandedStoryEstimate story={story}
+  componentDidMount() {
+    this.titleRef.current.focus();
+  }
+
+  render() {
+    const {
+      story,
+      onToggle,
+      editStory,
+      saveStory,
+      storyFailure,
+      deleteStory,
+      project,
+      createTask,
+      deleteTask,
+      toggleTask,
+      users,
+      deleteNote,
+      createNote,
+      addLabel,
+      removeLabel,
+      setLoadingStory,
+      addAttachment,
+      removeAttachment
+    } = this.props;
+
+    const loading = story._editing.loading ? "Story__enable-loading" : "";
+
+    return (
+      <div className={`Story Story--expanded ${loading}`} >
+        <div className="Story__loading"></div>
+        <ExpandedStoryControls
+          onCancel={onToggle}
+          isDirty={story._editing._isDirty}
+          onSave={() => saveStory(story.id, project.id)}
+          onDelete={() => deleteStory(story.id, project.id)}
+          canSave={Story.canSave(story)}
+          canDelete={Story.canDelete(story)}
+        />
+        {
+          !Story.isNew(story) ?
+            <ExpandedStoryHistoryLocation story={story} />
+            : null
+        }
+        <ExpandedStoryTitle
+          story={story}
+          titleRef={this.titleRef}
+          onEdit={(newTitle) => editStory(story.id, { title: newTitle })}
+        />
+
+        <div className="Story__flex">
+          <ExpandedStoryEstimate story={story}
+            onEdit={(newAttributes) => editStory(story.id, newAttributes)}
+          />
+
+          <ExpandedStoryType story={story}
+            onEdit={(newAttributes) => editStory(story.id, newAttributes)}
+          />
+        </div>
+        <div>
+          <ExpandedStoryRequestedBy
+            story={story}
+            users={users}
+            onEdit={(userId) => editStory(story.id, { requestedById: userId })}
+          />
+
+          <ExpandedStoryOwnedBy
+            story={story}
+            users={users}
+            onEdit={(userId) => editStory(story.id, { ownedById: userId })}
+          />
+        </div>
+        <ExpandedStoryState
+          story={story}
           onEdit={(newAttributes) => editStory(story.id, newAttributes)}
         />
 
-        <ExpandedStoryType story={story}
+        <ExpandedStoryLabels
+          onAddLabel={(label) => addLabel(story.id, label)}
+          story={story}
+          projectLabels={project.labels}
+          onRemoveLabel={(labelName) => removeLabel(story.id, labelName)}
+          onEdit={(value) => editStory(story.id, { labels: value })}
+        />
+
+        <ExpandedStoryDescription
+          story={story}
           onEdit={(newAttributes) => editStory(story.id, newAttributes)}
         />
-      </div>
-      <div>
-        <ExpandedStoryRequestedBy
-          story={story}
-          users={users}
-          onEdit={(userId) => editStory(story.id, { requestedById: userId })}
-        />
 
-        <ExpandedStoryOwnedBy
-          story={story}
-          users={users}
-          onEdit={(userId) => editStory(story.id, { ownedById: userId })}
-        />
-      </div>
-      <ExpandedStoryState
-        story={story}
-        onEdit={(newAttributes) => editStory(story.id, newAttributes)}
-      />
+        {
+          !Story.isNew(story) ?
+            <div>
+              <ExpandedStoryAttachments
+                story={story}
+                onFailure={(error) => storyFailure(story.id, error)}
+                startLoading={() => setLoadingStory(story.id)}
+                onAdd={(attachment) => addAttachment(story.id, project.id, attachment)}
+                onDelete={(documentId) => removeAttachment(story.id, documentId)}
+              />
 
-      <ExpandedStoryLabels
-        onAddLabel={(label) => addLabel(story.id, label)}
-        story={story}
-        projectLabels={project.labels}
-        onRemoveLabel={(labelName) => removeLabel(story.id, labelName)}
-        onEdit={(value) => editStory(story.id, { labels: value })}
-      />
+              <ExpandedStoryNotes
+                story={story}
+                projectId={project.id}
+                onDelete={(noteId) => deleteNote(project.id, story.id, noteId)}
+                onCreate={(note) => createNote(project.id, story.id, { note })}
+              />
 
-      <ExpandedStoryDescription
-        story={story}
-        onEdit={(newAttributes) => editStory(story.id, newAttributes)}
-      />
-
-      {
-        !Story.isNew(story) ?
-          <div>
-            <ExpandedStoryAttachments
-              story={story}
-              onFailure={(error) => storyFailure(story.id, error)}
-              startLoading={() => setLoadingStory(story.id)}
-              onAdd={(attachment) => addAttachment(story.id, project.id, attachment)}
-              onDelete={(documentId) => removeAttachment(story.id, documentId)}
-            />
-
-            <ExpandedStoryNotes
-              story={story}
-              projectId={project.id}
-              onDelete={(noteId) => deleteNote(project.id, story.id, noteId)}
-              onCreate={(note) => createNote(project.id, story.id, { note })}
-            />
-
-            <ExpandedStoryTask
-              story={story}
-              onToggle={(task, status) => toggleTask(project.id, story, task, status)}
-              onDelete={(taskId) => deleteTask(project.id, story.id, taskId)}
-              onSave={(task) => createTask(project.id, story.id, task)}
-            />
-          </div>
-          : null
-      }
-    </div >
-  );
-};
+              <ExpandedStoryTask
+                story={story}
+                onToggle={(task, status) => toggleTask(project.id, story, task, status)}
+                onDelete={(taskId) => deleteTask(project.id, story.id, taskId)}
+                onSave={(task) => createTask(project.id, story.id, task)}
+              />
+            </div>
+            : null
+        }
+      </div >
+    );
+  }
+}
 
 ExpandedStory.propTypes = {
   story: PropTypes.object.isRequired

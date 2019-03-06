@@ -47,7 +47,9 @@ class ExpandedStoryLabels extends React.Component {
             allowBackspace={false}
             addOnBlur={true}
             delimiterChars={[',', ' ']}
-            autoresize={false} />
+            autoresize={false}
+            autofocus={false}
+          />
         }
       </div>
     );
