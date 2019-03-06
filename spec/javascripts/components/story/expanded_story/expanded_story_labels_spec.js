@@ -9,7 +9,8 @@ describe('<ExpandedStoryLabels />', () => {
       { id: 1, name: 'back' }
     ];
 
-    const wrapper = shallow(<ExpandedStoryLabels labels={labels} />);
+    const story = { _editing: { labels } }
+    const wrapper = shallow(<ExpandedStoryLabels story={story} />);
 
     expect(wrapper.text()).toContain(I18n.t('activerecord.attributes.story.labels'));
   });
@@ -21,7 +22,8 @@ describe('<ExpandedStoryLabels />', () => {
         { id: 1, name: 'back' }
       ];
 
-      const wrapper = shallow(<ExpandedStoryLabels labels={labels} />);
+      const story = { _editing: { labels } }
+      const wrapper = shallow(<ExpandedStoryLabels story={story} />);
 
       expect(wrapper.find('ReactTags').prop('tags')).toEqual(labels);
     });

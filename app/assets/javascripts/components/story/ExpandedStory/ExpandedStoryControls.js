@@ -15,7 +15,7 @@ class ExpandedStoryControls extends Component {
       onDelete();
     }
   }
-  
+
   handleCancel() {
     const { onCancel, isDirty } = this.props;
 
@@ -30,7 +30,7 @@ class ExpandedStoryControls extends Component {
   }
 
   render() {
-    const { onSave, readOnly } = this.props;
+    const { onSave, canSave, canDelete } = this.props;
 
     return (
       <div className="form-group Story__controls">
@@ -38,14 +38,14 @@ class ExpandedStoryControls extends Component {
           onClick={onSave}
           type="button"
           value={I18n.t('save')}
-          disabled={readOnly}
+          disabled={!canSave}
         />
 
         <input className="delete"
           onClick={this.handleDelete}
           type="button"
           value={I18n.t('delete')}
-          disabled={readOnly}
+          disabled={!canDelete}
         />
 
         <input className="cancel"

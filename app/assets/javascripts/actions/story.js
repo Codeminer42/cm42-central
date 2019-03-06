@@ -1,5 +1,15 @@
 import actionTypes from './actionTypes';
 
+export const createStory = (attributes) => ({
+  type: actionTypes.CREATE_STORY,
+  attributes
+});
+
+export const addStory = (story) => ({
+  type: actionTypes.ADD_STORY,
+  story
+});
+
 export const receiveStories = (stories) => ({
   type: actionTypes.RECEIVE_STORIES,
   data: stories
@@ -37,19 +47,29 @@ export const setLoadingStory = (id) => ({
   id
 });
 
-export const updateStory = (storyId, projectId, options) =>
+export const saveStory = (storyId, projectId, options) =>
   (dispatch, getState, { Story }) => {
     const { stories } = getState();
     const story = stories.find((story) => story.id === storyId);
 
+    dispatch(setLoadingStory(story.id))
+
+    if (Story.isNew(story)) {
+      return Story.post(story._editing, projectId)
+        .then((story) =>
+          dispatch(addStory(story))
+        )
+        .catch((error) => dispatch(storyFailure(story.id, error)));
+    };
+
     if (story._editing._isDirty) {
-      dispatch(setLoadingStory(story.id))
       return Story.update(story._editing, projectId, options)
         .then((story) => {
           dispatch(updateStorySuccess(story))
         })
         .catch((error) => dispatch(storyFailure(story.id, error)))
     }
+
     return dispatch(toggleStory(story.id));
   };
 

@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const ExpandedStoryTitle = (props) => {
 
-  const { story, onEdit } = props;
+  const { story, onEdit, titleRef } = props;
 
   return (
     <div className="Story__section">
@@ -12,6 +12,7 @@ const ExpandedStoryTitle = (props) => {
       </div>
       <input
         value={story._editing.title}
+        ref={titleRef}
         className="form-control input-sm"
         onChange={(event) => onEdit(event.target.value)}
       />

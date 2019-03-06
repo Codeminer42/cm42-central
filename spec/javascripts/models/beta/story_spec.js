@@ -341,7 +341,7 @@ describe('Story model', function () {
 
   describe('setLoadingValue', () => {
     it('sets the loading state to true', () => {
-      const story = { loading: false  };
+      const story = { loading: false };
 
       const changedStory = Story.setLoadingValue(story, true);
 
@@ -373,6 +373,142 @@ describe('Story model', function () {
       const changedStory = Story.storyFailure(story, error);
 
       expect(changedStory.errors).toEqual([error]);
+    });
+  });
+
+  describe('isNew', () => {
+    it('returns true when story id is null', () => {
+      const story = { id: null }
+
+      expect(Story.isNew(story)).toBe(true);
+    });
+
+    it("returns false when story id isn't null", () => {
+      const story = { id: 42 }
+
+      expect(Story.isNew(story)).toBe(false);
+    });
+  });
+
+  describe('canDelete', () => {
+    it("returns true when story isn't accepted and isn't new", () => {
+      const story = { id: 42, state: 'started' };
+
+      expect(Story.canDelete(story)).toBe(true);
+    });
+
+    it('returns false when story is accepted', () => {
+      const story = { id: 42, state: 'accepted' };
+
+      expect(Story.canDelete(story)).toBe(false);
+    });
+
+    it('returns false when story is new', () => {
+      const story = { id: null, state: 'started' };
+
+      expect(Story.canDelete(story)).toBe(false);
+    });
+  });
+
+  describe('canSave', () => {
+    describe("when when story isn't accepted and the text isn't empty", () => {
+      it("returns true ", () => {
+        const story = { state: 'started', _editing: { title: 'title' } };
+
+        expect(Story.canSave(story)).toBe(true);
+      });
+    });
+
+    describe('when story is accepted', () => {
+      it('returns false', () => {
+        const story = { state: 'accepted', _editing: { title: 'title' } };
+
+        expect(Story.canSave(story)).toBe(false);
+      });
+    });
+
+    describe('when story title is null', () => {
+      it('returns false when story title is null', () => {
+        const story = { state: 'started', _editing: { title: "" } };
+
+        expect(Story.canSave(story)).toBe(false);
+      });
+    });
+  });
+
+  describe('withoutNewStory', () => {
+    it('remove a story with null id from a stories array', () => {
+      const stories = [{ id: 1 }, { id: 2 }];
+      const newStory = { id: null };
+
+      const storiesWithEmptyStories = [
+        stories[0],
+        newStory,
+        stories[1]
+      ];
+
+      expect(Story.withoutNewStory([...stories, newStory])).toEqual(stories);
+      expect(Story.withoutNewStory([newStory, ...stories])).toEqual(stories);
+      expect(Story.withoutNewStory(storiesWithEmptyStories)).toEqual(stories);
+    });
+  });
+
+  describe('createNewStory', () => {
+    const stories = [{ id: 1 }, { id: 3 }]
+
+    it('returns an empty story', () => {
+      const story = Story.createNewStory(stories, {});
+
+      expect(story.id).toBe(null);
+    });
+
+    it('returns an expanded story', () => {
+      const story = Story.createNewStory(stories, {});
+
+      expect(story.collapsed).toBe(false);
+    });
+
+    describe('when there is already a new story in the store', () => {
+      it('reuses the attributes of it', () => {
+        const story = Story.createNewStory(stories, {});
+        const attributes = { title: 'new Title' };
+        const modifiedStory = Story.createNewStory(stories, attributes);
+
+        expect(story.title).not.toEqual(modifiedStory.title);
+        expect(modifiedStory.title).toEqual(attributes.title);
+      });
+    });
+  });
+
+  describe('replaceOrAddNewStory', () => {
+    it('replace an empty for a new story', () => {
+      const stories = [{ id: 1 }, { id: null }, { id: 3 }]
+      const newStory = { id: 2 };
+      const expectedArray = [stories[0], newStory, stories[2]];
+
+      const newStoryArray = Story.replaceOrAddNewStory(stories, newStory);
+
+      expect(newStoryArray).toEqual(expectedArray);
+    });
+
+    it('return an array with new story', () => {
+      const stories = []
+      const newStory = { id: 2 };
+      const expectedArray = [newStory];
+
+      const newStoryArray = Story.replaceOrAddNewStory(stories, newStory);
+
+      expect(newStoryArray).toEqual(expectedArray);
+    });
+
+    it('add new story', () => {
+      const stories = [{ id: 1 }, { id: 3 }]
+      const newStory = { id: 2 };
+      const expectedArray = [newStory, ...stories];
+
+      const newStoryArray = Story.replaceOrAddNewStory(stories, newStory);
+
+      expect(newStoryArray).toEqual(expectedArray);
     });
   });
 });

@@ -71,12 +71,19 @@ export const states = [
 ];
 
 export const update = (story, projectId, options) => {
-  const newStory = changeCase.snakeKeys(serialize(story), { recursive: true, arrayRecursive: true });
+  const newStory = serialize(story);
 
   return httpService
     .put(`/projects/${projectId}/stories/${story.id}`, { story: newStory })
-    .then(({ data }) => changeCase.camelKeys(data, { recursive: true, arrayRecursive: true }))
-    .then(({ story }) => deserialize(story, options));
+    .then(({ data }) => deserialize(data.story, options));
+};
+
+export const post = (story, projectId) => {
+  const newStory = serialize(story);
+
+  return httpService
+    .post(`/projects/${projectId}/stories`, { story: newStory })
+    .then(({ data }) => deserialize(data.story));
 };
 
 export const deleteStory = (storyId, projectId) => {
@@ -132,7 +139,24 @@ export const editStory = (story, newAttributes) => {
   };
 };
 
-export const deserialize = (story, options) => {
+export const serialize = (story) => {
+  const data = {
+    ...story,
+    labels: Label.joinLabels(story.labels)
+  };
+
+  return changeCase.snakeKeys(data, {
+    recursive: true,
+    arrayRecursive: true
+  });
+};
+
+export const deserialize = (data, options) => {
+  const story = changeCase.camelKeys(data, {
+    recursive: true,
+    arrayRecursive: true
+  });
+
   options = options || {};
   const collapsed = options.collapse == undefined ? true : options.collapse;
 
@@ -155,7 +179,75 @@ export const setLoadingValue = (story, loading) => ({
   loading
 });
 
-export const serialize = (story) => ({
-  ...story,
-  labels: Label.joinLabels(story.labels)
-});
+export const createNewStory = (stories, storyAttributes) => {
+  const story = stories.find(isNew);
+
+  if (story) {
+    return {
+      ...story,
+      ...storyAttributes
+    };
+  }
+
+  const newStory = {
+    ...emptyStory,
+    ...storyAttributes,
+    collapsed: false
+  }
+
+  return {
+    ...newStory,
+    _editing: newStory
+  };
+};
+
+export const isNew = (story) =>
+  story.id === null;
+
+export const canSave = (story) =>
+  !isAccepted(story) && story._editing.title !== "";
+
+export const canDelete = (story) =>
+  !isAccepted(story) && !isNew(story);
+
+export const withoutNewStory = (stories) =>
+  stories.filter(story => !isNew(story));
+
+export const replaceOrAddNewStory = (stories, newStory) => {
+  if (shouldReplace(stories)) {
+    return stories.map(story =>
+      isNew(story) ? newStory : story
+    );
+  }
+
+  return [newStory, ...stories];
+}
+
+const shouldReplace = (stories) =>
+  stories.some(isNew);
+
+const emptyStory = {
+  id: null,
+  title: '',
+  description: null,
+  estimate: '',
+  storyType: 'feature',
+  state: 'unscheduled',
+  acceptedAt: null,
+  requestedById: null,
+  ownedById: null,
+  projectId: null,
+  createdAt: '',
+  updatedAt: '',
+  position: '',
+  labels: [],
+  requestedByName: '',
+  ownedByName: null,
+  ownedByInitials: null,
+  releaseDate: null,
+  deliveredAt: null,
+  errors: {},
+  notes: [],
+  documents: [],
+  tasks: [],
+};
