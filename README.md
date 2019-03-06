@@ -105,7 +105,7 @@ Once you have these:
     # Install the project dependencies
     $ gem install bundler
     $ bundle install
-    $ yarn install
+    $ yarn install [using version 9 of the node](https://github.com/creationix/nvm#deeper-shell-integration)
 
     # If you want working with import option, have to activated the option memcached
     $ CentOS 6.4
