@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Markdown from '../../Markdown';
+import { editingStoryPropTypesShape } from '../../../models/beta/story';
 
 class ExpandedStoryDescription extends React.Component {
   constructor(props) {
@@ -74,8 +75,8 @@ class ExpandedStoryDescription extends React.Component {
 };
 
 ExpandedStoryDescription.propTypes = {
-  story: PropTypes.object,
-  onEdit: PropTypes.func
+  story: editingStoryPropTypesShape.isRequired,
+  onEdit: PropTypes.func.isRequired
 };
 
 export default ExpandedStoryDescription;

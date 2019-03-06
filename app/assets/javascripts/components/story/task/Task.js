@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { taskPropTypesShape } from '../../../models/beta/task';
 
 const Task = ({ task, onDelete, onToggle }) => (
   <div className="Story__task">
@@ -22,11 +23,7 @@ const Task = ({ task, onDelete, onToggle }) => (
 );
 
 Task.propTypes = {
-  task: PropTypes.shape({
-    id: PropTypes.number,
-    done: PropTypes.bool,
-    name: PropTypes.string
-  }),
+  task: taskPropTypesShape.isRequired,
   onToggle: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired
 };

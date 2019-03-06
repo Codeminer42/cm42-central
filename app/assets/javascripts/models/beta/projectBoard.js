@@ -2,6 +2,7 @@ import httpService from '../../services/httpService';
 import changeCase from 'change-object-case';
 import * as Story from './story';
 import * as Project from './project';
+import PropTypes from 'prop-types';
 
 export function get(projectId) {
   return httpService
@@ -13,3 +14,11 @@ export function get(projectId) {
       stories: projectBoard.stories.map(Story.deserialize)
     }));
 };
+
+export const projectBoardPropTypesShape = PropTypes.shape({
+  error: PropTypes.oneOf([
+    PropTypes.object,
+    PropTypes.array
+  ]),
+  isFetched: PropTypes.bool.isRequired
+});

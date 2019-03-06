@@ -4,7 +4,7 @@ import ExpandedStoryRequestBy from 'components/story/ExpandedStory/ExpandedStory
 
 describe('<ExpandedStoryRequestBy />', () => {
   const setup = propOverrides => {
-    const defaultProps = {
+    const defaultProps = () => ({
       users: [
         { id: 1, name: 'foo' },
         { id: 2, name: 'bar' }
@@ -12,9 +12,9 @@ describe('<ExpandedStoryRequestBy />', () => {
       story: { _editing: { requestedById: 1 } },
       onEdit: sinon.spy(),
       ...propOverrides
-    };
+    });
 
-    const wrapper = shallow(<ExpandedStoryRequestBy {...defaultProps} />);
+    const wrapper = shallow(<ExpandedStoryRequestBy {...defaultProps()} />);
 
     return { wrapper };
   };

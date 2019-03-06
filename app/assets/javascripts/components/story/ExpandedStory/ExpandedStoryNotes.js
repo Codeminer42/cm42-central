@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import NotesList from '../note/NotesList';
+import { editingStoryPropTypesShape } from '../../../models/beta/story';
 
 class ExpandedStoryNotes extends React.Component {
   constructor(props) {
@@ -72,7 +73,7 @@ class ExpandedStoryNotes extends React.Component {
 };
 
 ExpandedStoryNotes.propTypes = {
-  story: PropTypes.object.isRequired,
+  story: editingStoryPropTypesShape.isRequired,
   onCreate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired
 };

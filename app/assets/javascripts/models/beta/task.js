@@ -1,4 +1,5 @@
 import httpService from '../../services/httpService';
+import PropTypes from 'prop-types';
 import changeCase from 'change-object-case';
 import { updateIfSameId } from '../../services/updateIfSameId';
 import { setLoadingValue } from './story';
@@ -50,4 +51,13 @@ export const deleteTask = (taskId, story) => ({
   ...story,
   _editing: setLoadingValue(story._editing, false),
   tasks: story.tasks.filter((task) => task.id !== taskId)
+});
+
+export const taskPropTypesShape = PropTypes.shape({
+  id: PropTypes.number,
+  storyId: PropTypes.number,
+  name: PropTypes.string,
+  done: PropTypes.bool,
+  createdAt: PropTypes.string,
+  updatedAt: PropTypes.string
 });

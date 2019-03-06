@@ -1,6 +1,7 @@
 import React from 'react';
 import Markdown from '../../Markdown';
 import PropTypes from 'prop-types';
+import { notePropTypesShape } from '../../../models/beta/note';
 
 const Note = ({ note, onDelete }) => (
   <div className='markdown-wrapper'>
@@ -19,7 +20,7 @@ const Note = ({ note, onDelete }) => (
 );
 
 Note.propTypes = {
-  note: PropTypes.object.isRequired,
+  note: notePropTypesShape.isRequired,
   onDelete: PropTypes.func.isRequired
 };
 

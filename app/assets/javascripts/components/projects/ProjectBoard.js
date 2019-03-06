@@ -9,6 +9,9 @@ import * as Columns from '../../models/beta/column';
 import { createStory } from '../../actions/story';
 import AddStoryButton from '../story/AddStoryButton';
 import * as Story from 'libs/beta/constants';
+import PropTypes from 'prop-types';
+import { storyPropTypesShape } from '../../models/beta/story';
+import { projectBoardPropTypesShape } from '../../models/beta/projectBoard';
 
 class ProjectBoard extends React.Component {
   componentWillMount() {
@@ -62,16 +65,22 @@ class ProjectBoard extends React.Component {
   }
 }
 
+ProjectBoard.propTypes = {
+  projectBoard: projectBoardPropTypesShape.isRequired,
+  chillyBinStories: PropTypes.arrayOf(storyPropTypesShape),
+  doneSprints: PropTypes.array.isRequired,
+  backlogSprints: PropTypes.array.isRequired,
+  fetchProjectBoard: PropTypes.func.isRequired,
+  createStory: PropTypes.func.isRequired
+}
+
 const mapStateToProps = ({
   projectBoard,
   project,
-  users,
   stories,
   pastIterations
 }) => ({
   projectBoard,
-  project,
-  users,
   chillyBinStories: getColumns({
     column: Columns.CHILLY_BIN,
     stories

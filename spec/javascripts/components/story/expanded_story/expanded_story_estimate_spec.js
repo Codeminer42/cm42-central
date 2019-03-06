@@ -3,11 +3,19 @@ import { shallow } from 'enzyme';
 import { ExpandedStoryEstimate } from 'components/story/ExpandedStory/ExpandedStoryEstimate';
 
 describe('<ExpandedStoryEstimate />', () => {
+  const defaultProps = () => ({
+    story: {},
+    project: {},
+    onEdit: sinon.spy()
+  });
+
   it("renders component with 'Fibonacci' point scale in select", () => {
     const project = { pointValues: ['1', '2', '3', '5', '8'] };
     const story = { estimate: null, _editing: { storyType: 'feature' } };
 
-    const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story} />);
+    const wrapper = shallow(
+      <ExpandedStoryEstimate {...defaultProps()} project={project} story={story} />
+    );
     const select = wrapper.find('select').text();
 
     project.pointValues.forEach((value) => {
@@ -19,7 +27,9 @@ describe('<ExpandedStoryEstimate />', () => {
     const project = { pointValues: ['1', '2', '4', '8'] };
     const story = { estimate: null, _editing: { storyType: 'feature' } };
 
-    const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story} />);
+    const wrapper = shallow(
+      <ExpandedStoryEstimate {...defaultProps()} project={project} story={story} />
+    );
     const select = wrapper.find('select').text();
 
     project.pointValues.forEach((value) => {
@@ -31,7 +41,9 @@ describe('<ExpandedStoryEstimate />', () => {
     const project = { pointValues: ['1', '2', '3', '4', '5'] };
     const story = { estimate: null, _editing: { storyType: 'feature' } };
 
-    const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story} />);
+    const wrapper = shallow(
+      <ExpandedStoryEstimate {...defaultProps()} project={project} story={story} />
+    );
     const select = wrapper.find('select').text();
 
     project.pointValues.forEach((value) => {
@@ -52,7 +64,9 @@ describe('<ExpandedStoryEstimate />', () => {
           }
         };
 
-        const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story} />);
+        const wrapper = shallow(
+          <ExpandedStoryEstimate {...defaultProps()} project={project} story={story} />
+        );
         const select = wrapper.find('select');
 
         expect(select.prop('value')).toBe(value);
@@ -70,7 +84,9 @@ describe('<ExpandedStoryEstimate />', () => {
         }
       };
 
-      const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story} />);
+      const wrapper = shallow(
+        <ExpandedStoryEstimate {...defaultProps()} project={project} story={story} />
+      );
       const select = wrapper.find('select');
 
       expect(select.prop('value')).toBe('');
@@ -86,7 +102,9 @@ describe('<ExpandedStoryEstimate />', () => {
 
         notFeatureTypes.forEach((type) => {
           const story = { _editing: { storyType: type } };
-          const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story} />);
+          const wrapper = shallow(
+            <ExpandedStoryEstimate {...defaultProps()} project={project} story={story} />
+          );
 
           const select = wrapper.find('select');
 
@@ -100,7 +118,9 @@ describe('<ExpandedStoryEstimate />', () => {
         const project = { pointValues: ['1', '2', '3', '4', '5'] };
         const story = { _editing: { storyType: 'feature' } };
 
-        const wrapper = shallow(<ExpandedStoryEstimate project={project} story={story} />);
+        const wrapper = shallow(
+          <ExpandedStoryEstimate {...defaultProps()} project={project} story={story} />
+        );
         const select = wrapper.find('select');
 
         expect(select.prop('disabled')).not.toBe(true);

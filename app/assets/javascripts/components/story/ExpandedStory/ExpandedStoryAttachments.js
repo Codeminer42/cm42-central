@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
 import AttachmentsList from '../attachment/AttachmentList';
 import { upload, acceptedMimeTypes } from '../../../models/beta/fileUpload';
+import { editingStoryPropTypesShape } from '../../../models/beta/story';
 
 class ExpandedStoryAttachments extends React.Component {
   constructor(props) {
@@ -99,7 +100,7 @@ class ExpandedStoryAttachments extends React.Component {
 }
 
 ExpandedStoryAttachments.propTypes = {
-  story: PropTypes.object.isRequired,
+  story: editingStoryPropTypesShape.isRequired,
   onDelete: PropTypes.func.isRequired,
   onAdd: PropTypes.func.isRequired
 };

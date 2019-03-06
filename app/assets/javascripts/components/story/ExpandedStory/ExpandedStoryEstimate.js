@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { isFeature } from '../../../models/beta/story';
+import { isFeature, editingStoryPropTypesShape } from '../../../models/beta/story';
+import { projectPropTypesShape } from '../../../models/beta/project';
 
 export const ExpandedStoryEstimate = (props) => {
   const { project, story, onEdit } = props;
@@ -34,8 +35,9 @@ export const ExpandedStoryEstimate = (props) => {
 };
 
 ExpandedStoryEstimate.propTypes = {
-  project: PropTypes.object,
-  story: PropTypes.object
+  project: projectPropTypesShape.isRequired,
+  story: editingStoryPropTypesShape.isRequired,
+  onEdit: PropTypes.func.isRequired
 };
 
 const mapStateToProps = ({ project }) => ({ project });

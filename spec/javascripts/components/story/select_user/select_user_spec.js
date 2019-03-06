@@ -4,7 +4,7 @@ import SelectUser from 'components/story/select_user/SelectUser';
 
 describe('<SelectUser />', () => {
   const setup = propOverrides => {
-    const defaultProps = {
+    const defaultProps = () => ({
       users: [
         { id: 1, name: 'foo' },
         { id: 2, name: 'bar' }
@@ -12,9 +12,9 @@ describe('<SelectUser />', () => {
       selectedUserId: 1,
       onEdit: sinon.spy(),
       ...propOverrides
-    };
+    });
 
-    const wrapper = shallow(<SelectUser {...defaultProps} />);
+    const wrapper = shallow(<SelectUser {...defaultProps()} />);
     const select = wrapper.find('select');
 
     return { wrapper, select };

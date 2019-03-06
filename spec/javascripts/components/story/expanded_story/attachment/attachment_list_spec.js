@@ -3,7 +3,18 @@ import { shallow } from 'enzyme';
 import AttachmentList from 'components/story/attachment/AttachmentList';
 
 describe('<AttachmentList/>', () => {
-  const attachments = [{ id: 1 }, { id: 2 }, { id: 3 }];
+  const newAttachment = (attrs) => ({
+    id: null,
+    resourceType: 'type',
+    publicId: 'publicId',
+    ...attrs
+  });
+
+  const attachments = [
+    newAttachment({ id: 1 }),
+    newAttachment({ id: 2 }),
+    newAttachment({ id: 3 })
+  ];
 
   it('render all attachments in a <Attachment> component', () => {
     const onDelete = sinon.stub();
@@ -20,7 +31,10 @@ describe('<AttachmentList/>', () => {
 
   it('click on delete button calls onDelete with attachment id', () => {
     const onDelete = sinon.stub();
-    const attachments = [{ id: 1 }, { id: 2 }]
+    const attachments = [
+      newAttachment({ id: 1 }),
+      newAttachment({ id: 2 })
+    ];
 
     const deletedAttachment = attachments[0];
 

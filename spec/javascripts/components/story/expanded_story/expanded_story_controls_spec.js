@@ -4,9 +4,22 @@ import ExpandedStoryControls from 'components/story/ExpandedStory/ExpandedStoryC
 
 describe('<ExpandedStoryControls />', () => {
   const controls = ['save', 'delete', 'cancel'];
+  const defaultProps = () => ({
+    onSave: sinon.stub(),
+    onCancel: sinon.stub(),
+    isDirty: false,
+    canSave: true,
+    canDelete: true,
+    onDelete: sinon.stub()
+  });
 
   it('renders all the control buttons', () => {
-    const wrapper = shallow(<ExpandedStoryControls readOnly={false} />);
+    const wrapper = shallow(
+      <ExpandedStoryControls
+        {...defaultProps()}
+        readOnly={false}
+      />
+    );
 
     controls.forEach(control => {
       expect(wrapper.find(`.${control}`).prop('value')).toBe(I18n.t(control))
@@ -19,6 +32,7 @@ describe('<ExpandedStoryControls />', () => {
 
       const wrapper = shallow(
         <ExpandedStoryControls
+          {...defaultProps()}
           canSave
           onSave={onSave}
         />
@@ -44,6 +58,7 @@ describe('<ExpandedStoryControls />', () => {
 
       const wrapper = shallow(
         <ExpandedStoryControls
+          {...defaultProps()}
           canDelete
           onDelete={onDelete}
         />
@@ -69,6 +84,7 @@ describe('<ExpandedStoryControls />', () => {
 
       const wrapper = shallow(
         <ExpandedStoryControls
+          {...defaultProps()}
           onCancel={handleCancel}
         />
       );
@@ -84,6 +100,7 @@ describe('<ExpandedStoryControls />', () => {
 
         const wrapper = shallow(
           <ExpandedStoryControls
+            {...defaultProps()}
             canSave={true}
             isDirty={true}
             onCancel={handleCancel}
@@ -103,6 +120,7 @@ describe('<ExpandedStoryControls />', () => {
 
         const wrapper = shallow(
           <ExpandedStoryControls
+            {...defaultProps()}
             canSave={true}
             isDirty={false}
             onCancel={handleCancel}
@@ -123,6 +141,7 @@ describe('<ExpandedStoryControls />', () => {
       beforeEach(() => {
         wrapper = shallow(
           <ExpandedStoryControls
+            {...defaultProps()}
             canDelete={false}
             canSave
           />
@@ -154,6 +173,7 @@ describe('<ExpandedStoryControls />', () => {
       beforeEach(() => {
         wrapper = shallow(
           <ExpandedStoryControls
+            {...defaultProps()}
             canDelete
           />
         );
@@ -174,6 +194,7 @@ describe('<ExpandedStoryControls />', () => {
       beforeEach(() => {
         wrapper = shallow(
           <ExpandedStoryControls
+            {...defaultProps()}
             canSave={false}
             canDelete
           />
@@ -205,6 +226,7 @@ describe('<ExpandedStoryControls />', () => {
       beforeEach(() => {
         wrapper = shallow(
           <ExpandedStoryControls
+            {...defaultProps()}
             canSave
           />
         );

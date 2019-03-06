@@ -1,6 +1,7 @@
 import React from 'react';
 import Clipboard from 'react-clipboard.js';
 import { storyUrl } from '../StoryUrl';
+import { editingStoryPropTypesShape } from '../../../models/beta/story';
 
 class ExpandedStoryHistoryLocation extends React.Component {
   render() {
@@ -37,6 +38,10 @@ class ExpandedStoryHistoryLocation extends React.Component {
       </div>
     );
   };
+};
+
+ExpandedStoryHistoryLocation.propTypes = {
+  story: editingStoryPropTypesShape.isRequired
 };
 
 export default ExpandedStoryHistoryLocation;

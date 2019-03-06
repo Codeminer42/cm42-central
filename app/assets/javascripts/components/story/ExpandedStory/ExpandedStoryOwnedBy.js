@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SelectUser from '../select_user/SelectUser';
+import { editingStoryPropTypesShape } from '../../../models/beta/story';
 
 const ExpandedStoryOwnedBy = ({ users, story, onEdit }) => (
   <div className="Story__section">
@@ -17,14 +18,7 @@ const ExpandedStoryOwnedBy = ({ users, story, onEdit }) => (
 
 ExpandedStoryOwnedBy.propTypes = {
   users: PropTypes.array.isRequired,
-  story: PropTypes.shape({
-    _editing: PropTypes.shape({
-      ownedById: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number
-      ]),
-    })
-  }),
+  story: editingStoryPropTypesShape.isRequired,
   onEdit: PropTypes.func.isRequired
 }
 

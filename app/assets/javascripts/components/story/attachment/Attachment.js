@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 class Attachment extends React.Component {
   renderAttachmentContent() {
     const { type, link, publicId } = this.props;
-    const imageSrc =  link.replace(/\.pdf$/, '.png');
+    const imageSrc = link.replace(/\.pdf$/, '.png');
 
     return (
       <div className={`attachment--${type}`}>
@@ -40,9 +40,10 @@ class Attachment extends React.Component {
   }
 }
 
-Attachment.PropTypes = {
-  files: PropTypes.arrayOf(PropTypes.object).isRequired,
-  publicLink: PropTypes.string.isRequired
+Attachment.propTypes = {
+  type: PropTypes.string.isRequired,
+  link: PropTypes.string.isRequired,
+  publicId: PropTypes.string.isRequired,
 }
 
 export default Attachment;

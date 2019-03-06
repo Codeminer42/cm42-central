@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { editingStoryPropTypesShape } from '../../../models/beta/story';
 
 const ExpandedStoryTitle = (props) => {
 
@@ -21,8 +22,8 @@ const ExpandedStoryTitle = (props) => {
 };
 
 ExpandedStoryTitle.propTypes = {
-  story: PropTypes.object.isRequired,
-  onEdit: PropTypes.func.isRequired
+  story: editingStoryPropTypesShape.isRequired,
+  onEdit: PropTypes.func.isRequired,
 };
 
 export default ExpandedStoryTitle

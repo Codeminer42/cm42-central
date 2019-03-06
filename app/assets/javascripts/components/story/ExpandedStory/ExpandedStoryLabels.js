@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactTags from 'react-tag-autocomplete';
 import PropTypes from 'prop-types';
+import { editingStoryPropTypesShape } from '../../../models/beta/story';
 
 class ExpandedStoryLabels extends React.Component {
   constructor(props) {
@@ -57,11 +58,7 @@ class ExpandedStoryLabels extends React.Component {
 };
 
 ExpandedStoryLabels.propTypes = {
-  story: PropTypes.shape({
-    _editing: PropTypes.shape({
-      labels: PropTypes.array.isRequired
-    })
-  }),
+  story: editingStoryPropTypesShape.isRequired,
   onAddLabel: PropTypes.func.isRequired,
   onRemoveLabel: PropTypes.func.isRequired,
   projectLabels: PropTypes.arrayOf(PropTypes.object).isRequired

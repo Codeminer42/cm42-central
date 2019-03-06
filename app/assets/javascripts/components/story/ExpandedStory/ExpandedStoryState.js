@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as Story from '../../../models/beta/story';
+import { editingStoryPropTypesShape } from '../../../models/beta/story';
 
 const ExpandedStoryState = ({ story, onEdit }) => {
   return (
@@ -27,7 +28,7 @@ const ExpandedStoryState = ({ story, onEdit }) => {
 };
 
 ExpandedStoryState.propTypes = {
-  story: PropTypes.object.isRequired,
+  story: editingStoryPropTypesShape.isRequired,
   onEdit: PropTypes.func.isRequired
 };
 

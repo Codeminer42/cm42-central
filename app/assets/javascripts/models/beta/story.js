@@ -2,6 +2,10 @@ import { status, storyTypes } from "libs/beta/constants";
 import httpService from '../../services/httpService';
 import changeCase from 'change-object-case';
 import * as Label from './label';
+import PropTypes from 'prop-types';
+import { notePropTypesShape } from './note';
+import { taskPropTypesShape } from './task';
+import { attachmentPropTypesShape } from './attachment';
 
 const compareValues = (a, b) => {
   if (a > b) return 1;
@@ -86,17 +90,14 @@ export const post = (story, projectId) => {
     .then(({ data }) => deserialize(data.story));
 };
 
-export const deleteStory = (storyId, projectId) => {
-  return httpService
+export const deleteStory = (storyId, projectId) =>
+  httpService
     .delete(`/projects/${projectId}/stories/${storyId}`)
-};
 
-export const updateStory = (story, newAttributes) => {
-  return {
-    ...story,
-    ...newAttributes
-  };
-};
+export const updateStory = (story, newAttributes) => ({
+  ...story,
+  ...newAttributes
+});
 
 export const storyFailure = (story, error) => {
   const errors = error ? [
@@ -293,3 +294,50 @@ export const getNextState = (currentState, transition) => {
 
   return currentState;
 }
+export const storyPropTypesShape = PropTypes.shape(storyPropTypes).isRequired;
+
+export const editingStoryPropTypesShape = PropTypes.shape({
+  ...storyPropTypes,
+  _editing: storyPropTypesShape
+});
+
+const storyPropTypes = {
+  id: PropTypes.number,
+  title: PropTypes.string,
+  description: PropTypes.string,
+  estimate: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]),
+  storyType: PropTypes.string,
+  state: PropTypes.string,
+  acceptedAt: PropTypes.string,
+  requestedById: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]),
+  ownedById: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]),
+  projectId: PropTypes.number,
+  createdAt: PropTypes.string,
+  updatedAt: PropTypes.string,
+  position: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]),
+  labels: PropTypes.array,
+  requestedByName: PropTypes.string,
+  ownedByName: PropTypes.string,
+  ownedByInitials: PropTypes.string,
+  releaseDate: PropTypes.string,
+  deliveredAt: PropTypes.string,
+  errors: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array
+  ]),
+  notes: PropTypes.arrayOf(notePropTypesShape.isRequired),
+  documents: PropTypes.arrayOf(attachmentPropTypesShape.isRequired),
+  tasks: PropTypes.arrayOf(taskPropTypesShape.isRequired),
+};
