@@ -41,8 +41,7 @@ class V1::Teams < Grape::API
     desc 'Return all users of a specified team', tags: ['team']
     paginate
     get '/:slug/users' do
-      team = Team.includes(enrollments: [:user]).find_by(slug: params[:slug])
-      users = team.users
+      users = User.joins(:teams).where(teams: { slug: params[:slug] })
 
       present paginate(users), with: Entities::User
     end
