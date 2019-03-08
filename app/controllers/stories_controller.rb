@@ -17,7 +17,7 @@ class StoriesController < ApplicationController
   def show
     @story = policy_scope(Story).try(:with_dependencies).try(:find, params[:id])
     authorize @story
-    render json: @story
+    render json: @story.as_json_with_dependencies
   end
 
   def sort

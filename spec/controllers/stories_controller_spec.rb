@@ -221,7 +221,7 @@ describe StoriesController do
         specify do
           get :show, xhr: true, params: { project_id: project.id, id: story.id }
           expect(response).to be_successful
-          expect(response.body).to eq(story.to_json)
+          expect(response.body).to eq(story.as_json_with_dependencies.to_json)
         end
       end
 
