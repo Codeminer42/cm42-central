@@ -74,25 +74,27 @@ export const states = [
   'rejected'
 ];
 
-export const update = (story, projectId, options) => {
+export const update = async (story, projectId, options) => {
   const newStory = serialize(story);
 
-  return httpService
-    .put(`/projects/${projectId}/stories/${story.id}`, { story: newStory })
-    .then(({ data }) => deserialize(data.story, options));
+  const { data } = await httpService
+    .put(`/projects/${projectId}/stories/${story.id}`, { story: newStory });
+
+  return deserialize(data.story, options);
 };
 
-export const post = (story, projectId) => {
+export const post = async (story, projectId) => {
   const newStory = serialize(story);
 
-  return httpService
-    .post(`/projects/${projectId}/stories`, { story: newStory })
-    .then(({ data }) => deserialize(data.story));
+  const { data } = await httpService
+    .post(`/projects/${projectId}/stories`, { story: newStory });
+
+  return deserialize(data.story);
 };
 
 export const deleteStory = (storyId, projectId) =>
   httpService
-    .delete(`/projects/${projectId}/stories/${storyId}`)
+    .delete(`/projects/${projectId}/stories/${storyId}`);
 
 export const updateStory = (story, newAttributes) => ({
   ...story,
@@ -254,11 +256,11 @@ const emptyStory = {
 };
 
 export const storyTransitions = {
-  START  : 'start',
-  FINISH : 'finish',
+  START: 'start',
+  FINISH: 'finish',
   DELIVER: 'deliver',
-  ACCEPT : 'accept',
-  REJECT : 'reject',
+  ACCEPT: 'accept',
+  REJECT: 'reject',
   RESTART: 'restart'
 };
 
@@ -282,13 +284,13 @@ const stateTransitions = {
   [status.REJECTED]: {
     [storyTransitions.RESTART]: status.STARTED
   },
-  [status.ACCEPTED] : {}
+  [status.ACCEPTED]: {}
 };
 
 export const getNextState = (currentState, transition) => {
   const nextState = stateTransitions[currentState][transition];
 
-  if(nextState) {
+  if (nextState) {
     return nextState;
   }
 

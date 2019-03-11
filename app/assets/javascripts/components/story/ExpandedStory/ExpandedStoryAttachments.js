@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
 import AttachmentsList from '../attachment/AttachmentList';
-import { upload, acceptedMimeTypes } from '../../../models/beta/fileUpload';
+import { upload, acceptedMimeTypes } from '../../../models/beta/attachment';
 import { editingStoryPropTypesShape } from '../../../models/beta/story';
 
 class ExpandedStoryAttachments extends React.Component {

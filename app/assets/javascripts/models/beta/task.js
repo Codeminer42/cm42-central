@@ -4,27 +4,30 @@ import changeCase from 'change-object-case';
 import { updateIfSameId } from '../../services/updateIfSameId';
 import { setLoadingValue } from './story';
 
-export const post = (projectId, storyId, task) => {
+export const post = async (projectId, storyId, task) => {
   const newTask = {
     name: task,
     done: false
   }
-  return httpService
-    .post(`/projects/${projectId}/stories/${storyId}/tasks`, newTask)
-    .then(({ data }) => changeCase.camelKeys(data, { recursive: true, arrayRecursive: true }));
+
+  const { data } = await httpService
+    .post(`/projects/${projectId}/stories/${storyId}/tasks`, newTask);
+
+  return deserialize(data);
 };
 
-export const toggle = (projectId, storyId, taskId, status) => {
-  const taskStatus = changeCase.snakeKeys(status);
-  return httpService
-    .put(`/projects/${projectId}/stories/${storyId}/tasks/${taskId}/`, taskStatus)
-    .then(({ data }) => changeCase.camelKeys(data, { recursive: true, arrayRecursive: true }));
+export const toggle = async (projectId, storyId, taskId, status) => {
+  const taskStatus = serialize(status);
+
+  const { data } = await httpService
+    .put(`/projects/${projectId}/stories/${storyId}/tasks/${taskId}/`, taskStatus);
+
+  return deserialize(data);
 };
 
-export const destroy = (projectId, storyId, taskId) => {
-  return httpService
+export const destroy = (projectId, storyId, taskId) =>
+  httpService
     .delete(`/projects/${projectId}/stories/${storyId}/tasks/${taskId}`);
-};
 
 export const addTask = (story, task) => ({
   ...story,
@@ -61,3 +64,15 @@ export const taskPropTypesShape = PropTypes.shape({
   createdAt: PropTypes.string,
   updatedAt: PropTypes.string
 });
+
+const serialize = (data) =>
+  changeCase.snakeKeys(data, {
+    recursive: true,
+    arrayRecursive: true
+  });
+
+const deserialize = (data) =>
+  changeCase.camelKeys(data, {
+    recursive: true,
+    arrayRecursive: true
+  });

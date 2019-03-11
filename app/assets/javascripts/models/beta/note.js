@@ -7,10 +7,14 @@ export const destroy = (projectId, storyId, noteId) =>
   httpService
     .delete(`/projects/${projectId}/stories/${storyId}/notes/${noteId}`);
 
-export const post = (projectId, storyId, note) =>
-  httpService
-    .post(`/projects/${projectId}/stories/${storyId}/notes`, { note })
-    .then(({ data }) => changeCase.camelKeys(data, { recursive: true, arrayRecursive: true }));
+export const post = async (projectId, storyId, note) => {
+  note = serialize(note);
+
+  const { data } = await httpService
+    .post(`/projects/${projectId}/stories/${storyId}/notes`, { note });
+
+  return deserialize(data);
+}
 
 export const addNote = (story, note) => ({
   ...story,
@@ -40,3 +44,15 @@ export const notePropTypesShape = PropTypes.shape({
     PropTypes.array
   ])
 });
+
+const deserialize = (data) =>
+  changeCase.camelKeys(data, {
+    recursive: true,
+    arrayRecursive: true
+  });
+
+const serialize = (data) =>
+  changeCase.snakeKeys(data, {
+    recursive: true,
+    arrayRecursive: true
+  });

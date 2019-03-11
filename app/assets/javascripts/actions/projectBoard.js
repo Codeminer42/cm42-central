@@ -22,18 +22,23 @@ const receiveProject = data => ({
   data
 });
 
-export const fetchProjectBoard = projectId => {
-  return (dispatch, getState, { ProjectBoard }) => {
+export const fetchProjectBoard = projectId =>
+  async (dispatch, getState, { ProjectBoard }) => {
     dispatch(requestProjectBoard());
 
-    ProjectBoard.get(projectId)
-      .then(({ project, users, stories, pastIterations }) => {
-        dispatch(receiveProject(project));
-        dispatch(receivePastIterations(pastIterations));
-        dispatch(receiveUsers(users));
-        dispatch(receiveStories(stories));
-        dispatch(receiveProjectBoard(projectId));
-      })
-      .catch(error => dispatch(errorRequestProjectBoard(error)));
+    try {
+      const {
+        project, users,
+        stories, pastIterations
+      } = await ProjectBoard.get(projectId);
+
+      dispatch(receiveProject(project));
+      dispatch(receivePastIterations(pastIterations));
+      dispatch(receiveUsers(users));
+      dispatch(receiveStories(stories));
+      dispatch(receiveProjectBoard(projectId));
+    }
+    catch (error) {
+      return dispatch(errorRequestProjectBoard(error));
+    }
   };
-};

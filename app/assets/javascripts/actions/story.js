@@ -61,39 +61,44 @@ export const updateCollapsedStory = (storyId, projectId, newAttributes) =>
   }
 
 export const saveStory = (storyId, projectId, options) =>
-  (dispatch, getState, { Story }) => {
+  async (dispatch, getState, { Story }) => {
     const { stories } = getState();
     const story = stories.find((story) => story.id === storyId);
 
     dispatch(setLoadingStory(story.id))
 
     if (Story.isNew(story)) {
-      return Story.post(story._editing, projectId)
-        .then((story) =>
-          dispatch(addStory(story))
-        )
-        .catch((error) => dispatch(storyFailure(story.id, error)));
+      try {
+        const newStory = await Story.post(story._editing, projectId)
+        return dispatch(addStory(newStory))
+      }
+      catch (error) {
+        return dispatch(storyFailure(story.id, error))
+      }
     };
 
     if (story._editing._isDirty) {
-      return Story.update(story._editing, projectId, options)
-        .then((story) => {
-          dispatch(updateStorySuccess(story))
-        })
-        .catch((error) => dispatch(storyFailure(story.id, error)))
+      try {
+        const updatedStory = await Story.update(story._editing, projectId, options)
+        return dispatch(updateStorySuccess(updatedStory))
+      }
+      catch (error) {
+        return dispatch(storyFailure(story.id, error))
+      }
     }
 
     return dispatch(toggleStory(story.id));
   };
 
 export const deleteStory = (storyId, projectId) =>
-  (dispatch, getState, { Story }) => {
+  async (dispatch, getState, { Story }) => {
     dispatch(setLoadingStory(storyId))
-    return Story.deleteStory(storyId, projectId)
-      .then(() => dispatch(deleteStorySuccess(storyId)))
-      .catch((error) => {
-        dispatch(storyFailure(storyId, error))
-        // TODO: dispatch an action to notify user on error
-        alert(error.message);
-      });
+
+    try {
+      await Story.deleteStory(storyId, projectId);
+      return dispatch(deleteStorySuccess(storyId));
+    }
+    catch (error) {
+      return dispatch(storyFailure(storyId, error))
+    }
   }
