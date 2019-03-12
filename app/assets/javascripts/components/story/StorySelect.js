@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 const renderOption = (option, i) => <option value={option[1]} key={i}> {option[0]} </option>;
 
@@ -8,7 +8,7 @@ const renderOptions = (options, blank) => ([
 ]);
 
 const StorySelect = ({ name, options, selected, disabled = false, blank, className }) =>
-  <div>
+  <Fragment>
     <label htmlFor={name}>{ I18n.t(`activerecord.attributes.story.${name}`) }</label>
     <br />
     <select
@@ -19,6 +19,6 @@ const StorySelect = ({ name, options, selected, disabled = false, blank, classNa
     >
       { renderOptions(options, blank) }
     </select>
-  </div>
+  </Fragment>
 
 export default StorySelect;

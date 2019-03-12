@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Note from './Note';
 import PropTypes from 'prop-types';
 import { notePropTypesShape } from '../../../models/beta/note';
 
 const NotesList = ({ notes, onDelete }) => (
-  <div>
+  <Fragment>
     {
       notes.map(note => (
         <Note
@@ -14,7 +14,7 @@ const NotesList = ({ notes, onDelete }) => (
         />
       ))
     }
-  </div>
+  </Fragment>
 );
 
 NotesList.propTypes = {

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Task from './Task'
 import PropTypes from 'prop-types';
 import { taskPropTypesShape } from '../../../models/beta/task';
 
 const TasksList = ({ tasks, onDelete, onToggle }) => (
-  <div>
+  <Fragment>
     {
       tasks.map((task) => (
         <Task
@@ -15,7 +15,7 @@ const TasksList = ({ tasks, onDelete, onToggle }) => (
         />
       ))
     }
-  </div>
+  </Fragment>
 )
 
 TasksList.propTypes = {

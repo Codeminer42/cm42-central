@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { TwitterPicker } from 'react-color';
 
 export default class ColorPick extends React.Component {
@@ -29,9 +29,8 @@ export default class ColorPick extends React.Component {
   }
 
   render() {
-
     return (
-      <div>
+      <Fragment>
         <div onClick={ this.handleClick } className="swatch">
           <div style={{ backgroundColor: this.state.color }} className="color-box" />
           <input type="hidden" value={ this.state.color } name="tag_group[bg_color]" />
@@ -40,7 +39,7 @@ export default class ColorPick extends React.Component {
           <div className="color-box-cover" onClick={ this.handleClose }/>
           <TwitterPicker color={ this.state.color } onChange={ this.handleChange } />
         </div> }
-      </div>
+      </Fragment>
     );
   }
 }

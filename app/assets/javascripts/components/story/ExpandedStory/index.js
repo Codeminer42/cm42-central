@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import ExpandedStoryHistoryLocation from './ExpandedStoryHistoryLocation';
 import ExpandedStoryControls from './ExpandedStoryControls';
@@ -88,19 +88,19 @@ export class ExpandedStory extends React.Component {
             onEdit={(newAttributes) => editStory(story.id, newAttributes)}
           />
         </div>
-        <div>
-          <ExpandedStoryRequestedBy
-            story={story}
-            users={users}
-            onEdit={(userId) => editStory(story.id, { requestedById: userId })}
-          />
 
-          <ExpandedStoryOwnedBy
-            story={story}
-            users={users}
-            onEdit={(userId) => editStory(story.id, { ownedById: userId })}
-          />
-        </div>
+        <ExpandedStoryRequestedBy
+          story={story}
+          users={users}
+          onEdit={(userId) => editStory(story.id, { requestedById: userId })}
+        />
+
+        <ExpandedStoryOwnedBy
+          story={story}
+          users={users}
+          onEdit={(userId) => editStory(story.id, { ownedById: userId })}
+        />
+
         <ExpandedStoryState
           story={story}
           onEdit={(newAttributes) => editStory(story.id, newAttributes)}
@@ -121,7 +121,7 @@ export class ExpandedStory extends React.Component {
 
         {
           !Story.isNew(story) ?
-            <div>
+            <Fragment>
               <ExpandedStoryAttachments
                 story={story}
                 onFailure={(error) => storyFailure(story.id, error)}
@@ -143,7 +143,7 @@ export class ExpandedStory extends React.Component {
                 onDelete={(taskId) => deleteTask(project.id, story.id, taskId)}
                 onSave={(task) => createTask(project.id, story.id, task)}
               />
-            </div>
+            </Fragment>
             : null
         }
       </div >

@@ -72,10 +72,8 @@ describe('<ProjectList />', () => {
       it('Title should be present', () => {
         const wrapper = shallow(<ProjectList {...defaultProps} />);
         expect(wrapper.contains(
-          <div>
-            <div className="col-md-12 project-list-title">
-              <h4><i className="mi md-20 heading-icon">view_module</i> { I18n.t('projects.mine') } | { 0 }</h4>
-            </div>
+          <div className="col-md-12 project-list-title">
+            <h4><i className="mi md-20 heading-icon">view_module</i> {I18n.t('projects.mine')} | {0}</h4>
           </div>
         )).toBe(true);
       });
@@ -110,10 +108,8 @@ describe('<ProjectList />', () => {
       it('Title should be present', () => {
         const wrapper = shallow(<ProjectList {...defaultProps} />);
         expect(wrapper.contains(
-          <div>
-            <div className="col-md-12 project-list-title">
-              <h4><i className="mi md-20 heading-icon">view_module</i> { I18n.t('projects.mine') } | { 0 }</h4>
-            </div>
+          <div className="col-md-12 project-list-title">
+            <h4><i className="mi md-20 heading-icon">view_module</i> {I18n.t('projects.mine')} | {0}</h4>
           </div>
         )).toBe(true);
       });

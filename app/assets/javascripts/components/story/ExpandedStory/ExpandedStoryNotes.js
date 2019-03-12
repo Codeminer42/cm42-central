@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import NotesList from '../note/NotesList';
 import { editingStoryPropTypesShape } from '../../../models/beta/story';
@@ -33,7 +33,7 @@ class ExpandedStoryNotes extends React.Component {
 
   notesForm() {
     return (
-      <div>
+      <Fragment>
         <textarea
           className="form-control input-sm create-note-text"
           value={this.state.value}
@@ -48,7 +48,7 @@ class ExpandedStoryNotes extends React.Component {
             disabled={this.hasAnEmptyValue()}
           />
         </div>
-      </div>
+      </Fragment>
     );
   }
 

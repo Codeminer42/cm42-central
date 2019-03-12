@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import ProjectCard from 'components/projects/ProjectCard';
 
 export default class ProjectList extends React.Component {
@@ -14,12 +14,12 @@ export default class ProjectList extends React.Component {
     const { projects, title } = this.props
 
     return(
-      <div>
+      <Fragment>
         <div className="col-md-12 project-list-title">
           <h4><i className="mi md-20 heading-icon">view_module</i> { title } | { projects.length }</h4>
         </div>
         { this.cards() }
-      </div>
+      </Fragment>
     );
   }
 }

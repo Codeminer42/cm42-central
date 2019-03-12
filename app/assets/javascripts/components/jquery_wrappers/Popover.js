@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 export default class Popover extends Component {
@@ -39,12 +39,12 @@ export default class Popover extends Component {
 
   render() {
     return (
-      <div>
+      <Fragment>
         { this.props.children({ ref: this.saveChildRef }) }
         <div style={{ display: 'none' }}>
           { this.props.renderContent({ ref: this.saveContentRef })}
         </div>
-      </div>
+      </Fragment>
     );
   }
 };

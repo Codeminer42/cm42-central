@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 const propTypes = {
@@ -9,10 +9,10 @@ const propTypes = {
 
 const Iteration = ({ number, startDate, points }) => {
     return (
-      <div>
+      <Fragment>
         {number} - {startDate}
         <span className="points">{points}</span>
-      </div>
+      </Fragment>
     );
 }
 
