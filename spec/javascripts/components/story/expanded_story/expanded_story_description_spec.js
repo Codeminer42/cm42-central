@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import ExpandedStoryDescription from 'components/story/ExpandedStory/ExpandedStoryDescription';
 
 describe('<ExpandedStoryDescription />', () => {
@@ -11,7 +11,7 @@ describe('<ExpandedStoryDescription />', () => {
   it('renders component title', () => {
     const story = { description: null, _editing: { description: null } };
 
-    const wrapper = shallow(
+    const wrapper = mount(
       <ExpandedStoryDescription {...defaultProps()} story={story} />
     );
 
@@ -38,7 +38,7 @@ describe('<ExpandedStoryDescription />', () => {
     it('renders edit button', () => {
       const story = { description: null, _editing: { description: null } };
 
-      const wrapper = shallow(
+      const wrapper = mount(
         <ExpandedStoryDescription {...defaultProps()} story={story} />
       );
 

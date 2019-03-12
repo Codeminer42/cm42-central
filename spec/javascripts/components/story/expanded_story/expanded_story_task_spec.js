@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import ExpandedStoryTask from 'components/story/ExpandedStory/ExpandedStoryTask';
 import storyFactory from '../../../support/factories/storyFactory';
 
@@ -18,7 +18,7 @@ describe('<ExpandedStoryTask />', () => {
       ...propOverrides
     });
 
-    const wrapper = shallow(<ExpandedStoryTask {...defaultProps()} />);
+    const wrapper = mount(<ExpandedStoryTask {...defaultProps()} />);
     const wrapperInstance = wrapper.instance();
     const button = wrapper.find('button');
     const input = wrapper.find('input');

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { taskPropTypesShape } from '../../../models/beta/task';
 
 const Task = ({ task, onDelete, onToggle }) => (
-  <div className="Story__task">
+  <div className="task">
     <label>
       <input
         type='checkbox'

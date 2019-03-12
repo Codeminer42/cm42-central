@@ -4,6 +4,7 @@ import Dropzone from 'react-dropzone';
 import AttachmentsList from '../attachment/AttachmentList';
 import { upload, acceptedMimeTypes } from '../../../models/beta/attachment';
 import { editingStoryPropTypesShape } from '../../../models/beta/story';
+import ExpandedStorySection from './ExpandedStorySection';
 
 class ExpandedStoryAttachments extends React.Component {
   constructor(props) {
@@ -56,45 +57,43 @@ class ExpandedStoryAttachments extends React.Component {
 
   render() {
     const { story, onDelete } = this.props;
+
     return (
-      <div className="Story__section">
-        <div className="Story__section-title">
-          {I18n.t('story.attachments')}
-        </div>
+      <ExpandedStorySection
+        title={I18n.t('story.attachments')}
+        identifier="attachments"
+      >
+        <Dropzone
+          onDrop={this.onFileDrop}
+          accept={acceptedMimeTypes()}
+          disabled={this.state.loading}
+          multiple={false}
+        >
+          {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {
+            const className = this.dropzoneClassName({ isDragActive, isDragReject })
 
-        <div className="Story__section__attachments">
-          <Dropzone
-            onDrop={this.onFileDrop}
-            accept={acceptedMimeTypes()}
-            disabled={this.state.loading}
-            multiple={false}
-          >
-            {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {
-              const className = this.dropzoneClassName({ isDragActive, isDragReject })
-
-              return (
-                <div
-                  {...getRootProps()}
-                  className={`btn btn-success attachments-dropzone ${className}`}
-                >
-                  <input {...getInputProps()} />
-                  <i className="mi md-20">cloud_upload</i>
-                  <div>
-                    {!isDragReject ?
-                      I18n.t('upload_new_file') :
-                      I18n.t('reject_new_file')}
-                  </div>
+            return (
+              <div
+                {...getRootProps()}
+                className={`btn btn-success attachments-dropzone ${className}`}
+              >
+                <input {...getInputProps()} />
+                <i className="mi md-20">cloud_upload</i>
+                <div>
+                  {!isDragReject ?
+                    I18n.t('upload_new_file') :
+                    I18n.t('reject_new_file')}
                 </div>
-              )
-            }}
-          </Dropzone>
+              </div>
+            )
+          }}
+        </Dropzone>
 
-          <AttachmentsList
-            files={story._editing.documents}
-            onDelete={onDelete}
-          />
-        </div>
-      </div>
+        <AttachmentsList
+          files={story._editing.documents}
+          onDelete={onDelete}
+        />
+      </ExpandedStorySection>
     );
   }
 }

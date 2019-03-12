@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import ExpandedStoryNotes from 'components/story/ExpandedStory/ExpandedStoryNotes';
 import storyFactory from '../../../support/factories/storyFactory';
 
@@ -22,7 +22,7 @@ describe('<ExpandedStoryNotes />', () => {
   it('renders component title', () => {
     const story = newStory();
 
-    const wrapper = shallow(
+    const wrapper = mount(
       <ExpandedStoryNotes
         story={story}
         onCreate={onCreate}
@@ -37,7 +37,7 @@ describe('<ExpandedStoryNotes />', () => {
   it('renders component content', () => {
     const story = newStory();
 
-    const wrapper = shallow(
+    const wrapper = mount(
       <ExpandedStoryNotes
         story={story}
         onCreate={onCreate}

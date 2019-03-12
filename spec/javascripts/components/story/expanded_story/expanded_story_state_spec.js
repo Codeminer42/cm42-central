@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import ExpandedStoryState from 'components/story/ExpandedStory/ExpandedStoryState';
 import { states } from '../../../../../app/assets/javascripts/models/beta/story';
 
@@ -9,7 +9,7 @@ describe('<ExpandedStoryState />', () => {
 
     const story = { state: 'started', _editing: { state: 'started' } };
 
-    const wrapper = shallow(<ExpandedStoryState story={story} onEdit={onEditSpy} />);
+    const wrapper = mount(<ExpandedStoryState story={story} onEdit={onEditSpy} />);
 
     expect(wrapper.text()).toContain(I18n.t('activerecord.attributes.story.state'));
   });
