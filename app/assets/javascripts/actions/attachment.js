@@ -27,7 +27,7 @@ export const addAttachment = (storyId, projectId, attachment) =>
       return dispatch(updateStorySuccess(updatedStory));
     }
     catch (error) {
-      return dispatch(storyFailure(error));
+      return dispatch(storyFailure(storyId, error));
     }
   }
 
