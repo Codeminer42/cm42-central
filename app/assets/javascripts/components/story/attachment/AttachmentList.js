@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Attachment from './Attachment';
 import * as AttachmentURL from '../../../models/beta/attachmentUrl';
+import { attachmentPropTypesShape } from '../../../models/beta/attachment';
 
 const AttachmentsList = ({ files, onDelete }) =>
   <div>
@@ -28,9 +29,8 @@ const AttachmentsList = ({ files, onDelete }) =>
   </div>
 
 AttachmentsList.propTypes = {
-  files: PropTypes.arrayOf(PropTypes.object).isRequired,
+  files: PropTypes.arrayOf(attachmentPropTypesShape.isRequired),
   onDelete: PropTypes.func.isRequired
 }
 
 export default AttachmentsList;
-

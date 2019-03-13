@@ -4,7 +4,7 @@ import Task from 'components/story/task/Task';
 
 describe('<Task />', () => {
   const setup = propOverrides => {
-    const defaultProps = {
+    const defaultProps = () => ({
       task: {
         id: 1,
         name: 'Foo',
@@ -14,9 +14,9 @@ describe('<Task />', () => {
       onDelete: sinon.spy(),
       onToggle: sinon.spy(),
       ...propOverrides
-    };
+    });
 
-    const wrapper = shallow(<Task {...defaultProps} />);
+    const wrapper = shallow(<Task {...defaultProps()} />);
     const span = wrapper.find('.delete-btn');
     const label = wrapper.find('label');
     const checkbox = wrapper.find('input');

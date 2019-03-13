@@ -1,6 +1,7 @@
 import React from 'react';
 import Note from './Note';
 import PropTypes from 'prop-types';
+import { notePropTypesShape } from '../../../models/beta/note';
 
 const NotesList = ({ notes, onDelete }) => (
   <div>
@@ -17,7 +18,7 @@ const NotesList = ({ notes, onDelete }) => (
 );
 
 NotesList.propTypes = {
-  notes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  notes: PropTypes.arrayOf(notePropTypesShape.isRequired),
   onDelete: PropTypes.func.isRequired
 };
 

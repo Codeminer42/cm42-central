@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import * as Labels from '../../../models/beta/label';
+import { storyPropTypesShape } from '../../../models/beta/story';
 
 const StoryLabel = ( { label } ) => (
   <a href="#" className="Story__label" title={label}>{label}</a>
@@ -25,7 +26,7 @@ const CollapsedStoryLabels = ({ story }) => {
 };
 
 CollapsedStoryLabels.propTypes = {
-  story: PropTypes.object.isRequired,
+  story: storyPropTypesShape
 };
 
 export default CollapsedStoryLabels;

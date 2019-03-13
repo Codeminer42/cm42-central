@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TasksList from '../task/TasksList';
 import PropTypes from 'prop-types';
+import { editingStoryPropTypesShape } from '../../../models/beta/story';
 
 class ExpandedStoryTask extends Component {
   constructor(props) {
@@ -72,10 +73,7 @@ class ExpandedStoryTask extends Component {
 };
 
 ExpandedStoryTask.propTypes = {
-  story: PropTypes.object.isRequired,
-  story: PropTypes.shape({
-    tasks: PropTypes.array.isRequired
-  }),
+  story: editingStoryPropTypesShape.isRequired,
   onToggle: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired

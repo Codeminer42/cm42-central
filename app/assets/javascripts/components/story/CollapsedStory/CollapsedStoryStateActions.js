@@ -1,18 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import CollapsedStoryEstimateButton from './CollapsedStoryEstimateButton';
 import CollapsedStoryStateButton from './CollapsedStoryStateButton';
-import { isStoryNotEstimated, getNextState, storyTransitions } from '../../../models/beta/story';
+import {
+  isStoryNotEstimated, getNextState,
+  storyTransitions, storyPropTypesShape
+} from '../../../models/beta/story';
 import { status } from '../../../libs/beta/constants';
 
 const StoryActionFor = (state) => StateAction[state] || StateAction.unstarted;
 
 const StateAction = {
-  [status.STARTED]  : ["finish"],
-  [status.FINISHED] : ["deliver"],
+  [status.STARTED]: ["finish"],
+  [status.FINISHED]: ["deliver"],
   [status.DELIVERED]: ["accept", "reject"],
-  [status.REJECTED] : ["restart"],
-  [status.ACCEPTED] : [],
+  [status.REJECTED]: ["restart"],
+  [status.ACCEPTED]: [],
   [status.UNSTARTED]: ["start"]
 };
 
@@ -69,7 +71,7 @@ class CollapsedStoryStateActions extends React.Component {
 };
 
 CollapsedStoryStateActions.propTypes = {
-  story: PropTypes.object.isRequired
+  story: storyPropTypesShape
 };
 
 export default CollapsedStoryStateActions;

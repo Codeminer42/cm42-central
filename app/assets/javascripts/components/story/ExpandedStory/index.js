@@ -20,6 +20,7 @@ import { addLabel, removeLabel } from '../../../actions/labels';
 import { addAttachment, removeAttachment } from '../../../actions/attachment';
 import { connect } from 'react-redux';
 import * as Story from '../../../models/beta/story';
+import { projectPropTypesShape } from '../../../models/beta/project';
 
 export class ExpandedStory extends React.Component {
   constructor(props) {
@@ -61,7 +62,7 @@ export class ExpandedStory extends React.Component {
         <div className="Story__loading"></div>
         <ExpandedStoryControls
           onCancel={onToggle}
-          isDirty={story._editing._isDirty}
+          isDirty={story._editing._isDirty || false}
           onSave={() => saveStory(story.id, project.id)}
           onDelete={() => deleteStory(story.id, project.id)}
           canSave={Story.canSave(story)}
@@ -151,7 +152,24 @@ export class ExpandedStory extends React.Component {
 }
 
 ExpandedStory.propTypes = {
-  story: PropTypes.object.isRequired
+  story: Story.editingStoryPropTypesShape.isRequired,
+  editStory: PropTypes.func.isRequired,
+  saveStory: PropTypes.func.isRequired,
+  storyFailure: PropTypes.func.isRequired,
+  createTask: PropTypes.func.isRequired,
+  deleteTask: PropTypes.func.isRequired,
+  toggleTask: PropTypes.func.isRequired,
+  deleteStory: PropTypes.func.isRequired,
+  deleteNote: PropTypes.func.isRequired,
+  createNote: PropTypes.func.isRequired,
+  addLabel: PropTypes.func.isRequired,
+  removeLabel: PropTypes.func.isRequired,
+  setLoadingStory: PropTypes.func.isRequired,
+  addAttachment: PropTypes.func.isRequired,
+  removeAttachment: PropTypes.func.isRequired,
+  users: PropTypes.array.isRequired,
+  project: projectPropTypesShape.isRequired,
+  onToggle: PropTypes.func.isRequired
 };
 
 const mapStateToProps = ({ project, users }) => ({ project, users });

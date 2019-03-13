@@ -3,10 +3,17 @@ import { shallow } from 'enzyme';
 import ExpandedStoryDescription from 'components/story/ExpandedStory/ExpandedStoryDescription';
 
 describe('<ExpandedStoryDescription />', () => {
+  const defaultProps = () => ({
+    story: {},
+    onEdit: sinon.spy()
+  });
+
   it('renders component title', () => {
     const story = { description: null, _editing: { description: null } };
 
-    const wrapper = shallow(<ExpandedStoryDescription story={story} />);
+    const wrapper = shallow(
+      <ExpandedStoryDescription {...defaultProps()} story={story} />
+    );
 
     expect(wrapper.text()).toContain(I18n.t('activerecord.attributes.story.description'));
   });
@@ -18,7 +25,9 @@ describe('<ExpandedStoryDescription />', () => {
         _editing: { description: 'story description' }
       };
 
-      const wrapper = shallow(<ExpandedStoryDescription story={story} />);
+      const wrapper = shallow(
+        <ExpandedStoryDescription {...defaultProps()} story={story} />
+      );
       const markdown = wrapper.find('Markdown');
 
       expect(markdown.prop('source')).toBe(story.description);
@@ -29,7 +38,9 @@ describe('<ExpandedStoryDescription />', () => {
     it('renders edit button', () => {
       const story = { description: null, _editing: { description: null } };
 
-      const wrapper = shallow(<ExpandedStoryDescription story={story} />);
+      const wrapper = shallow(
+        <ExpandedStoryDescription {...defaultProps()} story={story} />
+      );
 
       expect(wrapper.text()).toContain(I18n.t('edit'));
     });
@@ -39,7 +50,9 @@ describe('<ExpandedStoryDescription />', () => {
     it('change editing state from false to true', () => {
       const story = { description: null, _editing: { description: null } };
 
-      const wrapper = shallow(<ExpandedStoryDescription story={story} />);
+      const wrapper = shallow(
+        <ExpandedStoryDescription {...defaultProps()} story={story} />
+      );
       const content = wrapper.find('.story-description-content');
 
       expect(wrapper.state().editing).toBe(false);
@@ -53,7 +66,9 @@ describe('<ExpandedStoryDescription />', () => {
         _editing: { description: 'story description' }
       };
 
-      const wrapper = shallow(<ExpandedStoryDescription story={story} />);
+      const wrapper = shallow(
+        <ExpandedStoryDescription {...defaultProps()} story={story} />
+      );
       const content = wrapper.find('.story-description-content');
       content.simulate('click');
 

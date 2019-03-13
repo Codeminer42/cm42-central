@@ -3,6 +3,12 @@ import { shallow } from 'enzyme';
 import ExpandedStoryLabels from 'components/story/ExpandedStory/ExpandedStoryLabels';
 
 describe('<ExpandedStoryLabels />', () => {
+  const defaultProps = () => ({
+    onAddLabel: sinon.spy(),
+    onRemoveLabel: sinon.spy(),
+    projectLabels: []
+  });
+
   it('renders component title', () => {
     const labels = [
       { id: 0, name: 'front' },
@@ -10,7 +16,9 @@ describe('<ExpandedStoryLabels />', () => {
     ];
 
     const story = { _editing: { labels } }
-    const wrapper = shallow(<ExpandedStoryLabels story={story} />);
+    const wrapper = shallow(
+      <ExpandedStoryLabels {...defaultProps()} story={story} />
+    );
 
     expect(wrapper.text()).toContain(I18n.t('activerecord.attributes.story.labels'));
   });
@@ -23,7 +31,9 @@ describe('<ExpandedStoryLabels />', () => {
       ];
 
       const story = { _editing: { labels } }
-      const wrapper = shallow(<ExpandedStoryLabels story={story} />);
+      const wrapper = shallow(
+        <ExpandedStoryLabels {...defaultProps()} story={story} />
+      );
 
       expect(wrapper.find('ReactTags').prop('tags')).toEqual(labels);
     });

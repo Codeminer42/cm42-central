@@ -1,10 +1,18 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import ExpandedStoryNotes from 'components/story/ExpandedStory/ExpandedStoryNotes';
+import storyFactory from '../../../support/factories/storyFactory';
 
 describe('<ExpandedStoryNotes />', () => {
   let onCreate;
   let onDelete;
+
+  const newStory = () => ({
+    ...storyFactory({ notes: [] }),
+    _editing: {
+      ...storyFactory({ notes: [] })
+    }
+  })
 
   beforeEach(() => {
     onCreate = sinon.stub();
@@ -12,7 +20,7 @@ describe('<ExpandedStoryNotes />', () => {
   })
 
   it('renders component title', () => {
-    const story = { notes: [] };
+    const story = newStory();
 
     const wrapper = shallow(
       <ExpandedStoryNotes
@@ -27,7 +35,7 @@ describe('<ExpandedStoryNotes />', () => {
   });
 
   it('renders component content', () => {
-    const story = { notes: [] };
+    const story = newStory();
 
     const wrapper = shallow(
       <ExpandedStoryNotes
@@ -43,8 +51,8 @@ describe('<ExpandedStoryNotes />', () => {
     expect(wrapper.find('NotesList')).toExist();
   });
 
-  it('disables the add note button if text area is empty', ()=>{
-    const story = { notes: [] };
+  it('disables the add note button if text area is empty', () => {
+    const story = newStory();
 
     const wrapper = shallow(
       <ExpandedStoryNotes
@@ -53,7 +61,7 @@ describe('<ExpandedStoryNotes />', () => {
         onDelete={onDelete}
       />
     );
-    
+
     const textArea = wrapper.find('.create-note-text');
     const button = wrapper.find('.create-note-button input');
 
@@ -63,9 +71,7 @@ describe('<ExpandedStoryNotes />', () => {
 
   describe('when user create a new note', () => {
     it('triggers the onCreate callback passing the note', () => {
-      const story = {
-        notes: []
-      };
+      const story = newStory();
 
       const change = 'newNote';
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class ExpandedStoryControls extends Component {
   constructor(props) {
@@ -11,7 +12,7 @@ class ExpandedStoryControls extends Component {
   handleDelete() {
     const { onDelete } = this.props;
 
-    if (window.confirm(I18n.t('story destroy confirm'))){
+    if (window.confirm(I18n.t('story destroy confirm'))) {
       onDelete();
     }
   }
@@ -57,5 +58,13 @@ class ExpandedStoryControls extends Component {
     );
   }
 };
+
+ExpandedStoryControls.propTypes = {
+  onSave: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  canSave: PropTypes.bool.isRequired,
+  canDelete: PropTypes.bool.isRequired,
+  isDirty: PropTypes.bool.isRequired
+}
 
 export default ExpandedStoryControls;

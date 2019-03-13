@@ -4,7 +4,7 @@ import ExpandedStoryOwnedBy from 'components/story/ExpandedStory/ExpandedStoryOw
 
 describe('<ExpandedStoryOwnedBy />', () => {
   const setup = propOverrides => {
-    const defaultProps = {
+    const defaultProps = () => ({
       users: [
         { id: 1, name: 'foo' },
         { id: 2, name: 'bar' }
@@ -12,9 +12,9 @@ describe('<ExpandedStoryOwnedBy />', () => {
       story: { _editing: { ownedById: '' } },
       onEdit: sinon.spy(),
       ...propOverrides
-    };
+    });
 
-    const wrapper = shallow(<ExpandedStoryOwnedBy {...defaultProps} />);
+    const wrapper = shallow(<ExpandedStoryOwnedBy {...defaultProps()} />);
 
     return { wrapper };
   };

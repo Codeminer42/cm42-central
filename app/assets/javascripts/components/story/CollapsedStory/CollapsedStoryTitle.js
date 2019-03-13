@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import { storyPropTypesShape } from '../../../models/beta/story';
 
 const CollapsedStoryTitle = ({ story }) => (
   <div className="Story__title">
@@ -14,7 +14,7 @@ const CollapsedStoryTitle = ({ story }) => (
 );
 
 CollapsedStoryTitle.propTypes = {
-  story: PropTypes.object.isRequired,
+  story: storyPropTypesShape
 };
 
 

@@ -4,13 +4,13 @@ import ExpandedStoryTitle from 'components/story/ExpandedStory/ExpandedStoryTitl
 
 describe('<ExpandedStoryTitle />', () => {
   const setup = propOverrides => {
-    const defaultProps = {
+    const defaultProps = () => ({
       story: { _editing: { title: 'foo' } },
       onEdit: sinon.spy(),
       ...propOverrides
-    };
+    });
 
-    const wrapper = shallow(<ExpandedStoryTitle {...defaultProps} />);
+    const wrapper = shallow(<ExpandedStoryTitle {...defaultProps()} />);
     const input = wrapper.find('input');
 
     return { wrapper, input };
