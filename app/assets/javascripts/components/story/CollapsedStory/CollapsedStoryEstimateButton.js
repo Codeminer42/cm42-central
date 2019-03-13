@@ -2,12 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 
-export const CollapsedStoryEstimateButton = (props) => (
+export const CollapsedStoryEstimateButton = ({ project, onUpdate }) => (
   <div className="Story__estimate-box">
     {
-      props.project.pointValues.map((value, index) => (
-        <span className="Story__estimate" key={`estimate-${value}`} data-value={value}>
-          { value }
+      project.pointValues.map((value) => (
+        <span className="Story__estimate"
+          key={`estimate-${value}`}
+          data-value={value}
+          onClick={() => onUpdate(value)}
+        >
+          {value}
         </span>
       ))
     }

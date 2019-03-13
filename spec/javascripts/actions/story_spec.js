@@ -140,6 +140,34 @@ describe('saveStory', () => {
   });
 });
 
+describe('updateCollapsedStory', () => {
+  const projectId = 42;
+
+  it('calls Story.update with newStory and projectId', (done) => {
+    const story = storyFactory({ storyType: 'feature', estimate: 1 });
+    const newAttributes = { estimate: 4 };
+
+    const editedStory = { ...story, ...newAttributes };
+
+    const FakeStory = {
+      update: sinon.stub().resolves(story)
+    };
+
+    const fakeDispatch = sinon.stub().resolves({});
+
+    const fakeGetState = sinon.stub();
+    fakeGetState.returns({ stories: [story] });
+
+    Story.updateCollapsedStory(editedStory.id, projectId, newAttributes)
+      (fakeDispatch, fakeGetState, { Story: FakeStory }).then(() => {
+        expect(FakeStory.update).toHaveBeenCalledWith(editedStory, projectId);
+
+        done();
+      });
+  });
+});
+
+
 describe('deleteStory', () => {
   const storyId = 420;
   const projectId = 42;

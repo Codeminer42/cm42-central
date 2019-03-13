@@ -251,3 +251,45 @@ const emptyStory = {
   documents: [],
   tasks: [],
 };
+
+export const storyTransitions = {
+  START  : 'start',
+  FINISH : 'finish',
+  DELIVER: 'deliver',
+  ACCEPT : 'accept',
+  REJECT : 'reject',
+  RESTART: 'restart'
+};
+
+const stateTransitions = {
+  [status.UNSCHEDULED]: {
+    [storyTransitions.START]: status.STARTED
+  },
+  [status.UNSTARTED]: {
+    [storyTransitions.START]: status.STARTED
+  },
+  [status.STARTED]: {
+    [storyTransitions.FINISH]: status.FINISHED
+  },
+  [status.FINISHED]: {
+    [storyTransitions.DELIVER]: status.DELIVERED
+  },
+  [status.DELIVERED]: {
+    [storyTransitions.ACCEPT]: status.ACCEPTED,
+    [storyTransitions.REJECT]: status.REJECTED
+  },
+  [status.REJECTED]: {
+    [storyTransitions.RESTART]: status.STARTED
+  },
+  [status.ACCEPTED] : {}
+};
+
+export const getNextState = (currentState, transition) => {
+  const nextState = stateTransitions[currentState][transition];
+
+  if(nextState) {
+    return nextState;
+  }
+
+  return currentState;
+}
