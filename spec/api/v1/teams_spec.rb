@@ -13,7 +13,7 @@ RSpec.describe V1::Teams do
     it 'returns 2 teams' do
       subject
 
-      expect(JSON.parse(response.body).count).to eq(2)
+      expect(JSON.parse(response.body).count).to eq 2
     end
 
     context 'when api token is invalid' do
@@ -92,7 +92,7 @@ RSpec.describe V1::Teams do
     it 'returns 3 team projects' do
       subject
 
-      expect(JSON.parse(response.body).count).to eq(3)
+      expect(JSON.parse(response.body).count).to eq 3
     end
 
     context 'when api token is invalid' do
@@ -131,10 +131,24 @@ RSpec.describe V1::Teams do
 
     subject { get "/api/v1/teams/#{team.slug}/users", params: { per_page: 2, api_key: api_token.token } }
 
-    it 'returns 2 team users' do
-      subject
+    context 'when team returns some users' do
+      it 'returns 2 team users' do
+        subject
 
-      expect(JSON.parse(response.body).count).to eq(2)
+        expect(JSON.parse(response.body).count).to eq 2
+      end
+    end
+
+    context 'when team does not return any user' do
+      before do
+        team.users.destroy_all
+      end
+
+      it 'returns empty user list' do
+        subject
+
+        expect(response.body).to eq "[]"
+      end
     end
 
     context 'when api token is invalid' do

@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Fixed
+- fix team user not found in api request
+
 ## [2.1.0] 2019-02-20
 
 ### Update
