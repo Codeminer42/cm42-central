@@ -84,10 +84,13 @@ describe StoriesController do
 
     describe '#index' do
       context 'when responding to json' do
-        specify do
-          get :index, xhr: true, params: { project_id: project.id }
+        before { get :index, xhr: true, params: { project_id: project.id } }
 
+        it 'responds success' do
           expect(response).to be_successful
+        end
+
+        it 'responds correct payload' do
           expect(response.body).to eq(project.stories.to_json)
         end
       end
