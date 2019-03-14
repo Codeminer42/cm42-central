@@ -4,15 +4,11 @@ import * as Story from './story';
 import * as Project from './project';
 import PropTypes from 'prop-types';
 
-export function get(projectId) {
-  return httpService
-    .get(`/beta/project_boards/${projectId}`)
-    .then(({ data }) => changeCase.camelKeys(data, { recursive: true, arrayRecursive: true }))
-    .then((projectBoard) => ({
-      ...projectBoard,
-      project: Project.deserialize(projectBoard),
-      stories: projectBoard.stories.map(Story.deserialize)
-    }));
+export const get = async (projectId) => {
+  const { data } = await httpService
+    .get(`/beta/project_boards/${projectId}`);
+
+  return deserialize(data);
 };
 
 export const projectBoardPropTypesShape = PropTypes.shape({
@@ -22,3 +18,16 @@ export const projectBoardPropTypesShape = PropTypes.shape({
   ]),
   isFetched: PropTypes.bool.isRequired
 });
+
+const deserialize = (data) => {
+  const projectBoard = changeCase.camelKeys(data, {
+    recursive: true,
+    arrayRecursive: true
+  });
+
+  return {
+    ...projectBoard,
+    project: Project.deserialize(projectBoard),
+    stories: projectBoard.stories.map(Story.deserialize)
+  }
+}

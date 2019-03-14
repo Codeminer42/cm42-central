@@ -14,17 +14,27 @@ export const createNoteSuccess = (storyId, note) => ({
 });
 
 export const deleteNote = (projectId, storyId, noteId) =>
-  (dispatch, getState, { Note }) => {
+  async (dispatch, getState, { Note }) => {
     dispatch(setLoadingStory(storyId));
-    return Note.destroy(projectId, storyId, noteId)
-      .then(() => dispatch(deleteNoteSuccess(storyId, noteId)))
-      .catch((error) => dispatch(storyFailure(storyId, error)))
+
+    try {
+      await Note.destroy(projectId, storyId, noteId);
+      return dispatch(deleteNoteSuccess(storyId, noteId));
+    }
+    catch (error) {
+      return dispatch(storyFailure(storyId, error));
+    }
   }
 
 export const createNote = (projectId, storyId, note) =>
-  (dispatch, getState, { Note }) => {
+  async (dispatch, getState, { Note }) => {
     dispatch(setLoadingStory(storyId));
-    return Note.post(projectId, storyId, note)
-      .then((note) => dispatch(createNoteSuccess(storyId, note)))
-      .catch((error) => dispatch(storyFailure(storyId, error)))
+
+    try {
+      const newNote = await Note.post(projectId, storyId, note);
+      return dispatch(createNoteSuccess(storyId, newNote));
+    }
+    catch (error) {
+      return dispatch(storyFailure(storyId, error));
+    }
   }

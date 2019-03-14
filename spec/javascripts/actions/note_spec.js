@@ -7,37 +7,33 @@ describe('Note Actions', () => {
     const projectId = 42;
     const storyId = 420;
 
-    it('calls FakeNote.post with projectId, storyId and note', (done) => {
+    it('calls FakeNote.post with projectId, storyId and note', async () => {
       const FakeNote = {
         post: sinon.stub().resolves(note)
       };
 
       const fakeDispatch = sinon.stub().resolves({});
 
-      Note.createNote(projectId, storyId, note)(fakeDispatch, null, { Note: FakeNote })
-        .then(() => {
-          expect(FakeNote.post).toHaveBeenCalledWith(projectId, storyId, note);
+      await Note.createNote(projectId, storyId, note)
+        (fakeDispatch, null, { Note: FakeNote });
 
-          done();
-        });
+      expect(FakeNote.post).toHaveBeenCalledWith(projectId, storyId, note);
     });
 
-    it('dispatch createNoteSuccess with storyId and note', (done) => {
+    it('dispatch createNoteSuccess with storyId and note', async () => {
       const FakeNote = {
         post: sinon.stub().resolves(note)
       };
 
       const fakeDispatch = sinon.stub().resolves({});
 
-      Note.createNote(projectId, storyId, note)(fakeDispatch, null, { Note: FakeNote })
-        .then(() => {
-          expect(fakeDispatch).toHaveBeenCalledWith(Note.createNoteSuccess(storyId, note));
+      await Note.createNote(projectId, storyId, note)
+        (fakeDispatch, null, { Note: FakeNote });
 
-          done();
-        });
+      expect(fakeDispatch).toHaveBeenCalledWith(Note.createNoteSuccess(storyId, note));
     });
 
-    it('dispatches storyFailure when promise fails', (done) => {
+    it('dispatches storyFailure when promise fails', async () => {
       const error = { error: "boom" };
 
       const FakeNote = {
@@ -46,12 +42,10 @@ describe('Note Actions', () => {
 
       const fakeDispatch = sinon.stub().resolves({});
 
-      Note.createNote(projectId, storyId, note)(fakeDispatch, null, { Note: FakeNote })
-        .then(() => {
-          expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(storyId, error));
+      await Note.createNote(projectId, storyId, note)
+        (fakeDispatch, null, { Note: FakeNote });
 
-          done();
-        });
+      expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(storyId, error));
     });
   });
 
@@ -60,37 +54,33 @@ describe('Note Actions', () => {
     const projectId = 42;
     const storyId = 420;
 
-    it('calls FakeNote.destroy with projectId, storyId and noteId', (done) => {
+    it('calls FakeNote.destroy with projectId, storyId and noteId', async () => {
       const FakeNote = {
         destroy: sinon.stub().resolves({})
       };
 
       const fakeDispatch = sinon.stub().resolves({});
 
-      Note.deleteNote(projectId, storyId, noteId)(fakeDispatch, null, { Note: FakeNote })
-        .then(() => {
-          expect(FakeNote.destroy).toHaveBeenCalledWith(projectId, storyId, noteId);
+      await Note.deleteNote(projectId, storyId, noteId)
+        (fakeDispatch, null, { Note: FakeNote });
 
-          done();
-        });
+      expect(FakeNote.destroy).toHaveBeenCalledWith(projectId, storyId, noteId);
     });
 
-    it('dispatch deleteNoteSuccess with storyId and noteId', (done) => {
+    it('dispatch deleteNoteSuccess with storyId and noteId', async () => {
       const FakeNote = {
         destroy: sinon.stub().resolves({})
       };
 
       const fakeDispatch = sinon.stub().resolves({});
 
-      Note.deleteNote(projectId, storyId, noteId)(fakeDispatch, null, { Note: FakeNote })
-        .then(() => {
-          expect(fakeDispatch).toHaveBeenCalledWith(Note.deleteNoteSuccess(storyId, noteId));
+      await Note.deleteNote(projectId, storyId, noteId)
+        (fakeDispatch, null, { Note: FakeNote });
 
-          done();
-        });
+      expect(fakeDispatch).toHaveBeenCalledWith(Note.deleteNoteSuccess(storyId, noteId));
     });
 
-    it('dispatches storyFailure when promise fails', (done) => {
+    it('dispatches storyFailure when promise fails', async () => {
       const error = { error: "boom" };
 
       const FakeNote = {
@@ -99,12 +89,11 @@ describe('Note Actions', () => {
 
       const fakeDispatch = sinon.stub().resolves({});
 
-      Note.deleteNote(projectId, storyId, noteId)(fakeDispatch, null, { Note: FakeNote })
-        .then(() => {
-          expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(storyId, error));
 
-          done();
-        });
+      await Note.deleteNote(projectId, storyId, noteId)
+        (fakeDispatch, null, { Note: FakeNote });
+
+      expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(storyId, error));
     });
   });
 })
