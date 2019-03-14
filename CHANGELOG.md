@@ -2,8 +2,14 @@
 
 ## [Unreleased]
 
+### Added
+- [ V2 ] Story:
+  - Stories can be updated when it's closed
+- Block reserved words for new teams name
+
 ### Fixed
-- fix team user not found in api request
+- Fix error in recaptcha when access page new team
+- Fix team user not found in api request
 
 ## [2.1.0] 2019-02-20
 
