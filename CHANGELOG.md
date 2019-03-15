@@ -6,6 +6,7 @@
 - [ V2 ] Story:
   - Stories can be updated when it's closed
 - Block reserved words for new teams name
+- Refactor `.csv` renderer
 
 ### Fixed
 - Fix error in recaptcha when access page new team

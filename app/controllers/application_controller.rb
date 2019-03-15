@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
 
   include Pundit
   include SidebarController
+  include Renderers::CSV
 
   before_action :authenticate_user!, unless: :devise_controller?
   before_action :check_team_presence, if: :need_check_team?

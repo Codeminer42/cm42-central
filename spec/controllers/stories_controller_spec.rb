@@ -83,10 +83,46 @@ describe StoriesController do
     end
 
     describe '#index' do
-      specify do
-        get :index, xhr: true, params: { project_id: project.id }
-        expect(response).to be_successful
-        expect(response.body).to eq(project.stories.to_json)
+      context 'when responding to json' do
+        before { get :index, xhr: true, params: { project_id: project.id } }
+
+        it 'responds success' do
+          expect(response).to be_successful
+        end
+
+        it 'responds correct payload' do
+          expect(response.body).to eq(project.stories.to_json)
+        end
+      end
+
+      context 'when responding to csv' do
+        let(:active_story) { create(:story, :active, project: project, requested_by: user) }
+
+        before do
+          create(:note, story: active_story)
+
+          Timecop.freeze Time.utc(2019, 1, 1, 12, 0, 0, 0).in_time_zone do
+            get :index, format: :csv, params: { project_id: project.id }
+          end
+        end
+
+        it 'responds correct Content-Type' do
+          expect(response.headers['Content-Type']).to eq 'text/csv'
+        end
+
+        it 'responds correct filename' do
+          expect(response.headers['Content-Disposition']).to eq "attachment; filename=\"Test Project-20190101_1200.csv\""
+        end
+
+        it 'responds correct content' do
+          expect(response.body).to eq(
+            [
+              (Story.csv_headers << 'Note').to_csv,
+              project.stories.map { |story| story.to_csv({ notes: 1, documents: 0, tasks: 0 }) }
+                             .map(&:to_csv)
+            ].flatten.join
+          )
+        end
       end
     end
 
