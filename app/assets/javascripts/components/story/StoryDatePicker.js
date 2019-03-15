@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
@@ -22,7 +22,7 @@ export default class StoryDatePicker extends React.Component {
 
   render() {
     return (
-      <div>
+      <Fragment>
         <label htmlFor="release-date">{I18n.t('activerecord.attributes.story.release_date')}</label>
         <br/>
         <DatePicker
@@ -32,7 +32,7 @@ export default class StoryDatePicker extends React.Component {
           name="release_date"
           placeholderText={I18n.t('activerecord.attributes.story.release_date')}
         />
-      </div>
+      </Fragment>
     );
   }
 }

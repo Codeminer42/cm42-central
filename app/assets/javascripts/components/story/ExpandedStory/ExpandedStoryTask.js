@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TasksList from '../task/TasksList';
 import PropTypes from 'prop-types';
 import { editingStoryPropTypesShape } from '../../../models/beta/story';
+import ExpandedStorySection from './ExpandedStorySection';
 
 class ExpandedStoryTask extends Component {
   constructor(props) {
@@ -37,22 +38,19 @@ class ExpandedStoryTask extends Component {
     const { story, onToggle, onDelete } = this.props;
 
     return (
-      <div>
-        <div className="Story__section">
-          <div className="Story__section-title">
-            <div className="Story__section-title">
-              {I18n.t('story.tasks')}
-            </div>
-          </div>
-        </div>
-        <div className="Story__list-task" >
+      <ExpandedStorySection
+        title={I18n.t('story.tasks')}
+        identifier="tasks"
+      >
+        <div className="list-task" >
           <TasksList
             tasks={story.tasks}
             onDelete={onDelete}
             onToggle={onToggle}
           />
         </div>
-        <div className="Story__task-form">
+
+        <div className="task-form">
           <input
             value={this.state.task}
             className="form-control input-sm"
@@ -60,14 +58,14 @@ class ExpandedStoryTask extends Component {
           />
           <button
             type='submit'
-            className='Story__add-task-button'
+            className='add-task-button'
             onClick={this.onHandleSubmit}
             disabled={this.hasAnEmptyValue()}
           >
             {I18n.t('add task')}
           </button>
         </div>
-      </div>
+      </ExpandedStorySection>
     );
   }
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Markdown from '../Markdown';
@@ -21,7 +21,7 @@ export const StoryPopoverContent = ({ story }) => (
 
     {
       Boolean(story.description) && (
-        <div>
+        <Fragment>
           <h1 className='popover__content__title'>
             {I18n.t('description')}
           </h1>
@@ -29,12 +29,12 @@ export const StoryPopoverContent = ({ story }) => (
           <div className='markdown-wrapper'>
             <Markdown source={story.description} />
           </div>
-        </div>
+        </Fragment>
       )}
 
     {
       Boolean(story.notes.length) && (
-        <div>
+        <Fragment>
           <h1 className='popover__content__title'>
             {I18n.t('notes')}
           </h1>
@@ -47,7 +47,7 @@ export const StoryPopoverContent = ({ story }) => (
               </div>
             </div>
           )}
-        </div>
+        </Fragment>
       )}
   </div>
 )

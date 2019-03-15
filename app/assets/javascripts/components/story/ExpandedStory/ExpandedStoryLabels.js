@@ -2,6 +2,7 @@ import React from 'react';
 import ReactTags from 'react-tag-autocomplete';
 import PropTypes from 'prop-types';
 import { editingStoryPropTypesShape } from '../../../models/beta/story';
+import ExpandedStorySection from './ExpandedStorySection';
 
 class ExpandedStoryLabels extends React.Component {
   constructor(props) {
@@ -33,27 +34,24 @@ class ExpandedStoryLabels extends React.Component {
     const { labels } = story._editing;
 
     return (
-      <div className="Story__section">
-        <div className="Story__section-title">
-          {I18n.t('activerecord.attributes.story.labels')}
-        </div>
-        {
-          <ReactTags
-            tags={labels}
-            handleDelete={this.handleDelete}
-            suggestions={projectLabels}
-            handleAddition={this.handleAddition}
-            allowNew={true}
-            placeholder={I18n.t('add new label')}
-            allowBackspace={false}
-            addOnBlur={true}
-            delimiterChars={[',', ' ']}
-            autoresize={false}
-            autofocus={false}
-          />
-        }
-      </div>
-    );
+      <ExpandedStorySection
+        title={I18n.t('activerecord.attributes.story.labels')}
+      >
+        <ReactTags
+          tags={labels}
+          handleDelete={this.handleDelete}
+          suggestions={projectLabels}
+          handleAddition={this.handleAddition}
+          allowNew={true}
+          placeholder={I18n.t('add new label')}
+          allowBackspace={false}
+          addOnBlur={true}
+          delimiterChars={[',', ' ']}
+          autoresize={false}
+          autofocus={false}
+        />
+      </ExpandedStorySection>
+    )
   }
 };
 

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import TaggedInput from 'components/jquery_wrappers/TaggedInput';
 
 const StoryLabels = ({ name, className, value, availableLabels, onChange, disabled = false }) =>
-  <div>
+  <Fragment>
     <label htmlFor={name}>{ I18n.t(`activerecord.attributes.story.${name}`) }</label>
     <br />
     <TaggedInput
@@ -16,6 +16,6 @@ const StoryLabels = ({ name, className, value, availableLabels, onChange, disabl
         disabled,
       }}
     />
-  </div>
+  </Fragment>
 
 export default StoryLabels;

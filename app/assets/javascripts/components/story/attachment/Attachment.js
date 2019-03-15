@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 class Attachment extends React.Component {
@@ -14,10 +14,10 @@ class Attachment extends React.Component {
               src={imageSrc}
             />
             :
-            <div>
+            <Fragment>
               <i className="mi md-20">library_books</i>
               {publicId}
-            </div>
+            </Fragment>
         }
       </div>
     )

@@ -4,37 +4,6 @@
     border-bottom: 1px solid $story-border-bottom-color;
     border-top: 1px solid $story-border-top-color;
 
-    &__task-form {
-      @extend .clearfix;
-    }
-
-    &__add-task-button {
-      @extend .btn;
-      @extend .btn-default;
-      @extend .btn-xs;
-      @extend .pull-right;
-      margin-top: 10px;
-    }
-
-    &__task label {
-      min-height: 20px;
-      padding-left: 20px;
-      margin-bottom: 1px;
-      font-weight: normal;
-      cursor: pointer;
-    }
-
-    &__task input[type="checkbox"] {
-      position: absolute;
-      margin-left: -20px;
-      margin-top: 4px \9;
-    }
-
-    &__list-task {
-      font-size: 12px;
-      position: relative;
-    }
-
     &--collapsed {
       display: flex;
       justify-content: space-between;
@@ -296,20 +265,57 @@
             .create-note-text {
               resize: vertical;
               margin: 10px 0;
+              min-height: 30px;
             }
           }
 
-          .edit-description-button {
-            font-size: 12px;
-            border-radius: 5px;
-            background-color: $lightgrey-12;
-            border-color: $darkgrey-11;
-            border-width: 1px;
-            outline: none;
+          &__tasks {
+            .task label {
+              min-height: 20px;
+              padding-left: 20px;
+              margin-bottom: 1px;
+              font-weight: normal;
+              cursor: pointer;
+            }
+
+            .task input[type="checkbox"] {
+              position: absolute;
+              margin-left: -20px;
+              margin-top: 4px \9;
+            }
+
+            .list-task {
+              font-size: 12px;
+              position: relative;
+            }
+
+            .task-form {
+              @extend .clearfix;
+            }
+
+            .add-task-button {
+              @extend .btn;
+              @extend .btn-default;
+              @extend .btn-xs;
+              @extend .pull-right;
+              margin-top: 10px;
+            }
           }
 
-          .edit-description-text {
-            resize: vertical;
+          &__description {
+            .edit-description-button {
+              font-size: 12px;
+              border-radius: 5px;
+              background-color: $lightgrey-12;
+              border-color: $darkgrey-11;
+              border-width: 1px;
+              outline: none;
+            }
+
+            .edit-description-text {
+              resize: vertical;
+              min-height: 100px;
+            }
           }
         }
 

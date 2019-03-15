@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import ExpandedStoryAttachments from 'components/story/ExpandedStory/ExpandedStoryAttachments';
 
 describe('<ExpandedStoryAttachments />', () => {
@@ -14,7 +14,7 @@ describe('<ExpandedStoryAttachments />', () => {
   it('renders component title', () => {
     const story = { _editing: { documents: [] } };
 
-    const wrapper = shallow(
+    const wrapper = mount(
       <ExpandedStoryAttachments
         story={story}
         onAdd={onAdd}

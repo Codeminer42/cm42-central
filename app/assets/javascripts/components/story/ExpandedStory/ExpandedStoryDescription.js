@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Markdown from '../../Markdown';
 import { editingStoryPropTypesShape } from '../../../models/beta/story';
+import ExpandedStorySection from './ExpandedStorySection';
 
 class ExpandedStoryDescription extends React.Component {
   constructor(props) {
@@ -50,16 +51,14 @@ class ExpandedStoryDescription extends React.Component {
     const { story } = this.props;
 
     return (
-      <div className="Story__section">
-        <div className="Story__section-title">
-          { I18n.t('activerecord.attributes.story.description') }
-        </div>
-
+      <ExpandedStorySection
+        title={I18n.t('activerecord.attributes.story.description')}
+        identifier="description"
+      >
         {
           this.state.editing
-            ? (
-              this.descriptionTextArea(story._editing.description || '')
-            ) : (
+            ? this.descriptionTextArea(story._editing.description || '')
+            : (
               <div onClick={this.toggleField} className='story-description-content'>
                 {
                   story.description
@@ -69,7 +68,7 @@ class ExpandedStoryDescription extends React.Component {
               </div>
             )
         }
-      </div>
+      </ExpandedStorySection>
     );
   };
 };

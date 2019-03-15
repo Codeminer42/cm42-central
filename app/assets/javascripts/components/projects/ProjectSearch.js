@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Project from 'models/project';
 import ProjectList from 'components/projects/ProjectList';
 
@@ -75,7 +75,7 @@ export default class ProjectSearch extends React.Component {
 
   render() {
     return(
-      <div>
+      <Fragment>
         <div className="search-projects">
           <div className="form-group col-md-12">
             <div className="input-group">
@@ -103,7 +103,7 @@ export default class ProjectSearch extends React.Component {
         </div>
         { this.renderProjectList(this.state.visibleProjects.joined) }
         { this.renderProjectList(this.state.visibleProjects.unjoined) }
-      </div>
+      </Fragment>
     );
   }
 };

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import NotesList from '../note/NotesList';
 import { editingStoryPropTypesShape } from '../../../models/beta/story';
+import ExpandedStorySection from './ExpandedStorySection';
 
 class ExpandedStoryNotes extends React.Component {
   constructor(props) {
@@ -32,7 +33,7 @@ class ExpandedStoryNotes extends React.Component {
 
   notesForm() {
     return (
-      <div>
+      <Fragment>
         <textarea
           className="form-control input-sm create-note-text"
           value={this.state.value}
@@ -47,7 +48,7 @@ class ExpandedStoryNotes extends React.Component {
             disabled={this.hasAnEmptyValue()}
           />
         </div>
-      </div>
+      </Fragment>
     );
   }
 
@@ -55,19 +56,17 @@ class ExpandedStoryNotes extends React.Component {
     const { story, onDelete } = this.props;
 
     return (
-      <div className="Story__section">
-        <div className="Story__section-title">
-          {I18n.t('story.notes')}
-        </div>
-        <div className="Story__section__notes">
-          <NotesList
-            onDelete={onDelete}
-            notes={story.notes}
-          />
+      <ExpandedStorySection
+        title={I18n.t('story.notes')}
+        identifier="notes"
+      >
+        <NotesList
+          onDelete={onDelete}
+          notes={story.notes}
+        />
 
-          { this.notesForm() }
-        </div>
-      </div>
+        {this.notesForm()}
+      </ExpandedStorySection>
     );
   }
 };
