@@ -11,7 +11,7 @@ const ExpandedStoryState = ({ story, onEdit }) =>
     <select
       value={story._editing.state}
       className="form-control input-sm"
-      onChange={(event) => onEdit({ state: event.target.value })}
+      onChange={(event) => onEdit(event.target.value)}
     >
       {
         Story.states.map((state) => (

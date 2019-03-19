@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { ExpandedStoryEstimate } from 'components/story/ExpandedStory/ExpandedStoryEstimate';
+import ExpandedStoryEstimate from 'components/story/ExpandedStory/ExpandedStoryEstimate';
 
 describe('<ExpandedStoryEstimate />', () => {
   const defaultProps = () => ({

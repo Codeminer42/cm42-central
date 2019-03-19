@@ -47,7 +47,7 @@ describe('<ExpandedStoryState />', () => {
 
       select.simulate('change', { target: { value: change } });
 
-      expect(onEdit).toHaveBeenCalledWith({ state: change });
+      expect(onEdit).toHaveBeenCalledWith(change);
     });
   });
 });

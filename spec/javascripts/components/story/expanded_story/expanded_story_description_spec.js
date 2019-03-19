@@ -96,7 +96,7 @@ describe('<ExpandedStoryDescription />', () => {
 
       textarea.simulate('change', { target: { value: change } });
 
-      expect(onEdit).toHaveBeenCalledWith({ description: change });
+      expect(onEdit).toHaveBeenCalledWith(change);
     });
   });
 });

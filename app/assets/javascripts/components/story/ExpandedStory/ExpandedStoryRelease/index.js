@@ -1,33 +1,17 @@
 import React, { Fragment } from 'react';
-import ExpandedStoryReleaseDate from './ExpandedStoryReleaseDate';
+import PropTypes from 'prop-types';
 import ExpandedStoryTitle from '../ExpandedStoryTitle';
 import ExpandedStoryType from '../ExpandedStoryType';
-import ExpandedStoryControls from '../ExpandedStoryControls';
+import ExpandedStoryReleaseDate from './ExpandedStoryReleaseDate';
 import ExpandedStoryDescription from '../ExpandedStoryDescription';
-import PropTypes from 'prop-types';
 import { editingStoryPropTypesShape } from '../../../../models/beta/story';
 
 const ExpandedStoryRelease = ({
   story,
   titleRef,
-  onCancel,
-  isDirty,
-  onSave,
-  onDelete,
-  canSave,
-  canDelete,
   onEdit
 }) =>
   <Fragment>
-    <ExpandedStoryControls
-      onCancel={onCancel}
-      isDirty={isDirty}
-      onSave={onSave}
-      onDelete={onDelete}
-      canSave={canSave}
-      canDelete={canDelete}
-    />
-
     <ExpandedStoryTitle
       story={story}
       titleRef={titleRef}
@@ -51,13 +35,7 @@ const ExpandedStoryRelease = ({
 
 ExpandedStoryRelease.propTypes = {
   story: editingStoryPropTypesShape.isRequired,
-  onCancel: PropTypes.func.isRequired,
-  onEdit: PropTypes.func.isRequired,
-  onSave: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  isDirty: PropTypes.bool.isRequired,
-  canSave: PropTypes.bool.isRequired,
-  canDelete: PropTypes.bool.isRequired,
+  onEdit: PropTypes.func.isRequired
 };
 
 export default ExpandedStoryRelease;

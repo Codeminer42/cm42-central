@@ -9,13 +9,7 @@ describe('<ExpandedStoryRelase />', () => {
       ...storyFactory(),
       _editing: storyFactory()
     },
-    isDirty: false,
-    onCancel: sinon.spy(),
-    onSave: sinon.spy(),
     onEdit: sinon.spy(),
-    onDelete: sinon.spy(),
-    canDelete: true,
-    canSave: true
   });
 
   it('renders children components', () => {
@@ -25,7 +19,6 @@ describe('<ExpandedStoryRelase />', () => {
       />
     );
 
-    expect(wrapper.find('ExpandedStoryControls')).toExist();
     expect(wrapper.find('ExpandedStoryTitle')).toExist();
     expect(wrapper.find('ExpandedStoryType')).toExist();
     expect(wrapper.find('ExpandedStoryReleaseDate')).toExist();

@@ -1,18 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { isFeature, editingStoryPropTypesShape } from '../../../models/beta/story';
 import { projectPropTypesShape } from '../../../models/beta/project';
 import ExpandedStorySection from './ExpandedStorySection';
 
-export const ExpandedStoryEstimate = ({ project, story, onEdit }) =>
+const ExpandedStoryEstimate = ({ project, story, onEdit }) =>
   <ExpandedStorySection
     title={I18n.t('activerecord.attributes.story.estimate')}
   >
     <select
       value={story._editing.estimate}
       className="form-control input-sm"
-      onChange={(event) => onEdit({ estimate: parseInt(event.target.value) })}
+      onChange={(event) => onEdit(parseInt(event.target.value))}
       disabled={!isFeature(story._editing)}
     >
       <option value=''>
@@ -34,8 +33,4 @@ ExpandedStoryEstimate.propTypes = {
   onEdit: PropTypes.func.isRequired
 };
 
-const mapStateToProps = ({ project }) => ({ project });
-
-export default connect(
-  mapStateToProps
-)(ExpandedStoryEstimate);
+export default ExpandedStoryEstimate;

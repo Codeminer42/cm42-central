@@ -10,7 +10,7 @@ export const ExpandedStoryType = ({ story, onEdit }) =>
     <select
       value={story._editing.storyType}
       className="form-control input-sm"
-      onChange={(event) => onEdit({ storyType: event.target.value })}
+      onChange={(event) => onEdit(event.target.value)}
     >
       {
         types.map((value) => (
