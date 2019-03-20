@@ -36,6 +36,7 @@ describe('<ExpandedStory />', () => {
       expect(wrapper.find(ExpandedStoryDefault)).not.toExist();
     });
   });
+
   describe("when storyType isn't a release", () => {
     it('renders ExpandedStoryDefault component', () => {
       const story = storyFactory({
@@ -69,10 +70,11 @@ describe('<ExpandedStory />', () => {
       <ExpandedStory
         {...defaultProps()}
         story={story}
+        className=''
       />,
       { disableLifecycleMethods: true }
     );
 
-    expect(wrapper.find('div.Story__enable-loading')).toExist();
+    expect(wrapper.find('.Story__enable-loading')).toExist();
   })
 });

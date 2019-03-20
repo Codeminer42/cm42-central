@@ -26,13 +26,18 @@ export class ExpandedStory extends React.Component {
       editStory,
       saveStory,
       deleteStory,
-      project
+      project,
+      className,
+      title
     } = this.props;
 
     const loading = story._editing.loading ? "Story__enable-loading" : "";
 
     return (
-      <div className={`Story Story--expanded ${loading}`} >
+      <div
+        className={`Story Story--expanded ${loading} ${className}`}
+        title={title}
+      >
         <div className="Story__loading"></div>
 
         <ExpandedStoryControls
@@ -70,7 +75,9 @@ ExpandedStory.propTypes = {
   saveStory: PropTypes.func.isRequired,
   deleteStory: PropTypes.func.isRequired,
   onToggle: PropTypes.func.isRequired,
-  project: projectPropTypesShape.isRequired
+  project: projectPropTypesShape.isRequired,
+  title: PropTypes.string,
+  className: PropTypes.string
 };
 
 const mapStateToProps = ({ project }) => ({ project });

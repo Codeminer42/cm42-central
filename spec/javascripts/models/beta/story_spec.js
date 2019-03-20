@@ -1,4 +1,5 @@
 import * as Story from 'models/beta/story';
+import moment from 'moment';
 
 describe('Story model', function () {
   describe('comparePosition', () => {
@@ -511,6 +512,7 @@ describe('Story model', function () {
       expect(newStoryArray).toEqual(expectedArray);
     });
   });
+
   describe('getNextState', () => {
     describe('when the state is unscheduled', () => {
       const state = 'unscheduled';
@@ -633,6 +635,26 @@ describe('Story model', function () {
 
         expect(Story.getNextState(state, transition)).toBe(state);
       });
+    });
+  });
+
+  describe('releaseIsLate', () => {
+    it('returns true when relase date is before today', () => {
+      const releaseDate = moment().subtract(3, 'days');
+
+      expect(Story.releaseIsLate(releaseDate)).toBe(true);
+    });
+
+    it('returns false when relase date is after today', () => {
+      const releaseDate = moment().add(3, 'days');
+
+      expect(Story.releaseIsLate(releaseDate)).toBe(false);
+    });
+
+    it('returns false when relase date is today', () => {
+      const releaseDate = moment();
+
+      expect(Story.releaseIsLate(releaseDate)).toBe(false);
     });
   });
 });

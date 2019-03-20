@@ -4,6 +4,13 @@
     border-bottom: 1px solid $story-border-bottom-color;
     border-top: 1px solid $story-border-top-color;
 
+    &--late-release {
+      background-color: rgba($darkred, .5) !important;
+      border-top-color: rgba($darkred, .6) !important;
+      border-bottom-color: rgba($darkred, .1) !important;
+      color: white !important;
+    }
+
     &--collapsed {
       display: flex;
       justify-content: space-between;
@@ -310,6 +317,7 @@
               border-color: $darkgrey-11;
               border-width: 1px;
               outline: none;
+              color: $aluminium-6;
             }
 
             .edit-description-text {
@@ -342,6 +350,7 @@
         }
       }
     }
+
     &__enable-loading {
       cursor: wait;
       border-top: 0;

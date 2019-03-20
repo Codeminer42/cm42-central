@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { notePropTypesShape } from './note';
 import { taskPropTypesShape } from './task';
 import { attachmentPropTypesShape } from './attachment';
+import moment from 'moment';
 
 const compareValues = (a, b) => {
   if (a > b) return 1;
@@ -65,6 +66,14 @@ export const getCompletedPoints = story => {
 export const isStoryNotEstimated = (storyType, estimate) => storyType === 'feature' && !estimate;
 
 export const isRelease = (storyType) => storyType === 'release';
+
+export const releaseIsLate = (releaseDate) => {
+  moment.locale(I18n.locale);
+  const today = moment()._d.getDate();
+  const release = moment(releaseDate)._d.getDate();
+
+  return today > release;
+}
 
 export const types = ['feature', 'bug', 'release', 'chore'];
 
