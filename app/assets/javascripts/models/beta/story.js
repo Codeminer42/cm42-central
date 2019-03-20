@@ -152,10 +152,22 @@ export const editStory = (story, newAttributes) => {
 };
 
 export const serialize = (story) => {
-  const data = {
-    ...story,
-    labels: Label.joinLabels(story.labels)
-  };
+  const data = !isRelease(story.storyType)
+    ? {
+      ...story,
+      labels: Label.joinLabels(story.labels)
+    }
+    : {
+      ...story,
+      estimate: '',
+      ownedById: null,
+      labels: '',
+      ownedByName: null,
+      ownedByInitials: null,
+      notes: [],
+      documents: [],
+      tasks: [],
+    };
 
   return changeCase.snakeKeys(data, {
     recursive: true,
