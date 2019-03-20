@@ -72,10 +72,12 @@
 
         &__title {
           word-break: break-word;
-          flex: 1;
+          display: flex;
+          justify-content: space-between;
           text-align: justify;
 
           abbr {
+            min-width: 25px;
             border: none;
           }
         }

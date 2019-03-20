@@ -68,9 +68,8 @@ export const isStoryNotEstimated = (storyType, estimate) => storyType === 'featu
 export const isRelease = (storyType) => storyType === 'release';
 
 export const releaseIsLate = (releaseDate) => {
-  moment.locale(I18n.locale);
-  const today = moment()._d.getDate();
-  const release = moment(releaseDate)._d.getDate();
+  const today = moment();
+  const release = moment(releaseDate, ["YYYY-MM-DD"]).endOf('day');
 
   return today > release;
 }
