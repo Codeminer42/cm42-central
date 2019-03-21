@@ -75,21 +75,6 @@ const storiesReducer = (state = initialState, action) => {
         updateIfSameId(action.storyId, (story) => {
           return Note.deleteNote(story, action.noteId)
         }));
-    case actionTypes.ADD_TASK:
-      return state.map(
-        updateIfSameId(action.story.id, (story) => {
-          return Task.addTask(story, action.task);
-        }));
-    case actionTypes.REMOVE_TASK:
-      return state.map(
-        updateIfSameId(action.story.id, (story) => {
-          return Task.deleteTask(action.task, story);
-        }));
-    case actionTypes.UPDATE_TASK:
-      return state.map(
-        updateIfSameId(action.story.id, (story) => {
-          return Task.updateTask(story, action.task);
-        }));
     case actionTypes.ADD_LABEL:
       return state.map(
         updateIfSameId(action.storyId, (story) => ({
