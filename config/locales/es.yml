@@ -92,6 +92,7 @@ es:
       accept: "aceptar"
       reject: "rechazar"
       restart: "reanudar"
+      release: "release"
       clone: "Clonar historia"
       copy_url: "Copiar URL"
       copy_id: "Copiar ID"

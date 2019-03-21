@@ -80,6 +80,11 @@
             min-width: 25px;
             border: none;
           }
+
+          span {
+            min-width: 55px;
+            margin-left: 10px;
+          }
         }
 
         &__actions {
@@ -159,6 +164,10 @@
             background-position: sprite-position($icons-sprites, redo, 0, 2px);
             background-repeat: no-repeat;
             padding-left: 20px;
+          }
+
+          &--release{
+            @extend .btn-default;
           }
         }
 

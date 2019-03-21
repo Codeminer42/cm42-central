@@ -67,11 +67,15 @@ export const isStoryNotEstimated = (storyType, estimate) => storyType === 'featu
 
 export const isRelease = (storyType) => storyType === 'release';
 
-export const releaseIsLate = (releaseDate) => {
-  const today = moment();
-  const release = moment(releaseDate, ["YYYY-MM-DD"]).endOf('day');
+export const releaseIsLate = (story) => {
+  if (story.storyType !== storyTypes.RELEASE) {
+    return false;
+  }
 
-  return today > release;
+  const today = moment();
+  const releaseDate = moment(story.releaseDate, ["YYYY-MM-DD"]).endOf('day');
+
+  return today > releaseDate;
 }
 
 export const types = ['feature', 'bug', 'release', 'chore'];
@@ -281,7 +285,8 @@ export const storyTransitions = {
   DELIVER: 'deliver',
   ACCEPT: 'accept',
   REJECT: 'reject',
-  RESTART: 'restart'
+  RESTART: 'restart',
+  RELEASE: 'release'
 };
 
 const stateTransitions = {
@@ -308,6 +313,10 @@ const stateTransitions = {
 };
 
 export const getNextState = (currentState, transition) => {
+  if (transition === storyTransitions.RELEASE) {
+    return status.ACCEPTED
+  }
+
   const nextState = stateTransitions[currentState][transition];
 
   if (nextState) {
@@ -316,6 +325,7 @@ export const getNextState = (currentState, transition) => {
 
   return currentState;
 }
+
 export const storyPropTypesShape = PropTypes.shape(storyPropTypes).isRequired;
 
 export const editingStoryPropTypesShape = PropTypes.shape({

@@ -636,25 +636,54 @@ describe('Story model', function () {
         expect(Story.getNextState(state, transition)).toBe(state);
       });
     });
+
+    describe("when the transition is release", () => {
+      const state = 'any';
+
+      it('returns accepted', () => {
+        const expectedState = 'accepted';
+        const transition = 'release';
+
+        expect(Story.getNextState(state, transition)).toBe(expectedState);
+      });
+    });
   });
 
   describe('releaseIsLate', () => {
     it('returns true when relase date is before today', () => {
-      const releaseDate = moment().subtract(3, 'days');
+      const story = {
+        releaseDate: moment().subtract(3, 'days'),
+        storyType: 'release'
+      };
 
-      expect(Story.releaseIsLate(releaseDate)).toBe(true);
+      expect(Story.releaseIsLate(story)).toBe(true);
     });
 
     it('returns false when relase date is after today', () => {
-      const releaseDate = moment().add(3, 'days');
+      const story = {
+        releaseDate: moment().add(3, 'days'),
+        storyType: 'release'
+      };
 
-      expect(Story.releaseIsLate(releaseDate)).toBe(false);
+      expect(Story.releaseIsLate(story)).toBe(false);
     });
 
     it('returns false when relase date is today', () => {
-      const releaseDate = moment();
+      const story = {
+        releaseDate: moment(),
+        storyType: 'release'
+      };
 
-      expect(Story.releaseIsLate(releaseDate)).toBe(false);
+      expect(Story.releaseIsLate(story)).toBe(false);
+    });
+
+    it("returns false when story type isn't a release", () => {
+      const story = {
+        releaseDate: moment().subtract(3, 'days'),
+        storyType: 'feature'
+      };
+
+      expect(Story.releaseIsLate(story)).toBe(false);
     });
   });
 });

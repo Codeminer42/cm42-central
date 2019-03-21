@@ -6,6 +6,7 @@ export const status = {
   FINISHED: "finished",
   UNSTARTED: "unstarted",
   UNSCHEDULED: "unscheduled",
+  RELEASE: "release"
 };
 
 export const storyTypes = {

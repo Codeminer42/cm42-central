@@ -3,7 +3,8 @@ import CollapsedStoryEstimateButton from './CollapsedStoryEstimateButton';
 import CollapsedStoryStateButton from './CollapsedStoryStateButton';
 import {
   isStoryNotEstimated, getNextState,
-  storyTransitions, storyPropTypesShape
+  storyTransitions, storyPropTypesShape,
+  isRelease, isAccepted
 } from '../../../models/beta/story';
 import { status } from '../../../libs/beta/constants';
 
@@ -15,7 +16,8 @@ const StateAction = {
   [status.DELIVERED]: ["accept", "reject"],
   [status.REJECTED]: ["restart"],
   [status.ACCEPTED]: [],
-  [status.UNSTARTED]: ["start"]
+  [status.UNSTARTED]: ["start"],
+  [status.RELEASE]: ["release"]
 };
 
 class CollapsedStoryStateActions extends React.Component {
@@ -40,11 +42,20 @@ class CollapsedStoryStateActions extends React.Component {
   }
 
   needConfirmation(action) {
-    return action === storyTransitions.ACCEPT || action === storyTransitions.REJECT;
+    return action === storyTransitions.ACCEPT ||
+      action === storyTransitions.REJECT ||
+      action === storyTransitions.RELEASE;
+  }
+
+  getState(story) {
+    return isRelease(story.storyType) && !isAccepted(story)
+      ? status.RELEASE
+      : story.state;
   }
 
   render() {
     const { story, onUpdate } = this.props;
+    const state = this.getState(story);
 
     return (
       <div className='Story__actions' onClick={this.disableToggle}>
@@ -53,7 +64,7 @@ class CollapsedStoryStateActions extends React.Component {
             <CollapsedStoryEstimateButton
               onUpdate={((estimate) => onUpdate({ estimate }))}
             />
-            : StoryActionFor(story.state).map((stateAction) =>
+            : StoryActionFor(state).map((stateAction) =>
               <CollapsedStoryStateButton
                 action={stateAction}
                 key={stateAction}

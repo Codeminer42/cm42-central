@@ -7,8 +7,8 @@ import { toggleStory } from '../../actions/story';
 import { releaseIsLate } from '../../models/beta/story';
 
 export const StoryItem = ({ story, toggleStory }) => {
-  const className = releaseIsLate(story.releaseDate) ? 'Story--late-release' : '';
-  const title = releaseIsLate(story.releaseDate) ? I18n.t('story.warnings.backlogged_release') : '';
+  const className = releaseIsLate(story) ? 'Story--late-release' : '';
+  const title = releaseIsLate(story) ? I18n.t('story.warnings.backlogged_release') : '';
 
   return (
     <div className='story-container'>

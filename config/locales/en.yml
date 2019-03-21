@@ -96,6 +96,7 @@ en:
       accept: "accept"
       reject: "reject"
       restart: "restart"
+      release: "release"
       clone: "Clone story"
       copy_url: "Copy URL"
       copy_id: "Copy ID"
