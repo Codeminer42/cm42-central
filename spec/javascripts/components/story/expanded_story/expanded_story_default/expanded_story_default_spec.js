@@ -22,15 +22,19 @@ describe('<ExpandedStoryDefault />', () => {
     addAttachment: sinon.spy(),
     removeAttachment: sinon.spy(),
     users: [],
-    project: { labels: [] },
-    isNew: false
+    project: { labels: [] }
   });
 
   it("renders all children components when isn't a new story", () => {
+    const story = {
+      ...storyFactory({ id: 42 }),
+      _editing: storyFactory({ id: 42 })
+    }
+
     const wrapper = shallow(
       <ExpandedStoryDefault
         {...defaultProps()}
-        isNew={false}
+        story={story}
       />
     );
 
@@ -49,10 +53,15 @@ describe('<ExpandedStoryDefault />', () => {
   });
 
   it('not renders some components when it is a new story', () => {
+    const story = {
+      ...storyFactory({ id: null }),
+      _editing: storyFactory({ id: null })
+    }
+
     const wrapper = shallow(
       <ExpandedStoryDefault
         {...defaultProps()}
-        isNew
+        story={story}
       />
     );
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { storyPropTypesShape } from '../../../models/beta/story';
+import { storyPropTypesShape, isRelease } from '../../../models/beta/story';
 
 const CollapsedStoryTitle = ({ story }) => (
   <div className="Story__title">
@@ -15,7 +15,7 @@ const CollapsedStoryTitle = ({ story }) => (
         : null
     }
     {
-      story.storyType === 'release'
+      isRelease(story)
         ? story.releaseDate
           ? <span>{I18n.l("date.formats.short", story.releaseDate)}</span>
           : null

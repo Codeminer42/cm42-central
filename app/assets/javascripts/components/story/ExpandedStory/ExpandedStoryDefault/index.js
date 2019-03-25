@@ -5,7 +5,7 @@ import { addLabel, removeLabel } from '../../../../actions/labels';
 import { deleteNote, createNote } from '../../../../actions/note';
 import { addAttachment, removeAttachment } from '../../../../actions/attachment';
 import { setLoadingStory, storyFailure } from '../../../../actions/story';
-import { editingStoryPropTypesShape } from '../../../../models/beta/story';
+import { editingStoryPropTypesShape, isNew } from '../../../../models/beta/story';
 import { projectPropTypesShape } from '../../../../models/beta/project';
 import { createTask, deleteTask, toggleTask } from '../../../../actions/task';
 import ExpandedStoryHistoryLocation from '../ExpandedStoryHistoryLocation';
@@ -24,7 +24,7 @@ import ExpandedStoryOwnedBy from '../ExpandedStoryOwnedBy';
 export const ExpandedStoryDefault = ({
   titleRef,
   story, users, project,
-  onEdit, isNew,
+  onEdit,
   addLabel, removeLabel,
   createNote, deleteNote,
   createTask, deleteTask, toggleTask,
@@ -33,7 +33,7 @@ export const ExpandedStoryDefault = ({
 }) =>
   <Fragment>
     {
-      !isNew
+      !isNew(story)
         ? <ExpandedStoryHistoryLocation story={story} />
         : null
     }
@@ -45,12 +45,14 @@ export const ExpandedStoryDefault = ({
     />
 
     <div className="Story__flex">
-      <ExpandedStoryEstimate story={story}
+      <ExpandedStoryEstimate
+        story={story}
         onEdit={(estimate) => onEdit({ estimate })}
         project={project}
       />
 
-      <ExpandedStoryType story={story}
+      <ExpandedStoryType
+        story={story}
         onEdit={(storyType) => onEdit({ storyType })}
       />
     </div>
@@ -86,7 +88,7 @@ export const ExpandedStoryDefault = ({
     />
 
     {
-      !isNew ?
+      !isNew(story) ?
         <Fragment>
           <ExpandedStoryTask
             story={story}
@@ -117,7 +119,6 @@ ExpandedStoryDefault.propTypes = {
   story: editingStoryPropTypesShape.isRequired,
   users: PropTypes.array.isRequired,
   project: projectPropTypesShape.isRequired,
-  isNew: PropTypes.bool.isRequired,
   onEdit: PropTypes.func.isRequired,
   addLabel: PropTypes.func.isRequired,
   removeLabel: PropTypes.func.isRequired,

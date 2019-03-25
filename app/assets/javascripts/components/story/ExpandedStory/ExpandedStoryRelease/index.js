@@ -18,7 +18,8 @@ const ExpandedStoryRelease = ({
       onEdit={(title) => onEdit({ title })}
     />
 
-    <ExpandedStoryType story={story}
+    <ExpandedStoryType
+      story={story}
       onEdit={(storyType) => onEdit({ storyType })}
     />
 

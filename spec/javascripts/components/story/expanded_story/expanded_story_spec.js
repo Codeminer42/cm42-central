@@ -59,7 +59,7 @@ describe('<ExpandedStory />', () => {
     });
   });
 
-  it('adds loading overlay when updating a story', () => {
+  it('adds enable-loading className when updating a story', () => {
     const story = storyFactory({
       _editing: {
         ...storyFactory({ loading: true }),

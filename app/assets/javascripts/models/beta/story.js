@@ -65,10 +65,11 @@ export const getCompletedPoints = story => {
 
 export const isStoryNotEstimated = (storyType, estimate) => storyType === 'feature' && !estimate;
 
-export const isRelease = (storyType) => storyType === 'release';
+export const isRelease = (story) =>
+  story.storyType === storyTypes.RELEASE;
 
 export const releaseIsLate = (story) => {
-  if (story.storyType !== storyTypes.RELEASE) {
+  if (!isRelease(story)) {
     return false;
   }
 
@@ -155,7 +156,7 @@ export const editStory = (story, newAttributes) => {
 };
 
 export const serialize = (story) => {
-  const data = !isRelease(story.storyType)
+  const data = !isRelease(story)
     ? {
       ...story,
       labels: Label.joinLabels(story.labels)

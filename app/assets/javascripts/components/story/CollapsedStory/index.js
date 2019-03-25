@@ -11,22 +11,24 @@ import { updateCollapsedStory } from '../../../actions/story';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const storyClassName = (storyType, estimate, className) => {
-  const isStoryNotEstimated = Story.isStoryNotEstimated(storyType, estimate);
-  const isRelease = Story.isRelease(storyType);
+const storyClassName = (story, additionalClassname = '') => {
+  const isStoryNotEstimated = Story.isStoryNotEstimated(story.storyType, story.estimate);
+  const isRelease = Story.isRelease(story);
 
-  const storyClassName = `Story Story--collapsed ${className}`
-
-  return `${storyClassName} ${classname({
-    'Story--release': isRelease,
-    'Story--unestimated': isStoryNotEstimated,
-    'Story--estimated': !isStoryNotEstimated
-  })}`
+  return classname(
+    'Story Story--collapsed',
+    {
+      'Story--release': isRelease,
+      'Story--unestimated': isStoryNotEstimated,
+      'Story--estimated': !isStoryNotEstimated
+    },
+    additionalClassname
+  );
 };
 
 export const CollapsedStory = ({ onToggle, story, updateCollapsedStory, project, className, title }) =>
   <div
-    className={storyClassName(story.storyType, story.estimate, className)}
+    className={storyClassName(story, className)}
     onClick={onToggle}
     title={title}
   >

@@ -47,15 +47,15 @@ class CollapsedStoryStateActions extends React.Component {
       action === storyTransitions.RELEASE;
   }
 
-  getState(story) {
-    return isRelease(story.storyType) && !isAccepted(story)
+  getStoryState(story) {
+    return isRelease(story) && !isAccepted(story)
       ? status.RELEASE
       : story.state;
   }
 
   render() {
     const { story, onUpdate } = this.props;
-    const state = this.getState(story);
+    const state = this.getStoryState(story);
 
     return (
       <div className='Story__actions' onClick={this.disableToggle}>

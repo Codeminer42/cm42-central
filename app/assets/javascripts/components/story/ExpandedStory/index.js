@@ -50,7 +50,7 @@ export class ExpandedStory extends React.Component {
         />
 
         {
-          Story.isRelease(story._editing.storyType)
+          Story.isRelease(story._editing)
             ? <ExpandedStoryRelease
               story={story}
               titleRef={this.titleRef}
@@ -60,7 +60,6 @@ export class ExpandedStory extends React.Component {
               story={story}
               titleRef={this.titleRef}
               onEdit={(newAttributes) => editStory(story.id, newAttributes)}
-              isNew={Story.isNew(story)}
               project={project}
             />
         }
