@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Fixed
+ - [ V2 ] Remove redundant switch cases from the stories reducer.
+
 ## [2.2.0] 2019-03-15
 
 ### Added
