@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { notePropTypesShape } from './note';
 import { taskPropTypesShape } from './task';
 import { attachmentPropTypesShape } from './attachment';
+import moment from 'moment';
 
 const compareValues = (a, b) => {
   if (a > b) return 1;
@@ -64,7 +65,19 @@ export const getCompletedPoints = story => {
 
 export const isStoryNotEstimated = (storyType, estimate) => storyType === 'feature' && !estimate;
 
-export const isRelease = (storyType) => storyType === 'release';
+export const isRelease = (story) =>
+  story.storyType === storyTypes.RELEASE;
+
+export const releaseIsLate = (story) => {
+  if (!isRelease(story)) {
+    return false;
+  }
+
+  const today = moment();
+  const releaseDate = moment(story.releaseDate, ["YYYY-MM-DD"]).endOf('day');
+
+  return today > releaseDate;
+}
 
 export const types = ['feature', 'bug', 'release', 'chore'];
 
@@ -143,10 +156,22 @@ export const editStory = (story, newAttributes) => {
 };
 
 export const serialize = (story) => {
-  const data = {
-    ...story,
-    labels: Label.joinLabels(story.labels)
-  };
+  const data = !isRelease(story)
+    ? {
+      ...story,
+      labels: Label.joinLabels(story.labels)
+    }
+    : {
+      ...story,
+      estimate: '',
+      ownedById: null,
+      labels: '',
+      ownedByName: null,
+      ownedByInitials: null,
+      notes: [],
+      documents: [],
+      tasks: [],
+    };
 
   return changeCase.snakeKeys(data, {
     recursive: true,
@@ -261,7 +286,8 @@ export const storyTransitions = {
   DELIVER: 'deliver',
   ACCEPT: 'accept',
   REJECT: 'reject',
-  RESTART: 'restart'
+  RESTART: 'restart',
+  RELEASE: 'release'
 };
 
 const stateTransitions = {
@@ -288,6 +314,10 @@ const stateTransitions = {
 };
 
 export const getNextState = (currentState, transition) => {
+  if (transition === storyTransitions.RELEASE) {
+    return status.ACCEPTED
+  }
+
   const nextState = stateTransitions[currentState][transition];
 
   if (nextState) {
@@ -296,6 +326,7 @@ export const getNextState = (currentState, transition) => {
 
   return currentState;
 }
+
 export const storyPropTypesShape = PropTypes.shape(storyPropTypes).isRequired;
 
 export const editingStoryPropTypesShape = PropTypes.shape({

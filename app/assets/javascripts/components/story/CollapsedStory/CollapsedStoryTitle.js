@@ -1,15 +1,26 @@
 import React from 'react'
-import { storyPropTypesShape } from '../../../models/beta/story';
+import { storyPropTypesShape, isRelease } from '../../../models/beta/story';
 
 const CollapsedStoryTitle = ({ story }) => (
   <div className="Story__title">
     {story.title}
-    <abbr
-      className="Story__initials"
-      title={story.ownedByName}
-    >
-      {story.ownedByInitials}
-    </abbr>
+    {
+      story.ownedByInitials
+        ? <abbr
+          className="Story__initials"
+          title={story.ownedByName}
+        >
+          {story.ownedByInitials}
+        </abbr>
+        : null
+    }
+    {
+      isRelease(story)
+        ? story.releaseDate
+          ? <span>{I18n.l("date.formats.short", story.releaseDate)}</span>
+          : null
+        : null
+    }
   </div>
 );
 

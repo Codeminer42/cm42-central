@@ -93,6 +93,7 @@ pt-BR:
       accept: "aceitar"
       reject: "rejeitar"
       restart: "reiniciar"
+      release: "lançar"
       clone: "Clonar história"
       copy_url: "Copiar URL"
       copy_id: "Copiar ID"

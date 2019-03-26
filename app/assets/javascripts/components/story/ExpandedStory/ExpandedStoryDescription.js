@@ -41,7 +41,7 @@ class ExpandedStoryDescription extends React.Component {
     return (
       <textarea
         className="form-control input-sm edit-description-text"
-        onChange={(event) => onEdit({ description: event.target.value })}
+        onChange={(event) => onEdit(event.target.value)}
         value={description}
       />
     );

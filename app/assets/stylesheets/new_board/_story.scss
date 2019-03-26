@@ -4,6 +4,13 @@
     border-bottom: 1px solid $story-border-bottom-color;
     border-top: 1px solid $story-border-top-color;
 
+    &--late-release {
+      background-color: rgba($darkred, .5) !important;
+      border-top-color: rgba($darkred, .6) !important;
+      border-bottom-color: rgba($darkred, .1) !important;
+      color: white !important;
+    }
+
     &--collapsed {
       display: flex;
       justify-content: space-between;
@@ -65,11 +72,18 @@
 
         &__title {
           word-break: break-word;
-          flex: 1;
+          display: flex;
+          justify-content: space-between;
           text-align: justify;
 
           abbr {
+            min-width: 25px;
             border: none;
+          }
+
+          span {
+            min-width: 55px;
+            margin-left: 10px;
           }
         }
 
@@ -150,6 +164,10 @@
             background-position: sprite-position($icons-sprites, redo, 0, 2px);
             background-repeat: no-repeat;
             padding-left: 20px;
+          }
+
+          &--release{
+            @extend .btn-default;
           }
         }
 
@@ -310,6 +328,7 @@
               border-color: $darkgrey-11;
               border-width: 1px;
               outline: none;
+              color: $aluminium-6;
             }
 
             .edit-description-text {
@@ -342,6 +361,7 @@
         }
       }
     }
+
     &__enable-loading {
       cursor: wait;
       border-top: 0;

@@ -4,7 +4,7 @@ import SelectUser from '../select_user/SelectUser';
 import { editingStoryPropTypesShape } from '../../../models/beta/story';
 import ExpandedStorySection from './ExpandedStorySection';
 
-const ExpandedStoryRequestBy = ({ users, story, onEdit }) =>
+const ExpandedStoryRequestedBy = ({ users, story, onEdit }) =>
   <ExpandedStorySection
     title={I18n.t('activerecord.attributes.story.requested_by')}
   >
@@ -15,10 +15,10 @@ const ExpandedStoryRequestBy = ({ users, story, onEdit }) =>
     />
   </ExpandedStorySection>
 
-ExpandedStoryRequestBy.propTypes = {
+ExpandedStoryRequestedBy.propTypes = {
   users: PropTypes.array.isRequired,
   story: editingStoryPropTypesShape.isRequired,
   onEdit: PropTypes.func.isRequired
 }
 
-export default ExpandedStoryRequestBy;
+export default ExpandedStoryRequestedBy;

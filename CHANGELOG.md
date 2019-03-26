@@ -5,6 +5,10 @@
 ### Fixed
  - [ V2 ] Remove redundant switch cases from the stories reducer.
 
+### Added
+- [ V2 ] Story:
+  - Stories of release type
+
 ## [2.2.0] 2019-03-15
 
 ### Added

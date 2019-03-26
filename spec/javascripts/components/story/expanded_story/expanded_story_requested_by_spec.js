@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import ExpandedStoryRequestBy from 'components/story/ExpandedStory/ExpandedStoryRequestedBy';
+import ExpandedStoryRequestedBy from 'components/story/ExpandedStory/ExpandedStoryRequestedBy';
 
 describe('<ExpandedStoryRequestBy />', () => {
   const setup = propOverrides => {
@@ -14,7 +14,7 @@ describe('<ExpandedStoryRequestBy />', () => {
       ...propOverrides
     });
 
-    const wrapper = shallow(<ExpandedStoryRequestBy {...defaultProps()} />);
+    const wrapper = shallow(<ExpandedStoryRequestedBy {...defaultProps()} />);
 
     return { wrapper };
   };
