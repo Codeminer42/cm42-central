@@ -55,9 +55,10 @@ export const isAccepted = story => {
   return story.state === status.ACCEPTED;
 };
 
-export const getPoints = story => {
-  return isFeature(story) ? story.estimate : 0;
-};
+export const getPoints = story =>
+  isFeature(story)
+    ? Number(story.estimate)
+    : 0;
 
 export const getCompletedPoints = story => {
   return isFeature(story) && isAccepted(story) ? story.estimate : 0;
