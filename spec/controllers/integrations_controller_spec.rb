@@ -45,7 +45,7 @@ describe IntegrationsController do
             get :index, params: { project_id: project.id }
             expect(response).to be_successful
             expect(assigns[:project]).to eq(project)
-            expect(assigns[:integrations].count).to eq(3)
+            expect(assigns[:integrations].count).to eq(4)
             expect(assigns[:integrations].first.kind).to eq('discord')
           end
         end

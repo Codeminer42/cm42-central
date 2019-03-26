@@ -45,8 +45,8 @@ describe 'Teams', js: true do
 
     describe 'update team' do
       it 'should update a team and set a team logo' do
-        VCR.use_cassette('cloudinary_upload_team_logo') do
-          visit edit_team_path(user.teams.last)
+        VCR.use_cassette('cloudinary_upload_team_logo', match_requests_on: %i[uri method]) do
+          visit edit_team_path(user.teams.last.slug)
 
           attach_file('Logo', Rails.root.join('spec', 'fixtures', 'blank.jpg'))
           wait_spinner

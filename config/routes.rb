@@ -116,4 +116,10 @@ Rails.application.routes.draw do
 
   mount GrapeSwaggerRails::Engine => '/api/v1/explore'
   mount API => '/'
+
+  namespace :gitlab do
+    namespace :projects do
+      resources :events, only: :create
+    end
+  end
 end
