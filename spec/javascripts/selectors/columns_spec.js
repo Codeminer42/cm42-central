@@ -11,8 +11,8 @@ describe('Columns Selector', () => {
   const currentSprintDate = moment();
   const previousSprintDate = moment().subtract(1, 'weeks');
 
-  let storiesArray; 
-  
+  let storiesArray;
+
   beforeEach(() => {
     storiesArray = [unscheduledStory, startedStory, deliveredStory];
   });
@@ -45,7 +45,8 @@ describe('Columns Selector', () => {
       const backlogSprints = getColumns({
         column: Column.BACKLOG,
         project,
-        stories: storiesArray
+        stories: storiesArray,
+        pastIterations: []
       });
 
       expect(backlogSprints[0].stories).toContain(storyAcceptedCurrentSprint);
@@ -55,7 +56,8 @@ describe('Columns Selector', () => {
       const backlogSprints = getColumns({
         column: Column.BACKLOG,
         project,
-        stories: storiesArray
+        stories: storiesArray,
+        pastIterations: []
       });
 
       expect(backlogSprints[0].stories).not.toContain(unscheduledStory);

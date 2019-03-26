@@ -1,4 +1,5 @@
 import moment from "moment";
+import { last } from 'underscore';
 import * as Story from "./story";
 
 const weeksBetween = (dateA, dateB) =>
@@ -13,12 +14,27 @@ const getIterationForDate = (date, project) => {
     : iterationQuantity + 1;
 };
 
-export const getDateForIterationNumber = (iterationNumber, project) => {
-  return moment(new Date(project.startDate))
-    .startOf("isoWeek")
-    .add(iterationNumber, "weeks")
-    .format("ddd MMM Do Y");
-};
+const getNextIterationNumber = (sprints) => {
+  const lastSprint = last(sprints);
+
+  return lastSprint ? lastSprint.number + 1 : 1;
+}
+
+const getStartDate = (iterationNumber, project) => {
+  const momentDate = moment(project.startDate);
+
+  if (iterationNumber === 1) {
+    return moment(project.startDate);
+  }
+
+  const missingDaysFromFirstSprint = (momentDate.isoWeekday() - project.iterationStartDay) % 7;
+  const iterationDays = (iterationNumber - 1) * (project.iterationLength * 7);
+
+  return (momentDate.subtract(missingDaysFromFirstSprint, 'days')).add(iterationDays, 'days');
+}
+
+export const getDateForIterationNumber = (iterationNumber, project) =>
+  getStartDate(iterationNumber, project).format("ddd MMM Do Y");
 
 export const getCurrentIteration = project =>
   getIterationForDate(new Date(), project);
@@ -30,13 +46,13 @@ export const getIterationForStory = (story, project) => {
 };
 
 const createSprint = (sprintNumber = 0, startDate = 0, isFiller = false, velocity) => ({
-  number: sprintNumber + 1,
-  startDate: startDate,
+  number: sprintNumber,
+  startDate,
   points: 0,
   completedPoints: null,
   stories: [],
-  isFiller: isFiller,
-  remainingPoints: velocity 
+  isFiller,
+  remainingPoints: velocity
 });
 
 const createFillerSprints = (size, initialNumber, project) => {
@@ -90,9 +106,9 @@ const addStoryToSprint = (project, sprints, index, story) => {
     }
   }
   fillRemainingPoints(
-    sprints, 
+    sprints,
     Story.getPoints(story),
-    index, 
+    index,
     project.defaultVelocity,
     previousFillerSprintsQuantity
   );
@@ -110,10 +126,10 @@ const fillRemainingPoints = (sprints, storyPoints, index, velocity, previousFill
   }
 };
 
-const createFirstSprint = (sprints, project) => {
+const createFirstSprint = (sprints, project, initialSprintNumber) => {
   sprints.push(createSprint(
-    0,
-    getDateForIterationNumber(0, project),
+    initialSprintNumber,
+    getDateForIterationNumber(initialSprintNumber, project),
     undefined,
     project.defaultVelocity,
   ));
@@ -122,14 +138,16 @@ const createFirstSprint = (sprints, project) => {
 const addToSprintFromBacklog = (sprints, project, story) => {
   const sprintIndex = sprints.length && sprints.length - 1;
   const hasSpace = canTakeStory(sprints[sprintIndex], Story.getPoints(story));
-  
+
   if (hasSpace) {
     return addStoryToSprint(project, sprints, sprintIndex, story);
   }
-  
+
+  const iterationNumber = getNextIterationNumber(sprints);
+
   sprints[sprintIndex + 1] = createSprint(
-    sprints.length + getCurrentIteration(project),
-    getDateForIterationNumber(sprints.length + getCurrentIteration(project), project),
+    iterationNumber,
+    getDateForIterationNumber(iterationNumber, project),
     undefined,
     project.defaultVelocity
   );
@@ -150,7 +168,7 @@ export const groupBySprints = (stories = [], project, initialSprintNumber) => {
     );
 
     if (sprints.length === 0) {
-      createFirstSprint(sprints, project);
+      createFirstSprint(sprints, project, initialSprintNumber);
     }
 
     if (isFromSprintInProgress) {

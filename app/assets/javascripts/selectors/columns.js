@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { orderByState, groupStoriesInSprints } from "./backlog";
 import { mountPastIterations } from './done';
 import * as Column from "../models/beta/column";
-import { property } from 'underscore';
+import { property, last } from 'underscore';
 
 const getStories = property('stories');
 const getColumn = property('column');
@@ -20,7 +20,12 @@ export const getColumns = createSelector(
           story => Column.isBacklog(story, project))
         );
 
-        return groupStoriesInSprints(orderedStories, project);
+        const lastPastIteration = last(pastIterations);
+        const firstSprintNumber = lastPastIteration
+          ? lastPastIteration.iterationNumber + 1
+          : 1;
+
+        return groupStoriesInSprints(orderedStories, project, firstSprintNumber);
       case Column.DONE:
         return mountPastIterations(pastIterations);
     };
