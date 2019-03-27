@@ -4,6 +4,7 @@
 
 ### Fixed
  - [ V2 ] Remove redundant switch cases from the stories reducer.
+ - [ V2 ] Fix number, date and points of sprints.
 
 ### Added
 - [ V2 ] Story:
