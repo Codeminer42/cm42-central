@@ -34,7 +34,7 @@ const getStartDate = (iterationNumber, project) => {
 }
 
 export const getDateForIterationNumber = (iterationNumber, project) =>
-  getStartDate(iterationNumber, project).format("ddd MMM Do Y");
+  getStartDate(iterationNumber, project).format("YYYY/MM/DD");
 
 export const getCurrentIteration = project =>
   getIterationForDate(new Date(), project);

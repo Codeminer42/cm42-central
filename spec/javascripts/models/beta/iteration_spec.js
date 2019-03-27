@@ -349,7 +349,7 @@ describe("iteration", function() {
         ];
 
         const project = {
-          startDate: moment().format(),
+          startDate: moment().format("YYYY/MM/DD"),
           iterationLength: 1,
           defaultVelocity: 2
         };
@@ -361,19 +361,19 @@ describe("iteration", function() {
         );
 
         it('first sprint starts today', () => {
-          const startDate = moment().format("ddd MMM Do Y");
+          const startDate = moment().format("YYYY/MM/DD");
 
           expect(sprints[0].startDate).toBe(startDate);
         });
 
         it('second sprint starts 1 week after today', () => {
-          const startDate = moment().add(1, 'weeks').format("ddd MMM Do Y");
+          const startDate = moment().add(1, 'weeks').format("YYYY/MM/DD");
 
           expect(sprints[1].startDate).toBe(startDate);
         });
 
         it('third sprint starts 2 weeks after today', () => {
-          const startDate = moment().add(2, 'weeks').format("ddd MMM Do Y");
+          const startDate = moment().add(2, 'weeks').format("YYYY/MM/DD");
 
           expect(sprints[2].startDate).toBe(startDate);
         });
@@ -412,7 +412,7 @@ describe("iteration", function() {
           projectStartDate = moment().subtract(2, 'weeks');
 
           project = {
-            startDate: projectStartDate.format(),
+            startDate: projectStartDate.format("YYYY/MM/DD"),
             iterationLength: 1,
             defaultVelocity: 2
           };
@@ -425,13 +425,13 @@ describe("iteration", function() {
         });
 
         it('first sprint starts 2 weeks after projectStartDate', () => {
-          const startDate = projectStartDate.add(2, 'weeks').format("ddd MMM Do Y");
+          const startDate = projectStartDate.add(2, 'weeks').format("YYYY/MM/DD");
 
           expect(sprints[0].startDate).toBe(startDate);
         });
 
         it('second sprint starts 3 weeks after startDate', () => {
-          const startDate = projectStartDate.add(3, 'weeks').format("ddd MMM Do Y");
+          const startDate = projectStartDate.add(3, 'weeks').format("YYYY/MM/DD");
 
           expect(sprints[1].startDate).toBe(startDate);
         });
