@@ -155,7 +155,7 @@ const addToSprintFromBacklog = (sprints, project, story) => {
   return addStoryToSprint(project, sprints, sprintIndex + 1, story);
 };
 
-export const groupBySprints = (stories = [], project, initialSprintNumber) => {
+export const groupBySprints = (stories = [], project, initialSprintNumber = 1) => {
   return stories.reduce((sprints, story) => {
     const firstSprintIndex = 0;
     const isFromSprintInProgress = !Story.isUnstarted(story);
