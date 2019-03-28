@@ -214,7 +214,10 @@ export const cloneStory = (story) => {
     state: status.UNSCHEDULED,
     _isDirty: true,
     collapsed: false,
-    _editing: {}
+    tasks: [],
+    notes: [],
+    documents: [],
+    _editing: null
   }
 
   return {
