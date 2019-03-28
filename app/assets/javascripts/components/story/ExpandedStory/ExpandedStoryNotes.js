@@ -53,7 +53,9 @@ class ExpandedStoryNotes extends React.Component {
   }
 
   render() {
-    const { story, onDelete } = this.props;
+    const { story, onDelete, disabled } = this.props;
+
+    if(disabled && !story.notes.length) return null
 
     return (
       <ExpandedStorySection
@@ -61,11 +63,12 @@ class ExpandedStoryNotes extends React.Component {
         identifier="notes"
       >
         <NotesList
-          onDelete={onDelete}
           notes={story.notes}
+          onDelete={onDelete}
+          disabled={disabled}
         />
 
-        {this.notesForm()}
+        {!disabled && this.notesForm()}
       </ExpandedStorySection>
     );
   }
@@ -74,7 +77,8 @@ class ExpandedStoryNotes extends React.Component {
 ExpandedStoryNotes.propTypes = {
   story: editingStoryPropTypesShape.isRequired,
   onCreate: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired
+  onDelete: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired
 };
 
 export default ExpandedStoryNotes;

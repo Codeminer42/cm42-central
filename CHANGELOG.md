@@ -10,6 +10,7 @@
 - [ V2 ] Story:
   - Stories of release type
   - Option to Clone Stories
+  - Disable fields when story is read-only
 
 ## [2.2.0] 2019-03-15
 

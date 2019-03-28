@@ -35,7 +35,9 @@ class ExpandedStoryTask extends Component {
   }
 
   render() {
-    const { story, onToggle, onDelete } = this.props;
+    const { story, onToggle, onDelete, disabled } = this.props;
+
+    if (!story.tasks.length && disabled) return null;
 
     return (
       <ExpandedStorySection
@@ -47,24 +49,28 @@ class ExpandedStoryTask extends Component {
             tasks={story.tasks}
             onDelete={onDelete}
             onToggle={onToggle}
+            disabled={disabled}
           />
         </div>
 
-        <div className="task-form">
-          <input
-            value={this.state.task}
-            className="form-control input-sm"
-            onChange={this.onInputChange}
-          />
-          <button
-            type='submit'
-            className='add-task-button'
-            onClick={this.onHandleSubmit}
-            disabled={this.hasAnEmptyValue()}
-          >
-            {I18n.t('add task')}
-          </button>
-        </div>
+        {
+          !disabled &&
+            <div className="task-form">
+              <input
+                value={this.state.task}
+                className="form-control input-sm"
+                onChange={this.onInputChange}
+              />
+              <button
+                type='submit'
+                className='add-task-button'
+                onClick={this.onHandleSubmit}
+                disabled={this.hasAnEmptyValue()}
+              >
+                {I18n.t('add task')}
+              </button>
+            </div>
+        }
       </ExpandedStorySection>
     );
   }
@@ -74,7 +80,8 @@ ExpandedStoryTask.propTypes = {
   story: editingStoryPropTypesShape.isRequired,
   onToggle: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
-  onSave: PropTypes.func.isRequired
+  onSave: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired
 };
 
 export default ExpandedStoryTask;

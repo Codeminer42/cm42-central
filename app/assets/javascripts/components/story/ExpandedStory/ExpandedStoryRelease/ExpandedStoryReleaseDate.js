@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import { editingStoryPropTypesShape } from '../../../../models/beta/story';
 
-const ExpandedStoryReleaseDate = ({ onEdit, story }) => {
+const ExpandedStoryReleaseDate = ({ onEdit, story, disabled }) => {
   const releaseDate = moment(story._editing.releaseDate, ["YYYY-MM-DD"]);
   const validReleaseDate = releaseDate.isValid() ? releaseDate : null;
 
@@ -22,6 +22,7 @@ const ExpandedStoryReleaseDate = ({ onEdit, story }) => {
         onChange={(releaseDate) =>
           onEdit(releaseDate.format())
         }
+        disabled={disabled}
       />
     </ExpandedStorySection>
   )
@@ -29,7 +30,8 @@ const ExpandedStoryReleaseDate = ({ onEdit, story }) => {
 
 ExpandedStoryReleaseDate.propTypes = {
   story: editingStoryPropTypesShape.isRequired,
-  onEdit: PropTypes.func.isRequired
+  onEdit: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired
 };
 
 export default ExpandedStoryReleaseDate;

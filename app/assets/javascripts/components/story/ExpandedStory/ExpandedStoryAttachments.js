@@ -56,42 +56,47 @@ class ExpandedStoryAttachments extends React.Component {
   }
 
   render() {
-    const { story, onDelete } = this.props;
+    const { story, onDelete, disabled } = this.props;
+
+    if(disabled && !story.documents.length) return null
 
     return (
       <ExpandedStorySection
         title={I18n.t('story.attachments')}
         identifier="attachments"
       >
-        <Dropzone
-          onDrop={this.onFileDrop}
-          accept={acceptedMimeTypes()}
-          disabled={this.state.loading}
-          multiple={false}
-        >
-          {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {
-            const className = this.dropzoneClassName({ isDragActive, isDragReject })
+        {
+          !disabled && 
+            <Dropzone
+              onDrop={this.onFileDrop}
+              accept={acceptedMimeTypes()}
+              disabled={this.state.loading}
+              multiple={false}
+            >
+              {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {
+                const className = this.dropzoneClassName({ isDragActive, isDragReject })
 
-            return (
-              <div
-                {...getRootProps()}
-                className={`btn btn-success attachments-dropzone ${className}`}
-              >
-                <input {...getInputProps()} />
-                <i className="mi md-20">cloud_upload</i>
-                <div>
-                  {!isDragReject ?
-                    I18n.t('upload_new_file') :
-                    I18n.t('reject_new_file')}
-                </div>
-              </div>
-            )
-          }}
-        </Dropzone>
-
+                return (
+                  <div
+                    {...getRootProps()}
+                    className={`btn btn-success attachments-dropzone ${className}`}
+                  >
+                    <input {...getInputProps()} />
+                    <i className="mi md-20">cloud_upload</i>
+                    <div>
+                      {!isDragReject ?
+                        I18n.t('upload_new_file') :
+                        I18n.t('reject_new_file')}
+                    </div>
+                  </div>
+                )
+              }}
+            </Dropzone>
+        }
         <AttachmentsList
           files={story._editing.documents}
           onDelete={onDelete}
+          disabled={disabled}
         />
       </ExpandedStorySection>
     );
@@ -101,7 +106,8 @@ class ExpandedStoryAttachments extends React.Component {
 ExpandedStoryAttachments.propTypes = {
   story: editingStoryPropTypesShape.isRequired,
   onDelete: PropTypes.func.isRequired,
-  onAdd: PropTypes.func.isRequired
+  onAdd: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired
 };
 
 export default ExpandedStoryAttachments;
