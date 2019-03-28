@@ -1,5 +1,6 @@
 import * as Story from 'models/beta/story';
 import moment from 'moment';
+import { status } from 'libs/beta/constants';
 
 describe('Story model', function () {
   describe('comparePosition', () => {
@@ -684,6 +685,32 @@ describe('Story model', function () {
       };
 
       expect(Story.releaseIsLate(story)).toBe(false);
+    });
+  });
+
+  describe('cloneStory', () => {
+    it('retuns a new story with null id', () => {
+      const story = { id: 42 };
+
+      expect(Story.cloneStory(story).id).toBe(null);
+    });
+
+    it('retuns a new story with uncheduled state', () => {
+      const story = { state: 'accepted' };
+
+      expect(Story.cloneStory(story).state).toBe(status.UNSCHEDULED);
+    });
+
+    it('retuns a new dirty story', () => {
+      const story = { _isDirty: false };
+
+      expect(Story.cloneStory(story)._isDirty).toBe(true);
+    });
+
+    it('retuns a new expanded story', () => {
+      const story = { collapsed: true };
+
+      expect(Story.cloneStory(story).collapsed).toBe(false);
     });
   });
 });
