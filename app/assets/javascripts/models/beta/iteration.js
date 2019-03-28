@@ -14,24 +14,31 @@ const getIterationForDate = (date, project) => {
     : iterationQuantity + 1;
 };
 
-const getNextIterationNumber = (sprints) => {
-  const lastSprint = last(sprints);
+const getNextIterationNumber = (iterations) => {
+  const lastIteration = last(iterations);
 
-  return lastSprint ? lastSprint.number + 1 : 1;
+  return lastIteration ? lastIteration.number + 1 : 1;
 }
 
 const getStartDate = (iterationNumber, project) => {
-  const momentDate = moment(project.startDate);
+  const projectStartDate = moment(project.startDate);
 
   if (iterationNumber === 1) {
-    return moment(project.startDate);
+    return projectStartDate;
   }
 
-  const missingDaysFromFirstSprint = (momentDate.isoWeekday() - project.iterationStartDay) % 7;
-  const iterationDays = (iterationNumber - 1) * (project.iterationLength * 7);
+  const missingDaysFromFirsIteration = firstIterationMissingDays(project);
+  const daysUntilIteration = daysUntil(iterationNumber, project);
+  const expectedProjectStartDate = projectStartDate.subtract(missingDaysFromFirsIteration, 'days');
 
-  return (momentDate.subtract(missingDaysFromFirstSprint, 'days')).add(iterationDays, 'days');
+  return expectedProjectStartDate.add(daysUntilIteration, 'days');
 }
+
+const firstIterationMissingDays = (project) =>
+  (moment(project.startDate).isoWeekday() - project.iterationStartDay) % 7;
+
+const daysUntil = (iterationNumber, project) =>
+  (iterationNumber - 1) * (project.iterationLength * 7);
 
 export const getDateForIterationNumber = (iterationNumber, project) =>
   getStartDate(iterationNumber, project).format("YYYY/MM/DD");
