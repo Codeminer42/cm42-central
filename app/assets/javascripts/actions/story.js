@@ -10,6 +10,11 @@ export const addStory = (story) => ({
   story
 });
 
+export const cloneStory = (story) => ({
+  type: actionTypes.CLONE_STORY,
+  story
+});
+
 export const receiveStories = (stories) => ({
   type: actionTypes.RECEIVE_STORIES,
   data: stories

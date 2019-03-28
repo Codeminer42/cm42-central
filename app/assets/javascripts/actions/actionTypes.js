@@ -10,6 +10,7 @@ export default keyMirror({
   RECEIVE_PAST_ITERATIONS: null,
   CREATE_STORY: null,
   ADD_STORY: null,
+  CLONE_STORY: null,
   TOGGLE_STORY: null,
   EDIT_STORY: null,
   UPDATE_STORY: null,

@@ -1,6 +1,6 @@
 import actionTypes from 'actions/actionTypes';
 import {
-  toggleStory, editStory, updateStory, setLoadingStory,
+  toggleStory, editStory, updateStory, setLoadingStory, cloneStory,
   storyFailure, withoutNewStory, createNewStory, replaceOrAddNewStory
 } from 'models/beta/story';
 import * as Note from 'models/beta/note';
@@ -21,6 +21,10 @@ const storiesReducer = (state = initialState, action) => {
       return replaceOrAddNewStory(state, newStory);
     case actionTypes.ADD_STORY:
       return replaceOrAddNewStory(state, action.story);
+    case actionTypes.CLONE_STORY:
+      const clonedStory = cloneStory(action.story);
+
+      return replaceOrAddNewStory(state, clonedStory);
     case actionTypes.TOGGLE_STORY:
       if (action.id === null) {
         return withoutNewStory(state);
