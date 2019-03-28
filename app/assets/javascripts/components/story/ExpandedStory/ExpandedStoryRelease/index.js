@@ -4,14 +4,25 @@ import ExpandedStoryTitle from '../ExpandedStoryTitle';
 import ExpandedStoryType from '../ExpandedStoryType';
 import ExpandedStoryReleaseDate from './ExpandedStoryReleaseDate';
 import ExpandedStoryDescription from '../ExpandedStoryDescription';
-import { editingStoryPropTypesShape } from '../../../../models/beta/story';
+import ExpandedStoryHistoryLocation from '../ExpandedStoryHistoryLocation';
+import { editingStoryPropTypesShape, isNew } from '../../../../models/beta/story';
 
 const ExpandedStoryRelease = ({
   story,
   titleRef,
-  onEdit
+  onEdit,
+  onClone
 }) =>
   <Fragment>
+    {
+      !isNew(story)
+        ? <ExpandedStoryHistoryLocation
+          story={story}
+          onClone={() => onClone(story._editing)}
+        />
+        : null
+    }
+
     <ExpandedStoryTitle
       story={story}
       titleRef={titleRef}
@@ -36,7 +47,8 @@ const ExpandedStoryRelease = ({
 
 ExpandedStoryRelease.propTypes = {
   story: editingStoryPropTypesShape.isRequired,
-  onEdit: PropTypes.func.isRequired
+  onEdit: PropTypes.func.isRequired,
+  onClone: PropTypes.func.isRequired
 };
 
 export default ExpandedStoryRelease;

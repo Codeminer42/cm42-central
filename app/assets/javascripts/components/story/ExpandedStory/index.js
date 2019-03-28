@@ -56,6 +56,7 @@ export class ExpandedStory extends React.Component {
               story={story}
               titleRef={this.titleRef}
               onEdit={(newAttributes) => editStory(story.id, newAttributes)}
+              onClone={cloneStory}
             />
             : <ExpandedStoryDefault
               story={story}
