@@ -258,6 +258,9 @@ export const canSave = (story) =>
 export const canDelete = (story) =>
   !isAccepted(story) && !isNew(story);
 
+export const canEdit = (story) => 
+  !isAccepted(story)
+
 export const withoutNewStory = (stories) =>
   stories.filter(story => !isNew(story));
 
