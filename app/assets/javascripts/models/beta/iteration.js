@@ -1,4 +1,5 @@
 import moment from "moment";
+import { last } from 'underscore';
 import * as Story from "./story";
 
 const weeksBetween = (dateA, dateB) =>
@@ -13,12 +14,34 @@ const getIterationForDate = (date, project) => {
     : iterationQuantity + 1;
 };
 
-export const getDateForIterationNumber = (iterationNumber, project) => {
-  return moment(new Date(project.startDate))
-    .startOf("isoWeek")
-    .add(iterationNumber, "weeks")
-    .format("ddd MMM Do Y");
-};
+const getNextIterationNumber = (iterations) => {
+  const lastIteration = last(iterations);
+
+  return lastIteration ? lastIteration.number + 1 : 1;
+}
+
+const getStartDate = (iterationNumber, project) => {
+  const projectStartDate = moment(project.startDate);
+
+  if (iterationNumber === 1) {
+    return projectStartDate;
+  }
+
+  const missingDaysFromFirsIteration = firstIterationMissingDays(project);
+  const daysUntilIteration = daysUntil(iterationNumber, project);
+  const expectedProjectStartDate = projectStartDate.subtract(missingDaysFromFirsIteration, 'days');
+
+  return expectedProjectStartDate.add(daysUntilIteration, 'days');
+}
+
+const firstIterationMissingDays = (project) =>
+  (moment(project.startDate).isoWeekday() - project.iterationStartDay) % 7;
+
+const daysUntil = (iterationNumber, project) =>
+  (iterationNumber - 1) * (project.iterationLength * 7);
+
+export const getDateForIterationNumber = (iterationNumber, project) =>
+  getStartDate(iterationNumber, project).format("YYYY/MM/DD");
 
 export const getCurrentIteration = project =>
   getIterationForDate(new Date(), project);
@@ -30,13 +53,13 @@ export const getIterationForStory = (story, project) => {
 };
 
 const createSprint = (sprintNumber = 0, startDate = 0, isFiller = false, velocity) => ({
-  number: sprintNumber + 1,
-  startDate: startDate,
+  number: sprintNumber,
+  startDate,
   points: 0,
   completedPoints: null,
   stories: [],
-  isFiller: isFiller,
-  remainingPoints: velocity 
+  isFiller,
+  remainingPoints: velocity
 });
 
 const createFillerSprints = (size, initialNumber, project) => {
@@ -90,9 +113,9 @@ const addStoryToSprint = (project, sprints, index, story) => {
     }
   }
   fillRemainingPoints(
-    sprints, 
+    sprints,
     Story.getPoints(story),
-    index, 
+    index,
     project.defaultVelocity,
     previousFillerSprintsQuantity
   );
@@ -110,10 +133,10 @@ const fillRemainingPoints = (sprints, storyPoints, index, velocity, previousFill
   }
 };
 
-const createFirstSprint = (sprints, project) => {
+const createFirstSprint = (sprints, project, initialSprintNumber) => {
   sprints.push(createSprint(
-    0,
-    getDateForIterationNumber(0, project),
+    initialSprintNumber,
+    getDateForIterationNumber(initialSprintNumber, project),
     undefined,
     project.defaultVelocity,
   ));
@@ -122,14 +145,16 @@ const createFirstSprint = (sprints, project) => {
 const addToSprintFromBacklog = (sprints, project, story) => {
   const sprintIndex = sprints.length && sprints.length - 1;
   const hasSpace = canTakeStory(sprints[sprintIndex], Story.getPoints(story));
-  
+
   if (hasSpace) {
     return addStoryToSprint(project, sprints, sprintIndex, story);
   }
-  
+
+  const iterationNumber = getNextIterationNumber(sprints);
+
   sprints[sprintIndex + 1] = createSprint(
-    sprints.length + getCurrentIteration(project),
-    getDateForIterationNumber(sprints.length + getCurrentIteration(project), project),
+    iterationNumber,
+    getDateForIterationNumber(iterationNumber, project),
     undefined,
     project.defaultVelocity
   );
@@ -137,7 +162,7 @@ const addToSprintFromBacklog = (sprints, project, story) => {
   return addStoryToSprint(project, sprints, sprintIndex + 1, story);
 };
 
-export const groupBySprints = (stories = [], project, initialSprintNumber) => {
+export const groupBySprints = (stories = [], project, initialSprintNumber = 1) => {
   return stories.reduce((sprints, story) => {
     const firstSprintIndex = 0;
     const isFromSprintInProgress = !Story.isUnstarted(story);
@@ -150,7 +175,7 @@ export const groupBySprints = (stories = [], project, initialSprintNumber) => {
     );
 
     if (sprints.length === 0) {
-      createFirstSprint(sprints, project);
+      createFirstSprint(sprints, project, initialSprintNumber);
     }
 
     if (isFromSprintInProgress) {

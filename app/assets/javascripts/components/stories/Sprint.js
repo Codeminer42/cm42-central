@@ -34,7 +34,7 @@ class Sprint extends Component {
     return (
       <div className="Sprint">
         <div className="Sprint__header" onClick={this.toggleSprint}>
-          {number} - {startDate}
+          {number} - {I18n.l("date.formats.long", startDate)}
           <span className="Sprint__points">
             {completedPoints > 0 && `${completedPoints} / `}
             {points}

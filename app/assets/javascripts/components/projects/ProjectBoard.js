@@ -88,7 +88,8 @@ const mapStateToProps = ({
   backlogSprints: getColumns({
     column: Columns.BACKLOG,
     stories,
-    project
+    project,
+    pastIterations
   }),
   doneSprints: getColumns({
     column: Columns.DONE,

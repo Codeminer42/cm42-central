@@ -51,12 +51,9 @@ const sortStartedStories = (stories) => {
     .sort(Story.compareStartedAt);
 }
 
-export const groupStoriesInSprints = (stories, project) => {
-  const currentSprintNumber = Iteration.getCurrentIteration(project) || 0;
-
-  return Iteration.groupBySprints(
+export const groupStoriesInSprints = (stories, project, initialSprintNumber) =>
+  Iteration.groupBySprints(
     stories,
     project,
-    currentSprintNumber
+    initialSprintNumber
   );
-};

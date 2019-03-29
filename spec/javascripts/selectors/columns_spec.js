@@ -11,8 +11,8 @@ describe('Columns Selector', () => {
   const currentSprintDate = moment();
   const previousSprintDate = moment().subtract(1, 'weeks');
 
-  let storiesArray; 
-  
+  let storiesArray;
+
   beforeEach(() => {
     storiesArray = [unscheduledStory, startedStory, deliveredStory];
   });
@@ -36,7 +36,7 @@ describe('Columns Selector', () => {
     const project = {
       iterationLength: 1,
       iterationStartDay: 1,
-      startDate: currentSprintDate.format()
+      startDate: currentSprintDate.format("YYYY/MM/DD")
     };
 
     it('return story accepted in current sprint', () => {
@@ -45,7 +45,8 @@ describe('Columns Selector', () => {
       const backlogSprints = getColumns({
         column: Column.BACKLOG,
         project,
-        stories: storiesArray
+        stories: storiesArray,
+        pastIterations: []
       });
 
       expect(backlogSprints[0].stories).toContain(storyAcceptedCurrentSprint);
@@ -55,7 +56,8 @@ describe('Columns Selector', () => {
       const backlogSprints = getColumns({
         column: Column.BACKLOG,
         project,
-        stories: storiesArray
+        stories: storiesArray,
+        pastIterations: []
       });
 
       expect(backlogSprints[0].stories).not.toContain(unscheduledStory);
@@ -65,14 +67,14 @@ describe('Columns Selector', () => {
   describe('DONE', () => {
     const pastIterations = [
       {
-        startDate: previousSprintDate,
-        endDate: currentSprintDate
+        startDate: previousSprintDate.format("YYYY/MM/DD"),
+        endDate: currentSprintDate.format("YYYY/MM/DD")
       }
     ];
 
     it('return pastIterations with start and end date', () => {
-      const startDate =   moment(pastIterations[0].startDate).format("ddd MMM Do Y");
-      const endDate = moment(pastIterations[0].endDate).format("ddd MMM Do Y");
+      const startDate =   moment(pastIterations[0].startDate).format("YYYY/MM/DD");
+      const endDate = moment(pastIterations[0].endDate).format("YYYY/MM/DD");
 
       const doneSprints = getColumns({
         column: Column.DONE,
