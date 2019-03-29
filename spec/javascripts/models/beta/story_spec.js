@@ -1,5 +1,6 @@
 import * as Story from 'models/beta/story';
 import moment from 'moment';
+import { status } from 'libs/beta/constants';
 
 describe('Story model', function () {
   describe('comparePosition', () => {
@@ -684,6 +685,74 @@ describe('Story model', function () {
       };
 
       expect(Story.releaseIsLate(story)).toBe(false);
+    });
+  });
+
+  describe('cloneStory', () => {
+    it('retuns a new story with null id', () => {
+      const story = { id: 42 };
+
+      expect(Story.cloneStory(story).id).toBe(null);
+    });
+
+    it('retuns a new story with uncheduled state', () => {
+      const story = { state: 'accepted' };
+
+      expect(Story.cloneStory(story).state).toBe(status.UNSCHEDULED);
+    });
+
+    it('retuns a new dirty story', () => {
+      const story = { _isDirty: false };
+
+      expect(Story.cloneStory(story)._isDirty).toBe(true);
+    });
+
+    it('retuns a new expanded story', () => {
+      const story = { collapsed: true };
+
+      expect(Story.cloneStory(story).collapsed).toBe(false);
+    });
+
+    it('retuns the same story title', () => {
+      const story = { title: 'My new Title' };
+
+      expect(Story.cloneStory(story).title).toBe(story.title);
+    });
+
+    it('retuns the same story description', () => {
+      const story = { description: 'My description' };
+
+      expect(Story.cloneStory(story).description).toBe(story.description);
+    });
+
+    it('retuns the same story estimate', () => {
+      const story = { estimate: 1 };
+
+      expect(Story.cloneStory(story).estimate).toBe(story.estimate);
+    });
+
+    it('retuns the same story type', () => {
+      const story = { storyType: 'feature' };
+
+      expect(Story.cloneStory(story).storyType).toBe(story.storyType);
+    });
+
+    it("doesn't clone story tasks", () => {
+      const story = { tasks: [{ id: 1 }, { id: 2 }] };
+
+      expect(Story.cloneStory(story).tasks).toEqual([]);
+    });
+
+    it("doesn't clone story notes", () => {
+      const story = { notes: [{ id: 1 }, { id: 2 }] };
+
+      expect(Story.cloneStory(story).notes).toEqual([]);
+    });
+
+    it("doesn't clone story documents", () => {
+      const story = { documents: [{ id: 1 }, { id: 2 }] };
+
+      expect(Story.cloneStory(story).documents).toEqual([]);
     });
   });
 });

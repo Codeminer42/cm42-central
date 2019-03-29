@@ -208,6 +208,25 @@ export const setLoadingValue = (story, loading) => ({
   loading
 });
 
+export const cloneStory = (story) => {
+  const clonedStory = {
+    ...story,
+    id: null,
+    state: status.UNSCHEDULED,
+    _isDirty: true,
+    collapsed: false,
+    tasks: [],
+    notes: [],
+    documents: [],
+    _editing: null
+  }
+
+  return {
+    ...clonedStory,
+    _editing: clonedStory
+  }
+}
+
 export const createNewStory = (stories, storyAttributes) => {
   const story = stories.find(isNew);
 

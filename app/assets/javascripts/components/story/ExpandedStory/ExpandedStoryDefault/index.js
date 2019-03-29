@@ -24,7 +24,7 @@ import ExpandedStoryOwnedBy from '../ExpandedStoryOwnedBy';
 export const ExpandedStoryDefault = ({
   titleRef,
   story, users, project,
-  onEdit,
+  onEdit, onClone,
   addLabel, removeLabel,
   createNote, deleteNote,
   createTask, deleteTask, toggleTask,
@@ -34,7 +34,10 @@ export const ExpandedStoryDefault = ({
   <Fragment>
     {
       !isNew(story)
-        ? <ExpandedStoryHistoryLocation story={story} />
+        ? <ExpandedStoryHistoryLocation
+          story={story}
+          onClone={() => onClone(story._editing)}
+        />
         : null
     }
 
@@ -131,6 +134,7 @@ ExpandedStoryDefault.propTypes = {
   removeAttachment: PropTypes.func.isRequired,
   setLoadingStory: PropTypes.func.isRequired,
   storyFailure: PropTypes.func.isRequired,
+  onClone: PropTypes.func.isRequired
 };
 
 const mapStateToProps = ({ users }) => ({ users });

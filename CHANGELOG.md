@@ -9,6 +9,7 @@
 ### Added
 - [ V2 ] Story:
   - Stories of release type
+  - Option to Clone Stories
 
 ## [2.2.0] 2019-03-15
 
