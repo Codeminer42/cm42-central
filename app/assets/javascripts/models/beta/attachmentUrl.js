@@ -1,16 +1,27 @@
-export const cloudnaryUrl = () =>
-  process.env.CLOUDINARY_URL;
+export const cloudnaryUrl = () => {
+  console.log(process.env.CLOUDINARY_URL)
+  return process.env.CLOUDINARY_URL;
+}
 
-export const cloudName = () =>
-  cloudnaryUrl().substring(cloudnaryUrl().indexOf('@') + 1);
+export const cloudName = () => {
+  const cloud = cloudnaryUrl().substring(cloudnaryUrl().indexOf('@') + 1);
+  console.log(cloud)
+  return cloud;
+}
 
-export const uploadPreset = () =>
-  process.env.CLOUDINARY_UPLOAD_PRESET;
+export const uploadPreset = () => {
+  console.log(process.env.CLOUDINARY_UPLOAD_PRESET)
+  return process.env.CLOUDINARY_UPLOAD_PRESET;
+}
 
 export const uploadUrl = () => {
-  return `https://api.cloudinary.com/v1_1/${cloudName()}/upload`
+  const url = `https://api.cloudinary.com/v1_1/${cloudName()}/upload`
+  console.log(url)
+  return url
 }
 
 export const getFileLink = (resourceType, path) => {
-  return `http://res.cloudinary.com/${cloudName()}/${resourceType}/upload/${path}`
+  const link = `http://res.cloudinary.com/${cloudName()}/${resourceType}/upload/${path}`
+  console.log(link);
+  return link
 }
