@@ -13,6 +13,7 @@ import * as Story from 'libs/beta/constants';
 import PropTypes from 'prop-types';
 import { storyPropTypesShape } from '../../models/beta/story';
 import { projectBoardPropTypesShape } from '../../models/beta/projectBoard';
+import Notifications from '../Notifications';
 
 class ProjectBoard extends React.Component {
   componentWillMount() {
@@ -28,6 +29,7 @@ class ProjectBoard extends React.Component {
 
     return (
       <div className="ProjectBoard">
+        <Notifications messages={[]} />
         <Column title={I18n.t("projects.show.chilly_bin")}
           renderAction={() =>
             <AddStoryButton
