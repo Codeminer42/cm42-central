@@ -13,6 +13,7 @@ import PropTypes from 'prop-types';
 import { storyPropTypesShape } from '../../models/beta/story';
 import { projectBoardPropTypesShape } from '../../models/beta/projectBoard';
 import Notifications from '../Notifications';
+import { removeNotification } from '../../actions/notifications';
 
 class ProjectBoard extends React.Component {
   componentWillMount() {
@@ -24,11 +25,15 @@ class ProjectBoard extends React.Component {
       return <b>Loading</b>;
     }
 
-    const { createStory } = this.props;
+    const { createStory, notifications, removeNotification } = this.props;
 
     return (
       <div className="ProjectBoard">
-        <Notifications messages={[]} />
+        <Notifications
+          notifications={notifications}
+          onRemove={removeNotification}
+        />
+
         <Column title={I18n.t("projects.show.chilly_bin")}
           renderAction={() =>
             <AddStoryButton
@@ -73,14 +78,16 @@ ProjectBoard.propTypes = {
   doneSprints: PropTypes.array.isRequired,
   backlogSprints: PropTypes.array.isRequired,
   fetchProjectBoard: PropTypes.func.isRequired,
-  createStory: PropTypes.func.isRequired
+  createStory: PropTypes.func.isRequired,
+  notifications: PropTypes.array.isRequired
 }
 
 const mapStateToProps = ({
   projectBoard,
   project,
   stories,
-  pastIterations
+  pastIterations,
+  notifications
 }) => ({
   projectBoard,
   chillyBinStories: getColumns({
@@ -96,12 +103,14 @@ const mapStateToProps = ({
   doneSprints: getColumns({
     column: Columns.DONE,
     pastIterations
-  })
+  }),
+  notifications
 });
 
 const mapDispatchToProps = {
   fetchProjectBoard,
-  createStory
+  createStory,
+  removeNotification
 };
 
 export default connect(

@@ -2,22 +2,24 @@ import React from 'react';
 import Message from './Message';
 import PropTypes from 'prop-types';
 
-const Notifications = ({ messages }) =>
+const Notifications = ({ notifications, onRemove }) =>
   <div className="Notifications">
     {
-      messages.map((message) =>
+      notifications.map((notification) =>
         <Message
           className="Notifications__Message"
-          title={message.title}
-          content={message.content}
-          type={message.type}
+          message={notification.message}
+          type={notification.type}
+          onRemove={() => onRemove(notification.id)}
+          key={notification.id}
         />
       )
     }
   </div>
 
 Notifications.propTypes = {
-  messages: PropTypes.array.isRequired
+  notifications: PropTypes.array.isRequired,
+  onRemove: PropTypes.func.isRequired
 }
 
 export default Notifications;

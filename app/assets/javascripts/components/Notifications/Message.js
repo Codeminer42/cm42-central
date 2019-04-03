@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Message = ({ type, className, title, content }) => {
+const Message = ({ type, className, message, onRemove }) => {
   const modifierClassName = type ? `Message--${type}` : '';
 
   return (
     <div className={`Message ${modifierClassName} ${className}`}>
-      <div className="Message__title">
-        {title}
-        <button className="Message__title__button">
+      <div className="Message__content">
+        {message}
+        <button
+          className="Message__content__button"
+          onClick={onRemove}
+        >
           <i className={`mi md-close md-18`}>close</i>
         </button>
-      </div>
-      <div className="Message__content">
-        {content}
       </div>
     </div>
   )
@@ -22,8 +22,8 @@ const Message = ({ type, className, title, content }) => {
 Message.propTypes = {
   type: PropTypes.string,
   className: PropTypes.string,
-  title: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired
+  message: PropTypes.string.isRequired,
+  onRemove: PropTypes.func.isRequired
 };
 
 export default Message;
