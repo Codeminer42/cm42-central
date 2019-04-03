@@ -456,3 +456,11 @@ pt-BR:
     members:
       title: "Membros"
       text: "Se você quiser adicionar ou remover pessoas do projeto, clique aqui."
+
+  messages:
+    operations:
+      success:
+        story:
+          save:    Sua história "%{story}" foi atualizada com sucesso
+          delete:  Sua história "%{story}" foi deletada com sucesso
+          create:  Sua história "%{story}" foi criada com sucesso
