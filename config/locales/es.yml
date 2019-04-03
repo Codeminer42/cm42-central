@@ -644,3 +644,11 @@ es:
     members:
       title: "Miembros"
       text: "Si desea agregar o eliminar personas del equipo del proyecto, haga clic aquí"
+
+  messages:
+    operations:
+      success:
+        story:
+          save:    Su historia "%{story}" ha sido actualizada con éxito
+          delete:  Su historia "%{story}" ha sido borrada con éxito
+          create:  Su historia "%{story}" ha sido creada con éxito
