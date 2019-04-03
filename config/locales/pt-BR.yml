@@ -464,3 +464,5 @@ pt-BR:
           save:    Sua história "%{story}" foi atualizada com sucesso
           delete:  Sua história "%{story}" foi deletada com sucesso
           create:  Sua história "%{story}" foi criada com sucesso
+      error:
+        default_error: 'Algo deu errado, tente novamente por favor'

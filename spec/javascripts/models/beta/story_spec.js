@@ -368,13 +368,13 @@ describe('Story model', function () {
       expect(changedStory._editing.loading).toEqual(false);
     });
 
-    it('put error to errors array', () => {
+    it('put error to errors object', () => {
       const error = "error";
-      const story = { _editing: { loading: true }, errors: [] }
+      const story = { _editing: { loading: true }, errors: {} }
 
       const changedStory = Story.storyFailure(story, error);
 
-      expect(changedStory.errors).toEqual([error]);
+      expect(changedStory.errors).toEqual(error);
     });
   });
 

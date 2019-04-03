@@ -1,5 +1,5 @@
 import actionTypes from './actionTypes';
-import { sendSuccessNotification } from './notifications';
+import { sendSuccessNotification, sendErrorNotification } from './notifications';
 
 export const createStory = (attributes) => ({
   type: actionTypes.CREATE_STORY,
@@ -70,6 +70,7 @@ export const updateCollapsedStory = (storyId, projectId, newAttributes) =>
       ));
     }
     catch (error) {
+      dispatch(sendErrorNotification(error))
       return dispatch(storyFailure(story.id, error))
     }
   }
@@ -92,6 +93,7 @@ export const saveStory = (storyId, projectId, options) =>
         ));
       }
       catch (error) {
+        dispatch(sendErrorNotification(error))
         return dispatch(storyFailure(story.id, error))
       }
     };
@@ -107,6 +109,7 @@ export const saveStory = (storyId, projectId, options) =>
         ));
       }
       catch (error) {
+        dispatch(sendErrorNotification(error))
         return dispatch(storyFailure(story.id, error))
       }
     }
@@ -128,6 +131,7 @@ export const deleteStory = (storyId, projectId) =>
       ));
     }
     catch (error) {
+      dispatch(sendErrorNotification(error))
       return dispatch(storyFailure(storyId, error))
     }
   }

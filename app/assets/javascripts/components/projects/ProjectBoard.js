@@ -113,7 +113,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = {
   fetchProjectBoard,
   createStory,
-  fetchPastStories
+  fetchPastStories,
   removeNotification
 };
 

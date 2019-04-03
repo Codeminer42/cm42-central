@@ -6,8 +6,12 @@ export const createNotification = ({ type, message }) => ({
   message
 })
 
-export const addNotification = (notifications, newNotification) =>
-  [newNotification, ...notifications];
+export const addNotification = (notifications, newNotification) => {
+  if (Array.isArray(newNotification)) {
+    return [...newNotification, ...notifications]
+  }
+  return [newNotification, ...notifications];
+}
 
 export const removeNotification = (notifications, id) =>
   notifications.filter(notification => notification.id !== id);

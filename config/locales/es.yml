@@ -652,3 +652,5 @@ es:
           save:    Su historia "%{story}" ha sido actualizada con éxito
           delete:  Su historia "%{story}" ha sido borrada con éxito
           create:  Su historia "%{story}" ha sido creada con éxito
+      error:
+        default_error: 'Algo salió mal. Por favor, vuelva a intentarlo'
