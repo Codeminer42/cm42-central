@@ -115,18 +115,11 @@ export const updateStory = (story, newAttributes) => ({
   ...newAttributes
 });
 
-export const storyFailure = (story, error) => {
-  const errors = error ? [
-    ...story.errors,
-    error
-  ] : story.errors;
-
-  return {
-    ...story,
-    _editing: setLoadingValue(story._editing, false),
-    errors
-  };
-};
+export const storyFailure = (story, error) => ({
+  ...story,
+  _editing: setLoadingValue(story._editing, false),
+  errors: error
+});
 
 export const toggleStory = (story) => {
   const editing = story.collapsed ? { ...story, _isDirty: false, loading: false } : null;
