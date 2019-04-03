@@ -6,7 +6,8 @@ describe('<ExpandedStoryEstimate />', () => {
   const defaultProps = () => ({
     story: {},
     project: {},
-    onEdit: sinon.spy()
+    onEdit: sinon.spy(),
+    disabled: false
   });
 
   it("renders component with 'Fibonacci' point scale in select", () => {
@@ -114,16 +115,36 @@ describe('<ExpandedStoryEstimate />', () => {
     });
 
     describe("to a feature", () => {
-      it("doesn't disable estimate select", () => {
-        const project = { pointValues: ['1', '2', '3', '4', '5'] };
-        const story = { _editing: { storyType: 'feature' } };
+      const project = { pointValues: ['1', '2', '3', '4', '5'] };
+      const story = { _editing: { storyType: 'feature' } };
 
+      it("doesn't disable estimate select when disabled prop is false", () => {
         const wrapper = shallow(
-          <ExpandedStoryEstimate {...defaultProps()} project={project} story={story} />
+          <ExpandedStoryEstimate 
+            {...defaultProps()}
+              project={project}
+              story={story}
+              disabled={false}
+          />
         );
         const select = wrapper.find('select');
 
         expect(select.prop('disabled')).not.toBe(true);
+      });
+
+      describe('when component is disabled', () => {
+        it("disables estimate select when disabled prop is true", () => {
+          const wrapper = shallow(
+            <ExpandedStoryEstimate
+              {...defaultProps()}
+              project={project}
+              story={story}
+              disabled={true}
+            />
+          );
+          const select = wrapper.find('select');
+          expect(select.prop('disabled')).toBe(true);
+        });
       });
     });
   });

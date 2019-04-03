@@ -7,6 +7,7 @@ describe('<ExpandedStoryTitle />', () => {
     const defaultProps = () => ({
       story: { _editing: { title: 'foo' } },
       onEdit: sinon.spy(),
+      disabled: false,
       ...propOverrides
     });
 
@@ -39,6 +40,22 @@ describe('<ExpandedStoryTitle />', () => {
       input.simulate('change', { target: { value: eventValue } })
 
       expect(mockOnEdit).toHaveBeenCalledWith(eventValue);
+    });
+
+    describe('when the component is enabled', () => {
+      it('should not be read-only', () => {
+        const { input } = setup({disabled: false});
+
+        expect(input.prop('readOnly')).toBe(false);
+      });
+    });
+
+    describe('when component is disabled', () => {
+      it('should be read-only', () => {
+        const { input } = setup({disabled: true});
+
+        expect(input.prop('readOnly')).toBe(true);
+      });
     });
   });
 });

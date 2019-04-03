@@ -9,7 +9,13 @@ describe('<ExpandedStoryState />', () => {
 
     const story = { state: 'started', _editing: { state: 'started' } };
 
-    const wrapper = mount(<ExpandedStoryState story={story} onEdit={onEditSpy} />);
+    const wrapper = mount(
+      <ExpandedStoryState 
+        story={story} 
+        onEdit={onEditSpy} 
+        disabled={false} 
+      />
+    );
 
     expect(wrapper.text()).toContain(I18n.t('activerecord.attributes.story.state'));
   });
@@ -23,7 +29,13 @@ describe('<ExpandedStoryState />', () => {
           _editing: { state: state }
         };
 
-        const wrapper = shallow(<ExpandedStoryState story={story} onEdit={onEditSpy} />);
+        const wrapper = shallow(
+          <ExpandedStoryState 
+            story={story} 
+            onEdit={onEditSpy}
+            disabled={false}
+          />
+        );
         const select = wrapper.find('select');
 
         expect(select.prop('value')).toBe(state);
@@ -42,7 +54,13 @@ describe('<ExpandedStoryState />', () => {
 
       const onEdit = sinon.spy();
 
-      const wrapper = shallow(<ExpandedStoryState story={story} onEdit={onEdit} />);
+      const wrapper = shallow(
+        <ExpandedStoryState 
+          story={story} 
+          onEdit={onEdit} 
+          disabled={false} 
+        />
+      );
       const select = wrapper.find('select');
 
       select.simulate('change', { target: { value: change } });
@@ -50,4 +68,37 @@ describe('<ExpandedStoryState />', () => {
       expect(onEdit).toHaveBeenCalledWith(change);
     });
   });
+
+  describe('when component is disabled', () => {
+    it('select field is editable', () => {
+      const onEditSpy = sinon.spy();
+      const story = { state: 'started', _editing: { state: 'started' } };
+      const wrapper = mount(
+        <ExpandedStoryState 
+          story={story} 
+          onEdit={onEditSpy}
+          disabled={true} 
+        />
+      );
+      const select = wrapper.find('select');
+      expect(select.prop('disabled')).toBe(true);
+    });
+  });
+
+  describe('when component is enabled', () => {
+    it('select field is enabled', () => {
+      const onEditSpy = sinon.spy();
+      const story = { state: 'started', _editing: { state: 'started' } };
+      const wrapper = mount(
+        <ExpandedStoryState 
+          story={story} 
+          onEdit={onEditSpy}
+          disabled={false} 
+        />
+      );
+      const select = wrapper.find('select');
+      expect(select.prop('disabled')).toBe(false);
+    });
+  });
+
 });

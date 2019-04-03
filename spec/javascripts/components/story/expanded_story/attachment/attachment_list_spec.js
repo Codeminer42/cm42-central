@@ -23,6 +23,7 @@ describe('<AttachmentList/>', () => {
       <AttachmentList
         files={attachments}
         onDelete={onDelete}
+        disabled={false}
       />
     );
 
@@ -42,6 +43,7 @@ describe('<AttachmentList/>', () => {
       <AttachmentList
         files={attachments}
         onDelete={onDelete}
+        disabled={false}
       />
     );
 

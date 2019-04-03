@@ -11,11 +11,11 @@ describe('<ExpandedStoryRequestBy />', () => {
       ],
       story: { _editing: { requestedById: 1 } },
       onEdit: sinon.spy(),
+      disabled: false,
       ...propOverrides
     });
 
     const wrapper = shallow(<ExpandedStoryRequestedBy {...defaultProps()} />);
-
     return { wrapper };
   };
 

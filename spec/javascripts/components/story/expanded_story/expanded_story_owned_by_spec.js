@@ -11,6 +11,7 @@ describe('<ExpandedStoryOwnedBy />', () => {
       ],
       story: { _editing: { ownedById: '' } },
       onEdit: sinon.spy(),
+      disabled: false,
       ...propOverrides
     });
 

@@ -22,7 +22,8 @@ describe('<ExpandedStoryDefault />', () => {
     addAttachment: sinon.spy(),
     removeAttachment: sinon.spy(),
     users: [],
-    project: { labels: [] }
+    project: { labels: [] },
+    enabled: true
   });
 
   it("renders all children components when isn't a new story", () => {

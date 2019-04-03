@@ -12,6 +12,7 @@ describe('<ExpandedStory />', () => {
     saveStory: sinon.spy(),
     deleteStory: sinon.spy(),
     project: { labels: [] },
+    disabled: false,
     onToggle: sinon.spy()
   });
 
@@ -59,6 +60,54 @@ describe('<ExpandedStory />', () => {
     });
   });
 
+  describe('when story is editable', () => {
+    const story = storyFactory({
+      _editing: {
+        ...storyFactory(),
+        storyType: 'feature',
+        state: 'unstarted'
+      }
+    });
+    
+    it('passes disabled prop as false', () => {
+      const wrapper = shallow(
+        <ExpandedStory
+          {...defaultProps()}
+          story={story}
+        />, 
+        { disableLifecycleMethods: true }
+      );
+      const expandedStoryDefault = wrapper.find(ExpandedStoryDefault);
+
+      expect(expandedStoryDefault.prop('disabled')).toBe(false);
+    });
+  });
+
+  describe('when story is not editable', () => {
+    const story = storyFactory({
+      _editing: {
+        ...storyFactory(),
+        storyType: 'feature',
+        state: 'accepted'
+      },
+      storyType: 'feature',
+      state: 'accepted'
+    });
+    
+    it('passes disabled prop as true', () => {
+      const wrapper = shallow(
+        <ExpandedStory
+          {...defaultProps()}
+          story={story}
+        />,
+        { disableLifecycleMethods: true }
+      );
+      const expandedStoryDefault = wrapper.find(ExpandedStoryDefault);
+
+      expect(expandedStoryDefault.prop('disabled')).toBe(true);
+    });
+  });
+
   it('adds enable-loading className when updating a story', () => {
     const story = storyFactory({
       _editing: {
@@ -76,5 +125,6 @@ describe('<ExpandedStory />', () => {
     );
 
     expect(wrapper.find('.Story__enable-loading')).toExist();
-  })
+  });
+
 });

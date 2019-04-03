@@ -13,6 +13,7 @@ describe('<Task />', () => {
       },
       onDelete: sinon.spy(),
       onToggle: sinon.spy(),
+      disabled: false,
       ...propOverrides
     });
 
@@ -45,4 +46,24 @@ describe('<Task />', () => {
       expect(onToggleCheckedBoxSpy).toHaveBeenCalled();
     });
   });
+
+  describe('when task is read-only', () => {
+    it('does not render a Delete span', () => {
+      const { span } = setup({ disabled: true });
+      
+      expect(span.exists()).toBe(false);
+    });
+
+    describe('when user tries to update the task clicking on checkbox', () => {
+      it('does not trigger onToggle callback', () => {
+        const onToggleCheckedBoxSpy = sinon.spy();
+        const { checkbox } = setup({ disabled: true });
+  
+        checkbox.simulate('click');
+  
+        expect(onToggleCheckedBoxSpy).not.toHaveBeenCalled();
+      });
+    });
+  });
 });
+

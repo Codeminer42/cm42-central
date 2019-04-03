@@ -10,22 +10,46 @@ describe('<Note/>', () => {
     createdAt: '27/08/2018'
   };
 
-  describe('when user deletes a note', () => {
-    it('triggers onDelete callback', () => {
-      const onDeleteSpy = sinon.spy();
+  const setup = propOverrides => {
+    const onDeleteSpy = sinon.spy();
+  
+    const wrapper = shallow(
+      <Note
+        note={note}
+        onDelete={onDeleteSpy}
+        disabled={false}
+        {...propOverrides}
+      />
+    );
 
-      const wrapper = shallow(
-        <Note
-          note={note}
-          onDelete={onDeleteSpy}
-        />
-      );
+    const button = wrapper.find('.delete-note-button');
 
-      const button = wrapper.find('.delete-note-button');
+    return { wrapper, button, onDeleteSpy };
+  };
 
-      button.simulate('click');
+  describe('when component is enabled', () => {
+    it('allows editing', () => {
+      const { button } = setup();
 
-      expect(onDeleteSpy).toHaveBeenCalled();
+      expect(button.exists()).toBe(true);
+    });
+
+    describe('when user deletes a note', () => {
+      it('triggers onDelete callback', () => {
+        const { button, onDeleteSpy } = setup();
+  
+        button.simulate('click');
+  
+        expect(onDeleteSpy).toHaveBeenCalled();
+      });
+    });
+  });
+  
+  describe('when component is disabled', () => {
+    it('does not allow deleting', () => {
+      const { button } = setup({ disabled: true });
+
+      expect(button.exists()).toBe(false);
     });
   });
 });

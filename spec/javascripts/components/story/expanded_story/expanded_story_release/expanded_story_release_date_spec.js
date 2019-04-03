@@ -9,6 +9,7 @@ describe('<ExpandedStoryReleaseDate />', () => {
       ...storyFactory(),
       _editing: storyFactory({ releaseDate: null })
     },
+    disabled: false,
     onEdit: sinon.spy()
   });
 

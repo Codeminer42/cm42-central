@@ -9,6 +9,7 @@ describe('<TasksList />', () => {
       tasks: tasksArray,
       onDelete: sinon.spy(),
       onToggle: sinon.spy(),
+      disabled: false,
       ...propOverrides
     });
 
