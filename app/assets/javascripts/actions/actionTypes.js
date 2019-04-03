@@ -30,5 +30,7 @@ export default keyMirror({
   ADD_LABEL: null,
   DELETE_LABEL: null,
   ADD_ATTACHMENT: null,
-  DELETE_ATTACHMENT: null
+  DELETE_ATTACHMENT: null,
+  ADD_NOTIFICATION: null,
+  REMOVE_NOTIFICATION: null
 });

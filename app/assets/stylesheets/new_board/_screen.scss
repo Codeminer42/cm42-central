@@ -78,10 +78,9 @@
     background-color: $message-success-background-color;
   }
 
-  &__title {
+  &__content {
     font-size: 14px;
-    font-weight: bold;
-    align-items: center;
+    align-items: flex-start;
     display: flex;
     justify-content: space-between;
     margin: 0 2px 2px;
@@ -98,10 +97,5 @@
     &__button:hover {
       color: $black;
     }
-  }
-
-  &__content {
-    font-size: 14px;
-    margin: 0 2px 2px;
   }
 }
