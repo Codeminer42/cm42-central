@@ -25,11 +25,19 @@ class Sprint extends Component {
   }
 
   toggleSprint() {
-    this.setState(prevState => ({ isClosed: !prevState.isClosed }));
+    const { fetchStories } = this.props; 
+    const  { number, startDate, endDate, fetched, isFetching } = this.props.sprint;
+    const needsFetch = !(fetched || isFetching);
+
+    if(needsFetch && !!fetchStories) {
+      fetchStories(number, startDate, endDate);
+    } else {
+      this.setState(prevState => ({ isClosed: !prevState.isClosed }));
+    }
   }
 
   render() {
-    const { number, startDate, points, completedPoints, stories } = this.props;
+    const { number, startDate, points, completedPoints, stories } = this.props.sprint;
     const closedStyle = this.state.isClosed && "Sprint__body--is-collapsed";
     return (
       <div className="Sprint">

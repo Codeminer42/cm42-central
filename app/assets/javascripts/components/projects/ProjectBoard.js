@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { fetchProjectBoard } from "actions/projectBoard";
+import { fetchPastStories } from "actions/pastIterations";
 import Column from "../Columns/ColumnItem";
 import Stories from "../stories/Stories";
 import Sprints from "../stories/Sprints";
@@ -58,6 +59,7 @@ class ProjectBoard extends React.Component {
           title={I18n.t("projects.show.done")}>
           <Sprints
             sprints={this.props.doneSprints}
+            fetchStories={this.props.fetchPastStories}
           />
         </Column>
       </div>
@@ -93,16 +95,19 @@ const mapStateToProps = ({
   }),
   doneSprints: getColumns({
     column: Columns.DONE,
-    pastIterations
+    pastIterations,
+    stories
   })
 });
 
 const mapDispatchToProps = {
   fetchProjectBoard,
-  createStory
+  createStory,
+  fetchPastStories
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(ProjectBoard);
+
