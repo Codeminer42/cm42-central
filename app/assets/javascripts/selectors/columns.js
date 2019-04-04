@@ -27,7 +27,7 @@ export const getColumns = createSelector(
 
         return groupStoriesInSprints(orderedStories, project, firstSprintNumber);
       case Column.DONE:
-        return mountPastIterations(pastIterations);
+        return mountPastIterations(pastIterations, stories);
     };
   }
 );
