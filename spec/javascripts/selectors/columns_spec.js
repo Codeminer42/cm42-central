@@ -4,9 +4,10 @@ import * as Column from '../../../app/assets/javascripts/models/beta/column';
 import moment from 'moment';
 
 describe('Columns Selector', () => {
-  const unscheduledStory = storyFactory({ state: 'unscheduled' });
-  const startedStory = storyFactory({ state: 'started' });
-  const deliveredStory = storyFactory({ state: 'delivered' });
+  const unscheduledStory = storyFactory({ id: 1, state: 'unscheduled' });
+  const startedStory = storyFactory({ id: 2, state: 'started' });
+  const deliveredStory = storyFactory({ id: 3, state: 'delivered' });
+  const acceptedStory = storyFactory({ id: 42,  state: 'accepted' });
 
   const currentSprintDate = moment();
   const previousSprintDate = moment().subtract(1, 'weeks');
@@ -14,7 +15,7 @@ describe('Columns Selector', () => {
   let storiesArray;
 
   beforeEach(() => {
-    storiesArray = [unscheduledStory, startedStory, deliveredStory];
+    storiesArray = [unscheduledStory, startedStory, deliveredStory, acceptedStory];
   });
 
   describe('CHILLY_BIN', () => {
@@ -27,6 +28,7 @@ describe('Columns Selector', () => {
       expect(chillyBinStories).toContain(unscheduledStory);
       expect(chillyBinStories).not.toContain(startedStory);
       expect(chillyBinStories).not.toContain(deliveredStory);
+      expect(chillyBinStories).not.toContain(acceptedStory);
     });
   });
 
@@ -67,22 +69,37 @@ describe('Columns Selector', () => {
   describe('DONE', () => {
     const pastIterations = [
       {
+        iterationNumber: 420,
         startDate: previousSprintDate.format("YYYY/MM/DD"),
-        endDate: currentSprintDate.format("YYYY/MM/DD")
+        endDate: currentSprintDate.format("YYYY/MM/DD"),
+        storyIds: [42]
       }
     ];
-
+    
     it('return pastIterations with start and end date', () => {
       const startDate =   moment(pastIterations[0].startDate).format("YYYY/MM/DD");
       const endDate = moment(pastIterations[0].endDate).format("YYYY/MM/DD");
-
       const doneSprints = getColumns({
         column: Column.DONE,
-        pastIterations
+        pastIterations,
+        stories: storiesArray
       });
 
       expect(doneSprints[0].startDate).toBe(startDate);
       expect(doneSprints[0].endDate).toBe(endDate);
+    });
+
+    it('returns past iteration stories', () => {
+      const doneSprints = getColumns({
+        column: Column.DONE,
+        pastIterations,
+        stories: storiesArray
+      });
+
+      expect(doneSprints[0].stories).toContain(acceptedStory);
+      expect(doneSprints[0].stories).not.toContain(unscheduledStory);
+      expect(doneSprints[0].stories).not.toContain(startedStory);
+      expect(doneSprints[0].stories).not.toContain(deliveredStory);
     });
   });
 });

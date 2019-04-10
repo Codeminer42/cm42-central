@@ -2,12 +2,13 @@ import React from "react";
 import { shallow } from "enzyme";
 import Sprint from "components/stories/Sprint";
 
-let props = {};
+let sprint = {};
 let wrapper = {};
 
-const createProps = () => ({
+const createSprint = propOverrides => ({
   number: 1,
   startDate: "2018/09/03",
+  endDate: "2018/09/10",
   points: 3,
   completedPoints: 0,
   stories: [
@@ -25,13 +26,14 @@ const createProps = () => ({
       estimate: 1,
       storyType: "feature"
     }
-  ]
+  ],
+  ...propOverrides
 });
 
 describe("<Sprint />", () => {
   beforeEach(() => {
-    props = createProps();
-    wrapper = shallow(<Sprint {...props} />);
+    sprint = createSprint();
+    wrapper = shallow(<Sprint sprint={ sprint } />);
   });
 
   it('renders a <div> with class ".Sprint"', () => {
@@ -50,14 +52,35 @@ describe("<Sprint />", () => {
     expect(wrapper.find("Stories").exists()).toBe(true);
   });
 
-  describe("when no stories are passed as props", () => {
+  describe("when no stories are passed as sprint", () => {
     beforeEach(() => {
-      props = createProps();
-      props.stories = null;
-      wrapper = shallow(<Sprint {...props} />);
+      sprint = createSprint();
+      sprint.stories = null;
+      wrapper = shallow(<Sprint sprint={ sprint } />);
     });
+
     it("does not render any <Stories> component", () => {
       expect(wrapper.find("Stories").exists()).toBe(false);
     });
   });
+
+  describe('when story needs to fetch', () => {
+    let fetchStories;
+    
+    beforeEach(() => {
+      sprint = createSprint({ fetching: false, isFetched: false });
+      sprint.stories = null;
+      fetchStories = sinon.stub();
+      wrapper = shallow(<Sprint sprint={ sprint } fetchStories={fetchStories} />);
+    });
+
+    it('calls fetchStories with iteration number, start and end date on user click', () => {
+      const { number, startDate, endDate } = sprint;
+      const header = wrapper.find('.Sprint__header');
+      
+      header.simulate('click');
+
+      expect(fetchStories).toHaveBeenCalledWith(number, startDate, endDate);
+    });
+  })
 });
