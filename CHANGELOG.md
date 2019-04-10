@@ -7,6 +7,7 @@
  - [ V2 ] Fix number, date and points of sprints.
 
 ### Added
+- [ V2 ] Fetch and show stories on the done column
 - [ V2 ] Story:
   - Stories of release type
   - Option to Clone Stories
