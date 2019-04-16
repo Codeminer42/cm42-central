@@ -80,34 +80,31 @@ describe('Past iteration actions', () => {
     it('calls dispatch with requestPastSotires', async () => {
       const getState = sinon.stub();
       getState.returns({ project, pastIterations });
-      const dispatch = sinon.stub();
-      dispatch.resolves({});
-  
+      const dispatch = sinon.stub().resolves({});
+
       await PastIterations.fetchPastStories(iterationNumber)
         (dispatch, getState, { PastIteration });
-  
+
       expect(dispatch).toHaveBeenCalledWith(PastIterations.requestPastStories(iterationNumber));
     });
 
     it('tries to fetch iteration stories', async () => {
-        const getState = sinon.stub();
-        getState.returns({ project, pastIterations });
-        const dispatch = sinon.stub();
-        dispatch.resolves({});
+      const getState = sinon.stub();
+      getState.returns({ project, pastIterations });
+      const dispatch = sinon.stub().resolves({});
 
-        await PastIterations.fetchPastStories(iterationNumber, startDate, endDate)
-          (dispatch, getState, { PastIteration });
+      await PastIterations.fetchPastStories(iterationNumber, startDate, endDate)
+        (dispatch, getState, { PastIteration });
 
-        expect(PastIteration.getStories).toHaveBeenCalledWith(project.id, startDate, endDate);
+      expect(PastIteration.getStories).toHaveBeenCalledWith(project.id, startDate, endDate);
     });
-  
+
     describe('when request to get stories is sucessful', () => {
       it('calls dispatch with receivePastStories', async () => {
         const getState = sinon.stub();
         getState.returns({ project, pastIterations });
-        const dispatch = sinon.stub();
-        dispatch.resolves({});
-  
+        const dispatch = sinon.stub().resolves({});
+
         await PastIterations.fetchPastStories(iterationNumber, startDate, endDate)
           (dispatch, getState, { PastIteration });
 
@@ -116,7 +113,7 @@ describe('Past iteration actions', () => {
         );
       })
     });
-  
+
     describe('when request to get stories throws error', () => {
       const error = Error('whoopsie');
       const PastIterationError = {
@@ -124,16 +121,15 @@ describe('Past iteration actions', () => {
           throw error;
         }
       }
-  
+
       it('calls dispatch with errorRequestPastStories', async () => {
         const getState = sinon.stub();
         getState.returns({ project, pastIterations });
-        const dispatch = sinon.stub();
-        dispatch.resolves({});
-  
+        const dispatch = sinon.stub().resolves({});
+
         await PastIterations.fetchPastStories(iterationNumber, startDate, endDate)
           (dispatch, getState, { PastIteration: PastIterationError });
-  
+
         expect(dispatch).toHaveBeenCalledWith(
           PastIterations.errorRequestPastStories(error, iterationNumber)
         );
