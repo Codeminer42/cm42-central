@@ -12,7 +12,7 @@ describe('<Note/>', () => {
 
   const setup = propOverrides => {
     const onDeleteSpy = sinon.spy();
-  
+
     const wrapper = shallow(
       <Note
         note={note}
@@ -22,34 +22,34 @@ describe('<Note/>', () => {
       />
     );
 
-    const button = wrapper.find('.delete-note-button');
+    const deleteButton = wrapper.find('.delete-note-button');
 
-    return { wrapper, button, onDeleteSpy };
+    return { wrapper, deleteButton, onDeleteSpy };
   };
 
   describe('when component is enabled', () => {
     it('allows editing', () => {
-      const { button } = setup();
+      const { deleteButton } = setup();
 
-      expect(button.exists()).toBe(true);
+      expect(deleteButton.exists()).toBe(true);
     });
 
     describe('when user deletes a note', () => {
       it('triggers onDelete callback', () => {
-        const { button, onDeleteSpy } = setup();
-  
-        button.simulate('click');
-  
+        const { deleteButton, onDeleteSpy } = setup();
+
+        deleteButton.simulate('click');
+
         expect(onDeleteSpy).toHaveBeenCalled();
       });
     });
   });
-  
+
   describe('when component is disabled', () => {
     it('does not allow deleting', () => {
-      const { button } = setup({ disabled: true });
+      const { deleteButton } = setup({ disabled: true });
 
-      expect(button.exists()).toBe(false);
+      expect(deleteButton.exists()).toBe(false);
     });
   });
 });

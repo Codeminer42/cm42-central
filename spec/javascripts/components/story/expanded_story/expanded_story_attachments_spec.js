@@ -67,9 +67,9 @@ describe('<ExpandedStoryAttachments />', () => {
     });
   });
 
-  describe('when disabled', () => {    
+  describe('when disabled', () => {
     it('does not render dropzone', () => {
-      const documents = [{id: 1}];
+      const documents = [{ id: 1 }];
       const story = { documents, _editing: { documents } };
 
       const wrapper = mount(
