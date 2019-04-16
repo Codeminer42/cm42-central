@@ -438,6 +438,64 @@ describe('Story model', function () {
     });
   });
 
+  describe('canEdit', () => {
+    describe('when the story is accepted', () => {
+      it('returns false', () => {
+        const story = {state: 'accepted'};
+  
+        expect(Story.canEdit(story)).toBe(false);
+      });
+    });
+
+    describe(`when story is unscheduled`, () => {
+      it(`returns true`, () => {
+        const story = {state: 'unscheduled'};
+  
+        expect(Story.canEdit(story)).toBe(true);
+      });
+    });
+
+    describe(`when story is unstarted`, () => {
+      it(`returns true`, () => {
+        const story = {state: 'unstarted'};
+  
+        expect(Story.canEdit(story)).toBe(true);
+      });
+    });
+
+    describe(`when story is started`, () => {
+      it(`returns true`, () => {
+        const story = {state: 'started'};
+  
+        expect(Story.canEdit(story)).toBe(true);
+      });
+    });
+
+    describe(`when story is finished`, () => {
+      it(`returns true`, () => {
+        const story = {state: 'finished'};
+  
+        expect(Story.canEdit(story)).toBe(true);
+      });
+    });
+
+    describe(`when story is delivered`, () => {
+      it(`returns true`, () => {
+        const story = {state: 'delivered'};
+  
+        expect(Story.canEdit(story)).toBe(true);
+      });
+    });
+    
+    describe(`when story is rejected`, () => {
+      it(`returns true`, () => {
+        const story = {state: 'rejected'};
+  
+        expect(Story.canEdit(story)).toBe(true);
+      });
+    });
+  });
+
   describe('withoutNewStory', () => {
     it('remove a story with null id from a stories array', () => {
       const stories = [{ id: 1 }, { id: 2 }];

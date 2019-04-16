@@ -12,6 +12,7 @@ describe('<NotesList/>', () => {
       <NotesList
         notes={notesArray}
         onDelete={onDelete}
+        disabled={false}
       />
     );
 

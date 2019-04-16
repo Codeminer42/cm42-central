@@ -5,8 +5,26 @@ import ExpandedStoryDescription from 'components/story/ExpandedStory/ExpandedSto
 describe('<ExpandedStoryDescription />', () => {
   const defaultProps = () => ({
     story: {},
-    onEdit: sinon.spy()
+    onEdit: sinon.spy(),
+    disabled: false
   });
+
+  const renderTextarea = propOverrides => {
+    const story = {
+      description: 'story description',
+      _editing: { description: 'story description' }
+    };
+    const props = { ...defaultProps(), ...propOverrides }
+    const wrapper = shallow(
+      <ExpandedStoryDescription {...props} story={story} />
+    );
+    const content = wrapper.find('.story-description-content');
+    content.simulate('click');
+
+    const textarea = wrapper.find('textarea');
+
+    return { textarea, wrapper, story }
+  }
 
   it('renders component title', () => {
     const story = { description: null, _editing: { description: null } };
@@ -61,42 +79,52 @@ describe('<ExpandedStoryDescription />', () => {
     });
 
     it('change to a textarea with value story description', () => {
-      const story = {
-        description: 'story description',
-        _editing: { description: 'story description' }
-      };
-
-      const wrapper = shallow(
-        <ExpandedStoryDescription {...defaultProps()} story={story} />
-      );
-      const content = wrapper.find('.story-description-content');
-      content.simulate('click');
-
-      const textarea = wrapper.find('textarea');
+      const { textarea, story } = renderTextarea();
 
       expect(textarea.prop('value')).toBe(story._editing.description);
     });
   });
 
-  describe('onEdit', () => {
-    it('calls onEdit with story description on textarea change', () => {
-      const story = {
-        description: 'story description',
-        _editing: { description: 'story description' }
-      };
+  describe('when component is enabled', () => {
+    describe('textarea', () => {
+      it('is editable', () => {
+        const { textarea } = renderTextarea();
+  
+        expect(textarea.prop('readOnly')).toBe(false);
+      });
+    });
 
-      const onEdit = sinon.spy();
+    describe('onEdit', () => {
+      it('calls onEdit with story description on textarea change', () => {
+        const onEdit = sinon.spy();
+        const { textarea, story } = renderTextarea({ onEdit });
+        const change = `${story._editing.description} changed`;
+  
+        textarea.simulate('change', { target: { value: change } });
+  
+        expect(onEdit).toHaveBeenCalledWith(change);
+      });
+    });
+  });
 
-      const wrapper = shallow(<ExpandedStoryDescription story={story} onEdit={onEdit} />);
-      const content = wrapper.find('.story-description-content');
-      content.simulate('click');
+  describe('when component is disabled', () => {
+    it('does not allow editing', () => {
+      const { textarea } = renderTextarea({ disabled: true });
 
-      const textarea = wrapper.find('textarea');
-      const change = `${story._editing.description} changed`;
+      expect(textarea.prop('readOnly')).toBe(true);
+    });
 
-      textarea.simulate('change', { target: { value: change } });
+    describe('when story has no description', () => {
+      it('renders nothing', () => {
+        const story = { description: null, _editing: { description: null } };
 
-      expect(onEdit).toHaveBeenCalledWith(change);
+        const wrapper = shallow(
+          <ExpandedStoryDescription {...defaultProps()} disabled={true} story={story} />
+        );
+
+        expect(wrapper.html()).toBeNull();
+      });
     });
   });
 });
+

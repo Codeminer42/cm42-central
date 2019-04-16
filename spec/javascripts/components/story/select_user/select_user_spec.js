@@ -11,6 +11,7 @@ describe('<SelectUser />', () => {
       ],
       selectedUserId: 1,
       onEdit: sinon.spy(),
+      disabled: false,
       ...propOverrides
     });
 
@@ -53,6 +54,22 @@ describe('<SelectUser />', () => {
       select.simulate('change', { target: { value: selectedUserId } });
 
       expect(select.props().value).toEqual('');
+    });
+  });
+
+  describe('when component is not disabled', () => {
+    it('select field is editable', () => {
+      const { select } = setup();
+
+      expect(select.prop('disabled')).toBe(false);
+    });
+  });
+
+  describe('when component is disabled', () => {
+    it('select field is disabled', () => {
+      const { select } = setup({disabled: true});
+
+      expect(select.prop('disabled')).toBe(true);
     });
   });
 });

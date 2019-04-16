@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { types, editingStoryPropTypesShape } from '../../../models/beta/story';
 import ExpandedStorySection from './ExpandedStorySection';
 
-export const ExpandedStoryType = ({ story, onEdit }) =>
+export const ExpandedStoryType = ({ story, onEdit, disabled }) =>
   <ExpandedStorySection
     title={I18n.t('activerecord.attributes.story.story_type')}
   >
@@ -11,6 +11,7 @@ export const ExpandedStoryType = ({ story, onEdit }) =>
       value={story._editing.storyType}
       className="form-control input-sm"
       onChange={(event) => onEdit(event.target.value)}
+      disabled={disabled}
     >
       {
         types.map((value) => (
@@ -24,7 +25,8 @@ export const ExpandedStoryType = ({ story, onEdit }) =>
 
 ExpandedStoryType.propTypes = {
   story: editingStoryPropTypesShape.isRequired,
-  onEdit: PropTypes.func.isRequired
+  onEdit: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired
 };
 
 export default ExpandedStoryType;

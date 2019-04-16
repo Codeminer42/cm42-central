@@ -24,7 +24,7 @@ import ExpandedStoryOwnedBy from '../ExpandedStoryOwnedBy';
 export const ExpandedStoryDefault = ({
   titleRef,
   story, users, project,
-  onEdit, onClone,
+  onEdit, onClone, disabled,
   addLabel, removeLabel,
   createNote, deleteNote,
   createTask, deleteTask, toggleTask,
@@ -45,6 +45,7 @@ export const ExpandedStoryDefault = ({
       story={story}
       titleRef={titleRef}
       onEdit={(title) => onEdit({ title })}
+      disabled={disabled}
     />
 
     <div className="Story__flex">
@@ -52,29 +53,34 @@ export const ExpandedStoryDefault = ({
         story={story}
         onEdit={(estimate) => onEdit({ estimate })}
         project={project}
+        disabled={disabled}
       />
 
       <ExpandedStoryType
         story={story}
         onEdit={(storyType) => onEdit({ storyType })}
+        disabled={disabled}
       />
     </div>
 
     <ExpandedStoryState
       story={story}
       onEdit={(state) => onEdit({ state })}
+      disabled={disabled}
     />
 
     <ExpandedStoryRequestedBy
       story={story}
       users={users}
       onEdit={(requestedById) => onEdit({ requestedById })}
+      disabled={disabled}
     />
 
     <ExpandedStoryOwnedBy
       story={story}
       users={users}
       onEdit={(ownedById) => onEdit({ ownedById })}
+      disabled={disabled}
     />
 
     <ExpandedStoryLabels
@@ -83,11 +89,13 @@ export const ExpandedStoryDefault = ({
       projectLabels={project.labels}
       onRemoveLabel={(labelName) => removeLabel(story.id, labelName)}
       onEdit={(labels) => onEdit({ labels })}
+      disabled={disabled}
     />
 
     <ExpandedStoryDescription
       story={story}
       onEdit={(description) => onEdit({ description })}
+      disabled={disabled}
     />
 
     {
@@ -98,6 +106,7 @@ export const ExpandedStoryDefault = ({
             onToggle={(task, status) => toggleTask(project.id, story, task, status)}
             onDelete={(taskId) => deleteTask(project.id, story.id, taskId)}
             onSave={(task) => createTask(project.id, story.id, task)}
+            disabled={disabled}
           />
 
           <ExpandedStoryAttachments
@@ -106,12 +115,15 @@ export const ExpandedStoryDefault = ({
             startLoading={() => setLoadingStory(story.id)}
             onAdd={(attachment) => addAttachment(story.id, project.id, attachment)}
             onDelete={(documentId) => removeAttachment(story.id, documentId)}
+            disabled={disabled}
           />
+          
           <ExpandedStoryNotes
             story={story}
             projectId={project.id}
             onDelete={(noteId) => deleteNote(project.id, story.id, noteId)}
             onCreate={(note) => createNote(project.id, story.id, { note })}
+            disabled={disabled}
           />
         </Fragment>
         : null
@@ -134,7 +146,8 @@ ExpandedStoryDefault.propTypes = {
   removeAttachment: PropTypes.func.isRequired,
   setLoadingStory: PropTypes.func.isRequired,
   storyFailure: PropTypes.func.isRequired,
-  onClone: PropTypes.func.isRequired
+  onClone: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = ({ users }) => ({ users });

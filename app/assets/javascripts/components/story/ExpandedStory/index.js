@@ -33,6 +33,7 @@ export class ExpandedStory extends React.Component {
     } = this.props;
 
     const loading = story._editing.loading ? "Story__enable-loading" : "";
+    const disabled = !Story.canEdit(story);
 
     return (
       <div
@@ -57,6 +58,7 @@ export class ExpandedStory extends React.Component {
               titleRef={this.titleRef}
               onEdit={(newAttributes) => editStory(story.id, newAttributes)}
               onClone={cloneStory}
+              disabled={disabled}
             />
             : <ExpandedStoryDefault
               story={story}
@@ -64,6 +66,7 @@ export class ExpandedStory extends React.Component {
               onEdit={(newAttributes) => editStory(story.id, newAttributes)}
               project={project}
               onClone={cloneStory}
+              disabled={disabled}
             />
         }
       </div >

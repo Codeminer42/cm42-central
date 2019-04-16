@@ -3,7 +3,7 @@ import Task from './Task'
 import PropTypes from 'prop-types';
 import { taskPropTypesShape } from '../../../models/beta/task';
 
-const TasksList = ({ tasks, onDelete, onToggle }) => (
+const TasksList = ({ tasks, onDelete, onToggle, disabled }) => (
   <Fragment>
     {
       tasks.map((task) => (
@@ -12,6 +12,7 @@ const TasksList = ({ tasks, onDelete, onToggle }) => (
           task={task}
           onDelete={() => onDelete(task.id)}
           onToggle={() => onToggle(task, { done: !task.done })}
+          disabled={disabled}
         />
       ))
     }
@@ -21,7 +22,8 @@ const TasksList = ({ tasks, onDelete, onToggle }) => (
 TasksList.propTypes = {
   tasks: PropTypes.arrayOf(taskPropTypesShape.isRequired),
   onDelete: PropTypes.func.isRequired,
-  onToggle: PropTypes.func.isRequired
+  onToggle: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired
 };
 
 export default TasksList;

@@ -3,7 +3,7 @@ import Note from './Note';
 import PropTypes from 'prop-types';
 import { notePropTypesShape } from '../../../models/beta/note';
 
-const NotesList = ({ notes, onDelete }) => (
+const NotesList = ({ notes, onDelete, disabled }) => (
   <Fragment>
     {
       notes.map(note => (
@@ -11,6 +11,7 @@ const NotesList = ({ notes, onDelete }) => (
           key={note.id}
           note={note}
           onDelete={() => onDelete(note.id)}
+          disabled={disabled}
         />
       ))
     }
@@ -19,7 +20,8 @@ const NotesList = ({ notes, onDelete }) => (
 
 NotesList.propTypes = {
   notes: PropTypes.arrayOf(notePropTypesShape.isRequired),
-  onDelete: PropTypes.func.isRequired
+  onDelete: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired
 };
 
 export default NotesList;

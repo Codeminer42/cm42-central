@@ -11,7 +11,8 @@ const ExpandedStoryRelease = ({
   story,
   titleRef,
   onEdit,
-  onClone
+  onClone,
+  disabled
 }) =>
   <Fragment>
     {
@@ -27,28 +28,33 @@ const ExpandedStoryRelease = ({
       story={story}
       titleRef={titleRef}
       onEdit={(title) => onEdit({ title })}
+      disabled={disabled}
     />
 
     <ExpandedStoryType
       story={story}
       onEdit={(storyType) => onEdit({ storyType })}
+      disabled={disabled}
     />
 
     <ExpandedStoryReleaseDate
       story={story}
       onEdit={(releaseDate) => onEdit({ releaseDate })}
+      disabled={disabled}
     />
 
     <ExpandedStoryDescription
       story={story}
       onEdit={(description) => onEdit({ description })}
+      disabled={disabled}
     />
   </Fragment>
 
 ExpandedStoryRelease.propTypes = {
   story: editingStoryPropTypesShape.isRequired,
   onEdit: PropTypes.func.isRequired,
-  onClone: PropTypes.func.isRequired
+  onClone: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired
 };
 
 export default ExpandedStoryRelease;

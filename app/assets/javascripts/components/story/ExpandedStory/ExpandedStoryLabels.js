@@ -13,8 +13,10 @@ class ExpandedStoryLabels extends React.Component {
   }
 
   handleDelete(index) {
-    const { story, onRemoveLabel } = this.props;
+    const { story, onRemoveLabel, disabled } = this.props;
     const { labels } = story._editing;
+
+    if(disabled) return;
 
     const label = labels.find(
       (label, labelIndex) => labelIndex === index
@@ -30,8 +32,10 @@ class ExpandedStoryLabels extends React.Component {
   }
 
   render() {
-    const { projectLabels, story } = this.props;
+    const { projectLabels, story, disabled } = this.props;
     const { labels } = story._editing;
+
+    if(disabled && !story.labels.length) return null
 
     return (
       <ExpandedStorySection
@@ -42,8 +46,9 @@ class ExpandedStoryLabels extends React.Component {
           handleDelete={this.handleDelete}
           suggestions={projectLabels}
           handleAddition={this.handleAddition}
-          allowNew={true}
-          placeholder={I18n.t('add new label')}
+          allowNew={!disabled}
+          inputAttributes={{readOnly: disabled}}
+          placeholder={disabled ? "" : I18n.t('add new label')}
           allowBackspace={false}
           addOnBlur={true}
           delimiterChars={[',', ' ']}
@@ -59,7 +64,8 @@ ExpandedStoryLabels.propTypes = {
   story: editingStoryPropTypesShape.isRequired,
   onAddLabel: PropTypes.func.isRequired,
   onRemoveLabel: PropTypes.func.isRequired,
-  projectLabels: PropTypes.arrayOf(PropTypes.object).isRequired
+  projectLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
+  disabled: PropTypes.bool.isRequired
 };
 
 export default ExpandedStoryLabels;

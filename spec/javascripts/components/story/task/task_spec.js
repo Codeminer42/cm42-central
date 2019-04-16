@@ -13,23 +13,24 @@ describe('<Task />', () => {
       },
       onDelete: sinon.spy(),
       onToggle: sinon.spy(),
+      disabled: false,
       ...propOverrides
     });
 
     const wrapper = shallow(<Task {...defaultProps()} />);
-    const span = wrapper.find('.delete-btn');
+    const deleteLink = wrapper.find('.delete-btn');
     const label = wrapper.find('label');
     const checkbox = wrapper.find('input');
 
-    return { wrapper, span, label, checkbox };
+    return { wrapper, deleteLink, label, checkbox };
   };
 
   describe('when user deletes a task', () => {
     it('triggers onDelete callback', () => {
       const onDeleteSpy = sinon.spy();
-      const { span } = setup({ onDelete: onDeleteSpy })
+      const { deleteLink } = setup({ onDelete: onDeleteSpy })
 
-      span.simulate('click');
+      deleteLink.simulate('click');
 
       expect(onDeleteSpy).toHaveBeenCalled();
     });
@@ -45,4 +46,24 @@ describe('<Task />', () => {
       expect(onToggleCheckedBoxSpy).toHaveBeenCalled();
     });
   });
+
+  describe('when task is read-only', () => {
+    it('does not render a link to delete task', () => {
+      const { deleteLink } = setup({ disabled: true });
+
+      expect(deleteLink.exists()).toBe(false);
+    });
+
+    describe('when user tries to update the task clicking on checkbox', () => {
+      it('does not trigger onToggle callback', () => {
+        const onToggleCheckedBoxSpy = sinon.spy();
+        const { checkbox } = setup({ disabled: true });
+
+        checkbox.simulate('click');
+
+        expect(onToggleCheckedBoxSpy).not.toHaveBeenCalled();
+      });
+    });
+  });
 });
+

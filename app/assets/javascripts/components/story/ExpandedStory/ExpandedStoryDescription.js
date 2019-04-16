@@ -36,19 +36,22 @@ class ExpandedStoryDescription extends React.Component {
   };
 
   descriptionTextArea(description) {
-    const { onEdit } = this.props;
+    const { onEdit, disabled } = this.props;
 
     return (
       <textarea
         className="form-control input-sm edit-description-text"
         onChange={(event) => onEdit(event.target.value)}
+        readOnly={disabled}
         value={description}
       />
     );
   };
 
   render() {
-    const { story } = this.props;
+    const { story, disabled } = this.props;
+
+    if(disabled && !story.description) return null
 
     return (
       <ExpandedStorySection
@@ -75,7 +78,8 @@ class ExpandedStoryDescription extends React.Component {
 
 ExpandedStoryDescription.propTypes = {
   story: editingStoryPropTypesShape.isRequired,
-  onEdit: PropTypes.func.isRequired
+  onEdit: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired
 };
 
 export default ExpandedStoryDescription;
