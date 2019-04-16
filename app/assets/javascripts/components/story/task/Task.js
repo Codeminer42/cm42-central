@@ -14,14 +14,14 @@ const Task = ({ task, onDelete, onToggle, disabled }) => (
       {task.name}
     </label>
     {
-      !disabled &&
+      !disabled && (
         <span
           title={I18n.t('delete')}
           className='delete-btn'
           onClick={onDelete}
-        >
-          { I18n.t('delete') }
-        </span>
+          children={I18n.t('delete')}
+        />
+      )
     }
   </div>
 );

@@ -18,7 +18,7 @@ const AttachmentsList = ({ files, onDelete, disabled }) =>
             type={file.resourceType}
           >
             {
-              !disabled &&
+              !disabled && (
                 <button
                   onClick={() => onDelete(file.id)}
                   className="btn btn-danger btn-xs"
@@ -26,6 +26,7 @@ const AttachmentsList = ({ files, onDelete, disabled }) =>
                   <i className="mi md-18">delete</i>
                   {I18n.t('delete')}
                 </button>
+              )
             }
           </Attachment>
         )

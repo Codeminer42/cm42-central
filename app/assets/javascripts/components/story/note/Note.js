@@ -10,12 +10,13 @@ const Note = ({ note, onDelete, disabled }) => (
     <div className='markdown-wrapper__text-right'>
       {`${note.userName} - ${note.createdAt} `}
       {
-        !disabled &&
+        !disabled && (
           <span
             className='delete-note-button'
             onClick={onDelete}
             children={I18n.t('delete')}
           />
+        )
       }
     </div>
   </div>

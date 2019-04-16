@@ -37,7 +37,7 @@ class ExpandedStoryTask extends Component {
   render() {
     const { story, onToggle, onDelete, disabled } = this.props;
 
-    if (!story.tasks.length && disabled) return null;
+    if (disabled && !story.tasks.length) return null;
 
     return (
       <ExpandedStorySection
@@ -54,7 +54,7 @@ class ExpandedStoryTask extends Component {
         </div>
 
         {
-          !disabled &&
+          !disabled && (
             <div className="task-form">
               <input
                 value={this.state.task}
@@ -70,6 +70,7 @@ class ExpandedStoryTask extends Component {
                 {I18n.t('add task')}
               </button>
             </div>
+          )
         }
       </ExpandedStorySection>
     );

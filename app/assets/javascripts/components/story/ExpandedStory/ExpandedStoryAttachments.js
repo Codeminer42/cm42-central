@@ -58,7 +58,7 @@ class ExpandedStoryAttachments extends React.Component {
   render() {
     const { story, onDelete, disabled } = this.props;
 
-    if(disabled && !story.documents.length) return null
+    if (disabled && !story.documents.length) return null
 
     return (
       <ExpandedStorySection
@@ -66,7 +66,7 @@ class ExpandedStoryAttachments extends React.Component {
         identifier="attachments"
       >
         {
-          !disabled && 
+          !disabled && (
             <Dropzone
               onDrop={this.onFileDrop}
               accept={acceptedMimeTypes()}
@@ -92,6 +92,7 @@ class ExpandedStoryAttachments extends React.Component {
                 )
               }}
             </Dropzone>
+          )
         }
         <AttachmentsList
           files={story._editing.documents}

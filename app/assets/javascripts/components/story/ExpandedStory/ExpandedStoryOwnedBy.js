@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SelectUser from '../select_user/SelectUser';
-import { canEdit, editingStoryPropTypesShape } from '../../../models/beta/story';
+import { editingStoryPropTypesShape } from '../../../models/beta/story';
 import ExpandedStorySection from './ExpandedStorySection';
 
 const ExpandedStoryOwnedBy = ({ users, story, onEdit, disabled }) =>
