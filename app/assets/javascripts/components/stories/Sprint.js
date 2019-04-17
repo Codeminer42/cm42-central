@@ -1,20 +1,25 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Stories from "./Stories";
+import { sprintPropTypesShape } from '../../models/beta/iteration';
+import { pastIterationPropTypesShape } from '../../models/beta/pastIteration';
 
 const propTypes = {
-  number: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  startDate: PropTypes.node,
-  points: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  completedPoints: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  stories: PropTypes.array
+  fetchStories: PropTypes.func,
+  sprint: PropTypes.oneOf([
+    sprintPropTypesShape,
+    pastIterationPropTypesShape
+  ])
 };
 
 const defaultProps = {
-  number: 0,
-  startDate: 0,
-  points: 0,
-  stories: []
+  fetchStories: undefined,
+  sprint: {
+    number: 0,
+    startDate: 0,
+    points: 0,
+    stories: []
+  }
 };
 
 class Sprint extends Component {
@@ -25,11 +30,11 @@ class Sprint extends Component {
   }
 
   toggleSprint() {
-    const { fetchStories } = this.props; 
-    const  { number, startDate, endDate, fetched, isFetching } = this.props.sprint;
+    const { fetchStories } = this.props;
+    const { number, startDate, endDate, fetched, isFetching } = this.props.sprint;
     const needsFetch = !(fetched || isFetching);
 
-    if(needsFetch && !!fetchStories) {
+    if (needsFetch && !!fetchStories) {
       fetchStories(number, startDate, endDate);
     } else {
       this.setState(prevState => ({ isClosed: !prevState.isClosed }));

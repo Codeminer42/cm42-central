@@ -16,7 +16,7 @@ const renderSprints = (sprints, fetchStories) => {
       sprint ? (
         <Sprint
           key={sprint.number}
-          sprint={ sprint }
+          sprint={sprint}
           fetchStories={fetchStories}
         />
       ) : null

@@ -1,5 +1,6 @@
 import moment from "moment";
 import { last } from 'underscore';
+import PropTypes from 'prop-types';
 import * as Story from "./story";
 
 const weeksBetween = (dateA, dateB) =>
@@ -185,3 +186,13 @@ export const groupBySprints = (stories = [], project, initialSprintNumber = 1) =
     return addToSprintFromBacklog(sprints, project, story);
   }, []);
 };
+
+export const sprintPropTypesShape = PropTypes.shape({
+  number: PropTypes.number,
+  startDate: PropTypes.string,
+  points: PropTypes.number,
+  completedPoints: PropTypes.number,
+  stories: PropTypes.array,
+  isFiller: PropTypes.bool,
+  remainingPoints: PropTypes.bool
+});
