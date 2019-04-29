@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ExpandedStoryToolTip from './ExpandedStoryToolTip'
 
 class ExpandedStoryControls extends Component {
   constructor(props) {
@@ -31,7 +32,7 @@ class ExpandedStoryControls extends Component {
   }
 
   render() {
-    const { onSave, canSave, canDelete } = this.props;
+    const { onSave, canSave, canDelete, disabled } = this.props;
 
     return (
       <div className="form-group Story__controls">
@@ -54,6 +55,17 @@ class ExpandedStoryControls extends Component {
           type="button"
           value={I18n.t('cancel')}
         />
+
+        {
+          disabled && (
+            <button className="btnToolTip">
+              <ExpandedStoryToolTip text={I18n.t('accepted_tooltip')}>
+              ?
+              </ExpandedStoryToolTip> 
+            </button>
+          )
+        }
+
       </div>
     );
   }
@@ -64,7 +76,8 @@ ExpandedStoryControls.propTypes = {
   onCancel: PropTypes.func.isRequired,
   canSave: PropTypes.bool.isRequired,
   canDelete: PropTypes.bool.isRequired,
-  isDirty: PropTypes.bool.isRequired
+  isDirty: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool.isRequired
 }
 
 export default ExpandedStoryControls;

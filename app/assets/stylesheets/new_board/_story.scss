@@ -346,6 +346,17 @@
             @extend .btn-default;
             @extend .btn-xs;
           }
+          
+          .btnToolTip {
+            background-color: #fff;
+            border: 1px solid transparent;
+            border-color: #ccc;
+            border-radius: 3px;
+            color: red;
+            font-size: 12px;
+            height: 22px;
+            width: 30px;
+          }
         }
 
         &__loading {

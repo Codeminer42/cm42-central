@@ -49,6 +49,7 @@ export class ExpandedStory extends React.Component {
           onDelete={() => deleteStory(story.id, project.id)}
           canSave={Story.canSave(story)}
           canDelete={Story.canDelete(story)}
+          disabled={disabled}
         />
 
         {
