@@ -10,8 +10,9 @@ import * as Story from '../models/beta/story';
 import * as Task from '../models/beta/task'
 import * as ProjectBoard from '../models/beta/projectBoard';
 import * as Note from '../models/beta/note';
+import * as PastIteration from '../models/beta/pastIteration';
 
-const dependencies = { Story, ProjectBoard, Note, Task };
+const dependencies = { Story, ProjectBoard, Note, Task, PastIteration };
 
 const reducer = combineReducers({
   project,

@@ -15,6 +15,8 @@ const storiesReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.RECEIVE_STORIES:
       return action.data;
+    case actionTypes.RECEIVE_PAST_STORIES:
+      return [ ...state, ...action.stories];
     case actionTypes.CREATE_STORY:
       const newStory = createNewStory(state, action.attributes);
 
