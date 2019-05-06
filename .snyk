@@ -1,0 +1,57 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.13.3
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  SNYK-JS-AXIOS-174505:
+    - axios:
+        patched: '2019-05-06T18:46:42.338Z'
+  'npm:hoek:20180212':
+    - '@rails/webpacker > webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > cryptiles > boom > hoek':
+        patched: '2019-05-06T18:46:42.338Z'
+    - webpack-dev-server > chokidar > fsevents > node-pre-gyp > hawk > hoek:
+        patched: '2019-05-06T18:46:42.338Z'
+    - compression-webpack-plugin > node-zopfli > node-pre-gyp > hawk > boom > hoek:
+        patched: '2019-05-06T18:46:42.338Z'
+    - compression-webpack-plugin > node-zopfli > node-pre-gyp > hawk > sntp > hoek:
+        patched: '2019-05-06T18:46:42.338Z'
+    - compression-webpack-plugin > node-zopfli > node-pre-gyp > request > hawk > hoek:
+        patched: '2019-05-06T18:46:42.338Z'
+    - webpack-dev-server > chokidar > fsevents > node-pre-gyp > hawk > boom > hoek:
+        patched: '2019-05-06T18:46:42.338Z'
+    - compression-webpack-plugin > node-zopfli > node-pre-gyp > request > hawk > boom > hoek:
+        patched: '2019-05-06T18:46:42.338Z'
+    - webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > hoek:
+        patched: '2019-05-06T18:46:42.338Z'
+    - compression-webpack-plugin > node-zopfli > node-pre-gyp > request > hawk > sntp > hoek:
+        patched: '2019-05-06T18:46:42.338Z'
+    - webpack-dev-server > chokidar > fsevents > node-pre-gyp > hawk > sntp > hoek:
+        patched: '2019-05-06T18:46:42.338Z'
+    - compression-webpack-plugin > node-zopfli > node-pre-gyp > hawk > cryptiles > boom > hoek:
+        patched: '2019-05-06T18:46:42.338Z'
+    - compression-webpack-plugin > node-zopfli > node-pre-gyp > hawk > hoek:
+        patched: '2019-05-06T18:46:42.338Z'
+    - '@rails/webpacker > webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > hoek':
+        patched: '2019-05-06T18:46:42.338Z'
+    - webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > boom > hoek:
+        patched: '2019-05-06T18:46:42.338Z'
+    - webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > sntp > hoek:
+        patched: '2019-05-06T18:46:42.338Z'
+    - rewire-webpack > webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > hoek:
+        patched: '2019-05-06T18:46:42.338Z'
+    - webpack-dev-server > chokidar > fsevents > node-pre-gyp > hawk > cryptiles > boom > hoek:
+        patched: '2019-05-06T18:46:42.338Z'
+    - rewire-webpack > webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > sntp > hoek:
+        patched: '2019-05-06T18:46:42.338Z'
+    - '@rails/webpacker > webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > sntp > hoek':
+        patched: '2019-05-06T18:46:42.338Z'
+    - rewire-webpack > webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > boom > hoek:
+        patched: '2019-05-06T18:46:42.338Z'
+    - '@rails/webpacker > webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > boom > hoek':
+        patched: '2019-05-06T18:46:42.338Z'
+    - webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > cryptiles > boom > hoek:
+        patched: '2019-05-06T18:46:42.338Z'
+    - rewire-webpack > webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > cryptiles > boom > hoek:
+        patched: '2019-05-06T18:46:42.338Z'
+    - compression-webpack-plugin > node-zopfli > node-pre-gyp > request > hawk > cryptiles > boom > hoek:
+        patched: '2019-05-06T18:46:42.338Z'
