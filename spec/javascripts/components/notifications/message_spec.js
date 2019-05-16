@@ -46,7 +46,7 @@ describe('<Message />', () => {
       />
     );
 
-    const button = wrapper.find('button');
+    const button = wrapper.find('#close-button');
     button.simulate('click');
 
     expect(onRemove).toHaveBeenCalled();

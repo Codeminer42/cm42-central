@@ -14,18 +14,36 @@ describe('Notification model', () => {
   });
 
   describe('addNotification', () => {
-    it('returns an array with the new notification', () => {
-      const notifications = [
-        { id: 1 },
-        { id: 2 }
-      ];
+    describe('when notification param is a single notification', () => {
+      it('returns an array with the new notification', () => {
+        const notifications = [
+          { id: 1 },
+          { id: 2 }
+        ];
 
-      const newNotification = { id: 3 };
+        const newNotification = { id: 3 };
 
-      const expectedNotificationsArray = [newNotification, ...notifications];
-      const newNotificationsArray = Notification.addNotification(notifications, newNotification);
+        const expectedNotificationsArray = [newNotification, ...notifications];
+        const newNotificationsArray = Notification.addNotification(notifications, newNotification);
 
-      expect(newNotificationsArray).toEqual(expectedNotificationsArray);
+        expect(newNotificationsArray).toEqual(expectedNotificationsArray);
+      });
+    });
+
+    describe('when notification param is an array of notifications', () => {
+      it('returns an array with the new notification', () => {
+        const notifications = [
+          { id: 1 },
+          { id: 2 }
+        ];
+
+        const newNotifications = [{ id: 3 }, { id: 4 }, { id: 5 }];
+
+        const expectedNotificationsArray = [...newNotifications, ...notifications];
+        const newNotificationsArray = Notification.addNotification(notifications, newNotifications);
+
+        expect(newNotificationsArray).toEqual(expectedNotificationsArray);
+      });
     });
   });
 

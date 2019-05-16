@@ -9,6 +9,7 @@ const Message = ({ type, className, message, onRemove }) => {
       <div className="Message__content">
         {message}
         <button
+          id="close-button"
           className="Message__content__button"
           onClick={onRemove}
         >

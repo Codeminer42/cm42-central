@@ -18,8 +18,11 @@ describe('Notifications Actions', () => {
 
       const fakeDispatch = sinon.stub();
 
-      Notification.sendSuccessNotification(newNotification.message)
-        (fakeDispatch, null, { Notification: FakeNotification });
+      Notification.sendSuccessNotification(newNotification.message)(
+        fakeDispatch,
+        null,
+        { Notification: FakeNotification }
+      );
 
       expect(fakeDispatch).toHaveBeenCalledWith(Notification.addNotification(newNotification));
     });
@@ -36,14 +39,21 @@ describe('Notifications Actions', () => {
         types
       };
 
+      const clock = sinon.useFakeTimers()
+
       const fakeDispatch = sinon.stub();
 
-      Notification.sendSuccessNotification(newNotification.message)
-        (fakeDispatch, null, { Notification: FakeNotification });
+      Notification.sendSuccessNotification(newNotification.message)(
+        fakeDispatch,
+        null,
+        { Notification: FakeNotification }
+      );
 
-      setTimeout(() => {
-        expect(fakeDispatch).toHaveBeenCalledWith(Notification.removeNotification(newNotification.id));
-      }, 5000);
+      clock.tick(5000);
+
+      expect(fakeDispatch).toHaveBeenCalledWith(Notification.removeNotification(newNotification.id));
+
+      clock.restore();
     });
   });
 
@@ -74,8 +84,11 @@ describe('Notifications Actions', () => {
 
         const fakeDispatch = sinon.stub();
 
-        Notification.sendErrorNotification(error)
-          (fakeDispatch, null, { Notification: FakeNotification });
+        Notification.sendErrorNotification(error)(
+          fakeDispatch,
+          null,
+          { Notification: FakeNotification }
+        );
 
         expect(fakeDispatch).toHaveBeenCalled();
       });
@@ -101,8 +114,11 @@ describe('Notifications Actions', () => {
 
         const fakeDispatch = sinon.stub();
 
-        Notification.sendErrorNotification(error)
-          (fakeDispatch, null, { Notification: FakeNotification });
+        Notification.sendErrorNotification(error)(
+          fakeDispatch,
+          null,
+          { Notification: FakeNotification }
+        );
 
         expect(fakeDispatch).toHaveBeenCalledWith(Notification.addNotification(newNotification));
       });
@@ -128,8 +144,11 @@ describe('Notifications Actions', () => {
 
         const fakeDispatch = sinon.stub();
 
-        Notification.sendErrorNotification(error)
-          (fakeDispatch, null, { Notification: FakeNotification });
+        Notification.sendErrorNotification(error)(
+          fakeDispatch,
+          null,
+          { Notification: FakeNotification }
+        );
 
         expect(fakeDispatch).toHaveBeenCalledWith(Notification.addNotification(newNotification));
       });
@@ -155,8 +174,11 @@ describe('Notifications Actions', () => {
 
         const fakeDispatch = sinon.stub();
 
-        Notification.sendErrorNotification(error)
-          (fakeDispatch, null, { Notification: FakeNotification });
+        Notification.sendErrorNotification(error)(
+          fakeDispatch,
+          null,
+          { Notification: FakeNotification }
+        );
 
         expect(fakeDispatch).toHaveBeenCalledWith(Notification.addNotification(newNotification));
       });
@@ -180,8 +202,11 @@ describe('Notifications Actions', () => {
 
         const fakeDispatch = sinon.stub();
 
-        Notification.sendErrorNotification(error)
-          (fakeDispatch, null, { Notification: FakeNotification });
+        Notification.sendErrorNotification(error)(
+          fakeDispatch,
+          null,
+          { Notification: FakeNotification }
+        );
 
         expect(fakeDispatch).toHaveBeenCalledWith(Notification.addNotification(newNotification));
       })
@@ -215,8 +240,11 @@ describe('Notifications Actions', () => {
 
       const fakeDispatch = sinon.stub();
 
-      Notification.addValidationNotifications(errors)
-        (fakeDispatch, null, { Notification: FakeNotification });
+      Notification.addValidationNotifications(errors)(
+        fakeDispatch,
+        null,
+        { Notification: FakeNotification }
+      );
 
       expect(fakeDispatch).toHaveBeenCalledWith(Notification.addNotification(expectedNotifications));
     });
