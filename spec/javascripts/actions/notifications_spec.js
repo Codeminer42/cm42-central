@@ -161,6 +161,31 @@ describe('Notifications Actions', () => {
         expect(fakeDispatch).toHaveBeenCalledWith(Notification.addNotification(newNotification));
       });
     });
+
+    describe('when error has no response property', () => {
+      const error = {
+        message: "I'm an error!"
+      }
+
+      it('dispatches addNotification with the default message', () => {
+        const FakeNotification = {
+          createNotification,
+          types
+        };
+
+        const newNotification = createNotification({
+          type: types.ERROR,
+          message: I18n.t('messages.operations.error.default_error')
+        });
+
+        const fakeDispatch = sinon.stub();
+
+        Notification.sendErrorNotification(error)
+          (fakeDispatch, null, { Notification: FakeNotification });
+
+        expect(fakeDispatch).toHaveBeenCalledWith(Notification.addNotification(newNotification));
+      })
+    })
   });
 
   describe('addValidationNotifications', () => {

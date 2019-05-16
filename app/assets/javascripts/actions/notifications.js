@@ -26,6 +26,11 @@ export const sendSuccessNotification = (message) =>
   }
 
 export const sendErrorNotification = (error) =>
+  !!error.response
+    ? sendServerErrorNotification(error)
+    : sendDefaultErrorNotifiction()
+
+const sendServerErrorNotification = (error) =>
   (dispatch, getState, { Notification }) => {
     const type = Notification.types.ERROR;
 
@@ -54,15 +59,24 @@ export const sendErrorNotification = (error) =>
         );
       default:
         return dispatch(
-          addNotification(
-            Notification.createNotification({
-              type,
-              message: I18n.t('messages.operations.error.default_error')
-            })
-          )
+          addDefaultErrorNotification(Notification)
         );
     }
   }
+
+const sendDefaultErrorNotifiction = () =>
+  (dispatch, getState, { Notification }) =>
+    dispatch(
+      addDefaultErrorNotification(Notification)
+    );
+
+const addDefaultErrorNotification = Notification =>
+  addNotification(
+    Notification.createNotification({
+      type: Notification.types.ERROR,
+      message: I18n.t('messages.operations.error.default_error')
+    })
+  )
 
 export const addValidationNotifications = (errors) =>
   (dispatch, getState, { Notification }) => {
