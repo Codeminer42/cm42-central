@@ -58,11 +58,11 @@ class ExpandedStoryControls extends Component {
 
         {
           disabled && (
-            <button className="btnToolTip">
-              <ExpandedStoryToolTip text={I18n.t('accepted_tooltip')}>
-              ?
-              </ExpandedStoryToolTip> 
-            </button>
+            <ExpandedStoryToolTip text={I18n.t('accepted_tooltip')}>
+              <div className="infoToolTip">
+               <i className="mi md-18">info_outline</i>
+              </div>
+            </ExpandedStoryToolTip> 
           )
         }
 

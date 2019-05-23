@@ -455,6 +455,8 @@ a.button {
 // Popover Overrides
 // Custom Style Overrides
 .popover {
+  width: 200px;
+  
   &-title {
     font-size: 13px;
     word-wrap: break-word;

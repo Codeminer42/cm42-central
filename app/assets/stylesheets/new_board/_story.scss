@@ -341,21 +341,20 @@
         &__controls {
           @extend .btn-group;
 
+          height: 22px;
+          display: block;
+
           input {
             @extend .btn;
             @extend .btn-default;
             @extend .btn-xs;
           }
           
-          .btnToolTip {
+          .infoToolTip {
             background-color: #fff;
-            border: 1px solid transparent;
-            border-color: #ccc;
-            border-radius: 3px;
-            color: red;
-            font-size: 12px;
             height: 22px;
-            width: 30px;
+            cursor: default;
+            float: right;
           }
         }
 
