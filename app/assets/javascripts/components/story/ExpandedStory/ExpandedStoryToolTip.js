@@ -1,7 +1,7 @@
 import React from 'react';
 import Popover from 'components/jquery_wrappers/Popover.js';
 
-const ExpandedStoryToolTip = ({ text, children }) => (
+const ExpandedStoryToolTip = ({ text }) => (
 
   <Popover
     delay={100}
@@ -16,7 +16,9 @@ const ExpandedStoryToolTip = ({ text, children }) => (
     {
       ({ ref }) => (
         <div ref={ref}>
-          { children }
+          <div className="infoToolTip">
+            <i className="mi md-18">info_outline</i>
+          </div>
         </div>
       )
     }
