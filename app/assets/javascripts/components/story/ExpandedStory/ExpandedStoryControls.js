@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ExpandedStoryToolTip from './ExpandedStoryToolTip'
+import ExpandedStoryToolTip from './ExpandedStoryToolTip';
 
 class ExpandedStoryControls extends Component {
   constructor(props) {
