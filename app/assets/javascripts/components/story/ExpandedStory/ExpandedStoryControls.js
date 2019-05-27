@@ -59,6 +59,7 @@ class ExpandedStoryControls extends Component {
         {
           disabled && <ExpandedStoryToolTip text={I18n.t('accepted_tooltip')} />
         }
+
       </div>
     );
   }
