@@ -30,6 +30,24 @@ module Iterations
         expect(subject.past_iterations).to all(be_a(PastIteration))
       end
 
+      context 'when iteration has no stories' do
+        it 'has_stories flag is false' do
+
+          flags = subject.past_iterations.map{ |iteration| iteration.has_stories }
+          expect(flags).to all(eq(false))
+        end
+      end
+
+      context 'when iteration has stories' do
+        let(:story) { create(:story, :done, :with_project) }
+        let(:project) { story.project }
+
+        it 'has_stories flag is true' do
+          flags = subject.past_iterations.map{ |iteration| iteration.has_stories }
+          expect(flags).to all(eq(true))
+        end
+      end
+
       context 'when project start in the same week day as the iterations' do
         let(:story) { create(:story, :done, :with_project) }
         let(:project) { story.project }

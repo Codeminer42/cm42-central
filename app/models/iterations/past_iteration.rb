@@ -7,6 +7,7 @@ module Iterations
     attribute :iteration_number, Integer
     attribute :stories, Array[Story]
     attribute :points, Integer
+    attribute :has_stories, Boolean
 
     def points
       @points ||= stories.to_a.map(&:estimate).compact.sum
