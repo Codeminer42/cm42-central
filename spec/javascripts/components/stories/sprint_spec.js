@@ -33,15 +33,15 @@ const createSprint = propOverrides => ({
 describe("<Sprint />", () => {
   beforeEach(() => {
     sprint = createSprint();
-    wrapper = shallow(<Sprint sprint={ sprint } />);
+    wrapper = shallow(<Sprint sprint={sprint} />);
   });
 
   it('renders a <div> with class ".Sprint"', () => {
     expect(wrapper.find("div.Sprint").exists()).toBe(true);
   });
 
-  it('renders a div with class ".Sprint__header"', () => {
-    expect(wrapper.find("div.Sprint__header").exists()).toBe(true);
+  it('renders a SprintHeader component"', () => {
+    expect(wrapper.find('SprintHeader').exists()).toBe(true);
   });
 
   it('renders a div with class ".Sprint__body"', () => {
@@ -56,7 +56,7 @@ describe("<Sprint />", () => {
     beforeEach(() => {
       sprint = createSprint();
       sprint.stories = null;
-      wrapper = shallow(<Sprint sprint={ sprint } />);
+      wrapper = shallow(<Sprint sprint={sprint} />);
     });
 
     it("does not render any <Stories> component", () => {
@@ -66,18 +66,18 @@ describe("<Sprint />", () => {
 
   describe('when story needs to fetch', () => {
     let fetchStories;
-    
+
     beforeEach(() => {
-      sprint = createSprint({ fetching: false, isFetched: false });
+      sprint = createSprint({ fetching: false, isFetched: false, hasStories: true });
       sprint.stories = null;
       fetchStories = sinon.stub();
-      wrapper = shallow(<Sprint sprint={ sprint } fetchStories={fetchStories} />);
+      wrapper = shallow(<Sprint sprint={sprint} fetchStories={fetchStories} />);
     });
 
     it('calls fetchStories with iteration number, start and end date on user click', () => {
       const { number, startDate, endDate } = sprint;
-      const header = wrapper.find('.Sprint__header');
-      
+      const header = wrapper.find('SprintHeader');
+
       header.simulate('click');
 
       expect(fetchStories).toHaveBeenCalledWith(number, startDate, endDate);

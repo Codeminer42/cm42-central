@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Stories from "./Stories";
+import SprintHeader from './SprintHeader'
 import { sprintPropTypesShape } from '../../models/beta/iteration';
 import { pastIterationPropTypesShape } from '../../models/beta/pastIteration';
 
@@ -25,34 +26,63 @@ const defaultProps = {
 class Sprint extends Component {
   constructor(props) {
     super(props);
-    this.state = { isClosed: false };
+    this.state = { isClosed: this.isDone() };
+
+    this.isDone = this.isDone.bind(this);
+    this.needsFetch = this.needsFetch.bind(this);
     this.toggleSprint = this.toggleSprint.bind(this);
+    this.onHeaderClick = this.onHeaderClick.bind(this);
   }
 
-  toggleSprint() {
-    const { fetchStories } = this.props;
-    const { number, startDate, endDate, fetched, isFetching } = this.props.sprint;
-    const needsFetch = !(fetched || isFetching);
+  isDone() {
+    return this.props.sprint.hasOwnProperty('hasStories');
+  }
 
-    if (needsFetch && !!fetchStories) {
+  needsFetch() {
+    const { hasStories, fetched, isFetching } = this.props.sprint;
+
+    return hasStories && !(fetched || isFetching);
+  }
+
+  onHeaderClick() {
+    const { sprint: { number, startDate, endDate }, fetchStories } = this.props;
+
+    if (this.needsFetch()) {
       fetchStories(number, startDate, endDate);
+      this.toggleSprint();
     } else {
-      this.setState(prevState => ({ isClosed: !prevState.isClosed }));
+      this.toggleSprint();
     }
   }
 
+  toggleSprint() {
+    this.setState(prevState => ({ isClosed: !prevState.isClosed }));
+  }
+
   render() {
-    const { number, startDate, points, completedPoints, stories } = this.props.sprint;
-    const closedStyle = this.state.isClosed && "Sprint__body--is-collapsed";
+    const {
+      number,
+      points,
+      stories,
+      startDate,
+      hasStories,
+      completedPoints
+    } = this.props.sprint;
+    const { isClosed } = this.state;
+    const closedStyle = isClosed && "Sprint__body--is-collapsed";
+
     return (
       <div className="Sprint">
-        <div className="Sprint__header" onClick={this.toggleSprint}>
-          {number} - {I18n.l("date.formats.long", startDate)}
-          <span className="Sprint__points">
-            {completedPoints > 0 && `${completedPoints} / `}
-            {points}
-          </span>
-        </div>
+        <SprintHeader
+          number={number}
+          startDate={startDate}
+          completedPoints={completedPoints}
+          points={points}
+          hasStories={hasStories}
+          isDone={this.isDone()}
+          onClick={this.onHeaderClick}
+          isClosed={isClosed}
+        />
         <div className={`Sprint__body ${closedStyle}`}>
           {stories && <Stories stories={stories} />}
         </div>
