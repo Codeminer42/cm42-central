@@ -120,14 +120,16 @@ export const saveStory = (storyId, projectId, options) =>
 export const deleteStory = (storyId, projectId) =>
   async (dispatch, getState, { Story }) => {
     dispatch(setLoadingStory(storyId))
-
     try {
+      const { stories } = getState();
+      const storyTitle = stories.find(story => story.id === storyId).title;
+      
       await Story.deleteStory(storyId, projectId);
 
       dispatch(deleteStorySuccess(storyId));
 
       return dispatch(sendSuccessNotification(
-        I18n.t('messages.operations.success.story.delete', { story: storyId })
+        I18n.t('messages.operations.success.story.delete', { story: storyTitle })
       ));
     }
     catch (error) {
