@@ -28,7 +28,7 @@ export const sendSuccessNotification = (message) =>
 export const sendErrorNotification = (error) =>
   !!error.response
     ? sendServerErrorNotification(error)
-    : sendDefaultErrorNotifiction()
+    : sendDefaultErrorNotification();
 
 const sendServerErrorNotification = (error) =>
   (dispatch, getState, { Notification }) => {
@@ -64,7 +64,7 @@ const sendServerErrorNotification = (error) =>
     }
   }
 
-const sendDefaultErrorNotifiction = () =>
+const sendDefaultErrorNotification = () =>
   (dispatch, getState, { Notification }) =>
     dispatch(
       addDefaultErrorNotification(Notification)
