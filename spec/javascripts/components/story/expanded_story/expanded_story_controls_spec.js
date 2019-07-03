@@ -239,4 +239,31 @@ describe('<ExpandedStoryControls />', () => {
       });
     });
   });
+
+  describe("when prop disabled is false", () => {
+    it("should not render ExpandedStoryToolTip", () => {
+      const wrapper = shallow(
+        <ExpandedStoryControls
+          {...defaultProps()}
+        />
+      );
+
+      expect(wrapper.find('ExpandedStoryToolTip').exists()).toBe(false);
+
+    });
+  });
+
+  describe("when prop disabled is true", () => {
+    it("should render ExpandedStoryToolTip", () => {
+      const wrapper = shallow(
+        <ExpandedStoryControls
+          {...defaultProps()}
+          disabled={true}
+        />
+      );
+
+      expect(wrapper.find('ExpandedStoryToolTip').exists()).toBe(true);
+
+    });
+  });
 });

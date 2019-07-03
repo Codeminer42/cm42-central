@@ -75,6 +75,7 @@ es:
   stories_not_found: "Historias no encontradas"
   upload_new_file: "Arrastre el archivo aquí, o haga clic para agregar."
   reject_new_file: "Tipo de archivo no soportado."
+  accepted_tooltip: "La tarea ya ha sido aceptada. No se puede modificar."
 
   story:
     state:

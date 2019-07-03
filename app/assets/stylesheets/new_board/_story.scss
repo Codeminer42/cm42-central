@@ -341,10 +341,19 @@
         &__controls {
           @extend .btn-group;
 
+          height: 22px;
+          display: block;
+
           input {
             @extend .btn;
             @extend .btn-default;
             @extend .btn-xs;
+          }
+          
+          .infoToolTip {
+            height: 22px;
+            cursor: default;
+            float: right;
           }
         }
 
