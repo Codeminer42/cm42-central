@@ -144,11 +144,13 @@ describe('Story Actions', () => {
       const FakeStory = {
         deleteStory: sinon.stub().resolves({})
       };
-
+      const fakeGetState = sinon.stub().returns({
+        stories: [{id: storyId, title: 'foo'}]
+      });
       const fakeDispatch = sinon.stub().resolves({});
 
       await Story.deleteStory(storyId, projectId)
-        (fakeDispatch, null, { Story: FakeStory });
+        (fakeDispatch, fakeGetState, { Story: FakeStory });
 
       expect(FakeStory.deleteStory).toHaveBeenCalledWith(storyId, projectId);
     });
@@ -157,11 +159,13 @@ describe('Story Actions', () => {
       const FakeStory = {
         deleteStory: sinon.stub().resolves({})
       };
-
+      const fakeGetState = sinon.stub().returns({
+        stories: [{id: storyId, title: 'foo'}]
+      });
       const fakeDispatch = sinon.stub().resolves({});
 
       await Story.deleteStory(storyId, projectId)
-        (fakeDispatch, null, { Story: FakeStory });
+        (fakeDispatch, fakeGetState, { Story: FakeStory });
 
       expect(fakeDispatch).toHaveBeenCalledWith(Story.deleteStorySuccess(storyId));
     });
@@ -172,11 +176,13 @@ describe('Story Actions', () => {
       const FakeStory = {
         deleteStory: sinon.stub().rejects(error)
       };
-
+      const fakeGetState = sinon.stub().returns({
+        stories: [{id: storyId, title: 'foo'}]
+      });
       const fakeDispatch = sinon.stub().resolves({});
 
       await Story.deleteStory(storyId, projectId)
-        (fakeDispatch, null, { Story: FakeStory });
+        (fakeDispatch, fakeGetState, { Story: FakeStory });
 
       expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(storyId, error));
     });

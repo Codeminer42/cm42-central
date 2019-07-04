@@ -1,4 +1,5 @@
 import actionTypes from './actionTypes';
+import { sendSuccessNotification, sendErrorNotification } from './notifications';
 
 export const createStory = (attributes) => ({
   type: actionTypes.CREATE_STORY,
@@ -53,16 +54,25 @@ export const setLoadingStory = (id) => ({
 });
 
 export const updateCollapsedStory = (storyId, projectId, newAttributes) =>
-  (dispatch, getState, { Story }) => {
+  async (dispatch, getState, { Story }) => {
     const { stories } = getState();
     const story = stories.find((story) => story.id === storyId);
 
     const newStory = { ...story, ...newAttributes };
 
-    return Story.update(newStory, projectId)
-      .then((story) => {
-        dispatch(updateStorySuccess(story));
-      });
+    try {
+      const updatedStory = await Story.update(newStory, projectId);
+
+      dispatch(updateStorySuccess(updatedStory))
+
+      return dispatch(sendSuccessNotification(
+        I18n.t('messages.operations.success.story.save', { story: updatedStory.title })
+      ));
+    }
+    catch (error) {
+      dispatch(sendErrorNotification(error))
+      return dispatch(storyFailure(story.id, error))
+    }
   }
 
 export const saveStory = (storyId, projectId, options) =>
@@ -70,24 +80,36 @@ export const saveStory = (storyId, projectId, options) =>
     const { stories } = getState();
     const story = stories.find((story) => story.id === storyId);
 
-    dispatch(setLoadingStory(story.id))
+    dispatch(setLoadingStory(story.id));
 
     if (Story.isNew(story)) {
       try {
         const newStory = await Story.post(story._editing, projectId)
-        return dispatch(addStory(newStory))
+
+        dispatch(addStory(newStory));
+
+        return dispatch(sendSuccessNotification(
+          I18n.t('messages.operations.success.story.create', { story: story._editing.title })
+        ));
       }
       catch (error) {
+        dispatch(sendErrorNotification(error))
         return dispatch(storyFailure(story.id, error))
       }
     };
 
     if (story._editing._isDirty) {
       try {
-        const updatedStory = await Story.update(story._editing, projectId, options)
-        return dispatch(updateStorySuccess(updatedStory))
+        const updatedStory = await Story.update(story._editing, projectId, options);
+
+        dispatch(updateStorySuccess(updatedStory));
+
+        return dispatch(sendSuccessNotification(
+          I18n.t('messages.operations.success.story.save', { story: updatedStory.title })
+        ));
       }
       catch (error) {
+        dispatch(sendErrorNotification(error))
         return dispatch(storyFailure(story.id, error))
       }
     }
@@ -98,12 +120,20 @@ export const saveStory = (storyId, projectId, options) =>
 export const deleteStory = (storyId, projectId) =>
   async (dispatch, getState, { Story }) => {
     dispatch(setLoadingStory(storyId))
-
     try {
+      const { stories } = getState();
+      const storyTitle = stories.find(story => story.id === storyId).title;
+      
       await Story.deleteStory(storyId, projectId);
-      return dispatch(deleteStorySuccess(storyId));
+
+      dispatch(deleteStorySuccess(storyId));
+
+      return dispatch(sendSuccessNotification(
+        I18n.t('messages.operations.success.story.delete', { story: storyTitle })
+      ));
     }
     catch (error) {
+      dispatch(sendErrorNotification(error))
       return dispatch(storyFailure(storyId, error))
     }
   }

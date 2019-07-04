@@ -450,3 +450,13 @@ en:
     members:
       title: "Members"
       text: "If you want to add or remove people from the Project team, click here"
+
+  messages:
+    operations:
+      success:
+        story:
+          save:    Your story "%{story}" was successfully updated
+          delete:  Your story "%{story}" was successfully deleted
+          create:  Your story "%{story}" was successfully created
+      error:
+        default_error: 'Something went wrong, please try again'

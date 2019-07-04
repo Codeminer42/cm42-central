@@ -47,3 +47,56 @@
     }
   }
 }
+
+.Notifications {
+  position: absolute;
+  right: 0;
+  margin: 10px;
+  z-index: 99999;
+  
+  &__Message {
+    margin: 10px;
+    width: 300px;
+  }
+}
+
+.Message {
+  padding: 4px;
+  border-radius: 8px;
+  color: $message-default-color;
+  border: 1px solid $message-default-border-color;
+  background-color: $message-default-background-color;
+
+  &--error {
+    color: $message-error-color;
+    border: 1px solid $message-error-border-color;
+    background-color: $message-error-background-color;
+  }
+
+  &--success {
+    color: $message-success-color;
+    border: 1px solid $message-success-border-color;
+    background-color: $message-success-background-color;
+  }
+
+  &__content {
+    font-size: 14px;
+    align-items: flex-start;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 2px 2px;
+
+    &__button {
+      border-radius: 10px;
+      padding: 0;
+      border: none;
+      background-color: inherit;
+      color: inherit;
+      outline: none;
+    }
+
+    &__button:hover {
+      color: $black;
+    }
+  }
+}
