@@ -21,11 +21,14 @@ module Iterations
           end_at = iteration_end_date(start_at)
         end
 
+        iteration_stories = stories_between(start_at, end_at)
+
         PastIteration.new(
           start_date: start_at,
           end_date: end_at,
           iteration_number: iteration_number + 1,
-          points: points_of_stories_between(start_at, end_at)
+          points: points_of_stories(iteration_stories),
+          has_stories: iteration_stories.any?
         )
       end
     end
@@ -34,8 +37,8 @@ module Iterations
 
     attr_reader :project, :stories
 
-    def points_of_stories_between(start_at, end_at)
-      stories_between(start_at, end_at).to_a.map(&:estimate).compact.sum
+    def points_of_stories(stories)
+      stories.to_a.map(&:estimate).compact.sum
     end
 
     def stories_between(start_at, end_at)
