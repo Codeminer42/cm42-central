@@ -5,7 +5,9 @@
   "scripts": {
     "test": "NODE_ENV=test karma start config/karma.conf.js",
     "coveralls": "cat ./js_coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./js_coverage",
-    "lint": "eslint app/assets/javascripts"
+    "lint": "eslint app/assets/javascripts",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "@babel/core": "^7.2.2",
@@ -85,7 +87,8 @@
     "webpack": "^4.29.1",
     "webpack-dev-server": "^3.1.14",
     "webpack-manifest-plugin": "^2.0.4",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.0",
+    "snyk": "^1.192.0"
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.2.0",
@@ -120,5 +123,6 @@
     "react-test-renderer": "^16.8.0",
     "sinon": "^7.2.3",
     "webpack-cli": "^3.2.3"
-  }
+  },
+  "snyk": true
 }
