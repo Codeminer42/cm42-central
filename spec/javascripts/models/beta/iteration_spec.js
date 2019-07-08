@@ -65,162 +65,362 @@ describe("iteration", function() {
     });
 
     describe("with empty array of stories", function() {
-      it("should return an empty array of sprints", function() {
-        const stories = [];
-        const sprints = Iteration.groupBySprints(
-          stories,
-          this.project,
-          this.initialSprintNumber
-        );
-        expect(sprints).toEqual([]);
+      describe("when there are no past iterations", () => {
+        it("should return an empty array of sprints", function() {
+          const stories = [];
+          const sprints = Iteration.groupBySprints(
+            stories,
+            this.project,
+            this.initialSprintNumber,
+            []
+          );
+          expect(sprints).toEqual([]);
+        });
       });
+      describe("when there are 3 past iterations", () => {
+        it("should return an empty array of sprints", function() {
+          const stories = [];
+          const sprints = Iteration.groupBySprints(
+            stories,
+            this.project,
+            this.initialSprintNumber,
+            [{points: 3}, {points: 4}, {points: 5}]
+          );
+          expect(sprints).toEqual([]);
+        });
+      })
     });
 
     describe("with 2 unstarted features with 1 point", function() {
-      it("should return an array with 1 item", function() {
-        const stories = [
-          {
-            id: 1,
-            position: "3.2",
-            state: "unstarted",
-            estimate: 1,
-            storyType: "feature"
-          },
-          {
-            id: 2,
-            position: "10",
-            state: "unstarted",
-            estimate: 1,
-            storyType: "feature"
-          }
-        ];
+      describe("when there are no past iterations", () => {
+        it("should return an array with 1 item", function() {
+          const stories = [
+            {
+              id: 1,
+              position: "3.2",
+              state: "unstarted",
+              estimate: 1,
+              storyType: "feature"
+            },
+            {
+              id: 2,
+              position: "10",
+              state: "unstarted",
+              estimate: 1,
+              storyType: "feature"
+            }
+          ];
 
-        const sprints = Iteration.groupBySprints(
-          stories,
-          this.project,
-          this.initialSprintNumber
-        );
+          const sprints = Iteration.groupBySprints(
+            stories,
+            this.project,
+            this.initialSprintNumber,
+            []
+          );
 
-        expect(sprints.length).toEqual(1);
+          expect(sprints.length).toEqual(1);
+          expect(sprints[0].stories.length).toEqual(2);
+        })
+      });
+      describe("when there are 3 past iterations", () => {
+        it("should return an array with 1 item", function() {
+          const stories = [
+            {
+              id: 1,
+              position: "3.2",
+              state: "unstarted",
+              estimate: 1,
+              storyType: "feature"
+            },
+            {
+              id: 2,
+              position: "10",
+              state: "unstarted",
+              estimate: 1,
+              storyType: "feature"
+            }
+          ];
+
+          const sprints = Iteration.groupBySprints(
+            stories,
+            this.project,
+            this.initialSprintNumber,
+            [{points: 3}, {points: 4}, {points: 5}]
+          );
+
+          expect(sprints.length).toEqual(1);
+          expect(sprints[0].stories.length).toEqual(2);
+        })
       });
     });
 
-    describe("with 3 unstarted features with 2, 5 and 1 points and velocity 3", function() {
-      it("should return an array with 3 items", function() {
-        const stories = [
-          {
-            id: 1,
-            position: "1",
-            state: "unstarted",
-            estimate: 2,
-            storyType: "feature"
-          },
-          {
-            id: 2,
-            position: "2",
-            state: "unstarted",
-            estimate: 5,
-            storyType: "feature"
-          },
-          {
-            id: 3,
-            position: "3",
-            state: "unstarted",
-            estimate: 1,
-            storyType: "feature"
-          }
-        ];
+    describe("with 3 unstarted features with 2, 5 and 1 points and default velocity 3", function() {
+      describe("when there are no past iterations", () => {
+        it("should return an array with 3 items", function() {
+          const stories = [
+            {
+              id: 1,
+              position: "1",
+              state: "unstarted",
+              estimate: 2,
+              storyType: "feature"
+            },
+            {
+              id: 2,
+              position: "2",
+              state: "unstarted",
+              estimate: 5,
+              storyType: "feature"
+            },
+            {
+              id: 3,
+              position: "3",
+              state: "unstarted",
+              estimate: 1,
+              storyType: "feature"
+            }
+          ];
 
-        this.project.defaultVelocity = 3;
-        const sprints = Iteration.groupBySprints(
-          stories,
-          this.project,
-          this.initialSprintNumber
-        );
+          this.project.defaultVelocity = 3;
+          const sprints = Iteration.groupBySprints(
+            stories,
+            this.project,
+            this.initialSprintNumber,
+            []
+          );
 
-        expect(sprints.length).toEqual(3);
+          expect(sprints.length).toEqual(3);
+        })
+      });
+      describe("when there are 3 past iterations", () => {
+        it("should return an array with 1 item", function() {
+          const stories = [
+            {
+              id: 1,
+              position: "1",
+              state: "unstarted",
+              estimate: 2,
+              storyType: "feature"
+            },
+            {
+              id: 2,
+              position: "2",
+              state: "unstarted",
+              estimate: 5,
+              storyType: "feature"
+            },
+            {
+              id: 3,
+              position: "3",
+              state: "unstarted",
+              estimate: 1,
+              storyType: "feature"
+            }
+          ];
+
+          this.project.defaultVelocity = 3;
+          const sprints = Iteration.groupBySprints(
+            stories,
+            this.project,
+            this.initialSprintNumber,
+            [{points: 8}, {points: 8}, {points: 8}]
+          );
+
+          expect(sprints.length).toEqual(1);
+        })
       });
     });
 
     describe("with 1 unstarted features with 8 points and velocity 3", function() {
-      it("should return an array with 3 items", function() {
-        const stories = [
-          {
-            id: 1,
-            position: "1",
-            state: "unstarted",
-            estimate: 8,
-            storyType: "feature"
-          },
-        ];
-        this.project.defaultVelocity = 3;
-        const sprints = Iteration.groupBySprints(
-          stories,
-          this.project,
-          this.initialSprintNumber
-        );
+      describe("when there are no past iterations", () => {
+        it("should return an array with 3 items", function() {
+          const stories = [
+            {
+              id: 1,
+              position: "1",
+              state: "unstarted",
+              estimate: 8,
+              storyType: "feature"
+            },
+          ];
+          this.project.defaultVelocity = 3;
+          const sprints = Iteration.groupBySprints(
+            stories,
+            this.project,
+            this.initialSprintNumber,
+            []
+          );
 
-        expect(sprints.length).toEqual(3);
+          expect(sprints.length).toEqual(3);
+        })
+      });
+      describe("when there are 3 past iterations", () => {
+        it("should return an array with 2 items", function() {
+          const stories = [
+            {
+              id: 1,
+              position: "1",
+              state: "unstarted",
+              estimate: 8,
+              storyType: "feature"
+            },
+          ];
+          this.project.defaultVelocity = 3;
+          const sprints = Iteration.groupBySprints(
+            stories,
+            this.project,
+            this.initialSprintNumber,
+            [{points: 4}, {points: 4}, {points: 4}]
+          );
+          expect(sprints.length).toEqual(2);
+        })
       });
     });
 
     describe("with started, finished and delivered stories", function() {
-      it("should return an array with 3 items", function() {
-        const stories = [
-          {
-            id: 1,
-            position: "1.5",
-            state: "accepted",
-            acceptedAt: "2018-09-03T16:36:20.811Z",
-            estimate: 1,
-            storyType: "feature"
-          },
-          {
-            id: 3,
-            position: "3.2",
-            state: "unstarted",
-            estimate: 2,
-            storyType: "feature"
-          },
-          {
-            id: 4,
-            position: "7.5",
-            state: "started",
-            startedAt: "2018-09-03T16:36:20.811Z",
-            estimate: 1,
-            storyType: "feature"
-          },
-          {
-            id: 5,
-            position: "3.7",
-            state: "finished",
-            estimate: 1,
-            storyType: "feature"
-          },
-          {
-            id: 6,
-            position: "4.9",
-            state: "delivered",
-            deliveredAt: "2018-09-03T16:36:20.811Z",
-            estimate: 1,
-            storyType: "feature"
-          },
-          {
-            id: 7,
-            position: "10",
-            state: "unstarted",
-            estimate: 1,
-            storyType: "feature"
-          }
-        ];
+      describe("when there are no past iterations", () => {
+        it("should return an array with 3 items", function() {
+          const stories = [
+            {
+              id: 1,
+              position: "1.5",
+              state: "accepted",
+              acceptedAt: "2018-09-03T16:36:20.811Z",
+              estimate: 1,
+              storyType: "feature"
+            },
+            {
+              id: 3,
+              position: "3.2",
+              state: "unstarted",
+              estimate: 2,
+              storyType: "feature"
+            },
+            {
+              id: 4,
+              position: "7.5",
+              state: "started",
+              startedAt: "2018-09-03T16:36:20.811Z",
+              estimate: 1,
+              storyType: "feature"
+            },
+            {
+              id: 5,
+              position: "3.7",
+              state: "finished",
+              estimate: 1,
+              storyType: "feature"
+            },
+            {
+              id: 6,
+              position: "4.9",
+              state: "delivered",
+              deliveredAt: "2018-09-03T16:36:20.811Z",
+              estimate: 1,
+              storyType: "feature"
+            },
+            {
+              id: 7,
+              position: "10",
+              state: "unstarted",
+              estimate: 1,
+              storyType: "feature"
+            }
+          ];
 
-        const sprints = Iteration.groupBySprints(
-          stories,
-          this.project,
-          this.initialSprintNumber
-        );
-        expect(sprints.length).toEqual(3);
+          const sprints = Iteration.groupBySprints(
+            stories,
+            this.project,
+            this.initialSprintNumber,
+            []
+          );
+          expect(sprints.length).toEqual(3);
+        });
       });
+      describe("when there are 3 past iterations", () => {
+        it("should return an array with 3 items", function() {
+          const stories = [
+            {
+              id: 1,
+              position: "1.5",
+              state: "accepted",
+              acceptedAt: "2018-09-03T16:36:20.811Z",
+              estimate: 1,
+              storyType: "feature"
+            },
+            {
+              id: 3,
+              position: "3.2",
+              state: "unstarted",
+              estimate: 2,
+              storyType: "feature"
+            },
+            {
+              id: 4,
+              position: "7.5",
+              state: "started",
+              startedAt: "2018-09-03T16:36:20.811Z",
+              estimate: 1,
+              storyType: "feature"
+            },
+            {
+              id: 5,
+              position: "3.7",
+              state: "finished",
+              estimate: 1,
+              storyType: "feature"
+            },
+            {
+              id: 6,
+              position: "4.9",
+              state: "delivered",
+              deliveredAt: "2018-09-03T16:36:20.811Z",
+              estimate: 1,
+              storyType: "feature"
+            },
+            {
+              id: 7,
+              position: "10",
+              state: "unstarted",
+              estimate: 1,
+              storyType: "feature"
+            }
+          ];
+          const sprints = Iteration.groupBySprints(
+            stories,
+            this.project,
+            this.initialSprintNumber,
+            [{points: 4}, {points: 4}, {points: 4}]
+          );
+          expect(sprints.length).toEqual(2);
+        })
+      });
+    });
+
+    describe("with 1 unstarted features with 2 points", () => {
+      describe("when there are 3 past iterations", () => {
+        it("should return an array with 2 items", function() {
+          const stories = [
+            {
+              id: 1,
+              position: "1",
+              state: "unstarted",
+              estimate: 2,
+              storyType: "feature"
+            },
+          ];
+          this.project.defaultVelocity = 3;
+          const sprints = Iteration.groupBySprints(
+            stories,
+            this.project,
+            this.initialSprintNumber,
+            [{points: 0}, {points: 0}, {points: 0}]
+          );
+          expect(sprints.length).toEqual(2);
+          expect(sprints[0].stories.length).toEqual(0);
+          expect(sprints[1].stories.length).toEqual(1);
+        })
+      })
     });
 
     describe('sprints number', () => {
@@ -259,7 +459,8 @@ describe("iteration", function() {
           const sprints = Iteration.groupBySprints(
             stories,
             project,
-            15
+            15,
+            []
           );
 
           expect(sprints[0].number).toBe(15);
@@ -269,7 +470,8 @@ describe("iteration", function() {
           const sprints = Iteration.groupBySprints(
             stories,
             project,
-            15
+            15,
+            []
           );
 
           expect(sprints[1].number).toBe(16);
@@ -279,7 +481,8 @@ describe("iteration", function() {
           const sprints = Iteration.groupBySprints(
             stories,
             project,
-            15
+            15,
+            []
           );
 
           expect(sprints[2].number).toBe(17);
@@ -314,7 +517,8 @@ describe("iteration", function() {
           const sprints = Iteration.groupBySprints(
             stories,
             project,
-            undefined
+            undefined,
+            []
           );
 
           expect(sprints[0].number).toBe(1);
@@ -357,7 +561,8 @@ describe("iteration", function() {
         const sprints = Iteration.groupBySprints(
           stories,
           project,
-          undefined
+          undefined,
+          []
         );
 
         it('first sprint starts today', () => {
@@ -420,7 +625,8 @@ describe("iteration", function() {
           sprints = Iteration.groupBySprints(
             stories,
             project,
-            3
+            3,
+            []
           );
         });
 
@@ -466,7 +672,8 @@ describe("iteration", function() {
         const sprints = Iteration.groupBySprints(
           stories,
           project,
-          undefined
+          undefined,
+          []
         );
 
         it('returns 5', () => {
@@ -494,7 +701,8 @@ describe("iteration", function() {
         const sprints = Iteration.groupBySprints(
           stories,
           project,
-          undefined
+          undefined,
+          []
         );
 
         it('returns 0', () => {
@@ -529,7 +737,8 @@ describe("iteration", function() {
         const sprints = Iteration.groupBySprints(
           stories,
           project,
-          undefined
+          undefined,
+          []
         );
 
         it('returns 2', () => {
@@ -568,7 +777,8 @@ describe("iteration", function() {
         const sprints = Iteration.groupBySprints(
           stories,
           project,
-          undefined
+          undefined,
+          []
         );
 
         it('returns 2', () => {

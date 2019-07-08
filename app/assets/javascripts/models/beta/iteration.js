@@ -63,14 +63,14 @@ const createSprint = (sprintNumber = 0, startDate = 0, isFiller = false, velocit
   remainingPoints: velocity
 });
 
-const createFillerSprints = (size, initialNumber, project) => {
+const createFillerSprints = (size, initialNumber, project, velocity) => {
   return _.times(size, (i) => {
     const sprintNumber = initialNumber + i;
     const sprint = createSprint(
       sprintNumber,
       getDateForIterationNumber(sprintNumber, project),
       true,
-      project.defaultVelocity
+      velocity
     );
     return sprint;
   })
@@ -87,20 +87,20 @@ const calculateFillerSprintsQuantity = (storyPoints, velocity) => {
   return Math.ceil((storyPoints - velocity) / velocity);
 };
 
-const handleSprintsOverflow = (project, sprints, storyPoints, initialSprintNumber) => {
-  const overflow = calculateFillerSprintsQuantity(storyPoints, project.defaultVelocity);
+const handleSprintsOverflow = (project, sprints, storyPoints, initialSprintNumber, velocity) => {
+  const overflow = calculateFillerSprintsQuantity(storyPoints, velocity);
   const hasOverflown = overflow > 0;
   const currentSprintNumber = sprints.length + initialSprintNumber;
   if (hasOverflown) {
     return [
       ...sprints,
-      ...createFillerSprints(overflow, currentSprintNumber, project)
+      ...createFillerSprints(overflow, currentSprintNumber, project, velocity)
     ];
   }
   return sprints;
 };
 
-const addStoryToSprint = (project, sprints, index, story) => {
+const addStoryToSprint = (project, sprints, index, story, velocity) => {
   sprints[index].stories.push(story);
   sprints[index].points += Story.getPoints(story);
   const lastValidSprintIndex = sprints.length - 2;
@@ -117,7 +117,7 @@ const addStoryToSprint = (project, sprints, index, story) => {
     sprints,
     Story.getPoints(story),
     index,
-    project.defaultVelocity,
+    velocity,
     previousFillerSprintsQuantity
   );
 
@@ -134,21 +134,33 @@ const fillRemainingPoints = (sprints, storyPoints, index, velocity, previousFill
   }
 };
 
-const createFirstSprint = (sprints, project, initialSprintNumber) => {
+const createFirstSprint = (sprints, project, initialSprintNumber, velocity) => {
   sprints.push(createSprint(
     initialSprintNumber,
     getDateForIterationNumber(initialSprintNumber, project),
     undefined,
-    project.defaultVelocity,
+    velocity
   ));
 };
 
-const addToSprintFromBacklog = (sprints, project, story) => {
+const sprintVelocity = (project, pastIterations) => {
+  return pastIterations.length < 3
+    ? project.defaultVelocity
+    : pastAverageVelocity(pastIterations)
+}
+
+const pastAverageVelocity = (pastIterations) => {
+  const points = pastIterations.slice(-3)
+  const result = points.reduce((sum, iteration) => sum + iteration.points, 0) / 3
+  return Math.floor(result) || 1
+}
+
+const addToSprintFromBacklog = (sprints, project, story, velocity) => {
   const sprintIndex = sprints.length && sprints.length - 1;
   const hasSpace = canTakeStory(sprints[sprintIndex], Story.getPoints(story));
 
   if (hasSpace) {
-    return addStoryToSprint(project, sprints, sprintIndex, story);
+    return addStoryToSprint(project, sprints, sprintIndex, story, velocity);
   }
 
   const iterationNumber = getNextIterationNumber(sprints);
@@ -157,13 +169,15 @@ const addToSprintFromBacklog = (sprints, project, story) => {
     iterationNumber,
     getDateForIterationNumber(iterationNumber, project),
     undefined,
-    project.defaultVelocity
+    velocity
   );
 
-  return addStoryToSprint(project, sprints, sprintIndex + 1, story);
+  return addStoryToSprint(project, sprints, sprintIndex + 1, story, velocity);
 };
 
-export const groupBySprints = (stories = [], project, initialSprintNumber = 1) => {
+export const groupBySprints = (stories = [], project, initialSprintNumber = 1, pastIterations) => {
+  const velocity = sprintVelocity(project, pastIterations)
+
   return stories.reduce((sprints, story) => {
     const firstSprintIndex = 0;
     const isFromSprintInProgress = !Story.isUnstarted(story);
@@ -172,18 +186,19 @@ export const groupBySprints = (stories = [], project, initialSprintNumber = 1) =
       project,
       sprints,
       Story.getPoints(story),
-      initialSprintNumber
+      initialSprintNumber,
+      velocity
     );
 
     if (sprints.length === 0) {
-      createFirstSprint(sprints, project, initialSprintNumber);
+      createFirstSprint(sprints, project, initialSprintNumber, velocity);
     }
 
     if (isFromSprintInProgress) {
-      return addStoryToSprint(project, sprints, firstSprintIndex, story);
+      return addStoryToSprint(project, sprints, firstSprintIndex, story, velocity);
     }
 
-    return addToSprintFromBacklog(sprints, project, story);
+    return addToSprintFromBacklog(sprints, project, story, velocity);
   }, []);
 };
 
