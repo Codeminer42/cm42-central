@@ -198,6 +198,7 @@ en:
         story_type:           'Story type'
         state:                'State'
         accepted_at:          'Accepted at'
+        updated_at:           'Updated at'
         position:             'Position'
         labels:               'Labels'
         requested_by:         'Requested by'

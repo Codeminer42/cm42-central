@@ -188,6 +188,7 @@ es:
         story_type:           'Tipo de historia'
         state:                'Estado'
         accepted_at:          'Aceptada en'
+        updated_at:           'Actualizado en'
         position:             'Posición'
         labels:               'Etiquetas'
         requested_by:         'Solicitada por'

@@ -196,6 +196,7 @@ pt-BR:
         story_type:           'Tipo da história'
         state:                'Estado'
         accepted_at:          'Aceita em'
+        updated_at:           'Atualizado em'
         position:             'Posição'
         labels:               'Etiquetas'
         requested_by:         'Solicitada por'
