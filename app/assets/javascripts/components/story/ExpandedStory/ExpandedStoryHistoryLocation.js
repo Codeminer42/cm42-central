@@ -5,7 +5,7 @@ import { editingStoryPropTypesShape } from '../../../models/beta/story';
 
 class ExpandedStoryHistoryLocation extends React.Component {
   render() {
-    const { story, onClone } = this.props;
+    const { story, onClone, showHistory } = this.props;
 
     return (
       <div className="col-xs-12 form-group input-group input-group-sm">
@@ -34,6 +34,13 @@ class ExpandedStoryHistoryLocation extends React.Component {
           >
             ID
           </Clipboard>
+          <button
+            className='btn btn-default'
+            title={I18n.t('story.events.view_history')}
+            onClick={showHistory}
+          >
+            <i className="mi md-18">history</i>
+          </button>
           <button
             className="btn btn-default clone-story"
             title={I18n.t('story.events.clone')}

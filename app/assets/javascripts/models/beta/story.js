@@ -115,6 +115,12 @@ export const updateStory = (story, newAttributes) => ({
   ...newAttributes
 });
 
+export const getHistory = async (storyId, projectId) => {
+  const { data } = await httpService
+    .get(`/projects/${projectId}/stories/${storyId}/activities`)
+  return data
+}
+
 export const storyFailure = (story, error) => ({
   ...story,
   _editing: setLoadingValue(story._editing, false),
@@ -251,7 +257,7 @@ export const canSave = (story) =>
 export const canDelete = (story) =>
   !isAccepted(story) && !isNew(story);
 
-export const canEdit = (story) => 
+export const canEdit = (story) =>
   !isAccepted(story)
 
 export const withoutNewStory = (stories) =>

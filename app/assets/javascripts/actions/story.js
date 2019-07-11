@@ -11,6 +11,12 @@ export const addStory = (story) => ({
   story
 });
 
+export const updateHistory = (id, history) => ({
+  type: actionTypes.UPDATE_HISTORY,
+  id,
+  history
+})
+
 export const cloneStory = (story) => ({
   type: actionTypes.CLONE_STORY,
   story
@@ -52,6 +58,12 @@ export const setLoadingStory = (id) => ({
   type: actionTypes.SET_LOADING_STORY,
   id
 });
+
+export const showHistory = (story) =>
+  async (dispatch, getState, { Story }) => {
+    const history = await Story.getHistory(story.id, story.projectId)
+    dispatch(updateHistory(story.id, history))
+  }
 
 export const updateCollapsedStory = (storyId, projectId, newAttributes) =>
   async (dispatch, getState, { Story }) => {
@@ -123,7 +135,7 @@ export const deleteStory = (storyId, projectId) =>
     try {
       const { stories } = getState();
       const storyTitle = stories.find(story => story.id === storyId).title;
-      
+
       await Story.deleteStory(storyId, projectId);
 
       dispatch(deleteStorySuccess(storyId));

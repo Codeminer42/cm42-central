@@ -14,6 +14,7 @@ export default keyMirror({
   CREATE_STORY: null,
   ADD_STORY: null,
   CLONE_STORY: null,
+  UPDATE_HISTORY: null,
   TOGGLE_STORY: null,
   EDIT_STORY: null,
   UPDATE_STORY: null,
