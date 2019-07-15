@@ -11,10 +11,22 @@ export const addStory = (story) => ({
   story
 });
 
-export const updateHistory = (id, history) => ({
-  type: actionTypes.UPDATE_HISTORY,
-  id,
-  history
+export const loadHistory = (title) => ({
+  type: actionTypes.LOAD_HISTORY,
+  title
+})
+
+export const receiveHistory = (activities, title) => ({
+  type: actionTypes.RECEIVE_HISTORY,
+  activities,
+})
+
+export const closeHistory = () => ({
+  type: actionTypes.CLOSE_HISTORY
+})
+
+export const errorLoadHistory = () => ({
+  type: actionTypes.RECEIVE_HISTORY_ERROR
 })
 
 export const cloneStory = (story) => ({
@@ -59,16 +71,26 @@ export const setLoadingStory = (id) => ({
   id
 });
 
-export const showHistory = (story) =>
+export const showHistory = (storyId) =>
   async (dispatch, getState, { Story }) => {
-    const history = await Story.getHistory(story.id, story.projectId)
-    dispatch(updateHistory(story.id, history))
+    const { stories } = getState();
+    const story = Story.findById(stories, storyId)
+    dispatch(loadHistory(story.title))
+    try {
+      const activities = await Story.getHistory(story.id, story.projectId)
+      dispatch(receiveHistory(activities, story.title))
+    }
+    catch (error) {
+      dispatch(sendErrorNotification(error))
+      return dispatch(errorLoadHistory())
+    }
   }
 
 export const updateCollapsedStory = (storyId, projectId, newAttributes) =>
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
-    const story = stories.find((story) => story.id === storyId);
+    const story = Story.findById(stories, storyId);
+
 
     const newStory = { ...story, ...newAttributes };
 
@@ -90,7 +112,7 @@ export const updateCollapsedStory = (storyId, projectId, newAttributes) =>
 export const saveStory = (storyId, projectId, options) =>
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
-    const story = stories.find((story) => story.id === storyId);
+    const story = Story.findById(stories, storyId)
 
     dispatch(setLoadingStory(story.id));
 
@@ -134,7 +156,7 @@ export const deleteStory = (storyId, projectId) =>
     dispatch(setLoadingStory(storyId))
     try {
       const { stories } = getState();
-      const storyTitle = stories.find(story => story.id === storyId).title;
+      const storyTitle = Story.findById(stories, storyId).title;
 
       await Story.deleteStory(storyId, projectId);
 

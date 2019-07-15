@@ -88,6 +88,10 @@ export const states = [
   'rejected'
 ];
 
+export const findById = (stories, id) => {
+  return stories.find( story => story.id === id)
+}
+
 export const update = async (story, projectId, options) => {
   const newStory = serialize(story);
 

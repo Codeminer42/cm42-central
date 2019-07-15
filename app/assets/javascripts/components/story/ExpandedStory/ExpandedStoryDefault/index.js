@@ -37,7 +37,7 @@ export const ExpandedStoryDefault = ({
         ? <ExpandedStoryHistoryLocation
           story={story}
           onClone={() => onClone(story._editing)}
-          showHistory={() => showHistory(story._editing)}
+          showHistory={() => showHistory(story.id)}
         />
         : null
     }

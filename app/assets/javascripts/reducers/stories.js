@@ -23,11 +23,8 @@ const storiesReducer = (state = initialState, action) => {
       return replaceOrAddNewStory(state, newStory);
     case actionTypes.ADD_STORY:
       return replaceOrAddNewStory(state, action.story);
-    case actionTypes.UPDATE_HISTORY:
-      return state.map(updateIfSameId(action.id, story => updateStory(story, {history: action.history})))
     case actionTypes.CLONE_STORY:
       const clonedStory = cloneStory(action.story);
-
       return replaceOrAddNewStory(state, clonedStory);
     case actionTypes.TOGGLE_STORY:
       if (action.id === null) {
