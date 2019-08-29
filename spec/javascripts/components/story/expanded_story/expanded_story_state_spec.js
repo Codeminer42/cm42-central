@@ -10,10 +10,10 @@ describe('<ExpandedStoryState />', () => {
     const story = { state: 'started', _editing: { state: 'started' } };
 
     const wrapper = mount(
-      <ExpandedStoryState 
-        story={story} 
-        onEdit={onEditSpy} 
-        disabled={false} 
+      <ExpandedStoryState
+        story={story}
+        onEdit={onEditSpy}
+        disabled={false}
       />
     );
 
@@ -30,8 +30,8 @@ describe('<ExpandedStoryState />', () => {
         };
 
         const wrapper = shallow(
-          <ExpandedStoryState 
-            story={story} 
+          <ExpandedStoryState
+            story={story}
             onEdit={onEditSpy}
             disabled={false}
           />
@@ -55,10 +55,10 @@ describe('<ExpandedStoryState />', () => {
       const onEdit = sinon.spy();
 
       const wrapper = shallow(
-        <ExpandedStoryState 
-          story={story} 
-          onEdit={onEdit} 
-          disabled={false} 
+        <ExpandedStoryState
+          story={story}
+          onEdit={onEdit}
+          disabled={false}
         />
       );
       const select = wrapper.find('select');
@@ -74,10 +74,10 @@ describe('<ExpandedStoryState />', () => {
       const onEditSpy = sinon.spy();
       const story = { state: 'started', _editing: { state: 'started' } };
       const wrapper = mount(
-        <ExpandedStoryState 
-          story={story} 
+        <ExpandedStoryState
+          story={story}
           onEdit={onEditSpy}
-          disabled={true} 
+          disabled={true}
         />
       );
       const select = wrapper.find('select');
@@ -90,10 +90,10 @@ describe('<ExpandedStoryState />', () => {
       const onEditSpy = sinon.spy();
       const story = { state: 'started', _editing: { state: 'started' } };
       const wrapper = mount(
-        <ExpandedStoryState 
-          story={story} 
+        <ExpandedStoryState
+          story={story}
           onEdit={onEditSpy}
-          disabled={false} 
+          disabled={false}
         />
       );
       const select = wrapper.find('select');
@@ -101,4 +101,36 @@ describe('<ExpandedStoryState />', () => {
     });
   });
 
+  describe("When change estimate", () => {
+    describe("to no estimate", () => {
+      it("disables state select", () => {
+          const story = { _editing: { estimate: '', storyType: 'feature' } };
+
+          const wrapper = shallow(
+            <ExpandedStoryState
+              story={story}
+            />
+          );
+
+          const select = wrapper.find('select');
+
+          expect(select.prop('disabled')).toBe(true);
+      });
+    });
+
+    describe("to a number", () => {
+      it("doesn't disable state select when estimate is a number", () => {
+        const story = { _editing: { estimate: !isNaN, storyType: 'feature' } };
+
+        const wrapper = shallow(
+          <ExpandedStoryState
+              story={story}
+          />
+        );
+        const select = wrapper.find('select');
+
+        expect(select.prop('disabled')).toBe(false);
+      });
+    });
+  });
 });
