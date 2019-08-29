@@ -15,14 +15,14 @@ const History = (props) => {
   return <div className="History"> {result} </div>
 }
 
-const Header = props =>
+export const Header = props =>
   <div className="header">
     <div className="title">{props.title}</div>
     <div className="date">{props.date}</div>
   </div>
 
 
-const Changes = props => {
+export const Changes = props => {
   const result = Object.keys(props.changes).map(key => {
     return (
       <div key={key} className="info">
