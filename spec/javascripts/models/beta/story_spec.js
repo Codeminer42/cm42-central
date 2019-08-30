@@ -191,12 +191,12 @@ describe('Story model', function () {
           {
             id: 10,
             storyType: 'feature',
-            estimate: '',
+            estimate: null,
           },
           {
             id: 20,
             storyType: 'bug',
-            estimate: '',
+            estimate: null,
           },
           {
             id: 30,

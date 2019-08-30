@@ -36,7 +36,7 @@ export const compareStartedAt = (a, b) => {
 };
 
 export const isUnestimatedFeature = story => {
-  return (isNaN(story.estimate) || story.estimate === '') && story.storyType === storyTypes.FEATURE;
+  return (story.estimate === null || story.estimate === '') && story.storyType === storyTypes.FEATURE;
 };
 
 export const isFeature = story => {
