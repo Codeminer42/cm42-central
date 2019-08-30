@@ -1,7 +1,7 @@
 import * as actions from '../../../app/assets/javascripts/actions/story';
 import actionTypes from '../../../app/assets/javascripts/actions/actionTypes';
 import history from '../support/factories/historyFactory';
-import storie from '../support/factories/storyFactory';
+import story from '../support/factories/storyFactory';
 
 describe('History Actions', () => {
   it('Should load a new history when called showHistory action', async () => {
@@ -10,13 +10,13 @@ describe('History Actions', () => {
     const fakeGetState = sinon.stub();
 
     const FakeStory = {
-      findById: sinon.stub().returns(storie()),
+      findById: sinon.stub().returns(story()),
       getHistory: sinon.stub().resolves(history())
     };
 
-    fakeGetState.returns({ stories: [storie()] });
+    fakeGetState.returns({ stories: [story()] });
 
-    await actions.showHistory(storie().id)(fakeDispatch, fakeGetState, {
+    await actions.showHistory(story().id)(fakeDispatch, fakeGetState, {
       Story: FakeStory
     });
 
@@ -25,15 +25,15 @@ describe('History Actions', () => {
 
   it('Should receive a history when called showHistory action', async () => {
     const FakeStory = {
-      findById: sinon.stub().returns(storie()),
+      findById: sinon.stub().returns(story()),
       getHistory: sinon.stub().resolves(history())
     };
 
     const fakeDispatch = sinon.stub().resolves({});
 
-    const fakeGetState = sinon.stub().returns({ stories: [storie()] });
+    const fakeGetState = sinon.stub().returns({ stories: [story()] });
 
-    await actions.showHistory(storie().id)(fakeDispatch, fakeGetState, {
+    await actions.showHistory(story().id)(fakeDispatch, fakeGetState, {
       Story: FakeStory
     });
 
@@ -44,15 +44,15 @@ describe('History Actions', () => {
 
   it('Should dispatch errorLoadHistory when called showHistory action', async () => {
     const FakeStory = {
-      findById: sinon.stub().returns(storie()),
+      findById: sinon.stub().returns(story()),
       getHistory: sinon.stub().rejects('error')
     };
 
     const fakeDispatch = sinon.stub().resolves({});
 
-    const fakeGetState = sinon.stub().returns({ stories: [storie()] });
+    const fakeGetState = sinon.stub().returns({ stories: [story()] });
 
-    await actions.showHistory(storie().id)(fakeDispatch, fakeGetState, {
+    await actions.showHistory(story().id)(fakeDispatch, fakeGetState, {
       Story: FakeStory
     });
     expect(fakeDispatch).toHaveBeenCalledWith(actions.errorLoadHistory());

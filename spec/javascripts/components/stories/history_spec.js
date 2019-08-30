@@ -7,7 +7,11 @@ import History, {
 import HistoryFactory from '../../support/factories/historyFactory';
 
 describe('<History />', () => {
-  const wrapper = mount(<History history={HistoryFactory()} />);
+  let wrapper;
+
+  beforeEach(() => {
+    wrapper = mount(<History history={HistoryFactory()} />);
+  });
 
   it('Should render a History', () => {
     expect(wrapper.find('.history-activity')).toExist();
@@ -21,7 +25,7 @@ describe('<History />', () => {
         wrapper
           .find(Changes)
           .at(1)
-          .props().changes
+          .prop('changes')
       ).length
     ).toBe(6);
   });
@@ -33,13 +37,13 @@ describe('<History />', () => {
       wrapper
         .find(Header)
         .at(0)
-        .props().title
+        .prop('title')
     ).toBe(I18n.t(`activity.actions.create`));
     expect(
       wrapper
         .find(Header)
         .at(0)
-        .props().date
+        .prop('date')
     ).toBe('2019/08/27 14:18:00 -0300');
   });
 });
