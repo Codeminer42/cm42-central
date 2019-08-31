@@ -2,7 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const History = ({ history }) => {
-  const result = history.map(item => {
+  const array = history.sort(
+    (a, b) => new Date(b.activity.created_at) - new Date(a.activity.created_at)
+  );
+  const result = array.map(item => {
     return (
       <div key={item.activity.id} className="history-activity">
         <Header

@@ -25,7 +25,7 @@ describe("<History />", () => {
       Object.keys(
         wrapper
           .find(Changes)
-          .at(1)
+          .at(0)
           .prop("changes")
       ).length
     ).toBe(6);
@@ -37,13 +37,13 @@ describe("<History />", () => {
     expect(
       wrapper
         .find(Header)
-        .at(0)
+        .at(1)
         .prop("title")
     ).toBe(I18n.t(`activity.actions.create`));
     expect(
       wrapper
         .find(Header)
-        .at(0)
+        .at(1)
         .prop("date")
     ).toBe("2019/08/27 14:18:00 -0300");
   });
