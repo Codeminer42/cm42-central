@@ -3,6 +3,11 @@ es:
 
   welcome: "Bievenido al CM42 Central"
 
+  date:
+    formats:
+      long: "%d/%m/%Y %H:%M:%S"
+      short: "%d %b %Y"
+
   logout:  "Terminar sesión"
   login:   "Iniciar sesión"
   sign_up:  "Regístrate"

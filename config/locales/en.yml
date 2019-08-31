@@ -6,6 +6,11 @@ en:
 
   welcome: "Welcome to CM42 Central"
 
+  date:
+    formats:
+      long: "%m/%d/%Y %H:%M:%S"
+      short: "%b %d %Y"
+
   logout:  "Log out"
   login:   "Log in"
   sign_up:  "Sign up"

@@ -3,6 +3,11 @@ pt-BR:
 
   welcome: "Bem-vindo ao CM42 Central"
 
+  date:
+    formats:
+      long: "%d/%m/%Y %H:%M:%S"
+      short: "%d %b %Y"
+
   logout:  "Sair"
   login:   "Entrar"
   sign_up:  "Inscreva-se"
