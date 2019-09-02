@@ -11,12 +11,11 @@ describe("<History />", () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = mount(<History history={HistoryFactory()} />);
+    wrapper = shallow(<History history={HistoryFactory()} />);
   });
 
   it("Should render a History", () => {
     expect(wrapper.find(".history-activity")).toExist();
-    expect("history" in wrapper.props()).toEqual(true);
   });
 
   it("Should render a list of Changes", () => {
