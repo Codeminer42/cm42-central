@@ -15,7 +15,7 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "@babel/runtime": "^7.5.5",
-    "@rails/webpacker": "^4.0.7",
+    "@rails/webpacker": "4.0.7",
     "autoprefixer": "^9.6.1",
     "axios": "^0.19.0",
     "babel-loader": "^8.0.6",

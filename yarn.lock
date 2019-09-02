@@ -846,7 +846,7 @@
   resolved "https://registry.yarnpkg.com/@icons/material/-/material-0.2.4.tgz#e90c9f71768b3736e76d7dd6783fc6c2afa88bc8"
   integrity sha512-QPcGmICAPbGLGb6F/yNf/KzKqvFx8z5qx3D1yFqVAjoFmXK35EgyW+cJ57Te3CNsmzblwtzakLGFqHPqrfb4Tw==
 
-"@rails/webpacker@^4.0.7":
+"@rails/webpacker@4.0.7":
   version "4.0.7"
   resolved "https://registry.yarnpkg.com/@rails/webpacker/-/webpacker-4.0.7.tgz#268571bf974e78ce57eca9fa478f5bd97fd5182c"
   integrity sha512-nx3inMv7euO0UsD0voJ+n3/z1u56PuprW322b67TLuDmOHRpT7yUjBJULMisVKA6PVJw4DwiG9Kbf8ZGu53+tw==
