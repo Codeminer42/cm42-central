@@ -140,6 +140,15 @@ export const editStory = (story, newAttributes) => {
   newStory.estimate = isFeature(newStory) ? newStory.estimate : '';
   newStory.labels = Label.uniqueLabels(newStory.labels);
 
+  const handleState = (newStory) => {
+    if (newStory.state === "unscheduled" && typeof newStory.estimate === "number") return "unstarted";
+    if (newStory.state === "unstarted" && isUnestimatedFeature(newStory)) return "unscheduled";
+    if (!isFeature(newStory) && newStory.state === "unscheduled") return "unstarted";
+    return newStory.state;
+  }
+
+  newStory.state = handleState(newStory);
+
   return {
     ...story,
     _editing: {
