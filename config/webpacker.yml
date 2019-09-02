@@ -4,6 +4,7 @@ default: &default
   source_path: app/javascript
   source_entry_path: packs
   public_output_path: packs
+  check_yarn_integrity: false
   manifest: 
     host: http://127.0.0.1:3808
 

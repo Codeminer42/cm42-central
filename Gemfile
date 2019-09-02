@@ -59,7 +59,7 @@ gem 'sinatra', require: nil
 gem 'uglifier', '>= 2.5.3'
 gem 'user_impersonate2', require: 'user_impersonate'
 gem 'virtus'
-gem 'webpacker', '4.0.7'
+gem 'webpacker', '>= 4.0.x'
 gem 'pusher'
 
 source 'https://rails-assets.org' do
