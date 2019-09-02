@@ -104,7 +104,7 @@ describe('<ExpandedStoryState />', () => {
   describe("When change estimate", () => {
     describe("to no estimate", () => {
       it("disables state select", () => {
-          const story = { _editing: { estimate: '', storyType: 'feature' } };
+          const story = { _editing: { estimate: '', storyType: 'feature', state: 'unscheduled' } };
 
           const wrapper = shallow(
             <ExpandedStoryState
@@ -120,7 +120,7 @@ describe('<ExpandedStoryState />', () => {
 
     describe("to a number", () => {
       it("doesn't disable state select when estimate is a number", () => {
-        const story = { _editing: { estimate: !isNaN, storyType: 'feature' } };
+        const story = { _editing: { estimate: !isNaN, storyType: 'feature', state: 'unstarted' } };
 
         const wrapper = shallow(
           <ExpandedStoryState
