@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as Story from '../../../models/beta/story';
-import { editingStoryPropTypesShape } from '../../../models/beta/story';
+import { editingStoryPropTypesShape, isUnestimatedFeature } from '../../../models/beta/story';
 import ExpandedStorySection from './ExpandedStorySection';
 
 const ExpandedStoryState = ({ story, onEdit, disabled }) =>
@@ -12,7 +12,7 @@ const ExpandedStoryState = ({ story, onEdit, disabled }) =>
       value={story._editing.state}
       className="form-control input-sm"
       onChange={(event) => onEdit(event.target.value)}
-      disabled={disabled}
+      disabled={disabled || isUnestimatedFeature(story._editing)}
     >
       {
         Story.states.map((state) => (

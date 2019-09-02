@@ -4,6 +4,16 @@ import { isFeature, editingStoryPropTypesShape } from '../../../models/beta/stor
 import { projectPropTypesShape } from '../../../models/beta/project';
 import ExpandedStorySection from './ExpandedStorySection';
 
+const extractValue = (event) => {
+  const parsedValue = parseInt(event.target.value);
+
+  if(isNaN(parsedValue)) {
+    return null;
+  }
+
+  return parsedValue
+}
+
 const ExpandedStoryEstimate = ({ project, story, onEdit, disabled }) =>
   <ExpandedStorySection
     title={I18n.t('activerecord.attributes.story.estimate')}
@@ -11,7 +21,7 @@ const ExpandedStoryEstimate = ({ project, story, onEdit, disabled }) =>
     <select
       value={story._editing.estimate}
       className="form-control input-sm"
-      onChange={(event) => onEdit(parseInt(event.target.value))}
+      onChange = {(event) => onEdit(extractValue(event))}
       disabled={disabled || !isFeature(story._editing)}
     >
       <option value=''>
