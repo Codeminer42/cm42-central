@@ -131,6 +131,13 @@ export const toggleStory = (story) => {
   };
 };
 
+const stateFor = (story) => {
+  if (story.state === "unscheduled" && typeof story.estimate === "number") return "unstarted";
+  if (story.state === "unstarted" && isUnestimatedFeature(story)) return "unscheduled";
+  if (!isFeature(story) && story.state === "unscheduled") return "unstarted";
+  return story.state;
+}
+
 export const editStory = (story, newAttributes) => {
   const newStory = {
     ...story._editing,
@@ -140,14 +147,7 @@ export const editStory = (story, newAttributes) => {
   newStory.estimate = isFeature(newStory) ? newStory.estimate : '';
   newStory.labels = Label.uniqueLabels(newStory.labels);
 
-  const handleState = (newStory) => {
-    if (newStory.state === "unscheduled" && typeof newStory.estimate === "number") return "unstarted";
-    if (newStory.state === "unstarted" && isUnestimatedFeature(newStory)) return "unscheduled";
-    if (!isFeature(newStory) && newStory.state === "unscheduled") return "unstarted";
-    return newStory.state;
-  }
-
-  newStory.state = handleState(newStory);
+  newStory.state = stateFor(newStory);
 
   return {
     ...story,
