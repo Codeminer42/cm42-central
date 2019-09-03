@@ -213,6 +213,7 @@ pt-BR:
         documents:            'Anexos'
         tasks:                'Tarefas'
         release_date:         'Data de Lançamento'
+        delivered_at:         'Entregue em'
       task:
         name:                 'Nome'
       user:

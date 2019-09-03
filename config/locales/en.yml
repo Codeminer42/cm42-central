@@ -214,6 +214,7 @@ en:
         owned_by_id:          'Owned by id'
         documents:            'Attachments'
         release_date:         'Release Date'
+        delivered_at:         'Delivered at'
       user:
         name:                 'Full Name'
         username:             'Username'
