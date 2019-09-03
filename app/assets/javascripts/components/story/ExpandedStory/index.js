@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ExpandedStoryControls from './ExpandedStoryControls';
 import ExpandedStoryDefault from './ExpandedStoryDefault';
 import ExpandedStoryRelease from './ExpandedStoryRelease';
-import { editStory, saveStory, deleteStory, cloneStory } from '../../../actions/story';
+import { editStory, saveStory, deleteStory, cloneStory, showHistory } from '../../../actions/story';
 import { connect } from 'react-redux';
 import * as Story from '../../../models/beta/story';
 import { projectPropTypesShape } from '../../../models/beta/project';
@@ -26,6 +26,7 @@ export class ExpandedStory extends React.Component {
       editStory,
       saveStory,
       cloneStory,
+      showHistory,
       deleteStory,
       project,
       className,
@@ -67,6 +68,7 @@ export class ExpandedStory extends React.Component {
               onEdit={(newAttributes) => editStory(story.id, newAttributes)}
               project={project}
               onClone={cloneStory}
+              showHistory={showHistory}
               disabled={disabled}
             />
         }
@@ -80,6 +82,7 @@ ExpandedStory.propTypes = {
   editStory: PropTypes.func.isRequired,
   saveStory: PropTypes.func.isRequired,
   cloneStory: PropTypes.func.isRequired,
+  showHistory: PropTypes.func.isRequired,
   deleteStory: PropTypes.func.isRequired,
   onToggle: PropTypes.func.isRequired,
   project: projectPropTypesShape.isRequired,
@@ -95,6 +98,7 @@ export default connect(
     editStory,
     saveStory,
     deleteStory,
-    cloneStory
+    cloneStory,
+    showHistory
   }
 )(ExpandedStory);

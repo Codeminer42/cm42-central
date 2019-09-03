@@ -3,6 +3,11 @@ es:
 
   welcome: "Bievenido al CM42 Central"
 
+  date:
+    formats:
+      long: "%d/%m/%Y %H:%M:%S"
+      short: "%d %b %Y"
+
   logout:  "Terminar sesión"
   login:   "Iniciar sesión"
   sign_up:  "Regístrate"
@@ -187,13 +192,19 @@ es:
         estimate:             'La estimación'
         story_type:           'Tipo de historia'
         state:                'Estado'
+        started_at:           'Empezó a las'
         accepted_at:          'Aceptada en'
+        updated_at:           'Actualizado en'
         position:             'Posición'
         labels:               'Etiquetas'
         requested_by:         'Solicitada por'
         owned_by:             'Propiedad de'
+        owned_by_name:        'Propiedad de'
+        owned_by_initials:    'Propiedad de'
+        owned_by_id:          'Propiedad de id'
         documents:            'Archivos adjuntos'
         release_date:         'Fecha de lanzamiento'
+        delivered_at:         'Entregado en'
       user:
         name:                 'Nombre completo'
         username:             'Nombre de usuario'

@@ -359,6 +359,13 @@ describe('Story model', function () {
     });
   });
 
+  describe('findById', () => {
+    it('return the story by id', () => {
+      const stories = [{ id: 1 }, { id: 2 }, { id: 3 }];
+      expect(Story.findById(stories, 1)).toEqual(stories[0]);
+    });
+  });
+
   describe('storyFailure', () => {
     it('sets loading to false', () => {
       const story = { _editing: { loading: true }, errors: [] }

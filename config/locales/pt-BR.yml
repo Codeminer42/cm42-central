@@ -3,6 +3,11 @@ pt-BR:
 
   welcome: "Bem-vindo ao CM42 Central"
 
+  date:
+    formats:
+      long: "%d/%m/%Y %H:%M:%S"
+      short: "%d %b %Y"
+
   logout:  "Sair"
   login:   "Entrar"
   sign_up:  "Inscreva-se"
@@ -195,14 +200,20 @@ pt-BR:
         estimate:             'Estimativa'
         story_type:           'Tipo da história'
         state:                'Estado'
+        started_at:           'Iniciada em'
         accepted_at:          'Aceita em'
+        updated_at:           'Atualizado em'
         position:             'Posição'
         labels:               'Etiquetas'
         requested_by:         'Solicitada por'
         owned_by:             'Pertence à'
+        owned_by_name:        'Pertence à'
+        owned_by_initials:    'Pertence à'
+        owned_by_id:          'Pertece ao id'
         documents:            'Anexos'
         tasks:                'Tarefas'
         release_date:         'Data de Lançamento'
+        delivered_at:         'Entregue em'
       task:
         name:                 'Nome'
       user:

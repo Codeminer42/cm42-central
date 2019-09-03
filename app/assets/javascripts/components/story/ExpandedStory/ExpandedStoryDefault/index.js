@@ -24,8 +24,8 @@ import ExpandedStoryOwnedBy from '../ExpandedStoryOwnedBy';
 export const ExpandedStoryDefault = ({
   titleRef,
   story, users, project,
-  onEdit, onClone, disabled,
-  addLabel, removeLabel,
+  onEdit, onClone, showHistory,
+  disabled, addLabel, removeLabel,
   createNote, deleteNote,
   createTask, deleteTask, toggleTask,
   setLoadingStory, storyFailure,
@@ -37,6 +37,7 @@ export const ExpandedStoryDefault = ({
         ? <ExpandedStoryHistoryLocation
           story={story}
           onClone={() => onClone(story._editing)}
+          showHistory={() => showHistory(story.id)}
         />
         : null
     }
@@ -117,7 +118,7 @@ export const ExpandedStoryDefault = ({
             onDelete={(documentId) => removeAttachment(story.id, documentId)}
             disabled={disabled}
           />
-          
+
           <ExpandedStoryNotes
             story={story}
             projectId={project.id}
@@ -147,6 +148,7 @@ ExpandedStoryDefault.propTypes = {
   setLoadingStory: PropTypes.func.isRequired,
   storyFailure: PropTypes.func.isRequired,
   onClone: PropTypes.func.isRequired,
+  showHistory: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired
 };
 

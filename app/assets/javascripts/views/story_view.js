@@ -789,9 +789,9 @@ const StoryView = FormView.extend({
       );
       const addNoteButton = $noteForm.find('button')
       const noteTextArea = $noteForm.find('textarea')
-      
+
       addNoteButton.attr('disabled', 'disabled')
-      
+
       noteTextArea.atwho({
         at: '@',
         data: window.projectView.usernames()
@@ -800,9 +800,9 @@ const StoryView = FormView.extend({
       noteTextArea.keyup(function() {
         if ($.trim(noteTextArea.val())) {
           addNoteButton.removeAttr('disabled');
-        } else { 
+        } else {
           addNoteButton.attr('disabled', 'disabled');
-        }    
+        }
       });
     }
   },
@@ -862,9 +862,9 @@ const StoryView = FormView.extend({
       taskTextArea.keyup(function() {
         if ($.trim(taskTextArea.val())) {
           addTaskButton.removeAttr('disabled');
-        } else { 
+        } else {
           addTaskButton.attr('disabled', 'disabled');
-        }    
+        }
       });
     }
   },

@@ -88,6 +88,10 @@ export const states = [
   'rejected'
 ];
 
+export const findById = (stories, id) => {
+  return stories.find( story => story.id === id)
+}
+
 export const update = async (story, projectId, options) => {
   const newStory = serialize(story);
 
@@ -114,6 +118,12 @@ export const updateStory = (story, newAttributes) => ({
   ...story,
   ...newAttributes
 });
+
+export const getHistory = async (storyId, projectId) => {
+  const { data } = await httpService
+    .get(`/projects/${projectId}/stories/${storyId}/activities`)
+  return data
+}
 
 export const storyFailure = (story, error) => ({
   ...story,
