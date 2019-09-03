@@ -6,6 +6,11 @@ en:
 
   welcome: "Welcome to CM42 Central"
 
+  date:
+    formats:
+      long: "%m/%d/%Y %H:%M:%S"
+      short: "%b %d %Y"
+
   logout:  "Log out"
   login:   "Log in"
   sign_up:  "Sign up"
@@ -197,13 +202,19 @@ en:
         estimate:             'Estimate'
         story_type:           'Story type'
         state:                'State'
+        started_at:           'Started at'
         accepted_at:          'Accepted at'
+        updated_at:           'Updated at'
         position:             'Position'
         labels:               'Labels'
         requested_by:         'Requested by'
         owned_by:             'Owned by'
+        owned_by_name:        'Owned by'
+        owned_by_initials:    'Owned by'
+        owned_by_id:          'Owned by id'
         documents:            'Attachments'
         release_date:         'Release Date'
+        delivered_at:         'Delivered at'
       user:
         name:                 'Full Name'
         username:             'Username'

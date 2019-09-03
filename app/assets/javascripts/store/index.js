@@ -5,6 +5,7 @@ import project from 'reducers/project';
 import projectBoard from 'reducers/projectBoard';
 import users from 'reducers/users';
 import stories from 'reducers/stories';
+import history from 'reducers/history';
 import pastIterations from 'reducers/pastIterations';
 import notifications from 'reducers/notifications';
 import * as Story from '../models/beta/story';
@@ -28,6 +29,7 @@ const reducer = combineReducers({
   projectBoard,
   users,
   stories,
+  history,
   pastIterations,
   notifications
 });

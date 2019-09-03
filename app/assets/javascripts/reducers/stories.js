@@ -25,7 +25,6 @@ const storiesReducer = (state = initialState, action) => {
       return replaceOrAddNewStory(state, action.story);
     case actionTypes.CLONE_STORY:
       const clonedStory = cloneStory(action.story);
-
       return replaceOrAddNewStory(state, clonedStory);
     case actionTypes.TOGGLE_STORY:
       if (action.id === null) {

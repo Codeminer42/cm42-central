@@ -1,0 +1,38 @@
+.history-activity {
+  background-color: $lightgrey-11;
+  border-bottom: 1px solid $lightgrey-13;
+  border-top: 1px solid $white;
+  min-height: 37px;
+  padding: 7px 8px;
+  font-size: 11px;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+
+    .title {
+      font-size: 14px;
+    }
+
+    .date {
+      font-size: 10px;
+      font-weight: bold;
+    }
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5em 2em 0.5em 1em;
+
+    .action {
+      font-weight: bold;
+    }
+
+    .changes {
+      display: flex;
+      font-style: italic;
+
+    }
+  }
+}

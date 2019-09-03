@@ -5,9 +5,10 @@ import { fetchPastStories } from "actions/pastIterations";
 import Column from "../Columns/ColumnItem";
 import Stories from "../stories/Stories";
 import Sprints from "../stories/Sprints";
+import History from "../stories/History";
 import { getColumns } from "../../selectors/columns";
 import * as Columns from '../../models/beta/column';
-import { createStory } from '../../actions/story';
+import { createStory, closeHistory } from '../../actions/story';
 import AddStoryButton from '../story/AddStoryButton';
 import * as Story from 'libs/beta/constants';
 import PropTypes from 'prop-types';
@@ -26,7 +27,7 @@ class ProjectBoard extends React.Component {
       return <b>Loading</b>;
     }
 
-    const { createStory, notifications, removeNotification } = this.props;
+    const { createStory, closeHistory, notifications, removeNotification, history } = this.props;
 
     return (
       <div className="ProjectBoard">
@@ -63,12 +64,26 @@ class ProjectBoard extends React.Component {
         </Column>
 
         <Column
-          title={I18n.t("projects.show.done")}>
+          title={I18n.t("projects.show.done")}
+        >
           <Sprints
             sprints={this.props.doneSprints}
             fetchStories={this.props.fetchPastStories}
           />
         </Column>
+
+        {
+          history.status !== 'DISABLED' &&
+          <Column
+            onClose={closeHistory}
+            title={[I18n.t("projects.show.history"), "'", history.storyTitle, "'"].join(' ')}
+          >
+            { history.status === 'LOADED'
+              ? <History history={history.activities} />
+              : <div className="loading">Loading...</div>
+            }
+          </Column>
+        }
       </div>
     );
   }
@@ -81,6 +96,7 @@ ProjectBoard.propTypes = {
   backlogSprints: PropTypes.array.isRequired,
   fetchProjectBoard: PropTypes.func.isRequired,
   createStory: PropTypes.func.isRequired,
+  closeHistory: PropTypes.func.isRequired,
   notifications: PropTypes.array.isRequired
 }
 
@@ -88,10 +104,12 @@ const mapStateToProps = ({
   projectBoard,
   project,
   stories,
+  history,
   pastIterations,
   notifications
 }) => ({
   projectBoard,
+  history,
   chillyBinStories: getColumns({
     column: Columns.CHILLY_BIN,
     stories
@@ -113,6 +131,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = {
   fetchProjectBoard,
   createStory,
+  closeHistory,
   fetchPastStories,
   removeNotification
 };
