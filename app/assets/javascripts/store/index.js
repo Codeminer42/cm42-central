@@ -13,7 +13,8 @@ import * as Task from '../models/beta/task'
 import * as ProjectBoard from '../models/beta/projectBoard';
 import * as Note from '../models/beta/note';
 import * as PastIteration from '../models/beta/pastIteration';
-import * as Notification from '../models/beta/notification'
+import * as Notification from '../models/beta/notification';
+import * as UrlService from './../services/urlService';
 
 const dependencies = {
   Story,
@@ -21,7 +22,8 @@ const dependencies = {
   Note,
   Task,
   PastIteration,
-  Notification
+  Notification,
+  UrlService
 };
 
 const reducer = combineReducers({

@@ -1,6 +1,6 @@
 import actionTypes from "./actionTypes";
 import { receiveUsers } from "./user";
-import { receiveStories } from "./story";
+import { receiveStories, toggleStory } from "./story";
 import { receivePastIterations } from "./pastIterations";
 
 const requestProjectBoard = () => ({
@@ -22,8 +22,17 @@ const receiveProject = data => ({
   data
 });
 
+const expandStoryIfNeeded = (dispatch, getHash) => {
+  const storyId = getHash('story');
+
+  if (storyId) {
+    dispatch(toggleStory(storyId));
+    window.history.pushState('', '/', window.location.pathname);
+  }
+}
+
 export const fetchProjectBoard = projectId =>
-  async (dispatch, getState, { ProjectBoard }) => {
+  async (dispatch, getState, { ProjectBoard, UrlService }) => {
     dispatch(requestProjectBoard());
 
     try {
@@ -37,6 +46,7 @@ export const fetchProjectBoard = projectId =>
       dispatch(receiveUsers(users));
       dispatch(receiveStories(stories));
       dispatch(receiveProjectBoard(projectId));
+      expandStoryIfNeeded(dispatch, UrlService.getHash);
     }
     catch (error) {
       return dispatch(errorRequestProjectBoard(error));
