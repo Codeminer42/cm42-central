@@ -2,6 +2,7 @@ import * as actions from '../../../app/assets/javascripts/actions/story';
 import actionTypes from '../../../app/assets/javascripts/actions/actionTypes';
 import history from '../support/factories/historyFactory';
 import story from '../support/factories/storyFactory';
+import expandStoryIfNeeded from '../../../app/assets/javascripts/actions/projectBoard';
 
 describe('History Actions', () => {
   it('Should load a new history when called showHistory action', async () => {
@@ -57,4 +58,26 @@ describe('History Actions', () => {
     });
     expect(fakeDispatch).toHaveBeenCalledWith(actions.errorLoadHistory());
   });
+
+  it('Should dispatch toggleHistory when storyId is true', async () => {
+    const storyId = 127;
+
+    const fakeGetHash = sinon.stub().returns(storyId);
+
+    const fakeDispatch = sinon.stub().resolves({});
+
+    await expandStoryIfNeeded(fakeDispatch, fakeGetHash);
+    expect(fakeDispatch).toHaveBeenCalledWith(toggleStory(storyId));
+  })
+
+  it('Should not dispatch toggleHistory when storyId is false', async () => {
+    const storyId = null;
+
+    const fakeGetHash = sinon.stub().returns(storyId);
+
+    const fakeDispatch = sinon.stub().resolves({});
+
+    await expandStoryIfNeeded(fakeDispatch, fakeGetHash);
+    expect(fakeDispatch).toHaveBeenCalledWith(toggleStory(storyId));
+  })
 });
