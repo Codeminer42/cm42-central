@@ -22,7 +22,7 @@ const receiveProject = data => ({
   data
 });
 
-const expandStoryIfNeeded = (dispatch, getHash) => {
+export const expandStoryIfNeeded = (dispatch, getHash) => {
   const storyId = getHash('story');
 
   if (storyId) {
