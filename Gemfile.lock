@@ -1,6 +1,7 @@
 GIT
-  remote: https://github.com/Codeminer42/cm42-central-support.git
-  revision: a0f33d2e8185be2675ad6b9119c6c98835315fa3
+  remote: https://github.com/rubynho/cm42-central-support.git
+  revision: 040952419f8670bfb29bbd696b62ff779feccb60
+  branch: chore/refactor_csv_support
   specs:
     central-support (0.9.4)
       activerecord (>= 5.1)
@@ -194,7 +195,7 @@ GEM
     em-websocket (0.5.1)
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0.6.0)
-    enumerize (2.2.2)
+    enumerize (2.3.1)
       activesupport (>= 3.2)
     equalizer (0.0.11)
     erubi (1.8.0)
@@ -647,4 +648,4 @@ RUBY VERSION
    ruby 2.6.0p0
 
 BUNDLED WITH
-   1.17.2
+   1.17.3
