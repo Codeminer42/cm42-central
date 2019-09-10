@@ -2,7 +2,7 @@ import expandStoryIfNeeded from '../../../app/assets/javascripts/actions/project
 import { toggleStory } from '../../../app/assets/javascripts/actions/story';
 
 describe('Project Board Actions', () => {
-  it('Should dispatch toggleHistory when storyId is true', async () => {
+  it('Should dispatch toggleStory when storyId is true', async () => {
     const storyId = 127;
 
     const fakeGetHash = sinon.stub();
@@ -15,7 +15,7 @@ describe('Project Board Actions', () => {
     expect(fakeDispatch).toHaveBeenCalledWith(toggleStory(storyId));
   });
 
-  it('Should not dispatch toggleHistory when storyId is false', async () => {
+  it('Should not dispatch toggleStory when storyId is false', async () => {
     const storyId = null;
 
     const fakeGetHash = sinon.stub();
