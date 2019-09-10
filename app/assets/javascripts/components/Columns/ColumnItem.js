@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Droppable } from 'react-beautiful-dnd';
 
 const Column = ({ title, children, renderAction, onClose }) => (
   <div className="Column">
@@ -12,7 +13,13 @@ const Column = ({ title, children, renderAction, onClose }) => (
         </button>
       </div>
     </div>
-    <div className="Column__body">{children}</div>
+    <Droppable droppableId={title}>
+      {(provided) => (
+        <div className="Column__body" ref={provided.innerRef} {...provided.droppableProps}>
+          {children}
+        </div>
+      )}
+    </Droppable>
   </div>
 );
 

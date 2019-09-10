@@ -18,16 +18,44 @@ import Notifications from '../Notifications';
 import { removeNotification } from '../../actions/notifications';
 
 class ProjectBoard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      backLogStories: null,
+      chillyBinStories: null,
+    };
+    this.reorderBackLog = this.reorderBackLog.bind(this);
+    this.reorderChillyBin = this.reorderChillyBin.bind(this);
+  }
+
   componentWillMount() {
     this.props.fetchProjectBoard(this.props.projectId);
   }
+
+  reorderBackLog(result) {
+    console.log(result)
+  };
+
+  reorderChillyBin(result) {
+    if (!result.destination) {
+      return;
+    }
+
+    const items = reorder(
+      this.state.chillyBinStories || this.props.chillyBinStories[0].stories,
+      result.source.index,
+      result.destination.index
+    );
+
+    this.setState({ chillyBinStories: items });
+  };
 
   render() {
     if (!this.props.projectBoard.isFetched) {
       return <b>Loading</b>;
     }
 
-    const { createStory, closeHistory, notifications, removeNotification, history } = this.props;
+    const { createStory, notifications, removeNotification } = this.props;
 
     return (
       <div className="ProjectBoard">
@@ -36,54 +64,46 @@ class ProjectBoard extends React.Component {
           onRemove={removeNotification}
         />
 
-        <Column title={I18n.t("projects.show.chilly_bin")}
-          renderAction={() =>
-            <AddStoryButton
-              onAdd={() => createStory({
-                state: Story.status.UNSCHEDULED
-              })}
-            />
-          }
-        >
-          <Stories stories={this.props.chillyBinStories} />
-        </Column>
-
-        <Column
-          title={`${I18n.t("projects.show.backlog")} /
-          ${I18n.t("projects.show.in_progress")}`}
-          renderAction={() =>
-            <AddStoryButton
-              onAdd={() => createStory({
-                state: Story.status.UNSTARTED
-              })}
-            />}
-        >
-          <Sprints
-            sprints={this.props.backlogSprints}
-          />
-        </Column>
-
-        <Column
-          title={I18n.t("projects.show.done")}
-        >
-          <Sprints
-            sprints={this.props.doneSprints}
-            fetchStories={this.props.fetchPastStories}
-          />
-        </Column>
-
-        {
-          history.status !== 'DISABLED' &&
-          <Column
-            onClose={closeHistory}
-            title={[I18n.t("projects.show.history"), "'", history.storyTitle, "'"].join(' ')}
-          >
-            { history.status === 'LOADED'
-              ? <History history={history.activities} />
-              : <div className="loading">Loading...</div>
+        <DragDropContext>
+          <Column title={I18n.t("projects.show.chilly_bin")}
+            renderAction={() =>
+              <AddStoryButton
+                onAdd={() => createStory({
+                  state: Story.status.UNSCHEDULED,
+                })}
+              />
             }
+          >
+            <Stories stories={this.props.chillyBinStories} />
           </Column>
-        }
+        </DragDropContext>
+
+        <DragDropContext onDragEnd={this.reorderBackLog}>
+          <Column
+            title={`${I18n.t("projects.show.backlog")} /
+            ${I18n.t("projects.show.in_progress")}`}
+            renderAction={() =>
+              <AddStoryButton
+                onAdd={() => createStory({
+                  state: Story.status.UNSTARTED
+                })}
+              />}
+          >
+            <Sprints
+              sprints={this.props.backlogSprints}
+            />
+          </Column>
+        </DragDropContext>
+
+        <DragDropContext>
+          <Column
+            title={I18n.t("projects.show.done")}>
+            <Sprints
+              sprints={this.props.doneSprints}
+              fetchStories={this.props.fetchPastStories}
+            />
+          </Column>
+        </DragDropContext>
       </div>
     );
   }
