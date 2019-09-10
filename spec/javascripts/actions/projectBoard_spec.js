@@ -1,4 +1,4 @@
-import expandStoryIfNeeded from '../../../app/assets/javascripts/actions/projectBoard';
+import { expandStoryIfNeeded } from '../../../app/assets/javascripts/actions/projectBoard';
 import { toggleStory } from '../../../app/assets/javascripts/actions/story';
 
 describe('Project Board Actions', () => {
