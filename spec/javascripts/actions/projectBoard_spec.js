@@ -1,12 +1,15 @@
 import expandStoryIfNeeded from '../../../app/assets/javascripts/actions/projectBoard';
+import { toggleStory } from '../../../app/assets/javascripts/actions/story';
 
 describe('Project Board Actions', () => {
   it('Should dispatch toggleHistory when storyId is true', async () => {
     const storyId = 127;
 
-    const fakeGetHash = sinon.stub().returns(storyId);
+    const fakeGetHash = sinon.stub();
+    fakeGetHash.returns(storyId);
 
-    const fakeDispatch = sinon.stub().resolves({});
+    const fakeDispatch = sinon.stub();
+    fakeDispatch.resolves({});
 
     await expandStoryIfNeeded(fakeDispatch, fakeGetHash);
     expect(fakeDispatch).toHaveBeenCalledWith(toggleStory(storyId));
@@ -15,9 +18,11 @@ describe('Project Board Actions', () => {
   it('Should not dispatch toggleHistory when storyId is false', async () => {
     const storyId = null;
 
-    const fakeGetHash = sinon.stub().returns(storyId);
+    const fakeGetHash = sinon.stub();
+    fakeGetHash.returns(storyId);
 
-    const fakeDispatch = sinon.stub().resolves({});
+    const fakeDispatch = sinon.stub();
+    fakeDispatch.resolves({});
 
     await expandStoryIfNeeded(fakeDispatch, fakeGetHash);
     expect(fakeDispatch).toHaveBeenCalledWith(toggleStory(storyId));
