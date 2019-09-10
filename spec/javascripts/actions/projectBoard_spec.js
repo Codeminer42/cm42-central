@@ -25,6 +25,6 @@ describe('Project Board Actions', () => {
     fakeDispatch.resolves({});
 
     await expandStoryIfNeeded(fakeDispatch, fakeGetHash);
-    expect(fakeDispatch).toHaveBeenCalledWith(toggleStory(storyId));
+    expect(fakeDispatch).not.toHaveBeenCalledWith(toggleStory(storyId));
   });
 });
