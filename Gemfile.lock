@@ -1,7 +1,6 @@
 GIT
-  remote: https://github.com/rubynho/cm42-central-support.git
-  revision: 040952419f8670bfb29bbd696b62ff779feccb60
-  branch: chore/refactor_csv_support
+  remote: https://github.com/Codeminer42/cm42-central-support.git
+  revision: 3e0e505cf3c6686d987c59765ac99dbc4311024e
   specs:
     central-support (0.9.4)
       activerecord (>= 5.1)
