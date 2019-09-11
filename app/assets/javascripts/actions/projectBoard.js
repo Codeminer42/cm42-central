@@ -23,7 +23,7 @@ const receiveProject = data => ({
 });
 
 export const expandStoryIfNeeded = (dispatch, getHash) => {
-  const storyId = getHash('story');
+  const storyId = getHash('#story-');
 
   if (storyId) {
     dispatch(toggleStory(storyId));
