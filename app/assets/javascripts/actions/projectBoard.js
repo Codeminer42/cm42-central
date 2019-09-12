@@ -46,7 +46,7 @@ export const fetchProjectBoard = projectId =>
       dispatch(receiveUsers(users));
       dispatch(receiveStories(stories));
       dispatch(receiveProjectBoard(projectId));
-      dispatch(expandStoryIfNeeded(dispatch, UrlService.getHash));
+      expandStoryIfNeeded(dispatch, UrlService.getHash);
     }
     catch (error) {
       console.error(error);
