@@ -26,7 +26,7 @@ export const expandStoryIfNeeded = (dispatch, getHash) => {
   const storyId = getHash('#story-');
 
   if (storyId) {
-    dispatch(toggleStory(storyId));
+    dispatch(toggleStory(parseInt(storyId)));
     window.history.pushState('', '/', window.location.pathname);
   }
 }

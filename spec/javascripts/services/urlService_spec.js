@@ -18,7 +18,7 @@ describe('Services of Url', () => {
 
     window.location.hash = `${wordHash}${storyId}`;
 
-    expect(UrlService.getHash(wordHash)).toEqual(storyId);
+    expect(parseInt(UrlService.getHash(wordHash))).toEqual(storyId);
   });
 
   it('Should return null from empty hash', () => {

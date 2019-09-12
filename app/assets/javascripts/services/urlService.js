@@ -3,7 +3,7 @@ const getHash = word => {
 
   if (hash.includes(word)) {
     const cleanHash = hash.replace(word, '');
-    return parseInt(cleanHash);
+    return cleanHash;
   }
 
   return null;
