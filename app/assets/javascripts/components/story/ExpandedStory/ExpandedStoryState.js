@@ -4,7 +4,7 @@ import * as Story from '../../../models/beta/story';
 import { editingStoryPropTypesShape, isUnestimatedFeature } from '../../../models/beta/story';
 import ExpandedStorySection from './ExpandedStorySection';
 
-const ExpandedStoryState = ({ story, onEdit, disabled }) =>
+const ExpandedStoryState = ({ story, onEdit, disabled, isChillyBin }) =>
   <ExpandedStorySection
     title={I18n.t('activerecord.attributes.story.state')}
   >
@@ -15,11 +15,15 @@ const ExpandedStoryState = ({ story, onEdit, disabled }) =>
       disabled={disabled || isUnestimatedFeature(story._editing)}
     >
       {
-        Story.states.map((state) => (
-          <option value={state} key={state}>
-            {I18n.t(`story.state.${state}`)}
+        isChillyBin ?
+          <option value={Story.states[2]} key={Story.states[2]}>
+            {I18n.t(`story.state.${Story.states[2]}`)}
           </option>
-        ))
+        : Story.states.map((state) => (
+            <option value={state} key={state}>
+              {I18n.t(`story.state.${state}`)}
+            </option>
+          ))
       }
     </select>
   </ExpandedStorySection>

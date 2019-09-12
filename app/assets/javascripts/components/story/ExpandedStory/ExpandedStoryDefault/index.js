@@ -29,7 +29,8 @@ export const ExpandedStoryDefault = ({
   createNote, deleteNote,
   createTask, deleteTask, toggleTask,
   setLoadingStory, storyFailure,
-  addAttachment, removeAttachment
+  addAttachment, removeAttachment,
+  isChillyBin
 }) =>
   <Fragment>
     {
@@ -68,6 +69,7 @@ export const ExpandedStoryDefault = ({
       story={story}
       onEdit={(state) => onEdit({ state })}
       disabled={disabled}
+      isChillyBin={isChillyBin}
     />
 
     <ExpandedStoryRequestedBy

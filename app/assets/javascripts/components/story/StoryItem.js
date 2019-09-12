@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { toggleStory } from '../../actions/story';
 import { releaseIsLate } from '../../models/beta/story';
 
-export const StoryItem = ({ story, toggleStory }) => {
+export const StoryItem = ({ story, toggleStory, isChillyBin }) => {
   const className = releaseIsLate(story) ? 'Story--late-release' : '';
   const title = releaseIsLate(story) ? I18n.t('story.warnings.backlogged_release') : '';
 
@@ -25,6 +25,7 @@ export const StoryItem = ({ story, toggleStory }) => {
             onToggle={() => toggleStory(story.id)}
             className={className}
             title={title}
+            isChillyBin={isChillyBin}
           />
       }
     </div>

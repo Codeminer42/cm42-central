@@ -30,7 +30,8 @@ export class ExpandedStory extends React.Component {
       deleteStory,
       project,
       className,
-      title
+      title,
+      isChillyBin
     } = this.props;
 
     const loading = story._editing.loading ? "Story__enable-loading" : "";
@@ -70,6 +71,7 @@ export class ExpandedStory extends React.Component {
               onClone={cloneStory}
               showHistory={showHistory}
               disabled={disabled}
+              isChillyBin={isChillyBin}
             />
         }
       </div >
