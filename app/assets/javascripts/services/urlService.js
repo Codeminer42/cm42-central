@@ -1,7 +1,7 @@
 const getHash = word => {
   const hash = window.location.hash;
 
-  if (hash.contains(word)) {
+  if (hash.includes(word)) {
     const cleanHash = hash.replace(hash, '');
     return cleanHash;
   }
