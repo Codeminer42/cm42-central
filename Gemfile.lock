@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Codeminer42/cm42-central-support.git
-  revision: a0f33d2e8185be2675ad6b9119c6c98835315fa3
+  revision: 3e0e505cf3c6686d987c59765ac99dbc4311024e
   specs:
     central-support (0.9.4)
       activerecord (>= 5.1)
@@ -194,7 +194,7 @@ GEM
     em-websocket (0.5.1)
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0.6.0)
-    enumerize (2.2.2)
+    enumerize (2.3.1)
       activesupport (>= 3.2)
     equalizer (0.0.11)
     erubi (1.8.0)
@@ -647,4 +647,4 @@ RUBY VERSION
    ruby 2.6.0p0
 
 BUNDLED WITH
-   1.17.2
+   1.17.3

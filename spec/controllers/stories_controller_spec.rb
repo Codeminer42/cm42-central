@@ -100,7 +100,7 @@ describe StoriesController do
         before do
           create(:note, story: active_story)
 
-          Timecop.freeze Time.utc(2019, 1, 1, 12, 0, 0, 0).in_time_zone do
+          Timecop.freeze(2019, 1, 1, 12, 0, 0, 0) do
             get :index, format: :csv, params: { project_id: project.id }
           end
         end
