@@ -64,6 +64,8 @@
     "react-clipboard.js": "^2.0.1",
     "react-color": "^2.11",
     "react-datepicker": "^0.46.0",
+    "react-dnd": "^9.3.4",
+    "react-dnd-html5-backend": "^9.3.4",
     "react-dom": "^16.8.0",
     "react-dropzone": "^8.0.3",
     "react-redux": "^6.0.0",
