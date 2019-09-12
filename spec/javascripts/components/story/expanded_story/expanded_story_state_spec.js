@@ -41,6 +41,50 @@ describe('<ExpandedStoryState />', () => {
         expect(select.prop('value')).toBe(state);
       });
     });
+
+    it('when isChillyBin is true render just sarted state', () => {
+      const startedValue = 'started';
+      const onEditSpy = sinon.spy();
+
+      const story = {
+        _editing: { state: startedValue }
+      };
+
+      const wrapper = shallow(
+        <ExpandedStoryState
+          story={story}
+          onEdit={onEditSpy}
+          disabled={false}
+          isChillyBin
+        />
+      );
+      const select = wrapper.find('select');
+      const options = wrapper.find('option');
+
+      expect(select.prop('value')).toBe(startedValue);
+      expect(options.length).toEqual(1);
+    });
+
+    it('when isChillyBin is false render all states', () => {
+      const onEditSpy = sinon.spy();
+
+      const story = {
+        _editing: { state: states[0] }
+      };
+
+      const wrapper = shallow(
+        <ExpandedStoryState
+          story={story}
+          onEdit={onEditSpy}
+          disabled={false}
+        />
+      );
+      const select = wrapper.find('select');
+      const options = wrapper.find('option');
+
+      expect(select.prop('value')).toBe(states[0]);
+      expect(options.length).toEqual(states.length);
+    });
   });
 
   describe('when the user selects a state', () => {
