@@ -49,6 +49,7 @@ export const fetchProjectBoard = projectId =>
       dispatch(expandStoryIfNeeded(dispatch, UrlService.getHash));
     }
     catch (error) {
+      console.error(error);
       return dispatch(errorRequestProjectBoard(error));
     }
   };
