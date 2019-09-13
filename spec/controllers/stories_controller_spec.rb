@@ -252,6 +252,24 @@ describe StoriesController do
       let(:story) { create(:story, project: project, requested_by: user) }
       let(:story_params) { { title: 'Foo', foo: 'Bar' } }
 
+      let(:tasks_attributes) do
+        {
+          tasks_attributes: [{
+            name: 'Write the tests',
+            done: true
+          }]
+        }
+      end
+
+      let(:notes_attributes) do
+        {
+          notes_attributes: [
+            { note: 'A little note hihi' },
+            { note: 'Another note' }
+          ]
+        }
+      end
+
       describe '#show' do
         specify do
           get :show, xhr: true, params: { project_id: project.id, id: story.id }
@@ -266,6 +284,35 @@ describe StoriesController do
             get :update, xhr: true, params: { project_id: project.id, id: story.id, story: story_params }
             expect(response).to be_successful
             expect(response.body).to eq(assigns[:story].to_json)
+          end
+
+          context 'including tasks and notes attributes' do
+            before do
+              patch(
+                :update,
+                xhr: true,
+                params: {
+                  project_id: project.id,
+                  id: story.id,
+                  story: story_params.merge(tasks_attributes, notes_attributes)
+                }
+              )
+            end
+
+            it 'returns the story and the task' do
+              expect(response.body).to match(
+                tasks_attributes[:tasks_attributes][0][:name]
+              )
+            end
+
+            it 'returns the story and the notes' do
+              expect(response.body).to match(
+                notes_attributes[:notes_attributes][0][:note]
+              )
+              expect(response.body).to match(
+                notes_attributes[:notes_attributes][1][:note]
+              )
+            end
           end
         end
 
@@ -301,6 +348,27 @@ describe StoriesController do
             post :create, xhr: true, params: { project_id: project.id, story: story_params }
             expect(response).to be_successful
             expect(response.body).to eq(assigns[:story].to_json)
+          end
+
+          context 'including tasks and notes attributes' do
+            let(:post_request) do
+              post(
+                :create,
+                xhr: true,
+                params: {
+                  project_id: project.id,
+                  story: story_params.merge(tasks_attributes, notes_attributes)
+                }
+              )
+            end
+
+            it 'creates the story and the task' do
+              expect { post_request }.to change { Task.count }.by(1)
+            end
+
+            it 'creates the story and the notes' do
+              expect { post_request }.to change { Note.count }.by(2)
+            end
           end
         end
 

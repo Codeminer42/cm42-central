@@ -6,6 +6,11 @@ describe Story do
     subject.acting_user = build(:user)
   end
 
+  describe 'validations' do
+    it { is_expected.to accept_nested_attributes_for(:tasks) }
+    it { is_expected.to accept_nested_attributes_for(:notes) }
+  end
+
   describe 'defaults' do
     subject { Story.new }
 
