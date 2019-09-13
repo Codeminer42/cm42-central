@@ -89,7 +89,8 @@ ExpandedStory.propTypes = {
   onToggle: PropTypes.func.isRequired,
   project: projectPropTypesShape.isRequired,
   title: PropTypes.string,
-  className: PropTypes.string
+  className: PropTypes.string,
+  isChillyBin: PropTypes.bool
 };
 
 const mapStateToProps = ({ project }) => ({ project });
