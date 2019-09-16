@@ -42,26 +42,21 @@ describe('<ExpandedStoryState />', () => {
       });
     });
 
-    it('when isChillyBin is true render just sarted state', () => {
-      const startedValue = 'started';
+    it('when isChillyBin is true render just option of sarted state', () => {
+      const unscheduledValue = 'unscheduled';
       const onEditSpy = sinon.spy();
 
-      const story = {
-        _editing: { state: startedValue }
-      };
+      const story = { state: unscheduledValue, _editing: { state: unscheduledValue } };
 
       const wrapper = shallow(
         <ExpandedStoryState
           story={story}
           onEdit={onEditSpy}
           disabled={false}
-          isChillyBin
         />
       );
-      const select = wrapper.find('select');
       const options = wrapper.find('option');
 
-      expect(select.prop('value')).toBe(startedValue);
       expect(options.length).toEqual(1);
     });
 

@@ -30,8 +30,7 @@ export class ExpandedStory extends React.Component {
       deleteStory,
       project,
       className,
-      title,
-      isChillyBin
+      title
     } = this.props;
 
     const loading = story._editing.loading ? "Story__enable-loading" : "";
@@ -71,7 +70,6 @@ export class ExpandedStory extends React.Component {
               onClone={cloneStory}
               showHistory={showHistory}
               disabled={disabled}
-              isChillyBin={isChillyBin}
             />
         }
       </div >
@@ -89,8 +87,7 @@ ExpandedStory.propTypes = {
   onToggle: PropTypes.func.isRequired,
   project: projectPropTypesShape.isRequired,
   title: PropTypes.string,
-  className: PropTypes.string,
-  isChillyBin: PropTypes.bool
+  className: PropTypes.string
 };
 
 const mapStateToProps = ({ project }) => ({ project });

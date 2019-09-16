@@ -45,7 +45,7 @@ class ProjectBoard extends React.Component {
             />
           }
         >
-          <Stories stories={this.props.chillyBinStories} isChillyBin />
+          <Stories stories={this.props.chillyBinStories} />
         </Column>
 
         <Column

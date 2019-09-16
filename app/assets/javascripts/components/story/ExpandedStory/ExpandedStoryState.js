@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import * as Column from '../../../models/beta/column';
 import * as Story from '../../../models/beta/story';
 import { editingStoryPropTypesShape, isUnestimatedFeature } from '../../../models/beta/story';
 import ExpandedStorySection from './ExpandedStorySection';
 
-const ExpandedStoryState = ({ story, onEdit, disabled, isChillyBin }) =>
+const ExpandedStoryState = ({ story, onEdit, disabled }) =>
   <ExpandedStorySection
     title={I18n.t('activerecord.attributes.story.state')}
   >
@@ -15,7 +16,7 @@ const ExpandedStoryState = ({ story, onEdit, disabled, isChillyBin }) =>
       disabled={disabled || isUnestimatedFeature(story._editing)}
     >
       {
-        isChillyBin ?
+        Column.isChillyBin(story) ?
           <option value={Story.states[2]} key={Story.states[2]}>
             {I18n.t(`story.state.${Story.states[2]}`)}
           </option>
