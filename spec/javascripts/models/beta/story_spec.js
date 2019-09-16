@@ -862,4 +862,19 @@ describe('Story model', function () {
       expect(Story.cloneStory(story).documents).toEqual([]);
     });
   });
+
+  describe("possibleStatesFor", () => {
+    it("should return all states", () => {
+      const story = { state: '' }
+
+      expect(Story.possibleStatesFor(story).length).toEqual(7)
+    })
+
+    it("should return just the started state", () => {
+      const story = { state: 'unscheduled' }
+
+      expect(Story.possibleStatesFor(story).length).toEqual(1)
+      expect(Story.possibleStatesFor(story)[0]).toEqual(status.STARTED)
+    })
+  })
 });
