@@ -109,6 +109,25 @@ export const updateCollapsedStory = (storyId, projectId, newAttributes) =>
     }
   }
 
+export const moveStoryColumn = (storyId, projectId, newAttributes) =>
+  async (dispatch, getState, { Story }) => {
+    const { stories } = getState();
+    const story = Story.findById(stories, storyId);
+
+
+    const newStory = { ...story, ...newAttributes };
+
+    try {
+      const updatedStory = await Story.update(newStory, projectId);
+
+      return dispatch(updateStorySuccess(updatedStory))
+    }
+    catch (error) {
+      dispatch(sendErrorNotification(error))
+      return dispatch(storyFailure(story.id, error))
+    }
+  }
+
 export const saveStory = (storyId, projectId, options) =>
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();

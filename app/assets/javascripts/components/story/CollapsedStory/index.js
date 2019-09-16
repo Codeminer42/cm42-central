@@ -1,6 +1,6 @@
 import React from 'react'
 import classname from 'classnames'
-import { DragSource } from 'react-dnd'
+import { DragSource, DropTarget } from 'react-dnd'
 import StoryPopover from '../StoryPopover'
 import StoryDescriptionIcon from '../StoryDescriptionIcon'
 import CollapsedStoryEstimate from './CollapsedStoryEstimate'
@@ -8,7 +8,7 @@ import CollapsedStoryStateActions from './CollapsedStoryStateActions'
 import CollapsedStoryInfo from './CollapsedStoryInfo'
 import StoryIcon from '../StoryIcon'
 import * as Story from '../../../models/beta/story'
-import { updateCollapsedStory } from '../../../actions/story'
+import { moveStoryColumn, updateCollapsedStory } from '../../../actions/story'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
@@ -34,36 +34,52 @@ const type = {
   story: 'STORY'
 }
 
-const storyTarget = {
-  beginDrag({ story }) {
-    return { story }
-  }
+const storySource = {
+  beginDrag({ story, index, stories }) {
+    return { ...story, index, stories }
+  },
 }
 
-const collect = (connect, monitor) => {
+const storyTarget = {
+  hover(props, monitor, component) {
+    const story = monitor.getItem();
+    const upperStory = story.stories[props.index - 1];
+    const calculatedPosition = (Number(props.story.position) + Number(upperStory.position)) / 2;
+    updateCollapsedStory(story.id, story.projectId, { position: calculatedPosition });
+  },
+}
+
+const collectSource = (connect, monitor) => {
   return {
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging()
   }
 }
 
+const collectTarget = (connect) => {
+  return {
+    connectDropTarget: connect.dropTarget(),
+  }
+}
+
 export const CollapsedStory = ({
   onToggle,
   story,
-  updateCollapsedStory,
+  moveStoryColumn,
   project,
   className,
   title,
   isDragging,
-  connectDragSource
+  connectDragSource,
+  connectDropTarget
 }) => {
-  return connectDragSource(
+  return connectDropTarget(connectDragSource(
     <div
       className={storyClassName(story, className)}
       onClick={onToggle}
       title={title}
       style={{
-        opacity: isDragging ? 0.5 : 1
+        opacity: isDragging ? 0 : 1
       }}
     >
       <StoryPopover story={story}>
@@ -79,11 +95,11 @@ export const CollapsedStory = ({
       <CollapsedStoryStateActions
         story={story}
         onUpdate={newAttributes =>
-          updateCollapsedStory(story.id, project.id, newAttributes)
+          moveStoryColumn(story.id, project.id, newAttributes)
         }
       />
     </div>
-  )
+  ))
 }
 
 CollapsedStory.propTypes = {
@@ -95,5 +111,5 @@ CollapsedStory.propTypes = {
 
 export default connect(
   ({ project }) => ({ project }),
-  { updateCollapsedStory }
-)(DragSource(type.story, storyTarget, collect)(CollapsedStory))
+  { moveStoryColumn }
+)(DropTarget(type.story, storyTarget, collectTarget)(DragSource(type.story, storySource, collectSource)(CollapsedStory)))

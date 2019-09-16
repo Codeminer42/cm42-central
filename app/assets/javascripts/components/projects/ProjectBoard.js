@@ -10,7 +10,7 @@ import Sprints from "../stories/Sprints";
 import History from "../stories/History";
 import { getColumns } from "../../selectors/columns";
 import * as Columns from '../../models/beta/column';
-import { createStory, closeHistory, saveStory, updateCollapsedStory} from '../../actions/story';
+import { createStory, closeHistory, moveStoryColumn} from '../../actions/story';
 import AddStoryButton from '../story/AddStoryButton';
 import * as Story from 'libs/beta/constants';
 import PropTypes from 'prop-types';
@@ -29,12 +29,12 @@ class ProjectBoard extends React.Component {
   }
 
   moveStory = (story, column) => {
-    const {updateCollapsedStory, saveStory} = this.props
+    const { moveStoryColumn } = this.props
     if (column === 'chillyBin') {
-      return updateCollapsedStory(story.id, story.projectId, {state: Story.status.UNSCHEDULED})
+      return moveStoryColumn(story.id, story.projectId, {state: Story.status.UNSCHEDULED})
     }
     if (column === 'backlog') {
-      return updateCollapsedStory(story.id, story.projectId, {state: Story.status.UNSTARTED})
+      return moveStoryColumn(story.id, story.projectId, {state: Story.status.UNSTARTED})
     }
   }
 
@@ -161,8 +161,7 @@ const mapDispatchToProps = {
   closeHistory,
   fetchPastStories,
   removeNotification,
-  saveStory,
-  updateCollapsedStory
+  moveStoryColumn
 };
 
 export default connect(

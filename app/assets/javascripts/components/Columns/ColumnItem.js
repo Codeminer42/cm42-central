@@ -2,17 +2,17 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { DropTarget } from 'react-dnd'
 import { connect } from 'react-redux'
-import { saveStory } from '../../actions/story'
 
 const columnTarget = {
   canDrop({ canMoveStory, story }) {
-    return canMoveStory(story)
+    return canMoveStory(story);
   },
 
   drop({ moveStory, column }, monitor) {
-    const story = monitor.getItem().story
-    return moveStory(story, column)
-  }
+    const story = monitor.getItem();
+    moveStory(story, column);
+    return story;
+  },
 }
 
 const collect = (connect, monitor) => {
@@ -20,21 +20,15 @@ const collect = (connect, monitor) => {
     connectDropTarget: connect.dropTarget(),
     canDrop: monitor.canDrop(),
   }
-  return info
+  return info;
 }
 
 const Column = ({
   title,
   children,
-  column,
   renderAction,
   onClose,
   connectDropTarget,
-  canMoveStory,
-  saveStory,
-  moveStory,
-  item,
-  story
 }) =>
   connectDropTarget(
     <div className="Column">
@@ -60,7 +54,4 @@ Column.defaultProps = {
   renderAction: () => null
 }
 
-export default connect(
-  null,
-  { saveStory }
-)(DropTarget('STORY', columnTarget, collect)(Column))
+export default connect()(DropTarget('STORY', columnTarget, collect)(Column))
