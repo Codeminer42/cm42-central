@@ -2,6 +2,7 @@ import { status, storyTypes } from "libs/beta/constants";
 import httpService from '../../services/httpService';
 import changeCase from 'change-object-case';
 import * as Label from './label';
+import * as Column from './column';
 import PropTypes from 'prop-types';
 import { notePropTypesShape } from './note';
 import { taskPropTypesShape } from './task';
@@ -78,6 +79,10 @@ export const releaseIsLate = (story) => {
   const releaseDate = moment(story.releaseDate, ["YYYY-MM-DD"]).endOf('day');
 
   return today > releaseDate;
+}
+
+export const possibleStatesFor = (story) => {
+  return Column.isChillyBin(story) ? [states[2]] : states
 }
 
 export const types = ['feature', 'bug', 'release', 'chore'];
