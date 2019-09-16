@@ -104,9 +104,11 @@ class StoriesController < ApplicationController
     ]
 
     params.require(:story).permit(
-      :title, :description, :estimate, :story_type, :release_date, :state,
-      :requested_by_id, :owned_by_id, :position, :labels, documents: attachinary_params,
-      tasks_attributes: %i[id name done], notes_attributes: %i[id note]
+      :title, :description, :estimate, :story_type, :release_date,
+      :state, :requested_by_id, :owned_by_id, :position, :labels,
+      documents: attachinary_params,
+      tasks_attributes: %i[id name done],
+      notes_attributes: %i[id note]
     )
   end
 
