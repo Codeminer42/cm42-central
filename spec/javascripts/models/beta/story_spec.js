@@ -871,7 +871,7 @@ describe('Story model', function () {
     })
 
     it("should return just the started state", () => {
-      const story = { state: 'unscheduled' }
+      const story = { state: status.UNSCHEDULED }
 
       expect(Story.possibleStatesFor(story).length).toEqual(1)
       expect(Story.possibleStatesFor(story)[0]).toEqual(status.STARTED)
