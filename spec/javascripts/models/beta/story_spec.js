@@ -864,7 +864,7 @@ describe('Story model', function () {
   });
 
   describe("possibleStatesFor", () => {
-    it("should return all states", () => {
+    it("return all states", () => {
       Object.keys(status).forEach((key) => {
         const currentStatus = status[key];
         const story = { state: currentStatus }
@@ -875,7 +875,7 @@ describe('Story model', function () {
       })
     })
 
-    it("should return just the started state", () => {
+    it("return just the started state", () => {
       Object.keys(status).forEach((key) => {
         const currentStatus = status[key];
         const story = { state: currentStatus }
