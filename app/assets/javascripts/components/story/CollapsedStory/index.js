@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import classname from 'classnames'
 import { DragSource, DropTarget } from 'react-dnd'
 import StoryPopover from '../StoryPopover'
@@ -8,7 +8,7 @@ import CollapsedStoryStateActions from './CollapsedStoryStateActions'
 import CollapsedStoryInfo from './CollapsedStoryInfo'
 import StoryIcon from '../StoryIcon'
 import * as Story from '../../../models/beta/story'
-import { moveStoryColumn, updateCollapsedStory } from '../../../actions/story'
+import { dragDropStory, updateCollapsedStory } from '../../../actions/story'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
@@ -41,11 +41,50 @@ const storySource = {
 }
 
 const storyTarget = {
-  hover(props, monitor, component) {
+  hover(props, monitor) {
     const story = monitor.getItem();
+
     const upperStory = story.stories[props.index - 1];
-    const calculatedPosition = (Number(props.story.position) + Number(upperStory.position)) / 2;
-    updateCollapsedStory(story.id, story.projectId, { position: calculatedPosition });
+
+    const dragIndex = story.index
+    const hoverIndex = props.index
+
+    if (dragIndex === hoverIndex) {
+      return
+    }
+
+    // Determine rectangle on screen
+    const hoverBoundingRect = document.querySelector(".story-container").getBoundingClientRect()
+    // Get vertical middle
+    const hoverMiddleY =
+      (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+    // Determine mouse position
+    const clientOffset = monitor.getClientOffset()
+    // Get pixels to the top
+    const hoverClientY = clientOffset.y - hoverBoundingRect.top
+    // Only perform the move when the mouse has crossed half of the items height
+    // When dragging downwards, only move when the cursor is below 50%
+    // When dragging upwards, only move when the cursor is above 50%
+    // Dragging downwards
+    if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+      return
+    }
+    // Dragging upwards
+    if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+      return
+    }
+
+    let calculatedPosition;
+
+    if (upperStory !== undefined) {
+      calculatedPosition = (Number(props.story.position) + Number(upperStory.position)) / 2;
+    } else if (upperStory === undefined) {
+      calculatedPosition = (Number(story.stories[props.index].position) + 1);
+    }
+
+    console.log(calculatedPosition);
+
+    props.dragDropStory(story.id, story.projectId, { position: calculatedPosition });
   },
 }
 
@@ -65,7 +104,7 @@ const collectTarget = (connect) => {
 export const CollapsedStory = ({
   onToggle,
   story,
-  moveStoryColumn,
+  dragDropStory,
   project,
   className,
   title,
@@ -73,8 +112,10 @@ export const CollapsedStory = ({
   connectDragSource,
   connectDropTarget
 }) => {
+  const ref = useRef(null);
   return connectDropTarget(connectDragSource(
     <div
+      ref={ref}
       className={storyClassName(story, className)}
       onClick={onToggle}
       title={title}
@@ -95,7 +136,7 @@ export const CollapsedStory = ({
       <CollapsedStoryStateActions
         story={story}
         onUpdate={newAttributes =>
-          moveStoryColumn(story.id, project.id, newAttributes)
+          dragDropStory(story.id, project.id, newAttributes)
         }
       />
     </div>
@@ -111,5 +152,5 @@ CollapsedStory.propTypes = {
 
 export default connect(
   ({ project }) => ({ project }),
-  { moveStoryColumn }
+  { dragDropStory, updateCollapsedStory }
 )(DropTarget(type.story, storyTarget, collectTarget)(DragSource(type.story, storySource, collectSource)(CollapsedStory)))

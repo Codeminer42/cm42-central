@@ -109,7 +109,7 @@ export const updateCollapsedStory = (storyId, projectId, newAttributes) =>
     }
   }
 
-export const moveStoryColumn = (storyId, projectId, newAttributes) =>
+export const dragDropStory = (storyId, projectId, newAttributes) =>
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
     const story = Story.findById(stories, storyId);
