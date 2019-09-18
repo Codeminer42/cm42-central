@@ -1,5 +1,5 @@
 import * as Story from 'models/beta/story';
-import moment, { invalid } from 'moment';
+import moment from 'moment';
 import { status, storyTypes } from 'libs/beta/constants';
 
 describe('Story model', function () {
