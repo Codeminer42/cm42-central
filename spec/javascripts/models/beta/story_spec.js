@@ -864,27 +864,25 @@ describe('Story model', function () {
   });
 
   describe("possibleStatesFor", () => {
-    it("return all states", () => {
-      Object.keys(status).forEach((key) => {
-        const currentStatus = status[key];
-        const story = { state: currentStatus }
+    const noUnscheduledStates = Story.states.filter(state => state !== status.UNSCHEDULED);
 
-        if (currentStatus !== status.UNSCHEDULED) {
+    noUnscheduledStates.forEach(state => {
+      describe(`when state is ${state}`, () => {
+        it('return all states', () => {
+          const story = { state }
+
           expect(Story.possibleStatesFor(story).length).toEqual(7);
-        }
-      })
-    })
+        });
+      });
+    });
 
-    it("return just the started state", () => {
-      Object.keys(status).forEach((key) => {
-        const currentStatus = status[key];
-        const story = { state: currentStatus }
+    describe("when state is unscheduled", () => {
+      it("return just the started state", () => {
+        const story = { state: status.UNSCHEDULED }
 
-        if (currentStatus === status.UNSCHEDULED) {
-          expect(Story.possibleStatesFor(story).length).toEqual(1);
-          expect(Story.possibleStatesFor(story)[0]).toEqual(status.STARTED);
-        }
-      })
-    })
-  })
+        expect(Story.possibleStatesFor(story).length).toEqual(1);
+        expect(Story.possibleStatesFor(story)[0]).toEqual(status.STARTED);
+      });
+    });
+  });
 });
