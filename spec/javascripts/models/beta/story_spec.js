@@ -1,6 +1,6 @@
 import * as Story from 'models/beta/story';
-import moment from 'moment';
-import { status } from 'libs/beta/constants';
+import moment, { invalid } from 'moment';
+import { status, storyTypes } from 'libs/beta/constants';
 
 describe('Story model', function () {
   describe('comparePosition', () => {
@@ -864,25 +864,60 @@ describe('Story model', function () {
   });
 
   describe("possibleStatesFor", () => {
-    const noUnscheduledStates = Story.states.filter(state => state !== status.UNSCHEDULED);
+    const invalidEstimates = [null, ''];
+    const invalidStoryTypes = [storyTypes.FEATURE]
+    const validEstimates = [1,2,3]
+    const validStoryTypes = [storyTypes.BUG, storyTypes.CHORE, storyTypes.RELEASE]
 
-    noUnscheduledStates.forEach(state => {
-      describe(`when state is ${state}`, () => {
-        it('return all states', () => {
-          const story = { state }
+    invalidStoryTypes.forEach(invalidStoryType => {
+      describe(`when storyType is ${invalidStoryType}`, () => {
+        invalidEstimates.forEach(invalidEstimate => {
+          describe(`when estimate is "${invalidEstimate}"`, () => {
+            it('returns all states', () => {
+              const story = { estimate: invalidEstimate, storyType: invalidStoryType}
 
-          expect(Story.possibleStatesFor(story).length).toEqual(7);
-        });
-      });
-    });
+              expect(Story.possibleStatesFor(story).length).toEqual(7);
+            })
+          })
 
-    describe("when state is unscheduled", () => {
-      it("return just the started state", () => {
-        const story = { state: status.UNSCHEDULED }
+          validEstimates.forEach(validEstimate => {
+            describe(`when estimate is ${validEstimate}`, () => {
+              it('return just the unscheduled state', () => {
+                const story = { estimate: validEstimate, storyType: invalidStoryType }
 
-        expect(Story.possibleStatesFor(story).length).toEqual(1);
-        expect(Story.possibleStatesFor(story)[0]).toEqual(status.STARTED);
-      });
-    });
+                expect(Story.possibleStatesFor(story).length).toEqual(1);
+                expect(Story.possibleStatesFor(story)[0]).toEqual(status.UNSCHEDULED);
+              })
+            })
+          })
+        })
+      })
+    })
+
+    validStoryTypes.forEach(validStoryType => {
+      describe(`when storyType is ${validStoryType}`, () => {
+        invalidEstimates.forEach(invalidEstimate => {
+          describe(`when estimate is "${invalidEstimate}"`, () => {
+            it('returns all states', () => {
+              const story = { estimate: invalidEstimate, storyType: validStoryType}
+
+              expect(Story.possibleStatesFor(story).length).toEqual(1);
+                expect(Story.possibleStatesFor(story)[0]).toEqual(status.UNSCHEDULED);
+            })
+          })
+
+          validEstimates.forEach(validEstimate => {
+            describe(`when estimate is ${validEstimate}`, () => {
+              it('returns all states', () => {
+                const story = { estimate: validEstimate, storyType: validStoryType }
+
+                expect(Story.possibleStatesFor(story).length).toEqual(1);
+                expect(Story.possibleStatesFor(story)[0]).toEqual(status.UNSCHEDULED);
+              })
+            })
+          })
+        })
+      })
+    })
   });
 });

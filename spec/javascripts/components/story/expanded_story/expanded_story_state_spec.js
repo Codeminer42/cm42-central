@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import ExpandedStoryState from 'components/story/ExpandedStory/ExpandedStoryState';
 import { states } from '../../../../../app/assets/javascripts/models/beta/story';
+import { storyTypes } from '../../../../../app/assets/javascripts/libs/beta/constants'
 
 describe('<ExpandedStoryState />', () => {
   it('renders component title', () => {
@@ -42,28 +43,12 @@ describe('<ExpandedStoryState />', () => {
       });
     });
 
-    it('when isChillyBin is true render just option of sarted state', () => {
-      const unscheduledValue = 'unscheduled';
-      const onEditSpy = sinon.spy();
-
-      const story = { state: unscheduledValue, _editing: { state: unscheduledValue } };
-
-      const wrapper = shallow(
-        <ExpandedStoryState
-          story={story}
-          onEdit={onEditSpy}
-          disabled={false}
-        />
-      );
-      const options = wrapper.find('option');
-
-      expect(options.length).toEqual(1);
-    });
-
-    it('when isChillyBin is false render all states', () => {
+    it('when is estimated feature render just the unscheduled state', () => {
       const onEditSpy = sinon.spy();
 
       const story = {
+        estimate: 1,
+        storyType: storyTypes.BUG,
         _editing: { state: states[0] }
       };
 
@@ -74,10 +59,32 @@ describe('<ExpandedStoryState />', () => {
           disabled={false}
         />
       );
+      
+      const options = wrapper.find('option');
       const select = wrapper.find('select');
+
+      expect(options.length).toEqual(1);
+      expect(select.prop('value')).toBe(states[0]);
+    });
+
+    it('when is unestimated feature render all states', () => {
+      const onEditSpy = sinon.spy();
+
+      const story = {
+        estimate: null,
+        storyType: storyTypes.FEATURE,
+        _editing: { state: states[0] }
+      };
+
+      const wrapper = shallow(
+        <ExpandedStoryState
+          story={story}
+          onEdit={onEditSpy}
+          disabled={false}
+        />
+      );
       const options = wrapper.find('option');
 
-      expect(select.prop('value')).toBe(states[0]);
       expect(options.length).toEqual(states.length);
     });
   });
