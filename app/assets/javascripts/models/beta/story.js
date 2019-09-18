@@ -147,13 +147,28 @@ export const toggleStory = (story) => {
 };
 
 const stateFor = (story) => {
-  if (story.state === "unscheduled" && typeof story.estimate === "number") return "unstarted";
-  if (story.state === "unstarted" && isUnestimatedFeature(story)) return "unscheduled";
-  if (!isFeature(story) && story.state === "unscheduled") return "unstarted";
+  if (story.state === status.UNSCHEDULED && story.estimate) return status.UNSTARTED;
+  if (story.state === status.UNSTARTED && isUnestimatedFeature(story)) return status.UNSCHEDULED;
+  if (!isFeature(story) && story.state === status.UNSCHEDULED) return status.UNSTARTED;
   return story.state;
 }
 
+const isEstimable = (story) => {
+  return story.storyType === storyTypes.FEATURE
+}
+
 export const editStory = (story, newAttributes) => {
+  if (isEstimable(story)) {
+    if (!story.estimate && newAttributes.estimate) story.state = status.UNSTARTED
+    if (story.estimate) {
+      if (newAttributes.estimate === null) story.state = status.UNSCHEDULED
+      if (newAttributes.state === status.UNSCHEDULED) story.estimate = null
+      if (story.state === status.UNSCHEDULED && 
+        newAttributes.hasOwnProperty('state') && 
+        newAttributes.state != status.UNSCHEDULED) story.state = status.UNSCHEDULED
+    } 
+  }
+
   const newStory = {
     ...story._editing,
     ...newAttributes
@@ -248,10 +263,7 @@ export const createNewStory = (stories, storyAttributes) => {
   const story = stories.find(isNew);
 
   if (story) {
-    return {
-      ...story,
-      ...storyAttributes
-    };
+    editStory(story, storyAttributes);
   }
 
   const newStory = {

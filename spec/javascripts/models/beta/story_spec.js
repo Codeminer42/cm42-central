@@ -347,6 +347,54 @@ describe('Story model', function () {
         });
       });
     })
+
+    describe('when story have estimate', () => {
+      const story = { 
+        estimate: 1,
+        storyType: storyTypes.FEATURE 
+      }
+
+      describe('when newAttribute is estimate null', () => {
+        it('should return state unscheduled', () => {
+          const newAttributes = { estimate: null }
+  
+          const changedStory = Story.editStory(story, newAttributes);
+          expect(changedStory.state).toEqual(status.UNSCHEDULED);
+        });
+      })
+
+      describe('when newAttribute is state unscheduled', () => {
+        it('should return estimate null', () => {
+          const newAttributes = { state: status.UNSCHEDULED }
+  
+          const changedStory = Story.editStory(story, newAttributes);
+          expect(changedStory.estimate).toEqual(null);
+        });
+      })
+
+      describe('when newAttribute is state started', () => {
+        it('should return status unscheduled', () => {
+          const newAttributes = { state: status.STARTED }
+          story.state = status.UNSCHEDULED
+  
+          const changedStory = Story.editStory(story, newAttributes);
+          expect(changedStory.state).toEqual(status.UNSCHEDULED);
+        });
+      });
+    });
+    
+    describe('when story have not estimate', () => {
+      const story = { storyType: storyTypes.FEATURE }
+
+      describe('when newAttribute is estimate number', () => {
+        it('should return state unstarted', () => {
+          const newAttributes = { estimate: 1 }
+  
+          const changedStory = Story.editStory(story, newAttributes);
+          expect(changedStory.state).toEqual(status.UNSTARTED);
+        })
+      })
+    })
   });
 
   describe('updateStory', () => {
