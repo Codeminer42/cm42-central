@@ -90,7 +90,6 @@ class ProjectBoard extends React.Component {
           <Column
             title={I18n.t("projects.show.done")}
             canMoveStory={() => true}
-            moveStory={() => console.log('moved')}
           >
             <Sprints
               sprints={this.props.doneSprints}
