@@ -169,15 +169,12 @@ const stateFor = (story, newAttributes, newStory) => {
   return newStory.state;
 }
 
-const estimateFor = (story, newAttributes, newStory) => {
-  return isEstimable(story) && story._editing.estimate && newAttributes.state === status.UNSCHEDULED
+const estimateFor = (story, newAttributes, newStory) => 
+  isEstimable(story) && story._editing.estimate && newAttributes.state === status.UNSCHEDULED
     ? null 
     : newStory.estimate;
-}
 
-const isEstimable = (story) => {
-  return isFeature(story._editing)
-}
+const isEstimable = story => isFeature(story._editing)
 
 export const editStory = (story, newAttributes) => {
   const newStory = {
