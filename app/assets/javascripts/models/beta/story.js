@@ -165,7 +165,7 @@ export const editStory = (story, newAttributes) => {
       if (newAttributes.state === status.UNSCHEDULED) story.estimate = null
       if (story.state === status.UNSCHEDULED && 
         newAttributes.hasOwnProperty('state') && 
-        newAttributes.state != status.UNSCHEDULED) story.state = status.UNSCHEDULED
+        newAttributes.state !== status.UNSCHEDULED) story.state = status.UNSCHEDULED
     } 
   }
 
