@@ -250,6 +250,8 @@ describe('Story model', function () {
       const story = {
         _editing: {
           storyType: storyTypes.BUG,
+          estimate: 1,
+          state: status.STARTED
         }
       };
       const newAttributes = { storyType: storyTypes.FEATURE };
@@ -260,7 +262,9 @@ describe('Story model', function () {
         _editing: {
           labels: [],
           storyType: newAttributes.storyType,
-          _isDirty: true
+          _isDirty: true,
+          estimate: 1,
+          state: status.STARTED
         }
       });
     });
