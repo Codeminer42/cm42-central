@@ -146,11 +146,24 @@ export const toggleStory = (story) => {
   };
 };
 
-const stateFor = (story) => {
-  if (story.state === status.UNSCHEDULED && story.estimate) return status.UNSTARTED;
-  if (story.state === status.UNSTARTED && isUnestimatedFeature(story)) return status.UNSCHEDULED;
-  if (!isFeature(story) && story.state === status.UNSCHEDULED) return status.UNSTARTED;
-  return story.state;
+const stateFor = (story, newAttributes, newStory) => {
+  if (isEstimable(story)) {
+    if (!story._editing.estimate && newAttributes.estimate) return status.UNSTARTED;
+    if (story._editing.estimate) {
+      if (newAttributes.estimate === null) return status.UNSCHEDULED;
+      if (story._editing.state === status.UNSCHEDULED && 
+        newAttributes.hasOwnProperty('state') && 
+        newAttributes.state !== status.UNSCHEDULED) return status.UNSCHEDULED;
+    } 
+  }
+
+  return newStory.state;
+}
+
+const estimateFor = (story, newAttributes, newStory) => {
+  return isEstimable(story) && story._editing.estimate && newAttributes.state === status.UNSCHEDULED
+    ? null 
+    : newStory.estimate;
 }
 
 const isEstimable = (story) => {
@@ -174,6 +187,8 @@ export const editStory = (story, newAttributes) => {
     } 
   }
 
+  newStory.state = stateFor(story, newAttributes, newStory);
+  newStory.estimate = estimateFor(story, newAttributes, newStory)
   newStory.labels = Label.uniqueLabels(newStory.labels);
 
   return {
