@@ -176,17 +176,6 @@ export const editStory = (story, newAttributes) => {
     ...newAttributes
   };
 
-  if (isEstimable(story)) {
-    if (!story._editing.estimate && newAttributes.estimate) newStory.state = status.UNSTARTED
-    if (story._editing.estimate) {
-      if (newAttributes.estimate === null) newStory.state = status.UNSCHEDULED
-      if (newAttributes.state === status.UNSCHEDULED) newStory.estimate = null
-      if (story._editing.state === status.UNSCHEDULED && 
-        newAttributes.hasOwnProperty('state') && 
-        newAttributes.state !== status.UNSCHEDULED) newStory.state = status.UNSCHEDULED
-    } 
-  }
-
   newStory.state = stateFor(story, newAttributes, newStory);
   newStory.estimate = estimateFor(story, newAttributes, newStory)
   newStory.labels = Label.uniqueLabels(newStory.labels);
