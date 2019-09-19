@@ -154,30 +154,27 @@ const stateFor = (story) => {
 }
 
 const isEstimable = (story) => {
-  return story.storyType === storyTypes.FEATURE
+  return isFeature(story._editing)
 }
 
 export const editStory = (story, newAttributes) => {
-  if (isEstimable(story)) {
-    if (!story.estimate && newAttributes.estimate) story.state = status.UNSTARTED
-    if (story.estimate) {
-      if (newAttributes.estimate === null) story.state = status.UNSCHEDULED
-      if (newAttributes.state === status.UNSCHEDULED) story.estimate = null
-      if (story.state === status.UNSCHEDULED && 
-        newAttributes.hasOwnProperty('state') && 
-        newAttributes.state !== status.UNSCHEDULED) story.state = status.UNSCHEDULED
-    } 
-  }
-
   const newStory = {
     ...story._editing,
     ...newAttributes
   };
 
-  newStory.estimate = isFeature(newStory) ? newStory.estimate : '';
-  newStory.labels = Label.uniqueLabels(newStory.labels);
+  if (isEstimable(story)) {
+    if (!story._editing.estimate && newAttributes.estimate) newStory.state = status.UNSTARTED
+    if (story._editing.estimate) {
+      if (newAttributes.estimate === null) newStory.state = status.UNSCHEDULED
+      if (newAttributes.state === status.UNSCHEDULED) newStory.estimate = null
+      if (story._editing.state === status.UNSCHEDULED && 
+        newAttributes.hasOwnProperty('state') && 
+        newAttributes.state !== status.UNSCHEDULED) newStory.state = status.UNSCHEDULED
+    } 
+  }
 
-  newStory.state = stateFor(newStory);
+  newStory.labels = Label.uniqueLabels(newStory.labels);
 
   return {
     ...story,
