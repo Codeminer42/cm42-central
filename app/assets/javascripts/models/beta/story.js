@@ -2,12 +2,12 @@ import { status, storyTypes } from "libs/beta/constants";
 import httpService from '../../services/httpService';
 import changeCase from 'change-object-case';
 import * as Label from './label';
-import * as Column from './column';
 import PropTypes from 'prop-types';
 import { notePropTypesShape } from './note';
 import { taskPropTypesShape } from './task';
 import { attachmentPropTypesShape } from './attachment';
 import moment from 'moment';
+import { isNull, has } from 'underscore';
 
 const compareValues = (a, b) => {
   if (a > b) return 1;
@@ -146,17 +146,26 @@ export const toggleStory = (story) => {
   };
 };
 
-const stateFor = (story, newAttributes, newStory) => {
-  if (isEstimable(story)) {
-    if (!story._editing.estimate && newAttributes.estimate) return status.UNSTARTED;
-    if (story._editing.estimate) {
-      if (newAttributes.estimate === null) return status.UNSCHEDULED;
-      if (story._editing.state === status.UNSCHEDULED && 
-        newAttributes.hasOwnProperty('state') && 
-        newAttributes.state !== status.UNSCHEDULED) return status.UNSCHEDULED;
-    } 
-  }
+const isUnstartedState = (story, newAttributes) => 
+  !story._editing.estimate && newAttributes.estimate
 
+const isUnscheduledState = (story, newAttributes) => 
+  story._editing.estimate && (
+    isNull(newAttributes.estimate) || (
+      isUnscheduled(story._editing) && 
+      has(newAttributes, 'state') && 
+      !isUnscheduled(newAttributes)
+    )
+  )
+
+const stateFor = (story, newAttributes, newStory) => {
+  const { UNSTARTED, UNSCHEDULED } = status;
+  
+  if (isEstimable(story)) {
+    if (isUnstartedState(story, newAttributes)) return UNSTARTED
+    if (isUnscheduledState(story, newAttributes)) return UNSCHEDULED
+  }
+  
   return newStory.state;
 }
 
