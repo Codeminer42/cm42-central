@@ -170,7 +170,7 @@ const stateFor = (story, newAttributes, newStory) => {
 }
 
 const estimateFor = (story, newAttributes, newStory) => 
-  isEstimable(story) && story._editing.estimate && newAttributes.state === status.UNSCHEDULED
+  isEstimable(story) && story._editing.estimate && isUnscheduled(newAttributes)
     ? null 
     : newStory.estimate;
 
