@@ -272,7 +272,7 @@ describe('Story model', function () {
           labels: emptyLabels,
           storyType: newAttributes.storyType,
           _isDirty: true,
-          estimate: sample(estimatedValues),
+          estimate: story._editing.estimate,
           state: STARTED
         }
       });
@@ -395,7 +395,7 @@ describe('Story model', function () {
       describe('when newAttribute is state unscheduled', () => {
         it('should return estimate null', () => {
           const newAttributes = { state: UNSCHEDULED }
-  
+
           const changedStory = Story.editStory(story, newAttributes);
           expect(changedStory._editing.estimate).toEqual(null);
         });
@@ -411,7 +411,7 @@ describe('Story model', function () {
         });
       });
     });
-    
+
     describe('when story have not estimate', () => {
       const story = { 
         _editing: {
@@ -422,7 +422,7 @@ describe('Story model', function () {
       describe('when newAttribute is estimate number', () => {
         it('should return state unstarted', () => {
           const newAttributes = { estimate: sample(estimatedValues) }
-  
+
           const changedStory = Story.editStory(story, newAttributes);
           expect(changedStory._editing.state).toEqual(UNSTARTED);
         });

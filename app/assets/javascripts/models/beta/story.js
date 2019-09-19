@@ -162,8 +162,8 @@ const stateFor = (story, newAttributes, newStory) => {
   const { UNSTARTED, UNSCHEDULED } = status;
   
   if (isEstimable(story)) {
-    if (isUnstartedState(story, newAttributes)) return UNSTARTED
-    if (isUnscheduledState(story, newAttributes)) return UNSCHEDULED
+    if (isUnstartedState(story, newAttributes)) return UNSTARTED;
+    if (isUnscheduledState(story, newAttributes)) return UNSCHEDULED;
   }
   
   return newStory.state;
