@@ -1,4 +1,4 @@
-import React, { useRef, useImperativeHandle } from 'react'
+import React, { useRef, useState } from 'react'
 import classname from 'classnames'
 import { useDrag, useDrop } from 'react-dnd'
 import StoryPopover from '../StoryPopover'
@@ -45,6 +45,7 @@ export const CollapsedStory = ({
   stories,
   moveTask
 }) => {
+  let calculatedPosition;
   const ref = useRef(null)
   const [, drop] = useDrop({
     accept: type.story,
@@ -54,10 +55,16 @@ export const CollapsedStory = ({
       }
 
       const storySource = monitor.getItem();
-      const upperStory = storySource.stories[item.index - 1];
-      
-      const dragIndex = item.index
+            
+      let dragIndex = storySource.index
       const hoverIndex = index
+
+      let array = storySource.stories;
+
+      if(storySource.state === 'unscheduled'){
+        array = stories
+      }
+
       if (dragIndex === hoverIndex) {
         return
       }
@@ -79,26 +86,50 @@ export const CollapsedStory = ({
         return
       }
 
-      let calculatedPosition;
-
-      if (upperStory !== undefined) {
-        calculatedPosition = (Number(story.position) + Number(upperStory.position)) / 2;
-      } else if (upperStory === undefined) {
-        calculatedPosition = (Number(storySource.stories[index].position) + 1);
+      let upperStory;
+      let bellowStory;
+      if(item.index > index){
+        upperStory = array[index - 1]
+        bellowStory = story
+      }else{
+        bellowStory = array[index + 1]
+        upperStory = story
       }
-      
-      moveTask(dragIndex, hoverIndex);
+
+      console.log("down:", bellowStory)
+      console.log("up:", upperStory)
+
+      if (bellowStory === undefined) {
+        calculatedPosition = (Number(item.stories[index].position) + 1)
+      }else if (upperStory !== undefined && bellowStory !== undefined) {
+        calculatedPosition = (Number(bellowStory.position) + Number(upperStory.position)) / 2;
+      } else if (upperStory === undefined) {
+        calculatedPosition = (Number(item.stories[index].position) - 1);
+      }
+      moveTask(dragIndex, hoverIndex, storySource);  
 
       item.index = hoverIndex
     }
   })
   const [{ isDragging }, drag] = useDrag({
-    item: { type: type.story,  },
+    item: { type: type.story, calculatedPosition},
     collect: monitor => ({
       isDragging: monitor.isDragging(),
     }),
     begin() {
-      return { ...story, index, stories }
+      return { ...story, index, stories, calculatedPosition }
+    },
+    end(item, monitor) {
+      const storySource = monitor.getItem()
+      const dragPosition = item.position
+      const hoverStory = stories[index]
+
+      if(item.state === "unscheduled"){
+        dragDropStory(item.id, item.projectId, {state: 'unstarted'})
+      }
+      
+      dragDropStory(item.id, item.projectId, {position: item.calculatedPosition})
+
     }
   })
   drag(drop(ref))
