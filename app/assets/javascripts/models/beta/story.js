@@ -7,7 +7,7 @@ import { notePropTypesShape } from './note';
 import { taskPropTypesShape } from './task';
 import { attachmentPropTypesShape } from './attachment';
 import moment from 'moment';
-import { isNull, has } from 'underscore';
+import { has } from 'underscore';
 
 const compareValues = (a, b) => {
   if (a > b) return 1;
@@ -151,7 +151,7 @@ const isUnstartedState = (story, newAttributes) =>
 
 const isUnscheduledState = (story, newAttributes) => 
   story._editing.estimate && (
-    isNull(newAttributes.estimate) || (
+    !newAttributes.estimate || (
       isUnscheduled(story._editing) && 
       has(newAttributes, 'state') && 
       !isUnscheduled(newAttributes)
@@ -160,7 +160,7 @@ const isUnscheduledState = (story, newAttributes) =>
 
 const stateFor = (story, newAttributes, newStory) => {
   const { UNSTARTED, UNSCHEDULED } = status;
-  
+
   if (isEstimable(story)) {
     if (isUnstartedState(story, newAttributes)) return UNSTARTED;
     if (isUnscheduledState(story, newAttributes)) return UNSCHEDULED;
@@ -170,8 +170,8 @@ const stateFor = (story, newAttributes, newStory) => {
 }
 
 const estimateFor = (story, newAttributes, newStory) => 
-  isEstimable(story) && story._editing.estimate && isUnscheduled(newAttributes)
-    ? null 
+  !isEstimable(story) || isUnscheduled(newAttributes)
+    ? ''
     : newStory.estimate;
 
 const isEstimable = story => isFeature(story._editing)

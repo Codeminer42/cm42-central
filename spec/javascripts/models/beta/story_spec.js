@@ -251,7 +251,7 @@ describe('Story model', function () {
     const { STARTED, UNSTARTED, UNSCHEDULED } = status;
 
     const notFeatureTypes = [BUG, CHORE, RELEASE];
-    const noEstimatedValues = [null];
+    const noEstimatedValues = [''];
     const estimatedValues = [1, 2, 3, 4];
     const emptyLabels = [];
 
@@ -259,7 +259,6 @@ describe('Story model', function () {
       const story = {
         _editing: {
           storyType: BUG,
-          estimate: sample(estimatedValues),
           state: STARTED
         }
       };
@@ -272,7 +271,7 @@ describe('Story model', function () {
           labels: emptyLabels,
           storyType: newAttributes.storyType,
           _isDirty: true,
-          estimate: story._editing.estimate,
+          estimate: '',
           state: STARTED
         }
       });
@@ -282,7 +281,7 @@ describe('Story model', function () {
       const story = { 
         _editing: { 
           estimate: sample(estimatedValues), 
-          storyType: BUG, 
+          storyType: FEATURE, 
           state: UNSTARTED 
         } 
       };
@@ -293,7 +292,7 @@ describe('Story model', function () {
       expect(changedStory).toEqual({
         _editing: {
           labels: emptyLabels,
-          storyType: BUG,
+          storyType: FEATURE,
           estimate: newAttributes.estimate,
           state: UNSTARTED,
           _isDirty: true
@@ -325,7 +324,7 @@ describe('Story model', function () {
 
       estimatedValues.forEach(estimate => {
         describe(`when story estimate is ${estimate}`, () => {
-          it(`change story estimate to null when state is ${UNSCHEDULED} and sets _isDirty to true`, () => {
+          it(`change story estimate to "" when state is ${UNSCHEDULED} and sets _isDirty to true`, () => {
             const story = { _editing: { storyType: FEATURE, estimate } };
             const newAttributes = { state: UNSCHEDULED };
       
@@ -335,7 +334,7 @@ describe('Story model', function () {
               _editing: {
                 labels: emptyLabels,
                 storyType: FEATURE,
-                estimate: null,
+                estimate: '',
                 state: UNSCHEDULED,
                 _isDirty: true
               }
@@ -344,14 +343,14 @@ describe('Story model', function () {
 
           it(`change story state to unscheduled when estimate is null and sets _isDirty to true`, () => {
             const story = { _editing: { storyType: FEATURE, estimate } };
-            const newAttributes = { estimate: null };
+            const newAttributes = { estimate: '' };
 
             const changedStory = Story.editStory(story, newAttributes);
 
             expect(changedStory).toEqual({
               _editing: {
                 storyType: FEATURE,
-                estimate: null,
+                estimate: '',
                 state: UNSCHEDULED,
                 _isDirty: true,
                 labels: emptyLabels 
@@ -385,7 +384,7 @@ describe('Story model', function () {
 
       describe('when newAttribute is estimate null', () => {
         it('should return state unscheduled', () => {
-          const newAttributes = { estimate: null }
+          const newAttributes = { estimate: '' }
 
           const changedStory = Story.editStory(story, newAttributes);
           expect(changedStory._editing.state).toEqual(UNSCHEDULED);
@@ -393,11 +392,11 @@ describe('Story model', function () {
       })
 
       describe('when newAttribute is state unscheduled', () => {
-        it('should return estimate null', () => {
+        it('should return estimate ""', () => {
           const newAttributes = { state: UNSCHEDULED }
 
           const changedStory = Story.editStory(story, newAttributes);
-          expect(changedStory._editing.estimate).toEqual(null);
+          expect(changedStory._editing.estimate).toEqual('');
         });
       })
 
