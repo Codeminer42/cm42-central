@@ -170,11 +170,11 @@ const stateFor = (story, newAttributes, newStory) => {
 }
 
 const estimateFor = (story, newAttributes, newStory) => 
-  !isEstimable(story) || isUnscheduled(newAttributes)
+  !isEstimable(story._editing) || isUnscheduled(newAttributes)
     ? ''
     : newStory.estimate;
 
-const isEstimable = story => isFeature(story._editing)
+const isEstimable = story => isFeature(story)
 
 export const editStory = (story, newAttributes) => {
   const newStory = {
