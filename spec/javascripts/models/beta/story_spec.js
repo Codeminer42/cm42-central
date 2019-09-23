@@ -301,7 +301,7 @@ describe('Story model', function () {
         estimatedValues.forEach(estimatedValue => {
           describe(`when new estimate is ${estimatedValue}`, () => {
             it(`change story state to unstarted`, () => {
-              const story = { _editing: { storyType: FEATURE, estimate: '', state: STARTED } };
+              const story = { _editing: { storyType: FEATURE, estimate: 2, state: STARTED } };
               const newAttributes = { estimate: estimatedValue };
   
               const changedStory = Story.editStory(story, newAttributes);
