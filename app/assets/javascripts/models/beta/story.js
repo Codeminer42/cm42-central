@@ -159,7 +159,8 @@ const isUnscheduledState = (story, newAttributes) =>
       has(newAttributes, 'estimate')
     ) || (
       isUnscheduled(story._editing) && 
-      !has(newAttributes, 'state')
+      !has(newAttributes, 'state') &&
+      !haveEstimate(newAttributes)
     ) || isUnscheduled(newAttributes)
   )
 
@@ -174,7 +175,7 @@ const stateFor = (story, newAttributes, newStory) => {
 
 const estimateFor = (story, newAttributes, newStory) => {
   if (isNoEstimated(story, newAttributes) || isUnscheduledState(story, newAttributes)) return '';
-  if (isFeature(newAttributes)) return 1;
+  if (isFeature(newAttributes) && !isUnscheduled(story._editing)) return 1;
   
   return newStory.estimate;
 }

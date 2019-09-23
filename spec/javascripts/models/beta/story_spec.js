@@ -301,7 +301,7 @@ describe('Story model', function () {
         estimatedValues.forEach(estimatedValue => {
           describe(`when new estimate is ${estimatedValue}`, () => {
             it(`change story state to unstarted`, () => {
-              const story = { _editing: { storyType: FEATURE, estimate: 2, state: STARTED } };
+              const story = { _editing: { storyType: FEATURE, estimate: '', state: UNSCHEDULED } };
               const newAttributes = { estimate: estimatedValue };
   
               const changedStory = Story.editStory(story, newAttributes);
@@ -356,7 +356,7 @@ describe('Story model', function () {
             it('change story estimate to 1 and storyType to feature', () => {
               const story = { _editing: { 
                   storyType: noFeatureType,
-                  estimate: 2,
+                  estimate: '',
                   state: UNSTARTED
                 } 
               };
@@ -374,7 +374,7 @@ describe('Story model', function () {
         describe(`when state is ${UNSTARTED}`, () => {
           describe(`when new state is ${UNSCHEDULED}`, () => {
             it("change estimate to ''", () => {
-              const story = { _editing: { storyType: noFeatureType, state: UNSTARTED, estimate: 1 } };
+              const story = { _editing: { storyType: noFeatureType, state: UNSTARTED, estimate: '' } };
               const newAttributes = { state: UNSCHEDULED }
       
               const changedStory = Story.editStory(story, newAttributes);
@@ -388,7 +388,7 @@ describe('Story model', function () {
         describe(`when state is ${UNSCHEDULED}`, () => {
           describe(`when new state is ${UNSTARTED}`, () => {
             it("change estimate to ''", () => {
-              const story = { _editing: { storyType: noFeatureType, state: '', estimate: 1 } };
+              const story = { _editing: { storyType: noFeatureType, state: '', estimate: '' } };
               const newAttributes = { state: UNSTARTED }
       
               const changedStory = Story.editStory(story, newAttributes);
