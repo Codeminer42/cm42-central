@@ -150,31 +150,42 @@ const isUnstartedState = (story, newAttributes) =>
   !story._editing.estimate && newAttributes.estimate
 
 const isUnscheduledState = (story, newAttributes) => 
-  story._editing.estimate && (
-    !newAttributes.estimate || (
+  (
+    (
+      !haveEstimate(story._editing) &&
+      !haveEstimate(newAttributes)
+    ) || (
+      !haveEstimate(newAttributes) &&
+      has(newAttributes, 'estimate')
+    ) || (
       isUnscheduled(story._editing) && 
-      has(newAttributes, 'state') && 
-      !isUnscheduled(newAttributes)
-    )
+      !has(newAttributes, 'state')
+    ) || isUnscheduled(newAttributes)
   )
 
 const stateFor = (story, newAttributes, newStory) => {
   const { UNSTARTED, UNSCHEDULED } = status;
 
-  if (isEstimable(story)) {
-    if (isUnstartedState(story, newAttributes)) return UNSTARTED;
-    if (isUnscheduledState(story, newAttributes)) return UNSCHEDULED;
-  }
+  if (isUnstartedState(story, newAttributes)) return UNSTARTED;
+  if (isUnscheduledState(story, newAttributes)) return UNSCHEDULED;
   
   return newStory.state;
 }
 
-const estimateFor = (story, newAttributes, newStory) => 
-  !isEstimable(story._editing) || isUnscheduled(newAttributes)
-    ? ''
-    : newStory.estimate;
+const estimateFor = (story, newAttributes, newStory) => {
+  if (isNoEstimated(story, newAttributes) || isUnscheduledState(story, newAttributes)) return '';
+  if (isFeature(newAttributes)) return 1;
+  
+  return newStory.estimate;
+}
 
 const isEstimable = story => isFeature(story)
+
+const isNoEstimated = (story, newAttributes) => 
+  (!isEstimable(story._editing) && !has(newAttributes, 'storyType')) || 
+  (!isEstimable(newAttributes) && has(newAttributes, 'storyType'))
+
+const haveEstimate = story => story.estimate !== ''
 
 export const editStory = (story, newAttributes) => {
   const newStory = {
@@ -183,7 +194,7 @@ export const editStory = (story, newAttributes) => {
   };
 
   newStory.state = stateFor(story, newAttributes, newStory);
-  newStory.estimate = estimateFor(story, newAttributes, newStory)
+  newStory.estimate = estimateFor(story, newAttributes, newStory);
   newStory.labels = Label.uniqueLabels(newStory.labels);
 
   return {

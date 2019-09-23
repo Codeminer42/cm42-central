@@ -1,7 +1,6 @@
 import * as Story from 'models/beta/story';
 import moment from 'moment';
 import { status, storyTypes } from 'libs/beta/constants';
-import { sample } from 'underscore';
 
 describe('Story model', function () {
   describe('comparePosition', () => {
@@ -248,182 +247,156 @@ describe('Story model', function () {
 
   describe('editStory', () => {
     const { FEATURE, BUG, CHORE, RELEASE } = storyTypes;
-    const { STARTED, UNSTARTED, UNSCHEDULED } = status;
+    const { UNSTARTED, UNSCHEDULED, STARTED } = status;
 
     const notFeatureTypes = [BUG, CHORE, RELEASE];
-    const noEstimatedValues = [''];
     const estimatedValues = [1, 2, 3, 4];
-    const emptyLabels = [];
-
-    it('change story type and sets _isDirty to true', () => {
-      const story = {
-        _editing: {
-          storyType: BUG,
-          state: STARTED
-        }
-      };
-      const newAttributes = { storyType: FEATURE };
-
-      const changedStory = Story.editStory(story, newAttributes);
-
-      expect(changedStory).toEqual({
-        _editing: {
-          labels: emptyLabels,
-          storyType: newAttributes.storyType,
-          _isDirty: true,
-          estimate: '',
-          state: STARTED
-        }
-      });
-    });
-
-    it('change story estimate and sets _isDirty to true', () => {
-      const story = { 
-        _editing: { 
-          estimate: sample(estimatedValues), 
-          storyType: FEATURE, 
-          state: UNSTARTED 
-        } 
-      };
-      const newAttributes = { estimate: sample(estimatedValues) };
-
-      const changedStory = Story.editStory(story, newAttributes);
-
-      expect(changedStory).toEqual({
-        _editing: {
-          labels: emptyLabels,
-          storyType: FEATURE,
-          estimate: newAttributes.estimate,
-          state: UNSTARTED,
-          _isDirty: true
-        }
-      });
-    });
 
     describe(`when story type is ${FEATURE}`, () => {
-      noEstimatedValues.forEach(estimate => {
-        describe(`when story estimate is ${estimate}`, () => {
-          it(`change story state to unstarted when estimate is valid and sets _isDirty to true`, () => {
-            const story = { _editing: { storyType: FEATURE, estimate } };
-            const newAttributes = { estimate: sample(estimatedValues) };
+      notFeatureTypes.forEach(noFeatureType => {
+        describe(`when new story type is ${noFeatureType}`, () => {
+          it('change story estimate to ""', () => {
+            const story = { _editing: { storyType: FEATURE, estimate: 1 } };
+            const newAttributes = { storyType: noFeatureType }
 
+            const changedStory = Story.editStory(story, newAttributes);
+
+            expect(changedStory._editing.estimate).toEqual('');
+            expect(changedStory._editing.storyType).toEqual(noFeatureType);
+          });
+        });
+      });
+
+      describe(`when state is ${UNSTARTED}`, () => {
+        describe(`when new state is ${UNSCHEDULED}`, () => {
+          it("change estimate to ''", () => {
+            const story = { _editing: { storyType: FEATURE, state: UNSTARTED, estimate: 1 } };
+            const newAttributes = { state: UNSCHEDULED }
+    
             const changedStory = Story.editStory(story, newAttributes);
     
-            expect(changedStory).toEqual({
-              _editing: {
-                labels: emptyLabels,
-                storyType: FEATURE,
-                estimate: newAttributes.estimate,
-                state: UNSTARTED,
-                _isDirty: true
-              }
+            expect(changedStory._editing.estimate).toEqual('');
+            expect(changedStory._editing.state).toEqual(UNSCHEDULED);
+          });
+        });
+      });
+
+      estimatedValues.forEach(estimatedValue => {
+        describe(`when estimate is ${estimatedValue}`, () => {
+          describe(`when new estimate is ""`, () => {
+            it(`change state to unscheduled `, () => {
+              const story = { _editing: { storyType: FEATURE, estimate: estimatedValue } };
+              const newAttributes = { estimate: '' };
+  
+              const changedStory = Story.editStory(story, newAttributes);
+  
+              expect(changedStory._editing.state).toEqual(UNSCHEDULED);
+              expect(changedStory._editing.estimate).toEqual('');
             });
           });
-        })
-      })
+        });
+      });
 
-      estimatedValues.forEach(estimate => {
-        describe(`when story estimate is ${estimate}`, () => {
-          it(`change story estimate to "" when state is ${UNSCHEDULED} and sets _isDirty to true`, () => {
-            const story = { _editing: { storyType: FEATURE, estimate } };
-            const newAttributes = { state: UNSCHEDULED };
+      describe(`when estimate is ""`, () => {
+        estimatedValues.forEach(estimatedValue => {
+          describe(`when new estimate is ${estimatedValue}`, () => {
+            it(`change story state to unstarted`, () => {
+              const story = { _editing: { storyType: FEATURE, estimate: '', state: STARTED } };
+              const newAttributes = { estimate: estimatedValue };
+  
+              const changedStory = Story.editStory(story, newAttributes);
       
-            const changedStory = Story.editStory(story, newAttributes);
-      
-            expect(changedStory).toEqual({
-              _editing: {
-                labels: emptyLabels,
-                storyType: FEATURE,
-                estimate: '',
-                state: UNSCHEDULED,
-                _isDirty: true
-              }
-            });
-          });
-
-          it(`change story state to unscheduled when estimate is null and sets _isDirty to true`, () => {
-            const story = { _editing: { storyType: FEATURE, estimate } };
-            const newAttributes = { estimate: '' };
-
-            const changedStory = Story.editStory(story, newAttributes);
-
-            expect(changedStory).toEqual({
-              _editing: {
-                storyType: FEATURE,
-                estimate: '',
-                state: UNSCHEDULED,
-                _isDirty: true,
-                labels: emptyLabels 
-              }
+              expect(changedStory._editing.state).toEqual(UNSTARTED);
+              expect(changedStory._editing.estimate).toEqual(estimatedValue);
             });
           });
         });
       });
     });
 
-    notFeatureTypes.forEach(storyType => {
-      describe(`when story type is ${storyType}`, () => {
-        it(`should change the storyType to ${FEATURE}`, () => {
-          const story = { _editing: { storyType: FEATURE } };
-          const newAttributes = { storyType: FEATURE }
+    notFeatureTypes.forEach(noFeatureType => {
+      describe(`when story type is ${noFeatureType}`, () => {
+        const otherNotFeatureTypes = notFeatureTypes.filter(type => type !== noFeatureType);
 
-          const changedStory = Story.editStory(story, newAttributes);
+        otherNotFeatureTypes.forEach(otherNotFeatureType => {
+          describe(`when new story type is ${otherNotFeatureType}`, () => {
+            it("change estime to ''", () => {
+              const story = { _editing: { storyType: noFeatureType, estimate: '' } };
+              const newAttributes = { storyType: otherNotFeatureType }
 
-          expect(changedStory._editing.storyType).toEqual(FEATURE);
-        })
-      })
-    })
+              const changedStory = Story.editStory(story, newAttributes);
 
-    describe('when story have estimate', () => {
-      const story = {
-        _editing: {
-          estimate: sample(estimatedValues),
-          storyType: FEATURE
-        } 
-      }
-
-      describe('when newAttribute is estimate null', () => {
-        it('should return state unscheduled', () => {
-          const newAttributes = { estimate: '' }
-
-          const changedStory = Story.editStory(story, newAttributes);
-          expect(changedStory._editing.state).toEqual(UNSCHEDULED);
+              expect(changedStory._editing.storyType).toEqual(otherNotFeatureType);
+              expect(changedStory._editing.estimate).toEqual('');
+            });
+          });
         });
-      })
 
-      describe('when newAttribute is state unscheduled', () => {
-        it('should return estimate ""', () => {
-          const newAttributes = { state: UNSCHEDULED }
-
-          const changedStory = Story.editStory(story, newAttributes);
-          expect(changedStory._editing.estimate).toEqual('');
+        describe(`when story status is ${UNSCHEDULED}`, () => {
+          describe(`when new story type is feature`, () => {
+            it('change estimate to "" and storyType to feature', () => {
+              const story = { _editing: { 
+                storyType: noFeatureType, 
+                estimate: '', 
+                state: UNSCHEDULED } 
+              };
+              const newAttributes = { storyType: FEATURE }
+    
+              const changedStory = Story.editStory(story, newAttributes);
+    
+              expect(changedStory._editing.storyType).toEqual(FEATURE);
+              expect(changedStory._editing.state).toEqual(UNSCHEDULED);
+              expect(changedStory._editing.estimate).toEqual('');
+            });
+          });
         });
-      })
 
-      describe('when newAttribute is state started', () => {
-        it('should return status unscheduled', () => {
-          const newAttributes = { state: STARTED }
-          story._editing.state = UNSCHEDULED
+        describe(`when story status is ${UNSTARTED}`, () => {
+          describe(`when new story type is feature`, () => {
+            it('change story estimate to 1 and storyType to feature', () => {
+              const story = { _editing: { 
+                  storyType: noFeatureType,
+                  estimate: 2,
+                  state: UNSTARTED
+                } 
+              };
+              const newAttributes = { storyType: FEATURE }
 
-          const changedStory = Story.editStory(story, newAttributes);
-          expect(changedStory._editing.state).toEqual(UNSCHEDULED);
+              const changedStory = Story.editStory(story, newAttributes);
+
+              expect(changedStory._editing.storyType).toEqual(FEATURE);
+              expect(changedStory._editing.state).toEqual(UNSTARTED);
+              expect(changedStory._editing.estimate).toEqual(1);
+            });
+          });
         });
-      });
-    });
 
-    describe('when story have not estimate', () => {
-      const story = { 
-        _editing: {
-          storyType: FEATURE
-        } 
-      }
+        describe(`when state is ${UNSTARTED}`, () => {
+          describe(`when new state is ${UNSCHEDULED}`, () => {
+            it("change estimate to ''", () => {
+              const story = { _editing: { storyType: noFeatureType, state: UNSTARTED, estimate: 1 } };
+              const newAttributes = { state: UNSCHEDULED }
+      
+              const changedStory = Story.editStory(story, newAttributes);
+      
+              expect(changedStory._editing.estimate).toEqual('');
+              expect(changedStory._editing.state).toEqual(UNSCHEDULED);
+            });
+          });
+        });
 
-      describe('when newAttribute is estimate number', () => {
-        it('should return state unstarted', () => {
-          const newAttributes = { estimate: sample(estimatedValues) }
-
-          const changedStory = Story.editStory(story, newAttributes);
-          expect(changedStory._editing.state).toEqual(UNSTARTED);
+        describe(`when state is ${UNSCHEDULED}`, () => {
+          describe(`when new state is ${UNSTARTED}`, () => {
+            it("change estimate to ''", () => {
+              const story = { _editing: { storyType: noFeatureType, state: '', estimate: 1 } };
+              const newAttributes = { state: UNSTARTED }
+      
+              const changedStory = Story.editStory(story, newAttributes);
+      
+              expect(changedStory._editing.estimate).toEqual('');
+              expect(changedStory._editing.state).toEqual(UNSTARTED);
+            });
+          });
         });
       });
     });
