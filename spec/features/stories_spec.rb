@@ -221,7 +221,7 @@ describe 'Stories' do
   describe 'story links' do
     let!(:story) { create(:story, title: 'Story', project: project, requested_by: user) }
     let!(:target_story) do
-      create(:story, state: 'unscheduled', project: project, requested_by: user)
+      create(:story, state: 'unscheduled', estimate: 1, project: project, requested_by: user)
     end
 
     before do
