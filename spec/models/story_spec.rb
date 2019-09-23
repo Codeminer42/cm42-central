@@ -255,4 +255,17 @@ describe Story do
       end
     end
   end
+
+
+  describe '.can_be_estimated?' do
+    STORY_TYPES = { feature: true, chore: false, bug: false, release: false }.freeze
+
+    STORY_TYPES.each do |type, estimable|
+      context "when check if a #{type} story is estimable" do
+        it "returns #{estimable}" do
+          expect(Story.can_be_estimated?(type)).to eq(estimable)
+        end
+      end
+    end
+  end
 end
