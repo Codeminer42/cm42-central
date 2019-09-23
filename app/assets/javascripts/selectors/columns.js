@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import { orderByState, groupStoriesInSprints } from "./backlog";
 import { mountPastIterations } from './done';
 import * as Column from "../models/beta/column";
+import { comparePosition } from "../models/beta/story";
 import { property, last } from 'underscore';
 
 const getStories = property('stories');
@@ -14,7 +15,7 @@ export const getColumns = createSelector(
   (column, stories, project, pastIterations) => {
     switch (column) {
       case Column.CHILLY_BIN:
-        return stories.filter(story => Column.isChillyBin(story));
+        return stories.filter(story => Column.isChillyBin(story)).sort(comparePosition);
       case Column.BACKLOG:
         const orderedStories = orderByState(stories.filter(
           story => Column.isBacklog(story, project))

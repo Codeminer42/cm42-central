@@ -14,21 +14,13 @@ export const orderByState = stories => {
   const finishedStories = ordered.filter(filterByState(status.FINISHED));
   const unstartedStories = ordered.filter(filterByState(status.UNSTARTED));
 
-  const partitionedFeatures = _.partition(
-    unstartedStories,
-    Story.isUnestimatedFeature
-  );
-  const unestimatedUnstartedStories = partitionedFeatures[0];
-  const estimatedUnstartedStories = partitionedFeatures[1];
-
   return [
     ...acceptedStories,
     ...deliveredStories,
     ...rejectedStories,
     ...finishedStories,
     ...startedStories,
-    ...estimatedUnstartedStories,
-    ...unestimatedUnstartedStories
+    ...unstartedStories
   ];
 };
 
