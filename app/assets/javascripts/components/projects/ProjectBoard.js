@@ -31,10 +31,10 @@ class ProjectBoard extends React.Component {
   moveStory = (story, column) => {
     const { dragDropStory } = this.props
     if (column === 'chillyBin') {
-      return dragDropStory(story.id, story.projectId, {state: Story.status.UNSCHEDULED})
+      dragDropStory(story.id, story.projectId, {state: Story.status.UNSCHEDULED})
     }
     if (column === 'backlog') {
-      return dragDropStory(story.id, story.projectId, {state: Story.status.UNSTARTED})
+      dragDropStory(story.id, story.projectId, {state: Story.status.UNSTARTED})
     }
   }
 
@@ -89,7 +89,7 @@ class ProjectBoard extends React.Component {
 
           <Column
             title={I18n.t("projects.show.done")}
-            canMoveStory={() => true}
+            column="done"
           >
             <Sprints
               sprints={this.props.doneSprints}

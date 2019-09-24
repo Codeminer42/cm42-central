@@ -1,6 +1,6 @@
-import React, { Fragment, useState, useCallback, useEffect } from "react";
-import {connect} from 'react-redux'
-import StoryItem from "../story/StoryItem";
+import React, { Fragment, useState, useCallback, useEffect } from 'react'
+import { connect } from 'react-redux'
+import StoryItem from '../story/StoryItem'
 import update from 'immutability-helper'
 import { orderByState } from '../../selectors/backlog'
 import { dragDropStory } from '../../actions/story'
@@ -16,9 +16,9 @@ const Stories = ({ stories, dragDropStory }) => {
     setStories(stories)
   }, [stories])
 
-
   const moveTask = useCallback(
-    (dragIndex, hoverIndex, dragStory) => {
+    (dragIndex, hoverIndex ) => {
+      let dragStory = storiesDND[dragIndex]
       const dragPosition = dragStory.position
       const hoverStory = storiesDND[hoverIndex]
       if(dragStory.state === "unscheduled"){
@@ -39,10 +39,19 @@ const Stories = ({ stories, dragDropStory }) => {
   return (
     <Fragment>
       {storiesDND.map((story, index) => (
-        <StoryItem key={story.id} index={index} stories={storiesDND} story={story} moveTask={moveTask}/>
+        <StoryItem
+          key={story.id}
+          index={index}
+          stories={storiesDND}
+          story={story}
+          moveTask={moveTask}
+        />
       ))}
     </Fragment>
   );
 };
 
-export default connect(null, {dragDropStory})(Stories);
+export default connect(
+  null,
+  { dragDropStory}
+)(Stories)
