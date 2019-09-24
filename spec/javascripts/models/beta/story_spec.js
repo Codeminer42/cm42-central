@@ -285,7 +285,7 @@ describe('Story model', function () {
         describe(`when estimate is ${estimatedValue}`, () => {
           describe(`when new estimate is ""`, () => {
             it(`change state to unscheduled `, () => {
-              const story = { _editing: { storyType: FEATURE, estimate: estimatedValue } };
+              const story = { _editing: { storyType: FEATURE, estimate: estimatedValue, state: STARTED } };
               const newAttributes = { estimate: '' };
   
               const changedStory = Story.editStory(story, newAttributes);
@@ -356,7 +356,7 @@ describe('Story model', function () {
             it('change story estimate to 1 and storyType to feature', () => {
               const story = { _editing: { 
                   storyType: noFeatureType,
-                  estimate: '',
+                  estimate: 2,
                   state: UNSTARTED
                 } 
               };
@@ -388,7 +388,7 @@ describe('Story model', function () {
         describe(`when state is ${UNSCHEDULED}`, () => {
           describe(`when new state is ${UNSTARTED}`, () => {
             it("change estimate to ''", () => {
-              const story = { _editing: { storyType: noFeatureType, state: '', estimate: '' } };
+              const story = { _editing: { storyType: noFeatureType, state: '', estimate: 1 } };
               const newAttributes = { state: UNSTARTED }
       
               const changedStory = Story.editStory(story, newAttributes);
