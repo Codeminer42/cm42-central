@@ -21,7 +21,7 @@ describe('<ExpandedStoryDescription />', () => {
     const content = wrapper.find('.story-description-content');
     content.simulate('click');
 
-    const textarea = wrapper.find('textarea');
+    const textarea = wrapper.find('.textarea');
 
     return { textarea, wrapper, story }
   }
@@ -89,7 +89,7 @@ describe('<ExpandedStoryDescription />', () => {
     describe('textarea', () => {
       it('is editable', () => {
         const { textarea } = renderTextarea();
-  
+
         expect(textarea.prop('readOnly')).toBe(false);
       });
     });
@@ -99,9 +99,9 @@ describe('<ExpandedStoryDescription />', () => {
         const onEdit = sinon.spy();
         const { textarea, story } = renderTextarea({ onEdit });
         const change = `${story._editing.description} changed`;
-  
+
         textarea.simulate('change', { target: { value: change } });
-  
+
         expect(onEdit).toHaveBeenCalledWith(change);
       });
     });
