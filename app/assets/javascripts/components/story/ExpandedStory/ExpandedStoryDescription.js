@@ -10,16 +10,20 @@ class ExpandedStoryDescription extends React.Component {
     super(props);
 
     this.state = {
-      editing: false,
-      users: [],
+      editing: false
     };
 
     this.toggleField = this.toggleField.bind(this);
+    this.mentionFormat = this.mentionFormat.bind(this);
   };
 
   toggleField() {
     this.setState({ editing: !this.state.editing });
   };
+
+  mentionFormat(id, display) {
+    return `@${display}`;
+  }
 
   editButton() {
     return (
@@ -42,14 +46,14 @@ class ExpandedStoryDescription extends React.Component {
 
     return (
       <MentionsInput
-        className="form-control input-sm edit-description-text"
+        className="form-control input-sm edit-description-text textarea"
         onChange={(event) => onEdit(event.target.value)}
         readOnly={disabled}
         value={description}
       >
         <Mention
           markup="@__display__"
-          displayTransform={(id, display) => `@${display}`}
+          displayTransform={this.mentionFormat}
           data={suggestedUsers}
         />
       </MentionsInput>
@@ -57,9 +61,9 @@ class ExpandedStoryDescription extends React.Component {
   };
 
   render() {
-    const { story, disabled } = this.props;
+    const { story, disabled, users } = this.props;
 
-    const suggestedUsers = (this.props.users && this.props.users.map(user => ({ id: user.id, display: user.username })));
+    const suggestedUsers = users.map(({ id, username }) => ({ id, display: username }));
 
     if(disabled && !story.description) return null
 
@@ -84,6 +88,10 @@ class ExpandedStoryDescription extends React.Component {
       </ExpandedStorySection>
     );
   };
+};
+
+ExpandedStoryDescription.defaultProps = {
+  users: [],
 };
 
 ExpandedStoryDescription.propTypes = {
