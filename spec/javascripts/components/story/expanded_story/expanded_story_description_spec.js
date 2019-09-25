@@ -21,7 +21,7 @@ describe('<ExpandedStoryDescription />', () => {
     const content = wrapper.find('.story-description-content');
     content.simulate('click');
 
-    const textarea = wrapper.find('.textarea');
+    const textarea = wrapper.find('[data-id="text-area"]');
 
     return { textarea, wrapper, story }
   }

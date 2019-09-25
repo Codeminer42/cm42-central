@@ -14,16 +14,14 @@ class ExpandedStoryDescription extends React.Component {
     };
 
     this.toggleField = this.toggleField.bind(this);
-    this.mentionFormat = this.mentionFormat.bind(this);
+    this.formatMention = this.formatMention.bind(this);
   };
 
   toggleField() {
     this.setState({ editing: !this.state.editing });
   };
 
-  mentionFormat(id, display) {
-    return `@${display}`;
-  }
+  formatMention = (id, display) =>`@${display}`;
 
   editButton() {
     return (
@@ -41,8 +39,10 @@ class ExpandedStoryDescription extends React.Component {
     );
   };
 
-  descriptionTextArea(description, suggestedUsers) {
-    const { disabled, onEdit } = this.props;
+  descriptionTextArea(description) {
+    const { disabled, onEdit, users } = this.props;
+
+    const suggestedUsers = users.map(({ id, username }) => ({ id, display: username }));
 
     return (
       <MentionsInput
@@ -50,10 +50,11 @@ class ExpandedStoryDescription extends React.Component {
         onChange={(event) => onEdit(event.target.value)}
         readOnly={disabled}
         value={description}
+        data-id="text-area"
       >
         <Mention
           markup="@__display__"
-          displayTransform={this.mentionFormat}
+          displayTransform={this.formatMention}
           data={suggestedUsers}
         />
       </MentionsInput>
@@ -61,9 +62,7 @@ class ExpandedStoryDescription extends React.Component {
   };
 
   render() {
-    const { story, disabled, users } = this.props;
-
-    const suggestedUsers = users.map(({ id, username }) => ({ id, display: username }));
+    const { story, disabled } = this.props;
 
     if(disabled && !story.description) return null
 
@@ -74,7 +73,7 @@ class ExpandedStoryDescription extends React.Component {
       >
         {
           this.state.editing
-            ? this.descriptionTextArea(story._editing.description || '', suggestedUsers)
+            ? this.descriptionTextArea(story._editing.description || '')
             : (
               <div onClick={this.toggleField} className='story-description-content'>
                 {
