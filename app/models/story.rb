@@ -34,6 +34,8 @@ class Story < ApplicationRecord
                   accept: %i[raw jpg png psd docx xlsx doc xls pdf odt odm ods odg odp odb],
                   maximum: 10
 
+  accepts_nested_attributes_for :tasks, :notes
+
   attr_accessor :documents_attributes_was
   prepend ReadOnlyDocuments
 
