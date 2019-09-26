@@ -4,9 +4,11 @@ import * as Column from '../../../app/assets/javascripts/models/beta/column';
 import moment from 'moment';
 
 describe('Columns Selector', () => {
-  const unscheduledStory = storyFactory({ id: 1, state: 'unscheduled' });
-  const startedStory = storyFactory({ id: 2, state: 'started' });
-  const deliveredStory = storyFactory({ id: 3, state: 'delivered' });
+  const unscheduledStory = storyFactory({ id: 1, state: 'unscheduled', position: '1.0' });
+  const unscheduledStory2 = storyFactory({ id: 2, state: 'unscheduled', position: '2.0' });
+  const unstartedStory = storyFactory({ id: 3 });
+  const startedStory = storyFactory({ id: 4, state: 'started' });
+  const deliveredStory = storyFactory({ id: 5, state: 'delivered' });
   const acceptedStory = storyFactory({ id: 42,  state: 'accepted' });
 
   const currentSprintDate = moment();
@@ -15,7 +17,7 @@ describe('Columns Selector', () => {
   let storiesArray;
 
   beforeEach(() => {
-    storiesArray = [unscheduledStory, startedStory, deliveredStory, acceptedStory];
+    storiesArray = [unscheduledStory, unscheduledStory2, unstartedStory, startedStory, deliveredStory, acceptedStory];
   });
 
   describe('CHILLY_BIN', () => {
@@ -26,9 +28,19 @@ describe('Columns Selector', () => {
       });
 
       expect(chillyBinStories).toContain(unscheduledStory);
+      expect(chillyBinStories).not.toContain(unstartedStory);
       expect(chillyBinStories).not.toContain(startedStory);
       expect(chillyBinStories).not.toContain(deliveredStory);
       expect(chillyBinStories).not.toContain(acceptedStory);
+    });
+
+    it('return stories ordered by position', () => {
+      const chillyBinStories = getColumns({
+        column: Column.CHILLY_BIN,
+        stories: storiesArray
+      });
+
+      expect(chillyBinStories).toEqual([unscheduledStory, unscheduledStory2]);
     });
   });
 
@@ -75,7 +87,7 @@ describe('Columns Selector', () => {
         storyIds: [42]
       }
     ];
-    
+
     it('return pastIterations with start and end date', () => {
       const startDate =   moment(pastIterations[0].startDate).format("YYYY/MM/DD");
       const endDate = moment(pastIterations[0].endDate).format("YYYY/MM/DD");
@@ -100,6 +112,7 @@ describe('Columns Selector', () => {
       expect(doneSprints[0].stories).not.toContain(unscheduledStory);
       expect(doneSprints[0].stories).not.toContain(startedStory);
       expect(doneSprints[0].stories).not.toContain(deliveredStory);
+      expect(doneSprints[0].stories).not.toContain(unstartedStory);
     });
   });
 });
