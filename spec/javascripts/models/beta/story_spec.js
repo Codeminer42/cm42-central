@@ -332,6 +332,19 @@ describe('Story model', function () {
           });
         });
 
+        Object.keys(status).forEach(item => {
+          describe(`when new status is ${status[item]}`, () => {
+            it(`change status to ${status[item]}`, () => {
+              const story = { _editing: { storyType: noFeatureType } };
+              const newAttributes = { state: status[item] }
+
+              const changedStory = Story.editStory(story, newAttributes);
+
+              expect(changedStory._editing.state).toEqual(status[item]);
+            });
+          });
+        });
+
         describe(`when story status is ${UNSCHEDULED}`, () => {
           describe(`when new story type is feature`, () => {
             it('change estimate to "" and storyType to feature', () => {
