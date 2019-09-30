@@ -254,16 +254,22 @@ describe('Story model', function () {
 
     describe(`when story type is ${FEATURE}`, () => {
       notFeatureTypes.forEach(noFeatureType => {
-        describe(`when new story type is ${noFeatureType}`, () => {
+        describe(`and new story type is ${noFeatureType}`, () => {
+          const story = { _editing: { storyType: FEATURE, estimate: 1 } };
+          const newAttributes = { storyType: noFeatureType }
+          let changedStory;
+          
+          beforeEach(() => {
+            changedStory = Story.editStory(story, newAttributes);
+          })
+
           it('change story estimate to ""', () => {
-            const story = { _editing: { storyType: FEATURE, estimate: 1 } };
-            const newAttributes = { storyType: noFeatureType }
-
-            const changedStory = Story.editStory(story, newAttributes);
-
             expect(changedStory._editing.estimate).toEqual('');
+          })
+        
+          it(`change story type is ${noFeatureType}`, () => {
             expect(changedStory._editing.storyType).toEqual(noFeatureType);
-          });
+          })
         });
       });
 
