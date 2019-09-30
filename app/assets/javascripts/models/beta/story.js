@@ -152,19 +152,18 @@ const isUnstartedState = (story, newAttributes) =>
 const isUnscheduledState = (story, newAttributes) => 
   (
     isFeature(story._editing) && (
-      (
-        !hasEstimate(story._editing) &&
-        !hasEstimate(newAttributes)
-      ) || (
-        !hasEstimate(newAttributes) &&
-        has(newAttributes, 'estimate')
-      ) || (
-        isUnscheduled(story._editing) && 
-        !has(newAttributes, 'state') &&
-        !hasEstimate(newAttributes)
-      ) || isUnscheduled(newAttributes)
+      isChangingWithoutEstimate(story, newAttributes) ||
+      hasNilProp(newAttributes, 'estimate') || 
+      isChangingToUnscheduled(story, newAttributes) ||
+      isUnscheduled(newAttributes)
     )
   )
+
+const hasNilProp = (story, prop) => has(story, prop) && !story[prop]
+
+const isChangingToUnscheduled = (story, newAttributes) => isUnscheduled(story._editing) && !has(newAttributes, 'state') && !hasEstimate(newAttributes)
+
+const isChangingWithoutEstimate = (story, newAttributes) => !hasEstimate(story._editing) && !hasEstimate(newAttributes)
 
 const stateFor = (story, newAttributes, newStory) => {
   const { UNSTARTED, UNSCHEDULED } = status;
