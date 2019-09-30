@@ -1,18 +1,27 @@
 import * as Column from 'models/beta/column.js';
+import { states } from 'models/beta/story';
 import { status } from 'libs/beta/constants';
 
 describe('Column model', function() {
   describe('isChillyBin', function() {
-    it('should return true when state is unscheduled', function() {
-      const story = { state: status.UNSCHEDULED }
-
-      expect(Column.isChillyBin(story)).toEqual(true);
+    describe('when state is unscheduled', () => {
+      it('returns truthy', function() {
+        const story = { state: status.UNSCHEDULED }
+  
+        expect(Column.isChillyBin(story)).toBeTruthy();
+      });
     });
 
-    it('should return false when state is not unscheduled', function() {
-      const story = { state: status.STARTED }
+    const noUnscheduledStates = states.filter(state => state !== status.UNSCHEDULED);
+    
+    noUnscheduledStates.forEach(state => {
+      describe(`when state is ${state}`, () => {
+        it('return falsy', () => {
+          const story = { state }
 
-      expect(Column.isChillyBin(story)).toEqual(false);
+          expect(Column.isChillyBin(story)).toBeFalsy(false);
+        });
+      });
     });
   })
 })
