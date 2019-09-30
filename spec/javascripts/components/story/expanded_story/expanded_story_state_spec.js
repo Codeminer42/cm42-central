@@ -22,12 +22,64 @@ describe('<ExpandedStoryState />', () => {
   });
 
   describe("states at select", () => {
+    describe('when is estimated feature', () => {
+      const onEditSpy = sinon.spy();
+      const story = {
+        estimate: 1,
+        storyType: storyTypes.BUG,
+        _editing: { state: states[0] }
+      };
+      let wrapper;
+
+      beforeEach(() => {
+        wrapper = shallow(
+          <ExpandedStoryState
+            story={story}
+            onEdit={onEditSpy}
+            disabled={false}
+          />
+        );
+      });
+
+      it('render just one state', () => {
+        expect(wrapper.find('option').length).toEqual(1);
+      });
+
+      it('the state should be unscheduled', () => {
+        expect(wrapper.find('select').prop('value')).toBe(states[0]);
+      });
+    })
+
+  describe('when is unestimated feature', () => {
+    const onEditSpy = sinon.spy();
+    const story = {
+      estimate: null,
+      storyType: storyTypes.FEATURE,
+      _editing: { state: states[0] }
+    };
+    let wrapper;
+
+    beforeEach(() => {
+      wrapper = shallow(
+        <ExpandedStoryState
+          story={story}
+          onEdit={onEditSpy}
+          disabled={false}
+        />
+      );
+    })
+    
+    it('renders all states', () => {
+      expect(wrapper.find('option').length).toEqual(states.length);
+    });
+  })
+
     states.forEach(state => {
       it(`sets select value as ${state}`, () => {
         const onEditSpy = sinon.spy();
 
         const story = {
-          _editing: { state: state }
+          _editing: { state }
         };
 
         const wrapper = shallow(
@@ -41,51 +93,6 @@ describe('<ExpandedStoryState />', () => {
 
         expect(select.prop('value')).toBe(state);
       });
-    });
-
-    it('when is estimated feature render just the unscheduled state', () => {
-      const onEditSpy = sinon.spy();
-
-      const story = {
-        estimate: 1,
-        storyType: storyTypes.BUG,
-        _editing: { state: states[0] }
-      };
-
-      const wrapper = shallow(
-        <ExpandedStoryState
-          story={story}
-          onEdit={onEditSpy}
-          disabled={false}
-        />
-      );
-      
-      const options = wrapper.find('option');
-      const select = wrapper.find('select');
-
-      expect(options.length).toEqual(1);
-      expect(select.prop('value')).toBe(states[0]);
-    });
-
-    it('when is unestimated feature render all states', () => {
-      const onEditSpy = sinon.spy();
-
-      const story = {
-        estimate: null,
-        storyType: storyTypes.FEATURE,
-        _editing: { state: states[0] }
-      };
-
-      const wrapper = shallow(
-        <ExpandedStoryState
-          story={story}
-          onEdit={onEditSpy}
-          disabled={false}
-        />
-      );
-      const options = wrapper.find('option');
-
-      expect(options.length).toEqual(states.length);
     });
   });
 
