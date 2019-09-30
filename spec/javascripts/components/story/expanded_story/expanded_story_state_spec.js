@@ -41,11 +41,11 @@ describe('<ExpandedStoryState />', () => {
         );
       });
 
-      it('render just one state', () => {
+      it('renders just one state', () => {
         expect(wrapper.find('option').length).toEqual(1);
       });
 
-      it('the state should be unscheduled', () => {
+      it('has to be unscheduled', () => {
         expect(wrapper.find('select').prop('value')).toBe(states[0]);
       });
     })

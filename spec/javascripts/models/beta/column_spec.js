@@ -4,6 +4,8 @@ import { status } from 'libs/beta/constants';
 
 describe('Column model', function() {
   describe('isChillyBin', function() {
+    const noUnscheduledStates = states.filter(state => state !== status.UNSCHEDULED);
+    
     describe('when state is unscheduled', () => {
       it('returns truthy', function() {
         const story = { state: status.UNSCHEDULED }
@@ -11,8 +13,6 @@ describe('Column model', function() {
         expect(Column.isChillyBin(story)).toBeTruthy();
       });
     });
-
-    const noUnscheduledStates = states.filter(state => state !== status.UNSCHEDULED);
     
     noUnscheduledStates.forEach(state => {
       describe(`when state is ${state}`, () => {
