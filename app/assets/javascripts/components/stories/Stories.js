@@ -17,11 +17,11 @@ const Stories = ({ stories, dragDropStory }) => {
   }, [stories])
 
   const moveTask = useCallback(
-    (dragIndex, hoverIndex ) => {
+    (dragIndex, hoverIndex, column ) => {
       let dragStory = storiesDND[dragIndex]
       const dragPosition = dragStory.position
       const hoverStory = storiesDND[hoverIndex]
-      if(dragStory.state === "unscheduled"){
+      if(dragStory.state === "unscheduled" && column === 'backlog'){
         const arr = storiesDND.filter(item => dragStory.id === item.id)
         if(arr.length >= 1){
           return null

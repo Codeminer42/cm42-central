@@ -65,7 +65,7 @@ export const CollapsedStory = ({
 
       let array = storySource.stories;
 
-      if(storySource.state === 'unscheduled'){
+      if(storySource.state === 'unscheduled' && storySource.column === 'backlog'){
         return
       }
 
@@ -112,7 +112,7 @@ export const CollapsedStory = ({
         return
       }
 
-      moveTask(dragIndex, hoverIndex); 
+      moveTask(dragIndex, hoverIndex, storySource.column); 
       dragDropStory(storySource.id, storySource.projectId, {
         position: calculatedPosition
       })      
