@@ -147,21 +147,21 @@ export const toggleStory = (story) => {
 };
 
 const isUnstartedState = (story, newAttributes) => 
-  !haveEstimate(story) && haveEstimate(newAttributes)
+  !hasEstimate(story) && hasEstimate(newAttributes)
 
 const isUnscheduledState = (story, newAttributes) => 
   (
     isFeature(story._editing) && (
       (
-        !haveEstimate(story._editing) &&
-        !haveEstimate(newAttributes)
+        !hasEstimate(story._editing) &&
+        !hasEstimate(newAttributes)
       ) || (
-        !haveEstimate(newAttributes) &&
+        !hasEstimate(newAttributes) &&
         has(newAttributes, 'estimate')
       ) || (
         isUnscheduled(story._editing) && 
         !has(newAttributes, 'state') &&
-        !haveEstimate(newAttributes)
+        !hasEstimate(newAttributes)
       ) || isUnscheduled(newAttributes)
     )
   )
@@ -182,13 +182,13 @@ const estimateFor = (story, newAttributes, newStory) => {
   return newStory.estimate;
 }
 
-const isEstimable = story => isFeature(story)
+const isEstimable = isFeature
 
 const isNoEstimated = (story, newAttributes) => 
   (!isEstimable(story._editing) && !has(newAttributes, 'storyType')) || 
   (!isEstimable(newAttributes) && has(newAttributes, 'storyType'))
 
-const haveEstimate = story => story.estimate
+const hasEstimate = story => Boolean(story.estimate);
 
 export const editStory = (story, newAttributes) => {
   const newStory = {
