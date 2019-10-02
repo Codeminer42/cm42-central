@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Sprint from "./Sprint";
-import { sort } from '../../models/beta/sprint';
+import { sortSprints } from '../../models/beta/sprint';
 
 const propTypes = {
   sprints: PropTypes.array
@@ -12,7 +12,7 @@ const defaultProps = {
 };
 
 const renderSprints = (sprints, fetchStories) => {
-  return sort(sprints).map(
+  return sortSprints(sprints).map(
     (sprint, index) =>
       sprint ? (
         <Sprint

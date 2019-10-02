@@ -4,7 +4,7 @@ describe('Sprint model', () => {
   const doneSprint = { hasStories: '' }
   const undoneSprint = {}
 
-  describe('sort', () => {
+  describe('sortSprints', () => {
     describe('when is done sprints', () => {
       const amountOfSprints = [1,10,100]
 
@@ -14,7 +14,7 @@ describe('Sprint model', () => {
           let changedSprints;
 
           beforeEach(() => {
-            changedSprints = Sprint.sort(doneSprints);
+            changedSprints = Sprint.sortSprints(doneSprints);
           });
 
           it('return reverse order', () => {
@@ -37,7 +37,7 @@ describe('Sprint model', () => {
           let changedSprints;
     
           beforeEach(() => {
-            changedSprints = Sprint.sort(undoneSprints);
+            changedSprints = Sprint.sortSprints(undoneSprints);
           });
     
           it('return the same order', () => {
