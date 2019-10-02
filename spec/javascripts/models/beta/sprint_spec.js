@@ -5,60 +5,62 @@ describe('Sprint model', () => {
   const undoneSprint = {}
 
   describe('sortSprints', () => {
-    describe('when is done sprints', () => {
-      const amountOfSprints = [1,10,100]
-
-      amountOfSprints.forEach(amount => {
-        describe(`when have ${amount} sprints`, () => {
-          let doneSprints = Array(amount).fill(doneSprint);
-          let changedSprints;
-
-          beforeEach(() => {
-            changedSprints = Sprint.sortSprints(doneSprints);
-          });
-
-          it('return reverse order', () => {
-            expect(changedSprints).toEqual(doneSprints.reverse());
-          });
-    
-          it(`return ${doneSprints.length} sprints`, () => {
-            expect(changedSprints.length).toEqual(doneSprints.length);
-          });
-        })
-      })
+    describe('when all sprints are done', () => {
+      const sprints = [
+        { id: 1, hasStories: '' },
+        { id: 2, hasStories: '' },
+        { id: 3, hasStories: '' },
+      ];
+  
+      it('returns the sprints list reversed', () => {
+        expect(Sprint.sortSprints(sprints)).toEqual([
+          { id: 3, hasStories: '' },
+          { id: 2, hasStories: '' },
+          { id: 1, hasStories: '' },
+        ])
+      });
     });
-
-    describe('when is undone sprint', () => {
-      const amountOfSprints = [1,10,100]
-
-      amountOfSprints.forEach(amount => {
-        describe(`when have ${amount} sprints`, () => {
-          let undoneSprints = Array(amount).fill(undoneSprint);
-          let changedSprints;
-    
-          beforeEach(() => {
-            changedSprints = Sprint.sortSprints(undoneSprints);
-          });
-    
-          it('return the same order', () => {
-            expect(changedSprints).toEqual(changedSprints)
-          });
-    
-          it(`return ${undoneSprints.length} sprints`, () => {
-            expect(changedSprints.length).toEqual(undoneSprints.length);
-          });
-        });
+  
+    describe('When not all sprints are done', () => {
+      const sprints = [
+        { id: 1, hasStories: '' },
+        { id: 2, hasStories: '' },
+        { id: 3 },
+      ];
+  
+      it('returns the sprints list', () => {
+        expect(Sprint.sortSprints(sprints)).toEqual([
+          { id: 1, hasStories: '' },
+          { id: 2, hasStories: '' },
+          { id: 3 },
+        ])
+      });
+    });
+  
+    describe('When none sprints are done', () => {
+      const sprints = [
+        { id: 1 },
+        { id: 2 },
+        { id: 3 },
+      ];
+  
+      it('returns the sprints list', () => {
+        expect(Sprint.sortSprints(sprints)).toEqual([
+          { id: 1 },
+          { id: 2 },
+          { id: 3 },
+        ])
       });
     });
   });
 
   describe('isDone', () => {
-    describe(`when has stories`, () => {
-      it('return true', () => {
+    describe(`when story is done`, () => {
+      it('returns truthy', () => {
         expect(Sprint.isDone(doneSprint)).toBeTruthy();
       });
 
-      it('return false', () => {
+      it('returns falsy', () => {
         expect(Sprint.isDone(undoneSprint)).toBeFalsy();
       });
     });
