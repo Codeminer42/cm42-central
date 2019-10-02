@@ -81,9 +81,8 @@ export const releaseIsLate = (story) => {
   return today > releaseDate;
 }
 
-export const possibleStatesFor = (story) => {
-  return isUnestimatedFeature(story) ? states : [states[0]];
-}
+export const possibleStatesFor = story => 
+  isUnestimatedFeature(story) ? states : [states[0]];
 
 export const types = ['feature', 'bug', 'release', 'chore'];
 
