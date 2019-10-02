@@ -22,8 +22,13 @@ describe('<ExpandedStoryState />', () => {
   });
 
   describe("states at select", () => {
+    let onEditSpy;
+
+    beforeEach(() => {
+      onEditSpy = sinon.spy();
+    })
+
     describe('when is estimated feature', () => {
-      const onEditSpy = sinon.spy();
       const story = {
         estimate: 1,
         storyType: storyTypes.BUG,
@@ -51,7 +56,12 @@ describe('<ExpandedStoryState />', () => {
     })
 
   describe('when is unestimated feature', () => {
-    const onEditSpy = sinon.spy();
+    let onEditSpy;
+
+    beforeEach(() => {
+      onEditSpy = sinon.spy();
+    })
+
     const story = {
       estimate: null,
       storyType: storyTypes.FEATURE,
