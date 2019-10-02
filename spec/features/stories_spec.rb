@@ -117,6 +117,9 @@ describe 'Stories' do
       # Estimate the story
       within(chilly_bin_column.find('.story')) do
         find('#estimate-1').click
+      end
+
+      within(in_progress_column.find('.story')) do
         click_on 'start'
       end
 
@@ -221,7 +224,7 @@ describe 'Stories' do
   describe 'story links' do
     let!(:story) { create(:story, title: 'Story', project: project, requested_by: user) }
     let!(:target_story) do
-      create(:story, state: 'unscheduled', project: project, requested_by: user)
+      create(:story, state: 'unscheduled', estimate: 1, project: project, requested_by: user)
     end
 
     before do
