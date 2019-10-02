@@ -51,4 +51,16 @@ describe('Sprint model', () => {
       });
     });
   });
+
+  describe('isDone', () => {
+    describe(`when has stories`, () => {
+      it('return true', () => {
+        expect(Sprint.isDone(doneSprint)).toBeTruthy();
+      });
+
+      it('return false', () => {
+        expect(Sprint.isDone(undoneSprint)).toBeFalsy();
+      });
+    });
+  });
 });
