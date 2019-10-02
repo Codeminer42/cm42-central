@@ -4,6 +4,7 @@ class Beta::ProjectsController < ApplicationController
   def show
     authorize current_user
     @project_id = params[:id]
+    @project = current_user.projects.friendly.find @project_id
   end
 
   private
