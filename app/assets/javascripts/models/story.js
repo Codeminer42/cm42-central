@@ -113,7 +113,6 @@ const Story = Backbone.Model.extend({
   },
 
   setColumn: function() {
-
     var column = '#in_progress';
 
     switch(this.get('state')) {

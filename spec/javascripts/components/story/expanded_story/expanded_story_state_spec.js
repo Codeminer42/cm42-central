@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import ExpandedStoryState from 'components/story/ExpandedStory/ExpandedStoryState';
 import { states } from '../../../../../app/assets/javascripts/models/beta/story';
+import { storyTypes } from '../../../../../app/assets/javascripts/libs/beta/constants'
 
 describe('<ExpandedStoryState />', () => {
   it('renders component title', () => {
@@ -21,12 +22,74 @@ describe('<ExpandedStoryState />', () => {
   });
 
   describe("states at select", () => {
+    let onEditSpy;
+
+    beforeEach(() => {
+      onEditSpy = sinon.spy();
+    })
+
+    describe('when is estimated feature', () => {
+      const story = {
+        estimate: 1,
+        storyType: storyTypes.BUG,
+        _editing: { state: states[0] }
+      };
+      let wrapper;
+
+      beforeEach(() => {
+        wrapper = shallow(
+          <ExpandedStoryState
+            story={story}
+            onEdit={onEditSpy}
+            disabled={false}
+          />
+        );
+      });
+
+      it('renders just one state', () => {
+        expect(wrapper.find('option').length).toEqual(1);
+      });
+
+      it('has to be unscheduled', () => {
+        expect(wrapper.find('select').prop('value')).toBe(states[0]);
+      });
+    })
+
+  describe('when is unestimated feature', () => {
+    let onEditSpy;
+
+    beforeEach(() => {
+      onEditSpy = sinon.spy();
+    })
+
+    const story = {
+      estimate: null,
+      storyType: storyTypes.FEATURE,
+      _editing: { state: states[0] }
+    };
+    let wrapper;
+
+    beforeEach(() => {
+      wrapper = shallow(
+        <ExpandedStoryState
+          story={story}
+          onEdit={onEditSpy}
+          disabled={false}
+        />
+      );
+    })
+    
+    it('renders all states', () => {
+      expect(wrapper.find('option').length).toEqual(states.length);
+    });
+  })
+
     states.forEach(state => {
       it(`sets select value as ${state}`, () => {
         const onEditSpy = sinon.spy();
 
         const story = {
-          _editing: { state: state }
+          _editing: { state }
         };
 
         const wrapper = shallow(

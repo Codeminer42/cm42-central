@@ -7,6 +7,7 @@ import { notePropTypesShape } from './note';
 import { taskPropTypesShape } from './task';
 import { attachmentPropTypesShape } from './attachment';
 import moment from 'moment';
+import { has } from 'underscore';
 
 const compareValues = (a, b) => {
   if (a > b) return 1;
@@ -80,6 +81,9 @@ export const releaseIsLate = (story) => {
   return today > releaseDate;
 }
 
+export const possibleStatesFor = story => 
+  isUnestimatedFeature(story) ? states : [states[0]];
+
 export const types = ['feature', 'bug', 'release', 'chore'];
 
 export const states = [
@@ -141,12 +145,48 @@ export const toggleStory = (story) => {
   };
 };
 
-const stateFor = (story) => {
-  if (story.state === "unscheduled" && typeof story.estimate === "number") return "unstarted";
-  if (story.state === "unstarted" && isUnestimatedFeature(story)) return "unscheduled";
-  if (!isFeature(story) && story.state === "unscheduled") return "unstarted";
-  return story.state;
+const isUnstartedState = (story, newAttributes) => 
+  !hasEstimate(story) && hasEstimate(newAttributes)
+
+const isUnscheduledState = (story, newAttributes) => 
+  (
+    isFeature(story._editing) && (
+      isChangingWithoutEstimate(story, newAttributes) ||
+      hasNilProp(newAttributes, 'estimate') || 
+      isChangingToUnscheduled(story, newAttributes) ||
+      isUnscheduled(newAttributes)
+    )
+  )
+
+const hasNilProp = (story, prop) => has(story, prop) && !story[prop]
+
+const isChangingToUnscheduled = (story, newAttributes) => isUnscheduled(story._editing) && !has(newAttributes, 'state') && !hasEstimate(newAttributes)
+
+const isChangingWithoutEstimate = (story, newAttributes) => !hasEstimate(story._editing) && !hasEstimate(newAttributes)
+
+const stateFor = (story, newAttributes, newStory) => {
+  const { UNSTARTED, UNSCHEDULED } = status;
+
+  if (isUnstartedState(story._editing, newAttributes)) return UNSTARTED;
+  if (isUnscheduledState(story, newAttributes)) return UNSCHEDULED;
+  
+  return newStory.state;
 }
+
+const estimateFor = (story, newAttributes, newStory) => {
+  if (isNoEstimated(story, newAttributes) || isUnscheduledState(story, newAttributes)) return '';
+  if (isFeature(newAttributes) && !isUnscheduled(story._editing)) return 1;
+  
+  return newStory.estimate;
+}
+
+const isEstimable = isFeature
+
+const isNoEstimated = (story, newAttributes) => 
+  (!isEstimable(story._editing) && !has(newAttributes, 'storyType')) || 
+  (!isEstimable(newAttributes) && has(newAttributes, 'storyType'))
+
+const hasEstimate = story => Boolean(story.estimate);
 
 export const editStory = (story, newAttributes) => {
   const newStory = {
@@ -154,10 +194,9 @@ export const editStory = (story, newAttributes) => {
     ...newAttributes
   };
 
-  newStory.estimate = isFeature(newStory) ? newStory.estimate : '';
+  newStory.state = stateFor(story, newAttributes, newStory);
+  newStory.estimate = estimateFor(story, newAttributes, newStory);
   newStory.labels = Label.uniqueLabels(newStory.labels);
-
-  newStory.state = stateFor(newStory);
 
   return {
     ...story,
@@ -243,10 +282,7 @@ export const createNewStory = (stories, storyAttributes) => {
   const story = stories.find(isNew);
 
   if (story) {
-    return {
-      ...story,
-      ...storyAttributes
-    };
+    editStory(story, storyAttributes);
   }
 
   const newStory = {
