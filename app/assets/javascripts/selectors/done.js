@@ -7,4 +7,4 @@ export const mountPastIterations = (pastIterations, stories) =>
     startDate: sprint.startDate,
     endDate: sprint.endDate,
     stories: stories.filter(story => sprint.storyIds.includes(story.id))
-  }));
+  })).reverse();
