@@ -419,6 +419,9 @@ and CVE-2018-14567)
 - Fix a locale select bug to make the options visible on a dark navbar.
 - Some improvements to fix some issues reported by codeclimate.
 
+### Changed
+- Reversed the order of done column sprints
+
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
