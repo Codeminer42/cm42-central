@@ -1,16 +1,16 @@
-import React, { useRef, useState } from 'react'
-import classname from 'classnames'
-import { useDrag, useDrop } from 'react-dnd'
-import StoryPopover from '../StoryPopover'
-import StoryDescriptionIcon from '../StoryDescriptionIcon'
-import CollapsedStoryEstimate from './CollapsedStoryEstimate'
-import CollapsedStoryStateActions from './CollapsedStoryStateActions'
-import CollapsedStoryInfo from './CollapsedStoryInfo'
-import StoryIcon from '../StoryIcon'
-import * as Story from '../../../models/beta/story'
-import { dragDropStory, editStory, updateCollapsedStory } from '../../../actions/story'
-import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
+import React, { useRef } from 'react';
+import classname from 'classnames';
+import { useDrag, useDrop } from 'react-dnd';
+import StoryPopover from '../StoryPopover';
+import StoryDescriptionIcon from '../StoryDescriptionIcon';
+import CollapsedStoryEstimate from './CollapsedStoryEstimate';
+import CollapsedStoryStateActions from './CollapsedStoryStateActions';
+import CollapsedStoryInfo from './CollapsedStoryInfo';
+import StoryIcon from '../StoryIcon';
+import * as Story from '../../../models/beta/story';
+import { dragDropStory, updateCollapsedStory } from '../../../actions/story';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 const storyClassName = (story, additionalClassname = '') => {
   const isStoryNotEstimated = Story.isStoryNotEstimated(
@@ -43,9 +43,8 @@ export const CollapsedStory = ({
   title,
   index,
   stories,
-  moveTask
+  column
 }) => {
-  const [positionState, updateState] = useState(0)
   const ref = useRef(null)
   const [, drop] = useDrop({
     accept: type.story,
@@ -54,38 +53,38 @@ export const CollapsedStory = ({
         return
       }
 
-      if(story.state === 'accepted'){
-        return 
+      if(story.state === 'accepted') {
+        return
       }
 
       const storySource = monitor.getItem();
-            
+
+      if (storySource.column !== column) {
+        return
+      }
+
       let dragIndex = storySource.index
       const hoverIndex = index
 
       let array = storySource.stories;
-
-      if(storySource.state === 'unscheduled' && storySource.column === 'backlog'){
-        return
-      }
 
       if (dragIndex === hoverIndex) {
         return
       }
 
       // Determine rectangle on screen
-      const hoverBoundingRect = ref.current.getBoundingClientRect()      
-      // Get vertical middle   
-      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2    
-      // Determine mouse position    
+      const hoverBoundingRect = ref.current.getBoundingClientRect()
+      // Get vertical middle
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+      // Determine mouse position
       const clientOffset = monitor.getClientOffset()
-      // Get pixels to the top   
+      // Get pixels to the top
       const hoverClientY = clientOffset.y - hoverBoundingRect.top
 
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return
       }
-          // Dragging upwards
+      // Dragging upwards
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return
       }
@@ -112,32 +111,34 @@ export const CollapsedStory = ({
         return
       }
 
-      moveTask(dragIndex, hoverIndex, storySource.column); 
       dragDropStory(storySource.id, storySource.projectId, {
         position: calculatedPosition
-      })      
+      })
       item.index = hoverIndex
     }
   })
   const [{ isDragging }, drag] = useDrag({
-    item: { type: type.story, ...story, index, stories},
+    item: { type: type.story, ...story, index, stories, column},
     collect: monitor => ({
       isDragging: monitor.isDragging(),
     }),
-    canDrag(monitor) {
+    canDrag() {
       const storyState = story.state
       return storyState === "accepted" ? false : true
     },
     begin() {
-      return { ...story, index, stories }
+      return { ...story, index, stories, column }
     },
+
     end(item, monitor) {
       const storySource = monitor.getDropResult()
-      const dragPosition = item.position
-      const hoverStory = stories[index]
 
       if(storySource.state === "unscheduled" && storySource.column === "backlog"){
         dragDropStory(item.id, item.projectId, {state: 'unstarted'})
+      }
+
+      if(storySource.state === "unstarted" && storySource.column === "chillyBin"){
+        dragDropStory(item.id, item.projectId, {state: 'unscheduled'})
       }
     }
   })
@@ -165,7 +166,7 @@ export const CollapsedStory = ({
       <CollapsedStoryStateActions
         story={story}
         onUpdate={newAttributes =>
-          dragDropStory(story.id, project.id, newAttributes)
+          updateCollapsedStory(story.id, project.id, newAttributes)
         }
       />
     </div>
@@ -181,5 +182,5 @@ CollapsedStory.propTypes = {
 
 export default connect(
   ({ project }) => ({ project }),
-  { dragDropStory, updateCollapsedStory, editStory }
+  { dragDropStory, updateCollapsedStory }
 )(CollapsedStory)

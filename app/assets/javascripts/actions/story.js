@@ -114,12 +114,10 @@ export const dragDropStory = (storyId, projectId, newAttributes) =>
     const { stories } = getState();
     const story = Story.findById(stories, storyId);
 
-
     const newStory = { ...story, ...newAttributes };
 
     try {
       const updatedStory = await Story.update(newStory, projectId);
-
       return dispatch(updateStorySuccess(updatedStory))
     }
     catch (error) {

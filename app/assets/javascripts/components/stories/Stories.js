@@ -1,53 +1,25 @@
-import React, { Fragment, useState, useCallback, useEffect } from 'react'
-import { connect } from 'react-redux'
-import StoryItem from '../story/StoryItem'
-import update from 'immutability-helper'
-import { orderByState } from '../../selectors/backlog'
-import { dragDropStory } from '../../actions/story'
+import React from 'react';
+import { connect } from 'react-redux';
+import StoryItem from '../story/StoryItem';
+import { dragDropStory } from '../../actions/story';
 
-const Stories = ({ stories, dragDropStory }) => {
+const Stories = ({column, stories }) => {
   if (!stories.length) {
     return null;
   }
 
-  const [storiesDND, setStories] = useState(stories)
-
-  useEffect(() => {
-    setStories(stories)
-  }, [stories])
-
-  const moveTask = useCallback(
-    (dragIndex, hoverIndex, column ) => {
-      let dragStory = storiesDND[dragIndex]
-      const dragPosition = dragStory.position
-      const hoverStory = storiesDND[hoverIndex]
-      if(dragStory.state === "unscheduled" && column === 'backlog'){
-        const arr = storiesDND.filter(item => dragStory.id === item.id)
-        if(arr.length >= 1){
-          return null
-        }
-      }
-      setStories(
-        update(storiesDND, {
-          $splice: [[dragIndex, 1], [hoverIndex, 0, dragStory]],
-        }),
-      )
-    },
-    [storiesDND],
-  )
-
   return (
-    <Fragment>
-      {storiesDND.map((story, index) => (
+    <>
+      {stories.map((story, index) => (
         <StoryItem
           key={story.id}
           index={index}
-          stories={storiesDND}
+          stories={stories}
           story={story}
-          moveTask={moveTask}
+          column={column}
         />
       ))}
-    </Fragment>
+    </>
   );
 };
 

@@ -24,20 +24,6 @@ class ProjectBoard extends React.Component {
     this.props.fetchProjectBoard(this.props.projectId);
   }
 
-  canMoveStory = () => {
-    return true
-  }
-
-  moveStory = (story, column) => {
-    const { dragDropStory } = this.props
-    if (column === 'chillyBin') {
-      dragDropStory(story.id, story.projectId, {state: Story.status.UNSCHEDULED})
-    }
-    if (column === 'backlog') {
-      dragDropStory(story.id, story.projectId, {state: Story.status.UNSTARTED})
-    }
-  }
-
   render() {
     if (!this.props.projectBoard.isFetched) {
       return <b>Loading</b>;
@@ -62,10 +48,8 @@ class ProjectBoard extends React.Component {
                 })}
               />
             }
-            canMoveStory={() => true}
-            moveStory={this.moveStory}
           >
-            <Stories stories={this.props.chillyBinStories} />
+            <Stories column="chillyBin" stories={this.props.chillyBinStories} />
           </Column>
 
           <Column
@@ -78,11 +62,9 @@ class ProjectBoard extends React.Component {
                   state: Story.status.UNSTARTED
                 })}
               />}
-              canMoveStory={() => true}
-              moveStory={this.moveStory}
-
           >
             <Sprints
+              column="backlog"
               sprints={this.props.backlogSprints}
             />
           </Column>

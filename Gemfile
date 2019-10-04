@@ -75,6 +75,7 @@ group :production do
 end
 
 group :test do
+  gem 'cypress-on-rails', '~> 1.0'
   gem 'rails-controller-testing'
   gem 'capybara'
   gem 'capybara-screenshot'

@@ -10,11 +10,12 @@ const defaultProps = {
   sprints: [],
 };
 
-const renderSprints = (sprints, fetchStories) => {
+const renderSprints = (column, sprints, fetchStories) => {
   return sprints.map(
     (sprint, index) =>
       sprint ? (
         <Sprint
+          column={column}
           key={sprint.number}
           sprint={sprint}
           fetchStories={fetchStories}
@@ -23,10 +24,10 @@ const renderSprints = (sprints, fetchStories) => {
   );
 };
 
-const Sprints = ({ sprints, fetchStories }) => {
+const Sprints = ({ column, sprints, fetchStories }) => {
   if (!sprints.length) return null;
 
-  return <div className="Sprints">{renderSprints(sprints, fetchStories)}</div>;
+  return <div className="Sprints">{renderSprints(column, sprints, fetchStories)}</div>;
 };
 
 Sprint.propTypes = propTypes;

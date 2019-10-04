@@ -4,16 +4,15 @@ import { DropTarget } from 'react-dnd'
 import { connect } from 'react-redux'
 
 const columnTarget = {
-  canDrop({ canMoveStory, story, column}) {
+  canDrop({ column }) {
     if(column === 'done') {
       return false
     }
     return true;
   },
 
-  drop({ moveStory, column }, monitor) {
+  drop({ column }, monitor) {
     const story = monitor.getItem();
-    moveStory(story, column);
     return {...story, column};
   },
 }
