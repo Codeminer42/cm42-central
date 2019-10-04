@@ -33,4 +33,3 @@ rvm:
 script:
   - "bundle exec rake travis"
   - "bundle exec codeclimate-test-reporter"
-  - "yarn test:ci"
