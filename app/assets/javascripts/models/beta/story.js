@@ -80,7 +80,7 @@ export const releaseIsLate = (story) => {
 }
 
 export const possibleStatesFor = story => 
-  isUnestimatedFeature(story) ? [states[0]] : states;
+  isUnestimatedFeature(story._editing) ? [states[0]] : states;
 
 export const types = ['feature', 'bug', 'release', 'chore'];
 

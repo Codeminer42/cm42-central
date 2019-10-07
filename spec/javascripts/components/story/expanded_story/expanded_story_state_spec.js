@@ -35,9 +35,11 @@ describe('<ExpandedStoryState />', () => {
         states.forEach(state => {
           describe(`and state is ${state}`, () => {
             const story = {
-              estimate: 1,
-              storyType: noFeatureType,
-              _editing: { state }
+              _editing: { 
+                state,
+                estimate: 1,
+                storyType: noFeatureType,
+              }
             };
   
             let wrapper;
@@ -72,9 +74,7 @@ describe('<ExpandedStoryState />', () => {
       })
 
       const story = {
-        estimate: null,
-        storyType: storyTypes.FEATURE,
-        _editing: { state: states[0] }
+        _editing: { state: states[0], estimate: null, storyType: storyTypes.FEATURE }
       };
       let wrapper;
 

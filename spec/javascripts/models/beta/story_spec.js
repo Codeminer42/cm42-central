@@ -1006,7 +1006,7 @@ describe('Story model', function () {
             let story;
 
             beforeEach(() => {
-              story = { estimate: invalidEstimate, storyType: featureType}
+              story = { _editing:  { estimate: invalidEstimate, storyType: featureType } }
             });
 
             it(`state has to be ${status.UNSCHEDULED}`, () => {
@@ -1024,7 +1024,7 @@ describe('Story model', function () {
             let story;
 
             beforeEach(() => {
-              story = { estimate: validEstimate, storyType: featureType }
+              story = { _editing: { estimate: validEstimate, storyType: featureType } }
             });
 
             it('return all states', () => {
@@ -1042,7 +1042,7 @@ describe('Story model', function () {
             let story;
 
             beforeEach(() => {
-              story = { estimate: invalidEstimate, storyType: noFeatureType}
+              story = { _editing: { estimate: invalidEstimate, storyType: noFeatureType } }
             });
 
             it('returns all states', () => {
@@ -1055,7 +1055,7 @@ describe('Story model', function () {
               let story;
 
               beforeEach(() => {
-                story = { estimate: validEstimate, storyType: noFeatureType }
+                story = { _editing: { estimate: validEstimate, storyType: noFeatureType } }
               });
 
               it('returns all states', () => {
