@@ -245,7 +245,7 @@ class ProjectsController < ApplicationController
   end
 
   def set_project
-    @project = policy_scope(Project).friendly.find(params[:id])
+    @project = current_user.projects.friendly.find(params[:id])
     authorize @project
   end
 

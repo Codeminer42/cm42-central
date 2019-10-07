@@ -39,7 +39,10 @@ module Beta
       end
 
       def project
-        @project ||= @projects_scope
+        return raise ActiveRecord::RecordNotFound unless @current_user.present?
+
+        @project ||= @current_user
+          .projects
           .friendly
           .preload(:users, stories: %i[notes document_files tasks])
           .find(@project_id)

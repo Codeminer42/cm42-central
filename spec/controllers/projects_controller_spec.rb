@@ -193,6 +193,18 @@ describe ProjectsController do
               expect(assigns[:story].project).to eq(project)
             end
           end
+
+          describe 'when the user change to another project from another team' do
+            let(:new_team)            { create :team }
+            let(:new_project)         { create :project, users: [user] }
+            let(:new_story)           { create :story, project: new_project, requested_by: user }
+            it 'should accept request when it is from registred team' do
+              new_team.projects << new_project
+              user.teams << new_team
+              get :show, params: { id: new_project }
+              expect(response).to have_http_status(:ok)
+            end
+          end
         end
 
         describe '#edit' do
