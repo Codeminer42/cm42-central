@@ -994,18 +994,55 @@ describe('Story model', function () {
 
   describe("possibleStatesFor", () => {
     const invalidEstimates = [null, ''];
-    const invalidStoryTypes = [storyTypes.FEATURE]
     const validEstimates = [1,2,3]
-    const validStoryTypes = [storyTypes.BUG, storyTypes.CHORE, storyTypes.RELEASE]
 
-    invalidStoryTypes.forEach(invalidStoryType => {
-      describe(`when storyType is ${invalidStoryType}`, () => {
+    const featureTypes = Story.types.filter(type => type === storyTypes.FEATURE)
+    const noFeatureTypes = Story.types.filter(type => type !== storyTypes.FEATURE)
+
+    featureTypes.forEach(featureType => {
+      describe(`when storyType is ${featureType}`, () => {
         invalidEstimates.forEach(invalidEstimate => {
           describe(`and estimate is "${invalidEstimate}"`, () => {
             let story;
 
             beforeEach(() => {
-              story = { estimate: invalidEstimate, storyType: invalidStoryType}
+              story = { estimate: invalidEstimate, storyType: featureType}
+            });
+
+            it(`state has to be ${status.UNSCHEDULED}`, () => {
+              expect(Story.possibleStatesFor(story)[0]).toEqual(status.UNSCHEDULED);
+            })
+
+            it('returns just one state', () => {
+              expect(Story.possibleStatesFor(story).length).toEqual(1);
+            })
+          })
+        })
+
+        validEstimates.forEach(validEstimate => {
+          describe(`and estimate is ${validEstimate}`, () => {
+            let story;
+
+            beforeEach(() => {
+              story = { estimate: validEstimate, storyType: featureType }
+            });
+
+            it('return all states', () => {
+              expect(Story.possibleStatesFor(story).length).toEqual(7);
+            })
+          })
+        })
+      })
+    })
+
+    noFeatureTypes.forEach(noFeatureType => {
+      describe(`when storyType is ${noFeatureType}`, () => {
+        invalidEstimates.forEach(invalidEstimate => {
+          describe(`and estimate is "${invalidEstimate}"`, () => {
+            let story;
+
+            beforeEach(() => {
+              story = { estimate: invalidEstimate, storyType: noFeatureType}
             });
 
             it('returns all states', () => {
@@ -1018,55 +1055,11 @@ describe('Story model', function () {
               let story;
 
               beforeEach(() => {
-                story = { estimate: validEstimate, storyType: invalidStoryType }
-              });
-
-              it(`state has to be ${status.UNSCHEDULED}`, () => {
-                expect(Story.possibleStatesFor(story)[0]).toEqual(status.UNSCHEDULED);
-              })
-
-              it('return just one state', () => {
-                expect(Story.possibleStatesFor(story).length).toEqual(1);
-              })
-            })
-          })
-        })
-      })
-    })
-
-    validStoryTypes.forEach(validStoryType => {
-      describe(`when storyType is ${validStoryType}`, () => {
-        invalidEstimates.forEach(invalidEstimate => {
-          describe(`and estimate is "${invalidEstimate}"`, () => {
-            let story;
-
-            beforeEach(() => {
-              story = { estimate: invalidEstimate, storyType: validStoryType}
-            });
-
-            it('returns all states', () => {
-              expect(Story.possibleStatesFor(story).length).toEqual(1);
-            })
-
-            it(`state has to be ${status.UNSCHEDULED}`, () => {
-              expect(Story.possibleStatesFor(story)[0]).toEqual(status.UNSCHEDULED);
-            })
-          })
-
-          validEstimates.forEach(validEstimate => {
-            describe(`and estimate is ${validEstimate}`, () => {
-              let story;
-
-              beforeEach(() => {
-                story = { estimate: validEstimate, storyType: validStoryType }
+                story = { estimate: validEstimate, storyType: noFeatureType }
               });
 
               it('returns all states', () => {
-                expect(Story.possibleStatesFor(story).length).toEqual(1);
-              })
-
-              it(`state has to be ${status.UNSCHEDULED}`, () => {
-                expect(Story.possibleStatesFor(story)[0]).toEqual(status.UNSCHEDULED);
+                expect(Story.possibleStatesFor(story).length).toEqual(7);
               })
             })
           })
