@@ -177,7 +177,10 @@ CollapsedStory.propTypes = {
   story: Story.storyPropTypesShape,
   onToggle: PropTypes.func.isRequired,
   title: PropTypes.string,
-  className: PropTypes.string
+  className: PropTypes.string,
+  index: PropTypes.number,
+  stories: PropTypes.array,
+  column: PropTypes.string
 }
 
 export default connect(
