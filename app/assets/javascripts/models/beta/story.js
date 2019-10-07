@@ -36,9 +36,7 @@ export const compareStartedAt = (a, b) => {
   return compareValues(a.startedAt, b.startedAt);
 };
 
-export const isUnestimatedFeature = story => {
-  return (story.estimate === null || story.estimate === '') && story.storyType === storyTypes.FEATURE;
-};
+export const isUnestimatedFeature = story => !hasEstimate(story) && isFeature(story)
 
 export const isFeature = story => {
   return story.storyType === storyTypes.FEATURE;
@@ -82,7 +80,7 @@ export const releaseIsLate = (story) => {
 }
 
 export const possibleStatesFor = story => 
-  isUnestimatedFeature(story) ? states : [states[0]];
+  isUnestimatedFeature(story._editing) ? [states[0]] : states;
 
 export const types = ['feature', 'bug', 'release', 'chore'];
 
