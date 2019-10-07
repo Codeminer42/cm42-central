@@ -55,11 +55,11 @@ describe Beta::ProjectBoardOperations do
     end
 
     context 'when the project does not exist' do
-      it 'returns a failed response with the error' do
+      it 'returns a failed response with the error', :aggregate_failures do
         result = Beta::ProjectBoardOperations::Read.call(0, nil)
 
         expect(result).not_to be_successful
-        expect(result.error).to be_a ActiveRecord::RecordNotFound
+        expect(result.error).to be ActiveRecord::RecordNotFound
       end
     end
   end

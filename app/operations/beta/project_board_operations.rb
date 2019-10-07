@@ -13,6 +13,8 @@ module Beta
       end
 
       def run
+        return  OpenStruct.new(successful?: false, error: ActiveRecord::RecordNotFound) if  @current_user.blank?
+
         users = project.users
 
         project_board_params = stories_and_past_iterations.merge(
@@ -39,13 +41,11 @@ module Beta
       end
 
       def project
-        return raise ActiveRecord::RecordNotFound unless @current_user.present?
-
-        @project ||= @current_user
-          .projects
-          .friendly
-          .preload(:users, stories: %i[notes document_files tasks])
-          .find(@project_id)
+        @project ||=  @current_user
+                      .projects
+                      .friendly
+                      .preload(:users, stories: %i[notes document_files tasks])
+                      .find(@project_id)
       end
 
       def stories_and_past_iterations

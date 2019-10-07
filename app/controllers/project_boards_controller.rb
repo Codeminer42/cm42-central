@@ -9,6 +9,6 @@ class ProjectBoardsController < ApplicationController
   private
 
   def project
-    policy_scope(Project).friendly.find(params[:id])
+    current_user.projects.friendly.find(params[:id])
   end
 end

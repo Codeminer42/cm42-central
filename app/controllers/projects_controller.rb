@@ -29,7 +29,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1.xml
   def show
     @story = @project.stories.build
-
+    update_current_team
     respond_to do |format|
       format.html # show.html.erb
       format.js   { render json: @project }

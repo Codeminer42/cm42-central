@@ -198,10 +198,14 @@ describe ProjectsController do
             let(:new_team)            { create :team }
             let(:new_project)         { create :project, users: [user] }
             let(:new_story)           { create :story, project: new_project, requested_by: user }
-            it 'should accept request when it is from registred team' do
+
+            it 'should accept request when it is from registred team', :aggregate_failures do
               new_team.projects << new_project
               user.teams << new_team
+
               get :show, params: { id: new_project }
+
+              expect(session[:current_team_slug]).to eq(new_team.slug)
               expect(response).to have_http_status(:ok)
             end
           end
