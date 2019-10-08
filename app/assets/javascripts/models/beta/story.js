@@ -59,6 +59,8 @@ export const isAccepted = story => {
 export const totalPoints = stories => 
   stories.reduce((total, current) => total + getPoints(current), 0)
 
+export const hasFocus = story => Boolean(story.focus)
+
 export const getPoints = story =>
   isFeature(story)
     ? Number(story.estimate)
