@@ -8,14 +8,16 @@ import Sprints from "../stories/Sprints";
 import History from "../stories/History";
 import { getColumns } from "../../selectors/columns";
 import * as Columns from '../../models/beta/column';
-import { createStory, closeHistory } from '../../actions/story';
+import { createStory, closeHistory, closeSearch } from '../../actions/story';
 import AddStoryButton from '../story/AddStoryButton';
 import * as Story from 'libs/beta/constants';
 import PropTypes from 'prop-types';
 import { storyPropTypesShape } from '../../models/beta/story';
-import { projectBoardPropTypesShape } from '../../models/beta/projectBoard';
+import { projectBoardPropTypesShape, hasSearchedStories } from '../../models/beta/projectBoard';
 import Notifications from '../Notifications';
 import { removeNotification } from '../../actions/notifications';
+import StorySearch from '../stories/StorySearch';
+import SearchedStories from './../stories/SearchedStories'
 
 class ProjectBoard extends React.Component {
   componentWillMount() {
@@ -27,15 +29,26 @@ class ProjectBoard extends React.Component {
       return <b>Loading</b>;
     }
 
-    const { createStory, closeHistory, notifications, removeNotification, history } = this.props;
+    const { 
+      projectId, 
+      createStory, 
+      closeHistory,
+      closeSearch,
+      notifications, 
+      removeNotification, 
+      history,
+      projectBoard 
+    } = this.props;
 
     return (
       <div className="ProjectBoard">
+        <StorySearch projectId={projectId} />
+
         <Notifications
           notifications={notifications}
           onRemove={removeNotification}
         />
-
+        
         <Column title={I18n.t("projects.show.chilly_bin")}
           renderAction={() =>
             <AddStoryButton
@@ -71,6 +84,16 @@ class ProjectBoard extends React.Component {
             fetchStories={this.props.fetchPastStories}
           />
         </Column>
+
+        {
+          hasSearchedStories(projectBoard) &&
+          <Column
+            onClose={closeSearch}
+            title={projectBoard.searchedColumn.title}
+          >
+            <SearchedStories stories={projectBoard.searchedColumn.stories} />
+          </Column>
+        }
 
         {
           history.status !== 'DISABLED' &&
@@ -132,6 +155,7 @@ const mapDispatchToProps = {
   fetchProjectBoard,
   createStory,
   closeHistory,
+  closeSearch,
   fetchPastStories,
   removeNotification
 };
