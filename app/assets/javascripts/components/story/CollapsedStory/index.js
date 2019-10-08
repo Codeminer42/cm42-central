@@ -34,6 +34,34 @@ const type = {
   story: 'STORY'
 }
 
+const calculatePosition = (upperStory, bellowStory, storiesArray, index) => {
+  if (bellowStory === undefined) {
+    return (Number(storiesArray[index].position) + 1)
+  }else if (upperStory !== undefined && bellowStory !== undefined) {
+    return (Number(bellowStory.position) + Number(upperStory.position)) / 2;
+  }else if (upperStory === undefined) {
+    return (Number(storiesArray[index].position) - 1);
+  }
+}
+
+const notGoingFoward = (storySource, dragIndex, hoverIndex, calculatedPosition, hoverClientY, hoverMiddleY) => {
+  if (storySource.index === hoverIndex) {
+    return true
+  }
+
+  if(storySource.position === calculatedPosition) {
+    return true
+  }
+
+  if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+    return true
+  }
+
+  if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+    return true
+  }
+}
+
 export const CollapsedStory = ({
   onToggle,
   story,
@@ -49,28 +77,17 @@ export const CollapsedStory = ({
   const [, drop] = useDrop({
     accept: type.story,
     hover(item, monitor) {
-      if(!ref.current) {
-        return
-      }
+      if(!ref.current) return;
 
-      if(story.state === 'accepted') {
-        return
-      }
+      if(state === 'accepted') return;
 
       const storySource = monitor.getItem();
 
-      if (storySource.column !== column) {
-        return
-      }
+      if (storySource.column !== column) return;
 
-      let dragIndex = storySource.index
       const hoverIndex = index
 
-      let array = storySource.stories;
-
-      if (dragIndex === hoverIndex) {
-        return
-      }
+      let storiesArray = storySource.stories;
 
       // Determine rectangle on screen
       const hoverBoundingRect = ref.current.getBoundingClientRect()
@@ -81,35 +98,19 @@ export const CollapsedStory = ({
       // Get pixels to the top
       const hoverClientY = clientOffset.y - hoverBoundingRect.top
 
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return
-      }
-      // Dragging upwards
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return
-      }
-
       let upperStory;
       let bellowStory;
-      if(item.index > index){
-        upperStory = array[index - 1]
+      if(item.index > index) {
+        upperStory = storiesArray[index - 1]
         bellowStory = story
-      }else{
-        bellowStory = array[index + 1]
+      } else {
+        bellowStory = storiesArray[index + 1]
         upperStory = story
       }
-      let calculatedPosition
-      if (bellowStory === undefined) {
-        calculatedPosition = (Number(array[index].position) + 1)
-      }else if (upperStory !== undefined && bellowStory !== undefined) {
-        calculatedPosition = (Number(bellowStory.position) + Number(upperStory.position)) / 2;
-      }else if (upperStory === undefined) {
-        calculatedPosition = (Number(array[index].position) - 1);
-      }
 
-      if(storySource.position === calculatedPosition) {
-        return
-      }
+      if (notGoingFoward(ref, story.state, storySource, hoverIndex, calculatedPosition, hoverClientY, hoverMiddleY, column)) return;
+
+      let calculatedPosition = calculatePosition(upperStory, bellowStory, storiesArray, index);
 
       dragDropStory(storySource.id, storySource.projectId, {
         position: calculatedPosition
