@@ -309,6 +309,9 @@ export const createNewStory = (stories, storyAttributes) => {
   };
 };
 
+export const haveStory = (story, stories) =>
+  stories.some(item => item.id === story.id)
+
 export const isNew = (story) =>
   story.id === null;
 

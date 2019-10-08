@@ -27,7 +27,7 @@ const storyClassName = (story, additionalClassname = '') => {
   );
 };
 
-export const CollapsedStory = ({ onToggle, story, updateCollapsedStory, project, className, title, search, focus }) =>
+export const CollapsedStory = ({ onToggle, story, updateCollapsedStory, project, className, title, search, focus, stories }) =>
   <div
     className={storyClassName(story, className)}
     onClick={onToggle}
@@ -48,7 +48,7 @@ export const CollapsedStory = ({ onToggle, story, updateCollapsedStory, project,
         updateCollapsedStory(story.id, project.id, newAttributes)}
     />
     {
-      search &&
+      (Story.haveStory(story, stories) && search) &&
       <CollapsedStoryFocusButon onClick={() => focus(story.id)} />
     }
   </div>
@@ -61,6 +61,6 @@ CollapsedStory.propTypes = {
 };
 
 export default connect(
-  ({ project }) => ({ project }),
+  ({ project, stories }) => ({ project, stories }),
   { updateCollapsedStory, focus }
 )(CollapsedStory);
