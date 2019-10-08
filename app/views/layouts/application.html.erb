@@ -21,7 +21,6 @@
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
-
         <% if session[:current_team_slug] && current_team.try(:logo) %>
           <a href="/" class="navbar-brand navbar-logo">
             <%= team_logo(current_team.logo.path) %>
@@ -35,6 +34,8 @@
         <%= yield :title_bar %>
 
         <div class="navbar-right">
+          <div id="portal-search-input" class="navbar-form navbar-left navbar-search"></div>
+
           <%= yield :right_menu %>
 
           <%= form_tag locales_path, method: :put, class: "dropdown" do %>
