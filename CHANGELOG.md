@@ -2,9 +2,12 @@
 
 ## [Unreleased]
 
+## [2.3.0] 2019-10-08
+
 ### Fixed
  - [ V2 ] Remove redundant switch cases from the stories reducer.
  - [ V2 ] Fix number, date and points of sprints.
+-  [ V2 ] Sprints are shown in easier order in "done" column
 
 ### Added
 - [ V2 ] Add project navigation bar
@@ -13,6 +16,10 @@
   - Stories of release type
   - Option to Clone Stories
   - Disable fields when story is read-only
+  - Link directly to stories
+  - History
+- [ V2 ] Centralized notification system
+- [ V2 ] Top nav
 
 ## [2.2.0] 2019-03-15
 
@@ -425,7 +432,7 @@ and CVE-2018-14567)
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v2.2.0...HEAD
+[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v2.3.0...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
@@ -461,3 +468,4 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [2.0.1]: https://github.com/Codeminer42/cm42-central/tree/v2.0.1
 [2.1.0]: https://github.com/Codeminer42/cm42-central/tree/v2.1.0
 [2.2.0]: https://github.com/Codeminer42/cm42-central/tree/v2.2.0
+[2.3.0]: https://github.com/Codeminer42/cm42-central/tree/v2.3.0
