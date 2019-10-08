@@ -26,7 +26,7 @@ const SearchedStories = ({ stories }) =>
       stories={stories}
     />
     <div className="Sprint__body">
-      <Stories stories={stories} />
+      <Stories stories={stories} search={true} />
     </div>
   </div>
 
