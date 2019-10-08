@@ -25,6 +25,10 @@ export const closeHistory = () => ({
   type: actionTypes.CLOSE_HISTORY
 })
 
+export const closeSearchSuccess = () => ({
+  type: actionTypes.CLOSE_SEARCH
+})
+
 export const errorLoadHistory = () => ({
   type: actionTypes.RECEIVE_HISTORY_ERROR
 })
@@ -48,6 +52,11 @@ export const updateStorySuccess = (story) => ({
   type: actionTypes.UPDATE_STORY_SUCCESS,
   story
 });
+
+export const searchStoriesSuccess = searchedColumn => ({
+  type: actionTypes.SEARCH_STORIES_SUCCESS,
+  searchedColumn
+})
 
 export const storyFailure = (id, error) => ({
   type: actionTypes.STORY_FAILURE,
@@ -169,5 +178,26 @@ export const deleteStory = (storyId, projectId) =>
     catch (error) {
       dispatch(sendErrorNotification(error))
       return dispatch(storyFailure(storyId, error))
+    }
+  }
+
+export const search = (keyWord, projectId) =>
+  async (dispatch, getState, { ProjectBoard }) => {
+    try {
+      const searchedColumn = await ProjectBoard.searchStories(keyWord, projectId);
+
+      dispatch(searchStoriesSuccess(searchedColumn));
+    }
+    catch (error) {
+      console.error(error)
+    }
+  };
+
+export const closeSearch = () =>
+  async (dispatch, getState, {}) => {
+    try {
+      dispatch(closeSearchSuccess());
+    } catch (error) {
+      console.error(error)
     }
   }

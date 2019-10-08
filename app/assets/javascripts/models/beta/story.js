@@ -123,6 +123,13 @@ export const updateStory = (story, newAttributes) => ({
   ...newAttributes
 });
 
+export const search = async (keyWord, projectId) => {
+  const { data } = await httpService
+    .get(`/projects/${projectId}/stories?q=${keyWord}`)
+
+  return data.map(item => deserialize(item.story));
+}
+
 export const getHistory = async (storyId, projectId) => {
   const { data } = await httpService
     .get(`/projects/${projectId}/stories/${storyId}/activities`)

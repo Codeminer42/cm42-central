@@ -2,6 +2,7 @@ import httpService from '../../services/httpService';
 import changeCase from 'change-object-case';
 import * as Story from './story';
 import * as Project from './project';
+import * as Iteration from './iteration';
 import PropTypes from 'prop-types';
 
 export const get = async (projectId) => {
@@ -31,3 +32,8 @@ const deserialize = (data) => {
     stories: projectBoard.stories.map(Story.deserialize)
   }
 }
+
+export const searchStories = async (keyWord, projectId) => ({
+  stories: await Story.search(keyWord, projectId),
+  title: `"${keyWord}"`
+})
