@@ -24,6 +24,16 @@ const projectBoardReducer = (state = initialState, action) => {
       ...state,
       error: action.error
     };
+  case actionTypes.SEARCH_STORIES_SUCCESS:
+    return {
+      ...state,
+      searchedColumn: action.searchedColumn,
+    }
+  case actionTypes.CLOSE_SEARCH:
+    return {
+      ...state,
+      searchedColumn: false,
+    }
   default:
     return state;
   }
