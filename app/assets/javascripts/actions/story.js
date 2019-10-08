@@ -29,6 +29,16 @@ export const closeSearchSuccess = () => ({
   type: actionTypes.CLOSE_SEARCH
 })
 
+export const focusStory = storyId => ({
+  type: actionTypes.FOCUS_STORY,
+  storyId
+})
+
+export const removeFocusStory = storyId => ({
+  type: actionTypes.REMOVE_FOCUS_STORY,
+  storyId
+})
+
 export const errorLoadHistory = () => ({
   type: actionTypes.RECEIVE_HISTORY_ERROR
 })
@@ -43,9 +53,10 @@ export const receiveStories = (stories) => ({
   data: stories
 });
 
-export const toggleStory = (id) => ({
+export const toggleStory = (id, search = false) => ({
   type: actionTypes.TOGGLE_STORY,
-  id
+  id,
+  search
 });
 
 export const updateStorySuccess = (story) => ({
@@ -197,6 +208,16 @@ export const closeSearch = () =>
   async (dispatch, getState, {}) => {
     try {
       dispatch(closeSearchSuccess());
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+export const focus = storyId =>
+  async (dispatch, getState, {}) => {
+    try {
+      dispatch(focusStory(storyId));
+      setTimeout(() => dispatch(removeFocusStory(storyId)), 400);
     } catch (error) {
       console.error(error)
     }

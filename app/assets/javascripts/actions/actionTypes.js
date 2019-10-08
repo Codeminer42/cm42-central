@@ -38,5 +38,7 @@ export default keyMirror({
   ADD_NOTIFICATION: null,
   REMOVE_NOTIFICATION: null,
   SEARCH_STORIES_SUCCESS: null,
-  CLOSE_SEARCH: null
+  CLOSE_SEARCH: null,
+  FOCUS_STORY: null,
+  REMOVE_FOCUS_STORY: null
 });
