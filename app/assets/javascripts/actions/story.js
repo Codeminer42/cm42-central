@@ -1,18 +1,18 @@
 import actionTypes from './actionTypes';
 import { sendSuccessNotification, sendErrorNotification } from './notifications';
-import { 
-  toggleSearchStory, editSearchStory, setLoadingSearchStory,
-  updateStorySearchSuccess 
-} from './projectBoard';
 
-export const createStory = (attributes) => ({
+const defaultFrom = 'all';
+
+export const createStory = (attributes, from = defaultFrom) => ({
   type: actionTypes.CREATE_STORY,
-  attributes
+  attributes,
+  from
 });
 
-export const addStory = (story) => ({
+export const addStory = (story, from = defaultFrom) => ({
   type: actionTypes.ADD_STORY,
-  story
+  story,
+  from
 });
 
 export const loadHistory = (title) => ({
@@ -29,98 +29,71 @@ export const closeHistory = () => ({
   type: actionTypes.CLOSE_HISTORY
 })
 
-export const highlightStory = (storyId, highlight) => ({
+export const highlightStory = (storyId, highlight, from = defaultFrom) => ({
   type: actionTypes.HIGHLIGHT_STORY,
   storyId,
-  highlight
+  highlight,
+  from
 });
 
 export const errorLoadHistory = () => ({
   type: actionTypes.RECEIVE_HISTORY_ERROR
 })
 
-export const cloneStory = (story) => ({
+export const cloneStory = (story, from = defaultFrom) => ({
   type: actionTypes.CLONE_STORY,
-  story
+  story,
+  from
 });
 
-export const receiveStories = (stories) => ({
+export const receiveStories = (stories, from = defaultFrom) => ({
   type: actionTypes.RECEIVE_STORIES,
-  data: stories
+  data: stories,
+  from
 });
 
-export const updateStorySuccess = (story) => ({
+export const updateStorySuccess = (story, from = defaultFrom) => ({
   type: actionTypes.UPDATE_STORY_SUCCESS,
-  story
+  story,
+  from
 });
 
-export const searchStoriesSuccess = search => ({
-  type: actionTypes.SEARCH_STORIES_SUCCESS,
-  search
-})
-
-export const storyFailure = (id, error) => ({
+export const storyFailure = (id, error, from = defaultFrom) => ({
   type: actionTypes.STORY_FAILURE,
   id,
-  error
+  error,
+  from
 });
 
-export const deleteStorySuccess = (id) => ({
+export const deleteStorySuccess = (id, from = defaultFrom) => ({
   type: actionTypes.DELETE_STORY_SUCCESS,
-  id
+  id,
+  from
 });
 
-export const toggleStoryDefault = id => ({
+export const toggleStory = (id, from = defaultFrom) => ({
   type: actionTypes.TOGGLE_STORY,
-  id
+  id,
+  from
 });
 
-export const editStoryDefault = (id, newAttributes) => ({
+export const editStory = (id, newAttributes, from = defaultFrom) => ({
   type: actionTypes.EDIT_STORY,
   id,
-  newAttributes
+  newAttributes,
+  from
 });
 
-export const setLoadingStoryDefault = id => ({
+export const setLoadingStory = (id, from = defaultFrom) => ({
   type: actionTypes.SET_LOADING_STORY,
-  id
+  id,
+  from
 });
 
-export const setLoadingStory = (id, from = '') =>
-  async (dispatch, getState, {}) => {
-    try {
-      switch (from) {
-        case 'search': return dispatch(setLoadingSearchStory(id));
-        default: return dispatch(setLoadingStoryDefault(id));
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-export const editStory = (id, newAttributes, from = '') =>
-  async (dispatch, getState, {}) => {
-    try {
-      switch (from) {
-        case 'search': return dispatch(editSearchStory(id, newAttributes));
-        default: return dispatch(editStoryDefault(id, newAttributes));
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-export const toggleStory = (id, from = '') => {
-  switch (from) {
-    case 'search': return toggleSearchStory(id)
-    default: return toggleStoryDefault(id)
-  }
-}
-
-export const showHistory = (storyId) =>
+export const showHistory = (storyId, from = defaultFrom) =>
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
-    const story = Story.findById(stories, storyId)
+    const story = Story.findById(stories[from], storyId)
     dispatch(loadHistory(story.title))
     try {
       const activities = await Story.getHistory(story.id, story.projectId)
@@ -132,10 +105,10 @@ export const showHistory = (storyId) =>
     }
   }
 
-export const updateCollapsedStory = (storyId, projectId, newAttributes) =>
+export const updateCollapsedStory = (storyId, projectId, newAttributes, from = defaultFrom) =>
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
-    const story = Story.findById(stories, storyId);
+    const story = Story.findById(stories[from], storyId);
 
 
     const newStory = { ...story, ...newAttributes };
@@ -155,20 +128,11 @@ export const updateCollapsedStory = (storyId, projectId, newAttributes) =>
     }
   }
 
-export const saveStory = (storyId, projectId, options, from = '') =>
+export const saveStory = (storyId, projectId, options, from = defaultFrom) =>
   async (dispatch, getState, { Story }) => {
-    const { stories, projectBoard } = getState();
+    const { stories } = getState();
 
-    let story;
-
-    switch (from) {
-      case 'search':
-        story = Story.findById(projectBoard.search.result, storyId)
-        break;
-
-      default: 
-        story = Story.findById(stories, storyId)
-    }
+    const story = Story.findById(stories[from], storyId);
 
     dispatch(setLoadingStory(story.id));
 
@@ -192,13 +156,7 @@ export const saveStory = (storyId, projectId, options, from = '') =>
       try {
         const updatedStory = await Story.update(story._editing, projectId, options);
 
-        switch (from) {
-          case 'search': 
-            dispatch(updateStorySearchSuccess(updatedStory));
-            break;
-        }
-
-        dispatch(updateStorySuccess(updatedStory));
+        dispatch(updateStorySuccess(updatedStory, from));
         
         return dispatch(sendSuccessNotification(
           I18n.t('messages.operations.success.story.save', { story: updatedStory.title })
@@ -213,16 +171,16 @@ export const saveStory = (storyId, projectId, options, from = '') =>
     return dispatch(toggleStory(story.id));
   };
 
-export const deleteStory = (storyId, projectId) =>
+export const deleteStory = (storyId, projectId, from = defaultFrom) =>
   async (dispatch, getState, { Story }) => {
     dispatch(setLoadingStory(storyId))
     try {
       const { stories } = getState();
-      const storyTitle = Story.findById(stories, storyId).title;
+      const storyTitle = Story.findById(stories[from], storyId).title;
 
       await Story.deleteStory(storyId, projectId);
 
-      dispatch(deleteStorySuccess(storyId));
+      dispatch(deleteStorySuccess(storyId, from));
 
       return dispatch(sendSuccessNotification(
         I18n.t('messages.operations.success.story.delete', { story: storyTitle })
@@ -233,18 +191,6 @@ export const deleteStory = (storyId, projectId) =>
       return dispatch(storyFailure(storyId, error))
     }
   }
-
-export const search = (keyWord, projectId) =>
-  async (dispatch, getState, { ProjectBoard }) => {
-    try {
-      const search = await ProjectBoard.searchStories(keyWord, projectId);
-
-      dispatch(searchStoriesSuccess(search));
-    }
-    catch (error) {
-      console.error(error)
-    }
-  };
 
 export const highlight = storyId =>
   async (dispatch, getState, {}) => {

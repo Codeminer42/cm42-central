@@ -38,7 +38,8 @@ class ProjectBoard extends React.Component {
       notifications, 
       removeNotification, 
       history,
-      projectBoard 
+      projectBoard,
+      stories
     } = this.props;
 
     return (
@@ -92,9 +93,9 @@ class ProjectBoard extends React.Component {
           hasSearch(projectBoard) &&
           <Column
             onClose={closeSearch}
-            title={projectBoard.search.keyWord}
+            title={projectBoard.keyWord}
           >
-            <Search stories={projectBoard.search.result} from="search" />
+            <Search stories={stories.search} from="search" />
           </Column>
         }
 
@@ -136,6 +137,7 @@ const mapStateToProps = ({
 }) => ({
   projectBoard,
   history,
+  stories,
   chillyBinStories: getColumns({
     column: Columns.CHILLY_BIN,
     stories

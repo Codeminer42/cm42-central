@@ -15,9 +15,9 @@ export const getColumns = createSelector(
   (column, stories, project, pastIterations) => {
     switch (column) {
       case Column.CHILLY_BIN:
-        return stories.filter(story => Column.isChillyBin(story)).sort(comparePosition);
+        return stories.all.filter(story => Column.isChillyBin(story)).sort(comparePosition);
       case Column.BACKLOG:
-        const orderedStories = orderByState(stories.filter(
+        const orderedStories = orderByState(stories.all.filter(
           story => Column.isBacklog(story, project))
         );
 
@@ -28,7 +28,7 @@ export const getColumns = createSelector(
 
         return groupStoriesInSprints(orderedStories, project, firstSprintNumber, pastIterations);
       case Column.DONE:
-        return mountPastIterations(pastIterations, stories);
+        return mountPastIterations(pastIterations, stories.all);
     };
   }
 );

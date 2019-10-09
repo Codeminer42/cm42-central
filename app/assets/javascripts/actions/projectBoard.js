@@ -26,30 +26,14 @@ const receiveProject = data => ({
   data
 });
 
-export const setLoadingSearchStory = id => ({
-  type: actionTypes.SET_LOADING_SEARCH_STORY,
-  id
-})
-
 export const updateStorySuccess = story => ({
   type: actionTypes.UPDATE_STORY_SUCCESS,
   story
 });
 
-export const editSearchStory = (id, newAttributes) => ({
-  type: actionTypes.EDIT_STORY_SEARCH,
-  id,
-  newAttributes
-});
-
-export const updateStorySearchSuccess = story => ({
-  type: actionTypes.UPDATE_STORY_SEARCH_SUCCESS,
-  story
-});
-
-export const toggleSearchStory = id => ({
-  type: actionTypes.TOGGLE_STORY_SEARCH,
-  id
+export const searchStoriesSuccess = keyWord => ({
+  type: actionTypes.SEARCH_STORIES_SUCCESS,
+  keyWord
 })
 
 export const expandStoryIfNeeded = (dispatch, getHash) => {
@@ -92,3 +76,16 @@ export const closeSearch = () =>
       console.error(error)
     }
   }
+
+export const search = (keyWord, projectId) =>
+  async (dispatch, getState, { ProjectBoard }) => {
+    try {
+      const search = await ProjectBoard.searchStories(keyWord, projectId);
+
+      dispatch(searchStoriesSuccess(search.keyWord));
+      dispatch(receiveStories(search.result, 'search'));
+    }
+    catch (error) {
+      console.error(error)
+    }
+  };

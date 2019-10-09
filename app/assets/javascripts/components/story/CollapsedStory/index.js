@@ -48,7 +48,7 @@ export const CollapsedStory = ({ onToggle, story, updateCollapsedStory, project,
         updateCollapsedStory(story.id, project.id, newAttributes)}
     />
     {
-      Story.isSearch(stories, story, from) && 
+      Story.isSearch(stories.all, story, from) && 
       <CollapsedStoryFocusButon onClick={() => highlight(story.id)} />
     }
   </div>

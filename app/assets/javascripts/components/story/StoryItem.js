@@ -11,23 +11,23 @@ export const StoryItem = ({ story, toggleStory, from }) => {
   const title = releaseIsLate(story) ? I18n.t('story.warnings.backlogged_release') : '';
   const styleFocus = hasFocus(story) ? 'Story--focused' : '';
 
+  const props = {
+    story,
+    onToggle: () => toggleStory(story.id, from),
+    className: `${className}${styleFocus}`,
+    title,
+    from
+  }
+
   return (
     <div className='story-container'>
       {
         story.collapsed
           ? <CollapsedStory
-            story={story}
-            onToggle={() => toggleStory(story.id, from)}
-            className={`${className}${styleFocus}`}
-            title={title}
-            from={from}
+            {...props}
           />
           : <ExpandedStory
-            story={story}
-            onToggle={() => toggleStory(story.id, from)}
-            className={`${className}${styleFocus}`}
-            title={title}
-            from={from}
+            {...props}
           />
       }
     </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { search } from "actions/story";
+import { search } from "actions/projectBoard";
 import { connect } from "react-redux";
 
 export const StorySearch = ({ projectId, search }) => {

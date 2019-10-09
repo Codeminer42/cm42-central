@@ -2,24 +2,28 @@ import { updateStorySuccess } from './story';
 import actionTypes from './actionTypes';
 import { storyFailure } from './story';
 
-export const addAttachmentToStory = (storyId, attachment) => ({
+const defaultFrom = 'all';
+
+export const addAttachmentToStory = (storyId, attachment, from = defaultFrom) => ({
   type: actionTypes.ADD_ATTACHMENT,
   storyId,
-  attachment
+  attachment,
+  from
 });
 
-export const removeAttachment = (storyId, attachmentId) => ({
+export const removeAttachment = (storyId, attachmentId, from = defaultFrom) => ({
   type: actionTypes.DELETE_ATTACHMENT,
   storyId,
-  attachmentId
+  attachmentId,
+  from
 });
 
-export const addAttachment = (storyId, projectId, attachment) =>
+export const addAttachment = (storyId, projectId, attachment, from = defaultFrom) =>
   async (dispatch, getState, { Story }) => {
     dispatch(addAttachmentToStory(storyId, attachment));
 
     const { stories } = getState();
-    const story = stories.find(story => story.id === storyId);
+    const story = stories[from].find(story => story.id === storyId);
     const options = { collapse: false };
 
     try {

@@ -48,7 +48,7 @@ export class ExpandedStory extends React.Component {
           onCancel={onToggle}
           isDirty={story._editing._isDirty || false}
           onSave={() => saveStory(story.id, project.id, {}, from)}
-          onDelete={() => deleteStory(story.id, project.id)}
+          onDelete={() => deleteStory(story.id, project.id, from)}
           canSave={Story.canSave(story)}
           canDelete={Story.canDelete(story)}
           disabled={disabled}

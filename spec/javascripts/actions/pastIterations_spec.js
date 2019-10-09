@@ -43,7 +43,8 @@ describe('Past iteration actions', () => {
     const expected = {
       type: actionTypes.RECEIVE_PAST_STORIES,
       stories: pastIterationsArray(),
-      iterationNumber: 42
+      iterationNumber: 42,
+      from: 'all'
     }
 
     it('creates an action to receive past iteration stories', () => {

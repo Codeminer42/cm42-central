@@ -21,7 +21,7 @@ describe('Attachment Actions', () => {
       const fakeDispatch = sinon.stub();
 
       const fakeGetState = sinon.stub();
-      fakeGetState.returns({ stories: [story] });
+      fakeGetState.returns({ stories: { all: [story] } });
 
       await addAttachment(story.id, projectId, newAttachment)
         (fakeDispatch, fakeGetState, { Story: FakeStory });
@@ -39,7 +39,7 @@ describe('Attachment Actions', () => {
       const fakeDispatch = sinon.stub();
 
       const fakeGetState = sinon.stub();
-      fakeGetState.returns({ stories: [story] });
+      fakeGetState.returns({ stories: { all: [story] } });
 
       await addAttachment(story.id, projectId, newAttachment)
         (fakeDispatch, fakeGetState, { Story: FakeStory });
@@ -59,7 +59,7 @@ describe('Attachment Actions', () => {
       const fakeDispatch = sinon.stub();
 
       const fakeGetState = sinon.stub();
-      fakeGetState.returns({ stories: [story] });
+      fakeGetState.returns({ stories: { all: [story] } });
 
       await addAttachment(story.id, projectId, newAttachment)
         (fakeDispatch, fakeGetState, { Story: FakeStory });
