@@ -22,6 +22,27 @@ const receiveProject = data => ({
   data
 });
 
+export const setLoadingSearchStory = id => ({
+  type: actionTypes.SET_LOADING_SEARCH_STORY,
+  id
+})
+
+export const updateStorySuccess = story => ({
+  type: actionTypes.UPDATE_STORY_SUCCESS,
+  story
+});
+
+export const editSearchStory = (id, newAttributes) => ({
+  type: actionTypes.EDIT_STORY_SEARCH,
+  id,
+  newAttributes
+});
+
+export const updateStorySearchSuccess = story => ({
+  type: actionTypes.UPDATE_STORY_SEARCH_SUCCESS,
+  story
+});
+
 export const toggleSearchStory = id => ({
   type: actionTypes.TOGGLE_STORY_SEARCH,
   id

@@ -30,7 +30,8 @@ export class ExpandedStory extends React.Component {
       deleteStory,
       project,
       className,
-      title
+      title,
+      from
     } = this.props;
 
     const loading = story._editing.loading ? "Story__enable-loading" : "";
@@ -46,7 +47,7 @@ export class ExpandedStory extends React.Component {
         <ExpandedStoryControls
           onCancel={onToggle}
           isDirty={story._editing._isDirty || false}
-          onSave={() => saveStory(story.id, project.id)}
+          onSave={() => saveStory(story.id, project.id, {}, from)}
           onDelete={() => deleteStory(story.id, project.id)}
           canSave={Story.canSave(story)}
           canDelete={Story.canDelete(story)}
@@ -58,14 +59,14 @@ export class ExpandedStory extends React.Component {
             ? <ExpandedStoryRelease
               story={story}
               titleRef={this.titleRef}
-              onEdit={(newAttributes) => editStory(story.id, newAttributes)}
+              onEdit={(newAttributes) => editStory(story.id, newAttributes, from)}
               onClone={cloneStory}
               disabled={disabled}
             />
             : <ExpandedStoryDefault
               story={story}
               titleRef={this.titleRef}
-              onEdit={(newAttributes) => editStory(story.id, newAttributes)}
+              onEdit={(newAttributes) => editStory(story.id, newAttributes, from)}
               project={project}
               onClone={cloneStory}
               showHistory={showHistory}

@@ -1,5 +1,8 @@
 import actionTypes from 'actions/actionTypes';
-import { toggleStory, withoutNewStory } from 'models/beta/story';
+import { 
+  toggleStory, withoutNewStory, editStory, 
+  setLoadingStory, updateStory 
+} from 'models/beta/story';
 import { updateIfSameId } from '../services/updateIfSameId';
 
 const initialState = {
@@ -26,6 +29,33 @@ const projectBoardReducer = (state = initialState, action) => {
       ...state,
       error: action.error
     };
+  case actionTypes.EDIT_STORY_SEARCH:
+    return {
+      ...state,
+      searchedColumn: {
+        ...state.searchedColumn,
+        stories: state.searchedColumn.stories.map(
+          updateIfSameId(action.id, (story) => editStory(story, action.newAttributes)))
+      }
+    }
+  case actionTypes.SET_LOADING_SEARCH_STORY:
+    return {
+      ...state,
+      searchedColumn: {
+        ...state.searchedColumn,
+        stories: state.searchedColumn.stories.map(updateIfSameId(action.id, setLoadingStory))
+      }
+    }
+  case actionTypes.UPDATE_STORY_SEARCH_SUCCESS:
+    return {
+      ...state,
+      searchedColumn: {
+        ...state.searchedColumn,
+        stories: state.searchedColumn.stories.map(
+          updateIfSameId(action.story.id, (story) => updateStory(story, action.story))
+        )
+      }
+    }
   case actionTypes.SEARCH_STORIES_SUCCESS:
     return {
       ...state,

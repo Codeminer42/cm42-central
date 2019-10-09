@@ -41,5 +41,8 @@ export default keyMirror({
   CLOSE_SEARCH: null,
   FOCUS_STORY: null,
   REMOVE_FOCUS_STORY: null,
-  TOGGLE_STORY_SEARCH: null
+  TOGGLE_STORY_SEARCH: null,
+  EDIT_STORY_SEARCH: null,
+  SET_LOADING_SEARCH_STORY: null,
+  UPDATE_STORY_SEARCH_SUCCESS: null
 });

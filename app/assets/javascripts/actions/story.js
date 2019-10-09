@@ -1,6 +1,9 @@
 import actionTypes from './actionTypes';
 import { sendSuccessNotification, sendErrorNotification } from './notifications';
-import { toggleSearchStory } from './projectBoard';
+import { 
+  toggleSearchStory, editSearchStory, setLoadingSearchStory,
+  updateStorySearchSuccess 
+} from './projectBoard';
 
 export const createStory = (attributes) => ({
   type: actionTypes.CREATE_STORY,
@@ -75,21 +78,45 @@ export const deleteStorySuccess = (id) => ({
   id
 });
 
-export const editStory = (id, newAttributes) => ({
+export const toggleStoryDefault = id => ({
+  type: actionTypes.TOGGLE_STORY,
+  id
+});
+
+export const editStoryDefault = (id, newAttributes) => ({
   type: actionTypes.EDIT_STORY,
   id,
   newAttributes
 });
 
-export const setLoadingStory = (id) => ({
+export const setLoadingStoryDefault = id => ({
   type: actionTypes.SET_LOADING_STORY,
   id
 });
 
-export const toggleStoryDefault = id => ({
-  type: actionTypes.TOGGLE_STORY,
-  id
-});
+export const setLoadingStory = (id, from = '') =>
+  async (dispatch, getState, {}) => {
+    try {
+      switch (from) {
+        case 'search': return dispatch(setLoadingSearchStory(id));
+        default: return dispatch(setLoadingStoryDefault(id));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+export const editStory = (id, newAttributes, from = '') =>
+  async (dispatch, getState, {}) => {
+    try {
+      switch (from) {
+        case 'search': return dispatch(editSearchStory(id, newAttributes));
+        default: return dispatch(editStoryDefault(id, newAttributes));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
 export const toggleStory = (id, from = '') => 
   async (dispatch, getState, {}) => {
@@ -141,10 +168,20 @@ export const updateCollapsedStory = (storyId, projectId, newAttributes) =>
     }
   }
 
-export const saveStory = (storyId, projectId, options) =>
+export const saveStory = (storyId, projectId, options, from) =>
   async (dispatch, getState, { Story }) => {
-    const { stories } = getState();
-    const story = Story.findById(stories, storyId)
+    const { stories, projectBoard } = getState();
+
+    let story;
+
+    switch (from) {
+      case 'search':
+        story = Story.findById(projectBoard.searchedColumn.stories, storyId)
+        break;
+
+      default: 
+        story = Story.findById(stories, storyId)
+    }
 
     dispatch(setLoadingStory(story.id));
 
@@ -168,8 +205,14 @@ export const saveStory = (storyId, projectId, options) =>
       try {
         const updatedStory = await Story.update(story._editing, projectId, options);
 
-        dispatch(updateStorySuccess(updatedStory));
+        switch (from) {
+          case 'search': 
+            dispatch(updateStorySearchSuccess(updatedStory));
+            break;
+        }
 
+        dispatch(updateStorySuccess(updatedStory));
+        
         return dispatch(sendSuccessNotification(
           I18n.t('messages.operations.success.story.save', { story: updatedStory.title })
         ));
