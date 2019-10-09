@@ -193,7 +193,47 @@ describe('Story Actions', () => {
       await Story.deleteStory(storyId, projectId)
         (fakeDispatch, fakeGetState, { Story: FakeStory });
 
-      expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(storyId, error));
+      expect(fakeDispatch).toHaveBeenCalledWith(Story.updateStorySuccess(storyId, error));
+    });
+  });
+
+  fdescribe("dragDropStory", () => {
+    const story = storyFactory();
+    const updatedStory = { ...story, position: 3.54 }; 
+
+    it('calls Story.dragDropStory with new position', async () => {
+      const FakeStory = {
+        findById: sinon.stub().returns(story),
+        update: sinon.stub().resolves(updatedStory)
+      };
+      const fakeGetState = sinon.stub().returns({
+        stories: story
+      });
+      const fakeDispatch = sinon.stub().resolves({});
+  
+      await Story.dragDropStory(story.id, story.projectId, { position: 3.54 })
+        (fakeDispatch, fakeGetState, { Story: FakeStory });
+  
+      expect(fakeDispatch).toHaveBeenCalledWith(Story.updateStorySuccess(updatedStory));
+    });
+
+    it('dispatches storyFailure when promise fails', async () => {
+      const error = { error: "boom" };
+
+      const FakeStory = {
+        findById: sinon.stub().returns(story),
+        update: sinon.stub().rejects(error)
+      };
+
+      const fakeGetState = sinon.stub().returns({
+        stories: story
+      });
+      const fakeDispatch = sinon.stub().resolves({});
+  
+      await Story.dragDropStory(story.id, story.projectId, { position: 3.54 })
+        (fakeDispatch, fakeGetState, { Story: FakeStory });
+  
+      expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(story.id, error));
     });
   });
 });
