@@ -1,4 +1,6 @@
 import actionTypes from 'actions/actionTypes';
+import { toggleStory, withoutNewStory } from 'models/beta/story';
+import { updateIfSameId } from '../services/updateIfSameId';
 
 const initialState = {
   isFetched: false,
@@ -33,6 +35,18 @@ const projectBoardReducer = (state = initialState, action) => {
     return {
       ...state,
       searchedColumn: false,
+    }
+  case actionTypes.TOGGLE_STORY_SEARCH:
+    if (action.id === null) {
+      return withoutNewStory(state.searchedColumn.stories);
+    }
+    
+    return {
+      ...state,
+      searchedColumn: {
+        ...state.searchedColumn,
+        stories: state.searchedColumn.stories.map(updateIfSameId(action.id, toggleStory))
+      }
     }
   default:
     return state;

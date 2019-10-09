@@ -1,5 +1,6 @@
 import actionTypes from './actionTypes';
 import { sendSuccessNotification, sendErrorNotification } from './notifications';
+import { toggleSearchStory } from './projectBoard';
 
 export const createStory = (attributes) => ({
   type: actionTypes.CREATE_STORY,
@@ -53,12 +54,6 @@ export const receiveStories = (stories) => ({
   data: stories
 });
 
-export const toggleStory = (id, search = false) => ({
-  type: actionTypes.TOGGLE_STORY,
-  id,
-  search
-});
-
 export const updateStorySuccess = (story) => ({
   type: actionTypes.UPDATE_STORY_SUCCESS,
   story
@@ -90,6 +85,23 @@ export const setLoadingStory = (id) => ({
   type: actionTypes.SET_LOADING_STORY,
   id
 });
+
+export const toggleStoryDefault = id => ({
+  type: actionTypes.TOGGLE_STORY,
+  id
+});
+
+export const toggleStory = (id, from = '') => 
+  async (dispatch, getState, {}) => {
+    try {
+      switch (from) {
+        case 'search': return dispatch(toggleSearchStory(id))
+        default: return dispatch(toggleStoryDefault(id))
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
 export const showHistory = (storyId) =>
   async (dispatch, getState, { Story }) => {
@@ -213,7 +225,7 @@ export const closeSearch = () =>
     }
   }
 
-export const focus = storyId =>
+export const highlight = storyId =>
   async (dispatch, getState, {}) => {
     try {
       dispatch(focusStory(storyId));

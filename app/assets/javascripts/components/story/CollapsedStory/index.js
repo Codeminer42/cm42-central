@@ -7,7 +7,7 @@ import CollapsedStoryStateActions from './CollapsedStoryStateActions';
 import CollapsedStoryInfo from './CollapsedStoryInfo';
 import StoryIcon from '../StoryIcon';
 import * as Story from '../../../models/beta/story';
-import { updateCollapsedStory, focus } from '../../../actions/story';
+import { updateCollapsedStory, highlight } from '../../../actions/story';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CollapsedStoryFocusButon from './CollapsedStoryFocusButton';
@@ -27,7 +27,7 @@ const storyClassName = (story, additionalClassname = '') => {
   );
 };
 
-export const CollapsedStory = ({ onToggle, story, updateCollapsedStory, project, className, title, search, focus, stories }) =>
+export const CollapsedStory = ({ onToggle, story, updateCollapsedStory, project, className, title, from, highlight, stories }) =>
   <div
     className={storyClassName(story, className)}
     onClick={onToggle}
@@ -48,8 +48,8 @@ export const CollapsedStory = ({ onToggle, story, updateCollapsedStory, project,
         updateCollapsedStory(story.id, project.id, newAttributes)}
     />
     {
-      (Story.haveStory(story, stories) && search) &&
-      <CollapsedStoryFocusButon onClick={() => focus(story.id)} />
+      (Story.haveStory(story, stories) && Story.isSearch({ from })) &&
+      <CollapsedStoryFocusButon onClick={() => highlight(story.id)} />
     }
   </div>
 
@@ -62,5 +62,5 @@ CollapsedStory.propTypes = {
 
 export default connect(
   ({ project, stories }) => ({ project, stories }),
-  { updateCollapsedStory, focus }
+  { updateCollapsedStory, highlight }
 )(CollapsedStory);

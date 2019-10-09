@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { toggleStory } from '../../actions/story';
 import { releaseIsLate, hasFocus } from '../../models/beta/story';
 
-export const StoryItem = ({ story, toggleStory, search = false }) => {
+export const StoryItem = ({ story, toggleStory, from }) => {
   const className = releaseIsLate(story) ? 'Story--late-release' : '';
   const title = releaseIsLate(story) ? I18n.t('story.warnings.backlogged_release') : '';
   const styleFocus = hasFocus(story) ? 'Story--focused' : '';
@@ -17,17 +17,17 @@ export const StoryItem = ({ story, toggleStory, search = false }) => {
         story.collapsed
           ? <CollapsedStory
             story={story}
-            onToggle={() => toggleStory(story.id, search)}
+            onToggle={() => toggleStory(story.id, from)}
             className={`${className}${styleFocus}`}
             title={title}
-            search={search}
+            from={from}
           />
           : <ExpandedStory
             story={story}
-            onToggle={() => toggleStory(story.id, search)}
+            onToggle={() => toggleStory(story.id, from)}
             className={`${className}${styleFocus}`}
             title={title}
-            search={search}
+            from={from}
           />
       }
     </div>

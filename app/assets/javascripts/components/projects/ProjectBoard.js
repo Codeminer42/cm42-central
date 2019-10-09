@@ -91,7 +91,7 @@ class ProjectBoard extends React.Component {
             onClose={closeSearch}
             title={projectBoard.searchedColumn.title}
           >
-            <SearchedStories stories={projectBoard.searchedColumn.stories} />
+            <SearchedStories stories={projectBoard.searchedColumn.stories} from="search" />
           </Column>
         }
 

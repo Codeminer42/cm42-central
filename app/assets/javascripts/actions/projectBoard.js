@@ -22,6 +22,11 @@ const receiveProject = data => ({
   data
 });
 
+export const toggleSearchStory = id => ({
+  type: actionTypes.TOGGLE_STORY_SEARCH,
+  id
+})
+
 export const expandStoryIfNeeded = (dispatch, getHash) => {
   const storyId = getHash('#story-');
 

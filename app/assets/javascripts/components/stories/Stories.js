@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import StoryItem from "../story/StoryItem";
 
-const Stories = ({ stories, search = false }) => {
+const Stories = ({ stories, from }) => {
   if (!stories.length) {
     return null;
   }
@@ -9,7 +9,7 @@ const Stories = ({ stories, search = false }) => {
   return (
     <Fragment>
       {stories.map(story => (
-        <StoryItem key={story.id} story={story} search={search} />
+        <StoryItem key={story.id} story={story} from={from} />
       ))}
     </Fragment>
   );
