@@ -18,6 +18,7 @@ import Notifications from '../Notifications';
 import { removeNotification } from '../../actions/notifications';
 import StorySearch from '../stories/StorySearch';
 import Search from './../stories/Search';
+import PortalSearchInput from './../../portals/PortalSearchInput';
 
 class ProjectBoard extends React.Component {
   componentWillMount() {
@@ -42,7 +43,9 @@ class ProjectBoard extends React.Component {
 
     return (
       <div className="ProjectBoard">
-        <StorySearch projectId={projectId} />
+        <PortalSearchInput>
+          <StorySearch projectId={projectId} />
+        </PortalSearchInput>
 
         <Notifications
           notifications={notifications}

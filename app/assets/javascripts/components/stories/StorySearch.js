@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 import { search } from "actions/story";
 import { connect } from "react-redux";
-
-const searchDiv = document.getElementById('portal-search-input');
 
 export class StorySearch extends Component {
   constructor(props) {
@@ -35,7 +32,7 @@ export class StorySearch extends Component {
   render() {
     const { keyWord } = this.state;
 
-    return ReactDOM.createPortal(
+    return (
       <form 
         action="#" 
         acceptCharset="UTF-8" 
@@ -51,8 +48,7 @@ export class StorySearch extends Component {
             value={keyWord}
           />
         </div>
-      </form>,
-      searchDiv
+      </form>
     );
   }
 }
