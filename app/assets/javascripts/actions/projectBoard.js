@@ -12,6 +12,10 @@ const receiveProjectBoard = projectId => ({
   data: projectId
 });
 
+export const closeSearchSuccess = () => ({
+  type: actionTypes.CLOSE_SEARCH
+});
+
 const errorRequestProjectBoard = error => ({
   type: actionTypes.ERROR_REQUEST_PROJECT_BOARD,
   error: error
@@ -79,3 +83,12 @@ export const fetchProjectBoard = projectId =>
       return dispatch(errorRequestProjectBoard(error));
     }
   };
+
+export const closeSearch = () =>
+  async (dispatch, getState, {}) => {
+    try {
+      dispatch(closeSearchSuccess());
+    } catch (error) {
+      console.error(error)
+    }
+  }

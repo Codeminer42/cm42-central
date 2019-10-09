@@ -29,10 +29,6 @@ export const closeHistory = () => ({
   type: actionTypes.CLOSE_HISTORY
 })
 
-export const closeSearchSuccess = () => ({
-  type: actionTypes.CLOSE_SEARCH
-})
-
 export const highlightStory = (storyId, highlight) => ({
   type: actionTypes.HIGHLIGHT_STORY,
   storyId,
@@ -249,15 +245,6 @@ export const search = (keyWord, projectId) =>
       console.error(error)
     }
   };
-
-export const closeSearch = () =>
-  async (dispatch, getState, {}) => {
-    try {
-      dispatch(closeSearchSuccess());
-    } catch (error) {
-      console.error(error)
-    }
-  }
 
 export const highlight = storyId =>
   async (dispatch, getState, {}) => {

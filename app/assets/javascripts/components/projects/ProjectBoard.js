@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { fetchProjectBoard } from "actions/projectBoard";
+import { fetchProjectBoard, closeSearch } from "actions/projectBoard";
 import { fetchPastStories } from "actions/pastIterations";
 import Column from "../Columns/ColumnItem";
 import Stories from "../stories/Stories";
@@ -8,7 +8,7 @@ import Sprints from "../stories/Sprints";
 import History from "../stories/History";
 import { getColumns } from "../../selectors/columns";
 import * as Columns from '../../models/beta/column';
-import { createStory, closeHistory, closeSearch } from '../../actions/story';
+import { createStory, closeHistory } from '../../actions/story';
 import AddStoryButton from '../story/AddStoryButton';
 import * as Story from 'libs/beta/constants';
 import PropTypes from 'prop-types';
