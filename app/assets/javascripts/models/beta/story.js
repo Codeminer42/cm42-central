@@ -309,8 +309,8 @@ export const createNewStory = (stories, storyAttributes) => {
   };
 };
 
-export const isSearch = story =>
-  story.from === 'search'
+export const isSearch = (stories, story, from) =>
+  from === 'search' && haveStory(story, stories)
 
 export const haveStory = (story, stories) =>
   stories.some(item => item.id === story.id)

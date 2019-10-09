@@ -118,17 +118,12 @@ export const editStory = (id, newAttributes, from = '') =>
     }
   }
 
-export const toggleStory = (id, from = '') => 
-  async (dispatch, getState, {}) => {
-    try {
-      switch (from) {
-        case 'search': return dispatch(toggleSearchStory(id))
-        default: return dispatch(toggleStoryDefault(id))
-      }
-    } catch (error) {
-      console.error(error)
-    }
+export const toggleStory = (id, from = '') => {
+  switch (from) {
+    case 'search': return toggleSearchStory(id)
+    default: return toggleStoryDefault(id)
   }
+}
 
 export const showHistory = (storyId) =>
   async (dispatch, getState, { Story }) => {
@@ -168,7 +163,7 @@ export const updateCollapsedStory = (storyId, projectId, newAttributes) =>
     }
   }
 
-export const saveStory = (storyId, projectId, options, from) =>
+export const saveStory = (storyId, projectId, options, from = '') =>
   async (dispatch, getState, { Story }) => {
     const { stories, projectBoard } = getState();
 
