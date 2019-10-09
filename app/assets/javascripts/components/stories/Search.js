@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Stories from './Stories';
-import * as Story from './../../models/beta/story';
+import * as Story from '../../models/beta/story';
 
 const propTypes = {
   stories: PropTypes.array.isRequired
@@ -20,7 +20,7 @@ const Header = ({ stories }) =>
     </div>
   </div>
 
-const SearchedStories = ({ stories }) =>
+const Search = ({ stories }) =>
   <div className="Sprint">
     <Header
       stories={stories}
@@ -30,7 +30,7 @@ const SearchedStories = ({ stories }) =>
     </div>
   </div>
 
-SearchedStories.propTypes = propTypes;
-SearchedStories.defaultProps = defaultProps;
+Search.propTypes = propTypes;
+Search.defaultProps = defaultProps;
 
-export default SearchedStories;
+export default Search;

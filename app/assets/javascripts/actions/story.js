@@ -62,9 +62,9 @@ export const updateStorySuccess = (story) => ({
   story
 });
 
-export const searchStoriesSuccess = searchedColumn => ({
+export const searchStoriesSuccess = search => ({
   type: actionTypes.SEARCH_STORIES_SUCCESS,
-  searchedColumn
+  search
 })
 
 export const storyFailure = (id, error) => ({
@@ -171,7 +171,7 @@ export const saveStory = (storyId, projectId, options, from = '') =>
 
     switch (from) {
       case 'search':
-        story = Story.findById(projectBoard.searchedColumn.stories, storyId)
+        story = Story.findById(projectBoard.search.result, storyId)
         break;
 
       default: 
@@ -245,9 +245,9 @@ export const deleteStory = (storyId, projectId) =>
 export const search = (keyWord, projectId) =>
   async (dispatch, getState, { ProjectBoard }) => {
     try {
-      const searchedColumn = await ProjectBoard.searchStories(keyWord, projectId);
+      const search = await ProjectBoard.searchStories(keyWord, projectId);
 
-      dispatch(searchStoriesSuccess(searchedColumn));
+      dispatch(searchStoriesSuccess(search));
     }
     catch (error) {
       console.error(error)

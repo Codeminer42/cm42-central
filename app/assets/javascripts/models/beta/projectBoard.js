@@ -32,9 +32,9 @@ const deserialize = (data) => {
   }
 }
 
-export const hasSearchedStories = projectBoard => Boolean(projectBoard.searchedColumn)
+export const hasSearch = projectBoard => Boolean(projectBoard.search)
 
 export const searchStories = async (keyWord, projectId) => ({
-  stories: await Story.search(keyWord, projectId),
-  title: `"${keyWord}"`
+  result: await Story.search(keyWord, projectId),
+  keyWord: `"${keyWord}"`
 })

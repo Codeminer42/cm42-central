@@ -13,11 +13,11 @@ import AddStoryButton from '../story/AddStoryButton';
 import * as Story from 'libs/beta/constants';
 import PropTypes from 'prop-types';
 import { storyPropTypesShape } from '../../models/beta/story';
-import { projectBoardPropTypesShape, hasSearchedStories } from '../../models/beta/projectBoard';
+import { projectBoardPropTypesShape, hasSearch } from '../../models/beta/projectBoard';
 import Notifications from '../Notifications';
 import { removeNotification } from '../../actions/notifications';
 import StorySearch from '../stories/StorySearch';
-import SearchedStories from './../stories/SearchedStories'
+import Search from './../stories/Search';
 
 class ProjectBoard extends React.Component {
   componentWillMount() {
@@ -86,12 +86,12 @@ class ProjectBoard extends React.Component {
         </Column>
 
         {
-          hasSearchedStories(projectBoard) &&
+          hasSearch(projectBoard) &&
           <Column
             onClose={closeSearch}
-            title={projectBoard.searchedColumn.title}
+            title={projectBoard.search.keyWord}
           >
-            <SearchedStories stories={projectBoard.searchedColumn.stories} from="search" />
+            <Search stories={projectBoard.search.result} from="search" />
           </Column>
         }
 

@@ -32,26 +32,26 @@ const projectBoardReducer = (state = initialState, action) => {
   case actionTypes.EDIT_STORY_SEARCH:
     return {
       ...state,
-      searchedColumn: {
-        ...state.searchedColumn,
-        stories: state.searchedColumn.stories.map(
+      search: {
+        ...state.search,
+        result: state.search.result.map(
           updateIfSameId(action.id, (story) => editStory(story, action.newAttributes)))
       }
     }
   case actionTypes.SET_LOADING_SEARCH_STORY:
     return {
       ...state,
-      searchedColumn: {
-        ...state.searchedColumn,
-        stories: state.searchedColumn.stories.map(updateIfSameId(action.id, setLoadingStory))
+      search: {
+        ...state.search,
+        result: state.search.result.map(updateIfSameId(action.id, setLoadingStory))
       }
     }
   case actionTypes.UPDATE_STORY_SEARCH_SUCCESS:
     return {
       ...state,
-      searchedColumn: {
-        ...state.searchedColumn,
-        stories: state.searchedColumn.stories.map(
+      search: {
+        ...state.search,
+        result: state.search.result.map(
           updateIfSameId(action.story.id, (story) => updateStory(story, action.story))
         )
       }
@@ -59,23 +59,23 @@ const projectBoardReducer = (state = initialState, action) => {
   case actionTypes.SEARCH_STORIES_SUCCESS:
     return {
       ...state,
-      searchedColumn: action.searchedColumn,
+      search: action.search,
     }
   case actionTypes.CLOSE_SEARCH:
     return {
       ...state,
-      searchedColumn: false,
+      search: false,
     }
   case actionTypes.TOGGLE_STORY_SEARCH:
     if (action.id === null) {
-      return withoutNewStory(state.searchedColumn.stories);
+      return withoutNewStory(state.search.result);
     }
     
     return {
       ...state,
-      searchedColumn: {
-        ...state.searchedColumn,
-        stories: state.searchedColumn.stories.map(updateIfSameId(action.id, toggleStory))
+      search: {
+        ...state.search,
+        result: state.search.result.map(updateIfSameId(action.id, toggleStory))
       }
     }
   default:

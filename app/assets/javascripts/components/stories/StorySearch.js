@@ -14,7 +14,7 @@ export class StorySearch extends Component {
 
     this.state = {
       keyWord: '',
-      searchedStories: [],
+      result: [],
       projectId,
       search
     }
