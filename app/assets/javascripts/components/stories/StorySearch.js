@@ -1,56 +1,37 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { search } from "actions/story";
 import { connect } from "react-redux";
 
-export class StorySearch extends Component {
-  constructor(props) {
-    super(props);
+export const StorySearch = ({ projectId, search }) => {
+  const [keyWord, setKeyWord] = useState('');
 
-    const { projectId, search } = props;
+  const handleChange = e => setKeyWord(e.target.value);
 
-    this.state = {
-      keyWord: '',
-      result: [],
-      projectId,
-      search
-    }
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    search(keyWord, projectId);
   }
   
-  handleChange = e => {
-    this.setState({ keyWord: e.target.value })
-  }
-
-  handleSearch = async (e) => {
-    e.preventDefault()
-
-    const { keyWord, projectId, search } = this.state
-
-    search(keyWord, projectId)
-  }
-
-  render() {
-    const { keyWord } = this.state;
-
-    return (
-      <form 
-        action="#" 
-        acceptCharset="UTF-8" 
-        method="post"
-        onSubmit={this.handleSearch}
-      >
-        <div className="form-group">
-          <input 
-            type="text" 
-            onChange={this.handleChange} 
-            placeholder="Search" 
-            className="form-control input-sm"
-            value={keyWord}
-          />
-        </div>
-      </form>
-    );
-  }
+  return (
+    <form 
+      action="#" 
+      acceptCharset="UTF-8" 
+      method="post"
+      onSubmit={handleSearch}
+    >
+      <div className="form-group">
+        <input 
+          type="text" 
+          onChange={handleChange} 
+          placeholder="Search" 
+          className="form-control input-sm"
+          value={keyWord}
+        />
+      </div>
+    </form>
+  );
 }
 
 StorySearch.propTypes = {
