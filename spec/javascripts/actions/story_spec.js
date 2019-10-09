@@ -193,11 +193,11 @@ describe('Story Actions', () => {
       await Story.deleteStory(storyId, projectId)
         (fakeDispatch, fakeGetState, { Story: FakeStory });
 
-      expect(fakeDispatch).toHaveBeenCalledWith(Story.updateStorySuccess(storyId, error));
+      expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(storyId, error));
     });
   });
 
-  fdescribe("dragDropStory", () => {
+  describe("dragDropStory", () => {
     const story = storyFactory();
     const updatedStory = { ...story, position: 3.54 }; 
 

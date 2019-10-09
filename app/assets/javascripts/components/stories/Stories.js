@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import StoryItem from '../story/StoryItem';
 
 const Stories = ({column, stories }) => {
@@ -7,7 +7,7 @@ const Stories = ({column, stories }) => {
   }
 
   return (
-    <>
+    <Fragment>
       {stories.map((story, index) => (
         <StoryItem
           key={story.id}
@@ -17,7 +17,7 @@ const Stories = ({column, stories }) => {
           column={column}
         />
       ))}
-    </>
+    </Fragment>
   );
 };
 
