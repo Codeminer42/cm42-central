@@ -1,28 +1,9 @@
 import React from 'react'
+import { useDrop } from 'react-dnd';
 import PropTypes from 'prop-types'
-import { DropTarget } from 'react-dnd'
-import { connect } from 'react-redux'
 
-const columnTarget = {
-  canDrop({ column }) {
-    if(column === 'done') {
-      return false
-    }
-    return true;
-  },
-
-  drop({ column }, monitor) {
-    const story = monitor.getItem();
-    return {...story, column};
-  },
-}
-
-const collect = (connect, monitor) => {
-  const info = {
-    connectDropTarget: connect.dropTarget(),
-    canDrop: monitor.canDrop(),
-  }
-  return info;
+const type = {
+  story: 'STORY'
 }
 
 const Column = ({
@@ -30,10 +11,26 @@ const Column = ({
   children,
   renderAction,
   onClose,
-  connectDropTarget,
-}) =>
-  connectDropTarget(
-    <div className="Column">
+  column
+}) => {
+  const [, drop] = useDrop({
+    accept: type.story,
+    canDrop() {
+      if(column === 'done') {
+        return false
+      }
+      return true;
+    },
+
+    drop(item) {
+      return {...item, column};
+    },
+    collect: (monitor) => ({
+      canDrop: monitor.canDrop(),
+    }),
+  })
+  return (
+    <div ref={drop} className="Column">
       <div className="Column__header">
         <h3 className="Column__name">{title}</h3>
         <div className="Column__actions">
@@ -45,7 +42,8 @@ const Column = ({
       </div>
       <div className="Column__body">{children}</div>
     </div>
-  )
+  );
+}
 
 Column.propTypes = {
   title: PropTypes.string.isRequired,
@@ -56,4 +54,4 @@ Column.defaultProps = {
   renderAction: () => null
 }
 
-export default connect()(DropTarget('STORY', columnTarget, collect)(Column))
+export default Column;
