@@ -33,15 +33,11 @@ export const closeSearchSuccess = () => ({
   type: actionTypes.CLOSE_SEARCH
 })
 
-export const focusStory = storyId => ({
-  type: actionTypes.FOCUS_STORY,
-  storyId
-})
-
-export const removeFocusStory = storyId => ({
-  type: actionTypes.REMOVE_FOCUS_STORY,
-  storyId
-})
+export const highlightStory = (storyId, highlight) => ({
+  type: actionTypes.HIGHLIGHT_STORY,
+  storyId,
+  highlight
+});
 
 export const errorLoadHistory = () => ({
   type: actionTypes.RECEIVE_HISTORY_ERROR
@@ -266,8 +262,8 @@ export const closeSearch = () =>
 export const highlight = storyId =>
   async (dispatch, getState, {}) => {
     try {
-      dispatch(focusStory(storyId));
-      setTimeout(() => dispatch(removeFocusStory(storyId)), 400);
+      dispatch(highlightStory(storyId, true));
+      setTimeout(() => dispatch(highlightStory(storyId, false)), 400);
     } catch (error) {
       console.error(error)
     }

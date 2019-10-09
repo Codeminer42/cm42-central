@@ -70,21 +70,15 @@ const storiesReducer = (state = initialState, action) => {
       return state.filter(
         story => story.id !== action.id
       );
-    case actionTypes.FOCUS_STORY:
-      return state.map(story => {
-        return story.id === action.storyId
-                ? { ...story, focus: true }
-                : story
-      });
     case actionTypes.ADD_NOTE:
       return state.map(
         updateIfSameId(action.storyId, (story) => {
           return Note.addNote(story, action.note)
         }));
-    case actionTypes.REMOVE_FOCUS_STORY:
+    case actionTypes.HIGHLIGHT_STORY:
       return state.map(story => {
         return story.id === action.storyId
-                ? { ...story, focus: false }
+                ? { ...story, focus: action.highlight }
                 : story
       });
     case actionTypes.DELETE_NOTE:
