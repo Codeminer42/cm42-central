@@ -1,7 +1,7 @@
 from ruby:2.6.0
 
 env DEBIAN_FRONTEND noninteractive
-ENV NODE_VERSION=7.7.2
+ENV NODE_VERSION=8.11.3
 
 run sed -i '/deb-src/d' /etc/apt/sources.list && \
   apt-get update
