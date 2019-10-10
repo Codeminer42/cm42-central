@@ -48,7 +48,7 @@ export const CollapsedStory = ({ onToggle, story, updateCollapsedStory, project,
         updateCollapsedStory(story.id, project.id, newAttributes)}
     />
     {
-      Story.haveHighlightButton(Story.withScope(stories, from), story, from) && 
+      Story.haveHighlightButton(Story.withScope(stories), story, from) && 
       <CollapsedStoryFocusButon onClick={() => highlight(story.id)} />
     }
   </div>

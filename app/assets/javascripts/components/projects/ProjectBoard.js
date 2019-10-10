@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { fetchProjectBoard, closeSearch } from "actions/projectBoard";
+import { fetchProjectBoard } from "actions/projectBoard";
 import { fetchPastStories } from "actions/pastIterations";
 import Column from "../Columns/ColumnItem";
 import Stories from "../stories/Stories";
@@ -17,7 +17,7 @@ import { projectBoardPropTypesShape, hasSearch } from '../../models/beta/project
 import Notifications from '../Notifications';
 import { removeNotification } from '../../actions/notifications';
 import StorySearch from '../search/StorySearch';
-import Search from './../search/Search';
+import SearchResults from './../search/SearchResults';
 
 class ProjectBoard extends React.Component {
   componentWillMount() {
@@ -33,7 +33,6 @@ class ProjectBoard extends React.Component {
       projectId, 
       createStory, 
       closeHistory,
-      closeSearch,
       notifications, 
       removeNotification, 
       history,
@@ -86,15 +85,7 @@ class ProjectBoard extends React.Component {
           />
         </Column>
 
-        {
-          hasSearch(projectBoard) &&
-          <Column
-            onClose={closeSearch}
-            title={projectBoard.keyWord}
-          >
-            <Search stories={stories.search} from="search" />
-          </Column>
-        }
+        <SearchResults />
 
         {
           history.status !== 'DISABLED' &&
@@ -157,7 +148,6 @@ const mapDispatchToProps = {
   fetchProjectBoard,
   createStory,
   closeHistory,
-  closeSearch,
   fetchPastStories,
   removeNotification
 };

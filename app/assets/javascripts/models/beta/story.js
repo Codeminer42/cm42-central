@@ -317,6 +317,9 @@ export const isSearch = from => from === storyScopes.SEARCH;
 export const haveHighlightButton = (stories, story, from) =>
   isSearch(from) && haveStory(story, stories)
 
+export const haveSearch = stories =>
+  Boolean(stories[storyScopes.SEARCH])
+
 export const haveStory = (story, stories) =>
   stories.some(item => item.id === story.id)
 

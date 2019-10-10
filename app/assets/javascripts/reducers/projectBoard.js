@@ -31,12 +31,14 @@ const projectBoardReducer = (state = initialState, action) => {
   case actionTypes.SEARCH_STORIES_SUCCESS:
     return {
       ...state,
-      keyWord: action.keyWord,
+      search: {
+        keyWord: action.keyWord
+      }
     }
   case actionTypes.CLOSE_SEARCH:
     return {
       ...state,
-      keyWord: '',
+      search: false,
     }
   default:
     return state;
