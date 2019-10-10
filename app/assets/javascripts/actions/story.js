@@ -1,15 +1,13 @@
 import actionTypes from './actionTypes';
 import { sendSuccessNotification, sendErrorNotification } from './notifications';
 
-const defaultFrom = 'all';
-
-export const createStory = (attributes, from = defaultFrom) => ({
+export const createStory = (attributes, from) => ({
   type: actionTypes.CREATE_STORY,
   attributes,
   from
 });
 
-export const addStory = (story, from = defaultFrom) => ({
+export const addStory = (story, from) => ({
   type: actionTypes.ADD_STORY,
   story,
   from
@@ -29,10 +27,10 @@ export const closeHistory = () => ({
   type: actionTypes.CLOSE_HISTORY
 })
 
-export const highlightStory = (storyId, highlight, from = defaultFrom) => ({
+export const updateHighlight = (storyId, highlighted, from) => ({
   type: actionTypes.HIGHLIGHT_STORY,
   storyId,
-  highlight,
+  highlighted,
   from
 });
 
@@ -40,60 +38,60 @@ export const errorLoadHistory = () => ({
   type: actionTypes.RECEIVE_HISTORY_ERROR
 })
 
-export const cloneStory = (story, from = defaultFrom) => ({
+export const cloneStory = (story, from) => ({
   type: actionTypes.CLONE_STORY,
   story,
   from
 });
 
-export const receiveStories = (stories, from = defaultFrom) => ({
+export const receiveStories = (stories, from) => ({
   type: actionTypes.RECEIVE_STORIES,
   data: stories,
   from
 });
 
-export const updateStorySuccess = (story, from = defaultFrom) => ({
+export const updateStorySuccess = (story, from) => ({
   type: actionTypes.UPDATE_STORY_SUCCESS,
   story,
   from
 });
 
-export const storyFailure = (id, error, from = defaultFrom) => ({
+export const storyFailure = (id, error, from) => ({
   type: actionTypes.STORY_FAILURE,
   id,
   error,
   from
 });
 
-export const deleteStorySuccess = (id, from = defaultFrom) => ({
+export const deleteStorySuccess = (id, from) => ({
   type: actionTypes.DELETE_STORY_SUCCESS,
   id,
   from
 });
 
-export const toggleStory = (id, from = defaultFrom) => ({
+export const toggleStory = (id, from) => ({
   type: actionTypes.TOGGLE_STORY,
   id,
   from
 });
 
-export const editStory = (id, newAttributes, from = defaultFrom) => ({
+export const editStory = (id, newAttributes, from) => ({
   type: actionTypes.EDIT_STORY,
   id,
   newAttributes,
   from
 });
 
-export const setLoadingStory = (id, from = defaultFrom) => ({
+export const setLoadingStory = (id, from) => ({
   type: actionTypes.SET_LOADING_STORY,
   id,
   from
 });
 
-export const showHistory = (storyId, from = defaultFrom) =>
+export const showHistory = (storyId, from) =>
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
-    const story = Story.findById(stories[from], storyId)
+    const story = Story.findById(Story.withScope(stories), storyId)
     dispatch(loadHistory(story.title))
     try {
       const activities = await Story.getHistory(story.id, story.projectId)
@@ -105,10 +103,10 @@ export const showHistory = (storyId, from = defaultFrom) =>
     }
   }
 
-export const updateCollapsedStory = (storyId, projectId, newAttributes, from = defaultFrom) =>
+export const updateCollapsedStory = (storyId, projectId, newAttributes, from) =>
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
-    const story = Story.findById(stories[from], storyId);
+    const story = Story.findById(Story.withScope(stories, from), storyId);
 
 
     const newStory = { ...story, ...newAttributes };
@@ -116,7 +114,7 @@ export const updateCollapsedStory = (storyId, projectId, newAttributes, from = d
     try {
       const updatedStory = await Story.update(newStory, projectId);
 
-      dispatch(updateStorySuccess(updatedStory))
+      dispatch(updateStorySuccess(updatedStory, from))
 
       return dispatch(sendSuccessNotification(
         I18n.t('messages.operations.success.story.save', { story: updatedStory.title })
@@ -124,23 +122,23 @@ export const updateCollapsedStory = (storyId, projectId, newAttributes, from = d
     }
     catch (error) {
       dispatch(sendErrorNotification(error))
-      return dispatch(storyFailure(story.id, error))
+      return dispatch(storyFailure(story.id, error, from))
     }
   }
 
-export const saveStory = (storyId, projectId, options, from = defaultFrom) =>
+export const saveStory = (storyId, projectId, options, from) =>
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
 
-    const story = Story.findById(stories[from], storyId);
+    const story = Story.findById(Story.withScope(stories, from), storyId);
 
-    dispatch(setLoadingStory(story.id));
+    dispatch(setLoadingStory(story.id, from));
 
     if (Story.isNew(story)) {
       try {
         const newStory = await Story.post(story._editing, projectId)
 
-        dispatch(addStory(newStory));
+        dispatch(addStory(newStory, from));
 
         return dispatch(sendSuccessNotification(
           I18n.t('messages.operations.success.story.create', { story: story._editing.title })
@@ -148,7 +146,7 @@ export const saveStory = (storyId, projectId, options, from = defaultFrom) =>
       }
       catch (error) {
         dispatch(sendErrorNotification(error))
-        return dispatch(storyFailure(story.id, error))
+        return dispatch(storyFailure(story.id, error, from))
       }
     };
 
@@ -164,19 +162,19 @@ export const saveStory = (storyId, projectId, options, from = defaultFrom) =>
       }
       catch (error) {
         dispatch(sendErrorNotification(error))
-        return dispatch(storyFailure(story.id, error))
+        return dispatch(storyFailure(story.id, error, from))
       }
     }
 
-    return dispatch(toggleStory(story.id));
+    return dispatch(toggleStory(story.id, from));
   };
 
-export const deleteStory = (storyId, projectId, from = defaultFrom) =>
+export const deleteStory = (storyId, projectId, from) =>
   async (dispatch, getState, { Story }) => {
-    dispatch(setLoadingStory(storyId))
+    dispatch(setLoadingStory(storyId, from))
     try {
       const { stories } = getState();
-      const storyTitle = Story.findById(stories[from], storyId).title;
+      const storyTitle = Story.findById(Story.withScope(stories, from), storyId).title;
 
       await Story.deleteStory(storyId, projectId);
 
@@ -188,16 +186,16 @@ export const deleteStory = (storyId, projectId, from = defaultFrom) =>
     }
     catch (error) {
       dispatch(sendErrorNotification(error))
-      return dispatch(storyFailure(storyId, error))
+      return dispatch(storyFailure(storyId, error, from))
     }
   }
 
 export const highlight = storyId =>
   async (dispatch, getState, {}) => {
     try {
-      dispatch(highlightStory(storyId, true));
-      setTimeout(() => dispatch(highlightStory(storyId, false)), 400);
+      dispatch(updateHighlight(storyId, true));
+      setTimeout(() => dispatch(updateHighlight(storyId, false)), 400);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }

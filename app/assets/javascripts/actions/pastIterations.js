@@ -1,7 +1,4 @@
 import actionTypes from './actionTypes';
-import { receiveStories } from './story';
-
-const defaultFrom = 'all';
 
 export const receivePastIterations = (pastIterations) => ({
   type: actionTypes.RECEIVE_PAST_ITERATIONS,
@@ -13,7 +10,7 @@ export const requestPastStories = iterationNumber => ({
   iterationNumber
 });
 
-export const receivePastStories = (stories, iterationNumber, from = defaultFrom) => ({
+export const receivePastStories = (stories, iterationNumber, from) => ({
   type: actionTypes.RECEIVE_PAST_STORIES,
   iterationNumber,
   stories,

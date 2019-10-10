@@ -8,9 +8,10 @@ import * as Task from 'models/beta/task';
 import * as Label from 'models/beta/label';
 import * as Attachment from 'models/beta/attachment';
 import { updateIfSameId } from '../services/updateIfSameId';
+import { storyScopes } from './../libs/beta/constants';
 
 const initialState = {
-  all: []
+  [storyScopes.ALL]: []
 };
 
 const storiesReducer = (state = initialState, action) => {
@@ -130,7 +131,7 @@ const storiesReducer = (state = initialState, action) => {
         ...state,
         [action.from]: state[action.from].map(story => {
           return story.id === action.storyId
-                  ? { ...story, focus: action.highlight }
+                  ? { ...story, highlighted: action.highlighted }
                   : story
           })
       }
@@ -191,4 +192,11 @@ const storiesReducer = (state = initialState, action) => {
   };
 };
 
-export default storiesReducer;
+const withScope = (reducer) => (state, action) => {
+  const from = action.from || storyScopes.ALL;
+  action = { ...action, from };
+
+  return reducer(state, action);
+}
+
+export default withScope(storiesReducer);

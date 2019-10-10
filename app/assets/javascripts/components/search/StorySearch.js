@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { search } from "actions/projectBoard";
 import { connect } from "react-redux";
+import ReactDOM from 'react-dom';
 
 export const StorySearch = ({ projectId, search }) => {
   const [keyWord, setKeyWord] = useState('');
@@ -14,7 +15,7 @@ export const StorySearch = ({ projectId, search }) => {
     search(keyWord, projectId);
   }
   
-  return (
+  return ReactDOM.createPortal(
     <form 
       action="#" 
       acceptCharset="UTF-8" 
@@ -30,7 +31,8 @@ export const StorySearch = ({ projectId, search }) => {
           value={keyWord}
         />
       </div>
-    </form>
+    </form>,
+    document.querySelector('[data-portal="search"]')
   );
 }
 

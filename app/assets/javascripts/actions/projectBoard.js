@@ -26,9 +26,10 @@ const receiveProject = data => ({
   data
 });
 
-export const updateStorySuccess = story => ({
+export const updateStorySuccess = (story, from) => ({
   type: actionTypes.UPDATE_STORY_SUCCESS,
-  story
+  story,
+  from
 });
 
 export const searchStoriesSuccess = keyWord => ({

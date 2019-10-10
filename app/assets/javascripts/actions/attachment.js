@@ -1,34 +1,31 @@
-import { updateStorySuccess } from './story';
+import { updateStorySuccess, storyFailure } from './story';
 import actionTypes from './actionTypes';
-import { storyFailure } from './story';
 
-const defaultFrom = 'all';
-
-export const addAttachmentToStory = (storyId, attachment, from = defaultFrom) => ({
+export const addAttachmentToStory = (storyId, attachment, from) => ({
   type: actionTypes.ADD_ATTACHMENT,
   storyId,
   attachment,
   from
 });
 
-export const removeAttachment = (storyId, attachmentId, from = defaultFrom) => ({
+export const removeAttachment = (storyId, attachmentId, from) => ({
   type: actionTypes.DELETE_ATTACHMENT,
   storyId,
   attachmentId,
   from
 });
 
-export const addAttachment = (storyId, projectId, attachment, from = defaultFrom) =>
+export const addAttachment = (storyId, projectId, attachment, from) =>
   async (dispatch, getState, { Story }) => {
-    dispatch(addAttachmentToStory(storyId, attachment));
+    dispatch(addAttachmentToStory(storyId, attachment, from));
 
     const { stories } = getState();
-    const story = stories[from].find(story => story.id === storyId);
+    const story = Story.withScope(stories, from).find(story => story.id === storyId);
     const options = { collapse: false };
 
     try {
       const updatedStory = await Story.update(story._editing, projectId, options);
-      return dispatch(updateStorySuccess(updatedStory));
+      return dispatch(updateStorySuccess(updatedStory, from));
     }
     catch (error) {
       return dispatch(storyFailure(storyId, error));

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Stories from './Stories';
+import Stories from '../stories/Stories';
 import * as Story from '../../models/beta/story';
 
 const propTypes = {

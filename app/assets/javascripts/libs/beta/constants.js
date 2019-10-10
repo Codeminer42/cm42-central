@@ -15,3 +15,8 @@ export const storyTypes = {
   FEATURE: "feature",
   RELEASE: "release"
 };
+
+export const storyScopes = {
+  ALL: 'all',
+  SEARCH: 'search'
+}

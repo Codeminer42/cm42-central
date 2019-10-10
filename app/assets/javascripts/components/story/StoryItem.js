@@ -4,12 +4,12 @@ import CollapsedStory from './CollapsedStory';
 import ExpandedStory from './ExpandedStory';
 import { connect } from 'react-redux';
 import { toggleStory } from '../../actions/story';
-import { releaseIsLate, hasFocus } from '../../models/beta/story';
+import { releaseIsLate, isHighlighted } from '../../models/beta/story';
 
 export const StoryItem = ({ story, toggleStory, from }) => {
   const className = releaseIsLate(story) ? 'Story--late-release' : '';
   const title = releaseIsLate(story) ? I18n.t('story.warnings.backlogged_release') : '';
-  const styleFocus = hasFocus(story) ? 'Story--focused' : '';
+  const styleFocus = isHighlighted(story) ? 'Story--focused' : '';
 
   const props = {
     story,

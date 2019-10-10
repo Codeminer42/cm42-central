@@ -18,13 +18,14 @@ describe('Story Actions', () => {
       const FakeStory = {
         findById: sinon.stub().returns(editedStory),
         update: sinon.stub().resolves(story),
-        isNew: sinon.stub().returns(false)
+        isNew: sinon.stub().returns(false),
+        withScope: sinon.stub().returns([story])
       };
 
       const fakeDispatch = sinon.stub().resolves({});
 
       const fakeGetState = sinon.stub();
-      fakeGetState.returns({ stories: [editedStory] });
+      fakeGetState.returns({ stories: { all: [editedStory] } });
 
       await Story.saveStory(editedStory.id, projectId)
         (fakeDispatch, fakeGetState, { Story: FakeStory });
@@ -44,13 +45,14 @@ describe('Story Actions', () => {
       const FakeStory = {
         findById: sinon.stub().returns(editedStory),
         update: sinon.stub().resolves(story),
-        isNew: sinon.stub().returns(false)
+        isNew: sinon.stub().returns(false),
+        withScope: sinon.stub().returns([story])
       };
 
       const fakeDispatch = sinon.stub().resolves({});
 
       const fakeGetState = sinon.stub();
-      fakeGetState.returns({ stories: [editedStory] });
+      fakeGetState.returns({ stories: { all: [editedStory] } });
 
       await Story.saveStory(editedStory.id, projectId)
         (fakeDispatch, fakeGetState, { Story: FakeStory });
@@ -71,13 +73,14 @@ describe('Story Actions', () => {
       const FakeStory = {
         findById: sinon.stub().returns(editedStory),
         update: sinon.stub().resolves(story),
-        isNew: sinon.stub().returns(false)
+        isNew: sinon.stub().returns(false),
+        withScope: sinon.stub().returns([story])
       };
 
       const fakeDispatch = sinon.stub().resolves({});
 
       const fakeGetState = sinon.stub();
-      fakeGetState.returns({ stories: [editedStory] });
+      fakeGetState.returns({ stories: { all: [editedStory] } });
 
       await Story.saveStory(editedStory.id, projectId)
         (fakeDispatch, fakeGetState, { Story: FakeStory });
@@ -96,13 +99,14 @@ describe('Story Actions', () => {
       const FakeStory = {
         findById: sinon.stub().returns(editedStory),
         post: sinon.stub().resolves(story),
-        isNew: sinon.stub().returns(true)
+        isNew: sinon.stub().returns(true),
+        withScope: sinon.stub().returns([story])
       };
 
       const fakeDispatch = sinon.stub().resolves({});
 
       const fakeGetState = sinon.stub();
-      fakeGetState.returns({ stories: [editedStory] });
+      fakeGetState.returns({ stories: { all: [editedStory] } });
 
       await Story.saveStory(editedStory.id, projectId)
         (fakeDispatch, fakeGetState, { Story: FakeStory });
@@ -127,12 +131,13 @@ describe('Story Actions', () => {
       const FakeStory = {
         findById: sinon.stub().returns(editedStory),
         update: sinon.stub().rejects(error),
-        isNew: sinon.stub().returns(false)
+        isNew: sinon.stub().returns(false),
+        withScope: sinon.stub().returns([story])
       };
 
       const fakeDispatch = sinon.stub().resolves({});
       const fakeGetState = sinon.stub();
-      fakeGetState.returns({ stories: [editedStory] });
+      fakeGetState.returns({ stories: { all:  [editedStory] } });
 
       await Story.saveStory(editedStory.id, projectId)
         (fakeDispatch, fakeGetState, { Story: FakeStory });
@@ -149,10 +154,13 @@ describe('Story Actions', () => {
     it('calls Story.deleteStory with projectId and storyId', async () => {
       const FakeStory = {
         findById: sinon.stub().returns(story),
-        deleteStory: sinon.stub().resolves({})
+        deleteStory: sinon.stub().resolves({}),
+        withScope: sinon.stub().returns([story])
       };
       const fakeGetState = sinon.stub().returns({
-        stories: [story]
+        stories: {
+          all: [story]
+        }
       });
       const fakeDispatch = sinon.stub().resolves({});
 
@@ -165,10 +173,11 @@ describe('Story Actions', () => {
     it('dispatch deleteStorySuccess', async () => {
       const FakeStory = {
         findById: sinon.stub().returns(story),
-        deleteStory: sinon.stub().resolves({})
+        deleteStory: sinon.stub().resolves({}),
+        withScope: sinon.stub().returns([story])
       };
       const fakeGetState = sinon.stub().returns({
-        stories: [story]
+        stories: { all: [story] }
       });
       const fakeDispatch = sinon.stub().resolves({});
 
@@ -183,10 +192,11 @@ describe('Story Actions', () => {
 
       const FakeStory = {
         findById: sinon.stub().returns(story),
-        deleteStory: sinon.stub().rejects(error)
+        deleteStory: sinon.stub().rejects(error),
+        withScope: sinon.stub().returns([story])
       };
       const fakeGetState = sinon.stub().returns({
-        stories: story
+        stories: { all: [story] }
       });
       const fakeDispatch = sinon.stub().resolves({});
 

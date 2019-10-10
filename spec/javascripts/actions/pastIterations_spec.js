@@ -44,7 +44,7 @@ describe('Past iteration actions', () => {
       type: actionTypes.RECEIVE_PAST_STORIES,
       stories: pastIterationsArray(),
       iterationNumber: 42,
-      from: 'all'
+      from: undefined
     }
 
     it('creates an action to receive past iteration stories', () => {

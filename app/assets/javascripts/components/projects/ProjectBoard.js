@@ -16,9 +16,8 @@ import { storyPropTypesShape } from '../../models/beta/story';
 import { projectBoardPropTypesShape, hasSearch } from '../../models/beta/projectBoard';
 import Notifications from '../Notifications';
 import { removeNotification } from '../../actions/notifications';
-import StorySearch from '../stories/StorySearch';
-import Search from './../stories/Search';
-import PortalSearchInput from './../../portals/PortalSearchInput';
+import StorySearch from '../search/StorySearch';
+import Search from './../search/Search';
 
 class ProjectBoard extends React.Component {
   componentWillMount() {
@@ -44,9 +43,7 @@ class ProjectBoard extends React.Component {
 
     return (
       <div className="ProjectBoard">
-        <PortalSearchInput>
-          <StorySearch projectId={projectId} />
-        </PortalSearchInput>
+        <StorySearch projectId={projectId} />
 
         <Notifications
           notifications={notifications}

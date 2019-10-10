@@ -15,7 +15,8 @@ describe('Attachment Actions', () => {
       const newAttachment = { id: 1 }
 
       const FakeStory = {
-        update: sinon.stub().resolves(story)
+        update: sinon.stub().resolves(story),
+        withScope: sinon.stub().returns([story])
       };
 
       const fakeDispatch = sinon.stub();
@@ -33,7 +34,8 @@ describe('Attachment Actions', () => {
       const newAttachment = { id: 1 }
 
       const FakeStory = {
-        update: sinon.stub().resolves(story)
+        update: sinon.stub().resolves(story),
+        withScope: sinon.stub().returns([story])
       };
 
       const fakeDispatch = sinon.stub();
@@ -53,7 +55,8 @@ describe('Attachment Actions', () => {
       const error = { error: 'error' }
 
       const FakeStory = {
-        update: sinon.stub().rejects(error)
+        update: sinon.stub().rejects(error),
+        withScope: sinon.stub().returns([story])
       };
 
       const fakeDispatch = sinon.stub();
