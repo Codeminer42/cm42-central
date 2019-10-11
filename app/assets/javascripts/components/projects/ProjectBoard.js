@@ -13,7 +13,7 @@ import AddStoryButton from '../story/AddStoryButton';
 import * as Story from 'libs/beta/constants';
 import PropTypes from 'prop-types';
 import { storyPropTypesShape } from '../../models/beta/story';
-import { projectBoardPropTypesShape, hasSearch } from '../../models/beta/projectBoard';
+import { projectBoardPropTypesShape } from '../../models/beta/projectBoard';
 import Notifications from '../Notifications';
 import { removeNotification } from '../../actions/notifications';
 import StorySearch from '../search/StorySearch';
@@ -35,9 +35,7 @@ class ProjectBoard extends React.Component {
       closeHistory,
       notifications, 
       removeNotification, 
-      history,
-      projectBoard,
-      stories
+      history
     } = this.props;
 
     return (
@@ -125,7 +123,6 @@ const mapStateToProps = ({
 }) => ({
   projectBoard,
   history,
-  stories,
   chillyBinStories: getColumns({
     column: Columns.CHILLY_BIN,
     stories

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const CollapsedStoryFocusButton = ({ onClick }) => {
   const handleClick = (e) => {
@@ -12,5 +13,10 @@ const CollapsedStoryFocusButton = ({ onClick }) => {
     </button>
   )
 }
+
+CollapsedStoryFocusButton.propTypes = {
+  onClick: PropTypes.func.isRequired
+};
+
 
 export default CollapsedStoryFocusButton

@@ -36,5 +36,5 @@ export const hasSearch = projectBoard => Boolean(projectBoard.search)
 
 export const searchStories = async (keyWord, projectId) => ({
   result: await Story.search(keyWord, projectId),
-  keyWord: `"${keyWord}"`
+  keyWord
 })

@@ -66,13 +66,12 @@ const storiesReducer = (state = initialState, action) => {
           }))
       }
     case actionTypes.UPDATE_STORY_SUCCESS:
-      return {
-        ...state,
-        [action.from]: state[action.from].map(
+      return allScopes(state, action.story.id, stories => {
+        return stories.map(
           updateIfSameId(action.story.id, (story) => {
             return updateStory(story, action.story);
           }))
-      }
+        })
     case actionTypes.STORY_FAILURE:
       return {
         ...state,
@@ -112,12 +111,11 @@ const storiesReducer = (state = initialState, action) => {
           }))
       }
     case actionTypes.DELETE_STORY_SUCCESS:
-      return {
-        ...state,
-        [action.from]: state[action.from].filter(
+      return allScopes(state, action.id, stories => {
+        return stories.filter(
           story => story.id !== action.id
         )
-      }
+      })
     case actionTypes.ADD_NOTE:
       return {
         ...state,
@@ -198,5 +196,10 @@ const withScope = (reducer) => (state, action) => {
 
   return reducer(state, action);
 }
+
+const allScopes = (stories, storyId, mutation) => ({
+  [storyScopes.ALL]: mutation(stories[storyScopes.ALL]),
+  [storyScopes.SEARCH]: mutation(stories[storyScopes.SEARCH])
+})
 
 export default withScope(storiesReducer);

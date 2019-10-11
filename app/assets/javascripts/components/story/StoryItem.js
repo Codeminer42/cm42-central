@@ -9,9 +9,9 @@ import { releaseIsLate, isHighlighted } from '../../models/beta/story';
 export const StoryItem = ({ story, toggleStory, from }) => {
   const className = releaseIsLate(story) ? 'Story--late-release' : '';
   const title = releaseIsLate(story) ? I18n.t('story.warnings.backlogged_release') : '';
-  const styleFocus = isHighlighted(story) ? 'Story--focused' : '';
+  const styleFocus = isHighlighted(story) ? 'Story--highlighted' : '';
 
-  const props = {
+  const childProps = {
     story,
     onToggle: () => toggleStory(story.id, from),
     className: `${className}${styleFocus}`,
@@ -24,10 +24,10 @@ export const StoryItem = ({ story, toggleStory, from }) => {
       {
         story.collapsed
           ? <CollapsedStory
-            {...props}
+            {...childProps}
           />
           : <ExpandedStory
-            {...props}
+            {...childProps}
           />
       }
     </div>

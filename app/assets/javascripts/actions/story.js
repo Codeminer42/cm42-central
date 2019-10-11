@@ -91,7 +91,7 @@ export const setLoadingStory = (id, from) => ({
 export const showHistory = (storyId, from) =>
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
-    const story = Story.findById(Story.withScope(stories), storyId)
+    const story = Story.findById(Story.withScope(stories, from), storyId)
     dispatch(loadHistory(story.title))
     try {
       const activities = await Story.getHistory(story.id, story.projectId)
@@ -126,7 +126,7 @@ export const updateCollapsedStory = (storyId, projectId, newAttributes, from) =>
     }
   }
 
-export const saveStory = (storyId, projectId, options, from) =>
+export const saveStory = (storyId, projectId, from, options) =>
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
 
@@ -191,11 +191,7 @@ export const deleteStory = (storyId, projectId, from) =>
   }
 
 export const highlight = storyId =>
-  async (dispatch, getState, {}) => {
-    try {
-      dispatch(updateHighlight(storyId, true));
-      setTimeout(() => dispatch(updateHighlight(storyId, false)), 400);
-    } catch (error) {
-      console.error(error);
-    }
+  (dispatch, getState, {}) => {
+    dispatch(updateHighlight(storyId, true));
+    setTimeout(() => dispatch(updateHighlight(storyId, false)), 400);
   }

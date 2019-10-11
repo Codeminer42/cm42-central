@@ -70,12 +70,8 @@ export const fetchProjectBoard = projectId =>
   };
 
 export const closeSearch = () =>
-  async (dispatch, getState, {}) => {
-    try {
-      dispatch(closeSearchSuccess());
-    } catch (error) {
-      console.error(error)
-    }
+  (dispatch, getState, {}) => {
+    dispatch(closeSearchSuccess());
   }
 
 export const search = (keyWord, projectId) =>

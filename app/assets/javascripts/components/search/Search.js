@@ -3,14 +3,6 @@ import PropTypes from "prop-types";
 import Stories from '../stories/Stories';
 import * as Story from '../../models/beta/story';
 
-const propTypes = {
-  stories: PropTypes.array.isRequired
-};
-
-const defaultProps = {
-  stories: []
-};
-
 const Header = ({ stories }) =>
   <div className="Sprint__header">
     Stories found: {stories.length}
@@ -29,6 +21,14 @@ const Search = ({ stories }) =>
       <Stories stories={stories} from="search" />
     </div>
   </div>
+
+const propTypes = {
+  stories: PropTypes.array.isRequired
+};
+
+const defaultProps = {
+  stories: []
+};
 
 Search.propTypes = propTypes;
 Search.defaultProps = defaultProps;

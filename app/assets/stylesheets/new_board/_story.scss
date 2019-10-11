@@ -3,9 +3,9 @@
     padding: 7px 8px;
     border-bottom: 1px solid $story-border-bottom-color;
     border-top: 1px solid $story-border-top-color;
-    -webkit-transition: ease-in-out .2s;
-    -o-transition: ease-in-out .2s;
-    transition: ease-in-out .2s;
+    -webkit-transition: background-color ease-in-out .2s;
+    -o-transition: background-color ease-in-out .2s;
+    transition: background-color ease-in-out .2s;
 
     &--late-release {
       background-color: rgba($darkred, .5) !important;
@@ -14,7 +14,7 @@
       color: white !important;
     }
 
-    &--focused {
+    &--highlighted {
       background-color: $story-background-focus-color !important;
     }
 
