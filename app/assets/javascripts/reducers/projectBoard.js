@@ -6,7 +6,10 @@ import { updateIfSameId } from '../services/updateIfSameId';
 
 const initialState = {
   isFetched: false,
-  error: null
+  error: null,
+  search: {
+    loading: false
+  }
 };
 
 const projectBoardReducer = (state = initialState, action) => {
@@ -32,13 +35,25 @@ const projectBoardReducer = (state = initialState, action) => {
     return {
       ...state,
       search: {
+        ...state.search,
         keyWord: action.keyWord
       }
     }
   case actionTypes.CLOSE_SEARCH:
     return {
       ...state,
-      search: false,
+      search: {
+        ...state.search,
+        keyWord: ''
+      },
+    }
+  case actionTypes.LOADING_SEARCH:
+    return {
+      ...state,
+      search: {
+        ...state.search,
+        loading: action.loading
+      }
     }
   default:
     return state;

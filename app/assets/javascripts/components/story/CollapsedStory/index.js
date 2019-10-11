@@ -28,7 +28,7 @@ const storyClassName = (story, additionalClassname = '') => {
   );
 };
 
-export const CollapsedStory = ({ onToggle, story, updateCollapsedStory, project, className, title, from, highlight, stories = [] }) =>
+export const CollapsedStory = ({ onToggle, story, updateCollapsedStory, project, className, title, from, highlight, stories }) =>
   <div
     className={storyClassName(story, className)}
     onClick={onToggle}

@@ -35,12 +35,13 @@ class ProjectBoard extends React.Component {
       closeHistory,
       notifications, 
       removeNotification, 
-      history
+      history,
+      projectBoard
     } = this.props;
 
     return (
       <div className="ProjectBoard">
-        <StorySearch projectId={projectId} />
+        <StorySearch projectId={projectId} loading={projectBoard.search.loading} />
 
         <Notifications
           notifications={notifications}

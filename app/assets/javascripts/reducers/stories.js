@@ -11,7 +11,8 @@ import { updateIfSameId } from '../services/updateIfSameId';
 import { storyScopes } from './../libs/beta/constants';
 
 const initialState = {
-  [storyScopes.ALL]: []
+  [storyScopes.ALL]: [],
+  [storyScopes.SEARCH]: []
 };
 
 const storiesReducer = (state = initialState, action) => {

@@ -4,7 +4,7 @@ import { search } from "actions/projectBoard";
 import { connect } from "react-redux";
 import ReactDOM from 'react-dom';
 
-export const StorySearch = ({ projectId, search }) => {
+export const StorySearch = ({ projectId, search, loading }) => {
   const [keyWord, setKeyWord] = useState('');
 
   const handleChange = e => setKeyWord(e.target.value);
@@ -22,6 +22,12 @@ export const StorySearch = ({ projectId, search }) => {
       method="post"
       onSubmit={handleSearch}
     >
+      {
+        loading && 
+          <span className="spinner-search">
+            <i className="fa fa-spinner fa-spin"></i>
+          </span>
+      }
       <div className="form-group">
         <input 
           type="text" 
@@ -37,7 +43,8 @@ export const StorySearch = ({ projectId, search }) => {
 }
 
 StorySearch.propTypes = {
-  projectId: PropTypes.number.isRequired
+  projectId: PropTypes.number.isRequired,
+  loading: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = ({ project }) => ({ projectId: project.id });

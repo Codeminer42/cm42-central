@@ -2,6 +2,8 @@ import actionTypes from "./actionTypes";
 import { receiveUsers } from "./user";
 import { receiveStories, toggleStory } from "./story";
 import { receivePastIterations } from "./pastIterations";
+import { storyScopes } from "../libs/beta/constants";
+import { sendErrorNotification } from './notifications';
 
 const requestProjectBoard = () => ({
   type: actionTypes.REQUEST_PROJECT_BOARD
@@ -35,6 +37,11 @@ export const updateStorySuccess = (story, from) => ({
 export const searchStoriesSuccess = keyWord => ({
   type: actionTypes.SEARCH_STORIES_SUCCESS,
   keyWord
+})
+
+export const updateLoadingSearch = loading => ({
+  type: actionTypes.LOADING_SEARCH,
+  loading
 })
 
 export const expandStoryIfNeeded = (dispatch, getHash) => {
@@ -72,17 +79,22 @@ export const fetchProjectBoard = projectId =>
 export const closeSearch = () =>
   (dispatch, getState, {}) => {
     dispatch(closeSearchSuccess());
+    dispatch(receiveStories([], storyScopes.SEARCH));
   }
 
 export const search = (keyWord, projectId) =>
-  async (dispatch, getState, { ProjectBoard }) => {
-    try {
-      const search = await ProjectBoard.searchStories(keyWord, projectId);
+  async (dispatch, getState, { Story }) => {
+    dispatch(updateLoadingSearch(true));
 
-      dispatch(searchStoriesSuccess(search.keyWord));
-      dispatch(receiveStories(search.result, 'search'));
+    try {
+      const result = await Story.search(keyWord, projectId);
+
+      dispatch(updateLoadingSearch(false));
+      dispatch(searchStoriesSuccess(keyWord));
+      dispatch(receiveStories(result, 'search'));
     }
     catch (error) {
+      dispatch(sendErrorNotification('Something wrong, try again.'));
       console.error(error)
     }
   };
