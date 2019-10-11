@@ -83,6 +83,6 @@ class User < ApplicationRecord
 
   def team_from_project(project)
     user_team_ids = teams.pluck(:id)
-    project.teams.where(user_team_ids).first
+    project.teams.find_by(id: user_team_ids)
   end
 end

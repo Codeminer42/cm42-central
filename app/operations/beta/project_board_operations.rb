@@ -13,7 +13,8 @@ module Beta
       end
 
       def run
-        return  OpenStruct.new(successful?: false, error: ActiveRecord::RecordNotFound) if  @current_user.blank?
+        error_not_found = OpenStruct.new(successful?: false, error: ActiveRecord::RecordNotFound)
+        return error_not_found if @current_user.blank?
 
         users = project.users
 
