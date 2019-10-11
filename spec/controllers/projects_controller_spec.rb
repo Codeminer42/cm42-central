@@ -195,17 +195,30 @@ describe ProjectsController do
           end
 
           describe 'when the user change to another project from another team' do
-            let(:new_team)            { create :team }
-            let(:new_project)         { create :project, users: [user] }
-            let(:new_story)           { create :story, project: new_project, requested_by: user }
+            let(:new_team)              { create :team }
+            let(:new_project)           { create :project, users: [user] }
+            let!(:new_team_projects)    { new_team.projects << new_project }
+            let(:second_team)           { create :team }
+            let(:second_project)        { create :project, users: [user] }
+            let!(:second_team_projects) { second_team.projects << second_project }
+            let!(:user_add_teams)       { user.teams << [new_team, second_team] }
 
             it 'should accept request when it is from registred team', :aggregate_failures do
-              new_team.projects << new_project
-              user.teams << new_team
-
               get :show, params: { id: new_project }
 
               expect(session[:current_team_slug]).to eq(new_team.slug)
+              expect(response).to have_http_status(:ok)
+            end
+
+            it 'should change session when change most one teams', :aggregate_failures do
+              get :show, params: { id: new_project }
+
+              expect(session[:current_team_slug]).to eq(new_team.slug)
+              expect(response).to have_http_status(:ok)
+
+              get :show, params: { id: second_project }
+
+              expect(session[:current_team_slug]).to eq(second_team.slug)
               expect(response).to have_http_status(:ok)
             end
           end
