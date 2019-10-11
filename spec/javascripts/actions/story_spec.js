@@ -206,4 +206,17 @@ describe('Story Actions', () => {
       expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(storyId, error));
     });
   });
+
+  describe('highlight', () => {
+    it('Should dispatch updateHighlight', () => {
+      const storyId = 1;
+      const fakeDispatch = sinon.stub().resolves({});
+      const fakeGetState = sinon.stub().returns({});
+
+      Story.highlight(storyId)
+        (fakeDispatch, fakeGetState, {});
+
+      expect(fakeDispatch).toHaveBeenCalledWith(Story.updateHighlight(storyId, true));
+    });
+  });
 });
