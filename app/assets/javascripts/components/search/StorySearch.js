@@ -16,7 +16,8 @@ export const StorySearch = ({ projectId, search, loading }) => {
   }
   
   return ReactDOM.createPortal(
-    <form 
+    <form
+      data-id="form-search-story"
       action="#" 
       acceptCharset="UTF-8" 
       method="post"
@@ -24,7 +25,7 @@ export const StorySearch = ({ projectId, search, loading }) => {
     >
       {
         loading && 
-          <span className="spinner-search">
+          <span className="spinner-search" data-id="spinner-loading">
             <i className="fa fa-spinner fa-spin"></i>
           </span>
       }
