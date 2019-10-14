@@ -10,6 +10,7 @@ addons:
   apt:
     packages:
       - chromium-chromedriver
+      - libgconf-2-4
   artifacts:
     paths:
       - $(ls -d -1 $PWD/tmp/capybara/* | tr "\n" ":")
