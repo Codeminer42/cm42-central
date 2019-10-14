@@ -53,6 +53,10 @@ export const expandStoryIfNeeded = (dispatch, getHash) => {
   }
 }
 
+export const sendErrorNotificationIfNeeded = (dispatch, code, condition) => {
+  if (!condition) dispatch(sendErrorNotification(code, { custom: true }));
+}
+
 export const fetchProjectBoard = projectId =>
   async (dispatch, getState, { ProjectBoard, UrlService }) => {
     dispatch(requestProjectBoard());
@@ -92,9 +96,10 @@ export const search = (keyWord, projectId) =>
       dispatch(updateLoadingSearch(false));
       dispatch(searchStoriesSuccess(keyWord));
       dispatch(receiveStories(result, 'search'));
+      sendErrorNotificationIfNeeded(dispatch, 'projects.stories_not_found', result.length);
     }
     catch (error) {
-      dispatch(sendErrorNotification('Something wrong, try again.'));
+      dispatch(sendErrorNotification('messages.operations.error.default_error', { custom: true }));
       dispatch(updateLoadingSearch(false));
       console.error(error)
     }

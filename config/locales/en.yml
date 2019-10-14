@@ -291,6 +291,7 @@ en:
     transfer: "Transfer Ownership"
     sharing: "Teams with access to this Project"
     invalid_action: "Can't perform this action or Team not found"
+    stories_not_found: "Your search have no results."
 
     confirmation_invalid: 'Invalid name confirmation, try again.'
     delete_confirmation: 'Please type in the name of the project to confirm.'

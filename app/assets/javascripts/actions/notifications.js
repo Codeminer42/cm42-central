@@ -25,10 +25,23 @@ export const sendSuccessNotification = (message) =>
     }, 4000);
   }
 
-export const sendErrorNotification = (error) =>
-  !!error.response
-    ? sendServerErrorNotification(error)
-    : sendDefaultErrorNotification();
+export const sendErrorNotification = (error, { custom = false } = {}) => {
+  if (!!error.response) return sendServerErrorNotification(error);
+  if (custom) return sendCustomErrorNotification(error);
+  return sendDefaultErrorNotification();
+}
+
+export const sendCustomErrorNotification = code =>
+  (dispatch, getState, { Notification }) => {
+    return dispatch(
+      addNotification(
+        Notification.createNotification({
+          type: Notification.types.ERROR,
+          message: I18n.t(code)
+        })
+      )
+    );
+  }
 
 const sendServerErrorNotification = (error) =>
   (dispatch, getState, { Notification }) => {

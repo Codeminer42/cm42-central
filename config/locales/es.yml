@@ -285,6 +285,7 @@ es:
     transfer: "Transferir la propiedad"
     sharing: "Los equipos con acceso a este proyecto"
     invalid_action: "No se puede realizar esta acción"
+    stories_not_found: "Tu búsqueda no tiene resultados."
 
     confirmation_invalid: 'Confirmación inválida, inténtalo de nuevo.'
     delete_confirmation: 'Por favor, introduzca el nombre del proyecto para confirmar.'

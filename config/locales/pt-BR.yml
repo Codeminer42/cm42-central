@@ -295,7 +295,7 @@ pt-BR:
     unshare: "Tirar Compartilhamento"
     transfer: "Transferir a propriedade"
     sharing: "Equipes com acesso a este projeto"
-    invalid_action: "Não é possível executar esta ação ou Equipe não encontrada"
+    stories_not_found: "Sua busca não teve resultados."
 
     confirmation_invalid: 'Confirmação inválida, tente novamente.'
     delete_confirmation: 'Por favor digite o nome do projeto para confirmar.'
