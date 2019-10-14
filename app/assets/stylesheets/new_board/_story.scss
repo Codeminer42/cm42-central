@@ -71,6 +71,19 @@
           width: 60px;
         }
 
+        &__focus-button {
+          width: 13px;
+          height: 21px;
+          position: relative;
+        }
+
+        &__focus-button-icon {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform:translate(-50%,-50%);
+        }
+
         &__icon {
           display: flex;
           align-items: center;
