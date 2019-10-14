@@ -1268,14 +1268,14 @@ describe('Story model', function () {
     ];
 
     stories.forEach(story => {
-      describe(`when story id is ${story.id}`, () => {
+      describe(`when story is present in the stories array`, () => {
         it('returns truthy', () => {
           expect(Story.haveStory(story, stories)).toBeTruthy();
         });
       });
     });
 
-    describe('when story id is 100', () => {
+    describe('when story is not present in stories array', () => {
       it('returns falsy', () => {
         const story = { id: 100 };
 
