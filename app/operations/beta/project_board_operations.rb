@@ -13,9 +13,6 @@ module Beta
       end
 
       def run
-        error_not_found = OpenStruct.new(successful?: false, error: ActiveRecord::RecordNotFound)
-        return error_not_found if @current_user.blank?
-
         users = project.users
 
         project_board_params = stories_and_past_iterations.merge(

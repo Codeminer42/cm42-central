@@ -210,7 +210,7 @@ describe ProjectsController do
               expect(response).to have_http_status(:ok)
             end
 
-            it 'should change session when change most one teams', :aggregate_failures do
+            it 'should change session when change most oneteams', :aggregate_failures do
               get :show, params: { id: new_project }
 
               expect(session[:current_team_slug]).to eq(new_team.slug)
