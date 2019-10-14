@@ -6,7 +6,7 @@
     "test": "NODE_ENV=test karma start config/karma.conf.js",
     "coveralls": "cat ./js_coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./js_coverage",
     "lint": "eslint app/assets/javascripts",
-    "test:ci": "rails s && wait-on http://localhost:3000 && cypress run"
+    "test:ci": "wait-on http://localhost:3000 && cypress run"
   },
   "dependencies": {
     "@babel/core": "^7.2.2",
@@ -85,6 +85,7 @@
     "tether-shepherd": "^1.8.1",
     "underscore": "^1.9.0",
     "uuid": "^3.3.2",
+    "wait-on": "^3.3.0",
     "webpack": "^4.29.1",
     "webpack-dev-server": "^3.1.14",
     "webpack-manifest-plugin": "^2.0.4",
