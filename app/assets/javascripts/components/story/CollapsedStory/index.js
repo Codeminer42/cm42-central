@@ -78,19 +78,26 @@ const checkStoryPosition = (ref, dragIndex, hoverIndex, monitor) => {
   }
 }
 
-const checkStory = (storySource, hoverIndex, newPosition, column) => {
-  if (storySource.column !== column){
+const canChangePosition = (ref, monitor, storySource, hoverIndex, newPosition) => {
+  if(!ref.current) {
     return true
-  };
+  }
 
+  if(storySource.position === newPosition) {
+    return true
+  }
+  
   if (storySource.index === hoverIndex) {
     return true
   }
   
-  if(storySource.position === newPosition) {
+  if(checkStoryPosition(ref, storySource.index, hoverIndex, monitor)) {
     return true
   }
 }
+
+const canChangeColumn = (state, column) =>
+  (state === 'unscheduled' || state === 'unstarted') && column !== 'done';
 
 export const CollapsedStory = ({
   onToggle,
@@ -107,27 +114,18 @@ export const CollapsedStory = ({
   const [, drop] = useDrop({
     accept: type.story,
     hover(item, monitor) {
-      if(!ref.current) {
-        return true
-      };
-            
-      if(story.state === 'accepted') {
-        return true
-      };
-    
       const storySource = monitor.getItem();
-
       const hoverIndex = index
+      const storiesArray = storySource.stories;
+    
+      if (storySource.column !== column){
+        return true
+      };
 
-      let storiesArray = storySource.stories;
+      const newPosition = getNewPosition(item, story, storiesArray, index);
 
-      let newPosition = getNewPosition(item, story, storiesArray, index);
-
-      if (
-        checkStory(storySource, hoverIndex, newPosition, column) ||
-        checkStoryPosition(ref, storySource.index, hoverIndex, monitor)
-      ) {
-        return;
+      if (canChangePosition(ref, monitor, storySource, hoverIndex, newPosition)) {
+        return true;
       }
 
       dragDropStory(storySource.id, storySource.projectId, {
@@ -151,10 +149,7 @@ export const CollapsedStory = ({
 
       const {state, column} = storySource;
 
-      if (
-        (state === 'unscheduled' || state === 'unstarted') &&
-        column !== 'done'
-      ) {
+      if (canChangeColumn(state, column)) {
         dragDropStory(item.id, item.projectId, {
           state: column === 'backlog' ? 'unstarted' : 'unscheduled'
         });
