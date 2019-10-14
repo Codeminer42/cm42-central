@@ -14,7 +14,7 @@ export const StoryItem = ({ story, toggleStory, from }) => {
   const childProps = {
     story,
     onToggle: () => toggleStory(story.id, from),
-    className: `${className}${styleFocus}`,
+    className: `${className} ${styleFocus}`,
     title,
     from
   }

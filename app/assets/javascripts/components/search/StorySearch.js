@@ -14,7 +14,7 @@ export const StorySearch = ({ projectId, search, loading }) => {
 
     search(keyWord, projectId);
   }
-  
+
   return ReactDOM.createPortal(
     <form
       data-id="form-search-story"
@@ -22,10 +22,11 @@ export const StorySearch = ({ projectId, search, loading }) => {
       acceptCharset="UTF-8" 
       method="post"
       onSubmit={handleSearch}
+      className="StorySearch"
     >
       {
         loading && 
-          <span className="spinner-search" data-id="spinner-loading">
+          <span className="StorySearch__spinner" data-id="spinner-loading">
             <i className="fa fa-spinner fa-spin"></i>
           </span>
       }
@@ -36,6 +37,7 @@ export const StorySearch = ({ projectId, search, loading }) => {
           placeholder="Search" 
           className="form-control input-sm"
           value={keyWord}
+          disabled={loading}
         />
       </div>
     </form>,

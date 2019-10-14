@@ -130,7 +130,9 @@ export const updateStory = (story, newAttributes) => ({
 
 export const search = async (keyWord, projectId) => {
   const { data } = await httpService
-    .get(`/projects/${projectId}/stories?q=${keyWord}`)
+    .get(`/projects/${projectId}/stories?q=${keyWord}`, {
+      timeout: 1500
+    })
 
   return data.map(item => deserialize(item.story));
 }

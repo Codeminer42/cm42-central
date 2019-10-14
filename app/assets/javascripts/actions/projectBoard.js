@@ -95,6 +95,7 @@ export const search = (keyWord, projectId) =>
     }
     catch (error) {
       dispatch(sendErrorNotification('Something wrong, try again.'));
+      dispatch(updateLoadingSearch(false));
       console.error(error)
     }
   };
