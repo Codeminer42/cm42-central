@@ -1,4 +1,4 @@
-describe('<CollapsedStory />', () => {
+describe('CollapsedStory', () => {
   describe('when estimate isnt null', () => {
     it('renders the component with Story--estimated className', () => {
       cy.loginWith('foo@bar.com', 'asdfasdf');
