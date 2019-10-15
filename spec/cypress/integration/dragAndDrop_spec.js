@@ -3,7 +3,7 @@ beforeEach(() => {
 })
 
 describe('Dragtest', () => {
-  it('should dragndrop', () => {
+  it('should dragndrop downwards', () => {
 
     cy.get('.Sprint__body > :nth-child(1)')
       .trigger('dragstart')
@@ -16,6 +16,24 @@ describe('Dragtest', () => {
         .trigger('dragend', 'bottom')
 
       cy.get('.Sprint__body > :nth-child(2)').invoke('text').then((text2) => {
+        expect(text1).to.eq(text2)
+      })
+    })
+  });
+
+  it('should dragndrop upwards', () => {
+
+    cy.get('.Sprint__body > :nth-child(2)')
+      .trigger('dragstart')
+      .trigger('drag')
+      .invoke('text').then((text1) => {
+
+      cy.get('.Sprint__body > :nth-child(1)')
+        .trigger('dragover', 'bottom')
+        .trigger('drop', 'bottom').wait(500)
+        .trigger('dragend', 'bottom')
+
+      cy.get('.Sprint__body > :nth-child(1)').invoke('text').then((text2) => {
         expect(text1).to.eq(text2)
       })
     })
