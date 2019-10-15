@@ -34,7 +34,7 @@ export const StorySearch = ({ projectId, search, loading }) => {
         <input 
           type="text" 
           onChange={handleChange} 
-          placeholder="Search" 
+          placeholder={I18n.t('projects.search_story')} 
           className="form-control input-sm"
           value={keyWord}
           disabled={loading}

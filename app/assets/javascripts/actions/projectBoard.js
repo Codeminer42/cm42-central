@@ -37,12 +37,12 @@ export const updateStorySuccess = (story, from) => ({
 export const searchStoriesSuccess = keyWord => ({
   type: actionTypes.SEARCH_STORIES_SUCCESS,
   keyWord
-})
+});
 
 export const updateLoadingSearch = loading => ({
   type: actionTypes.LOADING_SEARCH,
   loading
-})
+});
 
 export const expandStoryIfNeeded = (dispatch, getHash) => {
   const storyId = getHash('#story-');

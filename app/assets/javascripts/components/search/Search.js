@@ -5,10 +5,10 @@ import * as Story from '../../models/beta/story';
 
 export const Header = ({ stories }) =>
   <div className="Sprint__header" data-id="search-header">
-    Stories found: {stories.length}
+    {I18n.t('stories_found')}: {stories.length}
 
     <div>
-      <span className="done-points">Points: {Story.totalPoints(stories)}</span>
+      <span className="done-points">{I18n.t('projects.reports.points')}: {Story.totalPoints(stories)}</span>
     </div>
   </div>
 

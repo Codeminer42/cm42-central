@@ -8,6 +8,7 @@ es:
       long: "%d/%m/%Y %H:%M:%S"
       short: "%d %b %Y"
 
+  loading: "Cargando"
   logout:  "Terminar sesión"
   login:   "Iniciar sesión"
   sign_up:  "Regístrate"
@@ -78,6 +79,7 @@ es:
   stories_destroy_fail: "Las historias no se pudieron destruir debido a algunos errores de validación"
   update_stories_successfully: "Las historias se actualizaron con éxito"
   stories_not_found: "Historias no encontradas"
+  stories_found: "Historias encontradas"
   upload_new_file: "Arrastre el archivo aquí, o haga clic para agregar."
   reject_new_file: "Tipo de archivo no soportado."
   accepted_tooltip: "La tarea ya ha sido aceptada. No se puede modificar."
@@ -286,6 +288,7 @@ es:
     sharing: "Los equipos con acceso a este proyecto"
     invalid_action: "No se puede realizar esta acción"
     stories_not_found: "Tu búsqueda no tiene resultados."
+    search_story: "Buscar historias"
 
     confirmation_invalid: 'Confirmación inválida, inténtalo de nuevo.'
     delete_confirmation: 'Por favor, introduzca el nombre del proyecto para confirmar.'

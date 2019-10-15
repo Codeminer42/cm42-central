@@ -26,7 +26,7 @@ class ProjectBoard extends React.Component {
 
   render() {
     if (!this.props.projectBoard.isFetched) {
-      return <b>Loading</b>;
+      return <b>{I18n.t('loading')}</b>;
     }
 
     const { 
@@ -47,7 +47,7 @@ class ProjectBoard extends React.Component {
           notifications={notifications}
           onRemove={removeNotification}
         />
-        
+
         <Column title={I18n.t("projects.show.chilly_bin")}
           renderAction={() =>
             <AddStoryButton

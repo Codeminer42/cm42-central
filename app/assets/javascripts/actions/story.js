@@ -191,7 +191,7 @@ export const deleteStory = (storyId, projectId, from) =>
   }
 
 export const highlight = storyId =>
-  (dispatch, getState, {}) => {
+  dispatch => {
     dispatch(updateHighlight(storyId, true));
     setTimeout(() => dispatch(updateHighlight(storyId, false)), 400);
   }

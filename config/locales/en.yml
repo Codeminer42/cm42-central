@@ -11,6 +11,7 @@ en:
       long: "%m/%d/%Y %H:%M:%S"
       short: "%b %d %Y"
 
+  loading: "Loading"
   logout:  "Log out"
   login:   "Log in"
   sign_up:  "Sign up"
@@ -82,6 +83,7 @@ en:
   stories_destroy_fail: "Stories couldn't be destroyed due some validation errors"
   update_stories_successfully: "Stories were successfully updated"
   stories_not_found: "Stories not found"
+  stories_found: "Stories found"
   upload_new_file: "Drop files here, or click to upload."
   reject_new_file: "Unsupported file type."
   accepted_tooltip: "The task has already been accepted. It can't be modified."
@@ -292,6 +294,7 @@ en:
     sharing: "Teams with access to this Project"
     invalid_action: "Can't perform this action or Team not found"
     stories_not_found: "Your search have no results."
+    search_story: "Find story"
 
     confirmation_invalid: 'Invalid name confirmation, try again.'
     delete_confirmation: 'Please type in the name of the project to confirm.'

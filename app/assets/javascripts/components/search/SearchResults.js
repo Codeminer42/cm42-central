@@ -9,9 +9,7 @@ import PropTypes from 'prop-types';
 import { storyPropTypesShape } from './../../models/beta/story';
 
 export const SearchResults = ({ isEnabled, searchResults, closeSearch, projectBoard }) => {
-  if(!isEnabled) {
-    return null;
-  }
+  if (!isEnabled) return null;
 
   return (
     <Column
