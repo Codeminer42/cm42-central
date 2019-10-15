@@ -4,7 +4,7 @@ import SearchResults from 'components/search/Search';
 
 describe('<SearchResults />', () => {
   describe('when isEnabled is false', () => {
-    it('do not render the component', () => {
+    it('does not render the component', () => {
       const wrapper = shallow(
         <SearchResults 
           isEnabled={false}

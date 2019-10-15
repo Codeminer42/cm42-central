@@ -32,5 +32,6 @@ const deserialize = (data) => {
   }
 }
 
-export const hasSearch = projectBoard => Boolean(projectBoard.search.keyWord)
+export const hasSearch = projectBoard => Boolean(projectBoard.search.keyWord);
 
+export const validSearch = keyWord => Boolean(keyWord.trim());

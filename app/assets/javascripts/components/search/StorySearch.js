@@ -15,6 +15,10 @@ export const StorySearch = ({ projectId, search, loading }) => {
     search(keyWord, projectId);
   }
 
+  const handleMouseOver = () => {
+    alert('oi')
+  }
+
   return ReactDOM.createPortal(
     <form
       data-id="form-search-story"
@@ -35,10 +39,16 @@ export const StorySearch = ({ projectId, search, loading }) => {
           type="text" 
           onChange={handleChange} 
           placeholder={I18n.t('projects.search_story')} 
-          className="form-control input-sm"
+          className="form-control input-sm StorySearch__input"
           value={keyWord}
           disabled={loading}
+          required
         />
+        <i
+          className="mi md-20 drop-target" 
+          title={'keycuts.help'} 
+          onMouseOver={handleMouseOver}
+        >help</i>
       </div>
     </form>,
     document.querySelector('[data-portal="search"]')

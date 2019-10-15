@@ -81,26 +81,28 @@ export const fetchProjectBoard = projectId =>
   };
 
 export const closeSearch = () =>
-  (dispatch, getState, {}) => {
+  dispatch => {
     dispatch(closeSearchSuccess());
     dispatch(receiveStories([], storyScopes.SEARCH));
   }
 
 export const search = (keyWord, projectId) =>
-  async (dispatch, getState, { Story }) => {
-    dispatch(updateLoadingSearch(true));
+  async (dispatch, getState, { Story, ProjectBoard }) => {
+    if (ProjectBoard.validSearch(keyWord)) {
+      dispatch(updateLoadingSearch(true));
 
-    try {
-      const result = await Story.search(keyWord, projectId);
-
-      dispatch(updateLoadingSearch(false));
-      dispatch(searchStoriesSuccess(keyWord));
-      dispatch(receiveStories(result, 'search'));
-      sendErrorNotificationIfNeeded(dispatch, 'projects.stories_not_found', result.length);
-    }
-    catch (error) {
-      dispatch(sendErrorNotification('messages.operations.error.default_error', { custom: true }));
-      dispatch(updateLoadingSearch(false));
-      console.error(error)
+      try {
+        const result = await Story.search(keyWord, projectId);
+  
+        dispatch(updateLoadingSearch(false));
+        dispatch(searchStoriesSuccess(keyWord));
+        dispatch(receiveStories(result, 'search'));
+        sendErrorNotificationIfNeeded(dispatch, 'projects.stories_not_found', result.length);
+      }
+      catch (error) {
+        dispatch(sendErrorNotification('messages.operations.error.default_error', { custom: true }));
+        dispatch(updateLoadingSearch(false));
+        console.error(error)
+      }
     }
   };
