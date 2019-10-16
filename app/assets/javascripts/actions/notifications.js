@@ -76,7 +76,7 @@ const sendServerErrorNotification = (error) =>
     }
   }
 
-const sendDefaultErrorNotification = () =>
+export const sendDefaultErrorNotification = () =>
   (dispatch, getState, { Notification }) =>
     dispatch(
       addDefaultErrorNotification(Notification)
