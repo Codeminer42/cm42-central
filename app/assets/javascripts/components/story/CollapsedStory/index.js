@@ -28,7 +28,16 @@ const storyClassName = (story, additionalClassname = '') => {
   );
 };
 
-export const CollapsedStory = ({ onToggle, story, updateCollapsedStory, project, className, title, from, highlight, stories }) =>
+export const CollapsedStory = ({ 
+  onToggle, 
+  story, 
+  updateCollapsedStory, 
+  project, 
+  className, 
+  title, 
+  highlight, 
+  isHighlightable 
+}) =>
   <div
     className={storyClassName(story, className)}
     onClick={onToggle}
@@ -49,7 +58,7 @@ export const CollapsedStory = ({ onToggle, story, updateCollapsedStory, project,
         updateCollapsedStory(story.id, project.id, newAttributes)}
     />
     {
-      Story.haveHighlightButton(Story.withScope(stories), story, from) && 
+      isHighlightable && 
       <CollapsedStoryFocusButon onClick={() => highlight(story.id)} />
     }
   </div>
@@ -63,7 +72,18 @@ CollapsedStory.propTypes = {
   highlight: PropTypes.func
 };
 
+const mapStateToProps = ({ 
+  project, 
+  stories
+}, props) => ({ 
+  project, 
+  stories,
+  isHighlightable: Story.haveHighlightButton(Story.withScope(stories), props.story, props.from) 
+});
+
+const mapDispatchToProps = { updateCollapsedStory, highlight }
+
 export default connect(
-  ({ project, stories }) => ({ project, stories }),
-  { updateCollapsedStory, highlight }
+  mapStateToProps,
+  mapDispatchToProps
 )(CollapsedStory);

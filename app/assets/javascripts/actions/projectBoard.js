@@ -87,7 +87,7 @@ export const closeSearch = () =>
   }
 
 export const search = (keyWord, projectId) =>
-  async (dispatch, getState, { Story, ProjectBoard }) => {
+  async (dispatch, _, { Story, ProjectBoard }) => {
     if (ProjectBoard.validSearch(keyWord)) {
       dispatch(updateLoadingSearch(true));
 
