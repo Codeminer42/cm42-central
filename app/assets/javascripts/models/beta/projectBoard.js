@@ -46,7 +46,7 @@ export const isOperandSearch = word => {
 export const serializeKeyWordSearch = keyWord => {
   if (isOperandSearch(keyWord)) {
     const arraySearch = keyWord.split(':');
-    return `${operands[arraySearch[0]]}:${arraySearch[1]}`;
+    return `${operands[arraySearch[0]] || arraySearch[0]}:${arraySearch[1]}`;
   }
 
   return keyWord;
