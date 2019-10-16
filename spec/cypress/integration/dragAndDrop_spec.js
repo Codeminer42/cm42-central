@@ -1,4 +1,5 @@
 beforeEach(() => {
+  cy.app('load_seed');
   cy.loginWith('foo@bar.com', 'asdfasdf');
 })
 

@@ -19,6 +19,7 @@ ActiveRecord::Base.transaction do
     title: 'A user should be able to create features',
     story_type: 'feature',
     requested_by: user,
+    state: 'unscheduled',
     labels: 'features'
   )
 
