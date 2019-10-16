@@ -1,34 +1,61 @@
 import { 
   expandStoryIfNeeded, closeSearch, 
-  closeSearchSuccess 
+  closeSearchSuccess, sendErrorNotificationIfNeeded
 } from '../../../app/assets/javascripts/actions/projectBoard';
 import { toggleStory, receiveStories } from '../../../app/assets/javascripts/actions/story';
+import { sendErrorNotification } from '../../../app/assets/javascripts/actions/notifications';
 
 describe('Project Board Actions', () => {
-  it('Should dispatch toggleStory when storyId is true', async () => {
-    const storyId = 127;
-
-    const fakeGetHash = sinon.stub();
-    fakeGetHash.returns(storyId);
-
-    const fakeDispatch = sinon.stub();
-    fakeDispatch.resolves({});
-
-    await expandStoryIfNeeded(fakeDispatch, fakeGetHash);
-    expect(fakeDispatch).toHaveBeenCalledWith(toggleStory(storyId));
+  describe('expandStoryIfNeeded', () => {
+    it('Should dispatch toggleStory when storyId is true', async () => {
+      const storyId = 127;
+  
+      const fakeGetHash = sinon.stub();
+      fakeGetHash.returns(storyId);
+  
+      const fakeDispatch = sinon.stub();
+      fakeDispatch.resolves({});
+  
+      await expandStoryIfNeeded(fakeDispatch, fakeGetHash);
+      expect(fakeDispatch).toHaveBeenCalledWith(toggleStory(storyId));
+    });
+  
+    it('Should not dispatch toggleStory when storyId is false', async () => {
+      const storyId = null;
+  
+      const fakeGetHash = sinon.stub();
+      fakeGetHash.returns(storyId);
+  
+      const fakeDispatch = sinon.stub();
+      fakeDispatch.resolves({});
+  
+      await expandStoryIfNeeded(fakeDispatch, fakeGetHash);
+      expect(fakeDispatch).not.toHaveBeenCalledWith(toggleStory(storyId));
+    });
   });
 
-  it('Should not dispatch toggleStory when storyId is false', async () => {
-    const storyId = null;
+  describe('sendErrorNotificationIfNeeded', () => {
+    it('Should dispatch sendErrorNotification when condition is false', () => {
+      const condition = false;
+      const code = 'code';
 
-    const fakeGetHash = sinon.stub();
-    fakeGetHash.returns(storyId);
+      const fakeDispatch = sinon.stub();
+      fakeDispatch.resolves({});
 
-    const fakeDispatch = sinon.stub();
-    fakeDispatch.resolves({});
+      sendErrorNotificationIfNeeded(fakeDispatch, code, condition);
+      expect(fakeDispatch).toHaveBeenCalled();
+    });
+  
+    it('Should not dispatch sendErrorNotification when condition is true', () => {
+      const condition = true;
+      const code = 'code';
 
-    await expandStoryIfNeeded(fakeDispatch, fakeGetHash);
-    expect(fakeDispatch).not.toHaveBeenCalledWith(toggleStory(storyId));
+      const fakeDispatch = sinon.stub();
+      fakeDispatch.resolves({});
+
+      sendErrorNotificationIfNeeded(fakeDispatch, code, condition);  
+      expect(fakeDispatch).not.toHaveBeenCalledWith(sendErrorNotification(code, { custom: true }));
+    });
   });
 
   describe('closeSearch', () => {

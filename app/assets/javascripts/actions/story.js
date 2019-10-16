@@ -155,7 +155,7 @@ export const saveStory = (storyId, projectId, from, options) =>
         const updatedStory = await Story.update(story._editing, projectId, options);
 
         dispatch(updateStorySuccess(updatedStory, from));
-        
+
         return dispatch(sendSuccessNotification(
           I18n.t('messages.operations.success.story.save', { story: updatedStory.title })
         ));
