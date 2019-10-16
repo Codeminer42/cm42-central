@@ -128,12 +128,11 @@ export const updateStory = (story, newAttributes) => ({
   ...newAttributes
 });
 
-export const search = async (keyWord, projectId) => {
+export const search = async (queryParam, projectId) => {
   const { data } = await httpService
-    .get(`/projects/${projectId}/stories?q=${keyWord}`, {
+    .get(`/projects/${projectId}/stories?q=${queryParam}`, {
       timeout: 1500
     })
-
   return data.map(item => deserialize(item.story));
 }
 

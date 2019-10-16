@@ -20,3 +20,10 @@ export const storyScopes = {
   ALL: 'all',
   SEARCH: 'search'
 }
+
+export const operands = {
+  requester: 'requested_by_name',
+  owner: 'owned_by_name',
+  initials: 'owned_by_initials',
+  type: 'story_type',
+}

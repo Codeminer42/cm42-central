@@ -3,6 +3,7 @@ import changeCase from 'change-object-case';
 import * as Story from './story';
 import * as Project from './project';
 import PropTypes from 'prop-types';
+import { operands } from './../../libs/beta/constants';
 
 export const get = async (projectId) => {
   const { data } = await httpService
@@ -35,3 +36,18 @@ const deserialize = (data) => {
 export const hasSearch = projectBoard => Boolean(projectBoard.search.keyWord);
 
 export const validSearch = keyWord => Boolean(keyWord.trim());
+
+export const isOperandSearch = word => {
+  const operandsWords = Object.keys(operands);
+
+  return operandsWords.some(operand => word.includes(operand)) && word.includes(':');
+}
+
+export const serializeKeyWordSearch = keyWord => {
+  if (isOperandSearch(keyWord)) {
+    const arraySearch = keyWord.split(':');
+    return `${operands[arraySearch[0]]}:${arraySearch[1]}`;
+  }
+
+  return keyWord;
+}

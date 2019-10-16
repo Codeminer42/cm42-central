@@ -92,7 +92,8 @@ export const search = (keyWord, projectId) =>
       dispatch(updateLoadingSearch(true));
 
       try {
-        const result = await Story.search(keyWord, projectId);
+        const queryParam = ProjectBoard.serializeKeyWordSearch(keyWord);
+        const result = await Story.search(queryParam, projectId);
   
         dispatch(updateLoadingSearch(false));
         dispatch(searchStoriesSuccess(keyWord));
