@@ -1,4 +1,6 @@
 .StorySearch {
+  position: relative;
+
   &__spinner {
     padding-right: 10px;
   }
@@ -6,4 +8,48 @@
   &__input {
     margin-right: 10px;
   }
+
+  &__tooltip {
+    position: absolute;
+    z-index: 1;
+    background: $white;
+    color: $darkgrey-2;
+    width: 211px;
+    padding: 5px 4px 0px 4px;
+    border-radius: 4px;
+    right: -100px;
+    top: 38px;
+    -webkit-box-shadow: 2px 4px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 4px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 2px 4px 5px 0px rgba(0,0,0,0.75);
+
+    &:before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      background: $white;
+      position: absolute;
+      top: -4px;
+      transform: rotate(45deg);
+      right: 104px;
+    }
+
+    h4 {
+      text-align: center;
+    }
+
+    ul, li {
+      list-style-type: none;
+      margin: 0 5px 0 5px;
+      padding: 0;
+    }
+  }
+}
+
+.show {
+  opacity: 1;
+}
+
+.hidden{
+  opacity: 0;
 }

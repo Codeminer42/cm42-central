@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { search } from "actions/projectBoard";
 import { connect } from "react-redux";
 import ReactDOM from 'react-dom';
+import SearchTooltip from './SearchTooltip';
 
 export const StorySearch = ({ projectId, search, loading }) => {
   const [keyWord, setKeyWord] = useState('');
+  const [classPopup, setClassPopup] = useState('hidden');
 
   const handleChange = e => setKeyWord(e.target.value);
 
@@ -15,9 +17,9 @@ export const StorySearch = ({ projectId, search, loading }) => {
     search(keyWord, projectId);
   }
 
-  const handleMouseOver = () => {
-    alert('oi')
-  }
+  const handleMouseOver = () => setClassPopup('show');
+
+  const handleMouseOut = () => setClassPopup('hidden');
 
   return ReactDOM.createPortal(
     <form
@@ -45,10 +47,13 @@ export const StorySearch = ({ projectId, search, loading }) => {
           required
         />
         <i
-          className="mi md-20 drop-target" 
-          title={'keycuts.help'} 
+          className="mi md-20 drop-target"
           onMouseOver={handleMouseOver}
+          onMouseOut={handleMouseOut}
         >help</i>
+        <SearchTooltip 
+          aditionalClass={`StorySearch__tooltip ${classPopup}`}
+        />
       </div>
     </form>,
     document.querySelector('[data-portal="search"]')
