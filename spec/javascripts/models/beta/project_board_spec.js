@@ -29,4 +29,25 @@ describe('ProjectBoard model', () => {
       });
     });
   });
+
+  describe('validSearch', () => {
+    const validKeyWords = ['foo','bar','lorem ipsum'];
+    const invalidKeyWords = ['', '   ', '']
+
+    validKeyWords.forEach(keyWord => {
+      describe(`when keyword is ${keyWord}`, () => {
+        it('returns truthy', () => {
+          expect(ProjectBoard.validSearch(keyWord)).toBeTruthy();
+        });
+      });
+    });
+
+    invalidKeyWords.forEach(keyWord => {
+      describe(`when keyword is ${keyWord}`, () => {
+        it('returns falsy', () => {
+          expect(ProjectBoard.validSearch(keyWord)).toBeFalsy();
+        });
+      });
+    });
+  });
 });
