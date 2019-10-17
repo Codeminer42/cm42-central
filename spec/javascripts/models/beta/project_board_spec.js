@@ -103,4 +103,25 @@ describe('ProjectBoard model', () => {
       });
     });
   });
+
+  describe('haveTranslation', () => {
+    const translatedOperands = ['type','state'];
+    const noTranslatedOperands = ['foo','bar','lorem','ipsum'];
+
+    translatedOperands.forEach(operand => {
+      describe(`when operand is ${operand}`, () => {
+        it('returns truphy', () => {
+          expect(ProjectBoard.haveTranslation(operand)).toBeTruthy();
+        });
+      });
+    });
+
+    noTranslatedOperands.forEach(operand => {
+      describe(`when operand is ${operand}`, () => {
+        it('returns falsy', () => {
+          expect(ProjectBoard.haveTranslation(operand)).toBeFalsy();
+        });
+      });
+    });
+  });
 });
