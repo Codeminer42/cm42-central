@@ -71,6 +71,7 @@ class StoriesController < ApplicationController
   end
 
   def create
+    update_current_team
     @story = policy_scope(Story).build(allowed_params)
     authorize @story
     @story.requested_by_id = current_user.id unless @story.requested_by_id
@@ -113,6 +114,7 @@ class StoriesController < ApplicationController
   end
 
   def set_project
-    @project = policy_scope(Project).friendly.find(params[:project_id])
+    policy_scope(Project)
+    @project = @current_user.projects.friendly.find(params[:project_id])
   end
 end
