@@ -1,8 +1,9 @@
-beforeEach(() => {
-  cy.app('load_seed');
-});
-
 describe('CollapsedStory', () => {
+
+  beforeEach(() => {
+    cy.app('load_seed');
+  });
+
   it('renders the component with Story--estimated className', () => {
     cy.loginWith('foo@bar.com', 'asdfasdf');
 
