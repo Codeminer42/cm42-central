@@ -40,7 +40,7 @@ const Column = ({
           </button>
         </div>
       </div>
-      <div className="Column__body">{children}</div>
+      <div data-cy={column==='chillyBin' ? column : null} className="Column__body">{children}</div>
     </div>
   );
 }

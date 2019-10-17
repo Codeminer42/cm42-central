@@ -16,8 +16,7 @@ describe('Dragtest', () => {
       .trigger('drop', 'bottom').wait(500)
       .trigger('dragend', 'bottom')
 
-    cy.get('.Sprint__body > :nth-child(2)')
-      .contains('A user should be able to create bugs')
+    cy.matchingText({ column: 'backlog', text: 'A user should be able to create bugs' , storyPosition: 2 });
   });
 
   it('should dragndrop upwards', () => {
@@ -31,8 +30,7 @@ describe('Dragtest', () => {
       .trigger('drop', 'bottom').wait(500)
       .trigger('dragend', 'bottom')
 
-    cy.get('.Sprint__body > :nth-child(1)')
-      .contains('A user should be able to create chores')
+    cy.matchingText({ column: 'backlog', text: 'A user should be able to create chores' , storyPosition: 1 });
   });
 
   it('should be able to switch from backlog to chillybin', () => {
@@ -45,8 +43,7 @@ describe('Dragtest', () => {
       .trigger('drop')
       .trigger('dragend').wait(500)
 
-    cy.get('.Column__body > :last-child() > .Story')
-      .contains('A user should be able to create bugs')
+    cy.matchingText({ column: 'chillyBin', text: 'A user should be able to create bugs' , storyPosition: 2 });
   });
 
   it('should be able to switch from chillybin to backlog', () => {
@@ -59,26 +56,23 @@ describe('Dragtest', () => {
       .trigger('drop')
       .trigger('dragend').wait(500)
 
-    cy.get('.Sprint__body > :first-child > .Story')
-      .contains('A user should be able to create features')
+    cy.matchingText({ column: 'backlog', text: 'A user should be able to create features' , storyPosition: 1 });
   });
 
   it('shouldnt dragndrop done stories', () => {
 
-    cy.get(':nth-child(5) > .Sprint__header').click()
+    cy.get('[data-cy=sprints] > :nth-child(5)').click()
 
-    cy.get(':nth-child(5) > .Sprint__body > :nth-child(1) > .Story')
+    cy.get('[data-cy=done] > :nth-child(1)')
       .trigger('dragstart')
       .trigger('drag')
       .invoke('text').then((text1) => {
 
-      cy.get(':nth-child(5) > .Sprint__body > :nth-child(2) > .Story')
+      cy.get('[data-cy=done] > :nth-child(2)')
         .trigger('dragover', 'bottom')
         .trigger('dragend', 'bottom')
 
-      cy.get(':nth-child(5) > .Sprint__body > :nth-child(1) > .Story').invoke('text').then((text2) => {
-        expect(text1).to.eq(text2)
-      })
+        cy.matchingText({ column: 'done', text: text1 , storyPosition: 1 });
     })
   });
 });

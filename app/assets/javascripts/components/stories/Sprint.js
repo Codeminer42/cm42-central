@@ -84,7 +84,7 @@ class Sprint extends Component {
           onClick={this.onHeaderClick}
           isClosed={isClosed}
         />
-        <div className={`Sprint__body ${closedStyle}`}>
+        <div data-cy={ column ? column : 'done' } className={`Sprint__body ${closedStyle}`}>
           {stories && <Stories column={column} stories={stories} />}
         </div>
       </div>

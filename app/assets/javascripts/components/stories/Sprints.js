@@ -27,7 +27,7 @@ const renderSprints = (column, sprints, fetchStories) => {
 const Sprints = ({ column, sprints, fetchStories }) => {
   if (!sprints.length) return null;
 
-  return <div className="Sprints">{renderSprints(column, sprints, fetchStories)}</div>;
+  return <div data-cy={ !column ? 'sprints' : null } className="Sprints">{renderSprints(column, sprints, fetchStories)}</div>;
 };
 
 Sprint.propTypes = propTypes;

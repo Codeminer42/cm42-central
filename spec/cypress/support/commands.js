@@ -9,3 +9,8 @@ Cypress.Commands.add('loginWith', (email, password) => {
 
   cy.get('.auth-button-submit').click()
 });
+
+Cypress.Commands.add('matchingText', ({ column, text, storyPosition }) => {
+  cy.get(`[data-cy=${column}] > :nth-child(${storyPosition})`)
+    .contains(text)
+});
