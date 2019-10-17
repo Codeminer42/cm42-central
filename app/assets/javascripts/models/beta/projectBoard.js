@@ -47,7 +47,21 @@ export const serializeKeyWordSearch = keyWord => {
   if (isOperandSearch(keyWord)) {
     const arraySearch = keyWord.split(':');
     return `${operands[arraySearch[0]] || arraySearch[0]}:${arraySearch[1]}`;
+    const [firstKeyWord, secondKeyWord] = keyWord.split(':');
+
+    if (!isEnglishLocale()) {
+      const translations = _.invert(I18n.translations[currentLocale()].story[firstKeyWord]);
+      const translatedWord = I18n.t(`story.${firstKeyWord}.${translations[secondKeyWord]}`, { locale: I18n.defaultLocale });
+      return `${operands[firstKeyWord] || translatedWord}:${translatedWord}`;
+    } else {
+      return `${operands[firstKeyWord] || secondKeyWord}:${secondKeyWord}`;
+    }
+
   }
 
   return keyWord;
 }
+
+const isEnglishLocale = () => I18n.currentLocale() === 'en';
+
+const currentLocale = () => I18n.currentLocale();
