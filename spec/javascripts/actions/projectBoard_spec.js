@@ -3,12 +3,11 @@ import {
   closeSearchSuccess, sendErrorNotificationIfNeeded
 } from '../../../app/assets/javascripts/actions/projectBoard';
 import { toggleStory, receiveStories } from '../../../app/assets/javascripts/actions/story';
-import { addNotification } from '../../../app/assets/javascripts/actions/notifications';
 
 describe('Project Board Actions', () => {
   describe('expandStoryIfNeeded', () => {
     describe('when storyId is true', () => {
-      it('Should dispatch toggleStory', () => {
+      it('dispatch toggleStory', () => {
         const storyId = 127;
     
         const fakeGetHash = sinon.stub();
@@ -23,7 +22,7 @@ describe('Project Board Actions', () => {
     });
   
     describe('when storyId is false', () => {
-      it('Should not dispatch toggleStory', () => {
+      it('does not dispatch toggleStory', () => {
         const storyId = null;
     
         const fakeGetHash = sinon.stub();
@@ -40,7 +39,7 @@ describe('Project Board Actions', () => {
 
   describe('sendErrorNotificationIfNeeded', () => {
     describe('when condition is false', () => {
-      it('Calls "dispatch"', () => {
+      it('calls "dispatch"', () => {
         const condition = false;
         const code = 'code';
   
@@ -53,7 +52,7 @@ describe('Project Board Actions', () => {
     });
   
     describe('when condition is true', () => {
-      it('Do not call "dispatch"', () => {
+      it('does not call "dispatch"', () => {
         const condition = true;
         const code = 'code';
   
@@ -81,11 +80,11 @@ describe('Project Board Actions', () => {
         (fakeDispatch, fakeGetState, {});
     });
 
-    it('Should dispatch closeSearchSuccess', () => {
+    it('dispatch closeSearchSuccess', () => {
       expect(fakeDispatch).toHaveBeenCalledWith(closeSearchSuccess());
     });
 
-    it('Should dispatch receiveStories', () => {
+    it('dispatch receiveStories', () => {
       expect(fakeDispatch).toHaveBeenCalledWith(receiveStories([], 'search'));
     });
   });
