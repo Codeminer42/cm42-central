@@ -7,30 +7,34 @@ import { addNotification } from '../../../app/assets/javascripts/actions/notific
 
 describe('Project Board Actions', () => {
   describe('expandStoryIfNeeded', () => {
-    it('Should dispatch toggleStory when storyId is true', () => {
-      const storyId = 127;
-  
-      const fakeGetHash = sinon.stub();
-      fakeGetHash.returns(storyId);
-  
-      const fakeDispatch = sinon.stub();
-      fakeDispatch.resolves({});
-  
-      expandStoryIfNeeded(fakeDispatch, fakeGetHash);
-      expect(fakeDispatch).toHaveBeenCalledWith(toggleStory(storyId));
+    describe('when storyId is true', () => {
+      it('Should dispatch toggleStory', () => {
+        const storyId = 127;
+    
+        const fakeGetHash = sinon.stub();
+        fakeGetHash.returns(storyId);
+    
+        const fakeDispatch = sinon.stub();
+        fakeDispatch.resolves({});
+    
+        expandStoryIfNeeded(fakeDispatch, fakeGetHash);
+        expect(fakeDispatch).toHaveBeenCalledWith(toggleStory(storyId));
+      });
     });
   
-    it('Should not dispatch toggleStory when storyId is false', () => {
-      const storyId = null;
-  
-      const fakeGetHash = sinon.stub();
-      fakeGetHash.returns(storyId);
-  
-      const fakeDispatch = sinon.stub();
-      fakeDispatch.resolves({});
-  
-      expandStoryIfNeeded(fakeDispatch, fakeGetHash);
-      expect(fakeDispatch).not.toHaveBeenCalledWith(toggleStory(storyId));
+    describe('when storyId is false', () => {
+      it('Should not dispatch toggleStory', () => {
+        const storyId = null;
+    
+        const fakeGetHash = sinon.stub();
+        fakeGetHash.returns(storyId);
+    
+        const fakeDispatch = sinon.stub();
+        fakeDispatch.resolves({});
+    
+        expandStoryIfNeeded(fakeDispatch, fakeGetHash);
+        expect(fakeDispatch).not.toHaveBeenCalledWith(toggleStory(storyId));
+      });
     });
   });
 

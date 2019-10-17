@@ -208,7 +208,7 @@ describe('Story Actions', () => {
   });
 
   describe('highlight', () => {
-    it('Should dispatch updateHighlight', () => {
+    it('always dispatch updateHighlight', () => {
       const storyId = 1;
       const fakeDispatch = sinon.stub().resolves({});
       const fakeGetState = sinon.stub().returns({});
