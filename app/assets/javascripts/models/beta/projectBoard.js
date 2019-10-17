@@ -70,9 +70,9 @@ const translateWord = (operand, word, translations) =>
     ? word
     : I18n.t(`story.${operand}.${translations[word] || word}`, { locale: I18n.defaultLocale });
 
-const translatedOperands = ['state','type','estimate'];
+const translatedOperands = ['type'];
 
-const haveTranslation = operand => translatedOperands.includes(operand)
+export const haveTranslation = operand => translatedOperands.includes(operand)
 
 const isEnglishLocale = () => currentLocale() === 'en';
 
