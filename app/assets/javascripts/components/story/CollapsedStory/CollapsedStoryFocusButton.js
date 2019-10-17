@@ -13,6 +13,7 @@ const CollapsedStoryFocusButton = ({ onClick }) => {
       className="btn btn-default locate-btn Story__focus-button" 
       onClick={handleClick}
       title={I18n.t('projects.search_story')}
+      data-id="focus-button"
     >
       <i className="mi md-gps-fixed md-14 Story__focus-button-icon">gps_fixed</i>
     </button>
