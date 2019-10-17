@@ -66,7 +66,7 @@ describe('Dragtest', () => {
         .trigger('dragover')
         .trigger('drop')
         .trigger('dragend').wait(500)
-      cy.get('.Sprint__body > :last-child() > .Story').invoke('text').then((text2) => {
+      cy.get('.Sprint__body > :nth-child(4) > .Story').invoke('text').then((text2) => {
         expect(text1).to.eq(text2)
       })
     })
