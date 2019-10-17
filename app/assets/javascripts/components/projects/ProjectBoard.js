@@ -24,12 +24,40 @@ class ProjectBoard extends React.Component {
     this.props.fetchProjectBoard(this.props.projectId);
   }
 
+  onAddStory = (status) => {
+    const {createStory} = this.props;
+    return createStory({status});
+  }
+
+  renderColumnAction = (status) => 
+    <AddStoryButton onAdd={() => this.onAddStory(status)}/>
+  
+
+  getColumnTitle = () => {
+    const {history} = this.props;
+    return [I18n.t("projects.show.history"), "'", history.storyTitle, "'"].join(' ');
+  }
+
+  renderHistory = () => {
+    const { history, closeHistory} = this.props;
+    history.status !== 'DISABLED' &&
+    <Column
+      onClose={closeHistory}
+      title={() => this.getColumnTitle()}
+    >
+      { history.status === 'LOADED'
+        ? <History history={history.activities} />
+        : <div className="loading">Loading...</div>
+      }
+    </Column>
+  }
+
   render() {
     if (!this.props.projectBoard.isFetched) {
       return <b>Loading</b>;
     }
 
-    const { createStory, closeHistory, notifications, removeNotification, history } = this.props;
+    const { notifications, removeNotification } = this.props;
 
     return (
       <DndProvider backend={HTML5Backend}>
@@ -41,13 +69,7 @@ class ProjectBoard extends React.Component {
 
           <Column title={I18n.t("projects.show.chilly_bin")}
             column="chillyBin"
-            renderAction={() =>
-              <AddStoryButton
-                onAdd={() => createStory({
-                  state: Story.status.UNSCHEDULED
-                })}
-              />
-            }
+            renderAction={() => this.renderColumnAction(Story.status.UNSCHEDULED)}
           >
             <Stories column="chillyBin" stories={this.props.chillyBinStories} />
           </Column>
@@ -56,12 +78,7 @@ class ProjectBoard extends React.Component {
             title={`${I18n.t("projects.show.backlog")} /
             ${I18n.t("projects.show.in_progress")}`}
             column="backlog"
-            renderAction={() =>
-              <AddStoryButton
-                onAdd={() => createStory({
-                  state: Story.status.UNSTARTED
-                })}
-              />}
+            renderAction={() => this.renderColumnAction(Story.status.UNSTARTED)}
           >
             <Sprints
               column="backlog"
@@ -78,19 +95,7 @@ class ProjectBoard extends React.Component {
               fetchStories={this.props.fetchPastStories}
             />
           </Column>
-
-          {
-            history.status !== 'DISABLED' &&
-            <Column
-              onClose={closeHistory}
-              title={[I18n.t("projects.show.history"), "'", history.storyTitle, "'"].join(' ')}
-            >
-              { history.status === 'LOADED'
-                ? <History history={history.activities} />
-                : <div className="loading">Loading...</div>
-              }
-            </Column>
-          }
+          {this.renderHistory()}
         </div>
       </DndProvider>
     );

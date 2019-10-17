@@ -16,10 +16,7 @@ const Column = ({
   const [, drop] = useDrop({
     accept: type.story,
     canDrop() {
-      if(column === 'done') {
-        return false
-      }
-      return true;
+      return column !== 'done'
     },
 
     drop(item) {

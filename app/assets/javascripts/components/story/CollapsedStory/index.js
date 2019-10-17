@@ -37,27 +37,24 @@ const type = {
 const calculatePosition = (aboveStory, bellowStory, storiesArray, index) => {
   if (bellowStory === undefined) {
     return (Number(storiesArray[index].position) + 1)
-  }else if (aboveStory !== undefined && bellowStory !== undefined) {
-    return (Number(bellowStory.position) + Number(aboveStory.position)) / 2;
-  }else if (aboveStory === undefined) {
+  } else if (aboveStory === undefined) {
     return (Number(storiesArray[index].position) - 1);
   }
+  return (Number(bellowStory.position) + Number(aboveStory.position)) / 2;
 }
 
 const getNewPosition = (item, story, storiesArray, index) => {
-  let aboveStory;
-  let bellowStory;
-
   if(item.index > index) {
-    aboveStory = storiesArray[index - 1]
-    bellowStory = story
-  } else {
-    bellowStory = storiesArray[index + 1]
-    aboveStory = story
-  }
-
-  return calculatePosition(aboveStory, bellowStory, storiesArray, index)
+    return calculatePosition(storiesArray[index - 1], story, storiesArray, index);
+  }     
+  return calculatePosition(story, storiesArray[index + 1], storiesArray, index);
 }
+
+const isDraggedInTheSamePlaceOfHolder = (dragIndex, hoverIndex) => dragIndex === hoverIndex
+const isDraggedBellowTheHover = (dragIndex, hoverIndex, hoverClientY, hoverMiddleY) => dragIndex < hoverIndex && hoverClientY < hoverMiddleY
+const isDraggedAboveTheHover = (dragIndex, hoverIndex, hoverClientY, hoverMiddleY) => dragIndex > hoverIndex && hoverClientY > hoverMiddleY
+const canContinue = (dragIndex, hoverIndex, hoverClientY, hoverMiddleY) => 
+isDraggedBellowTheHover(dragIndex, hoverIndex, hoverClientY, hoverMiddleY) || isDraggedAboveTheHover(dragIndex, hoverIndex, hoverClientY, hoverMiddleY)
 
 const checkStoryPosition = (ref, dragIndex, hoverIndex, monitor) => {
   const hoverBoundingRect = ref.current.getBoundingClientRect()
@@ -65,17 +62,8 @@ const checkStoryPosition = (ref, dragIndex, hoverIndex, monitor) => {
   const clientOffset = monitor.getClientOffset()
   const hoverClientY = clientOffset.y - hoverBoundingRect.top
   
-  if(dragIndex === hoverIndex) {
-    return true
-  }
-
-  if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-    return true
-  }
-
-  if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-    return true
-  }
+  return isDraggedInTheSamePlaceOfHolder(dragIndex, hoverIndex) 
+    || canContinue(dragIndex, hoverIndex, hoverClientY, hoverMiddleY)
 }
 
 const canChangePosition = (ref, monitor, storySource, hoverIndex, newPosition) => {
@@ -99,6 +87,8 @@ const canChangePosition = (ref, monitor, storySource, hoverIndex, newPosition) =
 const canChangeColumn = (state, column) =>
   (state === 'unscheduled' || state === 'unstarted') && column !== 'done';
 
+const isADropTarget = (monitor) => !monitor.getDropResult()
+
 export const CollapsedStory = ({
   onToggle,
   story,
@@ -108,11 +98,15 @@ export const CollapsedStory = ({
   title,
   index,
   stories,
-  column
+  column,
+  updateCollapsedStory
 }) => {
   const ref = useRef(null)
   const [, drop] = useDrop({
     accept: type.story,
+    canDrop() {
+      return column !== 'done'
+    },
     hover(item, monitor) {
       const storySource = monitor.getItem();
       const hoverIndex = index
@@ -145,9 +139,8 @@ export const CollapsedStory = ({
       return { ...story, index, stories, column }
     },
     end(item, monitor) {
-      const storySource = monitor.getDropResult()
-
-      const {state, column} = storySource;
+      if(isADropTarget(monitor)) return null;
+      const {state, column} = monitor.getDropResult();
 
       if (canChangeColumn(state, column)) {
         dragDropStory(item.id, item.projectId, {

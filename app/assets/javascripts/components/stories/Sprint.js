@@ -71,6 +71,7 @@ class Sprint extends Component {
     const { isClosed } = this.state;
     const closedStyle = isClosed && "Sprint__body--is-collapsed";
     const { column } = this.props;
+    const cyColumn = column || 'done'
 
     return (
       <div className="Sprint">
@@ -84,7 +85,7 @@ class Sprint extends Component {
           onClick={this.onHeaderClick}
           isClosed={isClosed}
         />
-        <div data-cy={ column ? column : 'done' } className={`Sprint__body ${closedStyle}`}>
+        <div data-cy={ cyColumn } className={`Sprint__body ${closedStyle}`}>
           {stories && <Stories column={column} stories={stories} />}
         </div>
       </div>
