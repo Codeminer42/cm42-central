@@ -3,11 +3,11 @@ import {
   closeSearchSuccess, sendErrorNotificationIfNeeded
 } from '../../../app/assets/javascripts/actions/projectBoard';
 import { toggleStory, receiveStories } from '../../../app/assets/javascripts/actions/story';
-import { sendErrorNotification } from '../../../app/assets/javascripts/actions/notifications';
+import { addNotification } from '../../../app/assets/javascripts/actions/notifications';
 
 describe('Project Board Actions', () => {
   describe('expandStoryIfNeeded', () => {
-    it('Should dispatch toggleStory when storyId is true', async () => {
+    it('Should dispatch toggleStory when storyId is true', () => {
       const storyId = 127;
   
       const fakeGetHash = sinon.stub();
@@ -16,11 +16,11 @@ describe('Project Board Actions', () => {
       const fakeDispatch = sinon.stub();
       fakeDispatch.resolves({});
   
-      await expandStoryIfNeeded(fakeDispatch, fakeGetHash);
+      expandStoryIfNeeded(fakeDispatch, fakeGetHash);
       expect(fakeDispatch).toHaveBeenCalledWith(toggleStory(storyId));
     });
   
-    it('Should not dispatch toggleStory when storyId is false', async () => {
+    it('Should not dispatch toggleStory when storyId is false', () => {
       const storyId = null;
   
       const fakeGetHash = sinon.stub();
@@ -29,32 +29,36 @@ describe('Project Board Actions', () => {
       const fakeDispatch = sinon.stub();
       fakeDispatch.resolves({});
   
-      await expandStoryIfNeeded(fakeDispatch, fakeGetHash);
+      expandStoryIfNeeded(fakeDispatch, fakeGetHash);
       expect(fakeDispatch).not.toHaveBeenCalledWith(toggleStory(storyId));
     });
   });
 
   describe('sendErrorNotificationIfNeeded', () => {
-    it('Should dispatch sendErrorNotification when condition is false', () => {
-      const condition = false;
-      const code = 'code';
-
-      const fakeDispatch = sinon.stub();
-      fakeDispatch.resolves({});
-
-      sendErrorNotificationIfNeeded(fakeDispatch, code, condition);
-      expect(fakeDispatch).toHaveBeenCalled();
+    describe('when condition is false', () => {
+      it('Calls "dispatch"', () => {
+        const condition = false;
+        const code = 'code';
+  
+        const fakeDispatch = sinon.stub();
+        fakeDispatch.resolves({});
+  
+        sendErrorNotificationIfNeeded(fakeDispatch, code, condition);
+        expect(fakeDispatch).toHaveBeenCalled();
+      });
     });
   
-    it('Should not dispatch sendErrorNotification when condition is true', () => {
-      const condition = true;
-      const code = 'code';
-
-      const fakeDispatch = sinon.stub();
-      fakeDispatch.resolves({});
-
-      sendErrorNotificationIfNeeded(fakeDispatch, code, condition);  
-      expect(fakeDispatch).not.toHaveBeenCalledWith(sendErrorNotification(code, { custom: true }));
+    describe('when condition is true', () => {
+      it('Do not call "dispatch"', () => {
+        const condition = true;
+        const code = 'code';
+  
+        const fakeDispatch = sinon.stub();
+        fakeDispatch.resolves({});
+  
+        sendErrorNotificationIfNeeded(fakeDispatch, code, condition);  
+        expect(fakeDispatch).not.toHaveBeenCalled();
+      });
     });
   });
 
