@@ -26,4 +26,5 @@ export const operands = {
   owner: 'owned_by_name',
   initials: 'owned_by_initials',
   type: 'story_type',
+  state: 'state'
 }
