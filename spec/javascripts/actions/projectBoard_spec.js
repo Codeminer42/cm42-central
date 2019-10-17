@@ -1,7 +1,4 @@
-import { 
-  expandStoryIfNeeded, closeSearch, 
-  closeSearchSuccess, sendErrorNotificationIfNeeded
-} from '../../../app/assets/javascripts/actions/projectBoard';
+import * as ProjectBoard from '../../../app/assets/javascripts/actions/projectBoard';
 import { toggleStory, receiveStories } from '../../../app/assets/javascripts/actions/story';
 
 describe('Project Board Actions', () => {
@@ -16,7 +13,7 @@ describe('Project Board Actions', () => {
         const fakeDispatch = sinon.stub();
         fakeDispatch.resolves({});
     
-        expandStoryIfNeeded(fakeDispatch, fakeGetHash);
+        ProjectBoard.expandStoryIfNeeded(fakeDispatch, fakeGetHash);
         expect(fakeDispatch).toHaveBeenCalledWith(toggleStory(storyId));
       });
     });
@@ -31,7 +28,7 @@ describe('Project Board Actions', () => {
         const fakeDispatch = sinon.stub();
         fakeDispatch.resolves({});
     
-        expandStoryIfNeeded(fakeDispatch, fakeGetHash);
+        ProjectBoard.expandStoryIfNeeded(fakeDispatch, fakeGetHash);
         expect(fakeDispatch).not.toHaveBeenCalledWith(toggleStory(storyId));
       });
     });
@@ -46,7 +43,7 @@ describe('Project Board Actions', () => {
         const fakeDispatch = sinon.stub();
         fakeDispatch.resolves({});
   
-        sendErrorNotificationIfNeeded(fakeDispatch, code, condition);
+        ProjectBoard.sendErrorNotificationIfNeeded(fakeDispatch, code, condition);
         expect(fakeDispatch).toHaveBeenCalled();
       });
     });
@@ -59,7 +56,7 @@ describe('Project Board Actions', () => {
         const fakeDispatch = sinon.stub();
         fakeDispatch.resolves({});
   
-        sendErrorNotificationIfNeeded(fakeDispatch, code, condition);  
+        ProjectBoard.sendErrorNotificationIfNeeded(fakeDispatch, code, condition);  
         expect(fakeDispatch).not.toHaveBeenCalled();
       });
     });
@@ -76,16 +73,86 @@ describe('Project Board Actions', () => {
       fakeGetState = sinon.stub();
       fakeGetState.returns({});
 
-      closeSearch()
+      ProjectBoard.closeSearch()
         (fakeDispatch, fakeGetState, {});
     });
 
     it('dispatch closeSearchSuccess', () => {
-      expect(fakeDispatch).toHaveBeenCalledWith(closeSearchSuccess());
+      expect(fakeDispatch).toHaveBeenCalledWith(ProjectBoard.closeSearchSuccess());
     });
 
     it('dispatch receiveStories', () => {
       expect(fakeDispatch).toHaveBeenCalledWith(receiveStories([], 'search'));
+    });
+  });
+
+  describe('search', () => {
+    describe('when search is invalid', () => {
+      const fakeDispatch = sinon.stub();
+      const result = [];
+
+      const FakeStory = {
+        search: sinon.stub().returns(result)
+      };
+
+      const FakeProjectBoard = {
+        serializeKeyWordSearch: sinon.stub().resolves({}),
+        validSearch: sinon.stub().returns(false)
+      };
+
+      const keyword = 'keyword';
+      const projectId = 1;
+
+      ProjectBoard.search(keyword, projectId)(
+        fakeDispatch,
+        null,
+        { 
+          ProjectBoard: FakeProjectBoard,
+          Story: FakeStory
+        }
+      );
+
+      it('does nothing', () => {
+        expect(fakeDispatch).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('when search is valid', () => {
+      const fakeDispatch = sinon.stub();
+      const result = [];
+
+      const FakeStory = {
+        search: sinon.stub().returns(result)
+      };
+
+      const FakeProjectBoard = {
+        serializeKeyWordSearch: sinon.stub().resolves({}),
+        validSearch: sinon.stub().returns(true)
+      };
+
+      const keyword = 'keyword';
+      const projectId = 1;
+
+      ProjectBoard.search(keyword, projectId)(
+        fakeDispatch,
+        null,
+        { 
+          ProjectBoard: FakeProjectBoard,
+          Story: FakeStory
+        }
+      );
+
+      it('dispatch updateLoadingSearch with false', () => {
+        expect(fakeDispatch).toHaveBeenCalledWith(ProjectBoard.updateLoadingSearch(false));
+      });
+
+      it('dispatch searchStoriesSuccess with keyword', () => {
+        expect(fakeDispatch).toHaveBeenCalledWith(ProjectBoard.searchStoriesSuccess(keyword));
+      });
+
+      it('dispatch receiveStories with search and result', () => {
+        expect(fakeDispatch).toHaveBeenCalledWith(receiveStories(result, 'search'));
+      });
     });
   });
 });
