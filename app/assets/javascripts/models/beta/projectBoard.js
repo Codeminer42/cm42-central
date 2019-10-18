@@ -45,27 +45,10 @@ export const isOperandSearch = word => {
 
 const containsInArray = (word, array) => array.some(operand => word.includes(operand))
 
-export const serializeKeyWordSearch = keyWord => {
-  if (isOperandSearch(keyWord)) {
-    const [firstKeyWord, secondKeyWord] = keyWord.split(':');
-
-    if (!isEnglishLocale()) {
-      const translations = translateOperand(firstKeyWord);
-      const translatedWord = translateWord(firstKeyWord, secondKeyWord, translations) || secondKeyWord;
-
-      return `${operands[firstKeyWord] || firstKeyWord}:${translatedWord}`;
-    }
-
-    return `${operands[firstKeyWord] || firstKeyWord}:${secondKeyWord}`;
-  }
-
-  return keyWord;
-}
-
-const translateOperand = word =>
+export const translateOperand = word =>
   _.invert(I18n.translations[currentLocale()].story[word])
 
-const translateWord = (operand, word, translations) =>
+export const translateWord = (operand, word, translations) =>
   isFinite(word) || !haveTranslation(operand)
     ? word
     : I18n.t(`story.${operand}.${translations[word] || word}`, { locale: I18n.defaultLocale });
@@ -74,6 +57,6 @@ const translatedOperands = ['type','state'];
 
 export const haveTranslation = operand => translatedOperands.includes(operand)
 
-const isEnglishLocale = () => currentLocale() === 'en';
+export const isEnglishLocale = () => currentLocale() === 'en';
 
 const currentLocale = () => I18n.currentLocale();

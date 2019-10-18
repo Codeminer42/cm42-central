@@ -35,9 +35,9 @@ describe('Project Board Actions', () => {
   });
 
   describe('sendErrorNotificationIfNeeded', () => {
-    describe('when condition is false', () => {
+    describe('when condition is true', () => {
       it('calls "dispatch"', () => {
-        const condition = false;
+        const condition = true;
         const code = 'code';
   
         const fakeDispatch = sinon.stub();
@@ -48,9 +48,9 @@ describe('Project Board Actions', () => {
       });
     });
   
-    describe('when condition is true', () => {
+    describe('when condition is false', () => {
       it('does not call "dispatch"', () => {
-        const condition = true;
+        const condition = false;
         const code = 'code';
   
         const fakeDispatch = sinon.stub();
@@ -89,26 +89,19 @@ describe('Project Board Actions', () => {
   describe('search', () => {
     describe('when search is invalid', () => {
       const fakeDispatch = sinon.stub();
-      const result = [];
 
-      const FakeStory = {
-        search: sinon.stub().returns(result)
-      };
-
-      const FakeProjectBoard = {
-        serializeKeyWordSearch: sinon.stub().resolves({}),
-        validSearch: sinon.stub().returns(false)
-      };
-
-      const keyword = 'keyword';
+      const keyword = '';
       const projectId = 1;
+
+      const FakeSearch = { 
+        searchStories: sinon.stub()
+      };
 
       ProjectBoard.search(keyword, projectId)(
         fakeDispatch,
         null,
         { 
-          ProjectBoard: FakeProjectBoard,
-          Story: FakeStory
+          Search: FakeSearch,
         }
       );
 
@@ -121,24 +114,18 @@ describe('Project Board Actions', () => {
       const fakeDispatch = sinon.stub();
       const result = [];
 
-      const FakeStory = {
-        search: sinon.stub().returns(result)
-      };
-
-      const FakeProjectBoard = {
-        serializeKeyWordSearch: sinon.stub().resolves({}),
-        validSearch: sinon.stub().returns(true)
-      };
-
       const keyword = 'keyword';
       const projectId = 1;
+
+      const FakeSearch = { 
+        searchStories: (_, __, callback) => callback.onSuccess(result)
+      };
 
       ProjectBoard.search(keyword, projectId)(
         fakeDispatch,
         null,
         { 
-          ProjectBoard: FakeProjectBoard,
-          Story: FakeStory
+          Search: FakeSearch,
         }
       );
 

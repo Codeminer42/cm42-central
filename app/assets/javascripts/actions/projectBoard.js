@@ -54,7 +54,7 @@ export const expandStoryIfNeeded = (dispatch, getHash) => {
 }
 
 export const sendErrorNotificationIfNeeded = (dispatch, code, condition) => {
-  if (!condition) dispatch(sendErrorNotification(code, { custom: true }));
+  if (condition) dispatch(sendErrorNotification(code, { custom: true }));
 }
 
 export const fetchProjectBoard = projectId =>
@@ -87,23 +87,19 @@ export const closeSearch = () =>
   }
 
 export const search = (keyWord, projectId) =>
-  async (dispatch, _, { Story, ProjectBoard }) => {
-    if (ProjectBoard.validSearch(keyWord)) {
-      dispatch(updateLoadingSearch(true));
-
-      try {
-        const queryParam = ProjectBoard.serializeKeyWordSearch(keyWord);
-        const result = await Story.search(queryParam, projectId);
-
+  (dispatch, _, { Search }) => {
+    Search.searchStories(keyWord, projectId, {
+      onStart: () => dispatch(updateLoadingSearch(true)),
+      onSuccess: result => {
         dispatch(updateLoadingSearch(false));
         dispatch(searchStoriesSuccess(keyWord));
         dispatch(receiveStories(result, 'search'));
-        sendErrorNotificationIfNeeded(dispatch, 'projects.stories_not_found', result.length);
-      }
-      catch (error) {
+        sendErrorNotificationIfNeeded(dispatch, 'projects.stories_not_found', !result.length);
+      },
+      onError: error => {
         dispatch(sendErrorNotification('messages.operations.error.default_error', { custom: true }));
         dispatch(updateLoadingSearch(false));
         console.error(error)
       }
-    }
+    });
   };

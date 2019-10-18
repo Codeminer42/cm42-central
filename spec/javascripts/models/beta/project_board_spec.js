@@ -80,30 +80,6 @@ describe('ProjectBoard model', () => {
     });
   });
 
-  describe('serializeKeyWordSearch', () => {
-    const words = ['foo','bar','lorem'];
-
-    Object.keys(operands).forEach(operandKey => {
-      words.forEach(word => {
-        describe(`when keyword is ${operandKey}:${word}`, () => {
-          it(`returns '${operands[operandKey]}:${word}'`, () => {
-            const keyWord = `${operandKey}:${word}`;
-
-            expect(ProjectBoard.serializeKeyWordSearch(keyWord)).toEqual(`${operands[operandKey]}:${word}`);
-          });
-        });
-
-        describe(`when keyword is ${operandKey}${word}`, () => {
-          it(`returns ${operandKey}${word}`, () => {
-            const keyWord = `${operandKey}${word}`;
-
-            expect(ProjectBoard.serializeKeyWordSearch(keyWord)).toEqual(keyWord);
-          });
-        });
-      });
-    });
-  });
-
   describe('haveTranslation', () => {
     const translatedOperands = ['type','state'];
     const noTranslatedOperands = ['foo','bar','lorem','ipsum'];
