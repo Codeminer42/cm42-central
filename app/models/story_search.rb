@@ -1,6 +1,19 @@
 class StorySearch
+  extend Enumerize
   SEARCH_RESULTS_LIMIT = 40
   attr_reader :relation, :query_params, :parsed_params, :conditions
+
+  enumerize :operand, in:
+    %I[ title
+        state
+        labels
+        estimate
+        created_at
+        story_type
+        release_date
+        owned_by_initials
+        owned_by_name
+        requested_by_name ]
 
   def self.query(relation, query_params)
     new(relation, query_params).search
@@ -38,9 +51,13 @@ class StorySearch
     end
   end
 
+  def valid?(conditions)
+    conditions.keys.map { |value| StorySearch.operand.find_value(value) }.exclude? nil
+  end
+
   def add_conditions_to(search_method)
     new_relation = relation.with_dependencies.send(search_method, parsed_params.join(','))
-    new_relation = parse_queries(relation) unless conditions.empty?
+    new_relation = parse_queries(relation) if conditions.present? && valid?(conditions)
     new_relation.limit(SEARCH_RESULTS_LIMIT)
   end
 

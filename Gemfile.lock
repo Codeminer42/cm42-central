@@ -583,6 +583,7 @@ DEPENDENCIES
   devise-i18n
   differ
   dotenv-rails
+  enumerize (~> 2.3.1)
   factory_bot_rails
   faraday
   foreman
