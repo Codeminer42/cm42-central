@@ -12,10 +12,11 @@ describe('History Actions', () => {
 
     const FakeStory = {
       findById: sinon.stub().returns(story()),
-      getHistory: sinon.stub().resolves(history())
+      getHistory: sinon.stub().resolves(history()),
+      withScope: sinon.stub().returns([story()])
     };
 
-    fakeGetState.returns({ stories: [story()] });
+    fakeGetState.returns({ stories: { all: [story()] } });
 
     await actions.showHistory(story().id)(fakeDispatch, fakeGetState, {
       Story: FakeStory
@@ -27,12 +28,13 @@ describe('History Actions', () => {
   it('Should receive a history when called showHistory action', async () => {
     const FakeStory = {
       findById: sinon.stub().returns(story()),
-      getHistory: sinon.stub().resolves(history())
+      getHistory: sinon.stub().resolves(history()),
+      withScope: sinon.stub().returns([story()])
     };
 
     const fakeDispatch = sinon.stub().resolves({});
 
-    const fakeGetState = sinon.stub().returns({ stories: [story()] });
+    const fakeGetState = sinon.stub().returns({ stories: { all: [story()] } });
 
     await actions.showHistory(story().id)(fakeDispatch, fakeGetState, {
       Story: FakeStory
@@ -46,12 +48,13 @@ describe('History Actions', () => {
   it('Should dispatch errorLoadHistory when called showHistory action', async () => {
     const FakeStory = {
       findById: sinon.stub().returns(story()),
-      getHistory: sinon.stub().rejects('error')
+      getHistory: sinon.stub().rejects('error'),
+      withScope: sinon.stub().returns([story()])
     };
 
     const fakeDispatch = sinon.stub().resolves({});
 
-    const fakeGetState = sinon.stub().returns({ stories: [story()] });
+    const fakeGetState = sinon.stub().returns({ stories: { all: [story()] } });
 
     await actions.showHistory(story().id)(fakeDispatch, fakeGetState, {
       Story: FakeStory

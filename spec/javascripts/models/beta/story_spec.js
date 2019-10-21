@@ -1,6 +1,6 @@
 import * as Story from 'models/beta/story';
 import moment from 'moment';
-import { status, storyTypes } from 'libs/beta/constants';
+import { status, storyTypes, storyScopes } from 'libs/beta/constants';
 
 describe('Story model', function () {
   describe('comparePosition', () => {
@@ -1066,5 +1066,214 @@ describe('Story model', function () {
         })
       })
     })
+  });
+
+  describe('withScope', () => {
+    const stories = {
+      [storyScopes.ALL]: [
+        { id: 1, storyType: storyTypes.FEATURE },
+        { id: 2, storyType: storyTypes.FEATURE },
+        { id: 3, storyType: storyTypes.FEATURE }
+      ],
+      [storyScopes.SEARCH]: [
+        { id: 4, storyType: storyTypes.FEATURE },
+        { id: 5, storyType: storyTypes.FEATURE },
+        { id: 6, storyType: storyTypes.FEATURE }
+      ]
+    }
+    const invalidScopes = [null, undefined, false, 0];
+
+    invalidScopes.forEach(scope => {
+      describe(`when scope is ${scope}`, () => {
+        it('returns stories of scope "all"', () => {
+          expect(Story.withScope(stories, scope)).toEqual([
+            { id: 1, storyType: storyTypes.FEATURE },
+            { id: 2, storyType: storyTypes.FEATURE },
+            { id: 3, storyType: storyTypes.FEATURE }
+          ])
+        });
+      });
+    });
+
+    describe(`when scope is ${storyScopes.ALL}`, () => {
+      it(`return stories of scope "${storyScopes.ALL}"`, () => {
+        expect(Story.withScope(stories, storyScopes.ALL)).toEqual([
+          { id: 1, storyType: storyTypes.FEATURE },
+          { id: 2, storyType: storyTypes.FEATURE },
+          { id: 3, storyType: storyTypes.FEATURE }
+        ]);
+      });
+    });
+
+    describe(`when scope is ${storyScopes.SEARCH}`, () => {
+      it(`return stories of scope "${storyScopes.SEARCH}"`, () => {
+        expect(Story.withScope(stories, storyScopes.SEARCH)).toEqual([
+          { id: 4, storyType: storyTypes.FEATURE },
+          { id: 5, storyType: storyTypes.FEATURE },
+          { id: 6, storyType: storyTypes.FEATURE }
+        ]);
+      });
+    });
+  });
+
+  describe('totalPoints', () => {
+    const stories = [
+      {
+        estimate: 1,
+        storyType: storyTypes.FEATURE
+      },
+      {
+        estimate: 1,
+        storyType: storyTypes.FEATURE
+      },
+      {
+        estimate: 1,
+        storyType: storyTypes.FEATURE
+      }
+    ];
+
+    it('return 3', () => {
+      expect(Story.totalPoints(stories)).toEqual(3);
+    });
+  });
+
+  describe('isHighlighted', () => {
+    describe('when highlighted is false', () => {
+      it('returns falsy', () => {
+        const story = { highlighted: false };
+        
+        expect(Story.isHighlighted(story)).toBeFalsy();
+      });
+    });
+
+    describe('when highlighted is true', () => {
+      it('returns truthy', () => {
+        const story = { highlighted: true };
+
+        expect(Story.isHighlighted(story)).toBeTruthy();
+      });
+    });
+
+    describe('when have not highlighted', () => {
+      it('returns falsy', () => {
+        const story = {};
+
+        expect(Story.isHighlighted(story)).toBeFalsy();
+      });
+    }); 
+  });
+
+  describe('isSearch', () => {
+    const noSearchScopes = [storyScopes.ALL];
+
+    noSearchScopes.forEach(scope => {
+      describe(`when scope is ${scope}`, () => {
+        it('returns falsy', () => {
+          expect(Story.isSearch(scope)).toBeFalsy();
+        });
+      });
+
+      describe(`when scope is ${storyScopes.SEARCH}`, () => {
+        it('returns truthy', () => {
+          expect(Story.isSearch(storyScopes.SEARCH)).toBeTruthy();
+        });
+      });
+    });
+  });
+
+  describe('haveHighlightButton', () => {
+    const stories = [
+      { id: 1, storyType: storyTypes.FEATURE },
+      { id: 2, storyType: storyTypes.FEATURE },
+      { id: 3, storyType: storyTypes.FEATURE },
+    ];
+
+    const noSearchScopes = [storyScopes.ALL];
+
+    stories.forEach(story => {
+      describe(`when story id is ${story.id}`, () => {
+        noSearchScopes.forEach(scope => {
+          describe(`and scope is ${scope}`, () => {
+            it('returns falsy', () => {
+              expect(Story.haveHighlightButton(stories, story, scope)).toBeFalsy();
+            });
+          });
+        });
+
+        describe(`and scope ${storyScopes.SEARCH}`, () => {
+          it('returns truthy', () => {
+            expect(Story.haveHighlightButton(stories, story, storyScopes.SEARCH)).toBeTruthy();
+          });
+        });
+      });
+    });
+
+    describe('when story id is 100', () => {
+      const fakeStory = { id: 100, storyType: storyTypes.FEATURE };
+
+      noSearchScopes.forEach(scope => {
+        describe(`and scope is ${scope}`, () => {
+          it('returns falsy', () => {
+            expect(Story.haveHighlightButton(stories, fakeStory, scope)).toBeFalsy();
+          });
+        });
+      });
+
+      describe(`and scope ${storyScopes.SEARCH}`, () => {
+        it('returns falsy', () => {
+          expect(Story.haveHighlightButton(stories, fakeStory, storyScopes.SEARCH)).toBeFalsy();
+        });
+      });
+    });
+  });
+
+  describe('haveSearch', () => {
+    describe('when have zero search stories', () => {
+      const stories = { 
+        [storyScopes.SEARCH]: [] 
+      };
+
+      it('returns falsy', () => {
+        expect(Story.haveSearch(stories)).toBeFalsy();
+      });
+    });
+
+    describe('when have more than one search story', () => {
+      const stories = {
+        [storyScopes.SEARCH]: [
+          { id: 1, storyType: storyTypes.FEATURE },
+          { id: 2, storyType: storyTypes.FEATURE },
+          { id: 3, storyType: storyTypes.FEATURE },
+        ]
+      }
+
+      it('returns truthy', () => {
+        expect(Story.haveSearch(stories)).toBeTruthy();
+      });
+    });
+  });
+
+  describe('haveStory', () => {
+    const stories = [
+      { id: 1 },
+      { id: 2 },
+      { id: 3 },
+    ];
+
+    stories.forEach(story => {
+      describe(`when story is present in the stories array`, () => {
+        it('returns truthy', () => {
+          expect(Story.haveStory(story, stories)).toBeTruthy();
+        });
+      });
+    });
+
+    describe('when story is not present in stories array', () => {
+      it('returns falsy', () => {
+        const story = { id: 100 };
+
+        expect(Story.haveStory(story, stories)).toBeFalsy();
+      });
+    });
   });
 });

@@ -1,30 +1,31 @@
-import { updateStorySuccess } from './story';
+import { updateStorySuccess, storyFailure } from './story';
 import actionTypes from './actionTypes';
-import { storyFailure } from './story';
 
-export const addAttachmentToStory = (storyId, attachment) => ({
+export const addAttachmentToStory = (storyId, attachment, from) => ({
   type: actionTypes.ADD_ATTACHMENT,
   storyId,
-  attachment
+  attachment,
+  from
 });
 
-export const removeAttachment = (storyId, attachmentId) => ({
+export const removeAttachment = (storyId, attachmentId, from) => ({
   type: actionTypes.DELETE_ATTACHMENT,
   storyId,
-  attachmentId
+  attachmentId,
+  from
 });
 
-export const addAttachment = (storyId, projectId, attachment) =>
+export const addAttachment = (storyId, projectId, attachment, from) =>
   async (dispatch, getState, { Story }) => {
-    dispatch(addAttachmentToStory(storyId, attachment));
+    dispatch(addAttachmentToStory(storyId, attachment, from));
 
     const { stories } = getState();
-    const story = stories.find(story => story.id === storyId);
+    const story = Story.withScope(stories, from).find(story => story.id === storyId);
     const options = { collapse: false };
 
     try {
       const updatedStory = await Story.update(story._editing, projectId, options);
-      return dispatch(updateStorySuccess(updatedStory));
+      return dispatch(updateStorySuccess(updatedStory, from));
     }
     catch (error) {
       return dispatch(storyFailure(storyId, error));

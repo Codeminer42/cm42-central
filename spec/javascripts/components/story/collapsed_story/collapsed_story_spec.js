@@ -6,7 +6,15 @@ import storyFactory from '../../../support/factories/storyFactory';
 describe('<CollapsedStory />', () => {
   const defaultProps = () => ({
     story: {},
-    onToggle: sinon.stub()
+    onToggle: sinon.stub(),
+    title: '',
+    className: '',
+    from: 'all', 
+    highlight: sinon.stub(),
+    stories: {
+      all: [],
+      search: []
+    }
   });
 
   describe('when estimate isn\'t null', () => {

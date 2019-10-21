@@ -16,6 +16,8 @@ import { storyPropTypesShape } from '../../models/beta/story';
 import { projectBoardPropTypesShape } from '../../models/beta/projectBoard';
 import Notifications from '../Notifications';
 import { removeNotification } from '../../actions/notifications';
+import StorySearch from '../search/StorySearch';
+import SearchResults from './../search/SearchResults';
 
 class ProjectBoard extends React.Component {
   componentWillMount() {
@@ -24,13 +26,23 @@ class ProjectBoard extends React.Component {
 
   render() {
     if (!this.props.projectBoard.isFetched) {
-      return <b>Loading</b>;
+      return <b>{I18n.t('loading')}</b>;
     }
 
-    const { createStory, closeHistory, notifications, removeNotification, history } = this.props;
+    const { 
+      projectId, 
+      createStory, 
+      closeHistory,
+      notifications, 
+      removeNotification, 
+      history,
+      projectBoard
+    } = this.props;
 
     return (
       <div className="ProjectBoard">
+        <StorySearch projectId={projectId} loading={projectBoard.search.loading} />
+
         <Notifications
           notifications={notifications}
           onRemove={removeNotification}
@@ -71,6 +83,8 @@ class ProjectBoard extends React.Component {
             fetchStories={this.props.fetchPastStories}
           />
         </Column>
+
+        <SearchResults />
 
         {
           history.status !== 'DISABLED' &&
