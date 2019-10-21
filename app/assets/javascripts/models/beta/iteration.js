@@ -71,11 +71,10 @@ const createSprint = (
   remainingPoints
 });
 
-const calculateRemainingPoints = (velocity, points) =>
+export const calculateRemainingPoints = (velocity, points) =>
   velocity - points > 0 ? velocity - points : 0;
 
 const createFillerSprints = (
-  sprints = [],
   quantityFillers,
   initialNumber,
   overflowStory,
@@ -100,32 +99,32 @@ const createFillerSprints = (
     );
   });
 
-  const remainingOverflowPoints = velocity - (storyPoints % velocity);
-  const numberOverflowSprint = getNextIterationNumber(fillersSprints) + 1;
-  const overflowSprint = createSprint(
-    numberOverflowSprint,
-    getDateForIterationNumber(numberOverflowSprint, project),
+  const remainingPointsLastSprint = velocity - (storyPoints % velocity);
+  const numberSprint = getNextIterationNumber(fillersSprints);
+
+  return [...fillersSprints, createSprint(
+    numberSprint,
+    getDateForIterationNumber(numberSprint, project),
     true,
     velocity,
     [overflowStory],
     storyPoints,
-    remainingOverflowPoints
-  );
-
-  return [...sprints, ...fillersSprints, overflowSprint];
+    remainingPointsLastSprint
+  )];
 };
 
-const canTakeStory = (sprint, storyPoints) => sprint.remainingPoints >= storyPoints;
+export const canTakeStory = (sprint, storyPoints) => sprint.remainingPoints >= storyPoints;
 
-const calculateFillerSprintsQuantity = (storyPoints, velocity) =>
-  Math.ceil((storyPoints - velocity) / velocity);
+export const calculateFillerSprintsQuantity = (storyPoints, velocity) =>
+  Math.ceil((storyPoints - velocity) / velocity) || 0;
 
 const handleSprintsOverflow = (project, sprints, story, velocity, firstSprintNumber) => {
   const storyPoints = Story.getPoints(story);
   const quantityFillers = calculateFillerSprintsQuantity(storyPoints, velocity);
   const indexOverflow = calculateIndexSprint(firstSprintNumber, sprints);
 
-  return createFillerSprints(sprints, quantityFillers, indexOverflow, story, project, velocity);
+  const fillerSprints = createFillerSprints(quantityFillers, indexOverflow, story, project, velocity);
+  return [...sprints, ...fillerSprints];
 };
 
 const calculateIndexSprint = (firstSprintNumber, sprints) => {
