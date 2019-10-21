@@ -54,13 +54,13 @@ describe Beta::ProjectBoardOperations do
       end
     end
 
-    context 'when the project does not exist' do
-      it 'returns a failed response with the error' do
-        result = Beta::ProjectBoardOperations::Read.call(0, nil)
+    describe 'when the project does not exist' do
+      let(:user)    { create :user }
+      let(:project) { create :project, users: [user] }
+      let(:result)  { Beta::ProjectBoardOperations::Read.call(nil, user) }
 
-        expect(result).not_to be_successful
-        expect(result.error).to be_a ActiveRecord::RecordNotFound
-      end
+      it { expect(result).not_to be_successful }
+      it { expect(result.error).to be_a ActiveRecord::RecordNotFound }
     end
   end
 end

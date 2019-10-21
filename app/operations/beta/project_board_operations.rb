@@ -39,10 +39,11 @@ module Beta
       end
 
       def project
-        @project ||= @projects_scope
-          .friendly
-          .preload(:users, stories: %i[notes document_files tasks])
-          .find(@project_id)
+        @project ||=  @current_user
+                      .projects
+                      .friendly
+                      .preload(:users, stories: %i[notes document_files tasks])
+                      .find(@project_id)
       end
 
       def stories_and_past_iterations

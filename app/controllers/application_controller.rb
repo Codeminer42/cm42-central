@@ -56,6 +56,11 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_team
 
+  def update_current_team
+    @current_team = current_user.team_from_project(@project)
+    session[:current_team_slug] = @current_team.slug
+  end
+
   def after_sign_in_path_for(resource)
     return super if resource.is_a?(AdminUser)
     if resource.authy_enabled && resource.authy_id.blank?
