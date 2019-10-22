@@ -119,7 +119,7 @@ describe 'Stories' do
         find('#estimate-1').click
       end
 
-      within(in_progress_column.find('.story')) do
+      within(chilly_bin_column.find('.story')) do
         click_on 'start'
       end
 

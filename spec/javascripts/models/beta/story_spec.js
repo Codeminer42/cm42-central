@@ -326,7 +326,7 @@ describe('Story model', function () {
               changedStory = Story.editStory(story, newAttributes);
             });
 
-            it(`keept change story state to ${UNSCHEDULED}`, () => {
+            it(`keep story state ${UNSCHEDULED}`, () => {
               expect(changedStory._editing.state).toEqual(UNSCHEDULED);
             });
 
