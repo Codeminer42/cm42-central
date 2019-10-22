@@ -38,6 +38,8 @@ export const compareStartedAt = (a, b) => {
 
 export const isUnestimatedFeature = story => !hasEstimate(story) && isFeature(story)
 
+export const isInProgress = story => !isUnscheduled(story) && !isUnstarted(story);
+
 export const isFeature = story => {
   return story.storyType === storyTypes.FEATURE;
 };
