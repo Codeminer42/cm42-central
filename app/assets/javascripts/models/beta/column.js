@@ -1,9 +1,7 @@
 import * as iteration from "./iteration";
 import * as Story from "./story";
 
-export const isChillyBin = (story) => {
-  return Story.isUnscheduled(story);
-};
+export const isChillyBin = (story) => Story.isUnscheduled(story);
 
 export const isBacklog = (story, project) => {
   const currentIteration = iteration.getCurrentIteration(project);

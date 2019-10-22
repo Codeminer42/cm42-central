@@ -156,9 +156,6 @@ export const toggleStory = (story) => {
   };
 };
 
-const isUnstartedState = (story, newAttributes) => 
-  !hasEstimate(story) && hasEstimate(newAttributes)
-
 const isUnscheduledState = (story, newAttributes) => 
   (
     isFeature(story._editing) && (
@@ -175,17 +172,11 @@ const isChangingToUnscheduled = (story, newAttributes) => isUnscheduled(story._e
 
 const isChangingWithoutEstimate = (story, newAttributes) => !hasEstimate(story._editing) && !hasEstimate(newAttributes)
 
-const stateFor = (story, newAttributes, newStory) => {
-  const { UNSTARTED, UNSCHEDULED } = status;
-
-  if (isUnstartedState(story._editing, newAttributes)) return UNSTARTED;
-  if (isUnscheduledState(story, newAttributes)) return UNSCHEDULED;
-  
-  return newStory.state;
-}
+const stateFor = (story, newAttributes, newStory) =>
+  isUnscheduledState(story, newAttributes) ? status.UNSCHEDULED : newStory.state;
 
 const estimateFor = (story, newAttributes, newStory) => {
-  if (isNoEstimated(story, newAttributes) || isUnscheduledState(story, newAttributes)) return '';
+  if (isNoEstimated(story, newAttributes)) return '';
   if (isFeature(newAttributes) && !isUnscheduled(story._editing)) return 1;
   
   return newStory.estimate;

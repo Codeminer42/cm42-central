@@ -1,5 +1,3 @@
-import moment from "moment";
-
 export const mountPastIterations = (pastIterations, stories) =>
   pastIterations.map(sprint => ({
     ...sprint,

@@ -283,8 +283,8 @@ describe('Story model', function () {
             changedStory = Story.editStory(story, newAttributes);
           });
           
-          it("change estimate to ''", () => {    
-            expect(changedStory._editing.estimate).toEqual('');
+          it("keep estimate 1", () => {    
+            expect(changedStory._editing.estimate).toEqual(1);
           });
 
           it(`change state to ${UNSCHEDULED}`, () => {
@@ -326,8 +326,8 @@ describe('Story model', function () {
               changedStory = Story.editStory(story, newAttributes);
             });
 
-            it(`change story state to ${UNSTARTED}`, () => {
-              expect(changedStory._editing.state).toEqual(UNSTARTED);
+            it(`keept change story state to ${UNSCHEDULED}`, () => {
+              expect(changedStory._editing.state).toEqual(UNSCHEDULED);
             });
 
             it(`change estimate to ${estimatedValue}`, () => {
