@@ -28,7 +28,7 @@ describe('<StoryItem />', () => {
         storyType: 'release',
         releaseDate: moment().subtract(3, 'days')
       });
-      const className = 'Story--late-release';
+      const className = 'Story--late-release ';
 
       const wrapper = shallow(<StoryItem story={story} />);
       const children = wrapper.find(ExpandedStory);
@@ -58,7 +58,7 @@ describe('<StoryItem />', () => {
         storyType: 'release',
         releaseDate: moment().add(3, 'days')
       });
-      const className = '';
+      const className = ' ';
 
       const wrapper = shallow(<StoryItem story={story} />);
       const children = wrapper.find(ExpandedStory);

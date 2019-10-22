@@ -18,6 +18,32 @@ describe StoryOperations do
       it { expect { subject.call }.to change { Story.count } }
       it { expect { subject.call }.to change { Changeset.count } }
       it { expect(subject.call).to be_eql Story.last }
+
+      Story::ESTIMABLE_TYPES.each do |story_type|
+        context "a #{story_type} story" do
+          it 'sets the story state as unstarted' do
+            story.attributes = { state: 'unscheduled', story_type: story_type, estimate: 1 }
+            subject.call
+            expect(story.state).to eq('unstarted')
+          end
+        end
+
+        context "a started #{story_type} story" do
+          it 'sets the story state as started' do
+            story.attributes = { state: 'started', story_type: story_type, estimate: 1 }
+            subject.call
+            expect(story.state).to eq('started')
+          end
+        end
+      end
+
+      context 'a non estimable story' do
+        it 'keeps the story state as unscheduled' do
+          story.attributes = { state: 'unscheduled', story_type: 'release' }
+          subject.call
+          expect(story.state).to eq('unscheduled')
+        end
+      end
     end
 
     context 'with invalid params' do
@@ -60,9 +86,7 @@ describe StoryOperations do
   end
 
   describe '#documents_attributes' do
-    before do
-      story.save!
-    end
+    before { story.save! }
 
     subject { -> { StoryOperations::Update.call(story, { documents: new_documents }, user) } }
 
@@ -123,13 +147,43 @@ describe StoryOperations do
   end
 
   describe '::Update', :vcr do
-    before do
-      story.save!
-    end
+    before { story.save! }
 
-    subject do
-      lambda do
-        StoryOperations::Update.call(story, { state: 'accepted', accepted_at: Date.current }, user)
+    let(:params) { { state: 'accepted', accepted_at: Date.current } }
+
+    subject { -> { StoryOperations::Update.call(story, params, user) } }
+
+    Story::ESTIMABLE_TYPES.each do |story_type|
+      context "when estimate #{story_type} story" do
+        let(:params) { { 'estimate' => 1, 'story_type' => story_type, 'state' => 'unscheduled' } }
+
+        it 'sets the story state as unstarted' do
+          story.state = 'unscheduled'
+          subject.call
+          expect(story.state).to eq('unstarted')
+        end
+      end
+
+      context "when underestimate #{story_type} story" do
+        let(:params) { { 'estimate' => nil, 'story_type' => story_type } }
+
+        it 'sets the story state as unscheduled' do
+          story.attributes = { estimate: 1, state: 'unstarted' }
+          subject.call
+          expect(story.state).to eq('unscheduled')
+        end
+      end
+
+      context "when change the estimate value of a #{story_type} story" do
+        let(:params) { { 'estimate' => 2, 'story_type' => 'started' } }
+
+        context 'and its state is started' do
+          it 'keeps the state as started' do
+            story.attributes = { estimate: 1, state: 'started' }
+            subject.call
+            expect(story.state).to eq('started')
+          end
+        end
       end
     end
 
@@ -383,9 +437,7 @@ describe StoryOperations do
   end
 
   describe '::Destroy' do
-    before do
-      story.save!
-    end
+    before { story.save! }
 
     context '::PusherNotification' do
       it 'notifies the pusher that the board has changes' do

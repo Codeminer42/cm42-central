@@ -379,6 +379,25 @@ describe StoriesController do
             expect(response.body).to eq(assigns[:story].to_json)
           end
         end
+
+        describe 'when the user create a story from the another team session', :aggregate_failures do
+          let(:user) { create :user, :with_team }
+          let(:team) { create :team }
+          let(:project) { create :project, users: [user], teams: [user.teams.first] }
+
+          before do
+            team.projects << project
+            user.teams << [team]
+            session[:current_team_slug] = team.slug
+          end
+
+          it 'create the story' do
+            post :create, xhr: true, params: { project_id: project.id, story: story_params }
+
+            expect(response).to be_successful
+            expect(response.body).to eq(assigns[:story].to_json)
+          end
+        end
       end
     end
   end

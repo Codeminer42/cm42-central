@@ -106,4 +106,8 @@ class Story < ApplicationRecord
   def saved_changes?
     documents_attributes_was != documents_attributes || super
   end
+
+  def self.can_be_estimated?(story_type)
+    ESTIMABLE_TYPES.include? story_type.to_s
+  end
 end

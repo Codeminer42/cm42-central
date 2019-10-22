@@ -1,7 +1,7 @@
 import Operands from '../mixins/contextual_serach_operands';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server'
-import SearchTootip from '../components/stories/search_tooltip';
+import SearchTootip from '../components/search/SearchTooltip';
 import SearchResultsBarView from './search_results_bar_view';
 import StoryView from './story_view';
 

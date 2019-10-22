@@ -64,7 +64,7 @@ describe('Notifications Actions', () => {
       message
     });
 
-    describe('when respose error is an unprocessable_entity', () => {
+    describe('when response error is an unprocessable_entity', () => {
       const error = {
         response: {
           status: status.UNPROCESSABLE_ENTITY,
@@ -94,7 +94,7 @@ describe('Notifications Actions', () => {
       });
     });
 
-    describe('when respose error is unauthorized', () => {
+    describe('when response error is unauthorized', () => {
       const error = {
         response: {
           status: status.UNAUTHORIZED
@@ -124,7 +124,7 @@ describe('Notifications Actions', () => {
       });
     });
 
-    describe('when respose error is not_found', () => {
+    describe('when response error is not_found', () => {
       const error = {
         response: {
           status: status.NOT_FOUND
@@ -154,7 +154,7 @@ describe('Notifications Actions', () => {
       });
     });
 
-    describe('when respose error is unknown', () => {
+    describe('when response error is unknown', () => {
       const error = {
         response: {
           status: 'unknown'
@@ -209,8 +209,108 @@ describe('Notifications Actions', () => {
         );
 
         expect(fakeDispatch).toHaveBeenCalledWith(Notification.addNotification(newNotification));
-      })
-    })
+      });
+    });
+
+    describe('when error has invalid response', () => {
+      const invalidMessageErrors = [null, undefined, '', false];
+
+      invalidMessageErrors.forEach(message => {
+        const error = {
+          response: message
+        };
+
+        it('dispatch addNotification with default notification', () => {
+          const defaultNotifcation = createNotification({
+            type: types.ERROR,
+            message: I18n.t('messages.operations.error.default_error')
+          });
+
+          const FakeNotification = {
+            createNotification,
+            types
+          };
+
+          const fakeDispatch = sinon.stub();
+
+          Notification.sendErrorNotification(error)(
+            fakeDispatch,
+            null,
+            { Notification: FakeNotification }
+          );
+
+          expect(fakeDispatch).toHaveBeenCalledWith(Notification.addNotification(defaultNotifcation));
+        });
+      });
+    });
+
+    describe('when custom is true', () => {
+      const errorsMessage = ['error','message here','lorem ipsum'];
+
+      errorsMessage.forEach(error => {
+        describe(`and error is ${error}`, () => {
+          it(`dispatch addNotification with ${error}`, () => {
+            const trueCustom = { custom: true };
+
+            const FakeNotification = {
+              createNotification,
+              types
+            };
+
+            const newNotification = createNotification({
+              type: types.ERROR,
+              message: I18n.t(error)
+            });
+
+            const fakeDispatch = sinon.stub();
+
+            Notification.sendErrorNotification(error, trueCustom)(
+              fakeDispatch,
+              null,
+              { Notification: FakeNotification }
+            );
+
+            expect(fakeDispatch).toHaveBeenCalledWith(Notification.addNotification(newNotification));
+          });
+        });
+      });
+    });
+  });
+
+  describe('sendCustomErrorNotification', () => {
+    const createNotification = (type, message) => ({
+      id: 42,
+      type,
+      message
+    });
+    
+    const errorsMessage = ['error','message here','lorem ipsum'];
+
+    errorsMessage.forEach(error => {
+      describe(`when message is ${error}`, () => {
+        it(`dispatch addNotification with ${error}`, () => {
+          const FakeNotification = {
+            createNotification,
+            types
+          };
+
+          const newNotification = createNotification({
+            type: types.ERROR,
+            message: I18n.t(error)
+          });
+
+          const fakeDispatch = sinon.stub();
+
+          Notification.sendCustomErrorNotification(error)(
+            fakeDispatch,
+            null,
+            { Notification: FakeNotification }
+          );
+
+          expect(fakeDispatch).toHaveBeenCalledWith(Notification.addNotification(newNotification));
+        });
+      });
+    });
   });
 
   describe('addValidationNotifications', () => {

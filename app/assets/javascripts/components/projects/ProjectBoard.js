@@ -18,6 +18,8 @@ import { storyPropTypesShape } from '../../models/beta/story';
 import { projectBoardPropTypesShape } from '../../models/beta/projectBoard';
 import Notifications from '../Notifications';
 import { removeNotification } from '../../actions/notifications';
+import StorySearch from '../search/StorySearch';
+import SearchResults from './../search/SearchResults';
 
 class ProjectBoard extends React.Component {
   componentWillMount() {
@@ -29,9 +31,9 @@ class ProjectBoard extends React.Component {
     return createStory({status});
   }
 
-  renderColumnAction = (status) => 
+  renderColumnAction = (status) =>
     <AddStoryButton onAdd={() => this.onAddStory(status)}/>
-  
+
 
   getColumnTitle = () => {
     const {history} = this.props;
@@ -57,11 +59,17 @@ class ProjectBoard extends React.Component {
       return <b>Loading</b>;
     }
 
-    const { notifications, removeNotification } = this.props;
+    const {
+      projectId,
+      notifications,
+      removeNotification,
+      projectBoard
+    } = this.props;
 
     return (
       <DndProvider backend={HTML5Backend}>
         <div className="ProjectBoard">
+          <StorySearch projectId={projectId} loading={projectBoard.search.loading} />
           <Notifications
             notifications={notifications}
             onRemove={removeNotification}
@@ -95,6 +103,7 @@ class ProjectBoard extends React.Component {
               fetchStories={this.props.fetchPastStories}
             />
           </Column>
+          <SearchResults />
           {this.renderHistory()}
         </div>
       </DndProvider>

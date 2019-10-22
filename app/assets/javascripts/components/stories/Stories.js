@@ -1,7 +1,9 @@
 import React from 'react';
 import StoryItem from '../story/StoryItem';
+import PropTypes from 'prop-types';
+import { storyPropTypesShape } from './../../models/beta/story';
 
-const Stories = ({ column, stories }) => {
+const Stories = ({ column, stories, from }) => {
   if (!stories.length) {
     return null;
   }
@@ -13,8 +15,14 @@ const Stories = ({ column, stories }) => {
       stories={stories}
       story={story}
       column={column}
+      from={from}
     />
   ));
 };
+
+Stories.propTypes = {
+  stories: PropTypes.arrayOf(storyPropTypesShape),
+  from: PropTypes.string
+}
 
 export default Stories;

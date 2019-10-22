@@ -8,9 +8,11 @@ import CollapsedStoryStateActions from './CollapsedStoryStateActions';
 import CollapsedStoryInfo from './CollapsedStoryInfo';
 import StoryIcon from '../StoryIcon';
 import * as Story from '../../../models/beta/story';
-import { dragDropStory, updateCollapsedStory } from '../../../actions/story';
+import { dragDropStory, updateCollapsedStory, highlight } from '../../../actions/story';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import CollapsedStoryFocusButon from './CollapsedStoryFocusButton';
+import { storyPropTypesShape } from './../../../models/beta/story';
 
 const storyClassName = (story, additionalClassname = '') => {
   const isStoryNotEstimated = Story.isStoryNotEstimated(
@@ -46,14 +48,14 @@ const calculatePosition = (aboveStory, bellowStory, storiesArray, index) => {
 const getNewPosition = (item, story, storiesArray, index) => {
   if(item.index > index) {
     return calculatePosition(storiesArray[index - 1], story, storiesArray, index);
-  }     
+  }
   return calculatePosition(story, storiesArray[index + 1], storiesArray, index);
 }
 
 const isDraggedInTheSamePlaceOfHolder = (dragIndex, hoverIndex) => dragIndex === hoverIndex
 const isDraggedBellowTheHover = (dragIndex, hoverIndex, hoverClientY, hoverMiddleY) => dragIndex < hoverIndex && hoverClientY < hoverMiddleY
 const isDraggedAboveTheHover = (dragIndex, hoverIndex, hoverClientY, hoverMiddleY) => dragIndex > hoverIndex && hoverClientY > hoverMiddleY
-const canContinue = (dragIndex, hoverIndex, hoverClientY, hoverMiddleY) => 
+const canContinue = (dragIndex, hoverIndex, hoverClientY, hoverMiddleY) =>
 isDraggedBellowTheHover(dragIndex, hoverIndex, hoverClientY, hoverMiddleY) || isDraggedAboveTheHover(dragIndex, hoverIndex, hoverClientY, hoverMiddleY)
 
 const checkStoryPosition = (ref, dragIndex, hoverIndex, monitor) => {
@@ -61,8 +63,8 @@ const checkStoryPosition = (ref, dragIndex, hoverIndex, monitor) => {
   const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
   const clientOffset = monitor.getClientOffset()
   const hoverClientY = clientOffset.y - hoverBoundingRect.top
-  
-  return isDraggedInTheSamePlaceOfHolder(dragIndex, hoverIndex) 
+
+  return isDraggedInTheSamePlaceOfHolder(dragIndex, hoverIndex)
     || canContinue(dragIndex, hoverIndex, hoverClientY, hoverMiddleY)
 }
 
@@ -74,11 +76,11 @@ const canChangePosition = (ref, monitor, storySource, hoverIndex, newPosition) =
   if(storySource.position === newPosition) {
     return true
   }
-  
+
   if (storySource.index === hoverIndex) {
     return true
   }
-  
+
   if(checkStoryPosition(ref, storySource.index, hoverIndex, monitor)) {
     return true
   }
@@ -99,7 +101,9 @@ export const CollapsedStory = ({
   index,
   stories,
   column,
-  updateCollapsedStory
+  updateCollapsedStory,
+  highlight,
+  isHighlightable
 }) => {
   const ref = useRef(null)
   const [, drop] = useDrop({
@@ -111,7 +115,7 @@ export const CollapsedStory = ({
       const storySource = monitor.getItem();
       const hoverIndex = index
       const storiesArray = storySource.stories;
-    
+
       if (storySource.column !== column){
         return true
       };
@@ -176,21 +180,36 @@ export const CollapsedStory = ({
           updateCollapsedStory(story.id, project.id, newAttributes)
         }
       />
+      {
+        isHighlightable &&
+        <CollapsedStoryFocusButon onClick={() => highlight(story.id)} />
+      }
     </div>
   )
 }
 
 CollapsedStory.propTypes = {
-  story: Story.storyPropTypesShape,
+  story: storyPropTypesShape,
   onToggle: PropTypes.func.isRequired,
   title: PropTypes.string,
   className: PropTypes.string,
   index: PropTypes.number,
-  stories: PropTypes.array,
-  column: PropTypes.string
-}
+  stories: PropTypes.arrayOf(storyPropTypesShape),
+  column: PropTypes.string,
+  from: PropTypes.string,
+  highlight: PropTypes.func
+};
+
+const mapStateToProps = ({
+  project,
+  stories
+}, props) => ({
+  project,
+  isHighlightable: Story.haveHighlightButton(Story.withScope(stories), props.story, props.from)
+});
+
+const mapDispatchToProps = { dragDropStory, updateCollapsedStory, highlight }
 
 export default connect(
-  ({ project }) => ({ project }),
-  { dragDropStory, updateCollapsedStory }
+mapStateToProps, mapDispatchToProps
 )(CollapsedStory)

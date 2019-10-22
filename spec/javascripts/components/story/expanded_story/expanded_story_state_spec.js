@@ -1,7 +1,8 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import ExpandedStoryState from 'components/story/ExpandedStory/ExpandedStoryState';
-import { states } from '../../../../../app/assets/javascripts/models/beta/story';
+import { states, types } from '../../../../../app/assets/javascripts/models/beta/story';
+import { storyTypes } from '../../../../../app/assets/javascripts/libs/beta/constants'
 
 describe('<ExpandedStoryState />', () => {
   it('renders component title', () => {
@@ -21,12 +22,87 @@ describe('<ExpandedStoryState />', () => {
   });
 
   describe("states at select", () => {
+    let onEditSpy;
+
+    beforeEach(() => {
+      onEditSpy = sinon.spy();
+    })
+
+    const noFeatureTypes = types.filter(type => type !== storyTypes.FEATURE);
+
+    noFeatureTypes.forEach(noFeatureType => {
+      describe(`when is no ${noFeatureType}`, () => {
+        states.forEach(state => {
+          describe(`and state is ${state}`, () => {
+            const story = {
+              _editing: { 
+                state,
+                estimate: 1,
+                storyType: noFeatureType,
+              }
+            };
+  
+            let wrapper;
+  
+            beforeEach(() => {
+              wrapper = shallow(
+                <ExpandedStoryState
+                  story={story}
+                  onEdit={onEditSpy}
+                  disabled={false}
+                />
+              );
+            });
+  
+            it('renders all states', () => {
+              expect(wrapper.find('option').length).toEqual(7);
+            });
+  
+            it(`has to be ${state}`, () => {
+              expect(wrapper.find('select').prop('value')).toBe(state);
+            });
+          });
+        });
+      })
+    })
+
+    describe('when is unestimated feature', () => {
+      let onEditSpy;
+
+      beforeEach(() => {
+        onEditSpy = sinon.spy();
+      })
+
+      const story = {
+        _editing: { state: states[0], estimate: null, storyType: storyTypes.FEATURE }
+      };
+      let wrapper;
+
+      beforeEach(() => {
+        wrapper = shallow(
+          <ExpandedStoryState
+            story={story}
+            onEdit={onEditSpy}
+            disabled={false}
+          />
+        );
+      })
+      
+      it('renders just one state', () => {
+        expect(wrapper.find('option').length).toEqual(1);
+      });
+
+      it('has to be unscheduled', () => {
+        expect(wrapper.find('select').prop('value')).toBe(states[0]);
+      });
+    });
+
     states.forEach(state => {
       it(`sets select value as ${state}`, () => {
         const onEditSpy = sinon.spy();
 
         const story = {
-          _editing: { state: state }
+          _editing: { state }
         };
 
         const wrapper = shallow(
@@ -120,7 +196,7 @@ describe('<ExpandedStoryState />', () => {
 
     describe("to a number", () => {
       it("doesn't disable state select when estimate is a number", () => {
-        const story = { _editing: { estimate: !isNaN, storyType: 'feature', state: 'unstarted' } };
+        const story = { _editing: { estimate: 1, storyType: 'feature', state: 'unstarted' } };
 
         const wrapper = shallow(
           <ExpandedStoryState

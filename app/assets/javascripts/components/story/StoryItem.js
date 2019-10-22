@@ -4,30 +4,33 @@ import CollapsedStory from './CollapsedStory';
 import ExpandedStory from './ExpandedStory';
 import { connect } from 'react-redux';
 import { toggleStory } from '../../actions/story';
-import { releaseIsLate } from '../../models/beta/story';
+import { releaseIsLate, isHighlighted } from '../../models/beta/story';
 
-export const StoryItem = ({ column, stories, index, story, toggleStory }) => {
+export const StoryItem = ({ column, stories, index, story, toggleStory, from }) => {
   const className = releaseIsLate(story) ? 'Story--late-release' : '';
   const title = releaseIsLate(story) ? I18n.t('story.warnings.backlogged_release') : '';
+  const styleFocus = isHighlighted(story) ? 'Story--highlighted' : '';
+
+  const childProps = {
+    column,
+    stories,
+    index,
+    story,
+    onToggle: () => toggleStory(story.id, from),
+    className: `${className} ${styleFocus}`,
+    title,
+    from
+  }
 
   return (
     <div className='story-container'>
       {
         story.collapsed
           ? <CollapsedStory
-            column={column}
-            story={story}
-            index={index}
-            stories={stories}
-            onToggle={() => toggleStory(story.id)}
-            className={className}
-            title={title}
+            {...childProps}
           />
           : <ExpandedStory
-            story={story}
-            onToggle={() => toggleStory(story.id)}
-            className={className}
-            title={title}
+            {...childProps}
           />
       }
     </div>

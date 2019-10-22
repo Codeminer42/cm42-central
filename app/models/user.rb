@@ -80,4 +80,9 @@ class User < ApplicationRecord
   def owns?(story)
     story.owned_by_id == id
   end
+
+  def team_from_project(project)
+    user_team_ids = teams.pluck(:id)
+    project.teams.find_by(id: user_team_ids)
+  end
 end

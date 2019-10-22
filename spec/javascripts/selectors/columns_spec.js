@@ -14,17 +14,19 @@ describe('Columns Selector', () => {
   const currentSprintDate = moment();
   const previousSprintDate = moment().subtract(1, 'weeks');
 
-  let storiesArray;
+  let stories;
 
   beforeEach(() => {
-    storiesArray = [unscheduledStory, unscheduledStory2, unstartedStory, startedStory, deliveredStory, acceptedStory];
+    stories = {
+      all: [unscheduledStory, unscheduledStory2, unstartedStory, startedStory, deliveredStory, acceptedStory]
+    };
   });
 
   describe('CHILLY_BIN', () => {
     it('return only unschedule stories', () => {
       const chillyBinStories = getColumns({
         column: Column.CHILLY_BIN,
-        stories: storiesArray
+        stories
       });
 
       expect(chillyBinStories).toContain(unscheduledStory);
@@ -37,7 +39,7 @@ describe('Columns Selector', () => {
     it('return stories ordered by position', () => {
       const chillyBinStories = getColumns({
         column: Column.CHILLY_BIN,
-        stories: storiesArray
+        stories
       });
 
       expect(chillyBinStories).toEqual([unscheduledStory, unscheduledStory2]);
@@ -54,12 +56,12 @@ describe('Columns Selector', () => {
     };
 
     it('return story accepted in current sprint', () => {
-      storiesArray.push(storyAcceptedCurrentSprint);
+      stories.all.push(storyAcceptedCurrentSprint);
 
       const backlogSprints = getColumns({
         column: Column.BACKLOG,
         project,
-        stories: storiesArray,
+        stories,
         pastIterations: []
       });
 
@@ -70,7 +72,7 @@ describe('Columns Selector', () => {
       const backlogSprints = getColumns({
         column: Column.BACKLOG,
         project,
-        stories: storiesArray,
+        stories,
         pastIterations: []
       });
 
@@ -94,7 +96,7 @@ describe('Columns Selector', () => {
       const doneSprints = getColumns({
         column: Column.DONE,
         pastIterations,
-        stories: storiesArray
+        stories
       });
 
       expect(doneSprints[0].startDate).toBe(startDate);
@@ -105,7 +107,7 @@ describe('Columns Selector', () => {
       const doneSprints = getColumns({
         column: Column.DONE,
         pastIterations,
-        stories: storiesArray
+        stories
       });
 
       expect(doneSprints[0].stories).toContain(acceptedStory);

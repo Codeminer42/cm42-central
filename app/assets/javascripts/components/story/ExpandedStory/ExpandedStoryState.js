@@ -15,7 +15,7 @@ const ExpandedStoryState = ({ story, onEdit, disabled }) =>
       disabled={disabled || isUnestimatedFeature(story._editing)}
     >
       {
-        Story.states.map((state) => (
+        Story.possibleStatesFor(story).map((state) => (
           <option value={state} key={state}>
             {I18n.t(`story.state.${state}`)}
           </option>
