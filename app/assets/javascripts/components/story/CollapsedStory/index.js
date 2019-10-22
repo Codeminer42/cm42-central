@@ -146,7 +146,7 @@ export const CollapsedStory = ({
       if(isADropTarget(monitor)) return null;
       const {state, column} = monitor.getDropResult();
 
-      if (canChangeColumn(state, column)) {
+      if (canChangeColumn(state, column) && !Story.isUnestimatedFeature(story)) {
         dragDropStory(item.id, item.projectId, {
           state: column === 'backlog' ? 'unstarted' : 'unscheduled'
         });
