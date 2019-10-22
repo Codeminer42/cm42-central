@@ -135,11 +135,11 @@ export const dragDropStory = (storyId, projectId, newAttributes, from) =>
 
     try {
       const updatedStory = await Story.update(newStory, projectId);
-      return dispatch(updateStorySuccess(updatedStory))
+      return dispatch(updateStorySuccess(updatedStory, from))
     }
     catch (error) {
       dispatch(sendErrorNotification(error))
-      return dispatch(storyFailure(story.id, error))
+      return dispatch(storyFailure(story.id, error, from))
     }
   }
 
