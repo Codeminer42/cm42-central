@@ -1281,7 +1281,7 @@ describe('Story model', function () {
     const { UNSTARTED, UNSCHEDULED } = status;
 
     describe('when is feature', () => {
-      describe('and have not estimate', () => {
+      describe('and have no estimate', () => {
         const story = { _editing: { id: 1, storyType: storyTypes.FEATURE, estimate: '' } };
         const newAttributes = { state: UNSTARTED }
         const newStory = { ...story, ...newAttributes };
@@ -1291,7 +1291,7 @@ describe('Story model', function () {
         });
       });
 
-      describe('and new attributes have not estimate', () => {
+      describe('and new attributes have no estimate', () => {
         const story = { _editing: { id: 1, storyType: storyTypes.FEATURE, estimate: 2 } };
         const newAttributes = { estimate: '' };
         const newStory = { ...story, ...newAttributes };

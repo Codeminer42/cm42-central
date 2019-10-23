@@ -42,8 +42,9 @@ module StoryOperations
     private
 
     def ensure_valid_state
-      params['state'] = 'unscheduled' if
-      should_be_unscheduled? estimate: params['estimate'], type: params['story_type']
+      return unless should_be_unscheduled? estimate: params['estimate'], type: params['story_type']
+
+      params['state'] = 'unscheduled'
     end
 
     def documents_changed?
