@@ -88,6 +88,19 @@ export const setLoadingStory = (id, from) => ({
   from
 });
 
+export const confirmBeforeSaveIfNeeded = async (story, confirm, needConfirmation, callback) => {
+  const confirmStoryChange = story => confirm(I18n.t('story.definitive_sure', { action: 'change' }))
+
+  if (!needConfirmation(story) || confirmStoryChange(story)) {
+    try {
+      await callback.onConfirmed();
+    }
+    catch (error) {
+      callback.onError(error);
+    }
+  }
+}
+
 export const showHistory = (storyId, from) =>
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();

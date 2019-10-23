@@ -1359,4 +1359,32 @@ describe('Story model', function () {
       });
     });
   });
+
+  describe('needConfirmation', () => {
+    const needConfirmationStates = [status.ACCEPTED, status.REJECTED];
+    const noNeedConfirmationStates = [
+      status.DELIVERED, status.STARTED, status.FINISHED, status.UNSTARTED,
+      status.UNSCHEDULED, status.RELEASE
+    ];
+
+    needConfirmationStates.forEach(state => {
+      describe(`when state is ${state}`, () => {
+        it('returns truthy', () => {
+          const story = { state };
+
+          expect(Story.needConfirmation(story)).toBeTruthy();
+        });
+      });
+    });
+
+    noNeedConfirmationStates.forEach(state => {
+      describe(`when state is ${state}`, () => {
+        it('returns falsy', () => {
+          const story = { state };
+
+          expect(Story.needConfirmation(story)).toBeFalsy();
+        });
+      });
+    });
+  });
 });
