@@ -172,10 +172,10 @@ const isChangingToUnscheduled = (story, newAttributes) => isUnscheduled(story._e
 
 const isChangingWithoutEstimate = (story, newAttributes) => !hasEstimate(story._editing) && !hasEstimate(newAttributes)
 
-const stateFor = (story, newAttributes, newStory) =>
+export const stateFor = (story, newAttributes, newStory) =>
   isUnscheduledState(story, newAttributes) ? status.UNSCHEDULED : newStory.state;
 
-const estimateFor = (story, newAttributes, newStory) => {
+export const estimateFor = (story, newAttributes, newStory) => {
   if (isNoEstimated(story, newAttributes)) return '';
   if (isFeature(newAttributes) && !isUnscheduled(story._editing)) return 1;
   

@@ -4,7 +4,6 @@ import { status, storyTypes, storyScopes } from 'libs/beta/constants';
 
 describe('Story model', function () {
   describe('comparePosition', () => {
-
     describe('when position A is bigger then B', () => {
       it("return 1", () => {
         const storyA = {
@@ -1273,6 +1272,90 @@ describe('Story model', function () {
         const story = { id: 100 };
 
         expect(Story.haveStory(story, stories)).toBeFalsy();
+      });
+    });
+  });
+
+  describe('stateFor', () => {
+    const { BUG, CHORE, RELEASE } = storyTypes;
+    const { UNSTARTED, UNSCHEDULED } = status;
+
+    describe('when is feature', () => {
+      describe('and have not estimate', () => {
+        const story = { _editing: { id: 1, storyType: storyTypes.FEATURE, estimate: '' } };
+        const newAttributes = { state: UNSTARTED }
+        const newStory = { ...story, ...newAttributes };
+
+        it(`return ${UNSCHEDULED}`, () => {
+          expect(Story.stateFor(story, newAttributes, newStory)).toEqual(UNSCHEDULED);
+        });
+      });
+
+      describe('and new attributes have not estimate', () => {
+        const story = { _editing: { id: 1, storyType: storyTypes.FEATURE, estimate: 2 } };
+        const newAttributes = { estimate: '' };
+        const newStory = { ...story, ...newAttributes };
+
+        it(`return ${UNSCHEDULED}`, () => {
+          expect(Story.stateFor(story, newAttributes, newStory)).toEqual(UNSCHEDULED);
+        });
+      });
+
+      describe(`and new attributes have state ${UNSCHEDULED}`, () => {
+        const story = { _editing: { id: 1, storyType: storyTypes.FEATURE, estimate: 2 } };
+        const newAttributes = { state: UNSCHEDULED };
+        const newStory = { ...story, ...newAttributes };
+
+        it(`return ${UNSCHEDULED}`, () => {
+          expect(Story.stateFor(story, newAttributes, newStory)).toEqual(UNSCHEDULED);
+        });
+      });
+    });
+
+    const noFeatureTypes = [BUG, CHORE, RELEASE];
+
+    noFeatureTypes.forEach(noFeatureType => {
+      describe(`when is ${noFeatureType}`, () => {
+        Story.states.forEach(state => {
+          describe(`and new attributes is state ${state}`, () => {
+            const story = { _editing: { id: 1, storyType: noFeatureType, estimate: 2 } };
+            const newAttributes = { state };
+            const newStory = { ...story, ...newAttributes };
+
+            it(`return ${state}`, () => {
+              expect(Story.stateFor(story, newAttributes, newStory)).toEqual(state);
+            });
+          });
+        });
+      });
+    });
+  });
+
+  describe('estimateFor', () => {
+    const { BUG, CHORE, RELEASE } = storyTypes;
+    const noFeatureTypes = [BUG, CHORE, RELEASE];
+
+    noFeatureTypes.forEach(noFeatureType => {
+      describe(`when story type is ${noFeatureType}`, () => {
+        describe('and new attributes have estimate 2', () => {
+          const story = { _editing: { id: 1, storyType: noFeatureType, estimate: '' } };
+          const newAttributes = { estimate: 2 };
+          const newStory = { ...story, ...newAttributes };
+  
+          it(`return ''`, () => {
+            expect(Story.estimateFor(story, newAttributes, newStory)).toEqual('');
+          });
+        });
+
+        describe('and new attributes have story type feature', () => {
+          const story = { _editing: { id: 1, storyType: noFeatureType, estimate: '' } };
+          const newAttributes = { storyType: 'feature' };
+          const newStory = { ...story, ...newAttributes };
+
+          it(`return 1`, () => {
+            expect(Story.estimateFor(story, newAttributes, newStory)).toEqual(1);
+          });
+        });
       });
     });
   });
