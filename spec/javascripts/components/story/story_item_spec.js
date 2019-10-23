@@ -28,7 +28,7 @@ describe('<StoryItem />', () => {
         storyType: 'release',
         releaseDate: moment().subtract(3, 'days')
       });
-      const className = 'Story--late-release ';
+      const className = 'Story--late-release  ';
 
       const wrapper = shallow(<StoryItem story={story} />);
       const children = wrapper.find(ExpandedStory);
@@ -58,7 +58,7 @@ describe('<StoryItem />', () => {
         storyType: 'release',
         releaseDate: moment().add(3, 'days')
       });
-      const className = ' ';
+      const className = '  ';
 
       const wrapper = shallow(<StoryItem story={story} />);
       const children = wrapper.find(ExpandedStory);
@@ -78,6 +78,36 @@ describe('<StoryItem />', () => {
       const children = wrapper.find(ExpandedStory);
 
       expect(children).toHaveProp('title', title);
+    });
+  });
+
+  describe('when the story is accepted', () => {
+    it('put .Story--accepted on childrens prop className', () => {
+      const story = storyFactory({
+        collapsed: false,
+        state: 'accepted'
+      });
+      const className = '  Story--accepted';
+
+      const wrapper = shallow(<StoryItem story={story} />);
+      const children = wrapper.find(ExpandedStory);
+
+      expect(children).toHaveProp('className', className);
+    });
+  });
+
+  describe('when the story is not accepted', () => {
+    it('do not put .Story--accepted on childrens prop className', () => {
+      const story = storyFactory({
+        collapsed: false,
+        state: 'accepted'
+      });
+      const className = 'Story--accepted';
+
+      const wrapper = shallow(<StoryItem story={story} />);
+      const children = wrapper.find(ExpandedStory);
+
+      expect(children).not.toHaveProp('className', className);
     });
   });
 });

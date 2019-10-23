@@ -8,9 +8,10 @@ import { releaseIsLate, isHighlighted, isAccepted } from '../../models/beta/stor
 
 export const StoryItem = ({ story, toggleStory, from }) => {
   const releaseClass = releaseIsLate(story) ? 'Story--late-release' : '';
-  const title = releaseIsLate(story) ? I18n.t('story.warnings.backlogged_release') : '';
   const highlightClass = isHighlighted(story) ? 'Story--highlighted' : '';
   const acceptedClass = isAccepted(story) ? 'Story--accepted' : '';
+
+  const title = releaseIsLate(story) ? I18n.t('story.warnings.backlogged_release') : '';
 
   const childProps = {
     story,
