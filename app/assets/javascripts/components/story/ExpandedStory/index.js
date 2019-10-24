@@ -19,22 +19,12 @@ export class ExpandedStory extends React.Component {
     this.titleRef.current.focus();
   }
 
-  handleSaveStory = (story, project, from) => {
-    if (Story.needConfirmation(story._editing) && !window.confirm(
-      I18n.t('story.definitive_sure', { action: `make ${story._editing.state}` })
-    )) {
-      return;
-    }
-
-    const { saveStory } = this.props;
-    saveStory(story.id, project.id, from);
-  }
-
   render() {
     const {
       story,
       onToggle,
       editStory,
+      saveStory,
       cloneStory,
       showHistory,
       deleteStory,
@@ -57,7 +47,7 @@ export class ExpandedStory extends React.Component {
         <ExpandedStoryControls
           onCancel={onToggle}
           isDirty={story._editing._isDirty || false}
-          onSave={() => this.handleSaveStory(story, project, from)}
+          onSave={() => saveStory(story.id, project.id, from)}
           onDelete={() => deleteStory(story.id, project.id, from)}
           canSave={Story.canSave(story)}
           canDelete={Story.canDelete(story)}

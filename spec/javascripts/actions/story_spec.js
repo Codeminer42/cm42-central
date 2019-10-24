@@ -19,7 +19,8 @@ describe('Story Actions', () => {
         findById: sinon.stub().returns(editedStory),
         update: sinon.stub().resolves(story),
         isNew: sinon.stub().returns(false),
-        withScope: sinon.stub().returns([story])
+        withScope: sinon.stub().returns([story]),
+        needConfirmation: sinon.stub().returns(false)
       };
 
       const fakeDispatch = sinon.stub().resolves({});
@@ -74,7 +75,8 @@ describe('Story Actions', () => {
         findById: sinon.stub().returns(editedStory),
         update: sinon.stub().resolves(story),
         isNew: sinon.stub().returns(false),
-        withScope: sinon.stub().returns([story])
+        withScope: sinon.stub().returns([story]),
+        needConfirmation: sinon.stub().returns(false)
       };
 
       const fakeDispatch = sinon.stub().resolves({});
@@ -100,7 +102,8 @@ describe('Story Actions', () => {
         findById: sinon.stub().returns(editedStory),
         post: sinon.stub().resolves(story),
         isNew: sinon.stub().returns(true),
-        withScope: sinon.stub().returns([story])
+        withScope: sinon.stub().returns([story]),
+        needConfirmation: sinon.stub().returns(false)
       };
 
       const fakeDispatch = sinon.stub().resolves({});
@@ -132,7 +135,8 @@ describe('Story Actions', () => {
         findById: sinon.stub().returns(editedStory),
         update: sinon.stub().rejects(error),
         isNew: sinon.stub().returns(false),
-        withScope: sinon.stub().returns([story])
+        withScope: sinon.stub().returns([story]),
+        needConfirmation: sinon.stub().returns(false)
       };
 
       const fakeDispatch = sinon.stub().resolves({});

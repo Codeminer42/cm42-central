@@ -19,7 +19,8 @@ const compareValues = (a, b) => {
 
 export const needConfirmation = story =>
   story.state === status.ACCEPTED ||
-  story.state === status.REJECTED
+  story.state === status.REJECTED ||
+  story.state === status.RELEASE
 
 export const comparePosition = (a, b) => {
   const positionA = parseFloat(a.position);

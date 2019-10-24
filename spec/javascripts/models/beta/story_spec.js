@@ -1361,10 +1361,10 @@ describe('Story model', function () {
   });
 
   describe('needConfirmation', () => {
-    const needConfirmationStates = [status.ACCEPTED, status.REJECTED];
+    const needConfirmationStates = [status.ACCEPTED, status.REJECTED, status.RELEASE];
     const noNeedConfirmationStates = [
-      status.DELIVERED, status.STARTED, status.FINISHED, status.UNSTARTED,
-      status.UNSCHEDULED, status.RELEASE
+      status.DELIVERED, status.STARTED, status.FINISHED,
+      status.UNSTARTED, status.UNSCHEDULED
     ];
 
     needConfirmationStates.forEach(state => {

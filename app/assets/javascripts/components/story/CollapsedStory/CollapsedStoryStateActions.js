@@ -23,28 +23,10 @@ const StateAction = {
 class CollapsedStoryStateActions extends React.Component {
   constructor(props) {
     super(props);
-
-    this.confirmTransition = this.confirmTransition.bind(this);
   }
 
   disableToggle(event) {
     event.stopPropagation();
-  }
-
-  confirmTransition(action, update) {
-    if (this.needConfirmation(action) && !window.confirm(
-      I18n.t('story.definitive_sure', { action })
-    )) {
-      return;
-    }
-
-    update();
-  }
-
-  needConfirmation(action) {
-    return action === storyTransitions.ACCEPT ||
-      action === storyTransitions.REJECT ||
-      action === storyTransitions.RELEASE;
   }
 
   getStoryState(story) {
@@ -68,11 +50,7 @@ class CollapsedStoryStateActions extends React.Component {
               <CollapsedStoryStateButton
                 action={stateAction}
                 key={stateAction}
-                onUpdate={() => {
-                  this.confirmTransition(stateAction, () => {
-                    onUpdate({ state: getNextState(story.state, stateAction) })
-                  })
-                }}
+                onUpdate={() => onUpdate({ state: getNextState(story.state, stateAction) })}
               />
             )
         }
