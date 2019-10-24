@@ -104,7 +104,8 @@ group :development do
 end
 
 group :development, :test do
+  gem "pusher-fake", "~> 1.10"
+  gem 'pry-byebug'
   gem 'pry-rails'
   gem 'pry-remote'
-  gem "pusher-fake", "~> 1.10"
 end
