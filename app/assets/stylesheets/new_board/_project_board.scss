@@ -4,7 +4,7 @@
   overflow: inherit;
   padding-top: 2px;
 
-  &__loading {
+  &-loading {
     display: flex;
     position: fixed;
     top: 0;
@@ -20,16 +20,16 @@
       transform: translate(-50%,-50%);
       color: $white;
       text-align: center;
+    }
 
-      &__spinner {
-        display: block;
-        font-size: 80px;
-      }
+    &__spinner {
+      display: block;
+      font-size: 80px;
+    }
 
-      &__text {
-        display: block;
-        text-transform: uppercase;
-      }
+    &__text {
+      display: block;
+      text-transform: uppercase;
     }
   }
 }
