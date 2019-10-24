@@ -214,11 +214,9 @@ describe 'Projects' do
         it 'shows form errors' do
           visit projects_path
 
-          within('.project-item') do
-            find('a[data-toggle="dropdown"]').click
+          find('a[data-toggle="dropdown"]').click
 
-            click_on 'Settings'
-          end
+          click_on 'Settings'
 
           fill_in 'Name', with: ''
           click_on 'Update Project'
