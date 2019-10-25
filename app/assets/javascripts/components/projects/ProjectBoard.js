@@ -20,14 +20,14 @@ import StorySearch from '../search/StorySearch';
 import SearchResults from './../search/SearchResults';
 import ProjectLoading from './ProjectLoading';
 
-class ProjectBoard extends React.Component {
+export class ProjectBoard extends React.Component {
   componentWillMount() {
     this.props.fetchProjectBoard(this.props.projectId);
   }
 
   render() {
     if (!this.props.projectBoard.isFetched) {
-      return <ProjectLoading />;
+      return <ProjectLoading data-id="project-loading" />;
     }
 
     const { 
