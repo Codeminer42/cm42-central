@@ -139,6 +139,7 @@ describe 'Projects' do
 
           within('.project-item') do
             find('a[data-toggle="dropdown"]').click
+            find('.dropdown.open .dropdown-menu')
 
             click_on 'Settings'
           end
@@ -216,6 +217,7 @@ describe 'Projects' do
 
           within('.project-item') do
             find('a[data-toggle="dropdown"]').click
+            find('.dropdown.open .dropdown-menu')
 
             click_on 'Settings'
           end
@@ -255,6 +257,7 @@ describe 'Projects' do
 
             within('.project-item') do
               find('a[data-toggle="dropdown"]').click
+              find('.dropdown.open .dropdown-menu')
 
               click_on 'Settings'
             end
@@ -263,6 +266,7 @@ describe 'Projects' do
 
             find('#submit_tag_group').click
             click_on 'Create Tag group'
+            
             expect(page).to have_content("can't be blank")
           end
         end
