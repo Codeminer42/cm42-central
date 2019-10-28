@@ -13,11 +13,9 @@ class ProjectsController < ApplicationController
     @projects = {}
 
     projects_joined = policy_scope(Project).preload(:tag_group)
-
     @projects = {
       joined: serialize_from_collection(projects_joined)
     }
-
     unless current_user.guest?
       @projects[:unjoined] = serialize_from_collection(projects_unjoined.order(:updated_at))
     end
@@ -245,7 +243,9 @@ class ProjectsController < ApplicationController
   end
 
   def set_project
-    @project = current_user.projects.friendly.find(params[:id])
+    options = { project: @current_project, current_story: @story }
+    pundit = PunditContext.new(@current_team, current_user, options )
+    @project = ProjectPolicy::Scope.new(pundit, current_user).show_project(params[:id])
     authorize @project
   end
 

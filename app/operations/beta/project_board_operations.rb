@@ -39,11 +39,9 @@ module Beta
       end
 
       def project
-        @project ||=  @current_user
-                      .projects
-                      .friendly
-                      .preload(:users, stories: %i[notes document_files tasks])
-                      .find(@project_id)
+        options = { project: @current_project, current_story: @story }
+        pundit = PunditContext.new(@current_team, @current_user, options)
+        @project = ProjectPolicy::Scope.new(pundit, @current_user).show_project(@project_id)
       end
 
       def stories_and_past_iterations

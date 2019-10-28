@@ -33,6 +33,21 @@ class ProjectPolicy < ApplicationPolicy
   alias ownership? share?
 
   class Scope < Scope
+    def show_project(project_id)
+      if root?
+        Project.all
+      elsif admin?
+        Project.all.friendly.find(project_id) if check_project(project_id)
+      else
+        current_user.projects.friendly.find(project_id)
+      end
+    end
+
+    def check_project(param)
+      list = current_team.projects | current_user.projects
+      list.pluck(:slug).include?(param) || list.pluck(:id).include?(param.to_i)
+    end
+
     def resolve
       if root?
         Project.all

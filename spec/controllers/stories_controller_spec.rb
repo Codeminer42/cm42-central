@@ -380,7 +380,7 @@ describe StoriesController do
           end
         end
 
-        describe 'when the user create a story from the another team session', :aggregate_failures do
+        describe 'when the user create story from the another team session', :aggregate_failures do
           let(:user) { create :user, :with_team }
           let(:team) { create :team }
           let(:project) { create :project, users: [user], teams: [user.teams.first] }

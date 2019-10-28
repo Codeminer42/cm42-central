@@ -115,6 +115,15 @@ class StoriesController < ApplicationController
 
   def set_project
     policy_scope(Project)
-    @project = @current_user.projects.friendly.find(params[:project_id])
+    options = { project: @current_project, current_story: @story }
+    pundit = PunditContext.new(@current_team, @current_user, options)
+    @project = ProjectPolicy::Scope.new(pundit, @current_user).show_project(params[:project_id])
+    # if Project.find(params[:project_id]).teams.first.is_admin?(@current_user)
+    #   lista = Project.find(params[:project_id]).teams.first.projects | @current_user.projects
+    #   @project = Project.find(params[:project_id]) if lista.pluck(:id).include? params[:project_id]
+    # else
+    #   @project = @current_user.projects.friendly.find(params[:project_id])
+    # end
+    # @project
   end
 end
