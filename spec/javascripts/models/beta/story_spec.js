@@ -1342,7 +1342,7 @@ describe('Story model', function () {
           const newAttributes = { estimate: 2 };
           const newStory = { ...story, ...newAttributes };
   
-          it(`return ''`, () => {
+          it('return an empty string', () => {
             expect(Story.estimateFor(story, newAttributes, newStory)).toEqual('');
           });
         });
@@ -1352,7 +1352,7 @@ describe('Story model', function () {
           const newAttributes = { storyType: 'feature' };
           const newStory = { ...story, ...newAttributes };
 
-          it(`return 1`, () => {
+          it('return 1', () => {
             expect(Story.estimateFor(story, newAttributes, newStory)).toEqual(1);
           });
         });
