@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+### Changed
+- [ V2 ] When project is accepted has a different background color.
+
+### Added
+- [ V2 ] Spinner when project is loading.
+
+### Changed
+- Unscheduled stories may or not may have a estimate.
+- Chilly Bin column have stories with or no estimate.
+
 ## [2.4.0] 2019-10-21
 
 ### Added
@@ -11,6 +21,9 @@
 - The app will automatically switch between teams when a user opens a link to a project of a team that is not the current selected one
 
 ## [2.3.0] 2019-10-08
+
+### Changed
+- Reversed the order of done column sprints
 
 ### Fixed
 - [ V2 ] Remove redundant switch cases from the stories reducer.
@@ -434,19 +447,8 @@ and CVE-2018-14567)
 - Fix a locale select bug to make the options visible on a dark navbar.
 - Some improvements to fix some issues reported by codeclimate.
 
-### Changed
-- Reversed the order of done column sprints
-
-### Changed
-- Unscheduled stories may or not may have a estimate.
-- Chilly Bin column have stories with or no estimate.
-
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
-
-### Added
-- Spinner when project is loading.
-
 
 [Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v2.4.0...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
