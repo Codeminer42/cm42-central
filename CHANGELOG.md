@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Fixed
+- [ V2 ] Fix a sprints calc bug.
+
 ### Changed
 - [ V2 ] When story is accepted it has a different background color.
 
