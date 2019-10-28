@@ -109,6 +109,8 @@ module StoryOperations
           .with_dependencies
           .where("state != 'accepted' OR accepted_at >= ?", current_iteration_start)
           .order('updated_at DESC')
+      rescue ActiveRecord::RecordNotFound => e
+        OpenStruct.new(successful?: false, error: e)
       end
     end
 

@@ -5,16 +5,19 @@ class Beta::ProjectBoardsController < ApplicationController
     authorize current_user
 
     result = Beta::ProjectBoardOperations::Read.call(
-      params[:id],
       current_user,
-      current_flow: cookies[:current_flow],
-      projects_scope: policy_scope(Project)
+      project,
+      current_flow: cookies[:current_flow]
     )
 
     render json: result.data.as_json(root: false)
   end
 
   private
+
+  def project
+    @project = ProjectPolicy::Scope.new(pundit_project, @current_user).show_project(params[:id])
+  end
 
   def set_fluid_layout
     @layout_settings[:fluid] = true

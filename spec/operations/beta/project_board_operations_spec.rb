@@ -23,7 +23,7 @@ describe Beta::ProjectBoardOperations do
       end
 
       it 'returns all the project board data' do
-        result = Beta::ProjectBoardOperations::Read.call(project.id, user)
+        result = Beta::ProjectBoardOperations::Read.call(user, project)
 
         expect(result).to be_successful
 
@@ -47,7 +47,7 @@ describe Beta::ProjectBoardOperations do
         let(:expected_labels) { 'front,back,bug' }
 
         it 'return a string with uniq labels' do
-          result = Beta::ProjectBoardOperations::Read.call(project.id, user)
+          result = Beta::ProjectBoardOperations::Read.call(user, project)
 
           expect(result.data.labels).to eq expected_labels
         end
@@ -57,8 +57,8 @@ describe Beta::ProjectBoardOperations do
     describe 'when the project does not exist' do
       let(:user)    { create :user }
       let(:project) { create :project, users: [user] }
-      let(:result)  { Beta::ProjectBoardOperations::Read.call(nil, user) }
 
+      subject(:result) { Beta::ProjectBoardOperations::Read.call(user, nil) }
       it { expect(result).not_to be_successful }
       it { expect(result.error).to be_a ActiveRecord::RecordNotFound }
     end

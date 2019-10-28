@@ -2,14 +2,12 @@ class ProjectBoardsController < ApplicationController
   def show
     authorize project
     project_board = StoryOperations::ReadAll.call(project: project)
-    render json: project_board, status: :ok
+    render json: project_board
   end
 
   private
 
   def project
-    options = { project: @current_project, current_story: nil }
-    pundit = PunditContext.new(@current_team, current_user, options)
-    @project = ProjectPolicy::Scope.new(pundit, current_user).show_project(params[:id])
+    @project = ProjectPolicy::Scope.new(pundit_project, current_user).show_project(params[:id])
   end
 end

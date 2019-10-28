@@ -51,6 +51,11 @@ class ApplicationController < ActionController::Base
   end
   helper_method :pundit_user
 
+  def pundit_project
+    PunditContext.new(current_team, current_user, project: @project, current_story: @story)
+  end
+  helper_method :pundit_project
+
   def current_team
     @current_team ||= Team.not_archived.find_by(slug: session[:current_team_slug])
   end

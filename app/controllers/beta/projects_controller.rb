@@ -4,9 +4,7 @@ class Beta::ProjectsController < ApplicationController
   def show
     authorize current_user
     @project_id = params[:id]
-    options = { project: @current_project, current_story: @story }
-    pundit = PunditContext.new(@current_team, @current_user, options)
-    @project = ProjectPolicy::Scope.new(pundit, @current_user).show_project(params[:id])
+    @project = ProjectPolicy::Scope.new(pundit_project, @current_user).show_project(params[:id])
     update_current_team
   end
 

@@ -34,17 +34,18 @@ class ProjectPolicy < ApplicationPolicy
 
   class Scope < Scope
     def show_project(project_id)
+      project = Project.friendly.find(project_id)
       if root?
-        Project.all
-      elsif admin?
-        Project.all.friendly.find(project_id) if check_project(project_id)
+        project
+      elsif admin? && check_project(project_id)
+        project
       else
         current_user.projects.friendly.find(project_id)
       end
     end
 
     def check_project(param)
-      list = current_team.projects | current_user.projects
+      list = current_user.teams.map(&:projects).flatten | current_user.projects
       list.pluck(:slug).include?(param) || list.pluck(:id).include?(param.to_i)
     end
 

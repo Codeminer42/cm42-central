@@ -5,18 +5,20 @@ module Beta
         new(*args).run
       end
 
-      def initialize(id, current_user, current_flow: nil, projects_scope: Project)
-        @project_id = id
+      def initialize(current_user, project, current_flow: nil)
         @current_user = current_user
+        @project = project
         @current_flow = current_flow
-        @projects_scope = projects_scope
       end
 
       def run
-        users = project.users
+        error = { successful?: false, error: ActiveRecord::RecordNotFound.new }
+        return OpenStruct.new(error) unless @project
+
+        users = @project.users
 
         project_board_params = stories_and_past_iterations.merge(
-          project: project,
+          project: @project,
           users: users,
           current_user: @current_user,
           current_flow: @current_flow,
@@ -38,14 +40,8 @@ module Beta
         labels.join(',').split(',').uniq.join(',')
       end
 
-      def project
-        options = { project: @current_project, current_story: @story }
-        pundit = PunditContext.new(@current_team, @current_user, options)
-        @project = ProjectPolicy::Scope.new(pundit, @current_user).show_project(@project_id)
-      end
-
       def stories_and_past_iterations
-        read_all_response = ::StoryOperations::ReadAll.call(project: project)
+        read_all_response = ::StoryOperations::ReadAll.call(project: @project)
         read_all_response[:stories] = read_all_response.delete(:active_stories)
         read_all_response
       end
