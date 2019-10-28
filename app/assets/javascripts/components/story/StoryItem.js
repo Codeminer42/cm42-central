@@ -5,18 +5,20 @@ import ExpandedStory from './ExpandedStory';
 import { connect } from 'react-redux';
 import { toggleStory } from '../../actions/story';
 import { releaseIsLate, isHighlighted, isAccepted } from '../../models/beta/story';
+import classNames from 'classnames';
 
 export const StoryItem = ({ story, toggleStory, from }) => {
-  const releaseClass = releaseIsLate(story) ? 'Story--late-release' : '';
-  const highlightClass = isHighlighted(story) ? 'Story--highlighted' : '';
-  const acceptedClass = isAccepted(story) ? 'Story--accepted' : '';
-
+  const className = classNames({
+    'Story--late-release': releaseIsLate(story),
+    'Story--highlighted': isHighlighted(story),
+    'Story--accepted': isAccepted(story),
+  });
   const title = releaseIsLate(story) ? I18n.t('story.warnings.backlogged_release') : '';
 
   const childProps = {
     story,
     onToggle: () => toggleStory(story.id, from),
-    className: `${releaseClass} ${highlightClass} ${acceptedClass}`,
+    className,
     title,
     from
   }

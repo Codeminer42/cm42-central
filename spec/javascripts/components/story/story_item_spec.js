@@ -28,7 +28,7 @@ describe('<StoryItem />', () => {
         storyType: 'release',
         releaseDate: moment().subtract(3, 'days')
       });
-      const className = 'Story--late-release  ';
+      const className = 'Story--late-release';
 
       const wrapper = shallow(<StoryItem story={story} />);
       const children = wrapper.find(ExpandedStory);
@@ -58,7 +58,7 @@ describe('<StoryItem />', () => {
         storyType: 'release',
         releaseDate: moment().add(3, 'days')
       });
-      const className = '  ';
+      const className = '';
 
       const wrapper = shallow(<StoryItem story={story} />);
       const children = wrapper.find(ExpandedStory);
@@ -81,33 +81,37 @@ describe('<StoryItem />', () => {
     });
   });
 
-  describe('when the story is accepted', () => {
-    it('put .Story--accepted on childrens prop className', () => {
+  describe('when the story is accepted', () => {  
+    let children;
+
+    beforeEach(() => {
       const story = storyFactory({
         collapsed: false,
         state: 'accepted'
       });
-      const className = '  Story--accepted';
-
       const wrapper = shallow(<StoryItem story={story} />);
-      const children = wrapper.find(ExpandedStory);
+      children = wrapper.find(ExpandedStory);
+    });
 
-      expect(children).toHaveProp('className', className);
+    it('puts .Story--accepted on childrens prop className', () => {
+      expect(children).toHaveProp('className', 'Story--accepted');
     });
   });
 
   describe('when the story is not accepted', () => {
-    it('do not put .Story--accepted on childrens prop className', () => {
+    let children;
+
+    beforeEach(() => {
       const story = storyFactory({
         collapsed: false,
-        state: 'accepted'
+        state: 'unscheduled'
       });
-      const className = 'Story--accepted';
-
       const wrapper = shallow(<StoryItem story={story} />);
-      const children = wrapper.find(ExpandedStory);
+      children = wrapper.find(ExpandedStory);
+    });
 
-      expect(children).not.toHaveProp('className', className);
+    it('does not put .Story--accepted on childrens prop className', () => {
+      expect(children).not.toHaveProp('className', 'Story--accepted');
     });
   });
 });
