@@ -440,6 +440,10 @@ and CVE-2018-14567)
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
+### Added
+- Spinner when project is loading.
+
+
 [Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v2.4.0...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
