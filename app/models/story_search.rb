@@ -52,7 +52,7 @@ class StorySearch
   end
 
   def valid?(conditions)
-    conditions.keys.map { |value| StorySearch.operand.find_value(value) }.exclude? nil
+    conditions.keys.all? { |value| StorySearch.operand.find_value(value) }
   end
 
   def add_conditions_to(search_method)
