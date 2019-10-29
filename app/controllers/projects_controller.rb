@@ -246,7 +246,7 @@ class ProjectsController < ApplicationController
   end
 
   def set_project
-    @project = ProjectPolicy::Scope.new(pundit_project, @current_user).show_project(params[:id])
+    @project = ProjectPolicy::Scope.new(pundit_user, @current_user).show_project(params[:id])
     authorize @project
   end
 

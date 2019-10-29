@@ -115,6 +115,6 @@ class StoriesController < ApplicationController
 
   def set_project
     policy_scope(Project)
-    @project = ProjectPolicy::Scope.new(pundit_project, @current_user).show_project(params[:project_id])
+    update_project(params[:project_id])
   end
 end
