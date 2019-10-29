@@ -43,10 +43,10 @@ describe('Dragtest', () => {
       .trigger('drop')
       .trigger('dragend').wait(500)
 
-    cy.matchingText({ column: 'chillyBin', text: 'A user should be able to create bugs' , storyPosition: 2 });
+    cy.matchingText({ column: 'chillyBin', text: 'A user should be able to create bugs' , storyPosition: 3 });
   });
 
-  it('should be able to switch from chillybin to backlog', () => {
+  it('shouldnt be able to switch unestimated features from chillybin to backlog', () => {
     cy.contains('A user should be able to create features')
       .trigger('dragstart')
       .trigger('drag')
@@ -56,7 +56,20 @@ describe('Dragtest', () => {
       .trigger('drop')
       .trigger('dragend').wait(500)
 
-    cy.matchingText({ column: 'backlog', text: 'A user should be able to create features' , storyPosition: 1 });
+    cy.matchingText({ column: 'chillyBin', text: 'A user should be able to create features' , storyPosition: 1 });
+  });
+
+  it('should be able to switch from chillybin to backlog', () => {
+    cy.contains('ChillyBin to Backlog')
+      .trigger('dragstart')
+      .trigger('drag')
+
+    cy.contains('A user should be able to create chores')
+      .trigger('dragover')
+      .trigger('drop')
+      .trigger('dragend').wait(500)
+
+    cy.matchingText({ column: 'backlog', text: 'ChillyBin to Backlog' , storyPosition: 1 });
   });
 
   it('shouldnt dragndrop done stories', () => {

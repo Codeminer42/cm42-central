@@ -24,6 +24,14 @@ ActiveRecord::Base.transaction do
   )
 
   project.stories.create!(
+    title: 'ChillyBin to Backlog',
+    story_type: 'bug',
+    requested_by: user,
+    state: 'unscheduled',
+    labels: 'cypress'
+  )
+
+  project.stories.create!(
     title: 'A user should be able to create bugs',
     story_type: 'bug',
     requested_by: user,
