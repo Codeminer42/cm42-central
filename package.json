@@ -120,5 +120,8 @@
     "react-test-renderer": "^16.8.0",
     "sinon": "^7.2.3",
     "webpack-cli": "^3.2.3"
-  }
+  },
+  "engines" : { 
+    "node" : "9.11.2" 
+  } 
 }
