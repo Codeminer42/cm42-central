@@ -127,5 +127,8 @@
     "sinon": "^7.2.3",
     "start-server-and-test": "^1.10.6",
     "webpack-cli": "^3.2.3"
-  }
+  },
+  "engines" : { 
+    "node" : "9.11.2" 
+  } 
 }
