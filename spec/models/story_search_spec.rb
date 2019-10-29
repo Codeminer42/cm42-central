@@ -4,20 +4,23 @@ describe StorySearch do
   let(:project) { create :project }
   let(:story) { create :story, title: 'Simple Story FOO BAR', project: project }
 
-  describe StorySearch do
+  describe 'enumerize operand ' do
     let(:query_params) { 'FOO' }
     subject { StorySearch.new(project.stories, query_params) }
-    it { expect(subject).to enumerize(:operand).in( :title,
-                                                    :state,
-                                                    :labels,
-                                                    :estimate,
-                                                    :created_at,
-                                                    :story_type,
-                                                    :release_date,
-                                                    :owned_by_initials,
-                                                    :owned_by_name,
-                                                    :requested_by_name) }
+    it 'should define enumerize :operand' do
+      expect(subject).to enumerize(:operand).in(  :title,
+                                                  :state,
+                                                  :labels,
+                                                  :estimate,
+                                                  :created_at,
+                                                  :story_type,
+                                                  :release_date,
+                                                  :owned_by_initials,
+                                                  :owned_by_name,
+                                                  :requested_by_name)
+    end
   end
+
   describe 'simple query' do
     let(:query_params) { 'FOO' }
     subject { StorySearch.new(project.stories, query_params) }
@@ -85,25 +88,38 @@ describe StorySearch do
       expect(StorySearch.new(project.stories, 'abc').search_labels).to eq([@story3, @story4])
     end
 
-    context 'search with labels' do
-      describe 'right labels' do
-        it 'one label' do
-          expect(StorySearch.new(project.stories, 'title: HELL').search).to eq([@story1, @story3])
-        end
+    describe 'when try do the search with valid labels' do
+      context 'when the single label used is valid' do
+        subject { StorySearch.new(project.stories, 'title: HELL') }
 
-        subject(:search) { StorySearch.new(project.stories, 'title: HELL, labels: foo').search }
-        it 'two labels' do
-          expect(search).to eq([@story1])
+        it 'should returns array with HELL and HELLO stories' do
+          expect(subject.search).to eq([@story1, @story3])
         end
       end
 
-      describe 'wrong labels' do
-        it 'one label' do
-          expect(StorySearch.new(project.stories, 'wrong: HELL').search).to eq([])
-        end
+      context 'when all labels used are valid' do
+        subject { StorySearch.new(project.stories, 'title: HELL, labels: foo') }
 
-        it 'one right label and one wrong label' do
-          expect(StorySearch.new(project.stories, 'title: HELL, wrong: WOR').search).to eq([])
+        it 'should returns HELL story' do
+          expect(subject.search).to eq([@story1])
+        end
+      end
+    end
+
+    describe 'when try do the search with wrong labels' do
+      context 'when the single label used is invalid' do
+        subject { StorySearch.new(project.stories, 'wrong: HELL') }
+
+        it 'should returns empty array' do
+          expect(subject.search).to eq([])
+        end
+      end
+
+      context 'when one of the labels are valid and the other is invalid' do
+        subject { StorySearch.new(project.stories, 'title: HELL, wrong: WOR') }
+
+        it 'should returns empty array' do
+          expect(subject.search).to eq([])
         end
       end
     end
