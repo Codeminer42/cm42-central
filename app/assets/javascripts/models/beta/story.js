@@ -54,10 +54,14 @@ export const isAccepted = story => {
   return story.state === status.ACCEPTED;
 };
 
-export const totalPoints = stories => 
+export const totalPoints = stories =>
   stories.reduce((total, current) => total + getPoints(current), 0)
 
 export const isHighlighted = story => Boolean(story.highlighted)
+
+export const isStoryDisabled = ({ status }) =>  status === 'DISABLED';
+
+export const isStoryLoaded = ({ status }) => status === 'LOADED';
 
 export const getPoints = story =>
   isFeature(story)
@@ -84,7 +88,7 @@ export const releaseIsLate = (story) => {
   return today > releaseDate;
 }
 
-export const possibleStatesFor = story => 
+export const possibleStatesFor = story =>
   isUnestimatedFeature(story._editing) ? [states[0]] : states;
 
 export const types = ['feature', 'bug', 'release', 'chore'];
@@ -156,14 +160,14 @@ export const toggleStory = (story) => {
   };
 };
 
-const isUnstartedState = (story, newAttributes) => 
+const isUnstartedState = (story, newAttributes) =>
   !hasEstimate(story) && hasEstimate(newAttributes)
 
-const isUnscheduledState = (story, newAttributes) => 
+const isUnscheduledState = (story, newAttributes) =>
   (
     isFeature(story._editing) && (
       isChangingWithoutEstimate(story, newAttributes) ||
-      hasNilProp(newAttributes, 'estimate') || 
+      hasNilProp(newAttributes, 'estimate') ||
       isChangingToUnscheduled(story, newAttributes) ||
       isUnscheduled(newAttributes)
     )
@@ -180,21 +184,21 @@ const stateFor = (story, newAttributes, newStory) => {
 
   if (isUnstartedState(story._editing, newAttributes)) return UNSTARTED;
   if (isUnscheduledState(story, newAttributes)) return UNSCHEDULED;
-  
+
   return newStory.state;
 }
 
 const estimateFor = (story, newAttributes, newStory) => {
   if (isNoEstimated(story, newAttributes) || isUnscheduledState(story, newAttributes)) return '';
   if (isFeature(newAttributes) && !isUnscheduled(story._editing)) return 1;
-  
+
   return newStory.estimate;
 }
 
 const isEstimable = isFeature
 
-const isNoEstimated = (story, newAttributes) => 
-  (!isEstimable(story._editing) && !has(newAttributes, 'storyType')) || 
+const isNoEstimated = (story, newAttributes) =>
+  (!isEstimable(story._editing) && !has(newAttributes, 'storyType')) ||
   (!isEstimable(newAttributes) && has(newAttributes, 'storyType'))
 
 const hasEstimate = story => Boolean(story.estimate);
@@ -308,7 +312,7 @@ export const createNewStory = (stories, storyAttributes) => {
   };
 };
 
-export const withScope = (stories, from) => 
+export const withScope = (stories, from) =>
   Boolean(from) ? stories[from] : stories[storyScopes.ALL];
 
 export const isSearch = from => from === storyScopes.SEARCH;

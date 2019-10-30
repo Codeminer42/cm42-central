@@ -211,7 +211,7 @@ describe('Story Actions', () => {
     const story = storyFactory();
     const updatedStory = { ...story, position: 3.54 };
 
-    it('calls Story.dragDropStory with new position', async () => {
+    it('calls Story.updateStorySuccess with new position', async () => {
       const FakeStory = {
         findById: sinon.stub().returns(updatedStory),
         update: sinon.stub().resolves(updatedStory),
@@ -231,7 +231,7 @@ describe('Story Actions', () => {
       expect(fakeDispatch).toHaveBeenCalledWith(Story.updateStorySuccess(updatedStory));
     });
 
-    it('dispatches storyFailure when promise fails', async () => {
+    describe('when promise fails', () => {
       const error = { error: "boom" };
 
       const FakeStory = {
@@ -241,17 +241,28 @@ describe('Story Actions', () => {
         withScope: sinon.stub().returns([story])
       };
 
-      const fakeGetState = sinon.stub();
-      fakeGetState.returns({
+      const fakeGetState = sinon.stub().returns({
         stories: { all: [updatedStory] }
       });
 
       const fakeDispatch = sinon.stub().resolves({});
 
-      await Story.dragDropStory(story.id, story.projectId, { position: 3.54 })
-        (fakeDispatch, fakeGetState, { Story: FakeStory });
+      beforeEach(async () => {
+        await Story.dragDropStory(story.id, story.projectId, { position: 3.54 })
+          (fakeDispatch, fakeGetState, { Story: FakeStory });
+      });
 
-      expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(updatedStory.id, error));
+      it('dispatches storyFailure', () => {
+        expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(updatedStory.id, error));
+      });
+
+      it('dispatches sendErrorNotification', () => {
+        expect(fakeDispatch).toHaveBeenCalledWith(sendErrorNotification(...));
+      });
+
+      it('do not dispatch updateStorySuccess', () => {
+        expect(fakeDispatch).not.toHaveBeenCalledWith(Story.updateStorySuccess(...));
+      });
     });
   });
 

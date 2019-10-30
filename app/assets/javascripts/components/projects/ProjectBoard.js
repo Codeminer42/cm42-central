@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import {DndProvider} from "react-dnd"
+import { DndProvider } from "react-dnd"
 import HTML5Backend from "react-dnd-html5-backend"
 import { fetchProjectBoard } from "actions/projectBoard";
 import { fetchPastStories } from "actions/pastIterations";
@@ -10,11 +10,11 @@ import Sprints from "../stories/Sprints";
 import History from "../stories/History";
 import { getColumns } from "../../selectors/columns";
 import * as Columns from '../../models/beta/column';
-import { createStory, closeHistory, dragDropStory} from '../../actions/story';
+import { createStory, closeHistory } from '../../actions/story';
 import AddStoryButton from '../story/AddStoryButton';
 import * as Story from 'libs/beta/constants';
 import PropTypes from 'prop-types';
-import { storyPropTypesShape } from '../../models/beta/story';
+import { storyPropTypesShape, isStoryLoaded, isStoryDisabled } from '../../models/beta/story';
 import { projectBoardPropTypesShape } from '../../models/beta/projectBoard';
 import Notifications from '../Notifications';
 import { removeNotification } from '../../actions/notifications';
@@ -26,28 +26,29 @@ class ProjectBoard extends React.Component {
     this.props.fetchProjectBoard(this.props.projectId);
   }
 
-  onAddStory = (status) => {
+  onAddStory = (status) => () => {
     const {createStory} = this.props;
+
     return createStory({status});
   }
 
   renderColumnAction = (status) =>
-    <AddStoryButton onAdd={() => this.onAddStory(status)}/>
+    <AddStoryButton onAdd={this.onAddStory(status)}/>
 
 
-  getColumnTitle = () => {
-    const {history} = this.props;
+  get columnTitle() {
+    const { history } = this.props;
     return [I18n.t("projects.show.history"), "'", history.storyTitle, "'"].join(' ');
   }
 
   renderHistory = () => {
     const { history, closeHistory} = this.props;
-    history.status !== 'DISABLED' &&
+    isStoryDisabled(history) &&
     <Column
       onClose={closeHistory}
-      title={() => this.getColumnTitle()}
+      title={() => this.columnTitle()}
     >
-      { history.status === 'LOADED'
+      { isStoryLoaded(history)
         ? <History history={history.activities} />
         : <div className="loading">Loading...</div>
       }
@@ -56,7 +57,7 @@ class ProjectBoard extends React.Component {
 
   render() {
     if (!this.props.projectBoard.isFetched) {
-      return <b>Loading</b>;
+      return <b>{I18n.t('loading')}</b>;
     }
 
     const {
@@ -155,8 +156,7 @@ const mapDispatchToProps = {
   createStory,
   closeHistory,
   fetchPastStories,
-  removeNotification,
-  dragDropStory
+  removeNotification
 };
 
 export default connect(

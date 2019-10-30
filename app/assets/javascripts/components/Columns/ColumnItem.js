@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDrop } from 'react-dnd';
 import PropTypes from 'prop-types'
+import { isChillyBin } from '../../models/beta/column';
 
 const type = {
   story: 'STORY'
@@ -37,7 +38,7 @@ const Column = ({
           </button>
         </div>
       </div>
-      <div data-cy={column==='chillyBin' ? column : null} className="Column__body">{children}</div>
+      <div data-cy={isChillyBin(column) ? column : null} className="Column__body">{children}</div>
     </div>
   );
 }
