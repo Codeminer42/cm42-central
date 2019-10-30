@@ -8,7 +8,6 @@ import { getColumns } from "../../selectors/columns";
 import { CHILLY_BIN, DONE, BACKLOG } from '../../models/beta/column';
 import { canCloseColumn } from '../../models/beta/projectBoard';
 import { createStory, closeHistory, dragDropStory } from '../../actions/story';
-import AddStoryButton from '../story/AddStoryButton';
 import { status, historyStatus } from 'libs/beta/constants';
 import PropTypes from 'prop-types';
 import StoryPropTypes from '../shapes/story';
@@ -34,18 +33,16 @@ export const ProjectBoard = ({
   history,
   chillyBinStories,
   backlogSprints,
-  doneSprints,
-  fetchPastStories,
   toggleColumn,
   reverseColumns
 }) => {
-  useEffect(() => {
-    fetchProjectBoard(projectId)
-  }, [fetchProjectBoard, projectId]);
-
   if (!projectBoard.isFetched) {
     return <ProjectLoading data-id="project-loading" />;
   }
+
+  useEffect(() => {
+    fetchProjectBoard(projectId)
+  }, [fetchProjectBoard, projectId]);
 
   const calculatePosition = (aboveStory, bellowStory) => {
     if (bellowStory === undefined) return (Number(aboveStory.position) + 1)
@@ -67,7 +64,7 @@ export const ProjectBoard = ({
 
   const getState = column => column === 'chillyBin' ? status.UNSCHEDULED : status.UNSTARTED
 
-  const isSameColumn = (sourceColumn, destinationColumn) => sourceColumn === destinationColumn
+  const isSameColumn = (sourceColumn, destinationColumn) => sourceColumn === destinationColumn;
 
   const onDragEnd = result => {
     const { destination, source } = result;
@@ -91,10 +88,11 @@ export const ProjectBoard = ({
       return dragDropStory(dragStory.id, dragStory.projectId, { position: newPosition });
     }
 
-    const newState = getNewState(isSameColumn, dropColumn, dragStory.state);
+    // Moving to a different column
+    const newState = getState(destination.droppableId);
     return dragDropStory(dragStory.id, dragStory.projectId, { position: newPosition, state: newState });
   }
-
+  
   const sideBarButtons = [
     {
       description: I18n.t('revert_columns_tooltip'),
