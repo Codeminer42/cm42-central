@@ -1,3 +1,8 @@
+import { useDrag, useDrop } from 'react-dnd';
+import { useRef } from 'react';
+import { isNotDone } from './column';
+import * as Story from './story';
+
 export const type = {
   story: 'STORY'
 }
@@ -40,7 +45,61 @@ export const canChangePosition = (ref, monitor, storySource, hoverIndex, newPosi
     storySource.index === hoverIndex ||
     checkStoryPosition(ref, storySource.index, hoverIndex, monitor)
 
-    export const canChangeColumn = (state, column) =>
+export const canChangeColumn = (state, column) =>
   (state === 'unscheduled' || state === 'unstarted') && column !== 'done';
 
-  export const isADropTarget = (monitor) => !monitor.getDropResult()
+export const isADropTarget = (monitor) => !monitor.getDropResult()
+
+export const DragDropRefs = (dragDropStory, index, stories, column, story) => {
+  const ref = useRef(null);
+  const [, drop] = useDrop({
+    accept: type.story,
+    canDrop() {
+      return isNotDone(column);
+    },
+    hover(item, monitor) {
+      const storySource = monitor.getItem();
+      const hoverIndex = index
+      const storiesArray = storySource.stories;
+
+      if (storySource.column !== column){
+        return true
+      };
+
+      const newPosition = getNewPosition(item, story, storiesArray, index);
+
+      if (canChangePosition(ref, monitor, storySource, hoverIndex, newPosition)) {
+        return true;
+      }
+
+      dragDropStory(storySource.id, {
+        position: newPosition
+      })
+    }
+  })
+
+  const [{ isDragging }, drag] = useDrag({
+    item: { type: type.story, ...story, index, stories, column},
+    collect: monitor => ({
+      isDragging: monitor.isDragging(),
+    }),
+    canDrag() {
+      return story.state !== "accepted";
+    },
+    begin() {
+      return { ...story, index, stories, column }
+    },
+    end(item, monitor) {
+      if(isADropTarget(monitor)) return null;
+      const {state, column} = monitor.getDropResult();
+
+      if (canChangeColumn(state, column) && !Story.isUnestimatedFeature(story)) {
+        dragDropStory(item.id, {
+          state: column === 'backlog' ? 'unstarted' : 'unscheduled'
+        });
+      }
+    }
+  })
+
+  return [drag(drop(ref)), isDragging];
+}

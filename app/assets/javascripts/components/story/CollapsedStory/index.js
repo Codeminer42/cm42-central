@@ -1,6 +1,5 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import classname from 'classnames';
-import { useDrag, useDrop } from 'react-dnd';
 import StoryPopover from '../StoryPopover';
 import StoryDescriptionIcon from '../StoryDescriptionIcon';
 import CollapsedStoryEstimate from './CollapsedStoryEstimate';
@@ -13,10 +12,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CollapsedStoryFocusButon from './CollapsedStoryFocusButton';
 import { storyPropTypesShape } from './../../../models/beta/story';
-import { isDone } from '../../../models/beta/column';
-import { getNewPosition, canChangePosition, isADropTarget, canChangeColumn, type } from '../../../models/beta/dragDrop';
+import { DragDropRefs } from '../../../models/beta/dragDrop';
 
-const storyClassName = (story, additionalClassname = '') => {
+const storyClassName = (story, additionalClassname = '', isDragging) => {
   const isStoryNotEstimated = Story.isStoryNotEstimated(
     story.storyType,
     story.estimate
@@ -28,7 +26,8 @@ const storyClassName = (story, additionalClassname = '') => {
     {
       'Story--release': isRelease,
       'Story--unestimated': isStoryNotEstimated,
-      'Story--estimated': !isStoryNotEstimated
+      'Story--estimated': !isStoryNotEstimated,
+      'Story--isDragging': isDragging
     },
     additionalClassname
   )
@@ -37,8 +36,8 @@ const storyClassName = (story, additionalClassname = '') => {
 export const CollapsedStory = ({
   onToggle,
   story,
-  dragDropStory,
   project,
+  dragDropStory,
   className,
   title,
   index,
@@ -48,64 +47,13 @@ export const CollapsedStory = ({
   highlight,
   isHighlightable
 }) => {
-  const ref = useRef(null)
-  const [, drop] = useDrop({
-    accept: type.story,
-    canDrop() {
-      return isDone(column);
-    },
-    hover(item, monitor) {
-      const storySource = monitor.getItem();
-      const hoverIndex = index
-      const storiesArray = storySource.stories;
-
-      if (storySource.column !== column){
-        return true
-      };
-
-      const newPosition = getNewPosition(item, story, storiesArray, index);
-
-      if (canChangePosition(ref, monitor, storySource, hoverIndex, newPosition)) {
-        return true;
-      }
-
-      dragDropStory(storySource.id, {
-        position: newPosition
-      })
-    }
-  })
-  const [{ isDragging }, drag] = useDrag({
-    item: { type: type.story, ...story, index, stories, column},
-    collect: monitor => ({
-      isDragging: monitor.isDragging(),
-    }),
-    canDrag() {
-      return story.state !== "accepted";
-    },
-    begin() {
-      return { ...story, index, stories, column }
-    },
-    end(item, monitor) {
-      if(isADropTarget(monitor)) return null;
-      const {state, column} = monitor.getDropResult();
-
-      if (canChangeColumn(state, column) && !Story.isUnestimatedFeature(story)) {
-        dragDropStory(item.id, {
-          state: column === 'backlog' ? 'unstarted' : 'unscheduled'
-        });
-      }
-    }
-  })
-  drag(drop(ref))
+  const [ref, isDragging] = DragDropRefs(dragDropStory, index, stories, column, story);
   return (
     <div
       ref={ref}
-      className={storyClassName(story, className)}
+      className={storyClassName(story, className, isDragging)}
       onClick={onToggle}
       title={title}
-      style={{
-        opacity: isDragging ? 0 : 1
-      }}
     >
       <StoryPopover story={story}>
         <div className="Story__icons-block">

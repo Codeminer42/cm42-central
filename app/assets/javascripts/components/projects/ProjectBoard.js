@@ -46,7 +46,7 @@ class ProjectBoard extends React.Component {
     isStoryDisabled(history) &&
     <Column
       onClose={closeHistory}
-      title={() => this.columnTitle()}
+      title={this.columnTitle}
     >
       { isStoryLoaded(history)
         ? <History history={history.activities} />

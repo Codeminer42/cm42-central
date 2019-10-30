@@ -257,11 +257,11 @@ describe('Story Actions', () => {
       });
 
       it('dispatches sendErrorNotification', () => {
-        expect(fakeDispatch).toHaveBeenCalledWith(sendErrorNotification(...));
+        expect(fakeDispatch).toHaveBeenCalledWith(sendErrorNotification(error));
       });
 
       it('do not dispatch updateStorySuccess', () => {
-        expect(fakeDispatch).not.toHaveBeenCalledWith(Story.updateStorySuccess(...));
+        expect(fakeDispatch).not.toHaveBeenCalledWith(Story.updateStorySuccess(updatedStory));
       });
     });
   });

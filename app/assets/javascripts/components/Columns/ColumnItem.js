@@ -2,10 +2,7 @@ import React from 'react'
 import { useDrop } from 'react-dnd';
 import PropTypes from 'prop-types'
 import { isChillyBin } from '../../models/beta/column';
-
-const type = {
-  story: 'STORY'
-}
+import { type } from '../../models/beta/dragDrop';
 
 const Column = ({
   title,

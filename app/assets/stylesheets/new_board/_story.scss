@@ -50,6 +50,10 @@
         }
       }
 
+      &.Story--isDragging {
+        opacity: 0;
+      }
+
       .Story {
         &__description-icon {
           display: flex;
@@ -369,7 +373,7 @@
             @extend .btn-default;
             @extend .btn-xs;
           }
-          
+
           .infoToolTip {
             height: 22px;
             cursor: default;
