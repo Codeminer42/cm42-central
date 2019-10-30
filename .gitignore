@@ -3,6 +3,7 @@ config/cloudinary.yml
 .bundle
 db/*.sqlite3
 *.log
+log/
 tmp/
 .rvmrc
 .ruby-version

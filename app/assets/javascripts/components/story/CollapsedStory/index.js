@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CollapsedStoryFocusButon from './CollapsedStoryFocusButton';
 import StoryPropTypes from '../../shapes/story';
+import { Draggable } from 'react-beautiful-dnd'
 
 const storyClassName = (story, additionalClassname = '') => {
   const isStoryNotEstimated = Story.isStoryNotEstimated(story.storyType, story.estimate);
@@ -28,57 +29,66 @@ const storyClassName = (story, additionalClassname = '') => {
   );
 };
 
-export const CollapsedStory = ({ 
-  onToggle, 
-  story, 
-  updateCollapsedStory, 
-  project, 
-  className, 
-  title, 
-  highlight, 
-  isHighlightable 
+export const CollapsedStory = ({
+  onToggle,
+  story,
+  updateCollapsedStory,
+  project,
+  className,
+  title,
+  highlight,
+  isHighlightable,
+  index
 }) =>
-  <div
-    className={storyClassName(story, className)}
-    onClick={onToggle}
-    title={title}
-  >
-    <StoryPopover story={story}>
-      <div className='Story__icons-block'>
-        <StoryIcon storyType={story.storyType} />
-        <CollapsedStoryEstimate estimate={story.estimate} />
-        <StoryDescriptionIcon description={story.description} />
+  <Draggable draggableId={story.id.toString()} index={index} isDragDisabled={story.state === 'accepted'}>
+    {provided => (
+      <div
+        className={storyClassName(story, className)}
+        onClick={onToggle}
+        title={title}
+        {...provided.draggableProps}
+        {...provided.dragHandleProps}
+        ref={provided.innerRef}
+      >
+        <StoryPopover story={story}>
+          <div className='Story__icons-block'>
+            <StoryIcon storyType={story.storyType} />
+            <CollapsedStoryEstimate estimate={story.estimate} />
+            <StoryDescriptionIcon description={story.description} />
+          </div>
+        </StoryPopover>
+
+        <CollapsedStoryInfo story={story} />
+
+        <CollapsedStoryStateActions story={story}
+          onUpdate={(newAttributes) =>
+            updateCollapsedStory(story.id, project.id, newAttributes)}
+        />
+        {
+          isHighlightable &&
+          <CollapsedStoryFocusButon onClick={() => highlight(story.id)} />
+        }
       </div>
-    </StoryPopover>
+    )}
+  </Draggable >
 
-    <CollapsedStoryInfo story={story} />
-
-    <CollapsedStoryStateActions story={story}
-      onUpdate={(newAttributes) =>
-        updateCollapsedStory(story.id, project.id, newAttributes)}
-    />
-    {
-      isHighlightable && 
-      <CollapsedStoryFocusButon onClick={() => highlight(story.id)} />
-    }
-  </div>
 
 CollapsedStory.propTypes = {
   story: StoryPropTypes,
   onToggle: PropTypes.func.isRequired,
   title: PropTypes.string,
   className: PropTypes.string,
-  from: PropTypes.string, 
+  from: PropTypes.string,
   highlight: PropTypes.func
 };
 
-const mapStateToProps = ({ 
-  project, 
+const mapStateToProps = ({
+  project,
   stories
-}, props) => ({ 
-  project, 
+}, props) => ({
+  project,
   stories,
-  isHighlightable: Story.haveHighlightButton(Story.withScope(stories), props.story, props.from) 
+  isHighlightable: Story.haveHighlightButton(Story.withScope(stories), props.story, props.from)
 });
 
 const mapDispatchToProps = { updateCollapsedStory, highlight }

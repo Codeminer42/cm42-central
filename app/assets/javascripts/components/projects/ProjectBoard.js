@@ -7,7 +7,7 @@ import History from "../stories/History";
 import { getColumns } from "../../selectors/columns";
 import { CHILLY_BIN, DONE, BACKLOG } from '../../models/beta/column';
 import { canCloseColumn } from '../../models/beta/projectBoard';
-import { createStory, closeHistory } from '../../actions/story';
+import { createStory, closeHistory, dragDropStory } from '../../actions/story';
 import AddStoryButton from '../story/AddStoryButton';
 import { status, historyStatus } from 'libs/beta/constants';
 import PropTypes from 'prop-types';
@@ -21,8 +21,7 @@ import SearchResults from './../search/SearchResults';
 import ProjectLoading from './ProjectLoading';
 import SideBar from './SideBar';
 import Columns from '../Columns';
-import Stories from "../stories/Stories";
-import Sprints from "../stories/Sprints";
+import { DragDropContext } from 'react-beautiful-dnd';
 
 export const ProjectBoard = ({
   fetchProjectBoard,
@@ -48,38 +47,53 @@ export const ProjectBoard = ({
     return <ProjectLoading data-id="project-loading" />;
   }
 
-  const columns = [
-    {
-      title: I18n.t("projects.show.chilly_bin"),
-      renderAction: () =>
-        <AddStoryButton
-          onAdd={() => createStory({
-            state: status.UNSCHEDULED
-          })}
-        />,
-      children: <Stories stories={chillyBinStories} />,
-      visible: projectBoard.visibleColumns.chillyBin,
-      onClose: () => toggleColumn('chillyBin')
-    },
-    {
-      title: `${I18n.t("projects.show.backlog")} / ${I18n.t("projects.show.in_progress")}`,
-      renderAction: () =>
-        <AddStoryButton
-          onAdd={() => createStory({
-            state: status.UNSTARTED
-          })}
-        />,
-      children: <Sprints sprints={backlogSprints} />,
-      visible: projectBoard.visibleColumns.backlog,
-      onClose: () => toggleColumn('backlog')
-    },
-    {
-      title: I18n.t("projects.show.done"),
-      children: <Sprints sprints={doneSprints} fetchStories={fetchPastStories} />,
-      visible: projectBoard.visibleColumns.done,
-      onClose: () => toggleColumn('done')
+  const calculatePosition = (aboveStory, bellowStory) => {
+    if (bellowStory === undefined) return (Number(aboveStory.position) + 1)
+    if (aboveStory === undefined) return (Number(bellowStory.position) - 1);
+    return (Number(bellowStory.position) + Number(aboveStory.position)) / 2;
+  }
+
+  const getNewPosition = (destinatitonIndex, sourceIndex, storiesArray, isSameColumn) => {
+    if (!isSameColumn) {
+      return calculatePosition(storiesArray[destinatitonIndex - 1], storiesArray[destinatitonIndex])
     }
-  ];
+    if (sourceIndex > destinatitonIndex) {
+      return calculatePosition(storiesArray[destinatitonIndex - 1], storiesArray[destinatitonIndex]);
+    }
+    return calculatePosition(storiesArray[destinatitonIndex], storiesArray[destinatitonIndex + 1]);
+  }
+
+  const getArray = column => column === 'chillyBin' ? chillyBinStories : backlogSprints[0].stories;
+
+  const getState = column => column === 'chillyBin' ? status.UNSCHEDULED : status.UNSTARTED
+
+  const isSameColumn = (sourceColumn, destinationColumn) => sourceColumn === destinationColumn
+
+  const onDragEnd = result => {
+    const { destination, source } = result;
+    const destinationArray = getArray(destination.droppableId); // stories of destination column
+    const sourceArray = getArray(source.droppableId); // stories of source column
+    const isSameColumn = isSameColumn(source.droppableId, destination.droppableId);
+    const dragStory = sourceArray[source.index];
+
+    if (!destination) {
+      return;
+    }
+
+    if (isSameColumn && source.index === destination.index) {
+      return;
+    }
+
+    const newPosition = getNewPosition(destination.index, source.index, destinationArray, isSameColumn);
+
+    // Moving to same column
+    if (isSameColumn) {
+      return dragDropStory(dragStory.id, dragStory.projectId, { position: newPosition });
+    }
+
+    const newState = getNewState(isSameColumn, dropColumn, dragStory.state);
+    return dragDropStory(dragStory.id, dragStory.projectId, { position: newPosition, state: newState });
+  }
 
   const sideBarButtons = [
     {
@@ -112,43 +126,46 @@ export const ProjectBoard = ({
     }
   ];
 
-    const columnProps = {
-      'data-id': projectBoard.reverse ? 'reversed-column' : 'normal-column',
-      columns: projectBoard.reverse ? columns.reverse() : columns
-    };
+  const columnProps = {
+    'data-id': projectBoard.reverse ? 'reversed-column' : 'normal-column',
+    columns: projectBoard.reverse ? columns.reverse() : columns
+  };
 
   return (
-    <div className="ProjectBoard">
-      <SprintVelocitySimulation />
+    <DragDropContext onDragEnd={onDragEnd}>
+      <div className="ProjectBoard">
+        <SprintVelocitySimulation />
 
-      <StorySearch projectId={projectId} loading={projectBoard.search.loading} />
+        <StorySearch projectId={projectId} loading={projectBoard.search.loading} />
 
-      <SideBar data-id="side-bar" buttons={sideBarButtons} />
+        <SideBar data-id="side-bar" buttons={sideBarButtons} />
 
-      <Notifications
-        notifications={notifications}
-        onRemove={removeNotification}
-        data-id="notifications"
-      />
+        <Notifications
+          notifications={notifications}
+          onRemove={removeNotification}
+          data-id="notifications"
+        />
 
-      <Columns {...columnProps} canCloseColumn={canCloseColumn(projectBoard)} />
+        <Columns {...columnProps} canClose={canCloseColumn(projectBoard)} />
 
-      <SearchResults />
+        <SearchResults />
 
-      {
-        history.status !== historyStatus.DISABLED &&
-          <Column
-            onClose={closeHistory}
-            title={`${I18n.t('projects.show.history')} '${history.storyTitle}'`}
-            data-id="history-column"
-          >
-            { history.status === historyStatus.LOADED
-              ? <History history={history.activities} data-id="history" />
-              : <ProjectLoading data-id="project-loading" />
-            }
-          </Column>
-      }
-    </div>
+        {
+          history.status !== historyStatus.DISABLED &&
+            <Column
+              onClose={closeHistory}
+              title={`${I18n.t('projects.show.history')} '${history.storyTitle}'`}
+              data-id="history-column"
+              canClose
+            >
+              { history.status === historyStatus.LOADED
+                ? <History history={history.activities} data-id="history" />
+                : <ProjectLoading data-id="project-loading" />
+              }
+            </Column>
+        }
+      </div>
+    </DragDropContext>
   );
 }
 
@@ -198,6 +215,7 @@ const mapStateToProps = ({
     pastIterations,
     stories
   }),
+  stories,
   notifications
 });
 
@@ -209,6 +227,7 @@ const mapDispatchToProps = {
   fetchPastStories,
   removeNotification,
   reverseColumns,
+  dragDropStory
 };
 
 export default connect(

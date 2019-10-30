@@ -20,7 +20,8 @@ export const StoryItem = ({ story, toggleStory, from }) => {
     onToggle: () => toggleStory(story.id, from),
     className,
     title,
-    from
+    from,
+    index
   }
 
   return (

@@ -10,8 +10,8 @@ const Stories = ({ stories, from }) => {
 
   return (
     <Fragment>
-      {stories.map(story => (
-        <StoryItem key={story.id} story={story} from={from} />
+      {stories.map((story, index) => (
+        <StoryItem key={story.id} story={story} from={from} index={index} />
       ))}
     </Fragment>
   );

@@ -149,6 +149,23 @@ export const updateCollapsedStory = (storyId, projectId, newAttributes, from) =>
     });
   }
 
+export const dragDropStory = (storyId, projectId, newAttributes, from) =>
+  async (dispatch, getState, { Story }) => {
+    const { stories } = getState();
+    const story = Story.findById(Story.withScope(stories, from), storyId);
+
+    const newStory = { ...story, ...newAttributes };
+
+    try {
+      const updatedStory = await Story.update(newStory, projectId);
+      return dispatch(updateStorySuccess(updatedStory, from))
+    }
+    catch (error) {
+      dispatch(sendErrorNotification(error))
+      return dispatch(storyFailure(story.id, error, from))
+    }
+  }
+
 export const saveStory = (storyId, projectId, from, options) =>
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
