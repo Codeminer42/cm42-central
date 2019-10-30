@@ -53,14 +53,5 @@ describe Beta::ProjectBoardOperations do
         end
       end
     end
-
-    describe 'when the project does not exist' do
-      let(:user)    { create :user }
-      let(:project) { create :project, users: [user] }
-
-      subject(:result) { Beta::ProjectBoardOperations::Read.call(user, nil) }
-      it { expect(result).not_to be_successful }
-      it { expect(result.error).to be_a ActiveRecord::RecordNotFound }
-    end
   end
 end

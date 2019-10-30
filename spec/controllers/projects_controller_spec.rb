@@ -174,19 +174,30 @@ describe ProjectsController do
         end
 
         describe '#show' do
+          let(:invalid_project) { -1 }
           context 'as html' do
             specify do
-              get :show, params: {id: project.id }
+              get :show, params: { id: project.id }
+
               expect(response).to be_successful
               expect(assigns[:project]).to eq(project)
               expect(assigns[:story].new_record?).to be_truthy
               expect(assigns[:story].project).to eq(project)
+            end
+
+            context 'when the project does not exists' do
+              it 'should not be successful' do
+                get :show, params: { id: invalid_project }
+
+                expect(response).not_to be_successful
+              end
             end
           end
 
           context 'as json' do
             specify do
               get :show, xhr: true, params: { id: project.id }
+
               expect(response).to be_successful
               expect(assigns[:project]).to eq(project)
               expect(assigns[:story].new_record?).to be_truthy
@@ -237,6 +248,21 @@ describe ProjectsController do
               get :show, params: { id: third_project }
               expect(session[:current_team_slug]).to eq(new_team.slug)
               expect(response).to have_http_status(:found)
+            end
+
+            describe 'admin can access any project from your team' do
+              let(:empty_project) { create :project }
+
+              before do
+                team.projects << empty_project
+              end
+
+              specify do
+                get :show, params: { id: empty_project }
+
+                expect(session[:current_team_slug]).to eq(team.slug)
+                expect(response).to have_http_status(:ok)
+              end
             end
           end
         end

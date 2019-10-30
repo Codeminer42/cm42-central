@@ -6,7 +6,7 @@ class Beta::ProjectBoardsController < ApplicationController
 
     result = Beta::ProjectBoardOperations::Read.call(
       current_user,
-      update_project(params[:id]),
+      project,
       current_flow: cookies[:current_flow]
     )
 
@@ -14,6 +14,10 @@ class Beta::ProjectBoardsController < ApplicationController
   end
 
   private
+
+  def project
+    @project ||= policy_scope(Project).friendly.find(params[:id])
+  end
 
   def set_fluid_layout
     @layout_settings[:fluid] = true

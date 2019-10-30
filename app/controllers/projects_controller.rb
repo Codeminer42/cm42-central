@@ -12,7 +12,10 @@ class ProjectsController < ApplicationController
   def index
     @projects = {}
 
-    projects_joined = policy_scope(Project).preload(:tag_group)
+    projects_joined = policy_scope(Project)
+                      .joins(:teams)
+                      .where(teams: { id: current_team })
+                      .preload(:tag_group)
 
     @projects = {
       joined: serialize_from_collection(projects_joined)
@@ -246,7 +249,9 @@ class ProjectsController < ApplicationController
   end
 
   def set_project
-    @project = ProjectPolicy::Scope.new(pundit_user, @current_user).show_project(params[:id])
+    @project =  policy_scope(Project)
+                .friendly
+                .find(params[:id])
     authorize @project
   end
 

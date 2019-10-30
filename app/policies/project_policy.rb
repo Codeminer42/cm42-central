@@ -33,30 +33,20 @@ class ProjectPolicy < ApplicationPolicy
   alias ownership? share?
 
   class Scope < Scope
-    def show_project(project_id)
-      project = Project.friendly.find(project_id)
-      if root?
-        project
-      elsif admin? && check_project(project_id)
-        project
-      else
-        current_user.projects.friendly.find(project_id)
-      end
-    end
-
-    def check_project(param)
-      list = current_user.teams.map(&:projects).flatten | current_user.projects
-      list.pluck(:slug).include?(param) || list.pluck(:id).include?(param.to_i)
+    def permitted_project_ids
+      teams_projects = current_user.teams.map(&:projects).flatten.pluck(:id)
+      user_projects  = current_user.projects.pluck(:id)
+      teams_projects | user_projects
     end
 
     def resolve
       if root?
         Project.all
       elsif admin?
-        current_team.projects
+        Project.where(id: permitted_project_ids)
       else
         return Project.none unless current_team
-        current_user.projects.not_archived.where(id: current_team.projects.pluck(:id))
+        current_user.projects.not_archived
       end
     end
   end

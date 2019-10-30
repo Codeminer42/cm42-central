@@ -6,7 +6,10 @@ module TopbarHelper
   end
 
   def topbar_projects
-    scope = ProjectPolicy::Scope.new(pundit_user, Project).resolve
+    scope = policy_scope(Project)
+            .joins(:teams)
+            .where(teams: { id: current_team })
+            .preload(:tag_group)
     scope.not_archived.order(:name).each do |project|
       yield project
     end

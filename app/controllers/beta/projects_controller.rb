@@ -4,7 +4,7 @@ class Beta::ProjectsController < ApplicationController
   def show
     authorize current_user
     @project_id = params[:id]
-    update_project(params[:id])
+    @project = policy_scope(Project).friendly.find(@project_id)
     update_current_team
   end
 
