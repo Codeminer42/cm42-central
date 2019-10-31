@@ -33,7 +33,7 @@ describe('<StoryItem />', () => {
       const wrapper = shallow(<StoryItem story={story} />);
       const children = wrapper.find(ExpandedStory);
 
-      expect(children).toHaveProp('className', className);
+      expect(children.prop('className')).toContain(className);
     });
 
     it('put a late release message on childrens prop title', () => {
@@ -81,37 +81,33 @@ describe('<StoryItem />', () => {
     });
   });
 
+  const render = props => {
+    const wrapper = shallow(<StoryItem {...props} />);
+    const expandedStory = wrapper.find('[data-id="expanded-story"]');
+    return { wrapper, expandedStory };
+  }
+
   describe('when the story is accepted', () => {  
-    let children;
-
-    beforeEach(() => {
-      const story = storyFactory({
-        collapsed: false,
-        state: 'accepted'
-      });
-      const wrapper = shallow(<StoryItem story={story} />);
-      children = wrapper.find(ExpandedStory);
-    });
-
     it('puts .Story--accepted on childrens prop className', () => {
-      expect(children).toHaveProp('className', 'Story--accepted');
+      const { expandedStory } = render({
+        story: storyFactory({
+          collapsed: false,
+          state: 'accepted'
+        })
+      });
+      expect(expandedStory.prop('className')).toContain('Story--accepted');
     });
   });
 
   describe('when the story is not accepted', () => {
-    let children;
-
-    beforeEach(() => {
-      const story = storyFactory({
-        collapsed: false,
-        state: 'unscheduled'
-      });
-      const wrapper = shallow(<StoryItem story={story} />);
-      children = wrapper.find(ExpandedStory);
-    });
-
     it('does not put .Story--accepted on childrens prop className', () => {
-      expect(children).not.toHaveProp('className', 'Story--accepted');
+      const { expandedStory } = render({
+        story: storyFactory({
+          collapsed: false,
+          state: 'unscheduled'
+        })
+      });
+      expect(expandedStory.prop('className')).not.toContain('Story--accepted');
     });
   });
 });

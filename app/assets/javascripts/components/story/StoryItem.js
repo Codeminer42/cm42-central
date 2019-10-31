@@ -32,6 +32,7 @@ export const StoryItem = ({ story, toggleStory, from }) => {
           />
           : <ExpandedStory
             {...childProps}
+            data-id="expanded-story"
           />
       }
     </div>

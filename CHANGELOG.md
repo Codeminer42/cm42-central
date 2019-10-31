@@ -3,7 +3,7 @@
 ## [Unreleased]
 
 ### Changed
-- [ V2 ] When project is accepted has a different background color.
+- [ V2 ] When story is accepted it has a different background color.
 
 ### Added
 - [ V2 ] Spinner when project is loading.
@@ -23,7 +23,7 @@
 ## [2.3.0] 2019-10-08
 
 ### Changed
-- Reversed the order of done column sprints
+- [ V2 ] Reversed the order of done column sprints
 
 ### Fixed
 - [ V2 ] Remove redundant switch cases from the stories reducer.
