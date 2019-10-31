@@ -21,7 +21,7 @@ describe StoryOperations do
 
       Story::ESTIMABLE_TYPES.each do |story_type|
         context "a #{story_type} story" do
-          it 'keep story state unscheduled' do
+          it 'keeps the story state unscheduled' do
             story.attributes = { state: 'unscheduled', story_type: story_type, estimate: 1 }
             subject.call
             expect(story.state).to eq('unscheduled')
@@ -157,7 +157,7 @@ describe StoryOperations do
       context "when estimate #{story_type} story" do
         let(:params) { { 'estimate' => 1, 'story_type' => story_type, 'state' => 'unscheduled' } }
 
-        it 'keep story state unscheduled' do
+        it 'keeps the story state unscheduled' do
           story.state = 'unscheduled'
           subject.call
           expect(story.state).to eq('unscheduled')

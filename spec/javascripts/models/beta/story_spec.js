@@ -1280,7 +1280,7 @@ describe('Story model', function () {
     const { BUG, CHORE, RELEASE } = storyTypes;
     const { UNSTARTED, UNSCHEDULED } = status;
 
-    describe('when is feature', () => {
+    describe('when is a feature', () => {
       describe('and have no estimate', () => {
         const story = { _editing: { id: 1, storyType: storyTypes.FEATURE, estimate: '' } };
         const newAttributes = { state: UNSTARTED }
