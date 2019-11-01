@@ -14,7 +14,7 @@ import CollapsedStoryFocusButon from './CollapsedStoryFocusButton';
 import StoryPropTypes from '../../shapes/story';
 import { Draggable } from 'react-beautiful-dnd'
 
-const storyClassName = (story, additionalClassname = '') => {
+const storyClassName = (story, additionalClassname = '', isDragging) => {
   const isStoryNotEstimated = Story.isStoryNotEstimated(story.storyType, story.estimate);
   const isRelease = Story.isRelease(story);
 
@@ -23,7 +23,8 @@ const storyClassName = (story, additionalClassname = '') => {
     {
       'Story--release': isRelease,
       'Story--unestimated': isStoryNotEstimated,
-      'Story--estimated': !isStoryNotEstimated
+      'Story--estimated': !isStoryNotEstimated,
+      'Story--isDragging': isDragging
     },
     additionalClassname
   );
@@ -41,9 +42,9 @@ export const CollapsedStory = ({
   index
 }) =>
   <Draggable draggableId={story.id.toString()} index={index} isDragDisabled={story.state === 'accepted'}>
-    {provided => (
+    {(provided, snapshot) => (
       <div
-        className={storyClassName(story, className)}
+        className={storyClassName(story, className, snapshot.isDragging)}
         onClick={onToggle}
         title={title}
         {...provided.draggableProps}

@@ -67,31 +67,56 @@ export const toggleColumn = (projectBoard, column, callback) => {
 
 // Drag And drop utils
 const calculatePosition = (aboveStory, bellowStory) => {
-  if (bellowStory === undefined) return (Number(aboveStory.position) + 1);
-  if (aboveStory === undefined) return (Number(bellowStory.position) - 1);
+  if (bellowStory === undefined) return Number(aboveStory.position) + 1;
+  if (aboveStory === undefined) return Number(bellowStory.position) - 1;
   return (Number(bellowStory.position) + Number(aboveStory.position)) / 2;
-}
+};
 
-export const getNewPosition = (destinatitonIndex, sourceIndex, storiesArray, isSameColumn, storyType) => {
+export const getNewPosition = (
+  destinatitonIndex,
+  sourceIndex,
+  storiesArray,
+  isSameColumn,
+  storyType,
+) => {
   //TODO: remove this second condition later
   if (!isSameColumn && storyType !== 'feature') {
-    return calculatePosition(storiesArray[destinatitonIndex - 1], storiesArray[destinatitonIndex]);
+    return calculatePosition(
+      storiesArray[destinatitonIndex - 1],
+      storiesArray[destinatitonIndex],
+    );
   }
   if (sourceIndex > destinatitonIndex) {
-    return calculatePosition(storiesArray[destinatitonIndex - 1], storiesArray[destinatitonIndex]);
+    return calculatePosition(
+      storiesArray[destinatitonIndex - 1],
+      storiesArray[destinatitonIndex],
+    );
   }
-  return calculatePosition(storiesArray[destinatitonIndex], storiesArray[destinatitonIndex + 1]);
-}
+  return calculatePosition(
+    storiesArray[destinatitonIndex],
+    storiesArray[destinatitonIndex + 1],
+  );
+};
 
 // reorder the array
-export const moveTask = (sourceArray, destinationArray, sourceIndex, destinationIndex) => {
+export const moveTask = (
+  sourceArray,
+  destinationArray,
+  sourceIndex,
+  destinationIndex,
+) => {
   const newSourceArray = sourceArray;
   const [removed] = newSourceArray.splice(sourceIndex, 1);
   const newDestinationArray = destinationArray;
   newDestinationArray.splice(destinationIndex, 0, removed);
   return [...newDestinationArray];
-}
+};
 
-export const getNewSprints = (newStories, sprints) => sprints.map((sprint, index) => index === 0 ? { ...sprint, stories: newStories } : sprint);
+export const getNewSprints = (newStories, sprints) =>
+  sprints.map((sprint, index) =>
+    index === 0 ? { ...sprint, stories: newStories } : sprint,
+  );
 
-export const getNewState = column => column === 'chillyBin' ? status.UNSCHEDULED : status.UNSTARTED;
+
+export const getNewState = column =>
+  column === 'chillyBin' ? status.UNSCHEDULED : status.UNSTARTED;

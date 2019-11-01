@@ -14,7 +14,7 @@ import {
   moveTask
 } from '../../models/beta/projectBoard';
 import { closeHistory, dragDropStory } from '../../actions/story';
-import { status, historyStatus } from 'libs/beta/constants';
+import { historyStatus } from 'libs/beta/constants';
 import PropTypes from 'prop-types';
 import StoryPropTypes from '../shapes/story';
 import ProjectBoardPropTypes from '../shapes/projectBoard';
@@ -60,7 +60,10 @@ export const ProjectBoard = ({
     fetchProjectBoard(projectId)
   }, [fetchProjectBoard, projectId]);
 
-  const getArray = column => column === 'chillyBin' ? chillyBinStories : backlogSprints[0].stories;
+  const getArray = column =>
+      column === 'chillyBin'
+        ? newChillyBinStories
+        : newBacklogSprints[0].stories;
 
   const onDragEnd = ({ destination, source }) => {
     const isSameColumn = source.droppableId === destination.droppableId;
@@ -76,21 +79,42 @@ export const ProjectBoard = ({
       return;
     }
 
-    const newPosition = getNewPosition(destination.index, source.index, destinationArray, isSameColumn, dragStory.storyType);
+    const newPosition = getNewPosition(
+      destination.index,
+      source.index,
+      destinationArray,
+      isSameColumn,
+      dragStory.storyType,
+    );
 
     // Changing the column array order
     if (destination.droppableId === 'chillyBin') {
-      setNewChillyBinStories(moveTask(sourceArray, destinationArray, source.index, destination.index));
+      setNewChillyBinStories(
+        moveTask(
+          sourceArray,
+          destinationArray,
+          source.index,
+          destination.index,
+        ),
+      );
     }
 
     if (destination.droppableId === 'backlog') {
-      const newStories = moveTask(sourceArray, destinationArray, source.index, destination.index);
+      const newStories = moveTask(
+        sourceArray,
+        destinationArray,
+        source.index,
+        destination.index,
+      );
       setNewBacklogSprints(getNewSprints(newStories, newBacklogSprints));
     }
 
-    // Persisting the new array order 
+    // Persisting the new array order
     const newState = getNewState(destination.droppableId);
-    return dragDropStory(dragStory.id, dragStory.projectId, { position: newPosition, state: newState });
+    return dragDropStory(dragStory.id, dragStory.projectId, {
+      position: newPosition,
+      state: newState,
+    });
   }
   
   const sideBarButtons = [
