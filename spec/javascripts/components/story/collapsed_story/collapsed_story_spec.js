@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { CollapsedStory } from 'components/story/CollapsedStory/index';
+import { Container as CollapsedStory} from 'components/story/CollapsedStory/index';
 import storyFactory from '../../../support/factories/storyFactory';
 
 describe('<CollapsedStory />', () => {
@@ -14,6 +14,14 @@ describe('<CollapsedStory />', () => {
     stories: {
       all: [],
       search: []
+    },
+    provided: {
+      draggableProps: {
+        style: {},
+      }
+    },
+    snapshot: {
+      isDragging: false,
     }
   });
 
@@ -21,7 +29,6 @@ describe('<CollapsedStory />', () => {
     it('renders the component with Story--estimated className', () => {
       const story = storyFactory({ storyType: 'feature', estimate: 1 });
       const wrapper = shallow(<CollapsedStory {...defaultProps()} story={story} />);
-
       expect(wrapper).toHaveClassName('Story--estimated');
     });
   });

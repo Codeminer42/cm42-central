@@ -30,7 +30,7 @@ const storyClassName = (story, additionalClassname = '', isDragging) => {
   );
 };
 
-export const CollapsedStory = ({
+export const Container = ({
   onToggle,
   story,
   updateCollapsedStory,
@@ -39,40 +39,49 @@ export const CollapsedStory = ({
   title,
   highlight,
   isHighlightable,
-  index
-}) =>
-  <Draggable draggableId={story.id.toString()} index={index} isDragDisabled={story.state === 'accepted'}>
-    {(provided, snapshot) => (
-      <div
-        className={storyClassName(story, className, snapshot.isDragging)}
-        onClick={onToggle}
-        title={title}
-        {...provided.draggableProps}
-        {...provided.dragHandleProps}
-        ref={provided.innerRef}
-      >
-        <StoryPopover story={story}>
-          <div className='Story__icons-block'>
-            <StoryIcon storyType={story.storyType} />
-            <CollapsedStoryEstimate estimate={story.estimate} />
-            <StoryDescriptionIcon description={story.description} />
-          </div>
-        </StoryPopover>
-
-        <CollapsedStoryInfo story={story} />
-
-        <CollapsedStoryStateActions story={story}
-          onUpdate={(newAttributes) =>
-            updateCollapsedStory(story.id, project.id, newAttributes)}
-        />
-        {
-          isHighlightable &&
-          <CollapsedStoryFocusButon onClick={() => highlight(story.id)} />
-        }
+  isDragging,
+  provided
+}) => (
+  <div
+    className={storyClassName(story, className, isDragging)}
+    onClick={onToggle}
+    title={title}
+    {...provided.draggableProps}
+    {...provided.dragHandleProps}
+    ref={provided.innerRef}
+  >
+    <StoryPopover story={story}>
+      <div className='Story__icons-block'>
+        <StoryIcon storyType={story.storyType} />
+        <CollapsedStoryEstimate estimate={story.estimate} />
+        <StoryDescriptionIcon description={story.description} />
       </div>
-    )}
-  </Draggable >
+    </StoryPopover>
 
+    <CollapsedStoryInfo story={story} />
+
+    <CollapsedStoryStateActions story={story}
+      onUpdate={(newAttributes) =>
+        updateCollapsedStory(story.id, project.id, newAttributes)}
+    />
+    {
+      isHighlightable &&
+      <CollapsedStoryFocusButon onClick={() => highlight(story.id)} />
+    }
+  </div>
+)
+
+export const CollapsedStory = (props) => {
+  const {index, ...other} =  props
+  const {story} = {...other}
+  return (
+    <Draggable draggableId={story.id.toString()} index={index} isDragDisabled={story.state === 'accepted'}>
+      {(provided, snapshot) => (
+        <Container {...other} provided={provided} isDragging={snapshot.isDragging}/>
+      )}
+    </Draggable >
+  )
+}
 
 CollapsedStory.propTypes = {
   story: StoryPropTypes,
