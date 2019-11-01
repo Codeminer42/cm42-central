@@ -6,8 +6,14 @@ import Column from "../Columns/ColumnItem";
 import History from "../stories/History";
 import { getColumns } from "../../selectors/columns";
 import { CHILLY_BIN, DONE, BACKLOG } from '../../models/beta/column';
-import { canCloseColumn } from '../../models/beta/projectBoard';
-import { createStory, closeHistory, dragDropStory } from '../../actions/story';
+import {
+  canCloseColumn,
+  getNewPosition,
+  getNewSprints,
+  getNewState,
+  moveTask
+} from '../../models/beta/projectBoard';
+import { closeHistory, dragDropStory } from '../../actions/story';
 import { status, historyStatus } from 'libs/beta/constants';
 import PropTypes from 'prop-types';
 import StoryPropTypes from '../shapes/story';
@@ -26,7 +32,6 @@ export const ProjectBoard = ({
   fetchProjectBoard,
   projectId,
   projectBoard,
-  createStory,
   closeHistory,
   notifications,
   removeNotification,
@@ -44,7 +49,7 @@ export const ProjectBoard = ({
   const [newBacklogSprints, setNewBacklogSprints] = useState();
 
   useEffect(() => {
-    setNewBacklogSprints(backlogSprints)
+    setNewBacklogSprints(backlogSprints);
   }, [backlogSprints]);
 
   useEffect(() => {
@@ -55,61 +60,12 @@ export const ProjectBoard = ({
     fetchProjectBoard(projectId)
   }, [fetchProjectBoard, projectId]);
 
-  const calculatePosition = (aboveStory, bellowStory) => {
-    if (bellowStory === undefined) return (Number(aboveStory.position) + 1);
-    if (aboveStory === undefined) return (Number(bellowStory.position) - 1);
-    return (Number(bellowStory.position) + Number(aboveStory.position)) / 2;
-  }
-
-  const getNewPosition = (destinatitonIndex, sourceIndex, storiesArray, isSameColumn, storyType) => {
-    //TODO: remove this second condition later
-    if (!isSameColumn && storyType !== 'feature') {
-      return calculatePosition(storiesArray[destinatitonIndex - 1], storiesArray[destinatitonIndex]);
-    }
-    if (sourceIndex > destinatitonIndex) {
-      return calculatePosition(storiesArray[destinatitonIndex - 1], storiesArray[destinatitonIndex]);
-    }
-    return calculatePosition(storiesArray[destinatitonIndex], storiesArray[destinatitonIndex + 1]);
-  }
-
   const getArray = column => column === 'chillyBin' ? chillyBinStories : backlogSprints[0].stories;
 
-  const getState = column => column === 'chillyBin' ? status.UNSCHEDULED : status.UNSTARTED
-
-  const isSameColumn = (sourceColumn, destinationColumn) => sourceColumn === destinationColumn;
-
-  const moveTaskToSameColum = (stories, sourceIndex, destinationIndex) => {
-    const newStories = stories;
-    const [removed] = newStories.splice(sourceIndex, 1);
-    newStories.splice(destinationIndex, 0, removed);
-    return [...newStories];
-  }
-
-  const moveTaskToAnotherColumn = (sourceArray, destinationArray, source, destination) => {
-    const newSourceArray = sourceArray;
-    const [removed] = newSourceArray.splice(source.index, 1);
-    const newDestinationArray = destinationArray;
-    newDestinationArray.splice(destination.index, 0, removed);
-    return setNewColumns([...newDestinationArray], source.droppableId);
-  }
-
-  const getNewSprints = (newStories) => newBacklogSprints.map((sprint, index) => index === 0 ? { ...sprint, stories: newStories } : sprint)
-
-  const setNewColumns = (newDestinationArray, sourceColumn) => {
-    if (sourceColumn === 'backlog') {
-      return setNewChillyBinStories(newDestinationArray);
-    }
-    return setNewBacklogSprints(getNewSprints(newDestinationArray));
-  }
-
-  const isEqualToColumn = column => destination.droppableId === column && source.droppableId === column
-
-  const onDragEnd = result => {
-    const { destination, source } = result;
+  const onDragEnd = ({ destination, source }) => {
+    const isSameColumn = source.droppableId === destination.droppableId;
     const destinationArray = getArray(destination.droppableId); // stories of destination column
     const sourceArray = getArray(source.droppableId); // stories of source column
-    const isSameColumn = isSameColumn(source.droppableId, destination.droppableId);
-    const isSameColumn = source.droppableId === destination.droppableId;
     const dragStory = sourceArray[source.index];
 
     if (!destination) {
@@ -123,27 +79,17 @@ export const ProjectBoard = ({
     const newPosition = getNewPosition(destination.index, source.index, destinationArray, isSameColumn, dragStory.storyType);
 
     // Changing the column array order
-    if (isEqualToColumn('chillyBin')) {
-      setNewChillyBinStories(moveTaskToSameColum(newChillyBinStories, source.index, destination.index));
+    if (destination.droppableId === 'chillyBin') {
+      setNewChillyBinStories(moveTask(sourceArray, destinationArray, source.index, destination.index));
     }
 
-    if (isEqualToColumn('backlog')) {
-      const newColumn = moveTaskToSameColum(newBacklogSprints[0].stories, source.index, destination.index);
-      setNewBacklogSprints(getNewSprints(newColumn));
-    }
-
-    if (!isSameColumn) {
-      moveTaskToAnotherColumn(sourceArray, destinationArray, source, destination);
+    if (destination.droppableId === 'backlog') {
+      const newStories = moveTask(sourceArray, destinationArray, source.index, destination.index);
+      setNewBacklogSprints(getNewSprints(newStories, newBacklogSprints));
     }
 
     // Persisting the new array order 
-    // Moving to same column
-    if (isSameColumn) {
-      return dragDropStory(dragStory.id, dragStory.projectId, { position: newPosition });
-    }
-
-    // Moving to a different column
-    const newState = getState(destination.droppableId);
+    const newState = getNewState(destination.droppableId);
     return dragDropStory(dragStory.id, dragStory.projectId, { position: newPosition, state: newState });
   }
   
@@ -227,7 +173,6 @@ ProjectBoard.propTypes = {
   doneSprints: PropTypes.array.isRequired,
   backlogSprints: PropTypes.array.isRequired,
   fetchProjectBoard: PropTypes.func.isRequired,
-  createStory: PropTypes.func.isRequired,
   closeHistory: PropTypes.func.isRequired,
   notifications: PropTypes.array.isRequired,
   reverseColumns: PropTypes.func.isRequired,
@@ -274,7 +219,6 @@ const mapStateToProps = ({
 const mapDispatchToProps = {
   fetchProjectBoard,
   toggleColumn,
-  createStory,
   closeHistory,
   fetchPastStories,
   removeNotification,
