@@ -10,21 +10,11 @@ module StoryOperations
     include PusherNotification
     include StateEnsurement
 
-    def before_save
-      ensure_valid_state
-    end
-
     def after_save
       model.changesets.create!
 
       notify_users
       notify_changes
-    end
-
-    private
-
-    def ensure_valid_state
-      model.state = 'unstarted' if should_be_unstarted? estimate: model.estimate, state: model.state
     end
   end
 
@@ -52,11 +42,9 @@ module StoryOperations
     private
 
     def ensure_valid_state
-      if should_be_unstarted? estimate: params['estimate'], state: params['state']
-        params['state'] = 'unstarted'
-      elsif should_be_unscheduled? estimate: params['estimate'], type: params['story_type']
-        params['state'] = 'unscheduled'
-      end
+      return unless should_be_unscheduled? estimate: params['estimate'], type: params['story_type']
+
+      params['state'] = 'unscheduled'
     end
 
     def documents_changed?

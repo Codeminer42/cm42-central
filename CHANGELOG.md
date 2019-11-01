@@ -437,6 +437,10 @@ and CVE-2018-14567)
 ### Changed
 - Reversed the order of done column sprints
 
+### Changed
+- Unscheduled stories may or not may have a estimate.
+- Chilly Bin column have stories with or no estimate.
+
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
