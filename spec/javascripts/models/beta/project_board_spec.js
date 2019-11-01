@@ -163,4 +163,162 @@ describe('ProjectBoard model', () => {
       });
     });
   });
+
+
+  describe('Drag and Drop', () => {
+    describe('getNewPosition', () => {
+      const array = [{ position: 24 }, { position: 20 }, { position: 16 }];
+
+      describe('same column', () => {
+        const isSameColumn = true;
+        describe('Dragging from bottom to up', () => {
+          const sourceIndex = 2;
+          const destinationIndex = 1;
+          it('returns a new position', () => {
+            expect(
+              ProjectBoard.getNewPosition(
+                destinationIndex,
+                sourceIndex,
+                array,
+                isSameColumn,
+                '',
+              ),
+            ).toEqual(22);
+          });
+        });
+
+        describe('Dragging from top to down', () => {
+          const sourceIndex = 0;
+          const destinationIndex = 1;
+          it('return a new position', () => {
+            expect(
+              ProjectBoard.getNewPosition(
+                destinationIndex,
+                sourceIndex,
+                array,
+                isSameColumn,
+                '',
+              ),
+            ).toEqual(18);
+          });
+        });
+
+        describe('Dragging to first index', () => {
+          const sourceIndex = 2;
+          const destinationIndex = 0;
+          it('returns a new position', () => {
+            expect(
+              ProjectBoard.getNewPosition(
+                destinationIndex,
+                sourceIndex,
+                array,
+                isSameColumn,
+                '',
+              ),
+            ).toEqual(23);
+          });
+        });
+
+        describe('Dragging to last index', () => {
+          const sourceIndex = 0;
+          const destinationIndex = 2;
+          it('returns a new position', () => {
+            expect(
+              ProjectBoard.getNewPosition(
+                destinationIndex,
+                sourceIndex,
+                array,
+                isSameColumn,
+                '',
+              ),
+            ).toEqual(17);
+          });
+        });
+      });
+
+      describe("Differents columns", () => {
+        const isSameColumn = false;
+        describe("Dragging to another column", () => {
+          const sourceIndex = 2;
+          const destinationIndex = 1;
+          it('returns a new position', () => {
+            expect(
+              ProjectBoard.getNewPosition(
+                destinationIndex,
+                sourceIndex,
+                array,
+                isSameColumn,
+                '',
+              ),
+            ).toEqual(22);
+          });
+        });
+
+        describe('Dragging to first index', () => {
+          const sourceIndex = 2;
+          const destinationIndex = 0;
+          it('returns a new position', () => {
+            expect(
+              ProjectBoard.getNewPosition(
+                destinationIndex,
+                sourceIndex,
+                array,
+                isSameColumn,
+                '',
+              ),
+            ).toEqual(23);
+          });
+        });
+
+        describe('Dragging to last index', () => {
+          const sourceIndex = 0;
+          const destinationIndex = 3;
+          it('returns a new position', () => {
+            expect(
+              ProjectBoard.getNewPosition(
+                destinationIndex,
+                sourceIndex,
+                array,
+                isSameColumn,
+                '',
+              ),
+            ).toEqual(17);
+          });
+        });
+      });
+    });
+
+    describe("moveTask", () => {
+      let sourceArray;
+      let destinationArray;
+      let newDestArray;
+      beforeEach(() => {
+        newDestArray = [];
+        sourceArray = [{story: 'source1'}, {story: 'source2'}, {story: 'source3'}];
+        destinationArray = [{story: 'dest1'}, {story: 'dest2'}, {story: 'dest3'}];
+      });
+
+      describe("When moving in same column", () => {
+        const sourceIndex = 0;
+        const destinationIndex = 1;
+        console.log(sourceArray)
+        it('returns a new array', () => {
+          newDestArray = ProjectBoard.moveTask(sourceArray, sourceArray, sourceIndex, destinationIndex);
+          expect(newDestArray).toBeTruthy();
+          expect(newDestArray[1].story).toEqual('source1');
+        });
+      });
+  
+      describe('When moving to a different column', () => {
+        const sourceIndex = 0;
+        const destinationIndex = 1;
+        it('returns a new array', () => {  
+          newDestArray = ProjectBoard.moveTask(sourceArray, destinationArray, sourceIndex, destinationIndex);
+          expect(newDestArray).toBeTruthy();
+          expect(newDestArray[1].story).toEqual('source1');
+          expect(newDestArray[0].story).toEqual('dest1');
+        });
+      });
+    });
+  });
 });
