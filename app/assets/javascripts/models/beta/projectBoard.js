@@ -79,6 +79,10 @@ export const getNewPosition = (
   isSameColumn,
   storyType,
 ) => {
+  if(storiesArray.length === 0){
+    return 1; // if array is empty than set 1 to story position
+  }
+  
   //TODO: remove this second condition later
   if (!isSameColumn && storyType !== 'feature') {
     return calculatePosition(
