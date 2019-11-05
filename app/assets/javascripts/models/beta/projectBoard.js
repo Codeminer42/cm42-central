@@ -77,14 +77,12 @@ export const getNewPosition = (
   sourceIndex,
   storiesArray,
   isSameColumn,
-  storyType,
 ) => {
   if(storiesArray.length === 0){
     return 1; // if array is empty than set 1 to story position
   }
-  
-  //TODO: remove this second condition later
-  if (!isSameColumn && storyType !== 'feature') {
+
+  if (!isSameColumn) {
     return calculatePosition(
       storiesArray[destinatitonIndex - 1],
       storiesArray[destinatitonIndex],
@@ -116,11 +114,26 @@ export const moveTask = (
   return [...newDestinationArray];
 };
 
-export const getNewSprints = (newStories, sprints) =>
+export const getNewSprints = (newStories, sprints, sprintIndex) =>
   sprints.map((sprint, index) =>
-    index === 0 ? { ...sprint, stories: newStories } : sprint,
+    index === sprintIndex ? { ...sprint, stories: newStories } : sprint,
   );
 
+export const getNewState = (isSameColumn, dropColumn, currentState) => {
+  if(isSameColumn) {
+    return currentState;
+  }
+  return dropColumn === 'chillyBin' ? status.UNSCHEDULED : status.UNSTARTED;
+}
 
-export const getNewState = column =>
-  column === 'chillyBin' ? status.UNSCHEDULED : status.UNSTARTED;
+export const getBacklogStories = (sprints, index) => sprints.length === 0 ? [{stories: []}] : sprints[index].stories;
+
+export const getArray = (column, backlogArray, chillyBinArray, sprintIndex) => {
+  if(column === 'backlog') {
+    if(sprintIndex === undefined) {
+      return;
+    }  
+    return backlogArray[sprintIndex].stories;
+  }
+  return chillyBinArray;
+}

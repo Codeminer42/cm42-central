@@ -71,15 +71,18 @@ export const Container = ({
   </div>
 )
 
-export const CollapsedStory = (props) => {
-  const {index, ...other} =  props
+export const CollapsedStory = ({index, sprintIndex, ...other}) => {
   const {story} = {...other}
   return (
-    <Draggable draggableId={story.id.toString()} index={index} isDragDisabled={story.state === 'accepted'}>
+    <Draggable
+      draggableId={JSON.stringify({id: story.id.toString(), sprintIndex})}
+      index={index} 
+      isDragDisabled={story.state === 'accepted'}
+    >
       {(provided, snapshot) => (
         <Container {...other} provided={provided} isDragging={snapshot.isDragging}/>
       )}
-    </Draggable >
+    </Draggable>
   )
 }
 

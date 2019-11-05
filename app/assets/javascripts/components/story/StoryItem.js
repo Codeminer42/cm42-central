@@ -21,7 +21,8 @@ export const StoryItem = ({ story, toggleStory, from }) => {
     className,
     title,
     from,
-    index
+    index,
+    sprintIndex
   }
 
   return (
