@@ -15,7 +15,11 @@
     }
 
     &--highlighted {
-      background-color: $story-background-focus-color !important;
+      background-color: $story-background-highlight-color !important;
+    }
+
+    &--accepted {
+      background-color: $story-background-accepted-color !important;
     }
 
     &--collapsed {
