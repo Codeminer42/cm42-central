@@ -6,10 +6,8 @@ module TopbarHelper
   end
 
   def topbar_projects
-    scope = policy_scope(Project)
-            .joins(:teams)
-            .where(teams: { id: current_team })
-            .preload(:tag_group)
+    scope = Project.projects_joined_by_team(policy_scope(Project), current_team)
+
     scope.not_archived.order(:name).each do |project|
       yield project
     end
