@@ -7,7 +7,7 @@ import { Droppable } from 'react-beautiful-dnd';
 const Stories = ({ stories, from, sprintIndex, columnId }) => (
   <Droppable droppableId={JSON.stringify({columnId, sprintIndex})} isDropDisabled={columnId === 'done'}>
     {provided => (
-      <div ref={provided.innerRef} {...provided.droppableProps}>
+      <div className="Column__body" ref={provided.innerRef} {...provided.droppableProps}>
         {stories.map((story, index) =>
           <StoryItem key={story.id} story={story} from={from} index={index} sprintIndex={sprintIndex}/>
         )}

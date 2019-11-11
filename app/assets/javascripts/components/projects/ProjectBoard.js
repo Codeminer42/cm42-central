@@ -12,7 +12,6 @@ import {
   getNewSprints,
   getNewState,
   moveTask,
-  getBacklogStories,
   getArray
 } from '../../models/beta/projectBoard';
 import { closeHistory, dragDropStory } from '../../actions/story';
@@ -62,7 +61,7 @@ export const ProjectBoard = ({
     fetchProjectBoard(projectId)
   }, [fetchProjectBoard, projectId]);
 
-  const onDragEnd = ({ destination, source, draggableId }) => {
+  const onDragEnd = ({ source, destination, draggableId }) => {
     const { sprintIndex: sprintDropIndex, columnId: dropColumn } = JSON.parse(destination.droppableId);
     const { sprintIndex: sprintDragIndex, columnId: dragColumn } = JSON.parse(source.droppableId);
     const isSameColumn = dragColumn === dropColumn;

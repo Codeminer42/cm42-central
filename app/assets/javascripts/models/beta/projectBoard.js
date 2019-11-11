@@ -129,11 +129,11 @@ export const getNewState = (isSameColumn, dropColumn, currentState) => {
 export const getBacklogStories = (sprints, index) => sprints.length === 0 ? [{stories: []}] : sprints[index].stories;
 
 export const getArray = (column, backlogArray, chillyBinArray, sprintIndex) => {
-  if(column === 'backlog') {
-    if(sprintIndex === undefined) {
-      return;
-    }  
-    return backlogArray[sprintIndex].stories;
+  if (column === 'backlog') {
+    if(backlogArray[sprintIndex]){
+      return backlogArray[sprintIndex].stories
+    }
+    return [];
   }
   return chillyBinArray;
 }
