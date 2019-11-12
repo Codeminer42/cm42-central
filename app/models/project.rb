@@ -123,10 +123,7 @@ class Project < ApplicationRecord
     "#{name}-#{Time.current.strftime('%Y%m%d_%I%M')}.csv"
   end
 
-  projects_by_team = lambda do |projects, team|
-    projects.joins(:teams).preload(:tag_group).where(teams: { id: team })
-  end
-  scope :projects_joined_by_team, projects_by_team
+  scope :joined_by_team, ->(team) { joins(:teams).preload(:tag_group).where(teams: { id: team }) }
 
   def last_changeset_id
     changesets.last&.id
