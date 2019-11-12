@@ -6,7 +6,7 @@ const Column = ({ title, children, renderAction, onClose, visible, canClose, col
   visible && (
     <Droppable droppableId={JSON.stringify({ columnId })} isDropDisabled={columnId === 'done'}>
       {provided => (
-        <div className="Column" data-id="column" ref={provided.innerRef} {...provided.droppableProps}>
+        <div className="Column" data-cy="column" data-id="column" ref={provided.innerRef} {...provided.droppableProps}>
           <div className="Column__header">
             <h3 className="Column__name" data-id="column-title">{title}</h3>
             <div className="Column__actions">

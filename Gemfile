@@ -107,5 +107,6 @@ end
 group :development, :test do
   gem 'pry-rails'
   gem 'pry-remote'
+  gem 'cypress-on-rails', '~> 1.0'
   gem "pusher-fake", "~> 1.10"
 end

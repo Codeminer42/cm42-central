@@ -5,6 +5,7 @@ db/*.sqlite3
 *.log
 log/
 tmp/
+log/
 .rvmrc
 .ruby-version
 .sass-cache/
