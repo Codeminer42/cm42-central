@@ -25,7 +25,7 @@ describe Exporters::Stories do
 
       let(:csv_headers) { Story.csv_headers }
       let(:csv_extra_columns) { { notes: 0, documents: 0, tasks: 0 } }
-      
+
       it { is_expected.to eq(csv) }
     end
 

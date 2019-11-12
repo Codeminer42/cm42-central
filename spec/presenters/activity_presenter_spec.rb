@@ -167,10 +167,10 @@ describe ActivityPresenter do
           ]
         }
 
-        expect(story).to receive(:saved_changes).and_return(documents_changes)
-        expect(story).to receive(:saved_changes?).and_return(true)
+        expect(story).to receive(:saved_changes).and_return(documents_changes).twice
         activity.subject = story
         activity.save
+
         expect(subject.description).to eq(
           "#{user_name} updated Story ##{story.id} - " \
           "'<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>' " \
