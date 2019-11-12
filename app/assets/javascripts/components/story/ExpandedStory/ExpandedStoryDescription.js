@@ -1,47 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Markdown from '../../Markdown';
 import { editingStoryPropTypesShape } from '../../../models/beta/story';
 import ExpandedStorySection from './ExpandedStorySection';
 import { MentionsInput, Mention } from 'react-mentions';
 
-class ExpandedStoryDescription extends React.Component {
-  constructor(props) {
-    super(props);
+const ExpandedStoryDescription = ({
+  disabled,
+  onEdit,
+  users
+}) => {
+  const [editing, setEditing] = useState(false);
 
-    this.state = {
-      editing: false
-    };
+  const toggleField = () => setEditing(!editing);
 
-    this.toggleField = this.toggleField.bind(this);
-    this.formatMention = this.formatMention.bind(this);
-  };
+  const formatMention = (id, display) => `@${display}`;
 
-  toggleField() {
-    this.setState({ editing: !this.state.editing });
-  };
+  const editButton = () =>
+    <button className='edit-description-button'>
+      { I18n.t('edit') }
+    </button>
 
-  formatMention = (id, display) =>`@${display}`;
+  const descriptionContent = description =>
+    <div className='markdown-wrapper'>
+      <Markdown source={description} />
+    </div>
 
-  editButton() {
-    return (
-      <button className='edit-description-button'>
-        { I18n.t('edit') }
-      </button>
-    );
-  };
-
-  descriptionContent(description) {
-    return (
-      <div className='markdown-wrapper'>
-        <Markdown source={description} />
-      </div>
-    );
-  };
-
-  descriptionTextArea(description) {
-    const { disabled, onEdit, users } = this.props;
-
+  const descriptionTextArea = description => {
     const suggestedUsers = users.map(({ id, username }) => ({ id, display: username }));
 
     return (
@@ -54,40 +39,33 @@ class ExpandedStoryDescription extends React.Component {
       >
         <Mention
           markup="@__display__"
-          displayTransform={this.formatMention}
+          displayTransform={formatMention}
           data={suggestedUsers}
         />
       </MentionsInput>
     );
-  };
+  }
 
-  render() {
-    const { story, disabled } = this.props;
-
-    if(disabled && !story.description) return null
-
-    return (
-      <ExpandedStorySection
-        title={I18n.t('activerecord.attributes.story.description')}
-        identifier="description"
-      >
-        {
-          this.state.editing
-            ? this.descriptionTextArea(story._editing.description || '')
-            : (
-              <div onClick={this.toggleField} className='story-description-content'>
-                {
-                  story.description
-                    ? this.descriptionContent(story.description)
-                    : this.editButton()
-                }
-              </div>
-            )
-        }
-      </ExpandedStorySection>
-    );
-  };
-};
+  return disabled && !story.description ? null :
+    <ExpandedStorySection
+      title={I18n.t('activerecord.attributes.story.description')}
+      identifier="description"
+    >
+      {
+        editing
+          ? descriptionTextArea(story._editing.description || '')
+          : (
+            <div onClick={toggleField} className='story-description-content'>
+              {
+                story.description
+                  ? descriptionContent(story.description)
+                  : editButton()
+              }
+            </div>
+          )
+      }
+    </ExpandedStorySection>
+}
 
 ExpandedStoryDescription.defaultProps = {
   users: [],
