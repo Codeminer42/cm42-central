@@ -12,7 +12,7 @@ class ProjectsController < ApplicationController
   def index
     @projects = {}
 
-    projects_joined = Project.projects_joined_by_team(policy_scope(Project), current_team)
+    projects_joined = policy_scope(Project).joined_by_team(current_team)
 
     @projects = {
       joined: serialize_from_collection(projects_joined)

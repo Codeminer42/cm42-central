@@ -6,7 +6,7 @@ module TopbarHelper
   end
 
   def topbar_projects
-    scope = Project.projects_joined_by_team(policy_scope(Project), current_team)
+    scope = policy_scope(Project).joined_by_team(current_team)
 
     scope.not_archived.order(:name).each do |project|
       yield project
