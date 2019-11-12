@@ -14,7 +14,7 @@ Cypress.Commands.add('moveStory', (dragElement, keyCode, keyEspace) => {
   cy.get(dragElement)
     .focus()
     .trigger('keydown', { keyCode: keyEspace }) // use the space key
-    .trigger('keydown', { keyCode: keyCode, force: true }) // use the passed key to move the story  
+    .trigger('keydown', { keyCode: keyCode, force: true }) // use the passed key to move the story
     // To have a nice look of the reorder movement
     .wait(0.2 * 1000)
     .trigger('keydown', { keyCode: keyEspace, force: true });

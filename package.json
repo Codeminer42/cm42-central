@@ -5,7 +5,9 @@
   "scripts": {
     "test": "jest",
     "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
-    "lint": "eslint app/assets/javascripts"
+    "lint": "eslint app/assets/javascripts",
+    "start:test": "rails s -e test -p 5000 & wait-on http://localhost:5000",
+    "cy:run": "cypress run -P spec/"
   },
   "jest": {
     "setupFilesAfterEnv": [
@@ -112,6 +114,7 @@
     "tether-shepherd": "^1.8.1",
     "underscore": "^1.9.1",
     "uuid": "^3.3.3",
+    "wait-on": "^3.3.0",
     "webpack": "^4.41.2",
     "webpack-dev-server": "^3.9.0",
     "webpack-manifest-plugin": "^2.2.0",
