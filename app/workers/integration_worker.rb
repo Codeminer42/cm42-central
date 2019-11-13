@@ -2,7 +2,7 @@ class IntegrationWorker
   include Sidekiq::Worker
   include Central::Support::DiscordHelper
   include Integrations::Mattermost::Helper
-  include Central::Support::SlackHelper
+  include Integrations::Slack::Helper
 
   def perform(project_id, message)
     project = Project.find(project_id)
