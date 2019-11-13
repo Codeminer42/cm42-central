@@ -8,30 +8,27 @@ const ExpandedStoryDescriptionTextArea = ({
   description,
   users
 }) => {
-  const formatMention = (_, display) => `@${display}`;
-  const data = users.map(({ id, username }) => ({ id, display: username }));
+  const extractMentionData = (({ id, username }) => ({ id, display: username }));
+  const formatMention = (_, display) => `@${display} `;
+  const mentionableUsers = users.map(extractMentionData);
 
   return (
     <MentionsInput
-      className="form-control input-sm edit-description-text textarea"
+      className="edit-description-text"
       onChange={(event) => onEdit(event.target.value)}
       readOnly={disabled}
       value={description}
       data-id="text-area"
+      markup="@{{__type__||__id__||__display__}}"
     >
       <Mention
-        markup="@__display__"
         displayTransform={formatMention}
-        data={data}
+        data={mentionableUsers}
+        type="user"
+        trigger="@"
       />
     </MentionsInput>
   )
-};
-
-ExpandedStoryDescriptionTextArea.defaultProps = {
-  description: '',
-  users: [],
-  disabled: false
 };
 
 ExpandedStoryDescriptionTextArea.propTypes = {

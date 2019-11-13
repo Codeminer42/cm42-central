@@ -7,10 +7,6 @@ const ExpandedStoryDescriptionContent = ({ description }) =>
     <Markdown source={description} />
   </div>
 
-ExpandedStoryDescriptionContent.defaultProps = {
-  description: ''
-};
-
 ExpandedStoryDescriptionContent.propTypes = {
   description: PropTypes.string.isRequired
 };

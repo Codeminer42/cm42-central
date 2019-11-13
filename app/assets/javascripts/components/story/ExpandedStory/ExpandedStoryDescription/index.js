@@ -24,7 +24,7 @@ const ExpandedStoryDescription = ({
       {
         editing
           ? <ExpandedStoryDescriptionTextArea 
-              description={story._editing.description || undefined}
+              description={story._editing.description || ''}
               onEdit={onEdit}
               disabled={disabled}
               users={users}
@@ -48,7 +48,8 @@ ExpandedStoryDescription.defaultProps = {
 ExpandedStoryDescription.propTypes = {
   story: editingStoryPropTypesShape.isRequired,
   onEdit: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired
+  disabled: PropTypes.bool.isRequired,
+  users: PropTypes.array
 };
 
 export default ExpandedStoryDescription;

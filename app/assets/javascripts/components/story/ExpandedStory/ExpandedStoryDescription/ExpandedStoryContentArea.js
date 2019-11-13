@@ -7,14 +7,10 @@ const ExpandedStoryContentArea = ({ onClick, description }) =>
   <div onClick={onClick} className='story-description-content' data-id="story-description">
   {
     description
-      ? <ExpandedStoryDescriptionContent description={description} />
-      : <ExpandedStoryDescriptionEditButton />
+      ? <ExpandedStoryDescriptionContent data-id="description-content" description={description} />
+      : <ExpandedStoryDescriptionEditButton data-id="edit-button" />
   }
   </div>
-
-ExpandedStoryContentArea.defaultProps = {
-  description: ''
-};
 
 ExpandedStoryContentArea.propTypes = {
   onClick: PropTypes.func.isRequired,

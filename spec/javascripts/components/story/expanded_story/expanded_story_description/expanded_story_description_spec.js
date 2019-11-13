@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import ExpandedStoryDescription from 'components/story/ExpandedStory/ExpandedStoryDescription/index';
 
 describe('<ExpandedStoryDescription />', () => {
@@ -9,26 +9,14 @@ describe('<ExpandedStoryDescription />', () => {
     disabled: false
   });
 
-  it('renders component title', () => {
+  it('renders component', () => {
     const story = { description: null, _editing: { description: null } };
 
-    const wrapper = mount(
+    const wrapper = shallow(
       <ExpandedStoryDescription {...defaultProps()} story={story} />
     );
 
-    expect(wrapper.text()).toContain(I18n.t('activerecord.attributes.story.description'));
-  });
-
-  describe('when description is null', () => {
-    it('renders edit button', () => {
-      const story = { description: null, _editing: { description: null } };
-
-      const wrapper = mount(
-        <ExpandedStoryDescription {...defaultProps()} story={story} />
-      );
-
-      expect(wrapper.text()).toContain(I18n.t('edit'));
-    });
+    expect(wrapper).toExist();
   });
 });
 
