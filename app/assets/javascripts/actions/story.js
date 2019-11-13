@@ -89,7 +89,11 @@ export const setLoadingStory = (id, from) => ({
 });
 
 export const confirmBeforeSaveIfNeeded = async (story, confirm, needConfirmation, callback) => {
-  const confirmStoryChange = story => confirm(I18n.t('story.definitive_sure', { action: 'change' }));
+  const confirmStoryChange = story => confirm(
+    I18n.t('story.definitive_sure', { 
+      action: I18n.t('story.change_to', { state: I18n.t(`story.state.${story.state}`) }) 
+    })
+  );
 
   if (!needConfirmation(story) || confirmStoryChange(story)) {
     try {
@@ -99,7 +103,7 @@ export const confirmBeforeSaveIfNeeded = async (story, confirm, needConfirmation
       callback.onError(error);
     }
   } else {
-    callback.onError(I18n.t('messages.operations.error.default_error'));
+    callback.onCanceled();
   }
 }
 
@@ -137,6 +141,10 @@ export const updateCollapsedStory = (storyId, projectId, newAttributes, from) =>
       onError: (error) => {
         dispatch(sendErrorNotification(error))
         dispatch(storyFailure(story.id, error, from))
+      },
+      onCanceled: () => {
+        dispatch(sendErrorNotification('messages.operations.cancel.default_cancel', { custom: true }))
+        dispatch(storyFailure(story.id, I18n.t('messages.operations.cancel.default_cancel'), from))
       }
     });
   }
@@ -162,6 +170,10 @@ export const saveStory = (storyId, projectId, from, options) =>
         onError: (error) => {
           dispatch(sendErrorNotification(error))
           dispatch(storyFailure(story.id, error, from))
+        },
+        onCanceled: () => {
+          dispatch(sendErrorNotification('messages.operations.cancel.default_cancel', { custom: true }))
+          dispatch(storyFailure(story.id, I18n.t('messages.operations.cancel.default_cancel'), from))
         }
       });
     };
@@ -179,6 +191,10 @@ export const saveStory = (storyId, projectId, from, options) =>
         onError: (error) => {
           dispatch(sendErrorNotification(error))
           dispatch(storyFailure(story.id, error, from))
+        },
+        onCanceled: () => {
+          dispatch(sendErrorNotification('messages.operations.cancel.default_cancel', { custom: true }))
+          dispatch(storyFailure(story.id, I18n.t('messages.operations.cancel.default_cancel'), from))
         }
       });
     }

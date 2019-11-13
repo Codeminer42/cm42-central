@@ -232,8 +232,13 @@ describe('Story Actions', () => {
     });
 
     describe('when do not need of confirmation', () => {
-      const needConfirmation = sinon.stub().returns(false);
-      const confirm = sinon.stub();
+      let needConfirmation;
+      let confirm;
+
+      beforeEach(() => {
+        needConfirmation = sinon.stub().returns(false)
+        confirm = sinon.stub();
+      });
 
       describe('and callback.onConfirmed do not throws an error', () => {
         it('call callback.onConfirmed', async () => {
@@ -252,7 +257,8 @@ describe('Story Actions', () => {
           error = { error: "boom" };
           callback = { 
             onConfirmed: sinon.stub().rejects(error), 
-            onError: sinon.stub() 
+            onError: sinon.stub(),
+            onCanceled: sinon.stub()
           };
         });
 
@@ -267,6 +273,12 @@ describe('Story Actions', () => {
 
           expect(callback.onError).toHaveBeenCalled();
         });
+
+        it('do not call callback.onCanceled', async () => {
+          await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+
+          expect(callback.onCanceled).not.toHaveBeenCalled();
+        });
       });
     });
 
@@ -277,7 +289,7 @@ describe('Story Actions', () => {
         let confirm;
 
         beforeEach(() => {
-          callback = { onConfirmed: sinon.stub() };
+          callback = { onConfirmed: sinon.stub(), onCanceled: sinon.stub()};
           needConfirmation = sinon.stub().returns(true);
           confirm = sinon.stub().returns(false);
         });
@@ -287,11 +299,22 @@ describe('Story Actions', () => {
 
           expect(callback.onConfirmed).not.toHaveBeenCalled();
         });
+
+        it('call callback.onCanceled', async () => {
+          await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+
+          expect(callback.onCanceled).toHaveBeenCalled();
+        });
       });
 
       describe('and is confirmed', () => {
-        const needConfirmation = sinon.stub().returns(true);
-        const confirm = sinon.stub().returns(true);
+        let needConfirmation;
+        let confirm;
+
+        beforeEach(() => {
+          needConfirmation = sinon.stub().returns(true);
+          confirm = sinon.stub().returns(true);
+        });
 
         describe('and callback.onConfirmed do not throws an error', () => {
           it('call callback.onConfirmed', async () => {
@@ -310,7 +333,8 @@ describe('Story Actions', () => {
             error = { error: "boom" };
             callback = { 
               onConfirmed: sinon.stub().rejects(error), 
-              onError: sinon.stub() 
+              onError: sinon.stub(),
+              onCanceled: sinon.stub()
             };
           });
 
@@ -324,6 +348,12 @@ describe('Story Actions', () => {
             await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
 
             expect(callback.onError).toHaveBeenCalled();
+          });
+
+          it('do not call callback.onCanceled', async () => {
+            await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+
+            expect(callback.onCanceled).not.toHaveBeenCalled();
           });
         });
       });

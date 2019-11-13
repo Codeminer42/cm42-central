@@ -120,6 +120,7 @@ es:
       failed_upload: "Error de subida. Vuelva a intentarlo."
 
     definitive_sure: "¿Seguro que deseas %{action} esta historia? Esta acción es irrreversible."
+    change_to: "cambiar a %{state}"
 
   author unknown: "Autor desconocido"
   add story: "Añadir articulo"
@@ -670,3 +671,5 @@ es:
           create:  Su historia "%{story}" ha sido creada con éxito
       error:
         default_error: 'Algo salió mal. Por favor, vuelva a intentarlo'
+      cancel:
+        default_cancel: "Operación cancelada"

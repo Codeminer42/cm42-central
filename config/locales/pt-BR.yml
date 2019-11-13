@@ -121,7 +121,8 @@ pt-BR:
     errors:
       failed_upload: "O upload falhou. Por favor, tente novamente."
 
-    definitive_sure: "Tem certeza que deseja %{action} essa história? Essa ações é irreversível."
+    definitive_sure: "Tem certeza que deseja %{action} essa história? Essa ação é irreversível."
+    change_to: "mudar para %{state}"
 
   author unknown: "Autor Desconhecido"
   add story: "Adicionar história"
@@ -483,3 +484,5 @@ pt-BR:
           create:  Sua história "%{story}" foi criada com sucesso
       error:
         default_error: 'Algo deu errado, tente novamente por favor'
+      cancel:
+        default_cancel: "Ação cancelada"
