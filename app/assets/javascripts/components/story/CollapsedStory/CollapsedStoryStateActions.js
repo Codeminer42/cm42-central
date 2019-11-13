@@ -20,44 +20,33 @@ const StateAction = {
   [status.RELEASE]: ["release"]
 };
 
-class CollapsedStoryStateActions extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+const CollapsedStoryStateActions = ({
+  story,
+  onUpdate
+}) => {
+  const disableToggle = event => event.stopPropagation();
 
-  disableToggle(event) {
-    event.stopPropagation();
-  }
+  const getStoryState = story =>
+    isRelease(story) && !isAccepted(story) ? status.RELEASE : story.state;
 
-  getStoryState(story) {
-    return isRelease(story) && !isAccepted(story)
-      ? status.RELEASE
-      : story.state;
-  }
-
-  render() {
-    const { story, onUpdate } = this.props;
-    const state = this.getStoryState(story);
-
-    return (
-      <div className='Story__actions' onClick={this.disableToggle}>
-        {
-          isStoryNotEstimated(story.storyType, story.estimate) ?
-            <CollapsedStoryEstimateButton
-              onUpdate={((estimate) => onUpdate({ estimate }))}
+  return (
+    <div className='Story__actions' onClick={disableToggle}>
+      {
+        isStoryNotEstimated(story.storyType, story.estimate) ?
+          <CollapsedStoryEstimateButton
+            onUpdate={((estimate) => onUpdate({ estimate }))}
+          />
+          : StoryActionFor(getStoryState(story)).map((stateAction) =>
+            <CollapsedStoryStateButton
+              action={stateAction}
+              key={stateAction}
+              onUpdate={() => onUpdate({ state: getNextState(story.state, stateAction) })}
             />
-            : StoryActionFor(state).map((stateAction) =>
-              <CollapsedStoryStateButton
-                action={stateAction}
-                key={stateAction}
-                onUpdate={() => onUpdate({ state: getNextState(story.state, stateAction) })}
-              />
-            )
-        }
-      </div>
-    );
-  }
-};
+          )
+      }
+    </div>
+  )
+}
 
 CollapsedStoryStateActions.propTypes = {
   story: storyPropTypesShape
