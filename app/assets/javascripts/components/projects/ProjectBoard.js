@@ -64,22 +64,24 @@ export const ProjectBoard = ({
   const onDragEnd = ({ source, destination, draggableId }) => {
     const { sprintIndex: sprintDropIndex, columnId: dropColumn } = JSON.parse(destination.droppableId);
     const { sprintIndex: sprintDragIndex, columnId: dragColumn } = JSON.parse(source.droppableId);
+    const { index: sourceIndex } = source;
+    const { index: destinationIndex} = destination;
     const isSameColumn = dragColumn === dropColumn;
     const destinationArray = getArray(dropColumn, newBacklogSprints, newChillyBinStories, sprintDropIndex); // stories of destination column
     const sourceArray = getArray(dragColumn, newBacklogSprints, newChillyBinStories, sprintDragIndex); // stories of source column
-    const dragStory = sourceArray[source.index];
+    const dragStory = sourceArray[sourceIndex];
 
     if (!destination) {
       return;
     }
 
-    if (isSameColumn && source.index === destination.index) {
+    if (isSameColumn && sourceIndex === destinationIndex) {
       return;
     }
 
     const newPosition = getNewPosition(
-      destination.index,
-      source.index,
+      destinationIndex,
+      sourceIndex,
       destinationArray,
       isSameColumn,
       dragStory.storyType,
@@ -88,8 +90,8 @@ export const ProjectBoard = ({
     const newStories = moveTask(
       sourceArray,
       destinationArray,
-      source.index,
-      destination.index,
+      sourceIndex,
+      destinationIndex,
     );
 
     // Changing the column array order

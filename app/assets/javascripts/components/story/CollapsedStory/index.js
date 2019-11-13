@@ -1,5 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Draggable } from 'react-beautiful-dnd'
 import classname from 'classnames';
+import PropTypes from 'prop-types';
+import { updateCollapsedStory, highlight } from '../../../actions/story';
 import StoryPopover from '../StoryPopover';
 import StoryDescriptionIcon from '../StoryDescriptionIcon';
 import CollapsedStoryEstimate from './CollapsedStoryEstimate';
@@ -7,9 +11,6 @@ import CollapsedStoryStateActions from './CollapsedStoryStateActions';
 import CollapsedStoryInfo from './CollapsedStoryInfo';
 import StoryIcon from '../StoryIcon';
 import * as Story from '../../../models/beta/story';
-import { updateCollapsedStory, highlight } from '../../../actions/story';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import CollapsedStoryFocusButon from './CollapsedStoryFocusButton';
 import StoryPropTypes from '../../shapes/story';
 import { Draggable } from 'react-beautiful-dnd'
@@ -71,13 +72,14 @@ export const Container = ({
   </div>
 )
 
-export const CollapsedStory = ({index, sprintIndex, ...other}) => {
+export const CollapsedStory = ({index, sprintIndex, columnId, ...other}) => {
   const {story} = {...other}
+  const isDragDisabled = story.state === 'accepted' || columnId === 'search';
   return (
     <Draggable
       draggableId={JSON.stringify({id: story.id.toString(), sprintIndex})}
       index={index} 
-      isDragDisabled={story.state === 'accepted'}
+      isDragDisabled={isDragDisabled}
     >
       {(provided, snapshot) => (
         <Container {...other} provided={provided} isDragging={snapshot.isDragging}/>
@@ -92,7 +94,10 @@ CollapsedStory.propTypes = {
   title: PropTypes.string,
   className: PropTypes.string,
   from: PropTypes.string,
-  highlight: PropTypes.func
+  highlight: PropTypes.func,
+  index: PropTypes.number,  
+  sprintIndex: PropTypes.number,
+  columnId: PropTypes.string
 };
 
 const mapStateToProps = ({
