@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-describe Mattermost do
-  let(:mattermost) { Mattermost.new('http://foo.com', 'test-channel', 'bot')}
+describe Integrations::Mattermost::Service do
+  let(:mattermost) { described_class.new('http://foo.com', 'test-channel', 'bot')}
 
   context '#payload' do
     it 'returns a JSON formatted payload' do
