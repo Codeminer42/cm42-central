@@ -19,7 +19,8 @@ describe('Story Actions', () => {
         findById: sinon.stub().returns(editedStory),
         update: sinon.stub().resolves(story),
         isNew: sinon.stub().returns(false),
-        withScope: sinon.stub().returns([story])
+        withScope: sinon.stub().returns([story]),
+        needConfirmation: sinon.stub().returns(false)
       };
 
       const fakeDispatch = sinon.stub().resolves({});
@@ -74,7 +75,8 @@ describe('Story Actions', () => {
         findById: sinon.stub().returns(editedStory),
         update: sinon.stub().resolves(story),
         isNew: sinon.stub().returns(false),
-        withScope: sinon.stub().returns([story])
+        withScope: sinon.stub().returns([story]),
+        needConfirmation: sinon.stub().returns(false)
       };
 
       const fakeDispatch = sinon.stub().resolves({});
@@ -100,7 +102,8 @@ describe('Story Actions', () => {
         findById: sinon.stub().returns(editedStory),
         post: sinon.stub().resolves(story),
         isNew: sinon.stub().returns(true),
-        withScope: sinon.stub().returns([story])
+        withScope: sinon.stub().returns([story]),
+        needConfirmation: sinon.stub().returns(false)
       };
 
       const fakeDispatch = sinon.stub().resolves({});
@@ -132,7 +135,8 @@ describe('Story Actions', () => {
         findById: sinon.stub().returns(editedStory),
         update: sinon.stub().rejects(error),
         isNew: sinon.stub().returns(false),
-        withScope: sinon.stub().returns([story])
+        withScope: sinon.stub().returns([story]),
+        needConfirmation: sinon.stub().returns(false)
       };
 
       const fakeDispatch = sinon.stub().resolves({});
@@ -217,6 +221,142 @@ describe('Story Actions', () => {
         (fakeDispatch, fakeGetState, {});
 
       expect(fakeDispatch).toHaveBeenCalledWith(Story.updateHighlight(storyId, true));
+    });
+  });
+
+  describe('confirmBeforeSaveIfNeeded', () => {
+    let story;
+
+    beforeEach(() => {
+      story = storyFactory();
+    });
+
+    describe('when do not need of confirmation', () => {
+      let needConfirmation;
+      let confirm;
+
+      beforeEach(() => {
+        needConfirmation = sinon.stub().returns(false)
+        confirm = sinon.stub();
+      });
+
+      describe('and callback.onConfirmed do not throws an error', () => {
+        it('call callback.onConfirmed', async () => {
+          const callback = { onConfirmed: sinon.stub() };
+
+          await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+          expect(callback.onConfirmed).toHaveBeenCalled();
+        });
+      });
+
+      describe('and callback.onConfirmed throws an error', () => {
+        let error;
+        let callback;
+
+        beforeEach(() => {
+          error = { error: "boom" };
+          callback = { 
+            onConfirmed: sinon.stub().rejects(error), 
+            onError: sinon.stub(),
+            onCanceled: sinon.stub()
+          };
+        });
+
+        it('call callback.onConfirmed', async () => {
+          await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+
+          expect(callback.onConfirmed).toHaveBeenCalled();
+        });
+
+        it('call callback.onError', async () => {
+          await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+
+          expect(callback.onError).toHaveBeenCalled();
+        });
+
+        it('do not call callback.onCanceled', async () => {
+          await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+
+          expect(callback.onCanceled).not.toHaveBeenCalled();
+        });
+      });
+    });
+
+    describe('when need of confirmation', () => {
+      describe('and is not confirmed', () => {
+        let callback;
+        let needConfirmation;
+        let confirm;
+
+        beforeEach(() => {
+          callback = { onConfirmed: sinon.stub(), onCanceled: sinon.stub()};
+          needConfirmation = sinon.stub().returns(true);
+          confirm = sinon.stub().returns(false);
+        });
+
+        it('do not call callback.onConfirmed', async () => {
+          await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+
+          expect(callback.onConfirmed).not.toHaveBeenCalled();
+        });
+
+        it('call callback.onCanceled', async () => {
+          await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+
+          expect(callback.onCanceled).toHaveBeenCalled();
+        });
+      });
+
+      describe('and is confirmed', () => {
+        let needConfirmation;
+        let confirm;
+
+        beforeEach(() => {
+          needConfirmation = sinon.stub().returns(true);
+          confirm = sinon.stub().returns(true);
+        });
+
+        describe('and callback.onConfirmed do not throws an error', () => {
+          it('call callback.onConfirmed', async () => {
+            const callback = { onConfirmed: sinon.stub() };
+
+            await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+            expect(callback.onConfirmed).toHaveBeenCalled();
+          });
+        });
+
+        describe('and callback.onConfirmed throws an error', () => {
+          let error;
+          let callback;
+
+          beforeEach(() => {
+            error = { error: "boom" };
+            callback = { 
+              onConfirmed: sinon.stub().rejects(error), 
+              onError: sinon.stub(),
+              onCanceled: sinon.stub()
+            };
+          });
+
+          it('call callback.onConfirmed', async () => {
+            await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+
+            expect(callback.onConfirmed).toHaveBeenCalled();
+          });
+
+          it('call callback.onError', async () => {
+            await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+
+            expect(callback.onError).toHaveBeenCalled();
+          });
+
+          it('do not call callback.onCanceled', async () => {
+            await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+
+            expect(callback.onCanceled).not.toHaveBeenCalled();
+          });
+        });
+      });
     });
   });
 });

@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- [ V2 ] Dialog confirmation when story state is changed in expanded shape.
+
 ### Changed
 - [ V2 ] When story is accepted it has a different background color.
 
