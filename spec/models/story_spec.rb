@@ -273,10 +273,6 @@ describe Story do
       expect(story.to_csv(number_of_extra_columns)).to be_kind_of(Array)
     end
 
-    it 'has the same number of elements as the .csv_headers' do
-      expect(story.to_csv(number_of_extra_columns).length).to eq(Story.csv_headers.length)
-    end
-
     context 'when story have tasks' do
       let(:task_name) { 'task_name' }
       let(:task_status) { 'completed' }

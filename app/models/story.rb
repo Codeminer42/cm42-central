@@ -14,11 +14,6 @@ class Story < ApplicationRecord
     end
   end
 
-  validates :project, presence: true
-  validates :title, presence: true
-  validates :requested_by_id, belongs_to_project: true
-  validates :owned_by_id, belongs_to_project: true
-
   before_validation :set_position_to_last
   before_save :set_started_at
   before_save :set_accepted_at
@@ -123,8 +118,12 @@ has_attachments :documents,
   STORY_TYPES     = %i[feature chore bug release].freeze
 
   enumerize :story_type, in: STORY_TYPES, predicates: true, scope: true
+  validates :project, presence: true
+  validates :title, presence: true
+  validates :requested_by_id, user_belongs_to_project: true
+  validates :owned_by_id, user_belongs_to_project: true
   validates :story_type, presence: true
-  validates :estimate, estimate: true, allow_nil: true
+  validates :estimate, central_estimate: true, allow_nil: true
   validate :validate_non_estimable_story
 
   def self.csv_headers
