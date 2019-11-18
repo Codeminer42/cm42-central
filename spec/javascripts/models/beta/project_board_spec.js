@@ -301,7 +301,6 @@ describe('ProjectBoard model', () => {
       describe("When moving in same column", () => {
         const sourceIndex = 0;
         const destinationIndex = 1;
-        console.log(sourceArray)
         it('returns a new array', () => {
           newDestArray = ProjectBoard.moveTask(sourceArray, sourceArray, sourceIndex, destinationIndex);
           expect(newDestArray[1].story).toEqual('source1');

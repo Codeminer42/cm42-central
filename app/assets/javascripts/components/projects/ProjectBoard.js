@@ -58,7 +58,7 @@ export const ProjectBoard = ({
   }, [chillyBinStories]);
 
   useEffect(() => {
-    fetchProjectBoard(projectId)
+    fetchProjectBoard(projectId);
   }, [fetchProjectBoard, projectId]);
 
   const onDragEnd = ({ source, destination, draggableId }) => {
