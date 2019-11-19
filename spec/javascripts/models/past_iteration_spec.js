@@ -3,19 +3,21 @@ import Project from 'models/project';
 import PastIteration from 'models/pastIteration';
 
 describe('PastIteration model', function() {
+  let project;
+  let pastIterations;
 
   beforeEach(function() {
     Cookies.set('current_flow', 'progress_to_left', {expires: 365});
 
-    this.project = new Project({
+    project = new Project({
       id: 1337, title: 'Test project', point_values: [0, 1, 2, 3],
       last_changeset_id: null, iteration_start_day: 1, iteration_length: 1,
       default_flow: Cookies.get('current_flow'),
       current_flow: Cookies.get('current_flow')
     });
 
-    this.pastIterations = new PastIteration({
-    	project: this.project,
+    pastIterations = new PastIteration({
+    	project: project,
     	startDate: Date.now(),
     	endDate: Date.now() + 7,
     	points: 3,
@@ -26,22 +28,22 @@ describe('PastIteration model', function() {
   describe('when instantiated', function() {
 
     it("should exhibit attributes", function() {
-      expect(this.pastIterations.get('number')).toEqual(2);
+      expect(pastIterations.get('number')).toEqual(2);
     });
 
     it("should have a default load state", function() {
-      expect(this.pastIterations.get('needsLoad')).toBe(true);
+      expect(pastIterations.get('needsLoad')).toBe(true);
     });
 
     it("should have a default column", function() {
-      expect(this.pastIterations.get('column')).toBe('#done');
+      expect(pastIterations.get('column')).toBe('#done');
     });
   });
 
   describe('stories', function() {
 
     it('should return the models stories', function() {
-      expect(this.pastIterations.stories()).toEqual(this.pastIterations._stories);
+      expect(pastIterations.stories()).toEqual(pastIterations._stories);
     });
 
   });
@@ -49,7 +51,7 @@ describe('PastIteration model', function() {
   describe('startDate', function() {
 
     it('should return the models start date', function() {
-      expect(this.pastIterations.startDate()).toEqual(this.pastIterations._startDate);
+      expect(pastIterations.startDate()).toEqual(pastIterations._startDate);
     });
 
   });
@@ -57,7 +59,7 @@ describe('PastIteration model', function() {
   describe('endDate', function() {
 
     it('should return the models end date', function() {
-      expect(this.pastIterations.endDate()).toEqual(this.pastIterations._endDate);
+      expect(pastIterations.endDate()).toEqual(pastIterations._endDate);
     });
 
   });
@@ -65,7 +67,7 @@ describe('PastIteration model', function() {
   describe('points', function() {
 
     it('should return the model points', function() {
-      expect(this.pastIterations.points()).toEqual(this.pastIterations._points);
+      expect(pastIterations.points()).toEqual(pastIterations._points);
     });
 
   });
@@ -85,11 +87,11 @@ describe('PastIteration model', function() {
         ]
       );
 
-      var initialStoriesLength = this.pastIterations._stories.length;
+      var initialStoriesLength = pastIterations._stories.length;
 
-      this.pastIterations.fetch()
+      pastIterations.fetch()
         .then(() => {
-          expect(this.pastIterations._stories.length).toEqual(initialStoriesLength + 1);
+          expect(pastIterations._stories.length).toEqual(initialStoriesLength + 1);
           done();
         });
     });

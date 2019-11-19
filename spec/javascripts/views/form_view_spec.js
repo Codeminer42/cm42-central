@@ -1,21 +1,22 @@
 import FormView from 'views/form_view';
 
 describe('FormView', function() {
+  let view;
 
   beforeEach(function() {
     FormView.prototype.template = sinon.stub();
-    this.view = new FormView();
+    view = new FormView();
   });
 
   it("should have a form as its top level element", function() {
-    expect(this.view.el.nodeName).toEqual('FORM');
+    expect(view.el.nodeName).toEqual('FORM');
   });
 
   describe("mergeAttrs", function() {
     it("merges an options hash with some defaults", function() {
       var opts = {foo: 'bar'};
       var defaults = {foo: 'baz', bar: 'baz'};
-      expect(this.view.mergeAttrs(defaults, opts)).toEqual({foo: 'bar', bar: 'baz'});
+      expect(view.mergeAttrs(defaults, opts)).toEqual({foo: 'bar', bar: 'baz'});
       expect(defaults).toEqual({foo: 'bar', bar: 'baz'});
     });
   });

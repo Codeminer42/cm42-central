@@ -7,7 +7,7 @@ var messageFactories = {
   spyWithCallCount: function(txt) {
     return function(pass, spy, otherArgs) {
       return messageUtils.expectedSpy(pass, spy, txt) + '. ' +
-        messageUtils.callCount(spy) + '.';
+        messageUtils.mock.calls.length(spy) + '.';
     };
   },
   spyWithOtherArgs: function(txt) {

@@ -1,74 +1,80 @@
 import ColumnView from 'views/column_view';
 
 describe("ColumnView", function() {
+  let el;
+  let view;
 
   beforeEach(function() {
     ColumnView.prototype.template = sinon.stub();
-    this.el = $('<td data-column-view="backlog" data-connect="#chilly_bin,#in_progress"></td>');
-    this.view = new ColumnView({el: this.el});
+    el = $('<td data-column-view="backlog" data-connect="#chilly_bin,#in_progress"></td>');
+    view = new ColumnView({el: el});
   });
 
   it("should be a <TD>", function() {
-    expect(this.view.$el[0].nodeName).toEqual('TD');
+    expect(view.$el[0].nodeName).toEqual('TD');
   });
 
   describe("toggle", function() {
 
     beforeEach(function() {
-      this.view.$el.toggle = sinon.spy();
+      view.$el.toggle = sinon.spy();
     });
 
     it("calls jQuery.hide() on its el", function() {
-      this.view.toggle();
-      expect(this.view.$el.toggle).toHaveBeenCalled();
+      view.toggle();
+      expect(view.$el.toggle).toHaveBeenCalled();
     });
 
     it("triggers the visibilityChanged event", function() {
       var stub = sinon.stub();
-      this.view.on('visibilityChanged', stub);
-      this.view.toggle();
+      view.on('visibilityChanged', stub);
+      view.toggle();
       expect(stub).toHaveBeenCalled();
     });
 
   });
 
   describe("storyColumn", function() {
+    let storyColumn;
+
     beforeEach(function() {
-      this.storyColumn = {};
-      sinon.stub(this.view, '$');
-      this.view.$.withArgs('.story_column').returns(this.storyColumn);
+      storyColumn = {};
+      sinon.stub(view, '$');
+      view.$.withArgs('.story_column').returns(storyColumn);
     });
 
     it("returns the story column", function() {
-      expect(this.view.storyColumn()).toBe(this.storyColumn);
+      expect(view.storyColumn()).toBe(storyColumn);
     });
   });
 
   describe("appendView", function() {
+    let storyColumn;
 
     beforeEach(function() {
-      this.storyColumn = {append: sinon.stub()};
-      this.view.storyColumn = sinon.stub().returns(this.storyColumn);
+      storyColumn = {append: sinon.stub()};
+      view.storyColumn = sinon.stub().returns(storyColumn);
     });
 
     it("appends the view to the story column", function() {
-      var view = {el: {}};
-      this.view.appendView(view);
-      expect(this.storyColumn.append).toHaveBeenCalledWith(view.el);
+      var currentView = {el: {}};
+      view.appendView(currentView);
+      expect(storyColumn.append).toHaveBeenCalledWith(currentView.el);
     });
 
   });
 
   describe("setSortable", function() {
+    let storyColumn;
 
     beforeEach(function() {
-      this.storyColumn = {sortable: sinon.stub()};
-      this.view.storyColumn = sinon.stub().returns(this.storyColumn);
+      storyColumn = {sortable: sinon.stub()};
+      view.storyColumn = sinon.stub().returns(storyColumn);
     });
 
     it("calls sortable on the story column", function() {
-      this.view.setSortable();
-      expect(this.storyColumn.sortable).toHaveBeenCalled();
+      view.setSortable();
+      expect(storyColumn.sortable).toHaveBeenCalled();
     });
 
   });
@@ -76,17 +82,17 @@ describe("ColumnView", function() {
   describe("hidden", function() {
 
     beforeEach(function() {
-      this.view.$el.is = sinon.stub();
+      view.$el.is = sinon.stub();
     });
 
     it("returns true if the column is hidden", function() {
-      this.view.$el.is.withArgs(':hidden').returns(true);
-      expect(this.view.hidden()).toEqual(true);
+      view.$el.is.withArgs(':hidden').returns(true);
+      expect(view.hidden()).toEqual(true);
     });
 
     it("returns false if the column is visible", function() {
-      this.view.$el.is.withArgs(':hidden').returns(false);
-      expect(this.view.hidden()).toEqual(false);
+      view.$el.is.withArgs(':hidden').returns(false);
+      expect(view.hidden()).toEqual(false);
     });
   });
 

@@ -6,8 +6,11 @@ import Chart from 'chart.js'
 import Charkick from 'chartkick';
 import CoreJsMap from 'core-js/library/fn/map';
 import CoreJsSet from 'core-js/library/fn/set';
+import Backbone from 'backbone';
 
 window.$ = window.jQuery = jQUery;
+
+window.Backbone = Backbone;
 
 window.I18n = I18nJs;
 

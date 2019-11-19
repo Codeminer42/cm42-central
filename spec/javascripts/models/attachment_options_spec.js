@@ -43,15 +43,16 @@ describe("AttachmentOptions", function() {
       }
     }
   }
+  let server;
 
   beforeEach(function(done) {
     refreshCallback = sinon.spy();
 
     let attachmentOptions = new AttachmentOptions({ refreshCallback });
 
-    this.server = sinon.fakeServer.create();
+    server = sinon.fakeServer.create();
 
-    this.server.respondWith(
+    server.respondWith(
       "GET", "/attachments/signature", [
         200, {"Content-Type": "application/json"},
         JSON.stringify(attachinaryJSON)
@@ -62,11 +63,11 @@ describe("AttachmentOptions", function() {
       done();
     });
 
-    this.server.respond();
+    server.respond();
   });
 
   afterEach(function() {
-    this.server.restore();
+    server.restore();
   });
 
   it("fetch return a signature", function() {

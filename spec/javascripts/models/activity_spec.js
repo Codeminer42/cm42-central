@@ -1,9 +1,10 @@
 import Activity from 'models/activity';
 
 describe("Activity", function() {
+  let activity;
 
   beforeEach(function() {
-    this.activity = new Activity({
+    activity = new Activity({
       activity: {
         action: 'update',
         subject_type: 'Story',
@@ -15,7 +16,7 @@ describe("Activity", function() {
   describe('initialize', function() {
 
     it('should format the date string', function(){
-      expect(this.activity.attributes.date).toBe('1 Feb 2017');
+      expect(activity.attributes.date).toBe('1 Feb 2017');
     });
 
   });
@@ -32,7 +33,7 @@ describe("Activity", function() {
     });
 
     it("returns the translated action name", function() {
-      expect(this.activity.humanActionName('update')).toEqual('updated');
+      expect(activity.humanActionName('update')).toEqual('updated');
     });
 
   });
