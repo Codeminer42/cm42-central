@@ -1,7 +1,7 @@
 import React from 'react';
 import CollapsedStoryTitle from './CollapsedStoryTitle';
 import CollapsedStoryLabels from './CollapsedStoryLabels';
-import { storyPropTypesShape } from '../../../models/beta/story';
+import StoryPropTypes from '../../shapes/story';
 
 const CollapsedStoryInfo = ({ story }) => (
   <div className="Story__info">
@@ -11,7 +11,7 @@ const CollapsedStoryInfo = ({ story }) => (
 );
 
 CollapsedStoryInfo.propTypes = {
-  story: storyPropTypesShape
+  story: StoryPropTypes
 };
 
 export default CollapsedStoryInfo;

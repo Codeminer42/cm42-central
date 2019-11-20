@@ -72,6 +72,7 @@ class ExpandedStoryAttachments extends React.Component {
               accept={acceptedMimeTypes()}
               disabled={this.state.loading}
               multiple={false}
+              data-id="dropzone"
             >
               {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {
                 const className = this.dropzoneClassName({ isDragActive, isDragReject })

@@ -6,7 +6,7 @@ import { haveSearch, withScope } from './../../models/beta/story';
 import { storyScopes } from './../../libs/beta/constants';
 import Column from './../Columns/ColumnItem';
 import PropTypes from 'prop-types';
-import { storyPropTypesShape } from './../../models/beta/story';
+import StoryPropTypes from '../shapes/story';
 
 export const SearchResults = ({ isEnabled, searchResults, closeSearch, projectBoard }) => {
   if (!isEnabled) return null;
@@ -23,7 +23,7 @@ export const SearchResults = ({ isEnabled, searchResults, closeSearch, projectBo
 
 SearchResults.propTypes = {
   isEnabled: PropTypes.bool.isRequired,
-  searchResults: PropTypes.arrayOf(storyPropTypesShape),
+  searchResults: PropTypes.arrayOf(StoryPropTypes),
   closeSearch: PropTypes.func.isRequired
 };
 

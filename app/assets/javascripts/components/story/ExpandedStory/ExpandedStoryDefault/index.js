@@ -6,7 +6,7 @@ import { deleteNote, createNote } from '../../../../actions/note';
 import { addAttachment, removeAttachment } from '../../../../actions/attachment';
 import { setLoadingStory, storyFailure } from '../../../../actions/story';
 import { editingStoryPropTypesShape, isNew } from '../../../../models/beta/story';
-import { projectPropTypesShape } from '../../../../models/beta/project';
+import ProjectPropTypes from '../../../shapes/project';
 import { createTask, deleteTask, toggleTask } from '../../../../actions/task';
 import ExpandedStoryHistoryLocation from '../ExpandedStoryHistoryLocation';
 import ExpandedStoryEstimate from '../ExpandedStoryEstimate';
@@ -134,7 +134,7 @@ export const ExpandedStoryDefault = ({
 ExpandedStoryDefault.propTypes = {
   story: editingStoryPropTypesShape.isRequired,
   users: PropTypes.array.isRequired,
-  project: projectPropTypesShape.isRequired,
+  project: ProjectPropTypes.isRequired,
   onEdit: PropTypes.func.isRequired,
   addLabel: PropTypes.func.isRequired,
   removeLabel: PropTypes.func.isRequired,

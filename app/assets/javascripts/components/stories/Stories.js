@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import StoryItem from "../story/StoryItem";
 import PropTypes from 'prop-types';
-import { storyPropTypesShape } from './../../models/beta/story';
+import StoryPropTypes from '../shapes/story';
 
 const Stories = ({ stories, from }) => {
   if (!stories.length) {
@@ -18,7 +18,7 @@ const Stories = ({ stories, from }) => {
 };
 
 Stories.propTypes = {
-  stories: PropTypes.arrayOf(storyPropTypesShape),
+  stories: PropTypes.arrayOf(StoryPropTypes),
   from: PropTypes.string
 }
 
