@@ -2,6 +2,22 @@
 
 ## [Unreleased]
 
+### Removed
+- Rewire and Rewire Webpack
+- Inject loader
+- Karma and all dependencies related
+
+## Changed
+- Migrate all the javascripts tests from jasmine to jest.
+
+### Update
+- Front-End Dependencies
+  - NodeJS from 9.11.2 to 10.17.0
+  - Webpack Dev Server from 3.1.14 to 3.9.0
+
+### Added
+- babel-jest and @testing-library/jest-dom
+
 ### Fixed
 - [ V2 ] Fix a sprints calc bug.
 

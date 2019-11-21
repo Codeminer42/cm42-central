@@ -1,7 +1,13 @@
 import 'libs/index';
 import 'raf/polyfill';
 import './enzyme';
-import '@testing-library/jest-dom/extend-expect';
+import 'jest-enzyme';
+
+import * as JestDom from '@testing-library/jest-dom';
+
+const { toHaveStyle: toHaveDomStyle, ...jestDomRest } = JestDom;
+
+expect.extend({ toHaveDomStyle, ...jestDomRest });
 
 window.sinon = require('sinon');
 window.md = { makeHtml: function() {} };

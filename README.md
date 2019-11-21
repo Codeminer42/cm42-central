@@ -289,11 +289,7 @@ Here are some general guidelines for contributing:
   Javascript, which is covered with a Jasmine test suite in `spec/javascripts/`.
 * Run `rake spec` to check the Rails test suite is green. You will need
   Firefox with Selenium installed to run the integration tests.
-* To run the Javascript test suite, run `npm test`. The tests are run with
-  Karma and PhantomJS. The Karma config is already prepared to run the tests on
-  Chrome too, just open `config/karma.conf.js` and add `'Chrome'`
-  to the `browsers` array.
-
+* To run the Javascript test suite, run `npm test`.
 
 License
 -------

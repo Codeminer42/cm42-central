@@ -113,7 +113,7 @@ describe('<ProjectCard />', () => {
           });
 
           it('has the background and foreground defined', () => {
-            // expect(wrapper.find('.card-tag')).toHaveStyle({ backgroundColor: '#2075F3', color: '#FFFFFF' });
+            expect(wrapper.find('.card-tag')).toHaveStyle({ backgroundColor: '#2075F3', color: '#FFFFFF' });
           });
         });
 

@@ -245,13 +245,3 @@ export const causesOverflow = (story, velocity) =>
 const calcPointsOverflowedSprint  = (velocity, storyPoints) => velocity - (storyPoints % velocity);
 
 const isLastFiller = (position, amountOfFillers) => position === amountOfFillers - 1;
-
-export const sprintPropTypesShape = PropTypes.shape({
-  number: PropTypes.number,
-  startDate: PropTypes.string,
-  points: PropTypes.number,
-  completedPoints: PropTypes.number,
-  stories: PropTypes.array,
-  isFiller: PropTypes.bool,
-  remainingPoints: PropTypes.bool
-});
