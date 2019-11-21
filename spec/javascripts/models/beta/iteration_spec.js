@@ -1027,6 +1027,83 @@ describe("iteration", function() {
         });
       });
 
+      describe('when have 10 stories no feature', () => {
+        const stories = [
+          {
+            id: 1,
+            position: "1",
+            storyType: "bug"
+          },
+          {
+            id: 2,
+            position: "2",
+            storyType: "bug"
+          },
+          {
+            id: 3,
+            position: "3",
+            storyType: "bug"
+          },
+          {
+            id: 4,
+            position: "4",
+            storyType: "bug"
+          },
+          {
+            id: 5,
+            position: "5",
+            storyType: "bug"
+          },
+          {
+            id: 6,
+            position: "6",
+            storyType: "bug"
+          },
+          {
+            id: 7,
+            position: "7",
+            storyType: "bug"
+          },
+          {
+            id: 8,
+            position: "8",
+            storyType: "bug"
+          },
+          {
+            id: 9,
+            position: "9",
+            storyType: "bug"
+          },
+          {
+            id: 10,
+            position: "10",
+            storyType: "bug"
+          },
+        ];
+
+        it("return an array with 1 item", function() {
+          const sprints = Iteration.groupBySprints(
+            stories,
+            project,
+            initialSprintNumber,
+            []
+          );
+
+          expect(sprints.length).toEqual(1);
+        });
+
+        it("return one sprint with 0 points", function() {
+          const sprints = Iteration.groupBySprints(
+            stories,
+            project,
+            initialSprintNumber,
+            []
+          );
+
+          expect(sprints[0].points).toEqual(0);
+        });
+      });
+
       describe('when have 10 started stories with 4 points each', () => {
         const stories = [
           {
@@ -1203,6 +1280,39 @@ describe("iteration", function() {
 
           expect(sprints[1].isFiller).toBeTruthy();
         });
+      });
+    });
+  });
+
+  describe('causesOverflow', () => {
+    describe('when story is feature', () => {
+      describe('and have 2 points', () => {
+        const story = {
+          storyType: 'feature',
+          estimate: 2
+        }
+
+        describe('and velocity is 3', () => {
+          it('returns truphy', () => {
+            expect(Iteration.causesOverflow(story, 3)).toBeFalsy();
+          })
+        });
+
+        describe('and velocity is 1', () => {
+          it('returns falsy', () => {
+            expect(Iteration.causesOverflow(story, 1)).toBeTruthy();
+          });
+        });
+      });
+    });
+
+    describe('when story is not a feature', () => {
+      const story = {
+        storyType: 'bug'
+      }
+
+      it('returns falsy', () => {
+        expect(Iteration.causesOverflow(story, 1)).toBeFalsy();
       });
     });
   });

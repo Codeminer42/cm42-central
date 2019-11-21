@@ -239,7 +239,7 @@ const canEnterLastAddedSprint = (sprints, story) => {
   return canTakeStory(lastSprint, storyPoints);
 }
 
-const causesOverflow = (story, velocity) =>
+export const causesOverflow = (story, velocity) =>
   Story.getPoints(story) > velocity && Story.isFeature(story);
 
 const calcPointsOverflowedSprint  = (velocity, storyPoints) => velocity - (storyPoints % velocity);
