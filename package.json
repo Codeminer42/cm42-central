@@ -134,7 +134,6 @@
     "eslint-plugin-import": "^2.6.0",
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-react": "^7.1.0",
-    "inject-loader": "^4.0.1",
     "jest": "^24.9.0",
     "jest-enzyme": "^7.1.2",
     "jest-sinon": "^1.0.1",
