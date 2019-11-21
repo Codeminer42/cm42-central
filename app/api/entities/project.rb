@@ -30,7 +30,7 @@ class Entities::Project < Entities::BaseEntity
 
   def iteration_service
     @iteration_service ||= begin
-      Central::Support::IterationService.new(
+      IterationService.new(
         object,
         current_time: Time.current
       )

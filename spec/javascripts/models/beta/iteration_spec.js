@@ -40,16 +40,18 @@ describe("iteration", function() {
         describe('and remaining points of sprint is bigger than story points', () => {
           it('returns truthy', () => {
             const sprint = { remainingPoints: biggerThanPoints };
+            const story = { estimate: points, storyType: 'feature' };
 
-            expect(Iteration.canTakeStory(sprint, points)).toBeTruthy();
+            expect(Iteration.canTakeStory(sprint, story)).toBeTruthy();
           });
         });
 
         describe('and remaining points of sprint is smaller than story points', () => {
           it('returns falsy', () => {
             const sprint = { remainingPoints: smallerThanPoints };
+            const story = { estimate: points, storyType: 'feature' };
 
-            expect(Iteration.canTakeStory(sprint, points)).toBeFalsy();
+            expect(Iteration.canTakeStory(sprint, story)).toBeFalsy();
           });
         });
       });
@@ -1101,6 +1103,59 @@ describe("iteration", function() {
           );
 
           expect(sprints[0].points).toEqual(0);
+        });
+      });
+
+      describe('when 4 stories no feature and 1 story feature', () => {
+        const stories = [
+          {
+            id: 1,
+            position: "1",
+            storyType: "bug"
+          },
+          {
+            id: 2,
+            position: "2",
+            storyType: "bug"
+          },
+          {
+            id: 3,
+            position: "3",
+            storyType: "bug"
+          },
+          {
+            id: 4,
+            position: "4",
+            storyType: "bug"
+          },
+          {
+            id: 5,
+            position: "5",
+            storyType: "feature",
+            estimate: "3"
+          },
+        ];
+
+        it("return an array with 1 item", function() {
+          const sprints = Iteration.groupBySprints(
+            stories,
+            project,
+            initialSprintNumber,
+            []
+          );
+
+          expect(sprints.length).toEqual(1);
+        });
+
+        it("return one sprint with 3 points", function() {
+          const sprints = Iteration.groupBySprints(
+            stories,
+            project,
+            initialSprintNumber,
+            []
+          );
+
+          expect(sprints[0].points).toEqual(3);
         });
       });
 

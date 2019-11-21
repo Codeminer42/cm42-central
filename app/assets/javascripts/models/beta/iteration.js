@@ -117,7 +117,8 @@ const createOverflowedSprint = (
   );
 }
 
-export const canTakeStory = (sprint, storyPoints) => sprint.remainingPoints >= storyPoints;
+export const canTakeStory = (sprint, story) =>
+  sprint.remainingPoints >= Story.getPoints(story) || !Story.isFeature(story);
 
 export const calculateFillerSprintsQuantity = (storyPoints, velocity) =>
   Math.ceil((storyPoints - velocity) / velocity) || 0;
@@ -234,9 +235,8 @@ const haveNoPoints = sprint => sprint.points === 0;
 
 const canEnterLastAddedSprint = (sprints, story) => {
   const lastSprint = last(sprints);
-  const storyPoints = Story.getPoints(story);
 
-  return canTakeStory(lastSprint, storyPoints);
+  return canTakeStory(lastSprint, story);
 }
 
 export const causesOverflow = (story, velocity) =>

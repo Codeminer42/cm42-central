@@ -91,6 +91,7 @@
     "heroku-postgresql",
     "heroku-redis",
     "sendgrid",
+    "pusher:sandbox",
     "rollbar:free"
   ],
   "heroku-postbuild": "webpack -p --config ./config/webpack/production.js --progress",

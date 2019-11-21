@@ -88,6 +88,25 @@ export const setLoadingStory = (id, from) => ({
   from
 });
 
+export const confirmBeforeSaveIfNeeded = async (story, confirm, needConfirmation, callback) => {
+  const confirmStoryChange = story => confirm(
+    I18n.t('story.definitive_sure', { 
+      action: I18n.t('story.change_to', { state: I18n.t(`story.state.${story.state}`) }) 
+    })
+  );
+
+  if (!needConfirmation(story) || confirmStoryChange(story)) {
+    try {
+      await callback.onConfirmed();
+    }
+    catch (error) {
+      callback.onError(error);
+    }
+  } else {
+    callback.onCanceled();
+  }
+}
+
 export const showHistory = (storyId, from) =>
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
@@ -107,23 +126,27 @@ export const updateCollapsedStory = (storyId, projectId, newAttributes, from) =>
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
     const story = Story.findById(Story.withScope(stories, from), storyId);
-
-
     const newStory = { ...story, ...newAttributes };
 
-    try {
-      const updatedStory = await Story.update(newStory, projectId);
+    return await confirmBeforeSaveIfNeeded(newStory, window.confirm, Story.needConfirmation, {
+      onConfirmed: async () => {
+        const updatedStory = await Story.update(newStory, projectId);
 
-      dispatch(updateStorySuccess(updatedStory, from))
+        dispatch(updateStorySuccess(updatedStory, from))
 
-      return dispatch(sendSuccessNotification(
-        I18n.t('messages.operations.success.story.save', { story: updatedStory.title })
-      ));
-    }
-    catch (error) {
-      dispatch(sendErrorNotification(error))
-      return dispatch(storyFailure(story.id, error, from))
-    }
+        dispatch(sendSuccessNotification(
+          I18n.t('messages.operations.success.story.save', { story: updatedStory.title })
+        ));
+      },
+      onError: (error) => {
+        dispatch(sendErrorNotification(error))
+        dispatch(storyFailure(story.id, error, from))
+      },
+      onCanceled: () => {
+        dispatch(sendErrorNotification('messages.operations.cancel.default_cancel', { custom: true }))
+        dispatch(storyFailure(story.id, I18n.t('messages.operations.cancel.default_cancel'), from))
+      }
+    });
   }
 
 export const saveStory = (storyId, projectId, from, options) =>
@@ -135,35 +158,45 @@ export const saveStory = (storyId, projectId, from, options) =>
     dispatch(setLoadingStory(story.id, from));
 
     if (Story.isNew(story)) {
-      try {
-        const newStory = await Story.post(story._editing, projectId)
+      return await confirmBeforeSaveIfNeeded(story._editing, window.confirm, Story.needConfirmation, {
+        onConfirmed: async () => {
+          const newStory = await Story.post(story._editing, projectId)
 
-        dispatch(addStory(newStory, from));
-
-        return dispatch(sendSuccessNotification(
-          I18n.t('messages.operations.success.story.create', { story: story._editing.title })
-        ));
-      }
-      catch (error) {
-        dispatch(sendErrorNotification(error))
-        return dispatch(storyFailure(story.id, error, from))
-      }
+          dispatch(addStory(newStory, from));
+          dispatch(sendSuccessNotification(
+            I18n.t('messages.operations.success.story.create', { story: story._editing.title })
+          ));
+        },
+        onError: (error) => {
+          dispatch(sendErrorNotification(error))
+          dispatch(storyFailure(story.id, error, from))
+        },
+        onCanceled: () => {
+          dispatch(sendErrorNotification('messages.operations.cancel.default_cancel', { custom: true }))
+          dispatch(storyFailure(story.id, I18n.t('messages.operations.cancel.default_cancel'), from))
+        }
+      });
     };
 
     if (story._editing._isDirty) {
-      try {
-        const updatedStory = await Story.update(story._editing, projectId, options);
+      return await confirmBeforeSaveIfNeeded(story._editing, window.confirm, Story.needConfirmation, {
+        onConfirmed: async () => {
+          const updatedStory = await Story.update(story._editing, projectId, options);
 
-        dispatch(updateStorySuccess(updatedStory, from));
-
-        return dispatch(sendSuccessNotification(
-          I18n.t('messages.operations.success.story.save', { story: updatedStory.title })
-        ));
-      }
-      catch (error) {
-        dispatch(sendErrorNotification(error))
-        return dispatch(storyFailure(story.id, error, from))
-      }
+          dispatch(updateStorySuccess(updatedStory, from));
+          dispatch(sendSuccessNotification(
+            I18n.t('messages.operations.success.story.save', { story: updatedStory.title })
+          ));
+        },
+        onError: (error) => {
+          dispatch(sendErrorNotification(error))
+          dispatch(storyFailure(story.id, error, from))
+        },
+        onCanceled: () => {
+          dispatch(sendErrorNotification('messages.operations.cancel.default_cancel', { custom: true }))
+          dispatch(storyFailure(story.id, I18n.t('messages.operations.cancel.default_cancel'), from))
+        }
+      });
     }
 
     return dispatch(toggleStory(story.id, from));
