@@ -8,9 +8,9 @@ const EstimateBadge = ({
   story
 }) =>
   <div className='Story__icons-block'>
-    <StoryIcon storyType={story.storyType} />
-    <StoryEstimate estimate={story.estimate} />
-    <StoryDescriptionIcon description={story.description} />
+    <StoryIcon data-id="story-icon" storyType={story.storyType} />
+    <StoryEstimate data-id="story-estimate" estimate={story.estimate} />
+    <StoryDescriptionIcon data-id="story-description-icon" description={story.description} />
   </div>
 
 EstimateBadge.propTypes = {

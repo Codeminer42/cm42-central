@@ -1,11 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import CollapsedStoryEstimate from 'components/story/CollapsedStory/CollapsedStoryEstimate';
+import StoryEstimate from 'components/story/EstimateBadge/StoryEstimate';
 
-describe('<CollapsedStoryEstimate />', () => {
+describe('<StoryEstimate />', () => {
   it('renders the estimate of the story', () => {
     const estimate = "1";
-    const wrapper = shallow(<CollapsedStoryEstimate estimate={estimate} />);
+    const wrapper = shallow(<StoryEstimate estimate={estimate} />);
 
     expect(wrapper.find('.Story__estimated-value').text()).toContain(estimate);
   });

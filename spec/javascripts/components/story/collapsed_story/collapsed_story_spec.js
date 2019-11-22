@@ -48,10 +48,7 @@ describe('<CollapsedStory />', () => {
     const story = storyFactory({ storyType: 'feature', estimate: 1 });
     const wrapper = shallow(<CollapsedStory {...defaultProps()} story={story} />);
 
-    expect(wrapper.find('StoryPopover')).toExist();
-    expect(wrapper.find('CollapsedStoryIcon')).toExist();
-    expect(wrapper.find('CollapsedStoryEstimate')).toExist();
-    expect(wrapper.find('StoryDescriptionIcon')).toExist();
+    expect(wrapper.find('EstimateBadge')).toExist();
     expect(wrapper.find('CollapsedStoryInfo')).toExist();
     expect(wrapper.find('CollapsedStoryStateActions')).toExist();
   });
