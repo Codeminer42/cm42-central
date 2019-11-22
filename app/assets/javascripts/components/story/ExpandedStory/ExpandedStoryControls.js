@@ -35,7 +35,7 @@ class ExpandedStoryControls extends Component {
     const { onSave, canSave, canDelete, disabled } = this.props;
 
     return (
-      <div className="form-group Story__controls">
+      <div className="Story__controls">
         <input className="save"
           onClick={onSave}
           type="button"

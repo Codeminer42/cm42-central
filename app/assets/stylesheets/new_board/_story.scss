@@ -70,11 +70,6 @@
           margin: 0 10px;
         }
 
-        &__icons-block {
-          display: flex;
-          width: 60px;
-        }
-
         &__focus-button {
           width: 13px;
           height: 21px;
@@ -86,12 +81,6 @@
           top: 50%;
           left: 50%;
           transform:translate(-50%,-50%);
-        }
-
-        &__icon {
-          display: flex;
-          align-items: center;
-          margin-right: 5px;
         }
 
         &__title {
@@ -114,20 +103,6 @@
         &__actions {
           display: flex;
           align-items: center;
-        }
-
-        &__estimated-value {
-          padding: 2px 3px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          background: $estimated-background-color;
-          margin-right: 1px;
-          border: 1px solid $estimated-border-color;
-          border-radius: 3px;
-          line-height: 1;
-          min-width: 15px;
-          font-style: normal;
         }
 
         &__estimate-box {
@@ -366,7 +341,8 @@
           @extend .btn-group;
 
           height: 22px;
-          display: block;
+          display: inline-block;
+          margin: 0 0 15px 15px;
 
           input {
             @extend .btn;
@@ -393,6 +369,32 @@
           display: none;
         }
       }
+    }
+
+    &__estimated-value {
+      padding: 2px 3px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: $estimated-background-color;
+      margin-right: 1px;
+      border: 1px solid $estimated-border-color;
+      border-radius: 3px;
+      line-height: 1;
+      min-width: 15px;
+      font-style: normal;
+      font-size: 12px;
+    }
+
+    &__icon {
+      align-items: center;
+      margin-right: 5px;
+    }
+
+    &__icons-block {
+      display: inline-block;
+      width: 60px;
+      vertical-align: top;
     }
 
     &__enable-loading {
