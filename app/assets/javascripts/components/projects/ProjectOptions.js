@@ -2,6 +2,7 @@ import React from 'react';
 import ProjectOption from './ProjectOption';
 import { reverseColumnsProjectBoard } from '../../actions/projectBoard';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 export const ProjectOptions = ({
   reverseColumnsProjectBoard
@@ -21,6 +22,10 @@ const mapStateToProps = ({ }) => ({ });
 
 const mapDispatchToProps = {
   reverseColumnsProjectBoard
+}
+
+ProjectOptions.propTypes = {
+  reverseColumnsProjectBoard: PropTypes.func.isRequired
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectOptions);
