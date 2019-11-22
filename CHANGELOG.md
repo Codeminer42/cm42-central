@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- [ V2 ] Estimate badge on expanded story.
+
 ### Removed
 - Rewire and Rewire Webpack
 - Inject loader
