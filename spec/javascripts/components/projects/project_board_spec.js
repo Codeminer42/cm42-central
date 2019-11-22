@@ -61,14 +61,14 @@ describe('<ProjectBoard />', () => {
         reverse: false
       }
     }
-    it('renders <NormalColumn />', () => {
+    it('renders normal-column', () => {
       const wrapper = render(aditionalProps);
       const normalColumn = wrapper.find('[data-id="normal-column"]');
 
       expect(normalColumn.exists()).toBeTruthy();
     });
 
-    it('does not renders <ReversedColumn />', () => {
+    it('does not renders reversed-column', () => {
       const wrapper = render(aditionalProps);
       const reversedColumn = wrapper.find('[data-id="reversed-column"]');
 
@@ -87,14 +87,14 @@ describe('<ProjectBoard />', () => {
       }
     };
 
-    it('renders <ReversedColumn />', () => {
+    it('renders reversed-column', () => {
       const wrapper = render(aditionalProps);
       const reversedColumn = wrapper.find('[data-id="reversed-column"]');
 
       expect(reversedColumn.exists()).toBeTruthy();
     });
 
-    it('does not renders <NormalColumn />', () => {
+    it('does not renders normal-column', () => {
       const wrapper = render(aditionalProps);
       const normalColumn = wrapper.find('[data-id="normal-column"]');
 

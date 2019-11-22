@@ -142,14 +142,4 @@ describe('Project Board Actions', () => {
       });
     });
   });
-
-  describe('reverseColumnsProjectBoard', () => {
-    const fakeDispatch = sinon.stub();
-
-    it('always dispatch reverseColumns', () => {
-      ProjectBoard.reverseColumnsProjectBoard()(fakeDispatch);
-
-      expect(fakeDispatch).toHaveBeenCalledWith(ProjectBoard.reverseColumns());
-    });
-  });
 });

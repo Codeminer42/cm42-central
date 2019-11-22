@@ -5,7 +5,7 @@ import { fetchPastStories } from "actions/pastIterations";
 import Column from "../Columns/ColumnItem";
 import History from "../stories/History";
 import { getColumns } from "../../selectors/columns";
-import * as Columns from '../../models/beta/column';
+import { CHILLY_BIN, DONE, BACKLOG } from '../../models/beta/column';
 import { createStory, closeHistory } from '../../actions/story';
 import AddStoryButton from '../story/AddStoryButton';
 import * as Story from 'libs/beta/constants';
@@ -18,8 +18,9 @@ import StorySearch from '../search/StorySearch';
 import SearchResults from './../search/SearchResults';
 import ProjectLoading from './ProjectLoading';
 import ProjectOptions from './ProjectOptions';
-import NormalColumn from '../Columns/NormalColumns';
-import ReversedColumn from '../Columns/ReversedColumns';
+import Columns from '../Columns/Columns';
+import Stories from "../stories/Stories";
+import Sprints from "../stories/Sprints";
 
 export const ProjectBoard = ({
   fetchProjectBoard,
@@ -43,8 +44,8 @@ export const ProjectBoard = ({
     return <ProjectLoading data-id="project-loading" />;
   }
 
-  const columns = {
-    chillyBin: {
+  const columns = [
+    {
       title: I18n.t("projects.show.chilly_bin"),
       renderAction: () =>
         <AddStoryButton
@@ -52,14 +53,9 @@ export const ProjectBoard = ({
             state: Story.status.UNSCHEDULED
           })}
         />,
-      stories: chillyBinStories
+      children: <Stories stories={chillyBinStories} />
     },
-    done: {
-      title: I18n.t("projects.show.done"),
-      sprints: doneSprints,
-      fetchPastStories
-    },
-    backlog: {
+    {
       title: `${I18n.t("projects.show.backlog")} / ${I18n.t("projects.show.in_progress")}`,
       renderAction: () =>
         <AddStoryButton
@@ -67,9 +63,13 @@ export const ProjectBoard = ({
             state: Story.status.UNSTARTED
           })}
         />,
-      sprints: backlogSprints
+      children: <Sprints sprints={backlogSprints} />
+    },
+    {
+      title: I18n.t("projects.show.done"),
+      children: <Sprints sprints={doneSprints} fetchStories={fetchPastStories} />
     }
-  }
+  ];
 
   return (
     <div className="ProjectBoard">
@@ -84,8 +84,16 @@ export const ProjectBoard = ({
 
       {
         projectBoard.reverse
-          ? <ReversedColumn data-id="reversed-column" {...columns} />
-          : <NormalColumn data-id="normal-column" {...columns} />
+          ? 
+            <Columns
+              data-id="reversed-column"
+              columns={columns.reverse()}
+            />
+          : 
+            <Columns
+              data-id="normal-column"
+              columns={columns}
+            />
       }
 
       <SearchResults />
@@ -128,17 +136,17 @@ const mapStateToProps = ({
   projectBoard,
   history,
   chillyBinStories: getColumns({
-    column: Columns.CHILLY_BIN,
+    column: CHILLY_BIN,
     stories
   }),
   backlogSprints: getColumns({
-    column: Columns.BACKLOG,
+    column: BACKLOG,
     stories,
     project,
     pastIterations
   }),
   doneSprints: getColumns({
-    column: Columns.DONE,
+    column: DONE,
     pastIterations,
     stories
   }),

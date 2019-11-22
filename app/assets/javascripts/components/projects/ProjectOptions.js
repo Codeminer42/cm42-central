@@ -1,17 +1,17 @@
 import React from 'react';
 import ProjectOption from './ProjectOption';
-import { reverseColumnsProjectBoard } from '../../actions/projectBoard';
+import { reverseColumns } from '../../actions/projectBoard';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 export const ProjectOptions = ({
-  reverseColumnsProjectBoard
+  reverseColumns
 }) =>
   <div className="ProjectBoard__options">
     <ul>
       <ProjectOption
         description={I18n.t('revert_tooltip')}
-        onClick={reverseColumnsProjectBoard}
+        onClick={reverseColumns}
         data-id="reverse-button"
       >
         <i className="fas fa-redo-alt ProjectOption__icon"></i>
@@ -19,14 +19,12 @@ export const ProjectOptions = ({
     </ul>
   </div>
 
-const mapStateToProps = ({ }) => ({ });
-
 const mapDispatchToProps = {
-  reverseColumnsProjectBoard
+  reverseColumns
 }
 
 ProjectOptions.propTypes = {
-  reverseColumnsProjectBoard: PropTypes.func.isRequired
+  reverseColumns: PropTypes.func.isRequired
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectOptions);
+export default connect(null, mapDispatchToProps)(ProjectOptions);

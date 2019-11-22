@@ -61,9 +61,6 @@ export const sendErrorNotificationIfNeeded = (dispatch, code, condition) => {
   if (condition) dispatch(sendErrorNotification(code, { custom: true }));
 }
 
-export const reverseColumnsProjectBoard = () =>
-  dispatch =>  dispatch(reverseColumns())
-
 export const fetchProjectBoard = projectId =>
   async (dispatch, getState, { ProjectBoard, UrlService }) => {
     dispatch(requestProjectBoard());
