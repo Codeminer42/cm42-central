@@ -87,6 +87,7 @@ en:
   upload_new_file: "Drop files here, or click to upload."
   reject_new_file: "Unsupported file type."
   accepted_tooltip: "The task has already been accepted. It can't be modified."
+  revert_tooltip: "Reverse the column order."
 
   story:
     state:

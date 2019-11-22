@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { fetchProjectBoard } from "actions/projectBoard";
 import { fetchPastStories } from "actions/pastIterations";
@@ -19,89 +19,93 @@ import { removeNotification } from '../../actions/notifications';
 import StorySearch from '../search/StorySearch';
 import SearchResults from './../search/SearchResults';
 import ProjectLoading from './ProjectLoading';
+import ProjectOptions from './ProjectOptions';
 
-export class ProjectBoard extends React.Component {
-  componentWillMount() {
-    this.props.fetchProjectBoard(this.props.projectId);
+const ProjectBoard = ({
+  fetchProjectBoard,
+  projectId,
+  projectBoard,
+  createStory, 
+  closeHistory,
+  notifications, 
+  removeNotification, 
+  history,
+  chillyBinStories,
+  backlogSprints,
+  doneSprints,
+  fetchPastStories
+}) => {
+  useEffect(() => {
+    fetchProjectBoard(projectId)
+  }, [fetchProjectBoard, projectId]);
+
+  if (!projectBoard.isFetched) {
+    return <ProjectLoading data-id="project-loading" />;
   }
 
-  render() {
-    if (!this.props.projectBoard.isFetched) {
-      return <ProjectLoading data-id="project-loading" />;
-    }
+  return (
+    <div className="ProjectBoard">
+      <StorySearch projectId={projectId} loading={projectBoard.search.loading} />
 
-    const { 
-      projectId, 
-      createStory, 
-      closeHistory,
-      notifications, 
-      removeNotification, 
-      history,
-      projectBoard
-    } = this.props;
+      <ProjectOptions />
 
-    return (
-      <div className="ProjectBoard">
-        <StorySearch projectId={projectId} loading={projectBoard.search.loading} />
+      <Notifications
+        notifications={notifications}
+        onRemove={removeNotification}
+      />
 
-        <Notifications
-          notifications={notifications}
-          onRemove={removeNotification}
-        />
-
-        <Column title={I18n.t("projects.show.chilly_bin")}
-          renderAction={() =>
-            <AddStoryButton
-              onAdd={() => createStory({
-                state: Story.status.UNSCHEDULED
-              })}
-            />
-          }
-        >
-          <Stories stories={this.props.chillyBinStories} />
-        </Column>
-
-        <Column
-          title={`${I18n.t("projects.show.backlog")} /
-          ${I18n.t("projects.show.in_progress")}`}
-          renderAction={() =>
-            <AddStoryButton
-              onAdd={() => createStory({
-                state: Story.status.UNSTARTED
-              })}
-            />}
-        >
-          <Sprints
-            sprints={this.props.backlogSprints}
+      <Column title={I18n.t("projects.show.chilly_bin")}
+        renderAction={() =>
+          <AddStoryButton
+            onAdd={() => createStory({
+              state: Story.status.UNSCHEDULED
+            })}
           />
-        </Column>
-
-        <Column
-          title={I18n.t("projects.show.done")}
-        >
-          <Sprints
-            sprints={this.props.doneSprints}
-            fetchStories={this.props.fetchPastStories}
-          />
-        </Column>
-
-        <SearchResults />
-
-        {
-          history.status !== 'DISABLED' &&
-          <Column
-            onClose={closeHistory}
-            title={[I18n.t("projects.show.history"), "'", history.storyTitle, "'"].join(' ')}
-          >
-            { history.status === 'LOADED'
-              ? <History history={history.activities} />
-              : <div className="loading">Loading...</div>
-            }
-          </Column>
         }
-      </div>
-    );
-  }
+      >
+        <Stories stories={chillyBinStories} />
+      </Column>
+
+      <Column
+        title={`${I18n.t("projects.show.backlog")} /
+        ${I18n.t("projects.show.in_progress")}`}
+        renderAction={() =>
+          <AddStoryButton
+            onAdd={() => createStory({
+              state: Story.status.UNSTARTED
+            })}
+          />}
+      >
+        <Sprints
+          sprints={backlogSprints}
+        />
+      </Column>
+
+      <Column
+        title={I18n.t("projects.show.done")}
+      >
+        <Sprints
+          sprints={doneSprints}
+          fetchStories={fetchPastStories}
+        />
+      </Column>
+
+      <SearchResults />
+
+      {
+        history.status !== 'DISABLED' &&
+        <Column
+          onClose={closeHistory}
+          title={[I18n.t("projects.show.history"), "'", history.storyTitle, "'"].join(' ')}
+        >
+          { history.status === 'LOADED'
+            ? <History history={history.activities} />
+            : <div className="loading">Loading...</div>
+          }
+        </Column>
+      }
+    </div>
+  );
 }
 
 ProjectBoard.propTypes = {

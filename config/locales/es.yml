@@ -83,6 +83,7 @@ es:
   upload_new_file: "Arrastre el archivo aquí, o haga clic para agregar."
   reject_new_file: "Tipo de archivo no soportado."
   accepted_tooltip: "La tarea ya ha sido aceptada. No se puede modificar."
+  revert_tooltip: "Invertir el orden de las columnas."
 
   story:
     state:
