@@ -15,6 +15,7 @@ const ProjectOption = ({
       onMouseOut={() => setShowInfo(false)}
       className="ProjectOption"
       onClick={onClick}
+      data-id="project-option"
     >
       {
         showInfo && <ProjectOptionInfo description={description} />

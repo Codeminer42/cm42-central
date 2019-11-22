@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const ProjectOptionInfo = ({
   description
 }) =>
-  <span className="ProjectOption__info">
+  <span data-id="project-option-info" className="ProjectOption__info">
     { description }
   </span>
 

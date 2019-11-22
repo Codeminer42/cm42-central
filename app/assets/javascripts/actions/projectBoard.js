@@ -28,7 +28,7 @@ const receiveProject = data => ({
   data
 });
 
-const reverseColumns = () => ({
+export const reverseColumns = () => ({
   type: actionTypes.REVERSE_COLUMNS
 });
 

@@ -21,7 +21,7 @@ import ProjectOptions from './ProjectOptions';
 import NormalColumn from '../Columns/NormalColumns';
 import ReversedColumn from '../Columns/ReversedColumns';
 
-const ProjectBoard = ({
+export const ProjectBoard = ({
   fetchProjectBoard,
   projectId,
   projectBoard,
@@ -43,33 +43,33 @@ const ProjectBoard = ({
     return <ProjectLoading data-id="project-loading" />;
   }
 
-  const chillyBin = {
-    title: I18n.t("projects.show.chilly_bin"),
-    renderAction: () =>
-      <AddStoryButton
-        onAdd={() => createStory({
-          state: Story.status.UNSCHEDULED
-        })}
-      />,
-    stories: chillyBinStories
-  };
-
-  const done = {
-    title: I18n.t("projects.show.done"),
-    sprints: doneSprints,
-    fetchPastStories
+  const columns = {
+    chillyBin: {
+      title: I18n.t("projects.show.chilly_bin"),
+      renderAction: () =>
+        <AddStoryButton
+          onAdd={() => createStory({
+            state: Story.status.UNSCHEDULED
+          })}
+        />,
+      stories: chillyBinStories
+    },
+    done: {
+      title: I18n.t("projects.show.done"),
+      sprints: doneSprints,
+      fetchPastStories
+    },
+    backlog: {
+      title: `${I18n.t("projects.show.backlog")} / ${I18n.t("projects.show.in_progress")}`,
+      renderAction: () =>
+        <AddStoryButton
+          onAdd={() => createStory({
+            state: Story.status.UNSTARTED
+          })}
+        />,
+      sprints: backlogSprints
+    }
   }
-
-  const backlog = {
-    title: `${I18n.t("projects.show.backlog")} / ${I18n.t("projects.show.in_progress")}`,
-    renderAction: () =>
-      <AddStoryButton
-        onAdd={() => createStory({
-          state: Story.status.UNSTARTED
-        })}
-      />,
-    sprints: backlogSprints
-  };
 
   return (
     <div className="ProjectBoard">
@@ -84,8 +84,8 @@ const ProjectBoard = ({
 
       {
         projectBoard.reverse
-          ? <ReversedColumn done={done} chillyBin={chillyBin} backlog={backlog} />
-          : <NormalColumn done={done} chillyBin={chillyBin} backlog={backlog} />
+          ? <ReversedColumn data-id="reversed-column" {...columns} />
+          : <NormalColumn data-id="normal-column" {...columns} />
       }
 
       <SearchResults />
