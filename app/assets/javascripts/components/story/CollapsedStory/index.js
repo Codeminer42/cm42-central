@@ -1,17 +1,14 @@
 import React from 'react';
 import classname from 'classnames';
-import StoryPopover from '../StoryPopover';
-import StoryDescriptionIcon from '../StoryDescriptionIcon';
-import CollapsedStoryEstimate from './CollapsedStoryEstimate';
 import CollapsedStoryStateActions from './CollapsedStoryStateActions';
 import CollapsedStoryInfo from './CollapsedStoryInfo';
-import StoryIcon from '../StoryIcon';
 import * as Story from '../../../models/beta/story';
 import { updateCollapsedStory, highlight } from '../../../actions/story';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CollapsedStoryFocusButon from './CollapsedStoryFocusButton';
 import StoryPropTypes from '../../shapes/story';
+import EstimateBadge from '../EstimateBadge';
 
 const storyClassName = (story, additionalClassname = '') => {
   const isStoryNotEstimated = Story.isStoryNotEstimated(story.storyType, story.estimate);
@@ -43,13 +40,7 @@ export const CollapsedStory = ({
     onClick={onToggle}
     title={title}
   >
-    <StoryPopover story={story}>
-      <div className='Story__icons-block'>
-        <StoryIcon storyType={story.storyType} />
-        <CollapsedStoryEstimate estimate={story.estimate} />
-        <StoryDescriptionIcon description={story.description} />
-      </div>
-    </StoryPopover>
+    <EstimateBadge story={story} />
 
     <CollapsedStoryInfo story={story} />
 
