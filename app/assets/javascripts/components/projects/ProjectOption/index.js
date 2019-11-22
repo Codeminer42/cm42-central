@@ -3,7 +3,8 @@ import ProjectOptionInfo from './ProjectOptionInfo';
 
 const ProjectOption = ({
   children,
-  description
+  description,
+  onClick
 }) => {
   const [showInfo, setShowInfo] = useState(false);
 
@@ -12,6 +13,7 @@ const ProjectOption = ({
       onMouseOver={() => setShowInfo(true)}
       onMouseOut={() => setShowInfo(false)}
       className="ProjectOption"
+      onClick={onClick}
     >
       {
         showInfo && <ProjectOptionInfo description={description} />

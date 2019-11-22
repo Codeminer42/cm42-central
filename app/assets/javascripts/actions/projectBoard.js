@@ -28,6 +28,10 @@ const receiveProject = data => ({
   data
 });
 
+const reverseColumns = () => ({
+  type: actionTypes.REVERSE_COLUMNS
+});
+
 export const updateStorySuccess = (story, from) => ({
   type: actionTypes.UPDATE_STORY_SUCCESS,
   story,
@@ -56,6 +60,9 @@ export const expandStoryIfNeeded = (dispatch, getHash) => {
 export const sendErrorNotificationIfNeeded = (dispatch, code, condition) => {
   if (condition) dispatch(sendErrorNotification(code, { custom: true }));
 }
+
+export const reverseColumnsProjectBoard = reverse =>
+  dispatch =>  dispatch(reverseColumns())
 
 export const fetchProjectBoard = projectId =>
   async (dispatch, getState, { ProjectBoard, UrlService }) => {

@@ -40,5 +40,6 @@ export default keyMirror({
   SEARCH_STORIES_SUCCESS: null,
   CLOSE_SEARCH: null,
   HIGHLIGHT_STORY: null,
-  LOADING_SEARCH: null
+  LOADING_SEARCH: null,
+  REVERSE_COLUMNS: null
 });

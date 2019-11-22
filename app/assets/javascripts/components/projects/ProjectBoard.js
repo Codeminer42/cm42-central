@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import { fetchProjectBoard } from "actions/projectBoard";
 import { fetchPastStories } from "actions/pastIterations";
 import Column from "../Columns/ColumnItem";
-import Stories from "../stories/Stories";
-import Sprints from "../stories/Sprints";
 import History from "../stories/History";
 import { getColumns } from "../../selectors/columns";
 import * as Columns from '../../models/beta/column';
@@ -20,6 +18,8 @@ import StorySearch from '../search/StorySearch';
 import SearchResults from './../search/SearchResults';
 import ProjectLoading from './ProjectLoading';
 import ProjectOptions from './ProjectOptions';
+import NormalColumn from '../Columns/NormalColumns';
+import ReversedColumn from '../Columns/ReversedColumns';
 
 const ProjectBoard = ({
   fetchProjectBoard,
@@ -43,6 +43,34 @@ const ProjectBoard = ({
     return <ProjectLoading data-id="project-loading" />;
   }
 
+  const chillyBin = {
+    title: I18n.t("projects.show.chilly_bin"),
+    renderAction: () =>
+      <AddStoryButton
+        onAdd={() => createStory({
+          state: Story.status.UNSCHEDULED
+        })}
+      />,
+    stories: chillyBinStories
+  };
+
+  const done = {
+    title: I18n.t("projects.show.done"),
+    sprints: doneSprints,
+    fetchPastStories
+  }
+
+  const backlog = {
+    title: `${I18n.t("projects.show.backlog")} / ${I18n.t("projects.show.in_progress")}`,
+    renderAction: () =>
+      <AddStoryButton
+        onAdd={() => createStory({
+          state: Story.status.UNSTARTED
+        })}
+      />,
+    sprints: backlogSprints
+  };
+
   return (
     <div className="ProjectBoard">
       <StorySearch projectId={projectId} loading={projectBoard.search.loading} />
@@ -54,41 +82,11 @@ const ProjectBoard = ({
         onRemove={removeNotification}
       />
 
-      <Column title={I18n.t("projects.show.chilly_bin")}
-        renderAction={() =>
-          <AddStoryButton
-            onAdd={() => createStory({
-              state: Story.status.UNSCHEDULED
-            })}
-          />
-        }
-      >
-        <Stories stories={chillyBinStories} />
-      </Column>
-
-      <Column
-        title={`${I18n.t("projects.show.backlog")} /
-        ${I18n.t("projects.show.in_progress")}`}
-        renderAction={() =>
-          <AddStoryButton
-            onAdd={() => createStory({
-              state: Story.status.UNSTARTED
-            })}
-          />}
-      >
-        <Sprints
-          sprints={backlogSprints}
-        />
-      </Column>
-
-      <Column
-        title={I18n.t("projects.show.done")}
-      >
-        <Sprints
-          sprints={doneSprints}
-          fetchStories={fetchPastStories}
-        />
-      </Column>
+      {
+        projectBoard.reverse
+          ? <ReversedColumn done={done} chillyBin={chillyBin} backlog={backlog} />
+          : <NormalColumn done={done} chillyBin={chillyBin} backlog={backlog} />
+      }
 
       <SearchResults />
 
