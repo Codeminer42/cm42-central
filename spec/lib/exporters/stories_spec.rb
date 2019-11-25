@@ -2,14 +2,13 @@ require 'rails_helper'
 
 describe Exporters::Stories do
   describe '.content' do
-    let(:user) { create(:user) }
-    let(:project) { create(:project, users: [user]) }
+    let(:user) { build(:user) }
+    let(:project) { build(:project, users: [user]) }
 
     let(:csv) do
       [
         csv_headers.to_csv,
-        project.stories.map { |story| story.to_csv(csv_extra_columns) }
-                       .map(&:to_csv)
+        stories.map { |story| story.to_csv(csv_extra_columns) }.map(&:to_csv)
       ].flatten.join
     end
 
@@ -22,12 +21,12 @@ describe Exporters::Stories do
     end
 
     context 'when stories has not notes nor documents nor tasks' do
-      let(:stories) { create_list(:story, 3, :done, project: project, requested_by: user) }
+      let(:stories) { build_list(:story, 3, :done, project: project, requested_by: user) }
 
       let(:csv_headers) { Story.csv_headers }
       let(:csv_extra_columns) { { notes: 0, documents: 0, tasks: 0 } }
 
-      it { is_expected.to eq csv }
+      it { is_expected.to eq(csv) }
     end
 
     context 'when only one story has notes' do

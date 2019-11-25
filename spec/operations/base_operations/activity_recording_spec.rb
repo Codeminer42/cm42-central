@@ -19,18 +19,17 @@ describe BaseOperations::ActivityRecording do
     Activity.all.map { |activity| activity[:subject_changes]['id'] }
   end
 
-  let(:user) { create(:user, :with_team) }
-  let(:project) { create(:project, users: [user], teams: [user.teams.first]) }
-  let(:story) { create(:story, project: project, requested_by: user) }
-  let(:model) { create_list(:story, 3, project: project, requested_by: user) }
+  let!(:user) { create(:user, :with_team) }
+  let!(:project) { create(:project, users: [user], teams: [user.teams.first]) }
+  let!(:story) { create(:story, project: project, requested_by: user) }
+  let!(:model) { create_list(:story, 3, project: project, requested_by: user) }
 
   describe '#create_activity' do
-    before(:each) { subject.create_activity }
-
     context 'when model is a collection of records' do
       subject { FakeClass.new(model, user) }
 
       it 'creates an activity for each record' do
+        subject.create_activity
         expect(activities_story_ids).to eq(model.map(&:id))
       end
     end
@@ -39,6 +38,7 @@ describe BaseOperations::ActivityRecording do
       subject { FakeClass.new(story, user) }
 
       it 'creates an activity' do
+        subject.create_activity
         expect(activities_story_ids.first).to eq(story.id)
       end
     end
