@@ -14,7 +14,9 @@ addons:
     paths:
       - $(ls -d -1 $PWD/tmp/capybara/* | tr "\n" ":")
 env:
-  - "DB=postgresql"
+  global:
+    - "DB=postgresql"
+    - CC_TEST_REPORTER_ID=9eb33c5afdf03c410afd7706824322e6bc10d0a6911c154a7d2a2e8671f1528f
 before_install:
   - nvm install 10.17.0
 install:
