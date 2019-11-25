@@ -119,8 +119,6 @@ GEM
     cloudinary (1.1.7)
       aws_cf_signer
       rest-client
-    codeclimate-test-reporter (1.0.9)
-      simplecov (<= 0.13)
     coderay (1.1.2)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
@@ -571,7 +569,6 @@ DEPENDENCIES
   chartkick
   chronic
   cloudinary
-  codeclimate-test-reporter
   coffee-rails
   compass-rails
   configuration

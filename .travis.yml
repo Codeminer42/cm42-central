@@ -28,8 +28,12 @@ before_script:
   - ln -s /usr/lib/chromium-browser/chromedriver ~/bin/chromedriver
   - "export DISPLAY=:99.0"
   - "bundle exec rake --trace fulcrum:setup db:setup"
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 rvm:
   - 2.6.0
 script:
   - "bundle exec rake travis"
-  - "bundle exec codeclimate-test-reporter"
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

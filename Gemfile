@@ -79,7 +79,6 @@ group :test do
   gem 'rails-controller-testing'
   gem 'capybara'
   gem 'capybara-screenshot'
-  gem 'codeclimate-test-reporter', require: nil
   gem 'database_cleaner'
   gem 'factory_bot_rails'
   gem 'selenium-webdriver'
