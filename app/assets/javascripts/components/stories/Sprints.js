@@ -10,18 +10,15 @@ const defaultProps = {
   sprints: [],
 };
 
-const renderSprints = (sprints, fetchStories) => {
-  return sprints.map(
-    (sprint, index) =>
-      sprint ? (
-        <Sprint
-          key={sprint.number}
-          sprint={sprint}
-          fetchStories={fetchStories}
-        />
-      ) : null
-  );
-};
+const renderSprints = (sprints, fetchStories) =>
+  sprints.map(
+    sprint =>
+      <Sprint
+        key={sprint.number}
+        sprint={sprint}
+        fetchStories={fetchStories}
+      />
+  )
 
 const Sprints = ({ sprints, fetchStories }) => {
   if (!sprints.length) return null;
