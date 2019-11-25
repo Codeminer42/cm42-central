@@ -1,6 +1,6 @@
 class IntegrationWorker
   include Sidekiq::Worker
-  include Central::Support::DiscordHelper
+  include Integrations::Discord::Helper
   include Integrations::Mattermost::Helper
   include Central::Support::SlackHelper
 
