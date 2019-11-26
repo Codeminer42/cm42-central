@@ -1,8 +1,15 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import StorySearch from 'components/search/StorySearch';
+import { StorySearch } from 'components/search/StorySearch';
 
 describe('<StorySearch />',  () => {
+  beforeEach(() => {
+    const divPortal = global.document.createElement('div');
+    divPortal.setAttribute('data-portal', 'search');
+    const body = global.document.querySelector('body');
+    body.appendChild(divPortal);
+  })
+
   it('renders the component', () => {
     const wrapper = shallow(
       <StorySearch 
