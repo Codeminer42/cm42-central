@@ -111,13 +111,14 @@ describe('<ProjectCard />', () => {
           it('has the tag name', () => {
             expect(wrapper.find('.card-tag')).toHaveText(defaultProps.project.get("tag_name"));
           });
+
           it('has the background and foreground defined', () => {
-            const card_tag = wrapper.find('.card-tag');
-            expect(card_tag).toHaveStyle({ backgroundColor: '#2075F3', color: '#FFFFFF' });
+            expect(wrapper.find('.card-tag')).toHaveStyle({ backgroundColor: '#2075F3', color: '#FFFFFF' });
           });
         });
+
         it('does not have the tag', () => {
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
+          const wrapper = mount(<ProjectCard {...propsWithTag} />);
           expect(wrapper.contains(
             <small className='card-tag'>{defaultProps.project.get("tag_name")}</small>
           )).toBe(false);

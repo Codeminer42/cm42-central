@@ -1,33 +1,35 @@
 import ProjectVelocityOverrideView from 'views/project_velocity_override_view';
 
 describe('ProjectVelocityOverrideView', function() {
+  let project;
+  let subject;
 
   beforeEach(function() {
-    this.project = {};
+    project = {};
     ProjectVelocityOverrideView.prototype.template = sinon.stub();
-    this.subject = new ProjectVelocityOverrideView({model: this.project});
+    subject = new ProjectVelocityOverrideView({model: project});
   });
 
   describe("changeVelocity", function() {
 
     beforeEach(function() {
-      sinon.stub(this.subject, 'requestedVelocityValue').returns(42);
-      this.project.velocity = sinon.stub();
-      this.subject.$el.remove = sinon.stub();
+      sinon.stub(subject, 'requestedVelocityValue').returns(42);
+      project.velocity = sinon.stub();
+      subject.$el.remove = sinon.stub();
     });
 
     it("calls velocity() on the model", function() {
-      this.subject.changeVelocity();
-      expect(this.project.velocity).toHaveBeenCalledWith(42);
+      subject.changeVelocity();
+      expect(project.velocity).toHaveBeenCalledWith(42);
     });
 
     it("removes the $el", function() {
-      this.subject.changeVelocity();
-      expect(this.subject.$el.remove).toHaveBeenCalled();
+      subject.changeVelocity();
+      expect(subject.$el.remove).toHaveBeenCalled();
     });
 
     it("returns false", function() {
-      expect(this.subject.changeVelocity()).toEqual(false);
+      expect(subject.changeVelocity()).toEqual(false);
     });
 
   });
@@ -35,22 +37,22 @@ describe('ProjectVelocityOverrideView', function() {
   describe("revertVelocity", function() {
 
     beforeEach(function() {
-      this.project.revertVelocity = sinon.stub();
-      this.subject.$el.remove = sinon.stub();
+      project.revertVelocity = sinon.stub();
+      subject.$el.remove = sinon.stub();
     });
 
     it("calls revertVelocity() on the model", function() {
-      this.subject.revertVelocity();
-      expect(this.project.revertVelocity).toHaveBeenCalled();
+      subject.revertVelocity();
+      expect(project.revertVelocity).toHaveBeenCalled();
     });
 
     it("removes the $el", function() {
-      this.subject.revertVelocity();
-      expect(this.subject.$el.remove).toHaveBeenCalled();
+      subject.revertVelocity();
+      expect(subject.$el.remove).toHaveBeenCalled();
     });
 
     it("returns false", function() {
-      expect(this.subject.revertVelocity()).toEqual(false);
+      expect(subject.revertVelocity()).toEqual(false);
     });
 
   });
@@ -58,11 +60,11 @@ describe('ProjectVelocityOverrideView', function() {
   describe("requestedVelocityValue", function() {
 
     beforeEach(function() {
-      this.subject.$el.append('<input name="override" value="42">');
+      subject.$el.append('<input name="override" value="42">');
     });
 
     it("returns the right value", function() {
-      expect(this.subject.requestedVelocityValue()).toEqual(42);
+      expect(subject.requestedVelocityValue()).toEqual(42);
     });
 
   });

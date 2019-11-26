@@ -5,10 +5,11 @@ import StoryDescription from 'components/story/StoryDescription';
 import StoryLink from 'components/stories/StoryLink';
 
 describe('<StoryDescription />', function() {
+  let story;
 
   beforeEach(function() {
     sinon.stub(window.md, 'makeHtml');
-    this.story = {id: 5, description: 'Description'};
+    story = {id: 5, description: 'Description'};
   });
 
   afterEach(function() {
@@ -22,7 +23,7 @@ describe('<StoryDescription />', function() {
         name='description'
         linkedStories={{}}
         isReadonly={false}
-        description={this.story.description}
+        description={story.description}
         isNew={false}
         editingDescription={false}
         value={""}

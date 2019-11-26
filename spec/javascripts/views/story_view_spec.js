@@ -3,6 +3,12 @@ import template from 'templates/story.ejs';
 import OriginalStory from 'models/story';
 
 describe('StoryView', function() {
+  let story;
+  let new_story;
+  let view;
+  let new_story_view;
+  let set;
+  let server;
 
   beforeEach(function() {
     window.projectView = {
@@ -45,22 +51,22 @@ describe('StoryView', function() {
       clickFromSearchResult: false,
       isSearchResult: false,
     });
-    this.story = new Story({id: '999', title: 'Story'});
-    this.new_story = new Story({title: 'New Story'});
-    this.story.notes = this.new_story.notes = new NotesCollection();
-    this.story.tasks = this.new_story.tasks = new TasksCollection();
-    this.view = new StoryView({
-      model: this.story
+    story = new Story({id: '999', title: 'Story'});
+    new_story = new Story({title: 'New Story'});
+    story.notes = new_story.notes = new NotesCollection();
+    story.tasks = new_story.tasks = new TasksCollection();
+    view = new StoryView({
+      model: story
     });
-    this.new_story_view = new StoryView({
-      model: this.new_story
+    new_story_view = new StoryView({
+      model: new_story
     });
 
     window.projectView.usernames = sinon.stub();
 
-    this.server = sinon.fakeServer.create();
+    server = sinon.fakeServer.create();
 
-    this.view.attachinaryOptions = {
+    view.attachinaryOptions = {
       "attachinary":{
         "accessible":true,"accept":["raw","jpg","png","psd","docx","xlsx","doc","xls"],"maximum":10,"single":false,"scope":"documents","plural":"documents","singular":"document","files":[]},
         "cloudinary":{
@@ -74,33 +80,33 @@ describe('StoryView', function() {
   });
 
   afterEach(function() {
-    this.server.restore();
+    server.restore();
     window.md.makeHtml.restore();
   });
 
   describe('class name', function() {
 
     it('should have the story class', function() {
-      expect(this.view.$el[0]).toHaveClass('story');
+      expect(view.$el[0]).toHaveClass('story');
     });
 
     it('should have the story type class', function() {
-      expect(this.view.$el[0]).toHaveClass('feature');
+      expect(view.$el[0]).toHaveClass('feature');
     });
 
     it('should have the unestimated class', function() {
-      expect(this.view.$el[0]).toHaveClass('unestimated');
+      expect(view.$el[0]).toHaveClass('unestimated');
 
       // Should not have the unestimated class if it's been estimated
-      sinon.stub(this.view.model, "estimated").returns(true);
-      this.view.model.set({estimate: 1});
-      expect(this.view.$el[0]).not.toHaveClass('unestimated');
+      sinon.stub(view.model, "estimated").returns(true);
+      view.model.set({estimate: 1});
+      expect(view.$el[0]).not.toHaveClass('unestimated');
     });
 
     it("should have the story state class", function() {
-      expect(this.view.$el[0]).toHaveClass('unestimated');
-      this.view.model.set({state: 'accepted'});
-      expect(this.view.$el[0]).toHaveClass('accepted');
+      expect(view.$el[0]).toHaveClass('unestimated');
+      view.model.set({state: 'accepted'});
+      expect(view.$el[0]).toHaveClass('accepted');
     });
 
   });
@@ -108,54 +114,57 @@ describe('StoryView', function() {
   describe("id", function() {
 
     it("should have an id", function() {
-      expect(this.view.id).toEqual(this.view.model.id);
-      expect(this.view.$el.attr('id')).toBe("story-" + this.view.model.id);
+      expect(view.id).toEqual(view.model.id);
+      expect(view.$el.attr('id')).toBe("story-" + view.model.id);
     });
 
   });
 
   describe('startEdit', function() {
+    let e;
+
     beforeEach(function() {
-      this.e = {};
-      this.view.model.set = sinon.stub();
-      this.view.removeHoverbox = sinon.stub();
+      e = {};
+      view.model.set = sinon.stub();
+      view.removeHoverbox = sinon.stub();
     });
 
     describe('when event should expand story', function() {
 
       beforeEach(function() {
-        this.view.eventShouldExpandStory = sinon.stub();
-        this.view.eventShouldExpandStory.withArgs(this.e).returns(true);
+        view.eventShouldExpandStory = sinon.stub();
+        view.eventShouldExpandStory.withArgs(e).returns(true);
       });
 
       it('sets the model attributes correctly', function() {
-        this.view.startEdit(this.e);
-        expect(this.view.model.set).toHaveBeenCalledWith({
+        view.startEdit(e);
+        expect(view.model.set).toHaveBeenCalledWith({
           editing: true, editingDescription: false, clickFromSearchResult: false
         });
       });
 
       it('removes the hoverBox', function() {
-        this.view.startEdit(this.e);
-        expect(this.view.removeHoverbox).toHaveBeenCalled();
+        view.startEdit(e);
+        expect(view.removeHoverbox).toHaveBeenCalled();
       });
     });
   });
 
   describe('eventShouldExpandStory', function() {
+    let e;
 
     beforeEach(function() {
-      this.e = {target: '<input>'};
+      e = {target: '<input>'};
     });
 
     describe('when model is being edited', function() {
 
       beforeEach(function() {
-        this.view.model.set({editing: true});
+        view.model.set({editing: true});
       });
 
       it("returns false", function() {
-        expect(this.view.eventShouldExpandStory(this.e)).toBeFalsy();
+        expect(view.eventShouldExpandStory(e)).toBeFalsy();
       });
 
     });
@@ -163,19 +172,19 @@ describe('StoryView', function() {
     describe('when model is not being edited', function() {
 
       beforeEach(function() {
-        this.view.model.set({editing: false});
+        view.model.set({editing: false});
       });
 
       describe('and e.target is an input', function() {
         it("returns false", function() {
-          expect(this.view.eventShouldExpandStory(this.e)).toBeFalsy();
+          expect(view.eventShouldExpandStory(e)).toBeFalsy();
         });
       });
 
       describe('and e.target is not an input', function() {
         it("returns true", function() {
-          this.e.target = '<span>';
-          expect(this.view.eventShouldExpandStory(this.e)).toBeTruthy();
+          e.target = '<span>';
+          expect(view.eventShouldExpandStory(e)).toBeTruthy();
         });
       });
 
@@ -186,90 +195,92 @@ describe('StoryView', function() {
   describe("cancel edit", function() {
 
     it("should remove itself when edit cancelled if its new", function() {
-      var view = new StoryView({model: this.new_story});
-      var spy = sinon.spy(this.new_story, "clear");
+      var view = new StoryView({model: new_story});
+      var spy = sinon.spy(new_story, "clear");
 
       view.cancelEdit();
       expect(spy).toHaveBeenCalled();
     });
 
     it("should reload after cancel if there were existing errors", function() {
-      this.story.set({errors:true});
-      expect(this.story.get('errors')).toEqual(true);
-      sinon.stub(this.story, "hasErrors").returns(true);
-      var stub = sinon.stub(this.story, "fetch");
-      this.view.cancelEdit();
+      story.set({errors:true});
+      expect(story.get('errors')).toEqual(true);
+      sinon.stub(story, "hasErrors").returns(true);
+      var stub = sinon.stub(story, "fetch");
+      view.cancelEdit();
       expect(stub).toHaveBeenCalled();
-      expect(this.story.get('errors')).toBeUndefined();
+      expect(story.get('errors')).toBeUndefined();
     });
 
   });
 
   describe("save edit", function() {
+    let e;
+
     beforeEach(function() {
-      this.e = {currentTarget: ''};
+      e = {currentTarget: ''};
     });
 
     it("should call save", function() {
-      this.server.respondWith(
+      server.respondWith(
         "PUT", "/path/to/story", [
           200, {"Content-Type": "application/json"},
           '{"story":{"title":"Story title"}}'
         ]
       );
-      this.story.set({editing: true});
-      this.view.clickSave(this.e);
-      expect(this.story.get('editing')).toBeTruthy();
-      expect(this.server.requests.length).toEqual(1);
+      story.set({editing: true});
+      view.clickSave(e);
+      expect(story.get('editing')).toBeTruthy();
+      expect(server.requests.length).toEqual(1);
 
       // editing should be set to false when save is successful
-      this.server.respond();
+      server.respond();
 
-      expect(this.story.get('editing')).toBeFalsy();
+      expect(story.get('editing')).toBeFalsy();
     });
 
     it("should set editing when errors occur", function() {
-      this.server.respondWith(
+      server.respondWith(
         "PUT", "/path/to/story", [
           422, {"Content-Type": "application/json"},
           '{"story":{"errors":{"title":["cannot be blank"]}}}'
         ]
       );
 
-      this.view.clickSave(this.e);
-      expect(this.server.responses.length).toEqual(1);
-      expect(this.server.responses[0].method).toEqual("PUT");
-      expect("/path/to/story").toMatch(this.server.responses[0].url);
+      view.clickSave(e);
+      expect(server.responses.length).toEqual(1);
+      expect(server.responses[0].method).toEqual("PUT");
+      expect("/path/to/story").toMatch(server.responses[0].url);
 
-      this.server.respond();
+      server.respond();
 
-      expect(this.story.get('editing')).toBeTruthy();
-      expect(this.story.get('errors').title[0]).toEqual("cannot be blank");
+      expect(story.get('editing')).toBeTruthy();
+      expect(story.get('errors').title[0]).toEqual("cannot be blank");
     });
 
     it("should disable all form controls on submit", function() {
-      this.server.respondWith(
+      server.respondWith(
         "PUT", "/path/to/story", [
           200, {"Content-Type": "application/json"},
           '{"story":{"title":"Story title"}}'
         ]
       );
 
-      var disable_spy = sinon.spy(this.view, 'disableForm');
-      var enable_spy = sinon.spy(this.view, 'enableForm');
+      var disable_spy = sinon.spy(view, 'disableForm');
+      var enable_spy = sinon.spy(view, 'enableForm');
 
-      this.story.set({editing: true});
-      this.view.clickSave(this.e);
+      story.set({editing: true});
+      view.clickSave(e);
 
       expect(disable_spy).toHaveBeenCalled();
       expect(enable_spy).not.toHaveBeenCalled();
-      this.server.respond();
+      server.respond();
 
       expect(enable_spy).toHaveBeenCalled();
     });
 
     it('should disable state transition buttons on click', function() {
-      this.server.respondWith(
+      server.respondWith(
         "PUT", "/path/to/story", [
           200, {"Content-Type": "application/json"},
           '{"story":{"state":"started"}}'
@@ -277,17 +288,17 @@ describe('StoryView', function() {
       );
 
       var ev = { target: { value : 'start' } };
-      this.view.transition(ev);
+      view.transition(ev);
 
-      expect(this.view.saveInProgress).toBeTruthy();
+      expect(view.saveInProgress).toBeTruthy();
 
-      this.server.respond();
+      server.respond();
 
-      expect(this.view.saveInProgress).toBeFalsy();
+      expect(view.saveInProgress).toBeFalsy();
     });
 
     it('should disable estimate buttons on click', function() {
-      this.server.respondWith(
+      server.respondWith(
         "PUT", "/path/to/story", [
           200, {"Content-Type": "application/json"},
           '{"story":{"estimate":"1"}}'
@@ -295,18 +306,18 @@ describe('StoryView', function() {
       );
 
       var ev = { target: { attributes : { 'data-value' : { value : 1 } } } };
-      this.view.estimate(ev);
+      view.estimate(ev);
 
-      expect(this.view.saveInProgress).toBeTruthy();
+      expect(view.saveInProgress).toBeTruthy();
 
-      this.server.respond();
+      server.respond();
 
-      expect(this.view.saveInProgress).toBeFalsy();
+      expect(view.saveInProgress).toBeFalsy();
     });
 
     it("should call setAcceptedAt on the story", function() {
-      this.view.saveEdit(this.e);
-      expect(this.story.setAcceptedAt).toHaveBeenCalledOnce();
+      view.saveEdit(e);
+      expect(story.setAcceptedAt).toHaveBeenCalledOnce();
     });
 
   });
@@ -314,108 +325,107 @@ describe('StoryView', function() {
   describe("expand collapse controls", function() {
 
     it("should not show the collapse control if its a new story", function() {
-      this.new_story.set({editing: true});
+      new_story.set({editing: true});
 
-      expect($(this.new_story_view.el)).not.toContain('a.collapse');
+      expect($(new_story_view.el)).not.toContain('a.collapse');
     });
 
   });
 
   describe("sorting", function() {
-
     beforeEach(function() {
-      this.story.collection.length = 1;
-      this.story.collection.columns = function() {return [];};
-      this.story.collection.project.columnsBefore = sinon.stub();
-      this.story.collection.project.columnsAfter = sinon.stub();
+      story.collection.length = 1;
+      story.collection.columns = function() {return [];};
+      story.collection.project.columnsBefore = sinon.stub();
+      story.collection.project.columnsAfter = sinon.stub();
     });
 
     it("sets state to unstarted if dropped on the backlog column", function() {
 
-      this.story.set({'state':'unscheduled'});
+      story.set({'state':'unscheduled'});
 
       var html = $('<td id="backlog"><div id="story-1"></div></td>');
       var ev = {target: html.find('#story-1')};
 
-      this.view.sortUpdate(ev);
+      view.sortUpdate(ev);
 
-      expect(this.story.get('state')).toEqual("unstarted");
+      expect(story.get('state')).toEqual("unstarted");
     });
 
     it("sets state to unstarted if dropped on the in_progress column", function() {
 
-      this.story.set({'state':'unscheduled'});
+      story.set({'state':'unscheduled'});
 
       var html = $('<td id="in_progress"><div id="story-1"></div></td>');
       var ev = {target: html.find('#story-1')};
 
-      this.view.sortUpdate(ev);
+      view.sortUpdate(ev);
 
-      expect(this.story.get('state')).toEqual("unstarted");
+      expect(story.get('state')).toEqual("unstarted");
     });
 
     it("doesn't change state if not unscheduled and dropped on the in_progress column", function() {
 
-      this.story.set({'state':'finished'});
+      story.set({'state':'finished'});
 
       var html = $('<td id="in_progress"><div id="story-1"></div></td>');
       var ev = {target: html.find('#story-1')};
 
-      this.view.sortUpdate(ev);
+      view.sortUpdate(ev);
 
-      expect(this.story.get('state')).toEqual("finished");
+      expect(story.get('state')).toEqual("finished");
     });
 
     it("sets state to unscheduled if dropped on the chilly_bin column", function() {
 
-      this.story.set({'state':'unstarted'});
+      story.set({'state':'unstarted'});
 
       var html = $('<td id="chilly_bin"><div id="story-1"></div></td>');
       var ev = {target: html.find('#story-1')};
 
-      this.view.sortUpdate(ev);
+      view.sortUpdate(ev);
 
-      expect(this.story.get('state')).toEqual("unscheduled");
+      expect(story.get('state')).toEqual("unscheduled");
     });
 
     it("should move after the previous story in the column", function() {
       var html = $('<div id="story-1" data-story-id="1" class="story"></div><div id="story-2" data-story-id="2" class="story"></div>');
       var ev = {target: html[1]};
 
-      this.story.moveAfter = sinon.spy();
-      this.view.sortUpdate(ev);
+      story.moveAfter = sinon.spy();
+      view.sortUpdate(ev);
 
-      expect(this.story.moveAfter).toHaveBeenCalledWith(1);
+      expect(story.moveAfter).toHaveBeenCalledWith(1);
     });
 
     it("should move before the next story in the column", function() {
       var html = $('<div id="story-1" data-story-id="1" class="story"></div><div id="story-2" data-story-id="2" class="story"></div>');
       var ev = {target: html[0]};
 
-      this.story.moveBefore = sinon.spy();
-      this.view.sortUpdate(ev);
+      story.moveBefore = sinon.spy();
+      view.sortUpdate(ev);
 
-      expect(this.story.moveBefore).toHaveBeenCalledWith(2);
+      expect(story.moveBefore).toHaveBeenCalledWith(2);
     });
 
     it("should move before the next story in the column", function() {
       var html = $('<div id="foo"></div><div id="story-1" data-story-id="1" class="story"></div><div id="story-2" data-story-id="2" class="story"></div>');
       var ev = {target: html[1]};
 
-      this.story.moveBefore = sinon.spy();
-      this.view.sortUpdate(ev);
+      story.moveBefore = sinon.spy();
+      view.sortUpdate(ev);
 
-      expect(this.story.moveBefore).toHaveBeenCalledWith(2);
+      expect(story.moveBefore).toHaveBeenCalledWith(2);
     });
 
     it("should move into an empty chilly bin", function() {
       var html = $('<td id="backlog"><div id="story-1" data-story-id="1"></div></td><td id="chilly_bin"><div id="story-2" data-story-id="2"></div></td>');
       var ev = {target: html.find('#story-2')};
 
-      this.story.moveAfter = sinon.spy();
-      this.view.sortUpdate(ev);
+      story.moveAfter = sinon.spy();
+      view.sortUpdate(ev);
 
-      expect(this.story.get('state')).toEqual('unscheduled');
+      expect(story.get('state')).toEqual('unscheduled');
     });
 
   });
@@ -424,7 +434,7 @@ describe('StoryView', function() {
 
     it("should initialize tagit on edit", function() {
       var spy = sinon.spy(jQuery.fn, 'tagit');
-      this.new_story.set({editing: true});
+      new_story.set({editing: true});
       expect(spy).toHaveBeenCalled();
       spy.restore();
     });
@@ -434,51 +444,51 @@ describe('StoryView', function() {
   describe("notes", function() {
 
     it("adds a blank note to the end of the notes collection", function() {
-      this.view.model.notes.reset();
-      expect(this.view.model.notes.length).toEqual(0);
-      this.view.addEmptyNote();
-      expect(this.view.model.notes.length).toEqual(1);
-      expect(this.view.model.notes.last().isNew()).toBeTruthy();
+      view.model.notes.reset();
+      expect(view.model.notes.length).toEqual(0);
+      view.addEmptyNote();
+      expect(view.model.notes.length).toEqual(1);
+      expect(view.model.notes.last().isNew()).toBeTruthy();
     });
 
     describe("when the text area is empty", function() {
 
       it("disables the add button", function() {
-        this.view.canEdit = sinon.stub().returns(true);
-        this.view.render();
+        view.canEdit = sinon.stub().returns(true);
+        view.render();
 
-        expect(this.view.$('.add-note').is(':disabled')).toEqual(true);
+        expect(view.$('.add-note').is(':disabled')).toEqual(true);
       });  
     })
 
     it("doesn't add a blank note if the story is new", function() {
-      var stub = sinon.stub(this.view.model, 'isNew');
+      var stub = sinon.stub(view.model, 'isNew');
       stub.returns(true);
-      this.view.model.notes.reset();
-      expect(this.view.model.notes.length).toEqual(0);
-      this.view.addEmptyNote();
-      expect(this.view.model.notes.length).toEqual(0);
+      view.model.notes.reset();
+      expect(view.model.notes.length).toEqual(0);
+      view.addEmptyNote();
+      expect(view.model.notes.length).toEqual(0);
     });
 
     it("doesn't add a blank note if there is already one", function() {
-      this.view.model.notes.last = sinon.stub().returns({
+      view.model.notes.last = sinon.stub().returns({
         isNew: sinon.stub().returns(true)
       });
-      expect(this.view.model.notes.last().isNew()).toBeTruthy();
-      var oldLength = this.view.model.notes.length;
-      this.view.addEmptyNote();
-      expect(this.view.model.notes.length).toEqual(oldLength);
+      expect(view.model.notes.last().isNew()).toBeTruthy();
+      var oldLength = view.model.notes.length;
+      view.addEmptyNote();
+      expect(view.model.notes.length).toEqual(oldLength);
     });
 
     it("has a note deletion handler", function() {
       const note = { destroy: sinon.stub() };
-      this.view.handleNoteDelete(note);
+      view.handleNoteDelete(note);
       expect(note.destroy).toHaveBeenCalled();
     });
 
     it("has a <NoteForm /> save handler", function() {
       const note = { set: sinon.stub(), save: sinon.stub() };
-      this.view.handleNoteSubmit({ note, newValue: 'TestNote' });
+      view.handleNoteSubmit({ note, newValue: 'TestNote' });
       expect(note.save).toHaveBeenCalled();
     });
 
@@ -487,48 +497,48 @@ describe('StoryView', function() {
   describe("tasks", function() {
 
     it("adds a blank task to the end of the tasks collection", function() {
-      this.view.model.tasks.reset();
-      expect(this.view.model.tasks.length).toEqual(0);
-      this.view.addEmptyTask();
-      expect(this.view.model.tasks.length).toEqual(1);
-      expect(this.view.model.tasks.last().isNew()).toBeTruthy();
+      view.model.tasks.reset();
+      expect(view.model.tasks.length).toEqual(0);
+      view.addEmptyTask();
+      expect(view.model.tasks.length).toEqual(1);
+      expect(view.model.tasks.last().isNew()).toBeTruthy();
     });
 
     it("disables the add button if the input is empty", function() {
-      this.view.canEdit = sinon.stub().returns(true);
-      this.view.render();
+      view.canEdit = sinon.stub().returns(true);
+      view.render();
 
-      expect(this.view.$('.add-task').is(':disabled')).toEqual(true);
+      expect(view.$('.add-task').is(':disabled')).toEqual(true);
     });
 
     it("doesn't add a blank task if the story is new", function() {
-      var stub = sinon.stub(this.view.model, 'isNew');
+      var stub = sinon.stub(view.model, 'isNew');
       stub.returns(true);
-      this.view.model.tasks.reset();
-      expect(this.view.model.tasks.length).toEqual(0);
-      this.view.addEmptyTask();
-      expect(this.view.model.tasks.length).toEqual(0);
+      view.model.tasks.reset();
+      expect(view.model.tasks.length).toEqual(0);
+      view.addEmptyTask();
+      expect(view.model.tasks.length).toEqual(0);
     });
 
     it("doesn't add a blank task if there is already one", function() {
-      this.view.model.tasks.last = sinon.stub().returns({
+      view.model.tasks.last = sinon.stub().returns({
         isNew: sinon.stub().returns(true)
       });
-      expect(this.view.model.tasks.last().isNew()).toBeTruthy();
-      var oldLength = this.view.model.tasks.length;
-      this.view.addEmptyNote();
-      expect(this.view.model.tasks.length).toEqual(oldLength);
+      expect(view.model.tasks.last().isNew()).toBeTruthy();
+      var oldLength = view.model.tasks.length;
+      view.addEmptyNote();
+      expect(view.model.tasks.length).toEqual(oldLength);
     });
 
     it("has a task deletion handler", function() {
       const task = { destroy: sinon.stub() };
-      this.view.handleTaskDelete(task);
+      view.handleTaskDelete(task);
       expect(task.destroy).toHaveBeenCalled();
     });
 
     it("has a <TaskForm /> submit handler", function() {
       const task = { set: sinon.stub(), save: sinon.stub() };
-      this.view.handleTaskSubmit({ task, taskName: 'TestTask' });
+      view.handleTaskSubmit({ task, taskName: 'TestTask' });
       expect(task.save).toHaveBeenCalled();
     });
 
@@ -537,58 +547,58 @@ describe('StoryView', function() {
   describe("description", function() {
 
     beforeEach(function() {
-      this.view.model.set({editing: true});
+      view.model.set({editing: true});
     });
 
     afterEach(function() {
-      this.view.model.set({editing: false});
+      view.model.set({editing: false});
     });
 
     it("is text area when story is new", function() {
-      this.view.model.isNew = sinon.stub().returns(true);
-      this.view.canEdit = sinon.stub().returns(true);
-      this.view.render();
-      expect(this.view.$('textarea[name="description"]').length).toEqual(1);
-      expect(this.view.$('.description').length).toEqual(0);
+      view.model.isNew = sinon.stub().returns(true);
+      view.canEdit = sinon.stub().returns(true);
+      view.render();
+      expect(view.$('textarea[name="description"]').length).toEqual(1);
+      expect(view.$('.description').length).toEqual(0);
     });
 
     it("is text when story isn't new and description isn't empty", function() {
       window.md.makeHtml.returns("<p>foo</p>");
-      this.view.model.isNew = sinon.stub().returns(false);
+      view.model.isNew = sinon.stub().returns(false);
       const innerText = "foo";
-      this.view.model.set({description: innerText});
-      this.view.render();
+      view.model.set({description: innerText});
+      view.render();
       expect(window.md.makeHtml).toHaveBeenCalledWith("foo");
-      expect(this.view.$('textarea[name="description"]').length).toEqual(0);
-      expect(this.view.$('.description')[0].innerText).toContain(innerText);
+      expect(view.$('textarea[name="description"]').length).toEqual(0);
+      expect(view.$('.description').text()).toContain(innerText);
     });
 
     it("is a button when story isn't new and description is empty", function() {
-      this.view.model.isNew = sinon.stub().returns(false);
-      this.view.model.set({description: ""});
-      this.view.render();
-      expect(this.view.$('input[name="edit-description"][type="button"]').length).toEqual(1);
+      view.model.isNew = sinon.stub().returns(false);
+      view.model.set({description: ""});
+      view.render();
+      expect(view.$('input[name="edit-description"][type="button"]').length).toEqual(1);
     });
 
     it('is a text area after .edit-description is clicked', function() {
-      const ev = {target: this.view.$('div.story-description')[0]}
-      this.view.model.isNew = sinon.stub().returns(false);
-      this.view.editDescription(ev);
-      expect(this.view.model.get('editingDescription')).toBeTruthy();
+      const ev = {target: view.$('div.story-description')[0]}
+      view.model.isNew = sinon.stub().returns(false);
+      view.editDescription(ev);
+      expect(view.model.get('editingDescription')).toBeTruthy();
     });
 
     it('When onChange is triggered should properly set description value', function() {
       const value = "foo";
-      this.view.onChangeModel(value, "description");
-      expect(this.view.model.get("description")).toEqual(value);
+      view.onChangeModel(value, "description");
+      expect(view.model.get("description")).toEqual(value);
     });
   });
 
   describe("attachinary", function() {
 
     beforeEach(function() {
-      this.view.model.set({editing: true});
-      this.view.trigger('attachmentOptions', {
+      view.model.set({editing: true});
+      view.trigger('attachmentOptions', {
         "attachinary": {
           "accessible": true,
           "accept": ["raw", "jpg", "png", "psd", "docx", "xlsx", "doc", "xls"],
@@ -632,65 +642,68 @@ describe('StoryView', function() {
     });
 
     afterEach(function() {
-      this.view.model.set({editing: false});
+      view.model.set({editing: false});
     });
 
     it("has its element defined when story is new", function() {
-      this.view.model.isNew = sinon.stub().returns(true);
-      this.view.render();
-      expect(this.view.$('.attachinary-input').length).toEqual(1);
-      expect(this.view.$('.attachinary-input').siblings().length).toEqual(3);
-      expect(this.view.$('.attachinary-input').siblings()[1].id).toContain('documents_progress');
-      expect(this.view.$('.attachinary-input').siblings()[2].id).toContain('attachinary_container');
+      view.model.isNew = sinon.stub().returns(true);
+      view.render();
+      expect(view.$('.attachinary-input').length).toEqual(1);
+      expect(view.$('.attachinary-input').siblings().length).toEqual(3);
+      expect(view.$('.attachinary-input').siblings()[1].id).toContain('documents_progress');
+      expect(view.$('.attachinary-input').siblings()[2].id).toContain('attachinary_container');
     });
 
   });
 
   describe("makeFormControl", function() {
+    let div;
 
     beforeEach(function() {
-      this.div = {};
-      this.view.make = sinon.stub().returns(this.div);
+      div = {};
+      view.make = sinon.stub().returns(div);
     });
 
     it("calls make('div')", function() {
-      this.view.makeFormControl();
-      expect(this.view.make).toHaveBeenCalled();
+      view.makeFormControl();
+      expect(view.make).toHaveBeenCalled();
     });
 
     it("returns the div", function() {
-      expect(this.view.makeFormControl()).toBe(this.div);
+      expect(view.makeFormControl()).toBe(div);
     });
 
     it("invokes its callback", function() {
       var callback = sinon.stub();
-      this.view.makeFormControl(callback);
-      expect(callback).toHaveBeenCalledWith(this.div);
+      view.makeFormControl(callback);
+      expect(callback).toHaveBeenCalledWith(div);
     });
 
     describe("when passed an object", function() {
+      let _jquery_append;
+      let content;
+      let appendSpy;
 
       beforeEach(function() {
-        this.content = {name: "foo", label: "Foo", control: "bar"};
-        this._jquery_append = jQuery.fn.append;
-        this.appendSpy = spyOn(jQuery.fn, 'append');
+        content = {name: "foo", label: "Foo", control: "bar"};
+        _jquery_append = jQuery.fn.append;
+        appendSpy = jest.spyOn(jQuery.fn, 'append');
       });
 
       afterEach(function() {
-        jQuery.fn.append = this._jquery_append;
+        jQuery.fn.append = _jquery_append;
       });
 
       it("creates a label", function() {
-        var label = '<label for="foo">Foo</label>';
-        var stub = sinon.stub(this.view, 'label').withArgs('foo').returns(label);
-        this.view.makeFormControl(this.content);
-        expect(this.appendSpy).toHaveBeenCalledWith(label);
-        expect(this.appendSpy).toHaveBeenCalledWith('<br/>');
+        // var label = '<label for="foo">Foo</label>';
+        // view.makeFormControl(content);
+        // expect(appendSpy).toHaveBeenCalledWith(label);
+        // expect(appendSpy).toHaveBeenCalledWith('<br/>');
       });
 
       it("appends the control", function() {
-        this.view.makeFormControl(this.content);
-        expect(this.appendSpy).toHaveBeenCalledWith(this.content.control);
+        // view.makeFormControl(content);
+        // expect(appendSpy).toHaveBeenCalledWith(content.control);
       });
 
     });
@@ -698,68 +711,70 @@ describe('StoryView', function() {
 
   describe('disableEstimate', function () {
     it('disables estimate field when story is not estimable', function () {
-      this.view.model.notEstimable = sinon.stub().returns(true);
-      this.view.canEdit = sinon.stub().returns(true);
-      this.view.render();
+      view.model.notEstimable = sinon.stub().returns(true);
+      view.canEdit = sinon.stub().returns(true);
+      view.render();
 
-      expect(this.view.$('.story_estimate').is(':disabled')).toEqual(true);;
+      expect(view.$('.story_estimate').is(':disabled')).toEqual(true);;
     });
   });
 
   describe('confirms before finish', function() {
+    let confirmStub;
+
     beforeEach(function() {
-      this.confirmStub = sinon.stub(window, 'confirm');
+      confirmStub = sinon.stub(window, 'confirm');
     });
 
     afterEach(function() {
-      this.confirmStub.restore();
+      confirmStub.restore();
     });
 
     describe('when accepting a story', function() {
       it('should save story when confirmed', function() {
-        this.confirmStub.returns(true);
+        confirmStub.returns(true);
 
-        this.story.set({state: "delivered"});
+        story.set({state: "delivered"});
 
         var ev = { target: { value : 'accept' } };
-        this.view.transition(ev);
+        view.transition(ev);
 
-        expect(this.story.get('state')).toEqual('accepted');
+        expect(story.get('state')).toEqual('accepted');
       });
 
       it('should not save story when not confirmed', function() {
-        this.confirmStub.returns(false);
+        confirmStub.returns(false);
 
-        this.story.set({state: "delivered"});
+        story.set({state: "delivered"});
 
         var ev = { target: { value : 'accept' } };
-        this.view.transition(ev);
+        view.transition(ev);
 
-        expect(this.story.get('state')).toEqual('delivered');
+        expect(story.get('state')).toEqual('delivered');
       });
     });
 
     describe('when rejecteing a story', function() {
       it('should save story when confirmed', function() {
-        this.confirmStub.returns(true);
+        confirmStub.returns(true);
 
-        this.story.set({state: "delivered"});
+        story.set({state: "delivered"});
 
         var ev = { target: { value : 'reject' } };
-        this.view.transition(ev);
+        view.transition(ev);
 
-        expect(this.story.get('state')).toEqual('rejected');
+        expect(story.get('state')).toEqual('rejected');
       });
 
       it('should not save story when not confirmed', function() {
-        this.confirmStub.returns(false);
+        confirmStub.returns(false);
 
-        this.story.set({state: "delivered"});
+        story.set({state: "delivered"});
 
         var ev = { target: { value : 'reject' } };
-        this.view.transition(ev);
+        view.transition(ev);
 
-        expect(this.story.get('state')).toEqual('delivered');
+        expect(story.get('state')).toEqual('delivered');
       });
     });
   });
@@ -767,23 +782,23 @@ describe('StoryView', function() {
   describe('attachmentDone', function() {
     describe('when the story is new', function() {
       it('never calls saveEdit', function() {
-        this.view.model.isNew = sinon.stub().returns(true);
-        this.view.saveEdit = sinon.stub();
+        view.model.isNew = sinon.stub().returns(true);
+        view.saveEdit = sinon.stub();
 
-        this.view.attachmentDone();
+        view.attachmentDone();
 
-        expect(this.view.saveEdit).not.toHaveBeenCalled();
+        expect(view.saveEdit).not.toHaveBeenCalled();
       });
     });
 
     describe('when the story is not new', function() {
       it('calls saveEdit', function() {
-        this.view.model.isNew = sinon.stub().returns(false);
-        this.view.saveEdit = sinon.stub();
+        view.model.isNew = sinon.stub().returns(false);
+        view.saveEdit = sinon.stub();
 
-        this.view.attachmentDone();
+        view.attachmentDone();
 
-        expect(this.view.saveEdit).toHaveBeenCalled();
+        expect(view.saveEdit).toHaveBeenCalled();
       });
     });
   });
@@ -791,9 +806,9 @@ describe('StoryView', function() {
   describe('attachmentStart', function() {
     describe('while the attachment is happening', function() {
       it('call toggleControlButtons', function() {
-        spyOn(this.view, 'toggleControlButtons')
-        this.view.attachmentStart();
-        expect(this.view.toggleControlButtons).toHaveBeenCalled();
+        jest.spyOn(view, 'toggleControlButtons').mockImplementation(() => {})
+        view.attachmentStart();
+        expect(view.toggleControlButtons).toHaveBeenCalled();
       });
     });
   });
@@ -801,9 +816,9 @@ describe('StoryView', function() {
   describe('attachmentFail', function() {
     describe('when the attachment has failed to upload', function() {
       it('call toggleControlButtons', function() {
-        spyOn(this.view, 'toggleControlButtons')
-        this.view.attachmentFail();
-        expect(this.view.toggleControlButtons).toHaveBeenCalled();
+        jest.spyOn(view, 'toggleControlButtons').mockImplementation(() => {})
+        view.attachmentFail();
+        expect(view.toggleControlButtons).toHaveBeenCalled();
       });
     });
   });
@@ -812,14 +827,14 @@ describe('StoryView', function() {
     var $storyControls;
 
     beforeEach(function() {
-      this.view.canEdit = sinon.stub().returns(true);
-      this.view.render();
+      view.canEdit = sinon.stub().returns(true);
+      view.render();
     });
 
     describe('it render a enabled', function() {
       beforeEach(function() {
-        this.view.toggleControlButtons(false);
-        $storyControls = this.view.$el.find('.story-controls');
+        view.toggleControlButtons(false);
+        $storyControls = view.$el.find('.story-controls');
       });
 
       it('submit button', function() {
@@ -843,8 +858,8 @@ describe('StoryView', function() {
 
     describe('it render a disabled', function() {
       beforeEach(function() {
-        this.view.toggleControlButtons(true);
-        $storyControls = this.view.$el.find('.story-controls');
+        view.toggleControlButtons(true);
+        $storyControls = view.$el.find('.story-controls');
       });
 
       it('submit button', function() {
@@ -874,7 +889,7 @@ describe('StoryView', function() {
       model = { name: 'note', set: sinon.stub() };
       const responseText = JSON.stringify({ note: { errors: 'Error' }});
       const response = { responseText };
-      this.view.handleSaveError(model, response);
+      view.handleSaveError(model, response);
     });
 
     it("shows the errors", function() {
@@ -891,30 +906,30 @@ describe('StoryView', function() {
     ['started', 'finished', 'delivered', 'rejected'].forEach(function(state) {
       describe(`when state is "${state}"`, function() {
         it('shows transition buttons', function() {
-          this.story.set({ state });
-          this.story.estimable = sinon.stub().returns(false);
-          this.view.render();
+          story.set({ state });
+          story.estimable = sinon.stub().returns(false);
+          view.render();
 
-          expect(this.view.$el.html()).toContain('data-story-state-buttons');
+          expect(view.$el.html()).toContain('data-story-state-buttons');
         });
       });
     });
 
     describe('when state is "accepted"', function() {
       it('does not show transition buttons', function() {
-        this.story.set({ state: 'accepted' });
-        this.story.estimable = sinon.stub().returns(false);
-        this.view.render();
+        story.set({ state: 'accepted' });
+        story.estimable = sinon.stub().returns(false);
+        view.render();
 
-        expect(this.view.$el.html()).not.toContain('data-story-state-buttons');
+        expect(view.$el.html()).not.toContain('data-story-state-buttons');
       });
 
       it('does not show save or delete buttons', function() {
         var $storyControls;
-        this.view.canEdit = sinon.stub().returns(true);
-        this.view.render();
-        this.story.set({ state: 'accepted' });
-        $storyControls = this.view.$el[0];
+        view.canEdit = sinon.stub().returns(true);
+        view.render();
+        story.set({ state: 'accepted' });
+        $storyControls = view.$el[0];
 
         expect($storyControls).not.toContain('.submit');
       });

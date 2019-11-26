@@ -1,32 +1,34 @@
 import NoteView from 'views/note_view';
 
 describe('NoteView', function() {
+  let note;
+  let view;
 
   beforeEach(function() {
     var Note = Backbone.Model.extend({name: 'note', url: '/foo'});
-    this.note = new Note({});
+    note = new Note({});
     NoteView.prototype.template = sinon.stub();
-    this.view = new NoteView({model: this.note});
+    view = new NoteView({model: note});
   });
 
   it("has div as the tag name", function() {
-    expect(this.view.el.nodeName).toEqual('DIV');
+    expect(view.el.nodeName).toEqual('DIV');
   });
 
   it("has the note class", function() {
-    expect(this.view.$el[0]).toHaveClass('note');
+    expect(view.$el[0]).toHaveClass('note');
   });
 
   describe("deleteNote", function() {
     it("should call destroy on the model", function() {
-      var deleteStub = sinon.stub(this.view.model, 'destroy');
-      this.view.deleteNote();
+      var deleteStub = sinon.stub(view.model, 'destroy');
+      view.deleteNote();
       expect(deleteStub).toHaveBeenCalled();
     });
 
     it("should remove element", function() {
-      var removeSpy = sinon.spy(this.view.$el, 'remove');
-      this.view.deleteNote();
+      var removeSpy = sinon.spy(view.$el, 'remove');
+      view.deleteNote();
       expect(removeSpy).toHaveBeenCalled();
     });
   });

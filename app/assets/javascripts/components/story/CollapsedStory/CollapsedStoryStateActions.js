@@ -2,10 +2,10 @@ import React from 'react';
 import CollapsedStoryEstimateButton from './CollapsedStoryEstimateButton';
 import CollapsedStoryStateButton from './CollapsedStoryStateButton';
 import {
-  isStoryNotEstimated, getNextState,
-  storyTransitions, storyPropTypesShape,
+  isStoryNotEstimated, getNextState, 
   isRelease, isAccepted
 } from '../../../models/beta/story';
+import StoryPropTypes from '../../shapes/story';
 import { status } from '../../../libs/beta/constants';
 
 const StoryActionFor = (state) => StateAction[state] || StateAction.unstarted;
@@ -49,7 +49,7 @@ const CollapsedStoryStateActions = ({
 }
 
 CollapsedStoryStateActions.propTypes = {
-  story: storyPropTypesShape
+  story: StoryPropTypes
 };
 
 export default CollapsedStoryStateActions;

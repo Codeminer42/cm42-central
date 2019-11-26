@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { isFeature, editingStoryPropTypesShape } from '../../../models/beta/story';
-import { projectPropTypesShape } from '../../../models/beta/project';
+import ProjectPropTypes from '../../shapes/project';
 import ExpandedStorySection from './ExpandedStorySection';
 
 const extractValue = (event) => {
@@ -38,7 +38,7 @@ const ExpandedStoryEstimate = ({ project, story, onEdit, disabled }) =>
   </ExpandedStorySection>
 
 ExpandedStoryEstimate.propTypes = {
-  project: projectPropTypesShape.isRequired,
+  project: ProjectPropTypes.isRequired,
   story: editingStoryPropTypesShape.isRequired,
   onEdit: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired

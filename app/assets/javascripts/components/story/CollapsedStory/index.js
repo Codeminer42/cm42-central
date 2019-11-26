@@ -11,7 +11,7 @@ import { updateCollapsedStory, highlight } from '../../../actions/story';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CollapsedStoryFocusButon from './CollapsedStoryFocusButton';
-import { storyPropTypesShape } from './../../../models/beta/story';
+import StoryPropTypes from '../../shapes/story';
 
 const storyClassName = (story, additionalClassname = '') => {
   const isStoryNotEstimated = Story.isStoryNotEstimated(story.storyType, story.estimate);
@@ -64,7 +64,7 @@ export const CollapsedStory = ({
   </div>
 
 CollapsedStory.propTypes = {
-  story: storyPropTypesShape,
+  story: StoryPropTypes,
   onToggle: PropTypes.func.isRequired,
   title: PropTypes.string,
   className: PropTypes.string,

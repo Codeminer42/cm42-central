@@ -105,14 +105,16 @@ describe("iteration", function() {
   });
 
   describe("time related functions", function() {
+    let clock;
+
     beforeEach(function() {
-      this.clock = sinon.useFakeTimers(
+      clock = sinon.useFakeTimers(
         new Date("2018-05-01T17:00:00").getTime()
       );
     });
 
     afterEach(function() {
-      this.clock.restore();
+      clock.restore();
     });
 
     describe("when 1 out of 1 week has passed", function() {
@@ -239,7 +241,7 @@ describe("iteration", function() {
             );
           });
 
-          it("return an array with 1 item ", function() {    
+          it("return an array with 1 item ", function() {
             expect(sprints.length).toEqual(1);
           });
 
@@ -463,7 +465,7 @@ describe("iteration", function() {
               storyType: "feature"
             }
           ];
-  
+
           const project = {
             startDate: "2018-09-03T16:00:00",
             iterationLength: 1,
@@ -706,7 +708,7 @@ describe("iteration", function() {
               storyType: "bug"
             }
           ];
-  
+
           const project = {
             startDate: moment().format(),
             iterationLength: 1,

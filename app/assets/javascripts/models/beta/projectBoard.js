@@ -2,7 +2,6 @@ import httpService from '../../services/httpService';
 import changeCase from 'change-object-case';
 import * as Story from './story';
 import * as Project from './project';
-import PropTypes from 'prop-types';
 import { operands } from './../../libs/beta/constants';
 
 export const get = async (projectId) => {
@@ -11,14 +10,6 @@ export const get = async (projectId) => {
 
   return deserialize(data);
 };
-
-export const projectBoardPropTypesShape = PropTypes.shape({
-  error: PropTypes.oneOf([
-    PropTypes.object,
-    PropTypes.array
-  ]),
-  isFetched: PropTypes.bool.isRequired
-});
 
 const deserialize = (data) => {
   const projectBoard = changeCase.camelKeys(data, {

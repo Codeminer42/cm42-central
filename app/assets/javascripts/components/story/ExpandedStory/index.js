@@ -6,7 +6,7 @@ import ExpandedStoryRelease from './ExpandedStoryRelease';
 import { editStory, saveStory, deleteStory, cloneStory, showHistory } from '../../../actions/story';
 import { connect } from 'react-redux';
 import * as Story from '../../../models/beta/story';
-import { projectPropTypesShape } from '../../../models/beta/project';
+import ProjectPropTypes from '../../shapes/project';
 
 export class ExpandedStory extends React.Component {
   constructor(props) {
@@ -86,7 +86,7 @@ ExpandedStory.propTypes = {
   showHistory: PropTypes.func.isRequired,
   deleteStory: PropTypes.func.isRequired,
   onToggle: PropTypes.func.isRequired,
-  project: projectPropTypesShape.isRequired,
+  project: ProjectPropTypes.isRequired,
   title: PropTypes.string,
   className: PropTypes.string
 };

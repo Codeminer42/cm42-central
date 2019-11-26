@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { taskPropTypesShape } from '../../../models/beta/task';
+import TaskPropTypes from '../../shapes/task';
 
 const Task = ({ task, onDelete, onToggle, disabled }) => (
   <div className="task">
@@ -27,7 +27,7 @@ const Task = ({ task, onDelete, onToggle, disabled }) => (
 );
 
 Task.propTypes = {
-  task: taskPropTypesShape.isRequired,
+  task: TaskPropTypes.isRequired,
   onToggle: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired

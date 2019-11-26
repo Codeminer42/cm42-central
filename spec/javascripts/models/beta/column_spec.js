@@ -19,7 +19,7 @@ describe('Column model', function() {
         it('return falsy', () => {
           const story = { state }
 
-          expect(Column.isChillyBin(story)).toBeFalsy(false);
+          expect(Column.isChillyBin(story)).toBeFalsy();
         });
       });
     });
