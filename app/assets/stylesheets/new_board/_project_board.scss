@@ -32,20 +32,4 @@
       text-transform: uppercase;
     }
   }
-
-  &__options {
-    display: inline-block;
-    width: 40px;
-
-    ul {
-      width: 100%;
-      height: 100%;
-    }
-
-    ul, li {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-    }
-  }
 }

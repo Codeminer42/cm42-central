@@ -1,6 +1,7 @@
 import React from 'react';
 import Column from './ColumnItem';
 import PropTypes from 'prop-types';
+import ColumnShape from '../shapes/column';
 
 const Columns = ({
   columns
@@ -16,7 +17,7 @@ const Columns = ({
   )
 
 Columns.propTypes = {
-  columns: PropTypes.array.isRequired
+  columns: PropTypes.arrayOf(ColumnShape).isRequired
 }
 
 export default Columns;

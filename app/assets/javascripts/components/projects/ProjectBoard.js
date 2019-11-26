@@ -8,7 +8,7 @@ import { getColumns } from "../../selectors/columns";
 import { CHILLY_BIN, DONE, BACKLOG } from '../../models/beta/column';
 import { createStory, closeHistory } from '../../actions/story';
 import AddStoryButton from '../story/AddStoryButton';
-import * as Story from 'libs/beta/constants';
+import { status, historyStatus } from 'libs/beta/constants';
 import PropTypes from 'prop-types';
 import StoryPropTypes from '../shapes/story';
 import ProjectBoardPropTypes from '../shapes/projectBoard';
@@ -17,7 +17,7 @@ import { removeNotification } from '../../actions/notifications';
 import StorySearch from '../search/StorySearch';
 import SearchResults from './../search/SearchResults';
 import ProjectLoading from './ProjectLoading';
-import ProjectOptions from './ProjectOptions';
+import SideBar from './SideBar';
 import Columns from '../Columns/Columns';
 import Stories from "../stories/Stories";
 import Sprints from "../stories/Sprints";
@@ -50,7 +50,7 @@ export const ProjectBoard = ({
       renderAction: () =>
         <AddStoryButton
           onAdd={() => createStory({
-            state: Story.status.UNSCHEDULED
+            state: status.UNSCHEDULED
           })}
         />,
       children: <Stories stories={chillyBinStories} />
@@ -60,7 +60,7 @@ export const ProjectBoard = ({
       renderAction: () =>
         <AddStoryButton
           onAdd={() => createStory({
-            state: Story.status.UNSTARTED
+            state: status.UNSTARTED
           })}
         />,
       children: <Sprints sprints={backlogSprints} />
@@ -71,42 +71,35 @@ export const ProjectBoard = ({
     }
   ];
 
+  const columnProps = {
+    'data-id': projectBoard.reverse ? 'reversed-column' : 'normal-column',
+    columns: projectBoard.reverse ? columns.reverse() : columns
+  };
+
   return (
     <div className="ProjectBoard">
       <StorySearch projectId={projectId} loading={projectBoard.search.loading} />
 
-      <ProjectOptions />
+      <SideBar />
 
       <Notifications
         notifications={notifications}
         onRemove={removeNotification}
       />
 
-      {
-        projectBoard.reverse
-          ? 
-            <Columns
-              data-id="reversed-column"
-              columns={columns.reverse()}
-            />
-          : 
-            <Columns
-              data-id="normal-column"
-              columns={columns}
-            />
-      }
+      <Columns {...columnProps} />
 
       <SearchResults />
 
       {
-        history.status !== 'DISABLED' &&
+        history.status !== historyStatus.DISABLED &&
         <Column
           onClose={closeHistory}
-          title={[I18n.t("projects.show.history"), "'", history.storyTitle, "'"].join(' ')}
+          title={`${I18n.t('projects.show.history')} '${history.storyTitle}'`}
         >
-          { history.status === 'LOADED'
+          { history.status === historyStatus.LOAD
             ? <History history={history.activities} />
-            : <div className="loading">Loading...</div>
+            : <ProjectLoading />
           }
         </Column>
       }

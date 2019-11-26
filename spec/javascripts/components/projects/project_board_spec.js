@@ -68,7 +68,7 @@ describe('<ProjectBoard />', () => {
       expect(normalColumn.exists()).toBeTruthy();
     });
 
-    it('does not renders reversed-column', () => {
+    it('does not render reversed-column', () => {
       const wrapper = render(aditionalProps);
       const reversedColumn = wrapper.find('[data-id="reversed-column"]');
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import ProjectOption from 'components/projects/ProjectOption/index';
+import SideBarButton from 'components/projects/SideBar/SideBarButton';
 
-describe('<ProjectOption />', () => {
+describe('<SideBarButton />', () => {
   const render = props => {
     const defaultProps = {
       children: '',
@@ -10,7 +10,7 @@ describe('<ProjectOption />', () => {
       onClick: sinon.stub()
     };
 
-    return shallow(<ProjectOption {...defaultProps} {...props } />);
+    return shallow(<SideBarButton {...defaultProps} {...props } />);
   };
 
   it('renders the component', () => {
@@ -23,31 +23,31 @@ describe('<ProjectOption />', () => {
     const children = 'I am children!';
     const wrapper = render({ children });
 
-    expect(wrapper.find('[data-id="project-option"]').text()).toEqual(children);
+    expect(wrapper.find('[data-id="side-bar-button"]').text()).toEqual(children);
   });
 
-  it('does not render <ProjectOptionInfo />', () => {
+  it('does not render <SideBarButtonInfo />', () => {
     const wrapper = render();
 
-    expect(wrapper.find('ProjectOptionInfo')).not.toExist();
+    expect(wrapper.find('[data-id="button-info"]')).not.toExist();
   });
 
-  describe('when click in <ProjectOption />', () => {
+  describe('when click in <SideBarButton />', () => {
     it('call onClick', () => {
       const onClick = sinon.stub();
       const wrapper = render({ onClick });
 
-      wrapper.find('[data-id="project-option"]').simulate('click');
+      wrapper.find('[data-id="side-bar-button"]').simulate('click');
       expect(onClick).toHaveBeenCalled();
     });
   });
 
   describe('when mouse over', () => {
-    it('renders <ProjectOptionInfo />', () => {
+    it('renders <SideBarButtonInfo />', () => {
       const wrapper = render();
 
-      wrapper.find('[data-id="project-option"]').simulate('hover');
-      expect(wrapper.find('ProjectOptionInfo')).toExist();
+      wrapper.find('[data-id="side-bar-button"]').simulate('mouseover');
+      expect(wrapper.find('[data-id="button-info"]')).toExist();
     });
   });
 });

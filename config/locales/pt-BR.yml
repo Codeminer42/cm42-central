@@ -84,7 +84,7 @@ pt-BR:
   upload_new_file: "Arraste o arquivo aqui, ou clique para adicionar."
   reject_new_file: "Formato não suportado."
   accepted_tooltip: "A Tarefa já foi entregue, não pode ser modificada."
-  revert_tooltip: "Inverter a ordem das colunas."
+  revert_columns_tooltip: "Inverter a ordem das colunas."
 
 
   story:

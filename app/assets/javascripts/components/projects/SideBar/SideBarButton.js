@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import ProjectOptionInfo from './ProjectOptionInfo';
+import SideBarButtonInfo from './SideBarButtonInfo';
 import PropTypes from 'prop-types';
 
-const ProjectOption = ({
+const SideBarButton = ({
   children,
   description,
   onClick
@@ -13,22 +13,22 @@ const ProjectOption = ({
     <li
       onMouseOver={() => setShowInfo(true)}
       onMouseOut={() => setShowInfo(false)}
-      className="ProjectOption"
+      className="SideBar__link"
       onClick={onClick}
-      data-id="project-option"
+      data-id="side-bar-button"
     >
       {
-        showInfo && <ProjectOptionInfo description={description} />
+        showInfo && <SideBarButtonInfo data-id="button-info" description={description} />
       }
       { children }
     </li>
   )
 }
 
-ProjectOption.propTypes = {
+SideBarButton.propTypes = {
   children: PropTypes.node.isRequired,
   description: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired
 }
 
-export default ProjectOption;
+export default SideBarButton;

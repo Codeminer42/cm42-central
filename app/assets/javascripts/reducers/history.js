@@ -1,11 +1,5 @@
 import actionTypes from 'actions/actionTypes';
-
-const historyStatus = {
-  DISABLED: 'DISABLED', // Vai para loading
-  LOADING: 'LOADING', // vai para loaded ou para failed
-  LOADED: 'LOADED', // vai para disabled ou para loading
-  FAILED: 'FAILED' // vai para disabled ou para loading
-}
+import { historyStatus } from '../libs/beta/constants';
 
 const initialState = {
   status: historyStatus.DISABLED,
