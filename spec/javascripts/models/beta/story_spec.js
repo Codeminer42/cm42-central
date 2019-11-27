@@ -1,10 +1,9 @@
 import * as Story from 'models/beta/story';
 import moment from 'moment';
-import { status, storyTypes } from 'libs/beta/constants';
+import { status, storyTypes, storyScopes } from 'libs/beta/constants';
 
 describe('Story model', function () {
   describe('comparePosition', () => {
-
     describe('when position A is bigger then B', () => {
       it("return 1", () => {
         const storyA = {
@@ -283,8 +282,8 @@ describe('Story model', function () {
             changedStory = Story.editStory(story, newAttributes);
           });
           
-          it("change estimate to ''", () => {    
-            expect(changedStory._editing.estimate).toEqual('');
+          it("keep estimate 1", () => {    
+            expect(changedStory._editing.estimate).toEqual(1);
           });
 
           it(`change state to ${UNSCHEDULED}`, () => {
@@ -326,8 +325,8 @@ describe('Story model', function () {
               changedStory = Story.editStory(story, newAttributes);
             });
 
-            it(`change story state to ${UNSTARTED}`, () => {
-              expect(changedStory._editing.state).toEqual(UNSTARTED);
+            it(`keep story state ${UNSCHEDULED}`, () => {
+              expect(changedStory._editing.state).toEqual(UNSCHEDULED);
             });
 
             it(`change estimate to ${estimatedValue}`, () => {
@@ -994,18 +993,55 @@ describe('Story model', function () {
 
   describe("possibleStatesFor", () => {
     const invalidEstimates = [null, ''];
-    const invalidStoryTypes = [storyTypes.FEATURE]
     const validEstimates = [1,2,3]
-    const validStoryTypes = [storyTypes.BUG, storyTypes.CHORE, storyTypes.RELEASE]
 
-    invalidStoryTypes.forEach(invalidStoryType => {
-      describe(`when storyType is ${invalidStoryType}`, () => {
+    const featureTypes = Story.types.filter(type => type === storyTypes.FEATURE)
+    const noFeatureTypes = Story.types.filter(type => type !== storyTypes.FEATURE)
+
+    featureTypes.forEach(featureType => {
+      describe(`when storyType is ${featureType}`, () => {
         invalidEstimates.forEach(invalidEstimate => {
           describe(`and estimate is "${invalidEstimate}"`, () => {
             let story;
 
             beforeEach(() => {
-              story = { estimate: invalidEstimate, storyType: invalidStoryType}
+              story = { _editing:  { estimate: invalidEstimate, storyType: featureType } }
+            });
+
+            it(`state has to be ${status.UNSCHEDULED}`, () => {
+              expect(Story.possibleStatesFor(story)[0]).toEqual(status.UNSCHEDULED);
+            })
+
+            it('returns just one state', () => {
+              expect(Story.possibleStatesFor(story).length).toEqual(1);
+            })
+          })
+        })
+
+        validEstimates.forEach(validEstimate => {
+          describe(`and estimate is ${validEstimate}`, () => {
+            let story;
+
+            beforeEach(() => {
+              story = { _editing: { estimate: validEstimate, storyType: featureType } }
+            });
+
+            it('return all states', () => {
+              expect(Story.possibleStatesFor(story).length).toEqual(7);
+            })
+          })
+        })
+      })
+    })
+
+    noFeatureTypes.forEach(noFeatureType => {
+      describe(`when storyType is ${noFeatureType}`, () => {
+        invalidEstimates.forEach(invalidEstimate => {
+          describe(`and estimate is "${invalidEstimate}"`, () => {
+            let story;
+
+            beforeEach(() => {
+              story = { _editing: { estimate: invalidEstimate, storyType: noFeatureType } }
             });
 
             it('returns all states', () => {
@@ -1018,60 +1054,337 @@ describe('Story model', function () {
               let story;
 
               beforeEach(() => {
-                story = { estimate: validEstimate, storyType: invalidStoryType }
-              });
-
-              it(`state has to be ${status.UNSCHEDULED}`, () => {
-                expect(Story.possibleStatesFor(story)[0]).toEqual(status.UNSCHEDULED);
-              })
-
-              it('return just one state', () => {
-                expect(Story.possibleStatesFor(story).length).toEqual(1);
-              })
-            })
-          })
-        })
-      })
-    })
-
-    validStoryTypes.forEach(validStoryType => {
-      describe(`when storyType is ${validStoryType}`, () => {
-        invalidEstimates.forEach(invalidEstimate => {
-          describe(`and estimate is "${invalidEstimate}"`, () => {
-            let story;
-
-            beforeEach(() => {
-              story = { estimate: invalidEstimate, storyType: validStoryType}
-            });
-
-            it('returns all states', () => {
-              expect(Story.possibleStatesFor(story).length).toEqual(1);
-            })
-
-            it(`state has to be ${status.UNSCHEDULED}`, () => {
-              expect(Story.possibleStatesFor(story)[0]).toEqual(status.UNSCHEDULED);
-            })
-          })
-
-          validEstimates.forEach(validEstimate => {
-            describe(`and estimate is ${validEstimate}`, () => {
-              let story;
-
-              beforeEach(() => {
-                story = { estimate: validEstimate, storyType: validStoryType }
+                story = { _editing: { estimate: validEstimate, storyType: noFeatureType } }
               });
 
               it('returns all states', () => {
-                expect(Story.possibleStatesFor(story).length).toEqual(1);
-              })
-
-              it(`state has to be ${status.UNSCHEDULED}`, () => {
-                expect(Story.possibleStatesFor(story)[0]).toEqual(status.UNSCHEDULED);
+                expect(Story.possibleStatesFor(story).length).toEqual(7);
               })
             })
           })
         })
       })
     })
+  });
+
+  describe('withScope', () => {
+    const stories = {
+      [storyScopes.ALL]: [
+        { id: 1, storyType: storyTypes.FEATURE },
+        { id: 2, storyType: storyTypes.FEATURE },
+        { id: 3, storyType: storyTypes.FEATURE }
+      ],
+      [storyScopes.SEARCH]: [
+        { id: 4, storyType: storyTypes.FEATURE },
+        { id: 5, storyType: storyTypes.FEATURE },
+        { id: 6, storyType: storyTypes.FEATURE }
+      ]
+    }
+    const invalidScopes = [null, undefined, false, 0];
+
+    invalidScopes.forEach(scope => {
+      describe(`when scope is ${scope}`, () => {
+        it('returns stories of scope "all"', () => {
+          expect(Story.withScope(stories, scope)).toEqual([
+            { id: 1, storyType: storyTypes.FEATURE },
+            { id: 2, storyType: storyTypes.FEATURE },
+            { id: 3, storyType: storyTypes.FEATURE }
+          ])
+        });
+      });
+    });
+
+    describe(`when scope is ${storyScopes.ALL}`, () => {
+      it(`return stories of scope "${storyScopes.ALL}"`, () => {
+        expect(Story.withScope(stories, storyScopes.ALL)).toEqual([
+          { id: 1, storyType: storyTypes.FEATURE },
+          { id: 2, storyType: storyTypes.FEATURE },
+          { id: 3, storyType: storyTypes.FEATURE }
+        ]);
+      });
+    });
+
+    describe(`when scope is ${storyScopes.SEARCH}`, () => {
+      it(`return stories of scope "${storyScopes.SEARCH}"`, () => {
+        expect(Story.withScope(stories, storyScopes.SEARCH)).toEqual([
+          { id: 4, storyType: storyTypes.FEATURE },
+          { id: 5, storyType: storyTypes.FEATURE },
+          { id: 6, storyType: storyTypes.FEATURE }
+        ]);
+      });
+    });
+  });
+
+  describe('totalPoints', () => {
+    const stories = [
+      {
+        estimate: 1,
+        storyType: storyTypes.FEATURE
+      },
+      {
+        estimate: 1,
+        storyType: storyTypes.FEATURE
+      },
+      {
+        estimate: 1,
+        storyType: storyTypes.FEATURE
+      }
+    ];
+
+    it('return 3', () => {
+      expect(Story.totalPoints(stories)).toEqual(3);
+    });
+  });
+
+  describe('isHighlighted', () => {
+    describe('when highlighted is false', () => {
+      it('returns falsy', () => {
+        const story = { highlighted: false };
+        
+        expect(Story.isHighlighted(story)).toBeFalsy();
+      });
+    });
+
+    describe('when highlighted is true', () => {
+      it('returns truthy', () => {
+        const story = { highlighted: true };
+
+        expect(Story.isHighlighted(story)).toBeTruthy();
+      });
+    });
+
+    describe('when have not highlighted', () => {
+      it('returns falsy', () => {
+        const story = {};
+
+        expect(Story.isHighlighted(story)).toBeFalsy();
+      });
+    }); 
+  });
+
+  describe('isSearch', () => {
+    const noSearchScopes = [storyScopes.ALL];
+
+    noSearchScopes.forEach(scope => {
+      describe(`when scope is ${scope}`, () => {
+        it('returns falsy', () => {
+          expect(Story.isSearch(scope)).toBeFalsy();
+        });
+      });
+
+      describe(`when scope is ${storyScopes.SEARCH}`, () => {
+        it('returns truthy', () => {
+          expect(Story.isSearch(storyScopes.SEARCH)).toBeTruthy();
+        });
+      });
+    });
+  });
+
+  describe('haveHighlightButton', () => {
+    const stories = [
+      { id: 1, storyType: storyTypes.FEATURE },
+      { id: 2, storyType: storyTypes.FEATURE },
+      { id: 3, storyType: storyTypes.FEATURE },
+    ];
+
+    const noSearchScopes = [storyScopes.ALL];
+
+    stories.forEach(story => {
+      describe(`when story id is ${story.id}`, () => {
+        noSearchScopes.forEach(scope => {
+          describe(`and scope is ${scope}`, () => {
+            it('returns falsy', () => {
+              expect(Story.haveHighlightButton(stories, story, scope)).toBeFalsy();
+            });
+          });
+        });
+
+        describe(`and scope ${storyScopes.SEARCH}`, () => {
+          it('returns truthy', () => {
+            expect(Story.haveHighlightButton(stories, story, storyScopes.SEARCH)).toBeTruthy();
+          });
+        });
+      });
+    });
+
+    describe('when story id is 100', () => {
+      const fakeStory = { id: 100, storyType: storyTypes.FEATURE };
+
+      noSearchScopes.forEach(scope => {
+        describe(`and scope is ${scope}`, () => {
+          it('returns falsy', () => {
+            expect(Story.haveHighlightButton(stories, fakeStory, scope)).toBeFalsy();
+          });
+        });
+      });
+
+      describe(`and scope ${storyScopes.SEARCH}`, () => {
+        it('returns falsy', () => {
+          expect(Story.haveHighlightButton(stories, fakeStory, storyScopes.SEARCH)).toBeFalsy();
+        });
+      });
+    });
+  });
+
+  describe('haveSearch', () => {
+    describe('when have zero search stories', () => {
+      const stories = { 
+        [storyScopes.SEARCH]: [] 
+      };
+
+      it('returns falsy', () => {
+        expect(Story.haveSearch(stories)).toBeFalsy();
+      });
+    });
+
+    describe('when have more than one search story', () => {
+      const stories = {
+        [storyScopes.SEARCH]: [
+          { id: 1, storyType: storyTypes.FEATURE },
+          { id: 2, storyType: storyTypes.FEATURE },
+          { id: 3, storyType: storyTypes.FEATURE },
+        ]
+      }
+
+      it('returns truthy', () => {
+        expect(Story.haveSearch(stories)).toBeTruthy();
+      });
+    });
+  });
+
+  describe('haveStory', () => {
+    const stories = [
+      { id: 1 },
+      { id: 2 },
+      { id: 3 },
+    ];
+
+    stories.forEach(story => {
+      describe(`when story is present in the stories array`, () => {
+        it('returns truthy', () => {
+          expect(Story.haveStory(story, stories)).toBeTruthy();
+        });
+      });
+    });
+
+    describe('when story is not present in stories array', () => {
+      it('returns falsy', () => {
+        const story = { id: 100 };
+
+        expect(Story.haveStory(story, stories)).toBeFalsy();
+      });
+    });
+  });
+
+  describe('stateFor', () => {
+    const { BUG, CHORE, RELEASE } = storyTypes;
+    const { UNSTARTED, UNSCHEDULED } = status;
+
+    describe('when is a feature', () => {
+      describe('and have no estimate', () => {
+        const story = { _editing: { id: 1, storyType: storyTypes.FEATURE, estimate: '' } };
+        const newAttributes = { state: UNSTARTED }
+        const newStory = { ...story, ...newAttributes };
+
+        it(`return ${UNSCHEDULED}`, () => {
+          expect(Story.stateFor(story, newAttributes, newStory)).toEqual(UNSCHEDULED);
+        });
+      });
+
+      describe('and new attributes have no estimate', () => {
+        const story = { _editing: { id: 1, storyType: storyTypes.FEATURE, estimate: 2 } };
+        const newAttributes = { estimate: '' };
+        const newStory = { ...story, ...newAttributes };
+
+        it(`return ${UNSCHEDULED}`, () => {
+          expect(Story.stateFor(story, newAttributes, newStory)).toEqual(UNSCHEDULED);
+        });
+      });
+
+      describe(`and new attributes have state ${UNSCHEDULED}`, () => {
+        const story = { _editing: { id: 1, storyType: storyTypes.FEATURE, estimate: 2 } };
+        const newAttributes = { state: UNSCHEDULED };
+        const newStory = { ...story, ...newAttributes };
+
+        it(`return ${UNSCHEDULED}`, () => {
+          expect(Story.stateFor(story, newAttributes, newStory)).toEqual(UNSCHEDULED);
+        });
+      });
+    });
+
+    const noFeatureTypes = [BUG, CHORE, RELEASE];
+
+    noFeatureTypes.forEach(noFeatureType => {
+      describe(`when is ${noFeatureType}`, () => {
+        Story.states.forEach(state => {
+          describe(`and new attributes is state ${state}`, () => {
+            const story = { _editing: { id: 1, storyType: noFeatureType, estimate: 2 } };
+            const newAttributes = { state };
+            const newStory = { ...story, ...newAttributes };
+
+            it(`return ${state}`, () => {
+              expect(Story.stateFor(story, newAttributes, newStory)).toEqual(state);
+            });
+          });
+        });
+      });
+    });
+  });
+
+  describe('estimateFor', () => {
+    const { BUG, CHORE, RELEASE } = storyTypes;
+    const noFeatureTypes = [BUG, CHORE, RELEASE];
+
+    noFeatureTypes.forEach(noFeatureType => {
+      describe(`when story type is ${noFeatureType}`, () => {
+        describe('and new attributes have estimate 2', () => {
+          const story = { _editing: { id: 1, storyType: noFeatureType, estimate: '' } };
+          const newAttributes = { estimate: 2 };
+          const newStory = { ...story, ...newAttributes };
+  
+          it('return an empty string', () => {
+            expect(Story.estimateFor(story, newAttributes, newStory)).toEqual('');
+          });
+        });
+
+        describe('and new attributes have story type feature', () => {
+          const story = { _editing: { id: 1, storyType: noFeatureType, estimate: '' } };
+          const newAttributes = { storyType: 'feature' };
+          const newStory = { ...story, ...newAttributes };
+
+          it('return 1', () => {
+            expect(Story.estimateFor(story, newAttributes, newStory)).toEqual(1);
+          });
+        });
+      });
+    });
+  });
+
+  describe('needConfirmation', () => {
+    const needConfirmationStates = [status.ACCEPTED, status.REJECTED, status.RELEASE];
+    const noNeedConfirmationStates = [
+      status.DELIVERED, status.STARTED, status.FINISHED,
+      status.UNSTARTED, status.UNSCHEDULED
+    ];
+
+    needConfirmationStates.forEach(state => {
+      describe(`when state is ${state}`, () => {
+        it('returns truthy', () => {
+          const story = { state };
+
+          expect(Story.needConfirmation(story)).toBeTruthy();
+        });
+      });
+    });
+
+    noNeedConfirmationStates.forEach(state => {
+      describe(`when state is ${state}`, () => {
+        it('returns falsy', () => {
+          const story = { state };
+
+          expect(Story.needConfirmation(story)).toBeFalsy();
+        });
+      });
+    });
   });
 });

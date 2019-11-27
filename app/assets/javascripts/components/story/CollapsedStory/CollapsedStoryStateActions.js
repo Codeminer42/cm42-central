@@ -2,10 +2,10 @@ import React from 'react';
 import CollapsedStoryEstimateButton from './CollapsedStoryEstimateButton';
 import CollapsedStoryStateButton from './CollapsedStoryStateButton';
 import {
-  isStoryNotEstimated, getNextState,
-  storyTransitions, storyPropTypesShape,
+  isStoryNotEstimated, getNextState, 
   isRelease, isAccepted
 } from '../../../models/beta/story';
+import StoryPropTypes from '../../shapes/story';
 import { status } from '../../../libs/beta/constants';
 
 const StoryActionFor = (state) => StateAction[state] || StateAction.unstarted;
@@ -20,69 +20,36 @@ const StateAction = {
   [status.RELEASE]: ["release"]
 };
 
-class CollapsedStoryStateActions extends React.Component {
-  constructor(props) {
-    super(props);
+const CollapsedStoryStateActions = ({
+  story,
+  onUpdate
+}) => {
+  const disableToggle = event => event.stopPropagation();
 
-    this.confirmTransition = this.confirmTransition.bind(this);
-  }
+  const getStoryState = story =>
+    isRelease(story) && !isAccepted(story) ? status.RELEASE : story.state;
 
-  disableToggle(event) {
-    event.stopPropagation();
-  }
-
-  confirmTransition(action, update) {
-    if (this.needConfirmation(action) && !window.confirm(
-      I18n.t('story.definitive_sure', { action })
-    )) {
-      return;
-    }
-
-    update();
-  }
-
-  needConfirmation(action) {
-    return action === storyTransitions.ACCEPT ||
-      action === storyTransitions.REJECT ||
-      action === storyTransitions.RELEASE;
-  }
-
-  getStoryState(story) {
-    return isRelease(story) && !isAccepted(story)
-      ? status.RELEASE
-      : story.state;
-  }
-
-  render() {
-    const { story, onUpdate } = this.props;
-    const state = this.getStoryState(story);
-
-    return (
-      <div className='Story__actions' onClick={this.disableToggle}>
-        {
-          isStoryNotEstimated(story.storyType, story.estimate) ?
-            <CollapsedStoryEstimateButton
-              onUpdate={((estimate) => onUpdate({ estimate }))}
+  return (
+    <div className='Story__actions' onClick={disableToggle}>
+      {
+        isStoryNotEstimated(story.storyType, story.estimate) ?
+          <CollapsedStoryEstimateButton
+            onUpdate={((estimate) => onUpdate({ estimate }))}
+          />
+          : StoryActionFor(getStoryState(story)).map((stateAction) =>
+            <CollapsedStoryStateButton
+              action={stateAction}
+              key={stateAction}
+              onUpdate={() => onUpdate({ state: getNextState(story.state, stateAction) })}
             />
-            : StoryActionFor(state).map((stateAction) =>
-              <CollapsedStoryStateButton
-                action={stateAction}
-                key={stateAction}
-                onUpdate={() => {
-                  this.confirmTransition(stateAction, () => {
-                    onUpdate({ state: getNextState(story.state, stateAction) })
-                  })
-                }}
-              />
-            )
-        }
-      </div>
-    );
-  }
-};
+          )
+      }
+    </div>
+  )
+}
 
 CollapsedStoryStateActions.propTypes = {
-  story: storyPropTypesShape
+  story: StoryPropTypes
 };
 
 export default CollapsedStoryStateActions;

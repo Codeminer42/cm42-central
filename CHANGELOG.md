@@ -2,9 +2,55 @@
 
 ## [Unreleased]
 
+### Removed
+- Rewire and Rewire Webpack
+- Inject loader
+- Karma and all dependencies related
+
+## Changed
+- Migrate all the javascripts tests from jasmine to jest.
+
+### Update
+- Front-End Dependencies
+  - NodeJS from 9.11.2 to 10.17.0
+  - Webpack Dev Server from 3.1.14 to 3.9.0
+
+### Added
+- babel-jest and @testing-library/jest-dom
+
 ### Fixed
- - [ V2 ] Remove redundant switch cases from the stories reducer.
- - [ V2 ] Fix number, date and points of sprints.
+- [ V2 ] Fix a sprints calc bug.
+
+### Added
+- [ V2 ] Dialog confirmation when story state is changed in expanded shape.
+
+### Changed
+- [ V2 ] When story is accepted it has a different background color.
+
+### Added
+- [ V2 ] Spinner when project is loading.
+
+### Changed
+- Unscheduled stories may or not may have a estimate.
+- Chilly Bin column have stories with or no estimate.
+
+## [2.4.0] 2019-10-21
+
+### Added
+- [ V2 ] Search feature
+
+### Changed
+- The app will automatically switch between teams when a user opens a link to a project of a team that is not the current selected one
+
+## [2.3.0] 2019-10-08
+
+### Changed
+- [ V2 ] Reversed the order of done column sprints
+
+### Fixed
+- [ V2 ] Remove redundant switch cases from the stories reducer.
+- [ V2 ] Fix number, date and points of sprints.
+-  [ V2 ] Sprints are shown in easier order in "done" column
 
 ### Added
 - [ V2 ] Add project navigation bar
@@ -13,6 +59,10 @@
   - Stories of release type
   - Option to Clone Stories
   - Disable fields when story is read-only
+  - Link directly to stories
+  - History
+- [ V2 ] Centralized notification system
+- [ V2 ] Top nav
 
 ## [2.2.0] 2019-03-15
 
@@ -419,13 +469,10 @@ and CVE-2018-14567)
 - Fix a locale select bug to make the options visible on a dark navbar.
 - Some improvements to fix some issues reported by codeclimate.
 
-### Changed
-- Reversed the order of done column sprints
-
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v2.2.0...HEAD
+[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v2.4.0...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
@@ -461,3 +508,5 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [2.0.1]: https://github.com/Codeminer42/cm42-central/tree/v2.0.1
 [2.1.0]: https://github.com/Codeminer42/cm42-central/tree/v2.1.0
 [2.2.0]: https://github.com/Codeminer42/cm42-central/tree/v2.2.0
+[2.3.0]: https://github.com/Codeminer42/cm42-central/tree/v2.3.0
+[2.4.0]: https://github.com/Codeminer42/cm42-central/tree/v2.4.0

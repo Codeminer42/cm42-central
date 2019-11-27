@@ -33,7 +33,7 @@ describe('<StoryItem />', () => {
       const wrapper = shallow(<StoryItem story={story} />);
       const children = wrapper.find(ExpandedStory);
 
-      expect(children).toHaveProp('className', className);
+      expect(children.prop('className')).toContain(className);
     });
 
     it('put a late release message on childrens prop title', () => {
@@ -78,6 +78,36 @@ describe('<StoryItem />', () => {
       const children = wrapper.find(ExpandedStory);
 
       expect(children).toHaveProp('title', title);
+    });
+  });
+
+  const render = props => {
+    const wrapper = shallow(<StoryItem {...props} />);
+    const expandedStory = wrapper.find('[data-id="expanded-story"]');
+    return { wrapper, expandedStory };
+  }
+
+  describe('when the story is accepted', () => {  
+    it('puts .Story--accepted on childrens prop className', () => {
+      const { expandedStory } = render({
+        story: storyFactory({
+          collapsed: false,
+          state: 'accepted'
+        })
+      });
+      expect(expandedStory.prop('className')).toContain('Story--accepted');
+    });
+  });
+
+  describe('when the story is not accepted', () => {
+    it('does not put .Story--accepted on childrens prop className', () => {
+      const { expandedStory } = render({
+        story: storyFactory({
+          collapsed: false,
+          state: 'unscheduled'
+        })
+      });
+      expect(expandedStory.prop('className')).not.toContain('Story--accepted');
     });
   });
 });

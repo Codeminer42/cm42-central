@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { projectPropTypesShape } from '../../../models/beta/project';
+import ProjectPropTypes from '../../shapes/project';
 
 export const CollapsedStoryEstimateButton = ({ project, onUpdate }) => (
   <div className="Story__estimate-box">
@@ -19,7 +19,7 @@ export const CollapsedStoryEstimateButton = ({ project, onUpdate }) => (
 );
 
 CollapsedStoryEstimateButton.propTypes = {
-  project: projectPropTypesShape.isRequired
+  project: ProjectPropTypes.isRequired
 };
 
 const mapStateToProps = ({ project }) => ({ project });

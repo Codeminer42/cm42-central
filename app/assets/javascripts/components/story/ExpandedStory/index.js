@@ -6,7 +6,7 @@ import ExpandedStoryRelease from './ExpandedStoryRelease';
 import { editStory, saveStory, deleteStory, cloneStory, showHistory } from '../../../actions/story';
 import { connect } from 'react-redux';
 import * as Story from '../../../models/beta/story';
-import { projectPropTypesShape } from '../../../models/beta/project';
+import ProjectPropTypes from '../../shapes/project';
 
 export class ExpandedStory extends React.Component {
   constructor(props) {
@@ -30,7 +30,8 @@ export class ExpandedStory extends React.Component {
       deleteStory,
       project,
       className,
-      title
+      title,
+      from
     } = this.props;
 
     const loading = story._editing.loading ? "Story__enable-loading" : "";
@@ -46,8 +47,8 @@ export class ExpandedStory extends React.Component {
         <ExpandedStoryControls
           onCancel={onToggle}
           isDirty={story._editing._isDirty || false}
-          onSave={() => saveStory(story.id, project.id)}
-          onDelete={() => deleteStory(story.id, project.id)}
+          onSave={() => saveStory(story.id, project.id, from)}
+          onDelete={() => deleteStory(story.id, project.id, from)}
           canSave={Story.canSave(story)}
           canDelete={Story.canDelete(story)}
           disabled={disabled}
@@ -58,14 +59,14 @@ export class ExpandedStory extends React.Component {
             ? <ExpandedStoryRelease
               story={story}
               titleRef={this.titleRef}
-              onEdit={(newAttributes) => editStory(story.id, newAttributes)}
+              onEdit={(newAttributes) => editStory(story.id, newAttributes, from)}
               onClone={cloneStory}
               disabled={disabled}
             />
             : <ExpandedStoryDefault
               story={story}
               titleRef={this.titleRef}
-              onEdit={(newAttributes) => editStory(story.id, newAttributes)}
+              onEdit={(newAttributes) => editStory(story.id, newAttributes, from)}
               project={project}
               onClone={cloneStory}
               showHistory={showHistory}
@@ -85,7 +86,7 @@ ExpandedStory.propTypes = {
   showHistory: PropTypes.func.isRequired,
   deleteStory: PropTypes.func.isRequired,
   onToggle: PropTypes.func.isRequired,
-  project: projectPropTypesShape.isRequired,
+  project: ProjectPropTypes.isRequired,
   title: PropTypes.string,
   className: PropTypes.string
 };

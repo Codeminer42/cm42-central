@@ -1,5 +1,4 @@
 import { setLoadingValue } from './story';
-import PropTypes from 'prop-types';
 import * as AttachmentUrl from './attachmentUrl';
 import changeCase from 'change-object-case';
 import httpService from '../../services/httpService';
@@ -44,17 +43,6 @@ export const removeAttachment = (story, attachmentId) => {
     }
   }
 }
-
-export const attachmentPropTypesShape = PropTypes.shape({
-  publicId: PropTypes.string,
-  version: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string
-  ]),
-  format: PropTypes.string,
-  resourceType: PropTypes.string,
-  path: PropTypes.string
-});
 
 export const upload = async (file) => {
   const uploadPreset = AttachmentUrl.uploadPreset();

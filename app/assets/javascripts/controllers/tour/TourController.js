@@ -16,7 +16,7 @@ export default class TourController {
     const lastStep = user.get('tour_steps').length - 1;
     const buttons = [];
 
-    if(index === 0) {
+    if(index !== lastStep) {
       buttons.push({
         text: I18n.t('skip'),
         action: (function() {

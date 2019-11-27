@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { orderByState, groupStoriesInSprints } from "./backlog";
 import { mountPastIterations } from './done';
 import * as Column from "../models/beta/column";
-import { comparePosition } from "../models/beta/story";
+import { comparePosition, withScope } from "../models/beta/story";
 import { property, last } from 'underscore';
 
 const getStories = property('stories');
@@ -15,9 +15,9 @@ export const getColumns = createSelector(
   (column, stories, project, pastIterations) => {
     switch (column) {
       case Column.CHILLY_BIN:
-        return stories.filter(story => Column.isChillyBin(story)).sort(comparePosition);
+        return withScope(stories).filter(story => Column.isChillyBin(story)).sort(comparePosition);
       case Column.BACKLOG:
-        const orderedStories = orderByState(stories.filter(
+        const orderedStories = orderByState(withScope(stories).filter(
           story => Column.isBacklog(story, project))
         );
 
@@ -28,7 +28,7 @@ export const getColumns = createSelector(
 
         return groupStoriesInSprints(orderedStories, project, firstSprintNumber, pastIterations);
       case Column.DONE:
-        return mountPastIterations(pastIterations, stories);
+        return mountPastIterations(pastIterations, withScope(stories));
     };
   }
 );

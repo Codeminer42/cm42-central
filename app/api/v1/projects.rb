@@ -59,7 +59,7 @@ class V1::Projects < Grape::API
       params[:since].months.ago
 
       if project
-        iteration = Central::Support::IterationService.new(project, current_time: current_time)
+        iteration = IterationService.new(project, current_time: current_time)
       end
 
       present iteration, with: Entities::ProjectAnalysis

@@ -55,6 +55,8 @@ $orange:        #FF5722;
 $lightyellow-1: #F3F3D1;
 $lightyellow-2: #DBDBB0;
 
+$black-transparent: rgba(0, 0, 0, 0.6);
+
 // Tango icon theme pallette
 // http://tango.freedesktop.org/Tango_Icon_Theme_Guidelines
 
@@ -88,6 +90,8 @@ $column-btn-close-active:       rgba(0, 0, 0, 0.6);
 
 /* Story */
 $story-background-color:        #f4f4f4;
+$story-background-highlight-color:  #d8d84a;
+$story-background-accepted-color:   #d3eabe;
 $story-border-bottom-color:     #dddddd;
 $story-border-top-color:        #ffffff;
 $story-hover-background-color:  #e6e6e6;

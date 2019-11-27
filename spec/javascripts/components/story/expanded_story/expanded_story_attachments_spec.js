@@ -63,7 +63,7 @@ describe('<ExpandedStoryAttachments />', () => {
         />
       );
 
-      expect(wrapper.exists('Dropzone')).toBe(true);
+      expect(wrapper.exists('[data-id="dropzone"]')).toBe(true);
     });
   });
 

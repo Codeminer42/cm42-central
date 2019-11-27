@@ -12,25 +12,38 @@ import { createStory, closeHistory } from '../../actions/story';
 import AddStoryButton from '../story/AddStoryButton';
 import * as Story from 'libs/beta/constants';
 import PropTypes from 'prop-types';
-import { storyPropTypesShape } from '../../models/beta/story';
-import { projectBoardPropTypesShape } from '../../models/beta/projectBoard';
+import StoryPropTypes from '../shapes/story';
+import ProjectBoardPropTypes from '../shapes/projectBoard';
 import Notifications from '../Notifications';
 import { removeNotification } from '../../actions/notifications';
+import StorySearch from '../search/StorySearch';
+import SearchResults from './../search/SearchResults';
+import ProjectLoading from './ProjectLoading';
 
-class ProjectBoard extends React.Component {
+export class ProjectBoard extends React.Component {
   componentWillMount() {
     this.props.fetchProjectBoard(this.props.projectId);
   }
 
   render() {
     if (!this.props.projectBoard.isFetched) {
-      return <b>Loading</b>;
+      return <ProjectLoading data-id="project-loading" />;
     }
 
-    const { createStory, closeHistory, notifications, removeNotification, history } = this.props;
+    const { 
+      projectId, 
+      createStory, 
+      closeHistory,
+      notifications, 
+      removeNotification, 
+      history,
+      projectBoard
+    } = this.props;
 
     return (
       <div className="ProjectBoard">
+        <StorySearch projectId={projectId} loading={projectBoard.search.loading} />
+
         <Notifications
           notifications={notifications}
           onRemove={removeNotification}
@@ -72,6 +85,8 @@ class ProjectBoard extends React.Component {
           />
         </Column>
 
+        <SearchResults />
+
         {
           history.status !== 'DISABLED' &&
           <Column
@@ -90,8 +105,8 @@ class ProjectBoard extends React.Component {
 }
 
 ProjectBoard.propTypes = {
-  projectBoard: projectBoardPropTypesShape.isRequired,
-  chillyBinStories: PropTypes.arrayOf(storyPropTypesShape),
+  projectBoard: ProjectBoardPropTypes.isRequired,
+  chillyBinStories: PropTypes.arrayOf(StoryPropTypes),
   doneSprints: PropTypes.array.isRequired,
   backlogSprints: PropTypes.array.isRequired,
   fetchProjectBoard: PropTypes.func.isRequired,

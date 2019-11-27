@@ -1,11 +1,9 @@
-import { status, storyTypes } from "libs/beta/constants";
+import { status, storyTypes, storyScopes } from "libs/beta/constants";
 import httpService from '../../services/httpService';
 import changeCase from 'change-object-case';
 import * as Label from './label';
 import PropTypes from 'prop-types';
-import { notePropTypesShape } from './note';
-import { taskPropTypesShape } from './task';
-import { attachmentPropTypesShape } from './attachment';
+import StoryPropTypesShape, { storyPropTypes } from '../../components/shapes/story';
 import moment from 'moment';
 import { has } from 'underscore';
 
@@ -16,6 +14,11 @@ const compareValues = (a, b) => {
 
   return 0;
 };
+
+export const needConfirmation = story =>
+  story.state === status.ACCEPTED ||
+  story.state === status.REJECTED ||
+  story.state === status.RELEASE
 
 export const comparePosition = (a, b) => {
   const positionA = parseFloat(a.position);
@@ -36,9 +39,9 @@ export const compareStartedAt = (a, b) => {
   return compareValues(a.startedAt, b.startedAt);
 };
 
-export const isUnestimatedFeature = story => {
-  return (story.estimate === null || story.estimate === '') && story.storyType === storyTypes.FEATURE;
-};
+export const isUnestimatedFeature = story => !hasEstimate(story) && isFeature(story)
+
+export const isInProgress = story => !isUnscheduled(story) && !isUnstarted(story);
 
 export const isFeature = story => {
   return story.storyType === storyTypes.FEATURE;
@@ -55,6 +58,11 @@ export const isUnstarted = story => {
 export const isAccepted = story => {
   return story.state === status.ACCEPTED;
 };
+
+export const totalPoints = stories => 
+  stories.reduce((total, current) => total + getPoints(current), 0)
+
+export const isHighlighted = story => Boolean(story.highlighted)
 
 export const getPoints = story =>
   isFeature(story)
@@ -82,7 +90,7 @@ export const releaseIsLate = (story) => {
 }
 
 export const possibleStatesFor = story => 
-  isUnestimatedFeature(story) ? states : [states[0]];
+  isUnestimatedFeature(story._editing) ? [states[0]] : states;
 
 export const types = ['feature', 'bug', 'release', 'chore'];
 
@@ -123,6 +131,14 @@ export const updateStory = (story, newAttributes) => ({
   ...newAttributes
 });
 
+export const search = async (queryParam, projectId) => {
+  const { data } = await httpService
+    .get(`/projects/${projectId}/stories?q=${queryParam}`, {
+      timeout: 1500
+    })
+  return data.map(item => deserialize(item.story));
+}
+
 export const getHistory = async (storyId, projectId) => {
   const { data } = await httpService
     .get(`/projects/${projectId}/stories/${storyId}/activities`)
@@ -145,9 +161,6 @@ export const toggleStory = (story) => {
   };
 };
 
-const isUnstartedState = (story, newAttributes) => 
-  !hasEstimate(story) && hasEstimate(newAttributes)
-
 const isUnscheduledState = (story, newAttributes) => 
   (
     isFeature(story._editing) && (
@@ -164,17 +177,11 @@ const isChangingToUnscheduled = (story, newAttributes) => isUnscheduled(story._e
 
 const isChangingWithoutEstimate = (story, newAttributes) => !hasEstimate(story._editing) && !hasEstimate(newAttributes)
 
-const stateFor = (story, newAttributes, newStory) => {
-  const { UNSTARTED, UNSCHEDULED } = status;
+export const stateFor = (story, newAttributes, newStory) =>
+  isUnscheduledState(story, newAttributes) ? status.UNSCHEDULED : newStory.state;
 
-  if (isUnstartedState(story._editing, newAttributes)) return UNSTARTED;
-  if (isUnscheduledState(story, newAttributes)) return UNSCHEDULED;
-  
-  return newStory.state;
-}
-
-const estimateFor = (story, newAttributes, newStory) => {
-  if (isNoEstimated(story, newAttributes) || isUnscheduledState(story, newAttributes)) return '';
+export const estimateFor = (story, newAttributes, newStory) => {
+  if (isNoEstimated(story, newAttributes)) return '';
   if (isFeature(newAttributes) && !isUnscheduled(story._editing)) return 1;
   
   return newStory.estimate;
@@ -297,6 +304,20 @@ export const createNewStory = (stories, storyAttributes) => {
   };
 };
 
+export const withScope = (stories, from) => 
+  Boolean(from) ? stories[from] : stories[storyScopes.ALL];
+
+export const isSearch = from => from === storyScopes.SEARCH;
+
+export const haveHighlightButton = (stories, story, from) =>
+  isSearch(from) && haveStory(story, stories)
+
+export const haveSearch = stories =>
+  Boolean(stories[storyScopes.SEARCH].length)
+
+export const haveStory = (story, stories) =>
+  stories.some(item => item.id === story.id)
+
 export const isNew = (story) =>
   story.id === null;
 
@@ -398,50 +419,7 @@ export const getNextState = (currentState, transition) => {
   return currentState;
 }
 
-export const storyPropTypesShape = PropTypes.shape(storyPropTypes).isRequired;
-
 export const editingStoryPropTypesShape = PropTypes.shape({
   ...storyPropTypes,
-  _editing: storyPropTypesShape
+  _editing: StoryPropTypesShape
 });
-
-const storyPropTypes = {
-  id: PropTypes.number,
-  title: PropTypes.string,
-  description: PropTypes.string,
-  estimate: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number
-  ]),
-  storyType: PropTypes.string,
-  state: PropTypes.string,
-  acceptedAt: PropTypes.string,
-  requestedById: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number
-  ]),
-  ownedById: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number
-  ]),
-  projectId: PropTypes.number,
-  createdAt: PropTypes.string,
-  updatedAt: PropTypes.string,
-  position: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number
-  ]),
-  labels: PropTypes.array,
-  requestedByName: PropTypes.string,
-  ownedByName: PropTypes.string,
-  ownedByInitials: PropTypes.string,
-  releaseDate: PropTypes.string,
-  deliveredAt: PropTypes.string,
-  errors: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.array
-  ]),
-  notes: PropTypes.arrayOf(notePropTypesShape.isRequired),
-  documents: PropTypes.arrayOf(attachmentPropTypesShape.isRequired),
-  tasks: PropTypes.arrayOf(taskPropTypesShape.isRequired),
-};

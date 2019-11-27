@@ -3,12 +3,23 @@
     padding: 7px 8px;
     border-bottom: 1px solid $story-border-bottom-color;
     border-top: 1px solid $story-border-top-color;
+    -webkit-transition: background-color ease-in-out .2s;
+    -o-transition: background-color ease-in-out .2s;
+    transition: background-color ease-in-out .2s;
 
     &--late-release {
       background-color: rgba($darkred, .5) !important;
       border-top-color: rgba($darkred, .6) !important;
       border-bottom-color: rgba($darkred, .1) !important;
       color: white !important;
+    }
+
+    &--highlighted {
+      background-color: $story-background-highlight-color !important;
+    }
+
+    &--accepted {
+      background-color: $story-background-accepted-color !important;
     }
 
     &--collapsed {
@@ -62,6 +73,19 @@
         &__icons-block {
           display: flex;
           width: 60px;
+        }
+
+        &__focus-button {
+          width: 13px;
+          height: 21px;
+          position: relative;
+        }
+
+        &__focus-button-icon {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform:translate(-50%,-50%);
         }
 
         &__icon {

@@ -1,21 +1,24 @@
 import Note from 'models/note';
 
 describe("Note", function() {
+  let note;
 
   beforeEach(function() {
-    this.note = new Note({});
+    note = new Note({});
   });
 
   describe("user", function() {
+    let project;
+    let usersCollectionStub;
 
     beforeEach(function() {
-      this.project = {users: {get: this.usersCollectionStub}};
-      this.note.set({user_id: 999, user_name: 'John Doe'});
-      this.note.collection = {story: {collection: {project: this.project}}};
+      project = {users: {get: usersCollectionStub}};
+      note.set({user_id: 999, user_name: 'John Doe'});
+      note.collection = {story: {collection: {project: project}}};
     });
 
     it("returns the name of the user", function() {
-      expect(this.note.get('user_name')).toEqual('John Doe');
+      expect(note.get('user_name')).toEqual('John Doe');
     });
 
   });
@@ -23,17 +26,17 @@ describe("Note", function() {
   describe("errors", function() {
 
     it("should record errors", function() {
-      expect(this.note.hasErrors()).toBeFalsy();
-      expect(this.note.errorsOn('note')).toBeFalsy();
+      expect(note.hasErrors()).toBeFalsy();
+      expect(note.errorsOn('note')).toBeFalsy();
 
-      this.note.set({errors: {
+      note.set({errors: {
         note: ["cannot be blank", "needs to be better"]
       }});
 
-      expect(this.note.hasErrors()).toBeTruthy();
-      expect(this.note.errorsOn('note')).toBeTruthy();
+      expect(note.hasErrors()).toBeTruthy();
+      expect(note.errorsOn('note')).toBeTruthy();
 
-      expect(this.note.errorMessages())
+      expect(note.errorMessages())
         .toEqual("note cannot be blank, note needs to be better");
     });
 
@@ -51,11 +54,11 @@ describe("Note", function() {
     });
 
     it("returns the translated attribute name", function() {
-      expect(this.note.humanAttributeName('foo_bar')).toEqual('Foo bar');
+      expect(note.humanAttributeName('foo_bar')).toEqual('Foo bar');
     });
 
     it("strips of the id suffix", function() {
-      expect(this.note.humanAttributeName('foo_bar_id')).toEqual('Foo bar');
+      expect(note.humanAttributeName('foo_bar_id')).toEqual('Foo bar');
     });
   });
 });

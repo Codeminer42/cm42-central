@@ -1,5 +1,5 @@
 namespace :travis do
-  desc 'Runs rspec specs and jasmine specs on travis'
+  desc 'Runs rspec specs and jest specs on travis'
   task :run_specs do
     ['bundle exec rspec spec', 'npm test', 'npm run coveralls'].each do |cmd|
       puts "Starting to run #{cmd}..."

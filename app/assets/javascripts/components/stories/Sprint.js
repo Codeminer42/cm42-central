@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Stories from "./Stories";
 import SprintHeader from './SprintHeader'
-import { sprintPropTypesShape } from '../../models/beta/iteration';
-import { pastIterationPropTypesShape } from '../../models/beta/pastIteration';
+import SprintPropTypes from '../shapes/iteration';
+import PastIterationPropTypes from '../shapes/pastIteration';
 
 const propTypes = {
   fetchStories: PropTypes.func,
   sprint: PropTypes.oneOf([
-    sprintPropTypesShape,
-    pastIterationPropTypesShape
+    SprintPropTypes,
+    PastIterationPropTypes
   ])
 };
 

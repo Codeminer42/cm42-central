@@ -8,6 +8,7 @@ pt-BR:
       long: "%d/%m/%Y %H:%M:%S"
       short: "%d %b %Y"
 
+  loading: "Carregando"
   logout:  "Sair"
   login:   "Entrar"
   sign_up:  "Inscreva-se"
@@ -79,6 +80,7 @@ pt-BR:
   stories_destroy_fail: "As histórias não puderam ser destruídas por alguns erros de validação"
   update_stories_successfully: "As histórias foram atualizadas com sucesso"
   stories_not_found: "Histórias não encontradas"
+  stories_found: "Histórias encontradas:"
   upload_new_file: "Arraste o arquivo aqui, ou clique para adicionar."
   reject_new_file: "Formato não suportado."
   accepted_tooltip: "A Tarefa já foi entregue, não pode ser modificada."
@@ -119,7 +121,8 @@ pt-BR:
     errors:
       failed_upload: "O upload falhou. Por favor, tente novamente."
 
-    definitive_sure: "Tem certeza que deseja %{action} essa história? Essa ações é irreversível."
+    definitive_sure: "Tem certeza que deseja %{action} essa história? Essa ação é irreversível."
+    change_to: "mudar para %{state}"
 
   author unknown: "Autor Desconhecido"
   add story: "Adicionar história"
@@ -296,6 +299,8 @@ pt-BR:
     transfer: "Transferir a propriedade"
     sharing: "Equipes com acesso a este projeto"
     invalid_action: "Não é possível executar esta ação ou Equipe não encontrada"
+    stories_not_found: "Sua busca não teve resultados."
+    search_story: "Buscar histórias"
 
     confirmation_invalid: 'Confirmação inválida, tente novamente.'
     delete_confirmation: 'Por favor digite o nome do projeto para confirmar.'
@@ -479,3 +484,5 @@ pt-BR:
           create:  Sua história "%{story}" foi criada com sucesso
       error:
         default_error: 'Algo deu errado, tente novamente por favor'
+      cancel:
+        default_cancel: "Ação cancelada"

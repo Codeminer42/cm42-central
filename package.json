@@ -3,9 +3,40 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "test": "NODE_ENV=test karma start config/karma.conf.js",
+    "test": "jest",
     "coveralls": "cat ./js_coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./js_coverage",
     "lint": "eslint app/assets/javascripts"
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "jest-sinon",
+      "./node_modules/jest-enzyme/lib/index.js",
+      "<rootDir>/spec/javascripts/support/setup.js"
+    ],
+    "testMatch": [
+      "<rootDir>/spec/javascripts/**/*_spec.js"
+    ],
+    "transform": {
+      "^.+\\.ejs$": "<rootDir>/spec/javascripts/support/ejsTransformer.js",
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "^vendor/(.*)": "<rootDir>/vendor/assets/javascripts/$1",
+      "^collections/(.*)": "<rootDir>/app/assets/javascripts/collections/$1",
+      "^mixins/(.*)": "<rootDir>/app/assets/javascripts/mixins/$1",
+      "^models/(.*)": "<rootDir>/app/assets/javascripts/models/$1",
+      "^templates/(.*)": "<rootDir>/app/assets/javascripts/templates/$1",
+      "^views/(.*)": "<rootDir>/app/assets/javascripts/views/$1",
+      "^libs/(.*)": "<rootDir>/app/assets/javascripts/libs/$1",
+      "^components/(.*)": "<rootDir>/app/assets/javascripts/components/$1",
+      "^controllers/(.*)": "<rootDir>/app/assets/javascripts/controllers/$1",
+      "^reducers/(.*)": "<rootDir>/app/assets/javascripts/reducers/$1",
+      "^actions/(.*)": "<rootDir>/app/assets/javascripts/actions/$1",
+      "^central/(.*)": "<rootDir>/app/assets/javascripts/central/$1",
+      "^store/(.*)": "<rootDir>/app/assets/javascripts/store/$1",
+      "^gritter$": "gritter/js/jquery.gritter.min.js",
+      "jquery\\.ui\\.widget": "cloudinary_js/js/jquery.ui.widget.js"
+    }
   },
   "dependencies": {
     "@babel/core": "^7.2.2",
@@ -27,7 +58,7 @@
     "chartkick": "^3.0.2",
     "classnames": "^2.2.5",
     "clipboard": "^1.5.12",
-    "cloudinary_js": "^2.1.2",
+    "cloudinary_js": "2.1.2",
     "coffee-loader": "^0.7.3",
     "coffee-script": "^1.12.6",
     "compression-webpack-plugin": "^0.4.0",
@@ -73,8 +104,6 @@
     "redux-thunk": "^2.2.0",
     "reselect": "^4.0.0",
     "resolve-url-loader": "^2.1.0",
-    "rewire": "^2.5.2",
-    "rewire-webpack": "^1.0.1",
     "sass-loader": "^6.0.6",
     "stats-webpack-plugin": "^0.4.2",
     "style-loader": "^0.18.2",
@@ -83,13 +112,15 @@
     "underscore": "^1.9.0",
     "uuid": "^3.3.2",
     "webpack": "^4.29.1",
-    "webpack-dev-server": "^3.1.14",
+    "webpack-dev-server": "^3.9.0",
     "webpack-manifest-plugin": "^2.0.4",
     "webpack-merge": "^4.1.0"
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.2.0",
+    "@testing-library/jest-dom": "^4.2.4",
     "babel-eslint": "^9.0.0",
+    "babel-jest": "^24.9.0",
     "babel-plugin-istanbul": "^3.1.2",
     "core-js": "^2.6.3",
     "coveralls": "^2.11.14",
@@ -103,22 +134,16 @@
     "eslint-plugin-import": "^2.6.0",
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-react": "^7.1.0",
-    "inject-loader": "^4.0.1",
-    "jasmine-core": "^3.3.0",
-    "jasmine-enzyme": "^7.0.1",
-    "karma": "^4.0.0",
-    "karma-chrome-launcher": "^2.0.0",
-    "karma-coverage": "^1.1.1",
-    "karma-jasmine": "^2.0.1",
-    "karma-phantomjs-launcher": "^1.0.2",
-    "karma-sinon": "^1.0.5",
-    "karma-sourcemap-loader": "^0.3.7",
-    "karma-spec-reporter": "0.0.26",
-    "karma-webpack": "^3.0.5",
+    "jest": "^24.9.0",
+    "jest-enzyme": "^7.1.2",
+    "jest-sinon": "^1.0.1",
     "mini-css-extract-plugin": "^0.5.0",
     "react-addons-test-utils": "^15.6.2",
     "react-test-renderer": "^16.8.0",
     "sinon": "^7.2.3",
     "webpack-cli": "^3.2.3"
+  },
+  "engines": {
+    "node": "10.17.0"
   }
 }

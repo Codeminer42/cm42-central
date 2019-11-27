@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import Note from './Note';
 import PropTypes from 'prop-types';
-import { notePropTypesShape } from '../../../models/beta/note';
+import NotePropTypes from '../../shapes/note';
 
 const NotesList = ({ notes, onDelete, disabled }) => (
   <Fragment>
@@ -19,7 +19,7 @@ const NotesList = ({ notes, onDelete, disabled }) => (
 );
 
 NotesList.propTypes = {
-  notes: PropTypes.arrayOf(notePropTypesShape.isRequired),
+  notes: PropTypes.arrayOf(NotePropTypes.isRequired),
   onDelete: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired
 };

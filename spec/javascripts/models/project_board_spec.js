@@ -3,33 +3,35 @@ import Project from 'models/project';
 import ProjectBoard from 'models/projectBoard';
 
 describe('ProjectBoard model', function() {
+  let project;
+  let projectBoard;
 
   beforeEach(function() {
     Cookies.set('current_flow', 'progress_to_left', {expires: 365});
 
-    this.project = new Project({
+    project = new Project({
       id: 1337, title: 'Test project', point_values: [0, 1, 2, 3],
       last_changeset_id: null, iteration_start_day: 1, iteration_length: 1,
       default_flow: Cookies.get('current_flow'),
       current_flow: Cookies.get('current_flow')
     });
 
-    this.projectBoard = new ProjectBoard({project: this.project});
+    projectBoard = new ProjectBoard({project: project});
   });
 
   describe('when instantiated', function() {
 
     it('should set up a story collection', function() {
-      expect(this.projectBoard.stories).toBeDefined();
+      expect(projectBoard.stories).toBeDefined();
     });
 
     it('should have a project', function() {
-      expect(this.projectBoard.project).toBe(this.project);
-      expect(this.projectBoard.stories.project).toBe(this.project);
+      expect(projectBoard.project).toBe(project);
+      expect(projectBoard.stories.project).toBe(project);
     });
 
     it("should have a default past iterations empty array", function() {
-      expect(this.projectBoard.pastIterations).toEqual([]);
+      expect(projectBoard.pastIterations).toEqual([]);
     });
 
   });
@@ -49,14 +51,14 @@ describe('ProjectBoard model', function() {
         ]
       );
 
-      var initialPastIterationsLength = this.projectBoard.pastIterations.length;
+      var initialPastIterationsLength = projectBoard.pastIterations.length;
 
-      var initialActiveStoriesLength = this.projectBoard.stories.length
+      var initialActiveStoriesLength = projectBoard.stories.length
 
-      this.projectBoard.fetch()
+      projectBoard.fetch()
         .then(() => {
-          expect(this.projectBoard.pastIterations.length).toEqual(initialPastIterationsLength + 1);
-          expect(this.projectBoard.stories.length).toEqual(initialActiveStoriesLength + 1);
+          expect(projectBoard.pastIterations.length).toEqual(initialPastIterationsLength + 1);
+          expect(projectBoard.stories.length).toEqual(initialActiveStoriesLength + 1);
           done();
         });
     });

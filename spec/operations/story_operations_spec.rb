@@ -21,10 +21,10 @@ describe StoryOperations do
 
       Story::ESTIMABLE_TYPES.each do |story_type|
         context "a #{story_type} story" do
-          it 'sets the story state as unstarted' do
+          it 'keeps the story state unscheduled' do
             story.attributes = { state: 'unscheduled', story_type: story_type, estimate: 1 }
             subject.call
-            expect(story.state).to eq('unstarted')
+            expect(story.state).to eq('unscheduled')
           end
         end
 
@@ -141,8 +141,8 @@ describe StoryOperations do
       VCR.use_cassette('cloudinary_upload_activity', match_requests_on: %i[uri method]) do
         subject.call
       end
-      expect(Activity.last.subject_changes['documents_attributes']).to eq([%w[hello2.jpg hello.jpg],
-                                                                           %w[hello2.jpg hello3.jpg]])
+      expect(Activity.last.subject_changes['documents_attributes'].map(&:sort))
+        .to eq([%w[hello.jpg hello2.jpg], %w[hello2.jpg hello3.jpg]])
     end
   end
 
@@ -157,10 +157,10 @@ describe StoryOperations do
       context "when estimate #{story_type} story" do
         let(:params) { { 'estimate' => 1, 'story_type' => story_type, 'state' => 'unscheduled' } }
 
-        it 'sets the story state as unstarted' do
+        it 'keeps the story state unscheduled' do
           story.state = 'unscheduled'
           subject.call
-          expect(story.state).to eq('unstarted')
+          expect(story.state).to eq('unscheduled')
         end
       end
 

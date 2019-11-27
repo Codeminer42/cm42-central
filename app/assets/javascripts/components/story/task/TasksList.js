@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import Task from './Task'
 import PropTypes from 'prop-types';
-import { taskPropTypesShape } from '../../../models/beta/task';
+import TaskPropTypes from '../../shapes/task';
 
 const TasksList = ({ tasks, onDelete, onToggle, disabled }) => (
   <Fragment>
@@ -20,7 +20,7 @@ const TasksList = ({ tasks, onDelete, onToggle, disabled }) => (
 )
 
 TasksList.propTypes = {
-  tasks: PropTypes.arrayOf(taskPropTypesShape.isRequired),
+  tasks: PropTypes.arrayOf(TaskPropTypes.isRequired),
   onDelete: PropTypes.func.isRequired,
   onToggle: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired
