@@ -1,5 +1,4 @@
 require 'rails_helper'
-
 describe IntegrationWorker do
   let(:integration) { create(:integration) }
 
