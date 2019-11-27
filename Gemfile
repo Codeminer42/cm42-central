@@ -76,16 +76,17 @@ group :production do
 end
 
 group :test do
-  gem 'rails-controller-testing'
   gem 'capybara'
   gem 'capybara-screenshot'
+  gem 'coveralls', require: false
   gem 'database_cleaner'
   gem 'factory_bot_rails'
-  gem 'selenium-webdriver'
-  gem 'rspec-retry'
+  gem 'rails-controller-testing'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-its'
   gem 'rspec-rails'
+  gem 'rspec-retry'
+  gem 'selenium-webdriver'
   gem 'shoulda-matchers'
   gem 'simplecov'
   gem 'timecop'
