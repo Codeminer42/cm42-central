@@ -30,10 +30,7 @@ class ProjectsController < ApplicationController
   def show
     @story = @project.stories.build
     update_current_team
-<<<<<<< HEAD
 
-=======
->>>>>>> 9b9ca43742fc510a1cbcbebb67c0efff5b741f1b
     respond_to do |format|
       format.html # show.html.erb
       format.js   { render json: @project }
@@ -249,19 +246,10 @@ class ProjectsController < ApplicationController
   end
 
   def set_project
-<<<<<<< HEAD
-<<<<<<< HEAD
     @project =  policy_scope(Project)
                 .friendly
                 .find(params[:id])
-=======
-    @project = current_user.projects.friendly.find(params[:id])
->>>>>>> 9b9ca43742fc510a1cbcbebb67c0efff5b741f1b
-=======
-    @project =  policy_scope(Project)
-                .friendly
-                .find(params[:id])
->>>>>>> compact method to resolve in policy
+
     authorize @project
   end
 

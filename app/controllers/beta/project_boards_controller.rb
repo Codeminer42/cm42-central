@@ -6,7 +6,7 @@ class Beta::ProjectBoardsController < ApplicationController
 
     result = Beta::ProjectBoardOperations::Read.call(
       current_user,
-      project,
+      update_project(params[:id]),
       current_flow: cookies[:current_flow]
     )
 

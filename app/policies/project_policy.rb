@@ -34,15 +34,9 @@ class ProjectPolicy < ApplicationPolicy
 
   class Scope < Scope
     def permitted_project_ids
-<<<<<<< HEAD
       teams_projects_ids = current_user.teams.map(&:projects).flatten.pluck(:id)
       user_projects_ids  = current_user.projects.pluck(:id)
       teams_projects_ids | user_projects_ids
-=======
-      teams_projects = current_user.teams.map(&:projects).flatten.pluck(:id)
-      user_projects  = current_user.projects.pluck(:id)
-      teams_projects | user_projects
->>>>>>> compact method to resolve in policy
     end
 
     def resolve
