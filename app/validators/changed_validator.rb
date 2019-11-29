@@ -3,6 +3,6 @@ class ChangedValidator < ActiveModel::EachValidator
     return if record.action != 'update'
     return if value&.valid? && value&.saved_changes.present?
 
-    record.errors[attribute] << ( options[:message] || "Record didn't change" )
+    record.errors[attribute] << (options[:message] || "Record didn't change")
   end
 end

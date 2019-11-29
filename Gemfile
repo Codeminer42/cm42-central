@@ -56,7 +56,7 @@ gem 'sass-rails'
 gem 'sidekiq'
 gem 'sidekiq_mailer'
 gem 'sinatra', require: nil
-gem "transitions", :require => ["transitions", "active_model/transitions"]
+gem "transitions", require: ["transitions", "active_model/transitions"]
 gem 'uglifier', '>= 2.5.3'
 gem 'user_impersonate2', require: 'user_impersonate'
 gem 'virtus'

@@ -17,14 +17,14 @@ class IterationService
 
     @stories = fetch_stories!(since)
 
-    @accepted_stories = @stories.
-      select { |story| story.column == '#done' }.
-      select { |story| story.accepted_at < iteration_start_date(@current_time) }
+    @accepted_stories = @stories
+                        .select { |story| story.column == '#done' }
+                        .select { |story| story.accepted_at < iteration_start_date(@current_time) }
 
     calculate_iterations!
     fix_owner!
 
-    @backlog = ( @stories - @accepted_stories ).sort_by(&:position)
+    @backlog = (@stories - @accepted_stories).sort_by(&:position)
   end
 
   def fetch_stories!(since = nil)
@@ -38,7 +38,7 @@ class IterationService
     iteration_start_date = date.beginning_of_day
     if start_date.wday != iteration_start_day
       day_difference = start_date.wday - iteration_start_day
-      day_difference += DAYS_IN_WEEK if day_difference < 0
+      day_difference += DAYS_IN_WEEK if day_difference.negative?
 
       iteration_start_date -= day_difference.days
     end
@@ -47,9 +47,9 @@ class IterationService
 
   def iteration_number_for_date(compare_date)
     compare_date      = compare_date.to_time if compare_date.is_a?(Date)
-    days_apart        = ( compare_date - iteration_start_date ) / 1.day
+    days_apart        = (compare_date - iteration_start_date) / 1.day
     days_in_iteration = iteration_length * DAYS_IN_WEEK
-    ( days_apart / days_in_iteration ).floor + 1
+    (days_apart / days_in_iteration).floor + 1
   end
 
   def date_for_iteration_number(iteration_number)
@@ -70,19 +70,22 @@ class IterationService
 
   # FIXME must figure out why the Story allows a nil owner in delivered states
   def fix_owner!
-    @dummy_user ||= User.find_or_create_by!(username: "dummy", email: "dummy@foo.com", name: "Dummy", initials: "XX")
-    @accepted_stories.
-      select { |record| record.owned_by.nil? }.
-      each   { |record| record.owned_by = @dummy_user }
+    @dummy_user ||= User.find_or_create_by!(username: 'dummy',
+                                            email: 'dummy@foo.com',
+                                            name: 'Dummy',
+                                            initials: 'XX')
+    @accepted_stories
+      .select { |record| record.owned_by.nil? }
+      .each   { |record| record.owned_by = @dummy_user }
   end
 
   def group_by_day(range = nil)
     @group_by_day = {}
     @group_by_day[range] ||= begin
       accepted = @accepted_stories
-      accepted = accepted.select  { |story| story.accepted_at >= range.first && story.accepted_at < range.last } if range
-      accepted += backlog_iterations.first.select { |story| story.accepted_at }
-      accepted = accepted.sort_by { |story| story.accepted_at }.group_by { |story| story.accepted_at.to_date }
+      accepted = accepted.select{ |story| story.accepted_at >= range.first && story.accepted_at < range.last } if range
+      accepted += backlog_iterations.first.select(&:accepted_at)
+      accepted = accepted.sort_by(&:accepted_at).group_by { |story| story.accepted_at.to_date }
 
       last_key = nil
       accepted.keys.each do |key|
@@ -103,9 +106,9 @@ class IterationService
   end
 
   def group_by_iteration
-    @group_by_iteration ||= @accepted_stories.
-      group_by { |story| story.iteration_number }.
-      reduce({}) do |group, iteration|
+    @group_by_iteration ||= @accepted_stories
+                            .group_by(&:iteration_number)
+                            .reduce({}) do |group, iteration|
         group.merge(iteration.first => stories_estimates(iteration.last))
       end
   end
@@ -143,18 +146,19 @@ class IterationService
   end
 
   def group_by_bugs
-    @group_by_bugs ||= @accepted_stories.
-      group_by { |story| story.iteration_number }.
-      reduce({}) do |group, iteration|
-        group.merge(iteration.first => bugs_impact(iteration.last))
-      end.
-      reduce({}) do |group, iteration|
-        group.merge(iteration.first => iteration.last.reduce(&:+))
-      end
+    @group_by_bugs ||=  @accepted_stories
+                        .group_by(&:iteration_number)
+                        .reduce({}) do |group, iteration|
+                          group.merge(iteration.first => bugs_impact(iteration.last))
+                        end
+                        .reduce({}) do |group, iteration|
+                          group.merge(iteration.first => iteration.last.reduce(&:+))
+                        end
   end
 
   def velocity(number_of_iterations = VELOCITY_ITERATIONS)
     return DEFAULT_VELOCITY if group_by_all_iterations.size.zero?
+
     @velocity ||= {}
     @velocity[number_of_iterations] ||= begin
       number_of_iterations = group_by_all_iterations.size if number_of_iterations > group_by_all_iterations.size
@@ -162,7 +166,7 @@ class IterationService
 
       iterations = Statistics.slice_to_sample_size(group_by_velocity.values, number_of_iterations)
 
-      if iterations.size > 0
+      if iterations.size.positive?
         velocity = (Statistics.sum(iterations) / Statistics.total(iterations)).floor
         velocity < 1 ? 1 : velocity
       else
@@ -179,11 +183,10 @@ class IterationService
         group_by { |story| story.owned_by.name }.
         map do |owner|
           # all multiple series must have all the same keys or they will mess the graph
-          data = (min_iteration..max_iteration).reduce({}) { |group, key| group.merge(key => 0)}
-          owner.last.group_by { |story| story.iteration_number }.
-            each do |iteration|
-              data[iteration.first] = stories_estimates(iteration.last).reduce(&:+)
-            end
+          data = (min_iteration..max_iteration).reduce({}) { |group, key| group.merge(key => 0) }
+          owner.last.group_by(&:iteration_number).each do |iteration|
+            data[iteration.first] = stories_estimates(iteration.last).reduce(&:+)
+          end
           { name: owner.first, data: data }
         end
     end
@@ -197,13 +200,11 @@ class IterationService
       current_iteration = Iteration.new(self, current_iteration_number, velocity_value)
       backlog_iteration = Iteration.new(self, current_iteration_number + 1, velocity_value)
       iterations = [current_iteration, backlog_iteration]
-      @backlog.
-        select { |story| story.column != '#chilly_bin' }.
-        each do |story|
+      @backlog.select { |story| story.column != '#chilly_bin' }.each do |story|
         if current_iteration.can_take_story?(story)
           current_iteration << story
         else
-          if !backlog_iteration.can_take_story?(story)
+          unless backlog_iteration.can_take_story?(story)
             # Iterations sometimes 'overflow', i.e. an iteration may contain a
             # 5 point story but the project velocity is 1.  In this case, the
             # next iteration that can have a story added is the current + 4.
@@ -220,10 +221,10 @@ class IterationService
 
   def current_iteration_details
     current_iteration = backlog_iterations.first
-    %w(started finished delivered accepted rejected).reduce({}) do |data, state|
+    %w[started finished delivered accepted rejected].reduce({}) do |data, state|
       data.merge(state => current_iteration.
                  select { |story| story.state == state }.
-                 reduce(0) { |points, story| points + (story.estimate || 0) } )
+                 reduce(0) { |points, story| points + (story.estimate || 0) })
     end
   end
 
