@@ -1,13 +1,3 @@
-GIT
-  remote: https://github.com/Codeminer42/cm42-central-support.git
-  revision: 34ecd37425a8a6f6d96dfa52cad829ab7033bffc
-  specs:
-    central-support (0.9.4)
-      activerecord (>= 5.1)
-      activesupport (>= 5.1)
-      enumerize (~> 2.0)
-      transitions (~> 0.1.9)
-
 GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
@@ -567,7 +557,6 @@ DEPENDENCIES
   bullet
   capybara
   capybara-screenshot
-  central-support!
   chartkick
   chronic
   cloudinary
@@ -637,6 +626,7 @@ DEPENDENCIES
   simplecov
   sinatra
   timecop
+  transitions
   uglifier (>= 2.5.3)
   user_impersonate2
   vcr

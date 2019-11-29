@@ -100,7 +100,7 @@ class Project < ApplicationRecord
 
   validates :point_scale, inclusion: { in: POINT_SCALES.keys,
                                        message: '%{value} is not a valid estimation scheme' }
-  
+
   validates :iteration_length,
     numericality: { greater_than_or_equal_to: ITERATION_LENGTH_RANGE.min,
                     less_than_or_equal_to: ITERATION_LENGTH_RANGE.max, only_integer: true,
@@ -143,7 +143,7 @@ class Project < ApplicationRecord
   end
 
   def iteration_service(since: nil, current_time: Time.current)
-    @iteration_service ||= Central::Support::IterationService.new(self, since: since, current_time: current_time)
+    @iteration_service ||= IterationService.new(self, since: since, current_time: current_time)
   end
 
   def point_values

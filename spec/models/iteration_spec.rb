@@ -1,5 +1,5 @@
 require 'rails_helper'
-require_relative '../../app/models/iteration' # TODO remove after central support (migrate)
+
 describe Iteration do
   let(:user) { create(:user) }
   let(:project) { create(:project) }
