@@ -22,6 +22,9 @@
 - babel-jest and @testing-library/jest-dom
 
 ### Fixed
+- [ V2 ] Internationalization date.
+
+### Fixed
 - [ V2 ] Fix a sprints calc bug.
 
 ### Added

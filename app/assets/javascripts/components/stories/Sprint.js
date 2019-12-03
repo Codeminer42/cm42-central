@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React, { useState, useMemo } from "react";
+import classname from 'classnames';
 import PropTypes from "prop-types";
 import Stories from "./Stories";
 import SprintHeader from './SprintHeader'
@@ -23,72 +24,63 @@ const defaultProps = {
   }
 };
 
-class Sprint extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { isClosed: this.isDone() };
+const Sprint = ({
+  fetchStories,
+  sprint
+}) => {
+  const isDone = useMemo(() => sprint.hasOwnProperty('hasStories'), [sprint]);
 
-    this.isDone = this.isDone.bind(this);
-    this.needsFetch = this.needsFetch.bind(this);
-    this.toggleSprint = this.toggleSprint.bind(this);
-    this.onHeaderClick = this.onHeaderClick.bind(this);
-  }
+  const [isClosed, setIsClosed] = useState(isDone);
 
-  isDone() {
-    return this.props.sprint.hasOwnProperty('hasStories');
-  }
-
-  needsFetch() {
-    const { hasStories, fetched, isFetching } = this.props.sprint;
+  const needsFetch = () => {
+    const { hasStories, fetched, isFetching } = sprint;
 
     return hasStories && !(fetched || isFetching);
   }
 
-  onHeaderClick() {
-    const { sprint: { number, startDate, endDate }, fetchStories } = this.props;
+  const onHeaderClick = () => {
+    const { number, startDate, endDate } = sprint;
 
-    if (this.needsFetch()) {
-      fetchStories(number, startDate, endDate);
-      this.toggleSprint();
-    } else {
-      this.toggleSprint();
+    if (needsFetch()) fetchStories(number, startDate, endDate);
+
+    toggleSprint();
+  }
+
+  const toggleSprint = () => setIsClosed(!isClosed);
+
+  const {
+    number,
+    points,
+    stories,
+    startDate,
+    hasStories,
+    completedPoints
+  } = sprint;
+
+  const classes = classname(
+    'Sprint__body',
+    {
+      'Sprint__body--is-collapsed': isClosed
     }
-  }
+  );
 
-  toggleSprint() {
-    this.setState(prevState => ({ isClosed: !prevState.isClosed }));
-  }
-
-  render() {
-    const {
-      number,
-      points,
-      stories,
-      startDate,
-      hasStories,
-      completedPoints
-    } = this.props.sprint;
-    const { isClosed } = this.state;
-    const closedStyle = isClosed && "Sprint__body--is-collapsed";
-
-    return (
-      <div className="Sprint">
-        <SprintHeader
-          number={number}
-          startDate={startDate}
-          completedPoints={completedPoints}
-          points={points}
-          hasStories={hasStories}
-          isDone={this.isDone()}
-          onClick={this.onHeaderClick}
-          isClosed={isClosed}
-        />
-        <div className={`Sprint__body ${closedStyle}`}>
-          {stories && <Stories stories={stories} />}
-        </div>
+  return (
+    <div className="Sprint">
+      <SprintHeader
+        number={number}
+        startDate={startDate}
+        completedPoints={completedPoints}
+        points={points}
+        hasStories={hasStories}
+        isDone={isDone}
+        onClick={onHeaderClick}
+        isClosed={isClosed}
+      />
+      <div className={classes}>
+        {stories && <Stories stories={stories} />}
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 Sprint.propTypes = propTypes;

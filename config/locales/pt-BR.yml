@@ -5,7 +5,7 @@ pt-BR:
 
   date:
     formats:
-      long: "%d/%m/%Y %H:%M:%S"
+      long: "%d/%m/%Y"
       short: "%d %b %Y"
 
   loading: "Carregando"
