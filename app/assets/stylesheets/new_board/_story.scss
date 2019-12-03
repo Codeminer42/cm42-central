@@ -358,6 +358,19 @@
             .edit-description-text {
               resize: vertical;
               min-height: 100px;
+
+              &__suggestions {
+                position: absolute !important;
+                background: $blue-6 !important;
+                color: $white !important;
+                left: 15px !important;
+                padding: 5px 10px 5px 10px !important;
+                top: 7px !important;
+
+                &:hover {
+                  background: $blue;
+                }
+              }
             }
           }
         }

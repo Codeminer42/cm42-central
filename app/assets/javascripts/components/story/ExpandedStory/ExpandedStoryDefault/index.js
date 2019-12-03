@@ -97,6 +97,7 @@ export const ExpandedStoryDefault = ({
       story={story}
       onEdit={(description) => onEdit({ description })}
       disabled={disabled}
+      users={users}
     />
 
     {

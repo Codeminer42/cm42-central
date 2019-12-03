@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- [ V2 ] User mention.
+
 ### Removed
 - Rewire and Rewire Webpack
 - Inject loader
