@@ -7,7 +7,8 @@ describe('<SideBarButton />', () => {
     const defaultProps = {
       children: '',
       description: '',
-      onClick: sinon.stub()
+      onClick: sinon.stub(),
+      toggled: false
     };
 
     return shallow(<SideBarButton {...defaultProps} {...props } />);
@@ -48,6 +49,24 @@ describe('<SideBarButton />', () => {
 
       wrapper.find('[data-id="side-bar-button"]').simulate('mouseover');
       expect(wrapper.find('[data-id="button-info"]')).toExist();
+    });
+  });
+
+  describe('when toggled is true', () => {
+    it('renders <SideBar /> with SideBar__link--is-toggled class', () => {
+      const wrapper = render({ toggled: true });
+      const button = wrapper.find('[data-id="side-bar-button"]');
+
+      expect(button.hasClass('SideBar__link--is-toggled')).toBeTruthy();
+    });
+  });
+
+  describe('when toggled is false', () => {
+    it('render <SideBar /> without SideBar__link--is-toggled class', () => {
+      const wrapper = render();
+      const button = wrapper.find('[data-id="side-bar-button"]');
+
+      expect(button.hasClass('SideBar__link--is-toggled')).toBeFalsy();
     });
   });
 });

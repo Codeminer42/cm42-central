@@ -10,7 +10,12 @@ describe('<ProjectBoard />', () => {
         search: {
           loading: false
         },
-        reverse: false
+        reverse: false,
+        visibleColumns: {
+          backlog: true,
+          done: true,
+          chillyBin: true
+        }
       },
       doneSprints: [],
       backlogSprints: [],
@@ -44,6 +49,11 @@ describe('<ProjectBoard />', () => {
           isFetched: true,
           search: {
             loading: false
+          },
+          visibleColumns: {
+            backlog: true,
+            done: true,
+            chillyBin: true
           }
         },
       });
@@ -60,7 +70,12 @@ describe('<ProjectBoard />', () => {
         search: {
           loading: false
         },
-        reverse: false
+        reverse: false,
+        visibleColumns: {
+          backlog: true,
+          done: true,
+          chillyBin: true
+        }
       }
     }
     it('renders normal-column', () => {
@@ -85,7 +100,12 @@ describe('<ProjectBoard />', () => {
         search: {
           loading: false
         },
-        reverse: true
+        reverse: true,
+        visibleColumns: {
+          backlog: true,
+          done: true,
+          chillyBin: true
+        }
       }
     };
 

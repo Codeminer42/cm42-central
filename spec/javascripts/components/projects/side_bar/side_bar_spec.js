@@ -5,7 +5,16 @@ import { SideBar } from 'components/projects/SideBar/index';
 describe('<SideBar />', () => {
   const render = props => {
     const defaultProps = {
-      reverseColumns: sinon.stub()
+      reverseColumns: sinon.stub(),
+      toggleColumn: sinon.stub(),
+      projectBoard: {
+        reverse: false,
+        visibleColumns: {
+          chillyBin: true,
+          backlog: true,
+          done: true
+        }
+      }
     };
 
     return shallow(<SideBar {...defaultProps} {...props } />);
