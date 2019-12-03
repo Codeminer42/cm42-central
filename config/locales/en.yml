@@ -8,7 +8,7 @@ en:
 
   date:
     formats:
-      long: "%m/%d/%Y %H:%M:%S"
+      long: "%m/%d/%Y"
       short: "%b %d %Y"
 
   loading: "Loading"
