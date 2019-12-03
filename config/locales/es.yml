@@ -84,6 +84,7 @@ es:
   reject_new_file: "Tipo de archivo no soportado."
   accepted_tooltip: "La tarea ya ha sido aceptada. No se puede modificar."
   revert_columns_tooltip: "Invertir el orden de las columnas."
+  toggle_column: 'Ocultar/Mostrar columna {{column}}'
 
   story:
     state:

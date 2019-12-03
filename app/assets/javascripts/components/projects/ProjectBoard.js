@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { fetchProjectBoard } from "actions/projectBoard";
+import { fetchProjectBoard, toggleColumn } from "actions/projectBoard";
 import { fetchPastStories } from "actions/pastIterations";
 import Column from "../Columns/ColumnItem";
 import History from "../stories/History";
@@ -18,7 +18,7 @@ import StorySearch from '../search/StorySearch';
 import SearchResults from './../search/SearchResults';
 import ProjectLoading from './ProjectLoading';
 import SideBar from './SideBar';
-import Columns from '../Columns/Columns';
+import Columns from '../Columns';
 import Stories from "../stories/Stories";
 import Sprints from "../stories/Sprints";
 
@@ -34,7 +34,8 @@ export const ProjectBoard = ({
   chillyBinStories,
   backlogSprints,
   doneSprints,
-  fetchPastStories
+  fetchPastStories,
+  toggleColumn
 }) => {
   useEffect(() => {
     fetchProjectBoard(projectId)
@@ -53,7 +54,9 @@ export const ProjectBoard = ({
             state: status.UNSCHEDULED
           })}
         />,
-      children: <Stories stories={chillyBinStories} />
+      children: <Stories stories={chillyBinStories} />,
+      visible: projectBoard.visibleColumns.chillyBin,
+      onClose: () => toggleColumn('chillyBin')
     },
     {
       title: `${I18n.t("projects.show.backlog")} / ${I18n.t("projects.show.in_progress")}`,
@@ -63,11 +66,15 @@ export const ProjectBoard = ({
             state: status.UNSTARTED
           })}
         />,
-      children: <Sprints sprints={backlogSprints} />
+      children: <Sprints sprints={backlogSprints} />,
+      visible: projectBoard.visibleColumns.backlog,
+      onClose: () => toggleColumn('backlog')
     },
     {
       title: I18n.t("projects.show.done"),
-      children: <Sprints sprints={doneSprints} fetchStories={fetchPastStories} />
+      children: <Sprints sprints={doneSprints} fetchStories={fetchPastStories} />,
+      visible: projectBoard.visibleColumns.done,
+      onClose: () => toggleColumn('done')
     }
   ];
 
@@ -149,6 +156,7 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = {
   fetchProjectBoard,
+  toggleColumn,
   createStory,
   closeHistory,
   fetchPastStories,

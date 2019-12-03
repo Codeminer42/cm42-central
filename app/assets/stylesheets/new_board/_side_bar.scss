@@ -10,7 +10,7 @@
     transition: background-color ease-in-out .2s;
     cursor: pointer;
 
-    &:hover {
+    &:hover, &--is-toggled {
       background: $sidebar-bg-hover;
     }
   }

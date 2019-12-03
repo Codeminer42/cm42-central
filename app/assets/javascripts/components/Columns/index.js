@@ -11,6 +11,8 @@ const Columns = ({
       title={column.title}
       renderAction={column.renderAction}
       key={column.title}
+      visible={column.visible}
+      onClose={column.onClose}
     >
       { column.children }
     </Column>

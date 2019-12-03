@@ -1,8 +1,4 @@
 import actionTypes from 'actions/actionTypes';
-import {
-  setLoadingStory, updateStory 
-} from 'models/beta/story';
-import { updateIfSameId } from '../services/updateIfSameId';
 
 const initialState = {
   isFetched: false,
@@ -10,7 +6,12 @@ const initialState = {
   search: {
     loading: false
   },
-  reverse: false
+  reverse: false,
+  visibleColumns: {
+    chillyBin: true,
+    backlog: true,
+    done: true
+  }
 };
 
 const projectBoardReducer = (state = initialState, action) => {
@@ -60,6 +61,14 @@ const projectBoardReducer = (state = initialState, action) => {
     return {
       ...state,
       reverse: !state.reverse
+    }
+  case actionTypes.TOGGLE_COLUMN_VISIBILITY:
+    return {
+      ...state,
+      visibleColumns: {
+        ...state.visibleColumns,
+        [action.column]: !state.visibleColumns[action.column]
+      }      
     }
   default:
     return state;
