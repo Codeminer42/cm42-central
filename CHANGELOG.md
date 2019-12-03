@@ -2,46 +2,32 @@
 
 ## [Unreleased]
 
-## Added
-- [ V2 ] Button to reverse story flow.
-
-### Added
-- [ V2 ] User mention.
-
 ### Removed
 - Rewire and Rewire Webpack
 - Inject loader
 - Karma and all dependencies related
 
-## Changed
+### Changed
+- [ V2 ] When story is accepted it has a different background color.
+- Unscheduled stories may or not may have a estimate.
+- Chilly Bin column have stories with or no estimate.
 - Migrate all the javascripts tests from jasmine to jest.
 
 ### Update
 - Front-End Dependencies
-  - NodeJS from 9.11.2 to 10.17.0
-  - Webpack Dev Server from 3.1.14 to 3.9.0
+- NodeJS from 9.11.2 to 10.17.0
+- Webpack Dev Server from 3.1.14 to 3.9.0
 
 ### Added
 - babel-jest and @testing-library/jest-dom
+- [ V2 ] Dialog confirmation when story state is changed in expanded shape.
+- [ V2 ] Spinner when project is loading.
+- [ V2 ] User mention.
+- [ V2 ] Button to reverse story flow.
 
 ### Fixed
 - [ V2 ] Internationalization date.
-
-### Fixed
-- [ V2 ] Fix a sprints calc bug.
-
-### Added
-- [ V2 ] Dialog confirmation when story state is changed in expanded shape.
-
-### Changed
-- [ V2 ] When story is accepted it has a different background color.
-
-### Added
-- [ V2 ] Spinner when project is loading.
-
-### Changed
-- Unscheduled stories may or not may have a estimate.
-- Chilly Bin column have stories with or no estimate.
+- [ V2 ] Sprints calc bug.
 
 ## [2.4.0] 2019-10-21
 
