@@ -9,7 +9,8 @@ const initialState = {
   error: null,
   search: {
     loading: false
-  }
+  },
+  reverse: false
 };
 
 const projectBoardReducer = (state = initialState, action) => {
@@ -54,6 +55,11 @@ const projectBoardReducer = (state = initialState, action) => {
         ...state.search,
         loading: action.loading
       }
+    }
+  case actionTypes.REVERSE_COLUMNS:
+    return {
+      ...state,
+      reverse: !state.reverse
     }
   default:
     return state;

@@ -28,6 +28,10 @@ const receiveProject = data => ({
   data
 });
 
+export const reverseColumns = () => ({
+  type: actionTypes.REVERSE_COLUMNS
+});
+
 export const updateStorySuccess = (story, from) => ({
   type: actionTypes.UPDATE_STORY_SUCCESS,
   story,

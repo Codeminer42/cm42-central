@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+## Added
+- [ V2 ] Button to reverse story flow.
+
 ### Added
 - [ V2 ] User mention.
 

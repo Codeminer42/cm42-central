@@ -1,3 +1,10 @@
+export const historyStatus = {
+  DISABLED: 'DISABLED',
+  LOADING: 'LOADING',
+  LOADED: 'LOADED',
+  FAILED: 'FAILED'
+}
+
 export const status = {
   ACCEPTED: "accepted",
   DELIVERED: "delivered",

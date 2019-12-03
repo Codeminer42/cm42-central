@@ -1,16 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { fetchProjectBoard } from "actions/projectBoard";
 import { fetchPastStories } from "actions/pastIterations";
 import Column from "../Columns/ColumnItem";
-import Stories from "../stories/Stories";
-import Sprints from "../stories/Sprints";
 import History from "../stories/History";
 import { getColumns } from "../../selectors/columns";
-import * as Columns from '../../models/beta/column';
+import { CHILLY_BIN, DONE, BACKLOG } from '../../models/beta/column';
 import { createStory, closeHistory } from '../../actions/story';
 import AddStoryButton from '../story/AddStoryButton';
-import * as Story from 'libs/beta/constants';
+import { status, historyStatus } from 'libs/beta/constants';
 import PropTypes from 'prop-types';
 import StoryPropTypes from '../shapes/story';
 import ProjectBoardPropTypes from '../shapes/projectBoard';
@@ -19,89 +17,94 @@ import { removeNotification } from '../../actions/notifications';
 import StorySearch from '../search/StorySearch';
 import SearchResults from './../search/SearchResults';
 import ProjectLoading from './ProjectLoading';
+import SideBar from './SideBar';
+import Columns from '../Columns/Columns';
+import Stories from "../stories/Stories";
+import Sprints from "../stories/Sprints";
 
-export class ProjectBoard extends React.Component {
-  componentWillMount() {
-    this.props.fetchProjectBoard(this.props.projectId);
+export const ProjectBoard = ({
+  fetchProjectBoard,
+  projectId,
+  projectBoard,
+  createStory, 
+  closeHistory,
+  notifications, 
+  removeNotification, 
+  history,
+  chillyBinStories,
+  backlogSprints,
+  doneSprints,
+  fetchPastStories
+}) => {
+  useEffect(() => {
+    fetchProjectBoard(projectId)
+  }, [fetchProjectBoard, projectId]);
+
+  if (!projectBoard.isFetched) {
+    return <ProjectLoading data-id="project-loading" />;
   }
 
-  render() {
-    if (!this.props.projectBoard.isFetched) {
-      return <ProjectLoading data-id="project-loading" />;
+  const columns = [
+    {
+      title: I18n.t("projects.show.chilly_bin"),
+      renderAction: () =>
+        <AddStoryButton
+          onAdd={() => createStory({
+            state: status.UNSCHEDULED
+          })}
+        />,
+      children: <Stories stories={chillyBinStories} />
+    },
+    {
+      title: `${I18n.t("projects.show.backlog")} / ${I18n.t("projects.show.in_progress")}`,
+      renderAction: () =>
+        <AddStoryButton
+          onAdd={() => createStory({
+            state: status.UNSTARTED
+          })}
+        />,
+      children: <Sprints sprints={backlogSprints} />
+    },
+    {
+      title: I18n.t("projects.show.done"),
+      children: <Sprints sprints={doneSprints} fetchStories={fetchPastStories} />
     }
+  ];
 
-    const { 
-      projectId, 
-      createStory, 
-      closeHistory,
-      notifications, 
-      removeNotification, 
-      history,
-      projectBoard
-    } = this.props;
+  const columnProps = {
+    'data-id': projectBoard.reverse ? 'reversed-column' : 'normal-column',
+    columns: projectBoard.reverse ? columns.reverse() : columns
+  };
 
-    return (
-      <div className="ProjectBoard">
-        <StorySearch projectId={projectId} loading={projectBoard.search.loading} />
+  return (
+    <div className="ProjectBoard">
+      <StorySearch projectId={projectId} loading={projectBoard.search.loading} />
 
-        <Notifications
-          notifications={notifications}
-          onRemove={removeNotification}
-        />
+      <SideBar />
 
-        <Column title={I18n.t("projects.show.chilly_bin")}
-          renderAction={() =>
-            <AddStoryButton
-              onAdd={() => createStory({
-                state: Story.status.UNSCHEDULED
-              })}
-            />
+      <Notifications
+        notifications={notifications}
+        onRemove={removeNotification}
+      />
+
+      <Columns {...columnProps} />
+
+      <SearchResults />
+
+      {
+        history.status !== historyStatus.DISABLED &&
+        <Column
+          onClose={closeHistory}
+          title={`${I18n.t('projects.show.history')} '${history.storyTitle}'`}
+        >
+          { history.status === historyStatus.LOAD
+            ? <History history={history.activities} />
+            : <ProjectLoading />
           }
-        >
-          <Stories stories={this.props.chillyBinStories} />
         </Column>
-
-        <Column
-          title={`${I18n.t("projects.show.backlog")} /
-          ${I18n.t("projects.show.in_progress")}`}
-          renderAction={() =>
-            <AddStoryButton
-              onAdd={() => createStory({
-                state: Story.status.UNSTARTED
-              })}
-            />}
-        >
-          <Sprints
-            sprints={this.props.backlogSprints}
-          />
-        </Column>
-
-        <Column
-          title={I18n.t("projects.show.done")}
-        >
-          <Sprints
-            sprints={this.props.doneSprints}
-            fetchStories={this.props.fetchPastStories}
-          />
-        </Column>
-
-        <SearchResults />
-
-        {
-          history.status !== 'DISABLED' &&
-          <Column
-            onClose={closeHistory}
-            title={[I18n.t("projects.show.history"), "'", history.storyTitle, "'"].join(' ')}
-          >
-            { history.status === 'LOADED'
-              ? <History history={history.activities} />
-              : <div className="loading">Loading...</div>
-            }
-          </Column>
-        }
-      </div>
-    );
-  }
+      }
+    </div>
+  );
 }
 
 ProjectBoard.propTypes = {
@@ -126,17 +129,17 @@ const mapStateToProps = ({
   projectBoard,
   history,
   chillyBinStories: getColumns({
-    column: Columns.CHILLY_BIN,
+    column: CHILLY_BIN,
     stories
   }),
   backlogSprints: getColumns({
-    column: Columns.BACKLOG,
+    column: BACKLOG,
     stories,
     project,
     pastIterations
   }),
   doneSprints: getColumns({
-    column: Columns.DONE,
+    column: DONE,
     pastIterations,
     stories
   }),

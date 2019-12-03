@@ -9,7 +9,8 @@ describe('<ProjectBoard />', () => {
         isFetched: false,
         search: {
           loading: false
-        }
+        },
+        reverse: false
       },
       doneSprints: [],
       backlogSprints: [],
@@ -47,6 +48,57 @@ describe('<ProjectBoard />', () => {
       const spinnerLoading = wrapper.find('[data-id="project-loading"]');
 
       expect(spinnerLoading.exists()).toBeFalsy();
+    });
+  });
+
+  describe('when projectBoard.reverse is false', () => {
+    const aditionalProps = {
+      projectBoard: {
+        isFetched: true,
+        search: {
+          loading: false
+        },
+        reverse: false
+      }
+    }
+    it('renders normal-column', () => {
+      const wrapper = render(aditionalProps);
+      const normalColumn = wrapper.find('[data-id="normal-column"]');
+
+      expect(normalColumn.exists()).toBeTruthy();
+    });
+
+    it('does not render reversed-column', () => {
+      const wrapper = render(aditionalProps);
+      const reversedColumn = wrapper.find('[data-id="reversed-column"]');
+
+      expect(reversedColumn.exists()).toBeFalsy();
+    });
+  });
+
+  describe('when projectBoard.reverse is true', () => {
+    const aditionalProps = {
+      projectBoard: {
+        isFetched: true,
+        search: {
+          loading: false
+        },
+        reverse: true
+      }
+    };
+
+    it('renders reversed-column', () => {
+      const wrapper = render(aditionalProps);
+      const reversedColumn = wrapper.find('[data-id="reversed-column"]');
+
+      expect(reversedColumn.exists()).toBeTruthy();
+    });
+
+    it('does not renders normal-column', () => {
+      const wrapper = render(aditionalProps);
+      const normalColumn = wrapper.find('[data-id="normal-column"]');
+
+      expect(normalColumn.exists()).toBeFalsy();
     });
   });
 });
