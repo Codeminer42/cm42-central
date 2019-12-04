@@ -13,9 +13,16 @@ describe('<StoryTasks />', function() {
   });
 
   it("should render a list of <Task /> components", function() {
+    const get = word => {
+      if (word === 'id') return 1;
+      if (word === 'name') return 'name';
+      if (word === 'done') return 'done';
+    }    
+
     const task = {
-      get: sinon.stub(),
-      escape: sinon.stub().returns('Test')
+      get,
+      escape: sinon.stub().returns('Test'),
+      id: 1
     };
 
     const wrapper = mount(

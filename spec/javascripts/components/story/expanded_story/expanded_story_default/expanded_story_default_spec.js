@@ -23,7 +23,10 @@ describe('<ExpandedStoryDefault />', () => {
     removeAttachment: sinon.spy(),
     users: [],
     project: { labels: [] },
-    enabled: true
+    enabled: true,
+    onClone: sinon.spy(),
+    showHistory: sinon.spy(),
+    disabled: false
   });
 
   it("renders all children components when isn't a new story", () => {

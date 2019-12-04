@@ -5,19 +5,22 @@ import ExpandedStorySection from 'components/story/ExpandedStory/ExpandedStorySe
 describe('<ExpandedStorySection />', () => {
   it('renders section-title with the right text', () => {
     const title = 'my title';
+    const children = 'children';
 
-    const wrapper = shallow(<ExpandedStorySection title={title} />);
+    const wrapper = shallow(<ExpandedStorySection title={title} children={children} />);
 
     expect(wrapper.find('.Story__section-title').text()).toContain(title);
   });
 
   it('renders with the right identifier className', () => {
     const identifier = 'content';
+    const children = 'children';
 
     const wrapper = shallow(
       <ExpandedStorySection
         title='title'
         identifier={identifier}
+        children={children}
       />
     );
 

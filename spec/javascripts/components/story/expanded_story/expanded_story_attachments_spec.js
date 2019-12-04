@@ -30,8 +30,16 @@ describe('<ExpandedStoryAttachments />', () => {
     const story = {
       _editing: {
         documents: [
-          { id: 1 },
-          { id: 2 }
+          {
+            id: '1',
+            publicId: '1',
+            resourceType: 'resource type'
+          },
+          {
+            id: '2',
+            publicId: '2',
+            resourceType: 'resource type'
+          },
         ]
       }
     };
@@ -69,7 +77,18 @@ describe('<ExpandedStoryAttachments />', () => {
 
   describe('when disabled', () => {
     it('does not render dropzone', () => {
-      const documents = [{ id: 1 }];
+      const documents = [
+        {
+          id: '1',
+          publicId: '1',
+          resourceType: 'resource type'
+        },
+        {
+          id: '2',
+          publicId: '2',
+          resourceType: 'resource type'
+        },
+      ];
       const story = { documents, _editing: { documents } };
 
       const wrapper = mount(

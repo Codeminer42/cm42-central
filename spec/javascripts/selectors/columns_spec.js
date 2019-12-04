@@ -91,8 +91,8 @@ describe('Columns Selector', () => {
     ];
 
     it('return pastIterations with start and end date', () => {
-      const startDate =   moment(pastIterations[0].startDate).format("YYYY/MM/DD");
-      const endDate = moment(pastIterations[0].endDate).format("YYYY/MM/DD");
+      const startDate = pastIterations[0].startDate;
+      const endDate = pastIterations[0].endDate;
       const doneSprints = getColumns({
         column: Column.DONE,
         pastIterations,

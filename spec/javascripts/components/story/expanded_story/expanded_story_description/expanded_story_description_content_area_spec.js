@@ -4,9 +4,10 @@ import ExpandedStoryContentArea from 'components/story/ExpandedStory/ExpandedSto
 
 describe('<ExpandedStoryContentArea />', () => {
   const renderContent = propsOverride => {
-    const wrapper = shallow (
+    const wrapper = shallow(
       <ExpandedStoryContentArea
         onClick={sinon.stub()}
+        description=""
         {...propsOverride}
       />
     )
@@ -31,18 +32,17 @@ describe('<ExpandedStoryContentArea />', () => {
     });
   });
 
-  const invalidsDescriptions = [null, undefined, ''];
-  invalidsDescriptions.forEach(description => {
-    describe(`when description is ${description}`, () => {
-      it('does not render <ExpandedStoryDescriptionContent />', () => {
-        const { descriptionContent } = renderContent({ description });
-        expect(descriptionContent.exists()).toBeFalsy();
-      });
+  describe("when description is ''", () => {
+    const description = '';
+
+    it('does not render <ExpandedStoryDescriptionContent />', () => {
+      const { descriptionContent } = renderContent({ description });
+      expect(descriptionContent.exists()).toBeFalsy();
+    });
   
-      it('renders <ExpandedStoryDescriptionEditButton />', () => {
-        const { editButton } = renderContent({ description });
-        expect(editButton.exists()).toBeTruthy();
-      });
+    it('renders <ExpandedStoryDescriptionEditButton />', () => {
+      const { editButton } = renderContent({ description });
+      expect(editButton.exists()).toBeTruthy();
     });
   });
 });

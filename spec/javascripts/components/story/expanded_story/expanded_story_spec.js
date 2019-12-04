@@ -13,7 +13,10 @@ describe('<ExpandedStory />', () => {
     deleteStory: sinon.spy(),
     project: { labels: [] },
     disabled: false,
-    onToggle: sinon.spy()
+    onToggle: sinon.spy(),
+    cloneStory: sinon.spy(),
+    showHistory: sinon.spy(),
+    onClone: sinon.spy()
   });
 
   describe('when storyType is a release', () => {

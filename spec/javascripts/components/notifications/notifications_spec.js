@@ -4,7 +4,8 @@ import Notifications from 'components/Notifications';
 
 describe('<Notifications />', () => {
   const defaultProps = () => ({
-    messages: []
+    messages: [],
+    onRemove: sinon.stub()
   });
 
   it('renders component with the right number of messages', () => {

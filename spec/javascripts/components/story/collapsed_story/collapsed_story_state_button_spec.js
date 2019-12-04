@@ -5,7 +5,8 @@ import CollapsedStoryStateButton from 'components/story/CollapsedStory/Collapsed
 describe('<CollapsedStoryStateButton />', () => {
   it("renders <CollapsedStoryStateButton /> with the right content", () => {
     const props = {
-      action: 'start'
+      action: 'start',
+      onUpdate: sinon.stub()
     };
     const wrapper = shallow(<CollapsedStoryStateButton {...props} />);
     expect(wrapper.text()).toEqual(I18n.translate('story.events.' + props.action));

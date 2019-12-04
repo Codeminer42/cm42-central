@@ -8,7 +8,7 @@ import PastIterationPropTypes from '../shapes/pastIteration';
 
 const propTypes = {
   fetchStories: PropTypes.func,
-  sprint: PropTypes.oneOf([
+  sprint: PropTypes.oneOfType([
     SprintPropTypes,
     PastIterationPropTypes
   ])

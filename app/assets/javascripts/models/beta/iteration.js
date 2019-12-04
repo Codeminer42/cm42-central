@@ -1,6 +1,5 @@
 import moment from "moment";
 import { last, isEmpty } from 'underscore';
-import PropTypes from 'prop-types';
 import * as Story from "./story";
 
 const weeksBetween = (dateA, dateB) =>
@@ -22,7 +21,7 @@ const getNextIterationNumber = (iterations) => {
 }
 
 const getStartDate = (iterationNumber, project) => {
-  const projectStartDate = moment(project.startDate);
+  const projectStartDate = moment(project.startDate, 'YYYY/MM/DD');
 
   if (iterationNumber === 1) {
     return projectStartDate;
@@ -36,7 +35,7 @@ const getStartDate = (iterationNumber, project) => {
 }
 
 const firstIterationMissingDays = (project) =>
-  (moment(project.startDate).isoWeekday() - project.iterationStartDay) % 7;
+  (moment(project.startDate, 'YYYY/MM/DD').isoWeekday() - project.iterationStartDay) % 7;
 
 const daysUntil = (iterationNumber, project) =>
   (iterationNumber - 1) * (project.iterationLength * 7);
