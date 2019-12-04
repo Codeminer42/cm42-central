@@ -7,14 +7,14 @@ const SideBarButton = ({
   children,
   description,
   onClick,
-  toggled
+  isVisible
 }) => {
   const [showInfo, setShowInfo] = useState(false);
 
   const classes = classname(
     'SideBar__link',
     {
-      'SideBar__link--is-toggled': toggled
+      'SideBar__link--is-visible': isVisible
     }
   );
 
@@ -38,7 +38,7 @@ SideBarButton.propTypes = {
   children: PropTypes.node.isRequired,
   description: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
-  toggled: PropTypes.bool.isRequired
+  isVisible: PropTypes.bool.isRequired
 }
 
 export default SideBarButton;

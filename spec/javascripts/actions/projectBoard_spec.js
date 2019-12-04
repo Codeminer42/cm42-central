@@ -1,5 +1,6 @@
 import * as ProjectBoard from '../../../app/assets/javascripts/actions/projectBoard';
 import { toggleStory, receiveStories } from '../../../app/assets/javascripts/actions/story';
+import { sendErrorNotification } from '../../../app/assets/javascripts/actions/notifications';
 
 describe('Project Board Actions', () => {
   describe('expandStoryIfNeeded', () => {
@@ -139,6 +140,36 @@ describe('Project Board Actions', () => {
 
       it('dispatch receiveStories with search and result', () => {
         expect(fakeDispatch).toHaveBeenCalledWith(receiveStories(result, 'search'));
+      });
+    });
+  });
+
+  describe('toggleColumn', () => {
+    const column = 'chillyBin';
+
+    describe('when callback.onToggle is called', () => {
+      let fakeDispatch;
+      let fakeGetState;
+      let fakeProjectBoard;
+
+      beforeEach(() => {
+        fakeDispatch = sinon.stub();
+        fakeGetState = sinon.stub().returns({});
+        fakeProjectBoard  = { 
+          toggleColumn: (_, __, callback) => callback.onToggle()
+        };
+      });
+
+      it('always dispatch toggleColumnVisibility', () => {
+        ProjectBoard.toggleColumn(column)(
+          fakeDispatch,
+          fakeGetState,
+          { 
+            ProjectBoard: fakeProjectBoard,
+          }
+        );
+
+        expect(fakeDispatch).toHaveBeenCalledWith(ProjectBoard.toggleColumnVisibility(column));
       });
     });
   });

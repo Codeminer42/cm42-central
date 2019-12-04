@@ -88,7 +88,7 @@ en:
   reject_new_file: "Unsupported file type."
   accepted_tooltip: "The task has already been accepted. It can't be modified."
   revert_columns_tooltip: "Reverse the column order."
-  toggle_column: 'Hide/Show column {{column}}'
+  toggle_column: "Hide/Show column %{column}"
 
   story:
     state:

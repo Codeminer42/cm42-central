@@ -7,7 +7,9 @@ describe('<ColumnItem />', () => {
   const render = overrideProps => {
     const defaultProps = {
       title: '',
-      visible: true
+      visible: true,
+      onClose: sinon.stub(),
+      canCloseColumn: true
     };
 
     const wrapper = shallow(<ColumnItem {...defaultProps} {...overrideProps} />);
@@ -45,14 +47,32 @@ describe('<ColumnItem />', () => {
 
       expect(renderAction).toHaveBeenCalled();
     });
-  
-    describe('when button is clicked', () => {
-      it('calls onClose', () => {
-        const onClose = sinon.stub();
-        const { button } = render({ onClose });
-        button.simulate('click');
-  
-        expect(onClose).toHaveBeenCalled();
+  });
+
+  describe('button', () => {
+    describe('when canCloseColumn is true', () => {
+      it('renders button', () => {
+        const { button } = render();
+
+        expect(button.exists()).toBeTruthy();
+      });
+    });
+
+    describe('when canCloseColumn is false', () => {
+      it('does not render the button', () => {
+        const { button } = render({ canCloseColumn: false });
+
+        expect(button.exists()).toBeFalsy();
+      });
+
+      describe('when button is clicked', () => {
+        it('calls onClose', () => {
+          const onClose = sinon.stub();
+          const { button } = render({ onClose });
+          button.simulate('click');
+    
+          expect(onClose).toHaveBeenCalled();
+        });
       });
     });
   });

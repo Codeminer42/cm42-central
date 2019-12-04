@@ -27,11 +27,53 @@ describe('<ProjectBoard />', () => {
         status: 'DISABLED'
       },
       onRemove: sinon.stub(),
-      removeNotification: sinon.stub()
+      removeNotification: sinon.stub(),
+      toggleColumn: sinon.stub(),
+      reverseColumns: sinon.stub(),
+      projectId: '1',
+      fetchPastStories: sinon.stub()
     };
 
     return shallow(<ProjectBoard {...defaultProps} {...props } />);
-  }
+  };
+
+  it('renders <SideBar />', () => {
+    const wrapper = render({
+      projectBoard: { 
+        isFetched: true,
+        search: {
+          loading: false
+        },
+        visibleColumns: {
+          backlog: true,
+          done: true,
+          chillyBin: true
+        },
+        reverse: true
+      }
+    });
+
+    expect(wrapper.find('[data-id="side-bar"]')).toExist();
+  });
+
+  it('render <Notifications />', () => {
+    const wrapper = render({
+      projectBoard: { 
+        isFetched: true,
+        search: {
+          loading: false
+        },
+        visibleColumns: {
+          backlog: true,
+          done: true,
+          chillyBin: true
+        },
+        reverse: true
+      },
+    });
+
+    expect(wrapper.find('[data-id="notifications"]')).toExist();
+  });
 
   describe('when projectBoard.isFetched is false',  () => {
     it('renders <ProjectLoading />', () => {
@@ -54,7 +96,8 @@ describe('<ProjectBoard />', () => {
             backlog: true,
             done: true,
             chillyBin: true
-          }
+          },
+          reverse: true
         },
       });
       const spinnerLoading = wrapper.find('[data-id="project-loading"]');
@@ -77,7 +120,8 @@ describe('<ProjectBoard />', () => {
           chillyBin: true
         }
       }
-    }
+    };
+
     it('renders normal-column', () => {
       const wrapper = render(aditionalProps);
       const normalColumn = wrapper.find('[data-id="normal-column"]');
@@ -135,6 +179,12 @@ describe('<ProjectBoard />', () => {
         isFetched: true,
         search: {
           loading: false
+        },
+        reverse: false,
+        visibleColumns: {
+          backlog: true,
+          done: true,
+          chillyBin: true
         }
       },
     };
@@ -169,6 +219,12 @@ describe('<ProjectBoard />', () => {
         isFetched: true,
         search: {
           loading: false
+        },
+        reverse: false,
+        visibleColumns: {
+          backlog: true,
+          done: true,
+          chillyBin: true
         }
       },
     };
@@ -203,6 +259,12 @@ describe('<ProjectBoard />', () => {
         isFetched: true,
         search: {
           loading: false
+        },
+        reverse: false,
+        visibleColumns: {
+          backlog: true,
+          done: true,
+          chillyBin: true
         }
       },
     };
@@ -237,6 +299,12 @@ describe('<ProjectBoard />', () => {
         isFetched: true,
         search: {
           loading: false
+        },
+        reverse: false,
+        visibleColumns: {
+          backlog: true,
+          done: true,
+          chillyBin: true
         }
       },
     };

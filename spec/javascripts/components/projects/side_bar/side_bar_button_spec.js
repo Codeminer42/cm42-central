@@ -8,7 +8,7 @@ describe('<SideBarButton />', () => {
       children: '',
       description: '',
       onClick: sinon.stub(),
-      toggled: false
+      isVisible: false
     };
 
     return shallow(<SideBarButton {...defaultProps} {...props } />);
@@ -52,21 +52,21 @@ describe('<SideBarButton />', () => {
     });
   });
 
-  describe('when toggled is true', () => {
-    it('renders <SideBar /> with SideBar__link--is-toggled class', () => {
-      const wrapper = render({ toggled: true });
+  describe('when isVisible is true', () => {
+    it('renders <SideBar /> with SideBar__link--is-visible class', () => {
+      const wrapper = render({ isVisible: true });
       const button = wrapper.find('[data-id="side-bar-button"]');
 
-      expect(button.hasClass('SideBar__link--is-toggled')).toBeTruthy();
+      expect(button.hasClass('SideBar__link--is-visible')).toBeTruthy();
     });
   });
 
-  describe('when toggled is false', () => {
-    it('render <SideBar /> without SideBar__link--is-toggled class', () => {
+  describe('when isVisible is false', () => {
+    it('render <SideBar /> without SideBar__link--is-visible class', () => {
       const wrapper = render();
       const button = wrapper.find('[data-id="side-bar-button"]');
 
-      expect(button.hasClass('SideBar__link--is-toggled')).toBeFalsy();
+      expect(button.hasClass('SideBar__link--is-visible')).toBeFalsy();
     });
   });
 });

@@ -48,7 +48,7 @@ export const updateLoadingSearch = loading => ({
   loading
 });
 
-export const toggleColumn = column => ({
+export const toggleColumnVisibility = column => ({
   type: actionTypes.TOGGLE_COLUMN_VISIBILITY,
   column
 });
@@ -65,6 +65,15 @@ export const expandStoryIfNeeded = (dispatch, getHash) => {
 export const sendErrorNotificationIfNeeded = (dispatch, code, condition) => {
   if (condition) dispatch(sendErrorNotification(code, { custom: true }));
 }
+
+export const toggleColumn = column =>
+  (dispatch, getState, { ProjectBoard }) => {
+    const { projectBoard } = getState();
+
+    ProjectBoard.toggleColumn(projectBoard, column, {
+      onToggle: () => dispatch(toggleColumnVisibility(column))
+    });
+  }
 
 export const fetchProjectBoard = projectId =>
   async (dispatch, getState, { ProjectBoard, UrlService }) => {

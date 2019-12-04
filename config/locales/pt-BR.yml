@@ -85,7 +85,7 @@ pt-BR:
   reject_new_file: "Formato não suportado."
   accepted_tooltip: "A Tarefa já foi entregue, não pode ser modificada."
   revert_columns_tooltip: "Inverter a ordem das colunas."
-  toggle_column: 'Esconder/Mostrar coluna {{column}}'
+  toggle_column: "Esconder/Mostrar coluna %{column}"
 
 
   story:
