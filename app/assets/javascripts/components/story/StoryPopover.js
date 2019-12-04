@@ -10,7 +10,7 @@ export const StoryPopoverContent = ({ story }) => (
       {
         I18n.t('requested by user on date', {
           user: story.requestedByName,
-          date: moment(story.createdAt).format('DD MM YYYY, h:mm a')
+          date: moment(story.createdAt ,'YYYY/MM/DD').format('DD MM YYYY, h:mm a')
         })
       }
 

@@ -28,7 +28,10 @@ describe('<ExpandedStoryHistoryLocation />', () => {
 
   describe('story link', () => {
     it('renders an input with the right story link', () => {
-      const story = storyFactory({ id: 42 });
+      const story = storyFactory({
+        id: 42,
+        _editing: storyFactory()
+      });
 
       const wrapper = shallow(
         <ExpandedStoryHistoryLocation {...defaultProps()} story={story} />

@@ -20,7 +20,9 @@ describe('<ProjectBoard />', () => {
       notifications: [],
       history: {
         status: 'DISABLED'
-      }
+      },
+      onRemove: sinon.stub(),
+      removeNotification: sinon.stub()
     };
 
     return shallow(<ProjectBoard {...defaultProps} {...props } />);

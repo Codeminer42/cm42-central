@@ -10,7 +10,7 @@ describe('<ExpandedStoryDescription />', () => {
   });
 
   it('renders component', () => {
-    const story = { description: null, _editing: { description: null } };
+    const story = { description: '', _editing: { description: '' } };
 
     const wrapper = shallow(
       <ExpandedStoryDescription {...defaultProps()} story={story} />

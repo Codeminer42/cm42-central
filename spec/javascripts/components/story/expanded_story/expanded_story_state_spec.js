@@ -181,10 +181,12 @@ describe('<ExpandedStoryState />', () => {
     describe("to no estimate", () => {
       it("disables state select", () => {
           const story = { _editing: { estimate: '', storyType: 'feature', state: 'unscheduled' } };
-
+          const onEditSpy = sinon.spy();
           const wrapper = shallow(
             <ExpandedStoryState
               story={story}
+              onEdit={onEditSpy}
+              disabled={false}
             />
           );
 
@@ -197,10 +199,12 @@ describe('<ExpandedStoryState />', () => {
     describe("to a number", () => {
       it("doesn't disable state select when estimate is a number", () => {
         const story = { _editing: { estimate: 1, storyType: 'feature', state: 'unstarted' } };
-
+        const onEditSpy = sinon.stub();
         const wrapper = shallow(
           <ExpandedStoryState
               story={story}
+              onEdit={onEditSpy}
+              disabled={false}
           />
         );
         const select = wrapper.find('select');

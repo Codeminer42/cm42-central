@@ -16,6 +16,7 @@ const AttachmentsList = ({ files, onDelete, disabled }) =>
             link={link}
             publicId={file.publicId}
             type={file.resourceType}
+            key={file.id}
           >
             {
               !disabled && (

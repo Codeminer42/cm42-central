@@ -4,7 +4,7 @@ import { CollapsedStoryEstimateButton } from 'components/story/CollapsedStory/Co
 
 describe('<CollapsedStoryEstimateButton />', () => {
   it("renders component with 'Fibonacci' point scale", () => {
-    const project = { pointValues: ['1','2','3','5','8'] }
+    const project = { pointValues: [1,2,3,5,8] }
     const wrapper = shallow(<CollapsedStoryEstimateButton project={project}/>);
     const text = wrapper.text()
 
@@ -14,7 +14,7 @@ describe('<CollapsedStoryEstimateButton />', () => {
   });
 
   it("renders component with 'Powers of two' point scale", () => {
-    const project = { pointValues: ['1','2','4','8'] }
+    const project = { pointValues: [1,2,4,8] }
     const wrapper = shallow(<CollapsedStoryEstimateButton project={project}/>);
     const text = wrapper.text()
 
@@ -24,7 +24,7 @@ describe('<CollapsedStoryEstimateButton />', () => {
   });
 
   it("renders component with 'Linear' point scale", () => {
-    const project = { pointValues: ['1','2','3','4','5'] }
+    const project = { pointValues: [1,2,3,4,5] }
     const wrapper = shallow(<CollapsedStoryEstimateButton project={project}/>);
     const text = wrapper.text()
 

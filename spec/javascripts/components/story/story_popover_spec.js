@@ -28,7 +28,7 @@ describe("<StoryPopover />", () => {
 
     expect(I18n.t).toHaveBeenCalledWith('requested by user on date', {
       user: props.requestedByName,
-      date: moment(props.createdAt).format('DD MM YYYY, h:mm a')
+      date: moment(props.createdAt, 'YYYY/MM/DD').format('DD MM YYYY, h:mm a')
     });
     expect(I18n.t).toHaveBeenCalledWith('story.type.' + props.storyType);
     expect(I18n.t).toHaveBeenCalledWith('description');

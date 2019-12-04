@@ -10,7 +10,8 @@ describe('<ExpandedStoryControls />', () => {
     isDirty: false,
     canSave: true,
     canDelete: true,
-    onDelete: sinon.stub()
+    onDelete: sinon.stub(),
+    disabled: false
   });
 
   it('renders all the control buttons', () => {
@@ -249,7 +250,6 @@ describe('<ExpandedStoryControls />', () => {
       );
 
       expect(wrapper.find('ExpandedStoryToolTip').exists()).toBe(false);
-
     });
   });
 
@@ -263,7 +263,6 @@ describe('<ExpandedStoryControls />', () => {
       );
 
       expect(wrapper.find('ExpandedStoryToolTip').exists()).toBe(true);
-
     });
   });
 });

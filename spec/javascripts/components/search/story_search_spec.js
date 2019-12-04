@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { StorySearch } from 'components/search/StorySearch';
 
 describe('<StorySearch />',  () => {
@@ -8,10 +8,10 @@ describe('<StorySearch />',  () => {
     divPortal.setAttribute('data-portal', 'search');
     const body = global.document.querySelector('body');
     body.appendChild(divPortal);
-  })
+  });
 
   it('renders the component', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <StorySearch 
         projectId={1}
         search={sinon.stub()}
@@ -27,7 +27,7 @@ describe('<StorySearch />',  () => {
       let wrapper;
   
       beforeEach(() => {
-        wrapper = shallow(
+        wrapper = mount(
           <StorySearch 
             projectId={1}
             search={sinon.stub()}
