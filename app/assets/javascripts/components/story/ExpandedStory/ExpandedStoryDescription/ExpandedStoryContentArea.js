@@ -14,7 +14,11 @@ const ExpandedStoryContentArea = ({ onClick, description }) =>
 
 ExpandedStoryContentArea.propTypes = {
   onClick: PropTypes.func.isRequired,
-  description: PropTypes.string.isRequired
+  description: PropTypes.string
 };
+
+ExpandedStoryContentArea.defaultProps = {
+  description: ''
+}
 
 export default ExpandedStoryContentArea;
