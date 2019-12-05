@@ -93,15 +93,15 @@ export const ProjectBoard = ({
 
       {
         history.status !== historyStatus.DISABLED &&
-        <Column
-          onClose={closeHistory}
-          title={`${I18n.t('projects.show.history')} '${history.storyTitle}'`}
-        >
-          { history.status === historyStatus.LOAD
-            ? <History history={history.activities} />
-            : <ProjectLoading />
-          }
-        </Column>
+          <Column
+            onClose={closeHistory}
+            title={`${I18n.t('projects.show.history')} '${history.storyTitle}'`}
+          >
+            { history.status === historyStatus.LOADED
+              ? <History history={history.activities} />
+              : <ProjectLoading />
+            }
+          </Column>
       }
     </div>
   );
