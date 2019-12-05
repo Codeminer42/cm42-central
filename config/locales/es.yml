@@ -202,6 +202,7 @@ es:
         position:             'Posición'
         labels:               'Etiquetas'
         requested_by:         'Solicitada por'
+        requested_by_name:    'Solicitada pelo'
         owned_by:             'Propiedad de'
         owned_by_name:        'Propiedad de'
         owned_by_initials:    'Propiedad de'

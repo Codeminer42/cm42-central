@@ -212,6 +212,7 @@ en:
         position:             'Position'
         labels:               'Labels'
         requested_by:         'Requested by'
+        requested_by_name:    'Requested by'
         owned_by:             'Owned by'
         owned_by_name:        'Owned by'
         owned_by_initials:    'Owned by'

@@ -1,0 +1,10 @@
+$final-height-timeline: 98%;
+
+@keyframes historyTimeLineAnimation {
+  from {
+    height: 0;
+  }
+  to {
+    height: $final-height-timeline;
+  }
+}

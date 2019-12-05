@@ -10,7 +10,9 @@ const historyFactory = () => [
       subject_changes: {},
       subject_destroyed_type: null,
       created_at: '2019/08/27 14:18:00 -0300',
-      updated_at: '2019/08/27 14:18:00 -0300'
+      updated_at: '2019/08/27 14:18:00 -0300',
+      user: 'user',
+      changes: []
     }
   },
   {
@@ -31,7 +33,9 @@ const historyFactory = () => [
       },
       subject_destroyed_type: null,
       created_at: '2019/08/27 14:18:10 -0300',
-      updated_at: '2019/08/27 14:18:10 -0300'
+      updated_at: '2019/08/27 14:18:10 -0300',
+      user: 'user',
+      changes: []
     }
   }
 ];
