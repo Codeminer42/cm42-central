@@ -21,11 +21,8 @@ const SideBar = ({
 
             return (
               <SideBarButton
-                description={button.description}
-                onClick={button.onClick}
-                data-id={button['data-id']}
-                toggled={button.toggled}
                 key={button['data-id']}
+                {...button}
               >
                 <i className={iconStyle}></i>
               </SideBarButton>
