@@ -103,4 +103,140 @@ describe('<ProjectBoard />', () => {
       expect(normalColumn.exists()).toBeFalsy();
     });
   });
+
+  describe('when history status is LOADING', () => {
+    const props = {
+      history: {
+        status: 'LOADING',
+        storyTitle: 'I am title!',
+        activities: []
+      },
+      projectBoard: { 
+        isFetched: true,
+        search: {
+          loading: false
+        }
+      },
+    };
+
+    it('renders history column', () => {
+      const wrapper = render(props);
+
+      expect(wrapper.find('[data-id="history-column"]')).toExist();
+    });
+
+    it('does not render history', () => {
+      const wrapper = render(props);
+
+      expect(wrapper.find('[data-id="history"]')).not.toExist();
+    });
+
+    it('renders loading', () => {
+      const wrapper = render(props);
+
+      expect(wrapper.find('[data-id="project-loading"]')).toExist();
+    });
+  });
+
+  describe('when history status is LOADED', () => {
+    const props = {
+      history: {
+        status: 'LOADED',
+        storyTitle: 'I am title!',
+        activities: []
+      },
+      projectBoard: { 
+        isFetched: true,
+        search: {
+          loading: false
+        }
+      },
+    };
+
+    it('renders history column', () => {
+      const wrapper = render(props);
+
+      expect(wrapper.find('[data-id="history-column"]')).toExist();
+    });
+
+    it('renders history', () => {
+      const wrapper = render(props);
+
+      expect(wrapper.find('[data-id="history"]')).toExist();
+    });
+
+    it('does not render loading', () => {
+      const wrapper = render(props);
+
+      expect(wrapper.find('[data-id="project-loading"]')).not.toExist();
+    });
+  });
+
+  describe('when history status is DISABLED', () => {
+    const props = {
+      history: {
+        status: 'DISABLED',
+        storyTitle: 'I am title!',
+        activities: []
+      },
+      projectBoard: { 
+        isFetched: true,
+        search: {
+          loading: false
+        }
+      },
+    };
+
+    it('does not render history column', () => {
+      const wrapper = render(props);
+
+      expect(wrapper.find('[data-id="history-column"]')).not.toExist();
+    });
+
+    it('does not render history', () => {
+      const wrapper = render(props);
+
+      expect(wrapper.find('[data-id="history"]')).not.toExist();
+    });
+
+    it('does not render loading', () => {
+      const wrapper = render(props);
+
+      expect(wrapper.find('[data-id="project-loading"]')).not.toExist();
+    });
+  });
+
+  describe('when history status is FAILED', () => {
+    const props = {
+      history: {
+        status: 'FAILED',
+        storyTitle: 'I am title!',
+        activities: []
+      },
+      projectBoard: { 
+        isFetched: true,
+        search: {
+          loading: false
+        }
+      },
+    };
+
+    it('renders history column', () => {
+      const wrapper = render(props);
+
+      expect(wrapper.find('[data-id="history-column"]')).toExist();
+    });
+
+    it('does not render history', () => {
+      const wrapper = render(props);
+
+      expect(wrapper.find('[data-id="history"]')).not.toExist();
+    });
+
+    it('renders loading', () => {
+      const wrapper = render(props);
+
+      expect(wrapper.find('[data-id="project-loading"]')).toExist();
+    });
+  });
 });
