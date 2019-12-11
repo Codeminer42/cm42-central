@@ -24,6 +24,7 @@
 - [ V2 ] Spinner when project is loading.
 - [ V2 ] User mention.
 - [ V2 ] Button to reverse story flow.
+- [ V2 ] Actor in history of changes.
 
 ### Fixed
 - [ V2 ] Internationalization date.
