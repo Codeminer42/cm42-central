@@ -84,7 +84,6 @@ export const fetchProjectBoard = projectId =>
         project, users,
         stories, pastIterations
       } = await ProjectBoard.get(projectId);
-
       dispatch(receiveProject(project));
       dispatch(receivePastIterations(pastIterations));
       dispatch(receiveUsers(users));

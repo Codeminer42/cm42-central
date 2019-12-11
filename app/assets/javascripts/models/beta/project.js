@@ -1,9 +1,16 @@
 import * as Label from './label';
+import { sprintVelocity } from './iteration'
 
-export const deserialize = (board) => ({
-  ...board.project,
-  labels: Label.splitLabels(board.labels)
-});
+
+export const deserialize = (board) => {
+  const calculatedSprintVelocity = sprintVelocity(board.project, board.pastIterations)
+
+  return {
+    ...board.project,
+    calculatedSprintVelocity,
+    currentSprintVelocity: calculatedSprintVelocity,
+    labels: Label.splitLabels(board.labels)}
+};
 
 export const addLabel = (project, label) => ({
   ...project,

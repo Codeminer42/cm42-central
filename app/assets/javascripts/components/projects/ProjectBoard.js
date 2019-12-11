@@ -8,6 +8,7 @@ import { getColumns } from "../../selectors/columns";
 import { CHILLY_BIN, DONE, BACKLOG } from '../../models/beta/column';
 import { canCloseColumn } from '../../models/beta/projectBoard';
 import { createStory, closeHistory } from '../../actions/story';
+import { simulateSprintVelocity, revertSprintVelocity } from '../../actions/sprint';
 import AddStoryButton from '../story/AddStoryButton';
 import { status, historyStatus } from 'libs/beta/constants';
 import PropTypes from 'prop-types';
@@ -16,6 +17,7 @@ import ProjectBoardPropTypes from '../shapes/projectBoard';
 import Notifications from '../Notifications';
 import { removeNotification } from '../../actions/notifications';
 import StorySearch from '../search/StorySearch';
+import { SprintButton } from '../sprint/SprintButton';
 import SearchResults from './../search/SearchResults';
 import ProjectLoading from './ProjectLoading';
 import SideBar from './SideBar';
@@ -27,17 +29,21 @@ export const ProjectBoard = ({
   fetchProjectBoard,
   projectId,
   projectBoard,
-  createStory, 
+  createStory,
   closeHistory,
-  notifications, 
-  removeNotification, 
+  notifications,
+  removeNotification,
   history,
   chillyBinStories,
   backlogSprints,
   doneSprints,
   fetchPastStories,
   toggleColumn,
-  reverseColumns
+  reverseColumns,
+  calculatedSprintVelocity,
+  sprintVelocity,
+  simulateSprintVelocity,
+  revertSprintVelocity
 }) => {
   useEffect(() => {
     fetchProjectBoard(projectId)
@@ -111,14 +117,20 @@ export const ProjectBoard = ({
     }
   ];
 
-  const columnProps = {
-    'data-id': projectBoard.reverse ? 'reversed-column' : 'normal-column',
-    columns: projectBoard.reverse ? columns.reverse() : columns
-  };
+    const columnProps = {
+      'data-id': projectBoard.reverse ? 'reversed-column' : 'normal-column',
+      columns: projectBoard.reverse ? columns.reverse() : columns
+    };
 
-  return (
-    <div className="ProjectBoard">
-      <StorySearch projectId={projectId} loading={projectBoard.search.loading} />
+    return (
+      <div className="ProjectBoard">
+        <SprintButton
+          sprintVelocity={sprintVelocity}
+          onSimulate={simulateSprintVelocity}
+          onRevert={revertSprintVelocity}
+          calculatedSprintVelocity={calculatedSprintVelocity}
+           />
+        <StorySearch projectId={projectId} loading={projectBoard.search.loading} />
 
       <SideBar data-id="side-bar" buttons={sideBarButtons} />
 
@@ -163,7 +175,11 @@ ProjectBoard.propTypes = {
   removeNotification: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   fetchPastStories: PropTypes.func.isRequired,
-  toggleColumn: PropTypes.func.isRequired
+  toggleColumn: PropTypes.func.isRequired,
+  calculatedSprintVelocity: PropTypes.number,
+  sprintVelocity: PropTypes.number,
+  simulateSprintVelocity: PropTypes.func,
+  revertSprintVelocity: PropTypes.func
 };
 
 const mapStateToProps = ({
@@ -172,8 +188,10 @@ const mapStateToProps = ({
   stories,
   history,
   pastIterations,
-  notifications
+  notifications,
 }) => ({
+  calculatedSprintVelocity: project.calculatedSprintVelocity,
+  sprintVelocity: project.currentSprintVelocity,
   projectBoard,
   history,
   chillyBinStories: getColumns({
@@ -201,7 +219,9 @@ const mapDispatchToProps = {
   closeHistory,
   fetchPastStories,
   removeNotification,
-  reverseColumns
+  reverseColumns,
+  simulateSprintVelocity,
+  revertSprintVelocity
 };
 
 export default connect(
