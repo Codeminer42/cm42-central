@@ -109,11 +109,11 @@ export const confirmBeforeSaveIfNeeded = async (story, confirm, needConfirmation
 
 export const showHistory = (storyId, from) =>
   async (dispatch, getState, { Story }) => {
-    const { stories } = getState();
+    const { stories, users } = getState();
     const story = Story.findById(Story.withScope(stories, from), storyId)
     dispatch(loadHistory(story.title))
     try {
-      const activities = await Story.getHistory(story.id, story.projectId)
+      const activities = await Story.getHistory(story.id, story.projectId, users)
       dispatch(receiveHistory(activities, story.title))
     }
     catch (error) {

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import StoryPropTypesShape, { storyPropTypes } from '../../components/shapes/story';
 import moment from 'moment';
 import { has } from 'underscore';
+import * as History from './history';
 
 const compareValues = (a, b) => {
   if (a > b) return 1;
@@ -139,10 +140,10 @@ export const search = async (queryParam, projectId) => {
   return data.map(item => deserialize(item.story));
 }
 
-export const getHistory = async (storyId, projectId) => {
+export const getHistory = async (storyId, projectId, users) => {
   const { data } = await httpService
     .get(`/projects/${projectId}/stories/${storyId}/activities`)
-  return data
+  return History.deserializeHistory(data, users);
 }
 
 export const storyFailure = (story, error) => ({

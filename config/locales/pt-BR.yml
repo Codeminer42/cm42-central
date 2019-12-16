@@ -210,6 +210,7 @@ pt-BR:
         position:             'Posição'
         labels:               'Etiquetas'
         requested_by:         'Solicitada por'
+        requested_by_name:    'Solicitado por'
         owned_by:             'Pertence à'
         owned_by_name:        'Pertence à'
         owned_by_initials:    'Pertence à'

@@ -1,8 +1,6 @@
 import * as actions from '../../../app/assets/javascripts/actions/story';
-import actionTypes from '../../../app/assets/javascripts/actions/actionTypes';
 import history from '../support/factories/historyFactory';
 import story from '../support/factories/storyFactory';
-import expandStoryIfNeeded from '../../../app/assets/javascripts/actions/projectBoard';
 
 describe('History Actions', () => {
   it('Should load a new history when called showHistory action', async () => {
