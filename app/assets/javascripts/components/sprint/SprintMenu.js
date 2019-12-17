@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{ useState } from 'react'
 
 export const SprintMenu = ({sprintVelocity, onSimulate, calculatedSprintVelocity, onRevert}) => {
   const [simulatedSprintVelocity, setSimulatedSprint] = useState(sprintVelocity)
