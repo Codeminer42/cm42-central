@@ -100,4 +100,67 @@ describe('ProjectBoard model', () => {
       });
     });
   });
+
+  describe('toggleColumn', () => {
+    describe('when is closing a column', () => {
+      const column = 'chillyBin';
+      let onToggle;
+      let callback;
+
+      beforeEach(() => {
+        onToggle = sinon.spy();
+        callback = { onToggle }
+      });
+
+      describe('and have more of one column open', () => {
+        it('calls callback.onToggle', () => {
+          const projectBoard = {
+            visibleColumns: {
+              chillyBin: true,
+              backlog: true
+            }
+          };
+  
+          ProjectBoard.toggleColumn(projectBoard, column, callback);
+          expect(onToggle.called).toBeTruthy();
+        });
+      });
+
+      describe('and have just on column open', () => {
+        it('does not call callback.onToggle', () => {
+          const projectBoard = {
+            visibleColumns: {
+              chillyBin: true,
+              backlog: false
+            }
+          };
+  
+          ProjectBoard.toggleColumn(projectBoard, column, callback);
+          expect(onToggle.called).toBeFalsy();
+        });
+      });
+    });
+
+    describe('when is opening an column', () => {
+      const projectBoard = {
+        visibleColumns: {
+          chillyBin: false
+        }
+      };
+      const column = 'chillyBin';
+      let onToggle;
+      let callback;
+
+      beforeEach(() => {
+        onToggle = sinon.spy();
+        callback = { onToggle };
+      });
+
+      it('always calls callback.onToggle', () => {
+        ProjectBoard.toggleColumn(projectBoard, column, callback);
+
+        expect(onToggle.called).toBeTruthy();
+      });
+    });
+  });
 });

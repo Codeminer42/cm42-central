@@ -1,11 +1,19 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { SideBar } from 'components/projects/SideBar/index';
+import SideBar from 'components/projects/SideBar';
 
 describe('<SideBar />', () => {
   const render = props => {
     const defaultProps = {
-      reverseColumns: sinon.stub()
+      buttons: [
+        {
+          description: 'description',
+          onClick: sinon.stub(),
+          'data-id': 'data-id',
+          isVisible: false,
+          icon: 'icon'
+        }
+      ]
     };
 
     return shallow(<SideBar {...defaultProps} {...props } />);
@@ -17,13 +25,19 @@ describe('<SideBar />', () => {
     expect(wrapper).toExist();
   });
 
-  describe('when reverse button is clicked', () => {
-    it('call reverseColumns', () => {
-      const reverseColumns = sinon.stub();
-      const wrapper = render({ reverseColumns });
+  describe('when have 3 buttons', () => {
+    const buttons = Array(3).fill({
+      description: 'description',
+      onClick: sinon.stub(),
+      'data-id': 'data-id',
+      isVisible: false,
+      icon: 'icon'
+    });
 
-      wrapper.find('[data-id="reverse-button"]').simulate('click');
-      expect(reverseColumns).toHaveBeenCalled();
+    it('render 3 buttons', () => {
+      const wrapper = render({ buttons });
+
+      expect(wrapper.find('SideBarButton').length).toEqual(3);
     });
   });
 });

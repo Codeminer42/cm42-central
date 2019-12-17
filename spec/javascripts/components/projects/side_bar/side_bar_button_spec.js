@@ -7,7 +7,8 @@ describe('<SideBarButton />', () => {
     const defaultProps = {
       children: '',
       description: '',
-      onClick: sinon.stub()
+      onClick: sinon.stub(),
+      isVisible: false
     };
 
     return shallow(<SideBarButton {...defaultProps} {...props } />);
@@ -48,6 +49,24 @@ describe('<SideBarButton />', () => {
 
       wrapper.find('[data-id="side-bar-button"]').simulate('mouseover');
       expect(wrapper.find('[data-id="button-info"]')).toExist();
+    });
+  });
+
+  describe('when isVisible is true', () => {
+    it('renders <SideBar /> with SideBar__link--is-visible class', () => {
+      const wrapper = render({ isVisible: true });
+      const button = wrapper.find('[data-id="side-bar-button"]');
+
+      expect(button.hasClass('SideBar__link--is-visible')).toBeTruthy();
+    });
+  });
+
+  describe('when isVisible is false', () => {
+    it('render <SideBar /> without SideBar__link--is-visible class', () => {
+      const wrapper = render();
+      const button = wrapper.find('[data-id="side-bar-button"]');
+
+      expect(button.hasClass('SideBar__link--is-visible')).toBeFalsy();
     });
   });
 });

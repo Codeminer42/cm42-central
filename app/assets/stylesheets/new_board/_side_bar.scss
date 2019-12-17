@@ -10,12 +10,13 @@
     transition: background-color ease-in-out .2s;
     cursor: pointer;
 
-    &:hover {
+    &:hover, &--is-visible {
       background: $sidebar-bg-hover;
     }
   }
 
   &__icon {
+    opacity: 0.5;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -23,6 +24,11 @@
     transform: translate(-50%, -50%);
     color: $sidebar-fg-selected;
     font-size: 20px;
+    transition: opacity ease-in-out .2s;
+
+    &--is-visible {
+      opacity: 1;
+    }
   }
 
   &__info {

@@ -41,5 +41,6 @@ export default keyMirror({
   CLOSE_SEARCH: null,
   HIGHLIGHT_STORY: null,
   LOADING_SEARCH: null,
-  REVERSE_COLUMNS: null
+  REVERSE_COLUMNS: null,
+  TOGGLE_COLUMN_VISIBILITY: null
 });

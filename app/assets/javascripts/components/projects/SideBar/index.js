@@ -1,30 +1,40 @@
 import React from 'react';
 import SideBarButton from './SideBarButton';
-import { reverseColumns } from '../../../actions/projectBoard';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import SideBarButtonShape from '../../shapes/sideBarButton';
+import classname from 'classnames';
 
-export const SideBar = ({
-  reverseColumns
+const SideBar = ({
+  buttons
 }) =>
   <div className="SideBar">
     <ul>
-      <SideBarButton
-        description={I18n.t('revert_columns_tooltip')}
-        onClick={reverseColumns}
-        data-id="reverse-button"
-      >
-        <i className="fas fa-redo-alt SideBar__icon"></i>
-      </SideBarButton>
+      {
+        buttons.map(button => {
+            const iconStyle = classname(
+              'SideBar__icon',
+              {
+                'SideBar__icon--is-visible': button.isVisible
+              },
+              button.icon
+            );
+
+            return (
+              <SideBarButton
+                key={button['data-id']}
+                {...button}
+              >
+                <i className={iconStyle}></i>
+              </SideBarButton>
+            )
+          }
+        )
+      }
     </ul>
   </div>
 
-const mapDispatchToProps = {
-  reverseColumns
-}
-
 SideBar.propTypes = {
-  reverseColumns: PropTypes.func.isRequired
+  buttons: PropTypes.arrayOf(SideBarButtonShape).isRequired
 }
 
-export default connect(null, mapDispatchToProps)(SideBar);
+export default SideBar;

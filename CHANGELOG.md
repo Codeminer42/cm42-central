@@ -25,6 +25,7 @@
 - [ V2 ] User mention.
 - [ V2 ] Button to reverse story flow.
 - [ V2 ] Actor in history of changes.
+- [ V2 ] Buttons to show and hide columns.
 
 ### Fixed
 - [ V2 ] Internationalization date.

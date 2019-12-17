@@ -3,6 +3,7 @@ import changeCase from 'change-object-case';
 import * as Story from './story';
 import * as Project from './project';
 import { operands } from './../../libs/beta/constants';
+import { values } from 'underscore';
 
 export const get = async (projectId) => {
   const { data } = await httpService
@@ -36,6 +37,12 @@ export const isOperandSearch = word => {
 
 const containsInArray = (word, array) => array.some(operand => word.includes(operand))
 
+export const canCloseColumn = projectBoard =>
+  values(projectBoard.visibleColumns).filter(Boolean).length > 1;
+
+const isOpen = (projectBoard, column) =>
+  Boolean(projectBoard.visibleColumns[column])
+
 export const translateOperand = word =>
   _.invert(I18n.translations[currentLocale()].story[word])
 
@@ -51,3 +58,9 @@ export const haveTranslation = operand => translatedOperands.includes(operand)
 export const isEnglishLocale = () => currentLocale() === 'en';
 
 const currentLocale = () => I18n.currentLocale();
+
+export const toggleColumn = (projectBoard, column, callback) => {
+  if (!isOpen(projectBoard, column) || canCloseColumn(projectBoard)) {
+    return callback.onToggle();
+  }
+}
