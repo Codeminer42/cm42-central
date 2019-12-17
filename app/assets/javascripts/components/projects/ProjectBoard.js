@@ -117,36 +117,36 @@ export const ProjectBoard = ({
       columns: projectBoard.reverse ? columns.reverse() : columns
     };
 
-    return (
-      <div className="ProjectBoard">
-        <SprintVelocitySimulation/>
-        <StorySearch projectId={projectId} loading={projectBoard.search.loading} />
+  return (
+    <div className="ProjectBoard">
+      <SprintVelocitySimulation/>
+      <StorySearch projectId={projectId} loading={projectBoard.search.loading} />
 
-      <SideBar data-id="side-bar" buttons={sideBarButtons} />
+    <SideBar data-id="side-bar" buttons={sideBarButtons} />
 
-      <Notifications
-        notifications={notifications}
-        onRemove={removeNotification}
-        data-id="notifications"
-      />
+    <Notifications
+      notifications={notifications}
+      onRemove={removeNotification}
+      data-id="notifications"
+    />
 
-      <Columns {...columnProps} canCloseColumn={canCloseColumn(projectBoard)} />
+    <Columns {...columnProps} canCloseColumn={canCloseColumn(projectBoard)} />
 
-      <SearchResults />
+    <SearchResults />
 
-      {
-        history.status !== historyStatus.DISABLED &&
-          <Column
-            onClose={closeHistory}
-            title={`${I18n.t('projects.show.history')} '${history.storyTitle}'`}
-            data-id="history-column"
-          >
-            { history.status === historyStatus.LOADED
-              ? <History history={history.activities} data-id="history" />
-              : <ProjectLoading data-id="project-loading" />
-            }
-          </Column>
-      }
+    {
+      history.status !== historyStatus.DISABLED &&
+      <Column
+        onClose={closeHistory}
+        title={`${I18n.t('projects.show.history')} '${history.storyTitle}'`}
+        data-id="history-column"
+      >
+        { history.status === historyStatus.LOADED
+          ? <History history={history.activities} data-id="history" />
+          : <ProjectLoading data-id="project-loading" />
+        }
+      </Column>
+    }
     </div>
   );
 }
@@ -178,7 +178,7 @@ const mapStateToProps = ({
   stories,
   history,
   pastIterations,
-  notifications,
+  notifications
 }) => ({
   projectBoard,
   history,

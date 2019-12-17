@@ -9,7 +9,8 @@ export const deserialize = (board) => {
     ...board.project,
     calculatedSprintVelocity,
     currentSprintVelocity: calculatedSprintVelocity,
-    labels: Label.splitLabels(board.labels)}
+    labels: Label.splitLabels(board.labels)
+  }
 };
 
 export const addLabel = (project, label) => ({

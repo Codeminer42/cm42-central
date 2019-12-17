@@ -9,7 +9,8 @@ export const SprintVelocitySimulation = ({
   currentSprintVelocity,
   calculatedSprintVelocity,
   simulateSprintVelocity,
-  revertSprintVelocity}) => {
+  revertSprintVelocity
+}) => {
 
   const [visible, setVisible] = useState(false)
 
