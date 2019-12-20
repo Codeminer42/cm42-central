@@ -160,11 +160,12 @@ describe("iteration", function() {
 
   describe("when calculating sprint velocity", function() {
     let project
-    beforeEach(() =>
-    project = {
-      startDate: "2018-09-03T16:00:00",
-      iterationLength: 1,
-      defaultVelocity: 2
+    beforeEach(() => {
+      project = {
+        startDate: "2018-09-03T16:00:00",
+        iterationLength: 1,
+        defaultVelocity: 2
+      }
     })
 
     describe("when there are less than 3 past iterations", function() {
@@ -176,6 +177,7 @@ describe("iteration", function() {
         expect(sprintVelocity).toEqual(project.defaultVelocity);
       });
     });
+
     describe("when there more than 3 past iterations", function() {
       it("return the medium of the last 3", () => {
         const sprintVelocity = Iteration.sprintVelocity(
@@ -197,7 +199,7 @@ describe("iteration", function() {
           startDate: "2018-09-03T16:00:00",
           iterationLength: 1,
           currentSprintVelocity: 2
-        };
+        }
       });
 
       describe("with empty array of stories", function() {
@@ -329,7 +331,6 @@ describe("iteration", function() {
               storyType: "feature"
             },
           ];
-
         });
 
         it("return an array with 1 item", function() {
@@ -388,7 +389,6 @@ describe("iteration", function() {
               iterationLength: 1,
               currentSprintVelocity: 2
             };
-
           })
 
           it('the first sprint returns 15', () => {
@@ -535,7 +535,6 @@ describe("iteration", function() {
         describe('when the project started 2 weeks ago and iterationLenght is 1 week', () => {
           let projectStartDate;
           let project;
-          let sprints;
           let stories
           beforeEach(() => {
             stories = [
@@ -905,7 +904,6 @@ describe("iteration", function() {
       describe('when 4 stories no feature and 1 story feature', () => {
         let stories
         beforeEach(() => {
-
           stories = [
             {
               id: 1,
