@@ -21,13 +21,7 @@ describe('ADD_NOTIFICATION', () => {
         notification: { id: 3 }
       };
 
-      const expectedState = [
-        { id: 3 },
-        { id: 1 },
-        { id: 2 }
-      ];
-
-      expect(reducer(state, action)).toEqual(expectedState);
+      expect(reducer(state, action)).toEqual([{ id: 3 }, { id: 1 }, { id: 2 }]);
     });
   });
 
@@ -44,9 +38,7 @@ describe('ADD_NOTIFICATION', () => {
         id: 2
       };
 
-      const expectedState = [{ id: 1 }, { id: 3 }];
-
-      expect(reducer(state, action)).toEqual(expectedState);
+      expect(reducer(state, action)).toEqual([{ id: 1 }, { id: 3 }]);
     })
   });
 })
