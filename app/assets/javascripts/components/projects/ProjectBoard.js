@@ -16,6 +16,7 @@ import ProjectBoardPropTypes from '../shapes/projectBoard';
 import Notifications from '../Notifications';
 import { removeNotification } from '../../actions/notifications';
 import StorySearch from '../search/StorySearch';
+import SprintVelocitySimulation from '../sprint/SprintVelocitySimulation';
 import SearchResults from './../search/SearchResults';
 import ProjectLoading from './ProjectLoading';
 import SideBar from './SideBar';
@@ -27,10 +28,10 @@ export const ProjectBoard = ({
   fetchProjectBoard,
   projectId,
   projectBoard,
-  createStory, 
+  createStory,
   closeHistory,
-  notifications, 
-  removeNotification, 
+  notifications,
+  removeNotification,
   history,
   chillyBinStories,
   backlogSprints,
@@ -111,40 +112,41 @@ export const ProjectBoard = ({
     }
   ];
 
-  const columnProps = {
-    'data-id': projectBoard.reverse ? 'reversed-column' : 'normal-column',
-    columns: projectBoard.reverse ? columns.reverse() : columns
-  };
+    const columnProps = {
+      'data-id': projectBoard.reverse ? 'reversed-column' : 'normal-column',
+      columns: projectBoard.reverse ? columns.reverse() : columns
+    };
 
   return (
     <div className="ProjectBoard">
+      <SprintVelocitySimulation/>
       <StorySearch projectId={projectId} loading={projectBoard.search.loading} />
 
-      <SideBar data-id="side-bar" buttons={sideBarButtons} />
+    <SideBar data-id="side-bar" buttons={sideBarButtons} />
 
-      <Notifications
-        notifications={notifications}
-        onRemove={removeNotification}
-        data-id="notifications"
-      />
+    <Notifications
+      notifications={notifications}
+      onRemove={removeNotification}
+      data-id="notifications"
+    />
 
-      <Columns {...columnProps} canCloseColumn={canCloseColumn(projectBoard)} />
+    <Columns {...columnProps} canCloseColumn={canCloseColumn(projectBoard)} />
 
-      <SearchResults />
+    <SearchResults />
 
-      {
-        history.status !== historyStatus.DISABLED &&
-          <Column
-            onClose={closeHistory}
-            title={`${I18n.t('projects.show.history')} '${history.storyTitle}'`}
-            data-id="history-column"
-          >
-            { history.status === historyStatus.LOADED
-              ? <History history={history.activities} data-id="history" />
-              : <ProjectLoading data-id="project-loading" />
-            }
-          </Column>
-      }
+    {
+      history.status !== historyStatus.DISABLED &&
+      <Column
+        onClose={closeHistory}
+        title={`${I18n.t('projects.show.history')} '${history.storyTitle}'`}
+        data-id="history-column"
+      >
+        { history.status === historyStatus.LOADED
+          ? <History history={history.activities} data-id="history" />
+          : <ProjectLoading data-id="project-loading" />
+        }
+      </Column>
+    }
     </div>
   );
 }
@@ -163,7 +165,11 @@ ProjectBoard.propTypes = {
   removeNotification: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   fetchPastStories: PropTypes.func.isRequired,
-  toggleColumn: PropTypes.func.isRequired
+  toggleColumn: PropTypes.func.isRequired,
+  calculatedSprintVelocity: PropTypes.number,
+  sprintVelocity: PropTypes.number,
+  simulateSprintVelocity: PropTypes.func,
+  revertSprintVelocity: PropTypes.func
 };
 
 const mapStateToProps = ({
@@ -201,7 +207,7 @@ const mapDispatchToProps = {
   closeHistory,
   fetchPastStories,
   removeNotification,
-  reverseColumns
+  reverseColumns,
 };
 
 export default connect(

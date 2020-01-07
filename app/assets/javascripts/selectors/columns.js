@@ -25,8 +25,7 @@ export const getColumns = createSelector(
         const firstSprintNumber = lastPastIteration
           ? lastPastIteration.iterationNumber + 1
           : 1;
-
-        return groupStoriesInSprints(orderedStories, project, firstSprintNumber, pastIterations);
+        return groupStoriesInSprints(orderedStories, project, firstSprintNumber);
       case Column.DONE:
         return mountPastIterations(pastIterations, withScope(stories));
     };

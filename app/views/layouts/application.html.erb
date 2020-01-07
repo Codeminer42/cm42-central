@@ -22,7 +22,6 @@
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
-
         <% if session[:current_team_slug] && current_team.try(:logo) %>
           <a href="/" class="navbar-brand navbar-logo">
             <%= team_logo(current_team.logo.path) %>
@@ -34,6 +33,8 @@
         <% end %>
 
         <%= yield :title_bar %>
+
+        <div data-portal="velocity" class="navbar-form navbar-left navbar-search"></div>
 
         <div class="navbar-right">
           <div data-portal="search" class="navbar-form navbar-left navbar-search"></div>

@@ -53,10 +53,10 @@ export const getIterationForStory = (story, project) => {
 };
 
 const createSprint = (
-  sprintNumber = 0, 
-  startDate = 0, 
-  isFiller = false, 
-  velocity, 
+  sprintNumber = 0,
+  startDate = 0,
+  isFiller = false,
+  velocity,
   stories = [],
   points = 0,
   remainingPoints = calculateRemainingPoints(velocity, points)
@@ -97,9 +97,9 @@ const createFillerSprints = (
   });
 
 const createOverflowedSprint = (
-  velocity, 
-  storyPoints, 
-  fillersSprints, 
+  velocity,
+  storyPoints,
+  fillersSprints,
   project,
   overflowStory
 ) => {
@@ -135,7 +135,7 @@ const addSprintWithOverflow = (project, sprints, story, velocity, firstSprintNum
     const fillerSprints = createFillerSprints(quantityFillers, indexOverflow, project, velocity, storyPoints);
     const overflowedSprint = createOverflowedSprint(velocity, storyPoints, fillerSprints, project, story);
     return [...sprints, ...fillerSprints, overflowedSprint];
-  } 
+  }
 };
 
 const sprintIndexFor = sprint => sprint.number + 1;
@@ -175,7 +175,7 @@ const createFirstSprint = (project, initialSprintNumber, velocity) =>
     velocity
   );
 
-const sprintVelocity = (project, pastIterations) => {
+export const sprintVelocity = (project, pastIterations) => {
   return pastIterations.length < 3
     ? project.defaultVelocity
     : pastAverageVelocity(pastIterations)
@@ -200,8 +200,8 @@ const addToSprintFromBacklog = (sprints, project, story, velocity) => {
   )];
 };
 
-export const groupBySprints = (stories = [], project, initialSprintNumber = 1, pastIterations) => {
-  const velocity = sprintVelocity(project, pastIterations)
+export const groupBySprints = (stories = [], project, initialSprintNumber = 1) => {
+  const velocity = project.currentSprintVelocity;
 
   return stories.reduce((sprints, story) => {
     const firstSprintIndex = 0;
