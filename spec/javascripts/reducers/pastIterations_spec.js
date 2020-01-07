@@ -3,7 +3,7 @@ import reducer from "../../../app/assets/javascripts/reducers/pastIterations";
 
 describe("Past Iterations Reducer", () => {
   describe("RECEIVE_PAST_ITERATIONS", () => {
-    it("return formatted past iterations,", () => {
+    it("returns formatted past iterations,", () => {
       const state = [];
 
       const action = {
@@ -56,7 +56,7 @@ describe("Past Iterations Reducer", () => {
   });
 
   describe("RECEIVE_PAST_STORIES", () => {
-    it("return formatted past stories", () => {
+    it("returns formatted past stories", () => {
       const state = [
         {
           iterationNumber: 1
@@ -90,7 +90,7 @@ describe("Past Iterations Reducer", () => {
 
 
   describe("ERROR_REQUEST_PAST_STORIES", () => {
-    it("", () => {
+    it("returns state with error", () => {
       const state = [
         {
           iterationNumber: 1
@@ -121,7 +121,7 @@ describe("Past Iterations Reducer", () => {
   });
 
   describe("DEFAULT", () => {
-    it("return initialState", () => {
+    it("returns initialState", () => {
       expect(reducer(undefined, {})).toEqual([]);
     });
   });
