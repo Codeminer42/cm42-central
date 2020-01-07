@@ -73,7 +73,7 @@ const calculatePosition = (aboveStory, bellowStory) => {
 };
 
 export const getNewPosition = (
-  destinatitonIndex,
+  destinationIndex,
   sourceIndex,
   storiesArray,
   isSameColumn,
@@ -82,21 +82,16 @@ export const getNewPosition = (
     return 1; // if array is empty than set 1 to story position
   }
 
-  if (!isSameColumn) {
+  if (!isSameColumn || sourceIndex > destinationIndex) {
     return calculatePosition(
-      storiesArray[destinatitonIndex - 1],
-      storiesArray[destinatitonIndex],
+      storiesArray[destinationIndex - 1],
+      storiesArray[destinationIndex],
     );
   }
-  if (sourceIndex > destinatitonIndex) {
-    return calculatePosition(
-      storiesArray[destinatitonIndex - 1],
-      storiesArray[destinatitonIndex],
-    );
-  }
+  
   return calculatePosition(
-    storiesArray[destinatitonIndex],
-    storiesArray[destinatitonIndex + 1],
+    storiesArray[destinationIndex],
+    storiesArray[destinationIndexq + 1],
   );
 };
 

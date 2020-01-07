@@ -8,14 +8,22 @@ const Column = ({ title, children, renderAction, onClose, visible, canClose, col
       {provided => (
         <div className="Column" data-cy="column" data-id="column" ref={provided.innerRef} {...provided.droppableProps}>
           <div className="Column__header">
-            <h3 className="Column__name" data-id="column-title">{title}</h3>
+            <h3 className="Column__name" data-id="column-title">
+              {title}
+            </h3>
             <div className="Column__actions">
               { renderAction() }
               {
-                canClose &&
-                  <button type="button" data-id="column-button" className="Column__btn-close" onClick={onClose}>
+                canClose && (
+                  <button
+                    type="button"
+                    data-id="column-button"
+                    className="Column__btn-close"
+                    onClick={onClose}
+                  >
                     <i className="mi md-light md-16">close</i>
                   </button>
+                )
               }
             </div>
           </div>

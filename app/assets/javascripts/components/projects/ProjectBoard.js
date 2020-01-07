@@ -46,8 +46,8 @@ export const ProjectBoard = ({
     return <ProjectLoading data-id="project-loading" />;
   }
 
-  const [newChillyBinStories, setNewChillyBinStories] = useState();
-  const [newBacklogSprints, setNewBacklogSprints] = useState();
+  const [newChillyBinStories, setNewChillyBinStories] = useState([]);
+  const [newBacklogSprints, setNewBacklogSprints] = useState([]);
 
   useEffect(() => {
     setNewBacklogSprints(backlogSprints);
@@ -152,7 +152,10 @@ export const ProjectBoard = ({
       <div className="ProjectBoard">
         <SprintVelocitySimulation />
 
-        <StorySearch projectId={projectId} loading={projectBoard.search.loading} />
+        <StorySearch
+          projectId={projectId}
+          loading={projectBoard.search.loading}
+        />
 
         <SideBar data-id="side-bar" buttons={sideBarButtons} />
 
