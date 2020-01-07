@@ -5,7 +5,9 @@ import { fetchPastStories } from "actions/pastIterations";
 import Column from "../Columns/ColumnItem";
 import History from "../stories/History";
 import { getColumns } from "../../selectors/columns";
-import { CHILLY_BIN, DONE, BACKLOG } from '../../models/beta/column';
+import { closeHistory, dragDropStory } from "../../actions/story";
+import { CHILLY_BIN, DONE, BACKLOG } from "../../models/beta/column";
+import PropTypes from "prop-types";
 import {
   canCloseColumn,
   getNewPosition,
@@ -14,9 +16,7 @@ import {
   moveTask,
   getArray
 } from '../../models/beta/projectBoard';
-import { closeHistory, dragDropStory } from '../../actions/story';
 import { historyStatus } from 'libs/beta/constants';
-import PropTypes from 'prop-types';
 import StoryPropTypes from '../shapes/story';
 import ProjectBoardPropTypes from '../shapes/projectBoard';
 import Notifications from '../Notifications';
@@ -28,6 +28,8 @@ import ProjectLoading from './ProjectLoading';
 import SideBar from './SideBar';
 import Columns from '../Columns';
 import { DragDropContext } from 'react-beautiful-dnd';
+import SearchResults from "./../search/SearchResults";
+import { create } from "react-test-renderer";
 
 export const ProjectBoard = ({
   fetchProjectBoard,
@@ -110,42 +112,6 @@ export const ProjectBoard = ({
       state: newState,
     });
   }
-  
-  const sideBarButtons = [
-    {
-      description: I18n.t('revert_columns_tooltip'),
-      onClick: reverseColumns,
-      'data-id': 'reverse-button',
-      isVisible: projectBoard.reverse,
-      icon: 'fas fa-columns'
-    },
-    {
-      description: I18n.t('toggle_column', { column: 'chilly bin' }),
-      onClick: () => toggleColumn('chillyBin'),
-      'data-id': 'toggle-chilly-bin',
-      isVisible: projectBoard.visibleColumns.chillyBin,
-      icon: 'fas fa-snowflake'
-    },
-    {
-      description: I18n.t('toggle_column', { column: 'backlog' }),
-      onClick: () => toggleColumn('backlog'),
-      'data-id': 'toggle-backlog',
-      isVisible: projectBoard.visibleColumns.backlog,
-      icon: 'fas fa-th-list'
-    },
-    {
-      description: I18n.t('toggle_column', { column: 'done' }),
-      onClick: () => toggleColumn('done'),
-      'data-id': 'toggle-done',
-      isVisible: projectBoard.visibleColumns.done,
-      icon: 'fas fa-check-circle'
-    }
-  ];
-
-  const columnProps = {
-    'data-id': projectBoard.reverse ? 'reversed-column' : 'normal-column',
-    columns: projectBoard.reverse ? columns.reverse() : columns
-  };
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -157,7 +123,13 @@ export const ProjectBoard = ({
           loading={projectBoard.search.loading}
         />
 
-        <SideBar data-id="side-bar" buttons={sideBarButtons} />
+        <SideBar
+          data-id="side-bar"
+          reverse={projectBoard.reverse}
+          visibleColumns={projectBoard.visibleColumns}
+          toggleColumn={toggleColumn}
+          reverseColumns={reverseColumns}
+        />
 
         <Notifications
           notifications={notifications}
@@ -165,7 +137,16 @@ export const ProjectBoard = ({
           data-id="notifications"
         />
 
-        <Columns {...columnProps} canClose={canCloseColumn(projectBoard)} />
+        <Columns
+          canClose={canCloseColumn(projectBoard)}
+          chillyBinStories={newChillyBinStories}
+          backlogSprints={newBacklogSprints}
+          doneSprints={doneSprints}
+          toggleColumn={toggleColumn}
+          visibleColumns={projectBoard.visibleColumns}
+          createStory={createStory}
+          fetchPastStories={fetchPastStories}
+        />
 
         <SearchResults />
 
