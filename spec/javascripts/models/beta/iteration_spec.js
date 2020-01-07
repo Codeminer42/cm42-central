@@ -1296,7 +1296,7 @@ describe("iteration", function() {
         })
 
         describe('and velocity is 3', () => {
-          it('returns truphy', () => {
+          it('returns truthy', () => {
             expect(Iteration.causesOverflow(story, 3)).toBeFalsy();
           })
         });
