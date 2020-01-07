@@ -5,6 +5,8 @@ import { Droppable } from 'react-beautiful-dnd';
 
 const propTypes = {
   sprints: PropTypes.array,
+  fetchStories: PropTypes.func,
+  columnId: PropTypes.string
 };
 
 const defaultProps = {
