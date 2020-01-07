@@ -4,12 +4,14 @@ export const SprintVelocitySimulationForm = ({
   currentSprintVelocity,
   calculatedSprintVelocity,
   simulateSprintVelocity,
-  revertSprintVelocity
+  revertSprintVelocity,
+  setVisible
 }) => {
   const [sprintVelocityToSimulate, setSprintVelocityToSimulate] = useState(currentSprintVelocity)
   const revertToCalculatedVelocity = () => {
     setSprintVelocityToSimulate(calculatedSprintVelocity);
-    revertSprintVelocity()
+    revertSprintVelocity();
+    setVisible(false);
   }
 
   return(

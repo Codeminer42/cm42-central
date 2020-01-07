@@ -25,6 +25,7 @@ export const SprintVelocitySimulation = ({
         currentSprintVelocity={currentSprintVelocity}
         simulateSprintVelocity={simulateSprintVelocity}
         revertSprintVelocity={revertSprintVelocity}
+        setVisible={setVisible}
         calculatedSprintVelocity={calculatedSprintVelocity}
       />
     }
