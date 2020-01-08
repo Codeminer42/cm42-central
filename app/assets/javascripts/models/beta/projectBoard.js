@@ -91,7 +91,7 @@ export const getNewPosition = (
   
   return calculatePosition(
     storiesArray[destinationIndex],
-    storiesArray[destinationIndexq + 1],
+    storiesArray[destinationIndex + 1],
   );
 };
 
