@@ -13,9 +13,10 @@ const Columns = ({
   fetchPastStories,
   toggleColumn,
   createStory,
-  visibleColumns
+  visibleColumns,
+  reverse
 }) => {
-  const columns = [
+  let columns = [
     {
       title: I18n.t("projects.show.chilly_bin"),
       renderAction: () => (
@@ -61,6 +62,8 @@ const Columns = ({
       onClose: () => toggleColumn("done")
     }
   ];
+  
+  columns = reverse ? columns.reverse() : columns
 
   return columns.map(column => (
     <Column

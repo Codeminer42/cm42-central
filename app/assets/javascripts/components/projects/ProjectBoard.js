@@ -146,6 +146,7 @@ export const ProjectBoard = ({
           visibleColumns={projectBoard.visibleColumns}
           createStory={createStory}
           fetchPastStories={fetchPastStories}
+          reverse={projectBoard.reverse}
         />
 
         <SearchResults />
