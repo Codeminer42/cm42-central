@@ -1,9 +1,9 @@
-import actionTypes from 'actions/actionTypes';
+import actionTypes from "actions/actionTypes";
 import reducer from "../../../app/assets/javascripts/reducers/pastIterations";
 
 describe("Past Iterations Reducer", () => {
   describe("RECEIVE_PAST_ITERATIONS", () => {
-    it("returns formatted past iterations,", () => {
+    it("returns formatted past iterations", () => {
       const state = [];
 
       const action = {
@@ -28,7 +28,7 @@ describe("Past Iterations Reducer", () => {
   });
 
   describe("REQUEST_PAST_STORIES", () => {
-    it("add isFetching: true, to the selected iteration ", () => {
+    it("adds isFetching: true, to the selected iteration ", () => {
       const state = [
         {
           iterationNumber: 1
@@ -103,7 +103,7 @@ describe("Past Iterations Reducer", () => {
       const action = {
         type: actionTypes.ERROR_REQUEST_PAST_STORIES,
         iterationNumber: 1,
-        error: Error('whoopsie')
+        error:new Error('whoopsie')
       };
 
       expect(reducer(state, action)).toEqual([
@@ -111,7 +111,7 @@ describe("Past Iterations Reducer", () => {
           iterationNumber: 1,
           fetched: false,
           isFetching: false,
-          error: Error('whoopsie')
+          error: new Error('whoopsie')
         },
         {
           iterationNumber: 2
