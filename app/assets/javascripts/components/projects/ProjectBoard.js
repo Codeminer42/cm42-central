@@ -111,7 +111,7 @@ export const ProjectBoard = ({
       position: newPosition,
       state: newState,
     });
-  }
+  };
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
