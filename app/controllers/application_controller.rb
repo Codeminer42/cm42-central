@@ -14,9 +14,23 @@ class ApplicationController < ActionController::Base
   after_action :verify_authorized, except: [:index], if: :must_pundit?
   after_action :verify_policy_scoped, only: [:index], if: :must_pundit?
 
+  rescue_from ActiveRecord::RecordNotFound, with: :render_404
   rescue_from Pundit::NotAuthorizedError,   with: :user_not_authorized
 
   protected
+
+  def render_404
+    respond_to do |format|
+      format.html do
+        if current_user
+          redirect_to(request.referer || root_path, alert: I18n.t('not_found'))
+        else
+          render 'errors/not_found', status: 404
+        end
+      end
+      format.xml { render nothing: true, status: '404' }
+    end
+  end
 
   def set_locale
     options = [session[:locale], current_user&.locale, 'en']

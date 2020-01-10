@@ -126,6 +126,10 @@ pt-BR:
     definitive_sure: "Tem certeza que deseja %{action} essa história? Essa ação é irreversível."
     change_to: "mudar para %{state}"
 
+  not_found:
+    title: 'Não encontrado'
+    description: 'Desculpe, a página que você está buscando não foi encontrada'
+
   author unknown: "Autor Desconhecido"
   add story: "Adicionar história"
   add note: "Adicionar nota"

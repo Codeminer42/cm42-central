@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - <%= t('not_found.title') %> - <%= t('cm-central') %></title>
+  <%= favicon_link_tag "favicon.ico" %>
+  <%= stylesheet_link_tag :application %>
+</head>
+<body class="NotFound">
+  <div class="NotFound__container">
+    <h2 class="NotFound__title">404</h2>
+    <h3 class="NotFound__description"><%= t('not_found.description') %></h3>
+    <%= link_to t('back'), request.referer || root_path, class: "NotFound__link" %>
+  </div>
+</body>
+</html>

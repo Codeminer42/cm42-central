@@ -59,7 +59,7 @@ class RegistrationsController < Devise::RegistrationsController
   def check_registration_enabled
     return unless Fulcrum::Application.config.fulcrum.disable_registration
 
-    redirect_to '/404'
+    render_404
   end
 
   def devise_params

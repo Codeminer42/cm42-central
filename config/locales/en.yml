@@ -128,6 +128,10 @@ en:
     definitive_sure: "Are you sure you want to %{action} this story? This action is irreversible."
     change_to: "change to %{state}"
 
+  not_found:
+    title: 'Not found'
+    description: 'Sorry, the page you are looking for could not be found'
+
   author unknown: "Author Unknown"
   add story: "Add story"
   add note: "Add note"
