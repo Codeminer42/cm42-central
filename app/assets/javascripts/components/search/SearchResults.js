@@ -14,7 +14,7 @@ export const SearchResults = ({ isEnabled, searchResults, closeSearch, projectBo
   return (
     <Column
       onClose={closeSearch}
-      canCloseColumn={true}
+      canCloseColumn
       title={`"${projectBoard.search.keyWord}"`}
     >
       <Search stories={searchResults} from="search" />
