@@ -3,7 +3,7 @@ import changeCase from 'change-object-case';
 import * as Story from './story';
 import * as Project from './project';
 import { operands, status } from './../../libs/beta/constants';
-import { values } from 'underscore';
+import { values, isEmpty } from 'underscore';
 
 export const get = async (projectId) => {
   const { data } = await httpService
@@ -78,7 +78,7 @@ export const getNewPosition = (
   storiesArray,
   isSameColumn,
 ) => {
-  if(storiesArray.length === 0){
+  if(isEmpty(storiesArray)){
     return 1; // if array is empty than set 1 to story position
   }
 
@@ -121,7 +121,7 @@ export const getNewState = (isSameColumn, dropColumn, currentState) => {
   return dropColumn === 'chillyBin' ? status.UNSCHEDULED : status.UNSTARTED;
 }
 
-export const getBacklogStories = (sprints, index) => sprints.length === 0 ? [{stories: []}] : sprints[index].stories;
+export const getBacklogStories = (sprints, index) => isEmpty(sprints) ? [{stories: []}] : sprints[index].stories;
 
 export const getArray = (column, backlogArray, chillyBinArray, sprintIndex) => {
   if (column === 'backlog') {

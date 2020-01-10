@@ -72,8 +72,8 @@ export const Container = ({
   </div>
 )
 
-export const CollapsedStory = ({index, sprintIndex, columnId, ...other}) => {
-  const {story} = {...other}
+export const CollapsedStory = ({index, sprintIndex, columnId, ...props}) => {
+  const {story} = {...props}
   const isDragDisabled = story.state === 'accepted' || columnId === 'search';
   return (
     <Draggable
@@ -82,7 +82,7 @@ export const CollapsedStory = ({index, sprintIndex, columnId, ...other}) => {
       isDragDisabled={isDragDisabled}
     >
       {(provided, snapshot) => (
-        <Container {...other} provided={provided} isDragging={snapshot.isDragging}/>
+        <Container {...props} provided={provided} isDragging={snapshot.isDragging}/>
       )}
     </Draggable>
   )
