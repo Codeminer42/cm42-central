@@ -103,7 +103,7 @@ describe("Past Iterations Reducer", () => {
       const action = {
         type: actionTypes.ERROR_REQUEST_PAST_STORIES,
         iterationNumber: 1,
-        error:new Error('whoopsie')
+        error: new Error('whoopsie')
       };
 
       expect(reducer(state, action)).toEqual([
