@@ -28,6 +28,8 @@ Rails.application.routes.draw do
   get 'attachments/signature', to: 'attachments#signature'
   get 't/:id' => 'teams#switch', as: :teams_switch
 
+  get '/404', to: 'errors#not_found', :via => :all
+
   resources :teams, except: :show do
     get :switch, on: :collection
     get 'manage_users' => 'teams#manage_users'

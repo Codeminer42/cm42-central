@@ -1,0 +1,53 @@
+.NotFound {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  align-items: center;
+  justify-content: end;
+  background-color: $lightgrey;
+
+  &__container {
+    width: 80vw;
+    margin-left: 4%;
+    border-left: solid 80px $darkgrey-3;
+    padding-left: 2%;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 15em;
+    font-weight: 900;
+    border-bottom: solid 1px $darkgrey-3;
+    color: $black;
+  }
+
+  &__description {
+    font-size: 2em;
+    font-style: italic;
+  }
+
+  &__link {
+    background-color: $darkgrey-3;
+    color: $white;
+    cursor: pointer;
+    transition: background-color ease-in-out .2s;
+    background-color: #3f4c5c;
+    display: block;
+    height: 35px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    width: 20%;
+    padding: 8px 0 0 0;
+    font-weight: 900;
+    border-radius: 8px;
+    border: solid 1px transparent;
+
+    &:hover {
+      background-color: $white;
+      color: $darkgrey-3;
+      border: solid 1px $darkgrey-3;
+      text-decoration: none;
+    }
+  }
+}

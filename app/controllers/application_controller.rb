@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
         if current_user
           redirect_to(request.referer || root_path, alert: I18n.t('not_found'))
         else
-          render file: Rails.root.join('public', '404.html'), status: '404'
+          render 'errors/not_found', status: 404
         end
       end
       format.xml { render nothing: true, status: '404' }
