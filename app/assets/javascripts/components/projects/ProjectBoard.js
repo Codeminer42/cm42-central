@@ -140,6 +140,7 @@ export const ProjectBoard = ({
         onClose={closeHistory}
         title={`${I18n.t('projects.show.history')} '${history.storyTitle}'`}
         data-id="history-column"
+        canCloseColumn
       >
         { history.status === historyStatus.LOADED
           ? <History history={history.activities} data-id="history" />
