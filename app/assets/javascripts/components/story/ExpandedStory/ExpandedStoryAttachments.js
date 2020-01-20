@@ -1,108 +1,94 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
 import AttachmentsList from '../attachment/AttachmentList';
 import { upload, acceptedMimeTypes } from '../../../models/beta/attachment';
-import { editingStoryPropTypesShape } from '../../../models/beta/story';
+import { editingStoryPropTypesShape, setLoadingStory } from '../../../models/beta/story';
 import ExpandedStorySection from './ExpandedStorySection';
+import classname from 'classnames';
+import { isEmpty } from 'underscore';
 
-class ExpandedStoryAttachments extends React.Component {
-  constructor(props) {
-    super(props);
+const ExpandedStoryAttachments = ({
+  onAdd,
+  startLoading,
+  onFailure,
+  story,
+  onDelete,
+  disabled
+}) => {
+  const [ loading, setLoading ] = useState(false);
 
-    this.state = {
-      loading: false
-    }
+  const onFileDrop = (files, rejectedFiles) => {
+    if (!isEmpty(rejectedFiles)) return;
 
-    this.onFileDrop = this.onFileDrop.bind(this);
+    const [ newFile ] = files;
+
+    setLoading(true)
+    startLoading();
+
+    upload(newFile)
+      .then(attachment =>
+        onAdd(attachment)
+      )
+      .then(() => setLoading(false))
+      .catch((error) => {
+        onFailure(error)
+        console.error(error);
+        setLoading(false)
+      })
   }
 
-  onFileDrop(files, rejectedFiles) {
-    if (rejectedFiles.length > 0) return;
+  if (disabled && isEmpty(story.documents)) return null;
 
-    const newFile = files[0];
-    const { onAdd, startLoading, onFailure } = this.props;
+  return (
+    <ExpandedStorySection
+      title={I18n.t('story.attachments')}
+      identifier="attachments"
+    >
+      {
+        !disabled && (
+          <Dropzone
+            onDrop={onFileDrop}
+            accept={acceptedMimeTypes()}
+            disabled={loading}
+            multiple={false}
+            data-id="dropzone"
+          >
+            {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {
+              const className = classname(
+                'btn btn-info attachments-dropzone',
+                {
+                  'attachments-dropzone--loading': loading,
+                  'attachments-dropzone--reject': isDragReject,
+                  'attachments-dropzone--drag': isDragActive
+                }
+              );
 
-    this.setState({ loading: true },
-      () => {
-        startLoading();
-        upload(newFile)
-          .then(attachment =>
-            onAdd(attachment)
-          )
-          .then(() => this.setState({ loading: false }))
-          .catch((error) => {
-            onFailure(error)
-            console.error(error);
-            this.setState({ loading: false });
-          })
-      }
-    )
-  }
-
-  dropzoneClassName({ isDragActive, isDragReject }) {
-    const className = 'attachments-dropzone'
-    if (this.state.loading) {
-      return `${className}--loading`
-    }
-    if (isDragReject) {
-      return `${className}--reject`
-    }
-    if (isDragActive) {
-      return `${className}--drag`
-    }
-
-    return null;
-  }
-
-  render() {
-    const { story, onDelete, disabled } = this.props;
-
-    if (disabled && !story.documents.length) return null
-
-    return (
-      <ExpandedStorySection
-        title={I18n.t('story.attachments')}
-        identifier="attachments"
-      >
-        {
-          !disabled && (
-            <Dropzone
-              onDrop={this.onFileDrop}
-              accept={acceptedMimeTypes()}
-              disabled={this.state.loading}
-              multiple={false}
-              data-id="dropzone"
-            >
-              {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {
-                const className = this.dropzoneClassName({ isDragActive, isDragReject })
-
-                return (
-                  <div
-                    {...getRootProps()}
-                    className={`btn btn-info attachments-dropzone ${className}`}
-                  >
-                    <input {...getInputProps()} />
-                    <i className="mi md-20">cloud_upload</i>
-                    <div>
-                      {!isDragReject ?
-                        I18n.t('upload_new_file') :
-                        I18n.t('reject_new_file')}
-                    </div>
+              return (
+                <div
+                  {...getRootProps()}
+                  className={className}
+                >
+                  <input {...getInputProps()} />
+                  <i className="mi md-20">cloud_upload</i>
+                  <div>
+                    {!isDragReject ?
+                      I18n.t('upload_new_file') :
+                      I18n.t('reject_new_file')}
                   </div>
-                )
-              }}
-            </Dropzone>
-          )
-        }
-        <AttachmentsList
-          files={story._editing.documents}
-          onDelete={onDelete}
-          disabled={disabled}
-        />
-      </ExpandedStorySection>
-    );
-  }
+                </div>
+              )
+            }}
+          </Dropzone>
+        )
+      }
+      <AttachmentsList
+        files={story._editing.documents}
+        onDelete={onDelete}
+        disabled={disabled}
+      />
+    </ExpandedStorySection>
+  );
 }
 
 ExpandedStoryAttachments.propTypes = {
