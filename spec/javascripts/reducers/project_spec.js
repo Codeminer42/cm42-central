@@ -2,8 +2,14 @@ import actionsTypes from "../../../app/assets/javascripts/actions/actionTypes";
 import reducer from "../../../app/assets/javascripts/reducers/project";
 
 describe("Project Reducer",() => {
+  describe("DEFAULT",() => {
+    it("returns the initialState",() => {
+      expect(reducer(undefined, {})).toEqual({});
+    });
+  });
+
   describe("RECEIVE_PROJECT",() => {
-    it("returns data from action",() => {
+    it("returns the project data from action",() => {
       const state = {};
 
       const action = {
@@ -26,11 +32,35 @@ describe("Project Reducer",() => {
 
       expect(reducer(state, action)).toEqual({ labels: [{ name: "label"}]});
     });
-  });
 
-  describe("DEFAULT",() => {
-    it("returns the initialState",() => {
-      expect(reducer(undefined, {})).toEqual({});
+    it("adds new label to labels",() => {
+      const state = { labels: [
+          {
+            name: "label0"
+          },
+          {
+            name: "label1"
+          },
+        ]
+      };
+
+      const action = {
+        type: actionsTypes.ADD_LABEL_TO_PROJECT,
+        label: { name: "label2" }
+      };
+
+      expect(reducer(state, action)).toEqual({ labels: [
+        {
+          name: "label0"
+        },
+        {
+          name: "label1"
+        },
+        {
+          name: "label2"
+        }
+      ]
+    });
     });
   });
 });
