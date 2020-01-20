@@ -69,9 +69,9 @@ const storiesReducer = (state = initialState, action) => {
     case actionTypes.UPDATE_STORY_SUCCESS:
       return allScopes(state, action.story.id, stories => {
         return stories.map(
-          updateIfSameId(action.story.id, (story) => {
-            return updateStory(story, action.story);
-          }))
+          updateIfSameId(action.story.id, story =>
+            updateStory(story, { ...action.story, needsToSave: false })
+          ))
         })
     case actionTypes.STORY_FAILURE:
       return {
@@ -182,9 +182,10 @@ const storiesReducer = (state = initialState, action) => {
       return {
         ...state,
         [action.from]: state[action.from].map(
-          updateIfSameId(action.storyId, (story) => {
-            return Attachment.removeAttachment(story, action.attachmentId)
-          }))
+          updateIfSameId(action.storyId, story => ({
+            ...Attachment.removeAttachment(story, action.attachmentId),
+            needsToSave: true
+          })))
       }
     default:
       return state;

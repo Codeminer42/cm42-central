@@ -9,6 +9,7 @@ const AttachmentsList = ({ files, onDelete, disabled }) =>
     {
       files.map(file => {
         const link = AttachmentURL.getFileLink(file.resourceType, file.path);
+
         return (
           <Attachment
             id={file.id}
@@ -16,7 +17,6 @@ const AttachmentsList = ({ files, onDelete, disabled }) =>
             link={link}
             publicId={file.publicId}
             type={file.resourceType}
-            key={file.id}
           >
             {
               !disabled && (

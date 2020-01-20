@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const ExpandedStorySection = ({ title, children, identifier }) =>
   <div className="Story__section">
     <div className="Story__section-title">
-      {title}
+      { title }
     </div>
     <div className={`Story__section__${identifier}`}>
       {children}

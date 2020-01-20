@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
 import AttachmentsList from '../attachment/AttachmentList';
 import { upload, acceptedMimeTypes } from '../../../models/beta/attachment';
-import { editingStoryPropTypesShape, setLoadingStory } from '../../../models/beta/story';
+import { editingStoryPropTypesShape } from '../../../models/beta/story';
 import ExpandedStorySection from './ExpandedStorySection';
 import classname from 'classnames';
 import { isEmpty } from 'underscore';
+import ExpandedStoryAttachmentsInfo from './ExpandedStoryAttachmentsInfo';
 
 const ExpandedStoryAttachments = ({
   onAdd,
@@ -14,7 +15,8 @@ const ExpandedStoryAttachments = ({
   onFailure,
   story,
   onDelete,
-  disabled
+  disabled,
+  needsToSave
 }) => {
   const [ loading, setLoading ] = useState(false);
 
@@ -27,9 +29,7 @@ const ExpandedStoryAttachments = ({
     startLoading();
 
     upload(newFile)
-      .then(attachment =>
-        onAdd(attachment)
-      )
+      .then(onAdd)
       .then(() => setLoading(false))
       .catch((error) => {
         onFailure(error)
@@ -82,6 +82,9 @@ const ExpandedStoryAttachments = ({
           </Dropzone>
         )
       }
+      {
+        needsToSave && <ExpandedStoryAttachmentsInfo data-id="attachments-info" />
+      }
       <AttachmentsList
         files={story._editing.documents}
         onDelete={onDelete}
@@ -97,5 +100,9 @@ ExpandedStoryAttachments.propTypes = {
   onAdd: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired
 };
+
+ExpandedStoryAttachments.defaultProps = {
+  needsToSave: false
+}
 
 export default ExpandedStoryAttachments;

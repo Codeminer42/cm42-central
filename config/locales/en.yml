@@ -486,3 +486,5 @@ en:
         default_error: 'Something went wrong, please try again'
       cancel:
         default_cancel: 'Operation canceled'
+    attachments:
+      needs_to_save: "You need to save the story to delete the attachment"

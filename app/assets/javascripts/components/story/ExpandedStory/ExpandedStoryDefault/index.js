@@ -118,6 +118,7 @@ export const ExpandedStoryDefault = ({
             onAdd={(attachment) => addAttachment(story.id, project.id, attachment)}
             onDelete={(documentId) => removeAttachment(story.id, documentId)}
             disabled={disabled}
+            needsToSave={story.needsToSave}
           />
 
           <ExpandedStoryNotes

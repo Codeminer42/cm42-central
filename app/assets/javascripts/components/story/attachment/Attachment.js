@@ -1,44 +1,46 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-class Attachment extends React.Component {
-  renderAttachmentContent() {
-    const { type, link, publicId } = this.props;
-    const imageSrc = link.replace(/\.pdf$/, '.png');
+const Attachment = ({
+  link,
+  children,
+  type,
+  publicId
+}) => (
+  <div className='attachment'>
+    <a
+      href={link}
+      target="blank"
+    >
+      <AttachmentContent
+        type={type}
+        publicId={publicId}
+        link={link}
+      />
+    </a>
+    { children }
+  </div>
+)
 
-    return (
-      <div className={`attachment--${type}`}>
-        {
-          type === 'image' ?
-            <img
-              src={imageSrc}
-            />
-            :
-            <Fragment>
-              <i className="mi md-20">library_books</i>
-              {publicId}
-            </Fragment>
-        }
-      </div>
-    )
+const AttachmentContent = ({
+  type,
+  link,
+  publicId
+}) => (
+  <div className={`attachment--${type}`}>
+  {
+    type === 'image' ?
+      <img
+        src={link.replace(/\.pdf$/, '.png')}
+      />
+      :
+      <Fragment>
+        <i className="mi md-20">library_books</i>
+        { publicId }
+      </Fragment>
   }
-
-  render() {
-    const { link, children } = this.props;
-
-    return (
-      <div className='attachment'>
-        <a
-          href={link}
-          target="blank"
-        >
-          { this.renderAttachmentContent() }
-        </a>
-        { children }
-      </div>
-    );
-  }
-}
+  </div>
+)
 
 Attachment.propTypes = {
   type: PropTypes.string.isRequired,

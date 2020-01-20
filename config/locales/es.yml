@@ -482,3 +482,5 @@ es:
         default_error: 'Algo salió mal. Por favor, vuelva a intentarlo'
       cancel:
         default_cancel: "Operación cancelada"
+    attachments:
+      needs_to_save: "Debes guardar la historia para eliminar el archivo adjunto."

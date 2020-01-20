@@ -285,6 +285,18 @@
                 font-size: 12px;
               }
             }
+
+            .attachments-info {
+              background: $lightgrey-14;
+              text-align: center;
+              color: $darkgrey-2;
+              border-radius: 4px;
+              padding: 7px;
+              text-transform: uppercase;
+              font-style: italic;
+              font-weight: 700;
+              cursor: help;
+            }
           }
 
           &__notes {

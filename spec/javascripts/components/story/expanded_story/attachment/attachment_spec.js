@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import Attachment from 'components/story/attachment/Attachment';
 
 describe('<Attachment/>', () => {
@@ -16,7 +16,7 @@ describe('<Attachment/>', () => {
     })
 
     it('renders a image with link on src', () => {
-      const wrapper = shallow(
+      const wrapper = mount(
         <Attachment
           id={attachment.id}
           type={attachment.type}
@@ -35,7 +35,7 @@ describe('<Attachment/>', () => {
       attachment.link = 'document.pdf';
       const expectedLink = 'document.png'
 
-      const wrapper = shallow(
+      const wrapper = mount(
         <Attachment
           id={attachment.id}
           type={attachment.type}
@@ -62,7 +62,7 @@ describe('<Attachment/>', () => {
     })
 
     it('renders a document with a icon and the publicId', () => {
-      const wrapper = shallow(
+      const wrapper = mount(
         <Attachment
           id={attachment.id}
           type={attachment.type}
