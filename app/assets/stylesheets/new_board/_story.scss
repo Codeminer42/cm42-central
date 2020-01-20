@@ -11,7 +11,7 @@
       background-color: rgba($darkred, .5) !important;
       border-top-color: rgba($darkred, .6) !important;
       border-bottom-color: rgba($darkred, .1) !important;
-      color: white !important;
+      color: $white;
     }
 
     &--highlighted {
@@ -52,6 +52,14 @@
         &:hover {
           background-color: $blue-3;
         }
+
+        .Story__icon {
+          color: $blue-4;
+        }
+      }
+
+      &.Story--accepted {
+        color: $darkgrey-3;
       }
 
       .Story {

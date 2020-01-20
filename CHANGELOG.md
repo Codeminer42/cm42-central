@@ -5,6 +5,9 @@
 ### Fixed
 - Bug when change release date of story.
 
+### Changed
+- [ V2 ] When story is accepted and release it has a different background color.
+
 ## [2.5.0] 2020-01-17
 
 ### Removed
