@@ -80,7 +80,7 @@ class ExpandedStoryAttachments extends React.Component {
                 return (
                   <div
                     {...getRootProps()}
-                    className={`btn btn-success attachments-dropzone ${className}`}
+                    className={`btn btn-info attachments-dropzone ${className}`}
                   >
                     <input {...getInputProps()} />
                     <i className="mi md-20">cloud_upload</i>
