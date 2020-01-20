@@ -224,6 +224,7 @@ pt-BR:
         tasks:                'Tarefas'
         release_date:         'Data de Lançamento'
         delivered_at:         'Entregue em'
+        documents_attributes: 'Anexos'
       task:
         name:                 'Nome'
       user:

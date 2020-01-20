@@ -215,6 +215,7 @@ es:
         documents:            'Archivos adjuntos'
         release_date:         'Fecha de lanzamiento'
         delivered_at:         'Entregado en'
+        documents_attributes: 'Archivos adjuntos'
       user:
         name:                 'Nombre completo'
         username:             'Nombre de usuario'
