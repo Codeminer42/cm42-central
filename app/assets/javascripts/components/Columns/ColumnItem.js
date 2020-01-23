@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Column = ({ title, children, renderAction, onClose, visible, canCloseColumn }) => (
+const Column = ({ title, children, renderAction, onClose, visible, canClose }) => (
   visible && (
     <div className="Column" data-id="column">
       <div className="Column__header">
@@ -9,7 +9,7 @@ const Column = ({ title, children, renderAction, onClose, visible, canCloseColum
         <div className="Column__actions">
           {renderAction()}
           {
-            canCloseColumn &&
+            canClose &&
               <button type="button" data-id="column-button" className="Column__btn-close" onClick={onClose}>
                 <i className="mi md-light md-16">close</i>
               </button>
@@ -27,7 +27,7 @@ Column.propTypes = {
   visible: PropTypes.bool,
   children: PropTypes.node,
   onClose: PropTypes.func.isRequired,
-  canCloseColumn: PropTypes.bool.isRequired
+  canClose: PropTypes.bool.isRequired
 }
 
 Column.defaultProps = {
