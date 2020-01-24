@@ -9,7 +9,7 @@ describe('<ColumnItem />', () => {
       title: '',
       visible: true,
       onClose: sinon.stub(),
-      canCloseColumn: true
+      canClose: true
     };
 
     const wrapper = shallow(<ColumnItem {...defaultProps} {...overrideProps} />);
@@ -50,7 +50,7 @@ describe('<ColumnItem />', () => {
   });
 
   describe('button', () => {
-    describe('when canCloseColumn is true', () => {
+    describe('when canClose is true', () => {
       it('renders button', () => {
         const { button } = render();
 
@@ -58,9 +58,9 @@ describe('<ColumnItem />', () => {
       });
     });
 
-    describe('when canCloseColumn is false', () => {
+    describe('when canClose is false', () => {
       it('does not render the button', () => {
-        const { button } = render({ canCloseColumn: false });
+        const { button } = render({ canClose: false });
 
         expect(button.exists()).toBeFalsy();
       });

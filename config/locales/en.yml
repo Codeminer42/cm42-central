@@ -225,6 +225,7 @@ en:
         documents:            'Attachments'
         release_date:         'Release Date'
         delivered_at:         'Delivered at'
+        documents_attributes: 'Attachments'
       user:
         name:                 'Full Name'
         username:             'Username'

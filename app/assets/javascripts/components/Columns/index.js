@@ -5,7 +5,7 @@ import ColumnShape from '../shapes/column';
 
 const Columns = ({
   columns,
-  canCloseColumn
+  canClose
 }) =>
   columns.map(column =>
     <Column
@@ -14,7 +14,7 @@ const Columns = ({
       key={column.title}
       visible={column.visible}
       onClose={column.onClose}
-      canCloseColumn={canCloseColumn}
+      canClose={canClose}
     >
       { column.children }
     </Column>
@@ -22,7 +22,7 @@ const Columns = ({
 
 Columns.propTypes = {
   columns: PropTypes.arrayOf(ColumnShape).isRequired,
-  canCloseColumn: PropTypes.bool.isRequired
+  canClose: PropTypes.bool.isRequired
 }
 
 export default Columns;

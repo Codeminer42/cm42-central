@@ -79,6 +79,8 @@ export const isStoryNotEstimated = (storyType, estimate) => storyType === 'featu
 export const isRelease = (story) =>
   story.storyType === storyTypes.RELEASE;
 
+export const hasHistory = story => !isRelease(story)
+
 export const releaseIsLate = (story) => {
   if (!isRelease(story)) {
     return false;
