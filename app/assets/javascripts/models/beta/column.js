@@ -10,6 +10,11 @@ export const isBacklog = (story, project) => {
   return !isChillyBin(story) && (!Story.isAccepted(story) || isFromCurrentSprint);
 };
 
+export const isDone = column => column === DONE;
+
+export const sort = (columns, reverse) =>
+  reverse ? columns.reverse() : columns;
+
 export const DONE = 'done';
 export const BACKLOG = 'backlog';
 export const CHILLY_BIN = 'chilly_bin';

@@ -5,7 +5,7 @@ import { fetchPastStories } from "actions/pastIterations";
 import Column from "../Columns/ColumnItem";
 import History from "../stories/History";
 import { getColumns } from "../../selectors/columns";
-import { closeHistory, dragDropStory } from "../../actions/story";
+import { closeHistory, createStory, dragDropStory } from "../../actions/story";
 import { CHILLY_BIN, DONE, BACKLOG } from "../../models/beta/column";
 import PropTypes from "prop-types";
 import {
@@ -16,7 +16,7 @@ import {
   moveTask,
   getArray
 } from '../../models/beta/projectBoard';
-import { historyStatus } from 'libs/beta/constants';
+import { historyStatus, columns } from 'libs/beta/constants';
 import StoryPropTypes from '../shapes/story';
 import ProjectBoardPropTypes from '../shapes/projectBoard';
 import Notifications from '../Notifications';
@@ -28,8 +28,6 @@ import ProjectLoading from './ProjectLoading';
 import SideBar from './SideBar';
 import Columns from '../Columns';
 import { DragDropContext } from 'react-beautiful-dnd';
-import SearchResults from "./../search/SearchResults";
-import { create } from "react-test-renderer";
 
 export const ProjectBoard = ({
   fetchProjectBoard,
@@ -42,12 +40,10 @@ export const ProjectBoard = ({
   chillyBinStories,
   backlogSprints,
   toggleColumn,
-  reverseColumns
+  reverseColumns,
+  doneSprints,
+  createStory
 }) => {
-  if (!projectBoard.isFetched) {
-    return <ProjectLoading data-id="project-loading" />;
-  }
-
   const [newChillyBinStories, setNewChillyBinStories] = useState([]);
   const [newBacklogSprints, setNewBacklogSprints] = useState([]);
 
@@ -63,7 +59,11 @@ export const ProjectBoard = ({
     fetchProjectBoard(projectId);
   }, [fetchProjectBoard, projectId]);
 
-  const onDragEnd = ({ source, destination, draggableId }) => {
+  if (!projectBoard.isFetched) {
+    return <ProjectLoading data-id="project-loading" />;
+  }
+
+  const onDragEnd = ({ source, destination }) => {
     const { sprintIndex: sprintDropIndex, columnId: dropColumn } = JSON.parse(destination.droppableId);
     const { sprintIndex: sprintDragIndex, columnId: dragColumn } = JSON.parse(source.droppableId);
     const { index: sourceIndex } = source;
@@ -73,13 +73,8 @@ export const ProjectBoard = ({
     const sourceArray = getArray(dragColumn, newBacklogSprints, newChillyBinStories, sprintDragIndex); // stories of source column
     const dragStory = sourceArray[sourceIndex];
 
-    if (!destination) {
-      return;
-    }
-
-    if (isSameColumn && sourceIndex === destinationIndex) {
-      return;
-    }
+    if (!destination) return;
+    if (isSameColumn && sourceIndex === destinationIndex) return;
 
     const newPosition = getNewPosition(
       destinationIndex,
@@ -97,11 +92,11 @@ export const ProjectBoard = ({
     );
 
     // Changing the column array order
-    if (dropColumn === 'chillyBin') {
+    if (dropColumn === columns.CHILLY_BIN) {
       setNewChillyBinStories(newStories);
     }
 
-    if (dropColumn === 'backlog') {
+    if (dropColumn === columns.BACKLOG) {
       setNewBacklogSprints(getNewSprints(newStories, newBacklogSprints, sprintDropIndex));
     }
 
@@ -226,7 +221,8 @@ const mapDispatchToProps = {
   fetchPastStories,
   removeNotification,
   reverseColumns,
-  dragDropStory
+  dragDropStory,
+  createStory
 };
 
 export default connect(

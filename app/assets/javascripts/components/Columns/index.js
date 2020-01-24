@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import Stories from "../stories/Stories";
 import Sprints from "../stories/Sprints";
 import AddStoryButton from "../story/AddStoryButton";
+import { sort } from '../../models/beta/column';
 
 const Columns = ({
   canClose,
@@ -16,7 +17,7 @@ const Columns = ({
   visibleColumns,
   reverse
 }) => {
-  let columns = [
+  const columns = [
     {
       title: I18n.t("projects.show.chilly_bin"),
       renderAction: () => (
@@ -62,10 +63,8 @@ const Columns = ({
       onClose: () => toggleColumn("done")
     }
   ];
-  
-  columns = reverse ? columns.reverse() : columns
 
-  return columns.map(column => (
+  return sort(columns, reverse).map(column => (
     <Column
       title={column.title}
       renderAction={column.renderAction}

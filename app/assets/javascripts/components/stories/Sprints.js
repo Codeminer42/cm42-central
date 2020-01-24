@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Sprint from './Sprint';
 import { Droppable } from 'react-beautiful-dnd';
+import { isEmpty } from 'underscore';
 
 const propTypes = {
   sprints: PropTypes.array,
@@ -38,16 +39,15 @@ const droppableContainer = columnId => (
 );
 
 
-const Sprints = ({ sprints, fetchStories, columnId }) => {
-  return (
-    <div className='Sprints'>
-      {sprints.length === 0
+const Sprints = ({ sprints, fetchStories, columnId }) => (
+  <div className='Sprints'>
+    {
+      isEmpty(sprints)
         ? droppableContainer(columnId)
         : renderSprints(sprints, fetchStories, columnId)
-      }
-    </div>
-  );
-};
+    }
+  </div>
+);
 
 Sprint.propTypes = propTypes;
 Sprint.defaultProps = defaultProps;

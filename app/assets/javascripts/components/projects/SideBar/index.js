@@ -1,11 +1,9 @@
 import React from "react";
 import SideBarButton from "./SideBarButton";
 import PropTypes from "prop-types";
-import SideBarButtonShape from "../../shapes/sideBarButton";
 import classname from "classnames";
 
 const SideBar = ({ reverse, visibleColumns, toggleColumn, reverseColumns }) => {
-
   const buttons = [
     {
       description: I18n.t("revert_columns_tooltip"),
@@ -40,21 +38,23 @@ const SideBar = ({ reverse, visibleColumns, toggleColumn, reverseColumns }) => {
   return (
     <div className="SideBar">
       <ul>
-        {buttons.map(button => {
-          const iconStyle = classname(
-            "SideBar__icon",
-            {
-              "SideBar__icon--is-visible": button.isVisible
-            },
-            button.icon
-          );
+        {
+          buttons.map(button => {
+            const iconStyle = classname(
+              "SideBar__icon",
+              {
+                "SideBar__icon--is-visible": button.isVisible
+              },
+              button.icon
+            );
 
-          return (
-            <SideBarButton key={button["data-id"]} {...button}>
-              <i className={iconStyle}></i>
-            </SideBarButton>
-          );
-        })}
+            return (
+              <SideBarButton key={button["data-id"]} {...button}>
+                <i className={iconStyle}></i>
+              </SideBarButton>
+            );
+          })
+        }
       </ul>
     </div>
   );

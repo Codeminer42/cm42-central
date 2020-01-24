@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Draggable } from 'react-beautiful-dnd'
+import { Draggable } from 'react-beautiful-dnd';
 import classname from 'classnames';
 import PropTypes from 'prop-types';
 import { updateCollapsedStory, highlight } from '../../../actions/story';
@@ -13,7 +13,6 @@ import StoryIcon from '../StoryIcon';
 import * as Story from '../../../models/beta/story';
 import CollapsedStoryFocusButon from './CollapsedStoryFocusButton';
 import StoryPropTypes from '../../shapes/story';
-import { Draggable } from 'react-beautiful-dnd'
 
 const storyClassName = (story, additionalClassname = '', isDragging) => {
   const isStoryNotEstimated = Story.isStoryNotEstimated(story.storyType, story.estimate);
@@ -73,7 +72,7 @@ export const Container = ({
 )
 
 export const CollapsedStory = ({index, sprintIndex, columnId, ...props}) => {
-  const {story} = {...props}
+  const { story } = { ...props }
   const isDragDisabled = story.state === 'accepted' || columnId === 'search';
   return (
     <Draggable
