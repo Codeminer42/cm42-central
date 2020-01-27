@@ -3,54 +3,71 @@ import PropTypes from 'prop-types';
 import { Droppable } from 'react-beautiful-dnd';
 import { isDone } from '../../models/beta/column';
 
-const Column = ({ title, children, renderAction, onClose, visible, canClose, columnId }) => (
+export const Column = ({ title, children, renderAction, onClose, canClose, providedProps, placeholder }) => (
+  <div className="Column" data-cy="column" data-id="column" {...providedProps}>
+    <div className="Column__header">
+      <h3 className="Column__name" data-id="column-title">
+        {title}
+      </h3>
+      <div className="Column__actions">
+        { renderAction() }
+        {
+          canClose && (
+            <button
+              type="button"
+              data-id="column-button"
+              className="Column__btn-close"
+              onClick={onClose}
+            >
+              <i className="mi md-light md-16">close</i>
+            </button>
+          )
+        }
+      </div>
+    </div>
+    <div data-id="column-children" className="Column__body">
+      { children }
+    </div>
+    { placeholder }
+  </div>
+);
+
+const DroppableColumn = ({ title, children, renderAction, onClose, visible, canClose, columnId }) => (
   visible && (
     <Droppable droppableId={JSON.stringify({ columnId })} isDropDisabled={isDone(columnId)}>
       {provided => (
-        <div className="Column" data-cy="column" data-id="column" ref={provided.innerRef} {...provided.droppableProps}>
-          <div className="Column__header">
-            <h3 className="Column__name" data-id="column-title">
-              {title}
-            </h3>
-            <div className="Column__actions">
-              { renderAction() }
-              {
-                canClose && (
-                  <button
-                    type="button"
-                    data-id="column-button"
-                    className="Column__btn-close"
-                    onClick={onClose}
-                  >
-                    <i className="mi md-light md-16">close</i>
-                  </button>
-                )
-              }
-            </div>
-          </div>
-          <div data-id="column-children" className="Column__body">
-            { children }
-          </div>
-          { provided.placeholder }
-        </div>
+        <Column
+          canClose={canClose}
+          onClose={onClose}
+          title={title}
+          children={children}
+          renderAction={renderAction}
+          placeholder={provided.placeholder}
+          providedProps={{
+            ref: provided.innerRef,
+            ...provided.droppableProps
+          }}
+        />
       )}
     </Droppable>
   )
-);
+)
 
 Column.propTypes = {
   title: PropTypes.string.isRequired,
   renderAction: PropTypes.func,
-  visible: PropTypes.bool,
   children: PropTypes.node,
   onClose: PropTypes.func.isRequired,
-  canClose: PropTypes.bool.isRequired
-}
+  canClose: PropTypes.bool.isRequired,
+  providedProps: PropTypes.object,
+  placeholder: PropTypes.string
+};
 
 Column.defaultProps = {
   renderAction: () => null,
   visible: true,
   children: '',
+  providedProps: {}
 }
 
-export default Column;
+export default DroppableColumn;

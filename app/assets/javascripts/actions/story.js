@@ -18,7 +18,7 @@ export const loadHistory = (title) => ({
   title
 })
 
-export const receiveHistory = (activities, title) => ({
+export const receiveHistory = activities => ({
   type: actionTypes.RECEIVE_HISTORY,
   activities,
 })

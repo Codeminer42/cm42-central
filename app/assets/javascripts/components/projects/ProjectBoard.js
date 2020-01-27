@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { fetchProjectBoard, toggleColumn, reverseColumns } from "actions/projectBoard";
 import { fetchPastStories } from "actions/pastIterations";
-import Column from "../Columns/ColumnItem";
+import { Column } from "../Columns/ColumnItem";
 import History from "../stories/History";
 import { getColumns } from "../../selectors/columns";
 import { closeHistory, createStory, dragDropStory } from "../../actions/story";
@@ -142,6 +142,7 @@ export const ProjectBoard = ({
           createStory={createStory}
           fetchPastStories={fetchPastStories}
           reverse={projectBoard.reverse}
+          data-id="columns"
         />
 
         <SearchResults />

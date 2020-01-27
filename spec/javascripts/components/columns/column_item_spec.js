@@ -1,18 +1,20 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { Column } from 'components/Columns/ColumnItem';
 
-import ColumnItem from 'components/Columns/ColumnItem';
-
-describe('<ColumnItem />', () => {
+describe('<Column />', () => {
   const render = overrideProps => {
     const defaultProps = {
       title: '',
-      visible: true,
       onClose: sinon.stub(),
-      canClose: true
+      canClose: true,
+      children: '',
+      renderAction: sinon.stub(),
+      providedProps: { },
+      placeholder: ''
     };
 
-    const wrapper = shallow(<ColumnItem {...defaultProps} {...overrideProps} />);
+    const wrapper = shallow(<Column {...defaultProps} {...overrideProps} />);
     const column = wrapper.find('[data-id="column"]');
     const title = wrapper.find('[data-id="column-title"]');
     const button = wrapper.find('[data-id="column-button"]');
@@ -20,33 +22,31 @@ describe('<ColumnItem />', () => {
     return { wrapper, title, button, children, column };
   };
 
-  describe('when visible is true', () => {
-    it('renders the component', () => {
-      const { column } = render();
+  it('renders the component', () => {
+    const { column } = render();
 
-      expect(column.exists()).toBeTruthy();
-    });
+    expect(column.exists()).toBeTruthy();
+  });
 
-    it('renders the title', () => {
-      const titleText = 'title';
-      const { title } = render({ title: titleText });
-  
-      expect(title.text()).toBe(titleText);
-    });
-  
-    it('renders the children', () => {
-      const childrenContent = 'children!';
-      const { children } = render({ children: childrenContent });
-  
-      expect(children.text()).toBe(childrenContent);
-    });
+  it('renders the title', () => {
+    const titleText = 'title';
+    const { title } = render({ title: titleText });
 
-    it('calls renderAction', () => {
-      const renderAction = sinon.stub();
-      render({ renderAction });
+    expect(title.text()).toBe(titleText);
+  });
 
-      expect(renderAction).toHaveBeenCalled();
-    });
+  it('renders the children', () => {
+    const childrenContent = 'children!';
+    const { children } = render({ children: childrenContent });
+
+    expect(children.text()).toBe(childrenContent);
+  });
+
+  it('calls renderAction', () => {
+    const renderAction = sinon.stub();
+    render({ renderAction });
+
+    expect(renderAction).toHaveBeenCalled();
   });
 
   describe('button', () => {
@@ -74,21 +74,6 @@ describe('<ColumnItem />', () => {
           expect(onClose).toHaveBeenCalled();
         });
       });
-    });
-  });
-
-  describe('when visible is false', () => {
-    it('does not render the component', () => {
-      const { column } = render({ visible: false });
-  
-      expect(column.exists()).toBeFalsy();
-    });
-
-    it('does not call renderAction', () => {
-      const renderAction = sinon.stub();
-      render({ renderAction, visible: false });
-
-      expect(renderAction).not.toHaveBeenCalled();
     });
   });
 });

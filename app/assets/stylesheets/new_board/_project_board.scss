@@ -3,6 +3,8 @@
   display: flex;
   overflow: inherit;
   padding-top: 2px;
+  max-width: 100%;
+  overflow: auto hidden;
 
   &-loading {
     display: flex;

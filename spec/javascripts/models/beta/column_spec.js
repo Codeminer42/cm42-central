@@ -23,5 +23,52 @@ describe('Column model', function() {
         });
       });
     });
-  })
+  });
+
+  describe('sort', () => {
+    const columns = [
+      {
+        title: 'Column #1',
+        visible: true,
+      },
+      {
+        title: 'Column #2',
+        visible: true,
+      }
+    ];
+
+    describe('when reverse is false', () => {
+      it('returns columns in same order', () => {
+        const reverse = false;
+
+        expect(Column.sort(columns, reverse)).toStrictEqual([
+          {
+            title: 'Column #1',
+            visible: true,
+          },
+          {
+            title: 'Column #2',
+            visible: true,
+          }
+        ]);
+      });
+    });
+  
+    describe('when reverse is true', () => {
+      it('returns columns reversed', () => {
+        const reverse = true;
+
+        expect(Column.sort(columns, reverse)).toStrictEqual([
+          {
+            title: 'Column #2',
+            visible: true,
+          },
+          {
+            title: 'Column #1',
+            visible: true,
+          }
+        ]);
+      });
+    });
+  });
 })
