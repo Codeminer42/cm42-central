@@ -494,3 +494,5 @@ pt-BR:
         default_error: 'Algo deu errado, tente novamente por favor'
       cancel:
         default_cancel: "Ação cancelada"
+    attachments:
+      needs_to_save: "Você precisa salvar a história para excluir o anexo"

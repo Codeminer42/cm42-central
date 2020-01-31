@@ -1,8 +1,20 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import ExpandedStoryAttachments from 'components/story/ExpandedStory/ExpandedStoryAttachments';
+import storyFactory from '../../../support/factories/storyFactory';
 
 describe('<ExpandedStoryAttachments />', () => {
+  const defaultProps = overrideProps => ({
+    disabled: false,
+    documents: [],
+    onAdd: sinon.stub(),
+    onDelete: sinon.stub(),
+    story: storyFactory({
+      _editing: { documents: [] }
+    }),
+    ...overrideProps
+  });
+
   let onAdd;
   let onDelete;
 
@@ -119,6 +131,30 @@ describe('<ExpandedStoryAttachments />', () => {
 
         expect(wrapper.html()).toBeNull();
       });
+    });
+  });
+
+  describe('when needs to save', () => {
+    it('renders <ExpandedStoryAttachmentsInfo />', () => {
+      const props = defaultProps({ needsToSave: true });
+
+      const wrapper = mount(
+        <ExpandedStoryAttachments {...props} />
+      );
+
+      expect(wrapper.find('[data-id="attachments-info"]')).toExist();
+    });
+  });
+
+  describe('when does not need to save', () => {
+    it('does not render <ExpandedStoryAttachmentsInfo />', () => {
+      const props = defaultProps({ needsToSave: false });
+
+      const wrapper = mount(
+        <ExpandedStoryAttachments {...props} />
+      );
+
+      expect(wrapper.find('[data-id="attachments-info"]')).not.toExist();
     });
   });
 });

@@ -151,7 +151,8 @@ export const getHistory = async (storyId, projectId, users) => {
 export const storyFailure = (story, error) => ({
   ...story,
   _editing: setLoadingValue(story._editing, false),
-  errors: error
+  errors: error,
+  needsToSave: false
 });
 
 export const toggleStory = (story) => {
