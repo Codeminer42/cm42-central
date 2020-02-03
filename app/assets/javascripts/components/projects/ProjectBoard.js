@@ -42,7 +42,9 @@ export const ProjectBoard = ({
   toggleColumn,
   reverseColumns,
   doneSprints,
-  createStory
+  createStory,
+  dragDropStory,
+  fetchPastStories
 }) => {
   const [newChillyBinStories, setNewChillyBinStories] = useState([]);
   const [newBacklogSprints, setNewBacklogSprints] = useState([]);
@@ -183,7 +185,8 @@ ProjectBoard.propTypes = {
   calculatedSprintVelocity: PropTypes.number,
   sprintVelocity: PropTypes.number,
   simulateSprintVelocity: PropTypes.func,
-  revertSprintVelocity: PropTypes.func
+  revertSprintVelocity: PropTypes.func,
+  createStory: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({
@@ -211,7 +214,6 @@ const mapStateToProps = ({
     pastIterations,
     stories
   }),
-  stories,
   notifications
 });
 

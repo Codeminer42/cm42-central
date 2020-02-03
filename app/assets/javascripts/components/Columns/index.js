@@ -5,6 +5,7 @@ import Stories from "../stories/Stories";
 import Sprints from "../stories/Sprints";
 import AddStoryButton from "../story/AddStoryButton";
 import { sort } from '../../models/beta/column';
+import { status } from "../../libs/beta/constants";
 
 const Columns = ({
   canClose,

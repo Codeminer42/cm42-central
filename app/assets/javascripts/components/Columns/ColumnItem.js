@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Droppable } from 'react-beautiful-dnd';
 import { isDone } from '../../models/beta/column';
 
-export const Column = ({ title, children, renderAction, onClose, canClose, providedProps, placeholder }) => (
+export const Column = ({ title, children, renderAction, onClose, canClose, providedProps }) => (
   <div className="Column" data-cy="column" data-id="column" {...providedProps}>
     <div className="Column__header">
       <h3 className="Column__name" data-id="column-title">
@@ -28,7 +28,6 @@ export const Column = ({ title, children, renderAction, onClose, canClose, provi
     <div data-id="column-children" className="Column__body">
       { children }
     </div>
-    { placeholder }
   </div>
 );
 
@@ -42,7 +41,6 @@ const DroppableColumn = ({ title, children, renderAction, onClose, visible, canC
           title={title}
           children={children}
           renderAction={renderAction}
-          placeholder={provided.placeholder}
           providedProps={{
             ref: provided.innerRef,
             ...provided.droppableProps
@@ -60,7 +58,6 @@ Column.propTypes = {
   onClose: PropTypes.func.isRequired,
   canClose: PropTypes.bool.isRequired,
   providedProps: PropTypes.object,
-  placeholder: PropTypes.string
 };
 
 Column.defaultProps = {

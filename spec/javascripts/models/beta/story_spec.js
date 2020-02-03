@@ -477,12 +477,12 @@ describe('Story model', function () {
     });
   });
 
-  describe('updateStory', () => {
+  describe('addNewAttributes', () => {
     it('update story type', () => {
       const story = { storyType: 'bug' };
       const newAttributes = { storyType: 'feature' };
 
-      const changedStory = Story.updateStory(story, newAttributes);
+      const changedStory = Story.addNewAttributes(story, newAttributes);
 
       expect(changedStory).toEqual({
         storyType: newAttributes.storyType
@@ -493,7 +493,7 @@ describe('Story model', function () {
       const story = { estimate: 1 };
       const newAttributes = { estimate: 2 };
 
-      const changedStory = Story.updateStory(story, newAttributes);
+      const changedStory = Story.addNewAttributes(story, newAttributes);
 
       expect(changedStory).toEqual({
         estimate: newAttributes.estimate

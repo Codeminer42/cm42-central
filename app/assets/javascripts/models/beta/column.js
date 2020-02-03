@@ -12,9 +12,14 @@ export const isBacklog = (story, project) => {
 
 export const isDone = column => column === DONE;
 
+export const isSearch = column => column === SEARCH;
+
 export const sort = (columns, reverse) =>
   reverse ? columns.reverse() : columns;
 
 export const DONE = 'done';
 export const BACKLOG = 'backlog';
 export const CHILLY_BIN = 'chilly_bin';
+export const SEARCH = 'search';
+
+export const isDropDisabled = column => isDone(column) || isSearch(column);

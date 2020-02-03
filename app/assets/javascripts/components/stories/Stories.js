@@ -3,8 +3,7 @@ import StoryItem from "../story/StoryItem";
 import PropTypes from 'prop-types';
 import StoryPropTypes from '../shapes/story';
 import { Droppable } from 'react-beautiful-dnd';
-
-const isDropDisabled = column => column === "done" || column === "search";
+import { isDropDisabled } from "../../models/beta/column";
 
 const Stories = ({ stories, from, sprintIndex, columnId }) => (
   <Droppable

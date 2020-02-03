@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Stories from '../stories/Stories';
 import * as Story from '../../models/beta/story';
 
-export const Header = ({ stories }) =>
+export const SearchHeader = ({ stories }) =>
   <div className="Sprint__header" data-id="search-header">
     {I18n.t('stories_found')}: {stories.length}
 
@@ -14,7 +14,7 @@ export const Header = ({ stories }) =>
 
 const Search = ({ stories }) =>
   <div className="Sprint">
-    <Header
+    <SearchHeader
       stories={stories}
     />
     <div className="Sprint__body" data-id="stories-search">

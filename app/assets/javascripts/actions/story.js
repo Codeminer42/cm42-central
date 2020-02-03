@@ -154,7 +154,7 @@ export const dragDropStory = (storyId, projectId, newAttributes, from) =>
     const { stories } = getState();
     const story = Story.findById(Story.withScope(stories, from), storyId);
 
-    const newStory = { ...story, ...newAttributes };
+    const newStory = Story.addNewAttributes(story, newAttributes);
 
     try {
       const updatedStory = await Story.update(newStory, projectId);

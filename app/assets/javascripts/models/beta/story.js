@@ -129,7 +129,7 @@ export const deleteStory = (storyId, projectId) =>
   httpService
     .delete(`/projects/${projectId}/stories/${storyId}`);
 
-export const updateStory = (story, newAttributes) => ({
+export const addNewAttributes = (story, newAttributes) => ({
   ...story,
   ...newAttributes
 });

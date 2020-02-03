@@ -14,19 +14,19 @@ const defaultProps = {
   sprints: [],
 };
 
-const renderSprints = (sprints, fetchStories, columnId) =>
+const renderSprints = (sprints, fetchStories, columnId) => (
   sprints.map(
-    (sprint, index) =>
-      sprint ? (
-        <Sprint
-          key={sprint.number}
-          sprint={sprint}
-          sprintIndex={index}
-          columnId={columnId}
-          fetchStories={fetchStories}
-        />
-      ) : null
-  );
+    (sprint, index) => (
+      <Sprint
+        key={sprint.number}
+        sprint={sprint}
+        sprintIndex={index}
+        columnId={columnId}
+        fetchStories={fetchStories}
+      />
+    )
+  )
+)
 
 const droppableContainer = columnId => (
   <Droppable droppableId={JSON.stringify({columnId, sprintIndex: 0})} isDropDisabled={columnId === 'done'}>
