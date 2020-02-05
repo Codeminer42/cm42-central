@@ -14,7 +14,8 @@ import {
   getNewSprints,
   getNewState,
   moveTask,
-  getArray
+  getSprintColumn,
+  dragStory
 } from '../../models/beta/projectBoard';
 import { historyStatus, columns } from 'libs/beta/constants';
 import StoryPropTypes from '../shapes/story';
@@ -51,11 +52,11 @@ export const ProjectBoard = ({
 
   useEffect(() => {
     setNewBacklogSprints(backlogSprints);
-  }, [backlogSprints]);
+  }, [setNewBacklogSprints, backlogSprints]);
 
   useEffect(() => {
     setNewChillyBinStories(chillyBinStories);
-  }, [chillyBinStories]);
+  }, [setNewChillyBinStories, chillyBinStories]);
 
   useEffect(() => {
     fetchProjectBoard(projectId);
@@ -66,17 +67,19 @@ export const ProjectBoard = ({
   }
 
   const onDragEnd = ({ source, destination }) => {
+    if (!destination || !source) return;
+
     const { sprintIndex: sprintDropIndex, columnId: dropColumn } = JSON.parse(destination.droppableId);
     const { sprintIndex: sprintDragIndex, columnId: dragColumn } = JSON.parse(source.droppableId);
     const { index: sourceIndex } = source;
     const { index: destinationIndex} = destination;
     const isSameColumn = dragColumn === dropColumn;
-    const destinationArray = getArray(dropColumn, newBacklogSprints, newChillyBinStories, sprintDropIndex); // stories of destination column
-    const sourceArray = getArray(dragColumn, newBacklogSprints, newChillyBinStories, sprintDragIndex); // stories of source column
+    const destinationArray = getSprintColumn(dropColumn, newBacklogSprints, newChillyBinStories, sprintDropIndex); // stories of destination column
+    const sourceArray = getSprintColumn(dragColumn, newBacklogSprints, newChillyBinStories, sprintDragIndex); // stories of source column
     const dragStory = sourceArray[sourceIndex];
 
-    if (!destination) return;
     if (isSameColumn && sourceIndex === destinationIndex) return;
+    if (!dropColumn) return;
 
     const newPosition = getNewPosition(
       destinationIndex,
@@ -110,8 +113,12 @@ export const ProjectBoard = ({
     });
   };
 
+  const onDragUpdate = ({ source, destination }) => {
+    dragStory(source, destination, newBacklogSprints, setNewBacklogSprints);
+  };
+
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext onDragEnd={onDragEnd} onDragUpdate={onDragUpdate}>
       <div className="ProjectBoard">
         <SprintVelocitySimulation />
 

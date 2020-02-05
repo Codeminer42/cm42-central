@@ -5,7 +5,7 @@ import * as Label from './label';
 import PropTypes from 'prop-types';
 import StoryPropTypesShape, { storyPropTypes } from '../../components/shapes/story';
 import moment from 'moment';
-import { has } from 'underscore';
+import { has, extend } from 'underscore';
 import * as History from './history';
 
 const compareValues = (a, b) => {
@@ -70,9 +70,10 @@ export const getPoints = story =>
     ? Number(story.estimate)
     : 0;
 
-export const getCompletedPoints = story => {
-  return isFeature(story) && isAccepted(story) ? story.estimate : 0;
-};
+export const getCompletedPoints = story =>
+  isFeature(story) && isAccepted(story) ? story.estimate : 0;
+
+export const isSameState = (story1, story2) => story1.state === story2.state;
 
 export const isStoryNotEstimated = (storyType, estimate) => storyType === 'feature' && !estimate;
 
@@ -129,10 +130,7 @@ export const deleteStory = (storyId, projectId) =>
   httpService
     .delete(`/projects/${projectId}/stories/${storyId}`);
 
-export const addNewAttributes = (story, newAttributes) => ({
-  ...story,
-  ...newAttributes
-});
+export const addNewAttributes = extend;
 
 export const search = async (queryParam, projectId) => {
   const { data } = await httpService

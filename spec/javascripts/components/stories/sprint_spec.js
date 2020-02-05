@@ -27,6 +27,7 @@ const createSprint = propOverrides => ({
       storyType: "feature"
     }
   ],
+  isDropDisabled: false,
   ...propOverrides
 });
 

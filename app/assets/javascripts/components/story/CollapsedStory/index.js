@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
 import { Draggable } from 'react-beautiful-dnd';
 import classname from 'classnames';
@@ -73,7 +73,9 @@ export const Container = ({
 
 export const CollapsedStory = ({index, sprintIndex, columnId, ...props}) => {
   const { story } = { ...props }
-  const isDragDisabled = story.state === 'accepted' || columnId === 'search';
+  const isDragDisabled = useMemo(() => 
+    story.state === 'accepted' || columnId === 'search', [story, columnId]
+  );
   return (
     <Draggable
       draggableId={JSON.stringify({id: story.id.toString(), sprintIndex})}

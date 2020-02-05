@@ -28,7 +28,8 @@ const Sprint = ({
   fetchStories,
   sprint,
   sprintIndex,
-  columnId
+  columnId,
+  isDropDisabled
 }) => {
   const isDone = useMemo(() => sprint.hasOwnProperty('hasStories'), [sprint]);
 
@@ -79,7 +80,16 @@ const Sprint = ({
         isClosed={isClosed}
       />
       <div className={classes}>
-        {stories && <Stories stories={stories} columnId={columnId} sprintIndex={sprintIndex} />}
+        {
+          stories && (
+            <Stories
+              stories={stories}
+              columnId={columnId}
+              sprintIndex={sprintIndex}
+              isDropDisabled={isDropDisabled}
+            />
+          )
+        }
       </div>
     </div>
   );

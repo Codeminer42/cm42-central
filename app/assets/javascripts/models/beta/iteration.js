@@ -67,7 +67,8 @@ const createSprint = (
   completedPoints: null,
   stories,
   isFiller,
-  remainingPoints
+  remainingPoints,
+  isDropDisabled: false
 });
 
 export const calculateRemainingPoints = (velocity, points) =>
@@ -244,3 +245,5 @@ export const causesOverflow = (story, velocity) =>
 const calcPointsOverflowedSprint  = (velocity, storyPoints) => velocity - (storyPoints % velocity);
 
 const isLastFiller = (position, amountOfFillers) => position === amountOfFillers - 1;
+
+export const isNewStoryPosition = (sprint, position) => !Boolean(sprint.stories[position]);

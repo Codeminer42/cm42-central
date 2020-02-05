@@ -2,8 +2,10 @@ import httpService from '../../services/httpService';
 import changeCase from 'change-object-case';
 import * as Story from './story';
 import * as Project from './project';
+import { isNewStoryPosition } from './iteration';
 import { operands, status } from './../../libs/beta/constants';
 import { values, isEmpty } from 'underscore';
+import { BACKLOG } from './column';
 
 export const get = async (projectId) => {
   const { data } = await httpService
@@ -123,7 +125,7 @@ export const getNewState = (isSameColumn, dropColumn, currentState) => {
 
 export const getBacklogStories = (sprints, index) => isEmpty(sprints) ? [{stories: []}] : sprints[index].stories;
 
-export const getArray = (column, backlogArray, chillyBinArray, sprintIndex) => {
+export const getSprintColumn = (column, backlogArray, chillyBinArray, sprintIndex) => {
   if (column === 'backlog') {
     if(backlogArray[sprintIndex]){
       return backlogArray[sprintIndex].stories
@@ -131,4 +133,28 @@ export const getArray = (column, backlogArray, chillyBinArray, sprintIndex) => {
     return [];
   }
   return chillyBinArray;
+}
+
+export const dragStory = (source, destination, backlogSprints, callback) => {
+  if (source && destination) {
+    const destinationDroppableId = JSON.parse(destination.droppableId);
+    const sourceDroppableId = JSON.parse(source.droppableId);
+
+    if (destinationDroppableId.columnId === BACKLOG && sourceDroppableId.columnId === BACKLOG) {
+      const destinationSprint = backlogSprints[destinationDroppableId.sprintIndex];
+      const sourceSprint = backlogSprints[sourceDroppableId.sprintIndex];
+
+      if (isNewStoryPosition(destinationSprint, destination.index)) return;
+
+      const draggedStory = sourceSprint.stories[source.index];
+      const destinationStory = destinationSprint.stories[destination.index];
+      const isDropDisabled  = !Story.isSameState(draggedStory, destinationStory);
+
+      const updatedBacklogSprints = backlogSprints.map(item =>
+        item.number === destinationSprint.number ? { ...item, isDropDisabled } : { ...item }
+      );
+
+      return callback(updatedBacklogSprints);
+    }
+  }
 }

@@ -272,6 +272,7 @@ describe('Story Actions', () => {
         update: sinon.stub().resolves(updatedStory),
         isNew: sinon.stub().returns(false),
         withScope: sinon.stub().returns([story]),
+        addNewAttributes: sinon.stub().returns(story)
       };
       const fakeGetState = sinon.stub();
       fakeGetState.returns({
@@ -297,6 +298,7 @@ describe('Story Actions', () => {
         update: sinon.stub().rejects(error),
         isNew: sinon.stub().returns(false),
         withScope: sinon.stub().returns([story]),
+        addNewAttributes: sinon.stub().returns(story)
       };
 
       const fakeGetState = sinon.stub().returns({

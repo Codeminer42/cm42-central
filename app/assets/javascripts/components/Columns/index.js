@@ -30,7 +30,13 @@ const Columns = ({
           }
         />
       ),
-      children: <Stories stories={chillyBinStories} columnId="chillyBin" />,
+      children: (
+        <Stories
+          stories={chillyBinStories}
+          columnId="chillyBin"
+          isDropDisabled={false}
+        />
+      ),
       visible: visibleColumns.chillyBin,
       onClose: () => toggleColumn("chillyBin")
     },
@@ -47,7 +53,12 @@ const Columns = ({
           }
         />
       ),
-      children: <Sprints sprints={backlogSprints} columnId="backlog" />,
+      children: (
+        <Sprints
+          sprints={backlogSprints}
+          columnId="backlog"
+        />
+      ),
       visible: visibleColumns.backlog,
       onClose: () => toggleColumn("backlog")
     },

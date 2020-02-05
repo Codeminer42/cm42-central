@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useMemo } from "react";
 import SideBarButton from "./SideBarButton";
 import PropTypes from "prop-types";
 import classname from "classnames";
 
 const SideBar = ({ reverse, visibleColumns, toggleColumn, reverseColumns }) => {
-  const buttons = [
+  const buttons = useMemo(() => [
     {
       description: I18n.t("revert_columns_tooltip"),
       onClick: reverseColumns,
@@ -33,7 +33,7 @@ const SideBar = ({ reverse, visibleColumns, toggleColumn, reverseColumns }) => {
       isVisible: visibleColumns.done,
       icon: "fas fa-check-circle"
     }
-  ];
+  ], [reverse, visibleColumns, toggleColumn, reverseColumns]);
 
   return (
     <div className="SideBar">

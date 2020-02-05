@@ -18,7 +18,7 @@ const Search = ({ stories }) =>
       stories={stories}
     />
     <div className="Sprint__body" data-id="stories-search">
-      <Stories columnId='search' stories={stories} from="search" />
+      <Stories columnId='search' stories={stories} from="search" isDropDisabled />
     </div>
   </div>
 
