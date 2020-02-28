@@ -44,16 +44,6 @@ export class ExpandedStory extends React.Component {
       >
         <div className="Story__loading"></div>
 
-        <ExpandedStoryControls
-          onCancel={onToggle}
-          isDirty={story._editing._isDirty || false}
-          onSave={() => saveStory(story.id, project.id, from)}
-          onDelete={() => deleteStory(story.id, project.id, from)}
-          canSave={Story.canSave(story)}
-          canDelete={Story.canDelete(story)}
-          disabled={disabled}
-        />
-
         {
           Story.isRelease(story._editing)
             ? <ExpandedStoryRelease
@@ -73,6 +63,16 @@ export class ExpandedStory extends React.Component {
               disabled={disabled}
             />
         }
+
+        <ExpandedStoryControls
+          onCancel={onToggle}
+          isDirty={story._editing._isDirty || false}
+          onSave={() => saveStory(story.id, project.id, from)}
+          onDelete={() => deleteStory(story.id, project.id, from)}
+          canSave={Story.canSave(story)}
+          canDelete={Story.canDelete(story)}
+          disabled={disabled}
+        />
       </div >
     );
   }

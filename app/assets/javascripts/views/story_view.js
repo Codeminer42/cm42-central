@@ -454,6 +454,7 @@ const StoryView = FormView.extend({
     this.appendAttachments();
     this.$el.append($('<div data-story-notes></div>'));
     this.$el.append($('<div data-story-note-form></div>'));
+    this.$el.append($storyControls);
     if(this.model.get('story_type') === 'release') {
       this.$el.empty();
       this.$el.append($storyControls);

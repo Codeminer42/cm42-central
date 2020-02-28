@@ -399,7 +399,9 @@
           @extend .btn-group;
 
           height: 22px;
-          display: block;
+          display: flex;
+          justify-content: flex-end;
+          margin-top: 10px;
 
           input {
             @extend .btn;

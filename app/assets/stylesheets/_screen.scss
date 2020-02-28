@@ -221,6 +221,10 @@ div.story-controls {
     @extend .btn-default;
     @extend .btn-xs;
   }
+  
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 div.story-title {
