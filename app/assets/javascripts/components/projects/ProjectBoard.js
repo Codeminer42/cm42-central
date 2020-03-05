@@ -13,7 +13,7 @@ import {
   getNewPosition,
   getNewSprints,
   getNewState,
-  moveTask,
+  moveStory,
   getSprintColumn,
   dragStory
 } from '../../models/beta/projectBoard';
@@ -72,7 +72,7 @@ export const ProjectBoard = ({
     const { sprintIndex: sprintDropIndex, columnId: dropColumn } = JSON.parse(destination.droppableId);
     const { sprintIndex: sprintDragIndex, columnId: dragColumn } = JSON.parse(source.droppableId);
     const { index: sourceIndex } = source;
-    const { index: destinationIndex} = destination;
+    const { index: destinationIndex } = destination;
     const isSameColumn = dragColumn === dropColumn;
     const destinationArray = getSprintColumn(dropColumn, newBacklogSprints, newChillyBinStories, sprintDropIndex); // stories of destination column
     const sourceArray = getSprintColumn(dragColumn, newBacklogSprints, newChillyBinStories, sprintDragIndex); // stories of source column
@@ -89,11 +89,12 @@ export const ProjectBoard = ({
       dragStory.storyType,
     );
 
-    const newStories = moveTask(
+    const newStories = moveStory(
       sourceArray,
       destinationArray,
       sourceIndex,
       destinationIndex,
+      isSameColumn,
     );
 
     // Changing the column array order
@@ -107,6 +108,7 @@ export const ProjectBoard = ({
 
     // Persisting the new array order
     const newState = getNewState(isSameColumn, dropColumn, dragStory.state);
+
     return dragDropStory(dragStory.id, dragStory.projectId, {
       position: newPosition,
       state: newState,
@@ -158,17 +160,17 @@ export const ProjectBoard = ({
 
         {
           history.status !== historyStatus.DISABLED &&
-            <Column
-              onClose={closeHistory}
-              title={`${I18n.t('projects.show.history')} '${history.storyTitle}'`}
-              data-id="history-column"
-              canClose
-            >
-              { history.status === historyStatus.LOADED
-                ? <History history={history.activities} data-id="history" />
-                : <ProjectLoading data-id="project-loading" />
-              }
-            </Column>
+          <Column
+            onClose={closeHistory}
+            title={`${I18n.t('projects.show.history')} '${history.storyTitle}'`}
+            data-id="history-column"
+            canClose
+          >
+            {history.status === historyStatus.LOADED
+              ? <History history={history.activities} data-id="history" />
+              : <ProjectLoading data-id="project-loading" />
+            }
+          </Column>
         }
       </div>
     </DragDropContext>

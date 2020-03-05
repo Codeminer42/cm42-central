@@ -14,7 +14,7 @@ export const isDone = column => column === DONE;
 
 export const isSearch = column => column === SEARCH;
 
-export const sort = (columns, reverse) =>
+export const order = (columns, reverse) =>
   reverse ? columns.reverse() : columns;
 
 export const DONE = 'done';

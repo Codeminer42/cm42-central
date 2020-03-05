@@ -13,10 +13,4 @@ if defined?(ActiveRecord)
   ActiveRecord::FixtureSet.reset_cache
   ActiveRecord::FixtureSet.create_fixtures(fixtures_dir, fixture_files)
   "Fixtures Done" # this gets returned
-else # this else part can be removed
-  logger.error "Looks like activerecord_fixtures has to be modified to suite your need"
-  Post.create(title: 'MyCypressFixtures')
-  Post.create(title: 'MyCypressFixtures2')
-  Post.create(title: 'MyRailsFixtures')
-  Post.create(title: 'MyRailsFixtures2')
 end

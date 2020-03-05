@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Stories from "../stories/Stories";
 import Sprints from "../stories/Sprints";
 import AddStoryButton from "../story/AddStoryButton";
-import { sort } from '../../models/beta/column';
+import { order } from '../../models/beta/column';
 import { status } from "../../libs/beta/constants";
 
 const Columns = ({
@@ -76,7 +76,7 @@ const Columns = ({
     }
   ];
 
-  return sort(columns, reverse).map(column => (
+  return order(columns, reverse).map(column => (
     <Column
       title={column.title}
       renderAction={column.renderAction}

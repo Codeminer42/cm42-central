@@ -80,7 +80,7 @@ export const getNewPosition = (
   storiesArray,
   isSameColumn,
 ) => {
-  if(isEmpty(storiesArray)){
+  if (isEmpty(storiesArray)) {
     return 1; // if array is empty than set 1 to story position
   }
 
@@ -90,7 +90,7 @@ export const getNewPosition = (
       storiesArray[destinationIndex],
     );
   }
-  
+
   return calculatePosition(
     storiesArray[destinationIndex],
     storiesArray[destinationIndex + 1],
@@ -98,17 +98,19 @@ export const getNewPosition = (
 };
 
 // reorder the array
-export const moveTask = (
+export const moveStory = (
   sourceArray,
   destinationArray,
   sourceIndex,
   destinationIndex,
 ) => {
-  const newSourceArray = sourceArray;
+  const newSourceArray = [...sourceArray];
   const [removed] = newSourceArray.splice(sourceIndex, 1);
-  const newDestinationArray = destinationArray;
-  newDestinationArray.splice(destinationIndex, 0, removed);
-  return [...newDestinationArray];
+  const newDestinationArray = [...destinationArray];
+  const filteredArray = newDestinationArray.filter((el, index) => index !== sourceIndex);
+  filteredArray.splice(destinationIndex, 0, removed);
+
+  return [...filteredArray];
 };
 
 export const getNewSprints = (newStories, sprints, sprintIndex) =>
@@ -117,17 +119,17 @@ export const getNewSprints = (newStories, sprints, sprintIndex) =>
   );
 
 export const getNewState = (isSameColumn, dropColumn, currentState) => {
-  if(isSameColumn) {
+  if (isSameColumn) {
     return currentState;
   }
   return dropColumn === 'chillyBin' ? status.UNSCHEDULED : status.UNSTARTED;
 }
 
-export const getBacklogStories = (sprints, index) => isEmpty(sprints) ? [{stories: []}] : sprints[index].stories;
+export const getBacklogStories = (sprints, index) => isEmpty(sprints) ? [{ stories: [] }] : sprints[index].stories;
 
 export const getSprintColumn = (column, backlogArray, chillyBinArray, sprintIndex) => {
   if (column === 'backlog') {
-    if(backlogArray[sprintIndex]){
+    if (backlogArray[sprintIndex]) {
       return backlogArray[sprintIndex].stories
     }
     return [];
@@ -148,7 +150,7 @@ export const dragStory = (source, destination, backlogSprints, callback) => {
 
       const draggedStory = sourceSprint.stories[source.index];
       const destinationStory = destinationSprint.stories[destination.index];
-      const isDropDisabled  = !Story.isSameState(draggedStory, destinationStory);
+      const isDropDisabled = !Story.isSameState(draggedStory, destinationStory);
 
       const updatedBacklogSprints = backlogSprints.map(item =>
         item.number === destinationSprint.number ? { ...item, isDropDisabled } : { ...item }
