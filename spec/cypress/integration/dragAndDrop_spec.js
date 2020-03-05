@@ -12,8 +12,7 @@ describe("DragAndDrop", () => {
     cy.app("load_seed"); // load the seeds
     cy.loginWith("foo@bar.com", "asdfasdf");
 
-    cy.server();
-    cy.route('PUT', '/projects/**').as('update-story');
+    cy.aliasUpdateStory();
   });
 
   describe("Drag and drop in same column", () => {
@@ -31,7 +30,7 @@ describe("DragAndDrop", () => {
       // reorder
       cy.moveStory("@first", Keys.arrowDown, Keys.space);
 
-      cy.aliasUpdateStory(200);
+      cy.waitUpdateStory(200);
 
       // check new order
       cy.getDraggableByIndex(2).should("contain", hoverStory);
@@ -76,7 +75,7 @@ describe("DragAndDrop", () => {
         .as("drag-story")
         .moveStory("@drag-story", Keys.arrowLeft, Keys.space);
 
-      cy.aliasUpdateStory(200);
+      cy.waitUpdateStory(200);
 
       // check new order
       cy.getDraggablesFromColumn(backlog).should("not.contain", dragStory);
@@ -97,7 +96,7 @@ describe("DragAndDrop", () => {
           .first()
           .click();
 
-        cy.aliasUpdateStory(200);
+        cy.waitUpdateStory(200);
 
         // move story
         cy.getDraggablesFromColumn(chillyBin)
@@ -105,7 +104,7 @@ describe("DragAndDrop", () => {
           .as("drag-element")
           .moveStory("@drag-element", Keys.arrowRight, Keys.space);
 
-        cy.aliasUpdateStory(200);
+        cy.waitUpdateStory(200);
 
         // check new order
         cy.getDraggablesFromColumn(chillyBin).should("not.contain", dragStory);
@@ -126,7 +125,7 @@ describe("DragAndDrop", () => {
           .as("drag-element")
           .moveStory("@drag-element", Keys.arrowRight, Keys.space);
 
-        cy.aliasUpdateStory(200);
+        cy.waitUpdateStory(200);
 
         // check new order
         cy.getDraggablesFromColumn(chillyBin).should("not.contain", dragStory);
@@ -147,7 +146,7 @@ describe("DragAndDrop", () => {
           .as("drag-element")
           .moveStory("@drag-element", Keys.arrowRight, Keys.space);
 
-        cy.aliasUpdateStory(422);
+        cy.waitUpdateStory(200);
 
         // check new order
         cy.getDraggablesFromColumn(chillyBin).should("contain", dragStory);

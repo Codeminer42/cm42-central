@@ -32,7 +32,12 @@ Cypress.Commands.add('getDraggablesFromColumn', (index) => {
     .find(`[${draggableId}]`)
 });
 
-Cypress.Commands.add('aliasUpdateStory', (httpCode) => {
+Cypress.Commands.add('aliasUpdateStory', () => {
+  cy.server();
+  cy.route('PUT', '/projects/**').as('update-story');
+})
+
+Cypress.Commands.add('waitUpdateStory', (httpCode = 200) => {
   cy.wait('@update-story')
     .should('have.property', 'status', httpCode);
 })
