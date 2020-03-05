@@ -2,10 +2,10 @@ Cypress.Commands.add('loginWith', (email, password) => {
   cy.visit('/beta/projects/test-project')
 
   cy.get('#user_email')
-  .type(email)
+    .type(email)
 
   cy.get('#user_password')
-  .type(password)
+    .type(password)
 
   cy.get('.auth-button-submit').click()
 });
@@ -31,3 +31,8 @@ Cypress.Commands.add('getDraggablesFromColumn', (index) => {
     .eq(index)
     .find(`[${draggableId}]`)
 });
+
+Cypress.Commands.add('aliasUpdateStory', (httpCode) => {
+  cy.wait('@update-story')
+    .should('have.property', 'status', httpCode);
+})

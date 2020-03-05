@@ -52,6 +52,14 @@ ActiveRecord::Base.transaction do
     labels: 'features'
   )
 
+  project.stories.create!(
+    title: 'A user should be able drag this story from chilly bean and drop to backlog',
+    story_type: 'bug',
+    state: 'unscheduled',
+    requested_by: user,
+    labels: 'bugs'
+  )
+
   3.times do |n|
     project.stories.create!(
       title: 'A project should have some past iterations',
