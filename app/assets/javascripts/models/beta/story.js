@@ -60,7 +60,7 @@ export const isAccepted = story => {
   return story.state === status.ACCEPTED;
 };
 
-export const totalPoints = stories => 
+export const totalPoints = stories =>
   stories.reduce((total, current) => total + getPoints(current), 0)
 
 export const isHighlighted = story => Boolean(story.highlighted)
@@ -93,7 +93,7 @@ export const releaseIsLate = (story) => {
   return today > releaseDate;
 }
 
-export const possibleStatesFor = story => 
+export const possibleStatesFor = story =>
   isUnestimatedFeature(story._editing) ? [states[0]] : states;
 
 export const types = ['feature', 'bug', 'release', 'chore'];
@@ -105,7 +105,7 @@ export const states = [
 ];
 
 export const findById = (stories, id) => {
-  return stories.find( story => story.id === id)
+  return stories.find(story => story.id === id)
 }
 
 export const update = async (story, projectId, options) => {
@@ -130,7 +130,9 @@ export const deleteStory = (storyId, projectId) =>
   httpService
     .delete(`/projects/${projectId}/stories/${storyId}`);
 
-export const addNewAttributes = extend;
+export const addNewAttributes = (current, newAttributes) => {
+  return extend({}, { ...current, ...newAttributes });
+};
 
 export const search = async (queryParam, projectId) => {
   const { data } = await httpService
@@ -163,11 +165,11 @@ export const toggleStory = (story) => {
   };
 };
 
-const isUnscheduledState = (story, newAttributes) => 
+const isUnscheduledState = (story, newAttributes) =>
   (
     isFeature(story._editing) && (
       isChangingWithoutEstimate(story, newAttributes) ||
-      hasNilProp(newAttributes, 'estimate') || 
+      hasNilProp(newAttributes, 'estimate') ||
       isChangingToUnscheduled(story, newAttributes) ||
       isUnscheduled(newAttributes)
     )
@@ -185,14 +187,14 @@ export const stateFor = (story, newAttributes, newStory) =>
 export const estimateFor = (story, newAttributes, newStory) => {
   if (isNoEstimated(story, newAttributes)) return '';
   if (isFeature(newAttributes) && !isUnscheduled(story._editing)) return 1;
-  
+
   return newStory.estimate;
 }
 
 const isEstimable = isFeature
 
-const isNoEstimated = (story, newAttributes) => 
-  (!isEstimable(story._editing) && !has(newAttributes, 'storyType')) || 
+const isNoEstimated = (story, newAttributes) =>
+  (!isEstimable(story._editing) && !has(newAttributes, 'storyType')) ||
   (!isEstimable(newAttributes) && has(newAttributes, 'storyType'))
 
 const hasEstimate = story => Boolean(story.estimate);
@@ -306,7 +308,7 @@ export const createNewStory = (stories, storyAttributes) => {
   };
 };
 
-export const withScope = (stories, from) => 
+export const withScope = (stories, from) =>
   Boolean(from) ? stories[from] : stories[storyScopes.ALL];
 
 export const isSearch = from => from === storyScopes.SEARCH;
