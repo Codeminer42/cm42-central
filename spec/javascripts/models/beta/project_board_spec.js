@@ -167,60 +167,12 @@ describe('ProjectBoard model', () => {
 
   describe('Drag and Drop', () => {
     describe('getNewPosition', () => {
-      const array = [{ position: 24 }, { position: 20 }, { position: 16 }];
+      const array = [{ position: 24, state: 'finished' }, { position: 20, state: 'finished' }, { position: 16, state: 'unstarted' }, { position: 12, state: 'unstarted' }, { position: 8, state: 'started' }, { position: 4, state: 'started' }];
 
       describe('same column', () => {
         const isSameColumn = true;
         describe('Dragging from bottom to up', () => {
-          const sourceIndex = 2;
-          const destinationIndex = 1;
-          it('returns a new position', () => {
-            expect(
-              ProjectBoard.getNewPosition(
-                destinationIndex,
-                sourceIndex,
-                array,
-                isSameColumn,
-                '',
-              ),
-            ).toEqual(22);
-          });
-        });
-
-        describe('Dragging from top to down', () => {
-          const sourceIndex = 0;
-          const destinationIndex = 1;
-          it('return a new position', () => {
-            expect(
-              ProjectBoard.getNewPosition(
-                destinationIndex,
-                sourceIndex,
-                array,
-                isSameColumn,
-                '',
-              ),
-            ).toEqual(18);
-          });
-        });
-
-        describe('Dragging to first index', () => {
-          const sourceIndex = 2;
-          const destinationIndex = 0;
-          it('returns a new position', () => {
-            expect(
-              ProjectBoard.getNewPosition(
-                destinationIndex,
-                sourceIndex,
-                array,
-                isSameColumn,
-                '',
-              ),
-            ).toEqual(23);
-          });
-        });
-
-        describe('Dragging to last index', () => {
-          const sourceIndex = 0;
+          const sourceIndex = 3;
           const destinationIndex = 2;
           it('returns a new position', () => {
             expect(
@@ -229,17 +181,14 @@ describe('ProjectBoard model', () => {
                 sourceIndex,
                 array,
                 isSameColumn,
-                '',
+                'unstarted',
               ),
-            ).toEqual(17);
+            ).toEqual(15);
           });
         });
-      });
 
-      describe("Differents columns", () => {
-        const isSameColumn = false;
-        describe("Dragging to another column", () => {
-          const sourceIndex = 2;
+        describe('Dragging from top to down', () => {
+          const sourceIndex = 0;
           const destinationIndex = 1;
           it('returns a new position', () => {
             expect(
@@ -248,14 +197,14 @@ describe('ProjectBoard model', () => {
                 sourceIndex,
                 array,
                 isSameColumn,
-                '',
+                'finished',
               ),
-            ).toEqual(22);
+            ).toEqual(21);
           });
         });
 
         describe('Dragging to first index', () => {
-          const sourceIndex = 2;
+          const sourceIndex = 1;
           const destinationIndex = 0;
           it('returns a new position', () => {
             expect(
@@ -264,15 +213,15 @@ describe('ProjectBoard model', () => {
                 sourceIndex,
                 array,
                 isSameColumn,
-                '',
+                'finished',
               ),
             ).toEqual(23);
           });
         });
 
         describe('Dragging to last index', () => {
-          const sourceIndex = 0;
-          const destinationIndex = 3;
+          const sourceIndex = 4;
+          const destinationIndex = 5;
           it('returns a new position', () => {
             expect(
               ProjectBoard.getNewPosition(
@@ -280,9 +229,60 @@ describe('ProjectBoard model', () => {
                 sourceIndex,
                 array,
                 isSameColumn,
-                '',
+                'started',
               ),
-            ).toEqual(17);
+            ).toEqual(5);
+          });
+        });
+      });
+
+      describe("Different columns", () => {
+        const isSameColumn = false;
+        describe("Dragging to another column", () => {
+          const sourceIndex = 3;
+          const destinationIndex = 2;
+          it('returns a new position', () => {
+            expect(
+              ProjectBoard.getNewPosition(
+                destinationIndex,
+                sourceIndex,
+                array,
+                isSameColumn,
+                'unstarted',
+              ),
+            ).toEqual(15);
+          });
+        });
+
+        describe('Dragging to first index', () => {
+          const sourceIndex = 1;
+          const destinationIndex = 0;
+          it('returns a new position', () => {
+            expect(
+              ProjectBoard.getNewPosition(
+                destinationIndex,
+                sourceIndex,
+                array,
+                isSameColumn,
+                'finished',
+              ),
+            ).toEqual(23);
+          });
+        });
+
+        describe('Dragging to last index', () => {
+          const sourceIndex = 4;
+          const destinationIndex = 6;
+          it('returns a new position', () => {
+            expect(
+              ProjectBoard.getNewPosition(
+                destinationIndex,
+                sourceIndex,
+                array,
+                isSameColumn,
+                'started',
+              ),
+            ).toEqual(5);
           });
         });
       });

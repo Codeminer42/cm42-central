@@ -68,10 +68,18 @@ export const toggleColumn = (projectBoard, column, callback) => {
 }
 
 // Drag And drop utils
-const calculatePosition = (aboveStory, bellowStory) => {
-  if (bellowStory === undefined) return Number(aboveStory.position) + 1;
-  if (aboveStory === undefined) return Number(bellowStory.position) - 1;
-  return (Number(bellowStory.position) + Number(aboveStory.position)) / 2;
+const calculatePosition = (aboveStory, bellowStory, storyState) => {
+  const aboveStoryState = aboveStory?.state;
+  const bellowStoryState = bellowStory?.state;
+  const aboveStoryPosition = aboveStory?.position;
+  const bellowStoryPosition = bellowStory?.position;
+
+  if (!bellowStory) return Number(aboveStoryPosition) + 1;
+  if (!aboveStory) return Number(bellowStoryPosition) - 1;
+  if (aboveStoryState === storyState && bellowStoryState !== storyState) return Number(aboveStoryPosition) + 1;
+  if (bellowStoryState === storyState && aboveStoryState !== storyState) return Number(bellowStoryPosition) - 1;
+
+  return (Number(bellowStoryPosition) + Number(aboveStoryPosition)) / 2;
 };
 
 export const getNewPosition = (
@@ -79,6 +87,7 @@ export const getNewPosition = (
   sourceIndex,
   storiesArray,
   isSameColumn,
+  storyState,
 ) => {
   if (isEmpty(storiesArray)) {
     return 1; // if array is empty than set 1 to story position
@@ -88,12 +97,14 @@ export const getNewPosition = (
     return calculatePosition(
       storiesArray[destinationIndex - 1],
       storiesArray[destinationIndex],
+      storyState,
     );
   }
 
   return calculatePosition(
     storiesArray[destinationIndex],
     storiesArray[destinationIndex + 1],
+    storyState,
   );
 };
 
