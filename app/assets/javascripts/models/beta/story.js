@@ -131,7 +131,7 @@ export const deleteStory = (storyId, projectId) =>
     .delete(`/projects/${projectId}/stories/${storyId}`);
 
 export const addNewAttributes = (current, newAttributes) => {
-  return extend({}, { ...current, ...newAttributes });
+  return { ...current, ...newAttributes };
 };
 
 export const search = async (queryParam, projectId) => {
