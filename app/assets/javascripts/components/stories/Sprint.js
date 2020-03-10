@@ -26,7 +26,10 @@ const defaultProps = {
 
 const Sprint = ({
   fetchStories,
-  sprint
+  sprint,
+  sprintIndex,
+  columnId,
+  isDropDisabled
 }) => {
   const isDone = useMemo(() => sprint.hasOwnProperty('hasStories'), [sprint]);
 
@@ -77,7 +80,16 @@ const Sprint = ({
         isClosed={isClosed}
       />
       <div className={classes}>
-        {stories && <Stories stories={stories} />}
+        {
+          stories && (
+            <Stories
+              stories={stories}
+              columnId={columnId}
+              sprintIndex={sprintIndex}
+              isDropDisabled={isDropDisabled}
+            />
+          )
+        }
       </div>
     </div>
   );

@@ -66,7 +66,8 @@ describe('Done selector functions', () => {
             startDate: '',
             storyIds: [4],
             endDate: '',
-            stories: []
+            stories: [],
+            isDropDisabled: true
           },
           {
             iterationNumber: 2,
@@ -74,7 +75,8 @@ describe('Done selector functions', () => {
             startDate: '',
             storyIds: [1,2,3],
             endDate: '',
-            stories: []
+            stories: [],
+            isDropDisabled: true
           },
           {
             iterationNumber: 1,
@@ -82,7 +84,8 @@ describe('Done selector functions', () => {
             startDate: '',
             storyIds: [],
             endDate: '',
-            stories: []
+            stories: [],
+            isDropDisabled: true
           }
         ]);
       });

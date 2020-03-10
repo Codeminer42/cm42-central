@@ -1,6 +1,6 @@
 import actionTypes from 'actions/actionTypes';
 import {
-  toggleStory, editStory, updateStory, setLoadingStory, cloneStory,
+  toggleStory, editStory, addNewAttributes, setLoadingStory, cloneStory,
   storyFailure, withoutNewStory, createNewStory, replaceOrAddNewStory
 } from 'models/beta/story';
 import * as Note from 'models/beta/note';
@@ -70,7 +70,7 @@ const storiesReducer = (state = initialState, action) => {
       return allScopes(state, action.story.id, stories => {
         return stories.map(
           updateIfSameId(action.story.id, story =>
-            updateStory(story, { ...action.story, needsToSave: false })
+            addNewAttributes(story, { ...action.story, needsToSave: false })
           ))
         })
     case actionTypes.STORY_FAILURE:

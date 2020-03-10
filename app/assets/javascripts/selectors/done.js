@@ -4,5 +4,6 @@ export const mountPastIterations = (pastIterations, stories) =>
     number: sprint.iterationNumber,
     startDate: sprint.startDate,
     endDate: sprint.endDate,
-    stories: stories.filter(story => sprint.storyIds.includes(story.id))
+    stories: stories.filter(story => sprint.storyIds.includes(story.id)),
+    isDropDisabled: true
   })).reverse();

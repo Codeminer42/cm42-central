@@ -55,12 +55,14 @@
 }
 
 .HistoryChange {
+  max-width: 30vw;
   background: $white;
   border-radius: 6px;
   padding: 5px 0 5px 5px;
   display: flex;
   flex-direction: column;
   margin: 0.5em 2em 0.5em 1em;
+  overflow: auto;
 
   &__action {
     font-weight: bold;

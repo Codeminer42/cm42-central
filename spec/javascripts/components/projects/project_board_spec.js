@@ -37,44 +37,6 @@ describe('<ProjectBoard />', () => {
     return shallow(<ProjectBoard {...defaultProps} {...props } />);
   };
 
-  it('renders <SideBar />', () => {
-    const wrapper = render({
-      projectBoard: { 
-        isFetched: true,
-        search: {
-          loading: false
-        },
-        visibleColumns: {
-          backlog: true,
-          done: true,
-          chillyBin: true
-        },
-        reverse: true
-      }
-    });
-
-    expect(wrapper.find('[data-id="side-bar"]')).toExist();
-  });
-
-  it('render <Notifications />', () => {
-    const wrapper = render({
-      projectBoard: { 
-        isFetched: true,
-        search: {
-          loading: false
-        },
-        visibleColumns: {
-          backlog: true,
-          done: true,
-          chillyBin: true
-        },
-        reverse: true
-      },
-    });
-
-    expect(wrapper.find('[data-id="notifications"]')).toExist();
-  });
-
   describe('when projectBoard.isFetched is false',  () => {
     it('renders <ProjectLoading />', () => {
       const wrapper = render();
@@ -104,67 +66,62 @@ describe('<ProjectBoard />', () => {
 
       expect(spinnerLoading.exists()).toBeFalsy();
     });
-  });
 
-  describe('when projectBoard.reverse is false', () => {
-    const aditionalProps = {
-      projectBoard: {
-        isFetched: true,
-        search: {
-          loading: false
-        },
-        reverse: false,
-        visibleColumns: {
-          backlog: true,
-          done: true,
-          chillyBin: true
+    it('renders <SideBar />', () => {
+      const wrapper = render({
+        projectBoard: { 
+          isFetched: true,
+          search: {
+            loading: false
+          },
+          visibleColumns: {
+            backlog: true,
+            done: true,
+            chillyBin: true
+          },
+          reverse: true
         }
-      }
-    };
-
-    it('renders normal-column', () => {
-      const wrapper = render(aditionalProps);
-      const normalColumn = wrapper.find('[data-id="normal-column"]');
-
-      expect(normalColumn.exists()).toBeTruthy();
+      });
+  
+      expect(wrapper.find('[data-id="side-bar"]')).toExist();
     });
-
-    it('does not render reversed-column', () => {
-      const wrapper = render(aditionalProps);
-      const reversedColumn = wrapper.find('[data-id="reversed-column"]');
-
-      expect(reversedColumn.exists()).toBeFalsy();
-    });
-  });
-
-  describe('when projectBoard.reverse is true', () => {
-    const aditionalProps = {
-      projectBoard: {
-        isFetched: true,
-        search: {
-          loading: false
+  
+    it('render <Notifications />', () => {
+      const wrapper = render({
+        projectBoard: { 
+          isFetched: true,
+          search: {
+            loading: false
+          },
+          visibleColumns: {
+            backlog: true,
+            done: true,
+            chillyBin: true
+          },
+          reverse: true
         },
-        reverse: true,
-        visibleColumns: {
-          backlog: true,
-          done: true,
-          chillyBin: true
-        }
-      }
-    };
-
-    it('renders reversed-column', () => {
-      const wrapper = render(aditionalProps);
-      const reversedColumn = wrapper.find('[data-id="reversed-column"]');
-
-      expect(reversedColumn.exists()).toBeTruthy();
+      });
+  
+      expect(wrapper.find('[data-id="notifications"]')).toExist();
     });
 
-    it('does not renders normal-column', () => {
-      const wrapper = render(aditionalProps);
-      const normalColumn = wrapper.find('[data-id="normal-column"]');
-
-      expect(normalColumn.exists()).toBeFalsy();
+    it('render <Columns />', () => {
+      const wrapper = render({
+        projectBoard: { 
+          isFetched: true,
+          search: {
+            loading: false
+          },
+          visibleColumns: {
+            backlog: true,
+            done: true,
+            chillyBin: true
+          },
+          reverse: true
+        },
+      });
+  
+      expect(wrapper.find('[data-id="columns"]')).toExist();
     });
   });
 

@@ -1,30 +1,54 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Sprint from "./Sprint";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Sprint from './Sprint';
+import { Droppable } from 'react-beautiful-dnd';
+import { isEmpty } from 'underscore';
 
 const propTypes = {
-  sprints: PropTypes.array
+  sprints: PropTypes.array,
+  fetchStories: PropTypes.func,
+  columnId: PropTypes.string
 };
 
 const defaultProps = {
   sprints: [],
 };
 
-const renderSprints = (sprints, fetchStories) =>
+const renderSprints = (sprints, fetchStories, columnId) => (
   sprints.map(
-    sprint =>
+    (sprint, index) => (
       <Sprint
         key={sprint.number}
         sprint={sprint}
+        sprintIndex={index}
+        columnId={columnId}
         fetchStories={fetchStories}
+        isDropDisabled={sprint.isDropDisabled}
       />
+    )
   )
+)
 
-const Sprints = ({ sprints, fetchStories }) => {
-  if (!sprints.length) return null;
+const droppableContainer = columnId => (
+  <Droppable droppableId={JSON.stringify({columnId, sprintIndex: 0})}>
+    {provided => (
+      <div className='Sprints' ref={provided.innerRef} {...provided.droppableProps}>
+        {provided.placeholder}
+      </div>
+    )}
+  </Droppable>
+);
 
-  return <div className="Sprints">{renderSprints(sprints, fetchStories)}</div>;
-};
+
+const Sprints = ({ sprints, fetchStories, columnId }) => (
+  <div className='Sprints'>
+    {
+      isEmpty(sprints)
+        ? droppableContainer(columnId)
+        : renderSprints(sprints, fetchStories, columnId)
+    }
+  </div>
+);
 
 Sprint.propTypes = propTypes;
 Sprint.defaultProps = defaultProps;

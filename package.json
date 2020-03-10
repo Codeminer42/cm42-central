@@ -5,7 +5,9 @@
   "scripts": {
     "test": "jest",
     "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
-    "lint": "eslint app/assets/javascripts"
+    "lint": "eslint app/assets/javascripts",
+    "start:test": "rails s -e test -p 5000 & wait-on http://localhost:5000",
+    "cy:run": "cypress run -P spec/"
   },
   "jest": {
     "setupFilesAfterEnv": [
@@ -92,9 +94,10 @@
     "raf": "^3.4.1",
     "rails-erb-loader": "^5.0.2",
     "react": "^16.12.0",
+    "react-beautiful-dnd": "^12.0.0",
     "react-clipboard.js": "^2.0.16",
     "react-color": "^2.17.3",
-    "react-datepicker": "^1.0.0",
+    "react-datepicker": "^2.10.1",
     "react-dom": "^16.12.0",
     "react-dropzone": "^10.2.1",
     "react-mentions": "^3.1.1",
@@ -112,22 +115,26 @@
     "tether-shepherd": "^1.8.1",
     "underscore": "^1.9.1",
     "uuid": "^3.3.3",
+    "wait-on": "^3.3.0",
     "webpack": "^4.41.2",
     "webpack-dev-server": "^3.9.0",
     "webpack-manifest-plugin": "^2.2.0",
     "webpack-merge": "^4.2.2"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.8.3",
+    "@babel/plugin-proposal-optional-chaining": "^7.8.3",
     "@babel/plugin-transform-modules-commonjs": "^7.7.4",
     "@testing-library/jest-dom": "^4.2.4",
-    "babel-eslint": "^10.0.3",
+    "babel-eslint": "^10.1.0",
     "babel-jest": "^24.9.0",
     "core-js": "^2.6.3",
     "coveralls": "^3.0.9",
+    "cypress": "^3.6.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "es6-promise": "^4.2.8",
-    "eslint": "^6.7.1",
+    "eslint": "^6.8.0",
     "eslint-config-react-app": "^5.0.2",
     "eslint-plugin-backbone": "^2.1.1",
     "eslint-plugin-flowtype": "^4.5.2",

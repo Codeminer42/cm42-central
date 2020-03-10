@@ -15,7 +15,7 @@ export const getColumns = createSelector(
   (column, stories, project, pastIterations) => {
     switch (column) {
       case Column.CHILLY_BIN:
-        return withScope(stories).filter(story => Column.isChillyBin(story)).sort(comparePosition);
+        return withScope(stories).filter(Column.isChillyBin).sort(comparePosition);
       case Column.BACKLOG:
         const orderedStories = orderByState(withScope(stories).filter(
           story => Column.isBacklog(story, project))

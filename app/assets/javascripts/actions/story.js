@@ -18,7 +18,7 @@ export const loadHistory = (title) => ({
   title
 })
 
-export const receiveHistory = (activities, title) => ({
+export const receiveHistory = activities => ({
   type: actionTypes.RECEIVE_HISTORY,
   activities,
 })
@@ -147,6 +147,23 @@ export const updateCollapsedStory = (storyId, projectId, newAttributes, from) =>
         dispatch(storyFailure(story.id, I18n.t('messages.operations.cancel.default_cancel'), from))
       }
     });
+  }
+
+export const dragDropStory = (storyId, projectId, newAttributes, from) =>
+  async (dispatch, getState, { Story }) => {
+    const { stories } = getState();
+    const story = Story.findById(Story.withScope(stories, from), storyId);
+
+    const newStory = Story.addNewAttributes(story, newAttributes);
+
+    try {
+      const updatedStory = await Story.update(newStory, projectId);
+      return dispatch(updateStorySuccess(updatedStory, from))
+    }
+    catch (error) {
+      dispatch(sendErrorNotification(error))
+      return dispatch(storyFailure(story.id, error, from))
+    }
   }
 
 export const saveStory = (storyId, projectId, from, options) =>

@@ -35,3 +35,10 @@ export const operands = {
   type: 'story_type',
   state: 'state'
 }
+
+export const columns = {
+  CHILLY_BIN: 'chillyBin',
+  DONE: 'done',
+  BACKLOG: 'backlog',
+  SEARCH: 'search'
+}

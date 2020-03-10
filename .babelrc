@@ -1,14 +1,17 @@
 {
   "presets": [
     "@babel/preset-react",
-    ["@babel/preset-env", {
-      "modules": false,
-      "targets": {
-        "browsers": "> 1%",
-        "uglify": true
-      },
-      "useBuiltIns": "usage"
-    }]
+    [
+      "@babel/preset-env",
+      {
+        "modules": false,
+        "targets": {
+          "browsers": "> 1%",
+          "uglify": true
+        },
+        "useBuiltIns": "usage"
+      }
+    ]
   ],
   "env": {
     "test": {
@@ -19,7 +22,13 @@
   },
   "plugins": [
     "@babel/plugin-transform-runtime",
-    ["@babel/plugin-proposal-class-properties", { "spec": true }]
+    [
+      "@babel/plugin-proposal-class-properties",
+      {
+        "spec": true
+      }
+    ],
+    "@babel/plugin-proposal-optional-chaining",
+    "@babel/plugin-proposal-nullish-coalescing-operator"
   ]
 }
-

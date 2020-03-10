@@ -11,8 +11,8 @@ describe('Story Actions', () => {
         ...story,
         _editing: {
           ...story,
-          _isDirty: true
-        }
+          _isDirty: true,
+        },
       };
 
       const FakeStory = {
@@ -20,7 +20,7 @@ describe('Story Actions', () => {
         update: sinon.stub().resolves(story),
         isNew: sinon.stub().returns(false),
         withScope: sinon.stub().returns([story]),
-        needConfirmation: sinon.stub().returns(false)
+        needConfirmation: sinon.stub().returns(false),
       };
 
       const fakeDispatch = sinon.stub().resolves({});
@@ -28,10 +28,16 @@ describe('Story Actions', () => {
       const fakeGetState = sinon.stub();
       fakeGetState.returns({ stories: { all: [editedStory] } });
 
-      await Story.saveStory(editedStory.id, projectId)
-        (fakeDispatch, fakeGetState, { Story: FakeStory });
+      await Story.saveStory(editedStory.id, projectId)(
+        fakeDispatch,
+        fakeGetState,
+        { Story: FakeStory },
+      );
 
-      expect(FakeStory.update).toHaveBeenCalledWith(editedStory._editing, projectId);
+      expect(FakeStory.update).toHaveBeenCalledWith(
+        editedStory._editing,
+        projectId,
+      );
     });
 
     it('dispatch only toggleStory when _isDirty is false', async () => {
@@ -39,15 +45,15 @@ describe('Story Actions', () => {
         ...story,
         _editing: {
           ...story,
-          _isDirty: false
-        }
+          _isDirty: false,
+        },
       };
 
       const FakeStory = {
         findById: sinon.stub().returns(editedStory),
         update: sinon.stub().resolves(story),
         isNew: sinon.stub().returns(false),
-        withScope: sinon.stub().returns([story])
+        withScope: sinon.stub().returns([story]),
       };
 
       const fakeDispatch = sinon.stub().resolves({});
@@ -55,11 +61,18 @@ describe('Story Actions', () => {
       const fakeGetState = sinon.stub();
       fakeGetState.returns({ stories: { all: [editedStory] } });
 
-      await Story.saveStory(editedStory.id, projectId)
-        (fakeDispatch, fakeGetState, { Story: FakeStory });
+      await Story.saveStory(editedStory.id, projectId)(
+        fakeDispatch,
+        fakeGetState,
+        { Story: FakeStory },
+      );
 
-      expect(fakeDispatch).toHaveBeenCalledWith(Story.toggleStory(editedStory.id));
-      expect(fakeDispatch).not.toHaveBeenCalledWith(Story.updateStorySuccess(story));
+      expect(fakeDispatch).toHaveBeenCalledWith(
+        Story.toggleStory(editedStory.id),
+      );
+      expect(fakeDispatch).not.toHaveBeenCalledWith(
+        Story.updateStorySuccess(story),
+      );
     });
 
     it('dispatch updateStorySuccess when _isDirty', async () => {
@@ -67,8 +80,8 @@ describe('Story Actions', () => {
         ...story,
         _editing: {
           ...story,
-          _isDirty: true
-        }
+          _isDirty: true,
+        },
       };
 
       const FakeStory = {
@@ -76,7 +89,7 @@ describe('Story Actions', () => {
         update: sinon.stub().resolves(story),
         isNew: sinon.stub().returns(false),
         withScope: sinon.stub().returns([story]),
-        needConfirmation: sinon.stub().returns(false)
+        needConfirmation: sinon.stub().returns(false),
       };
 
       const fakeDispatch = sinon.stub().resolves({});
@@ -84,18 +97,23 @@ describe('Story Actions', () => {
       const fakeGetState = sinon.stub();
       fakeGetState.returns({ stories: { all: [editedStory] } });
 
-      await Story.saveStory(editedStory.id, projectId)
-        (fakeDispatch, fakeGetState, { Story: FakeStory });
+      await Story.saveStory(editedStory.id, projectId)(
+        fakeDispatch,
+        fakeGetState,
+        { Story: FakeStory },
+      );
 
-      expect(fakeDispatch).toHaveBeenCalledWith(Story.updateStorySuccess(story));
+      expect(fakeDispatch).toHaveBeenCalledWith(
+        Story.updateStorySuccess(story),
+      );
     });
 
     it('dispatch only addStory when isNew', async () => {
       const editedStory = {
         ...story,
         _editing: {
-          ...story
-        }
+          ...story,
+        },
       };
 
       const FakeStory = {
@@ -103,7 +121,7 @@ describe('Story Actions', () => {
         post: sinon.stub().resolves(story),
         isNew: sinon.stub().returns(true),
         withScope: sinon.stub().returns([story]),
-        needConfirmation: sinon.stub().returns(false)
+        needConfirmation: sinon.stub().returns(false),
       };
 
       const fakeDispatch = sinon.stub().resolves({});
@@ -111,24 +129,31 @@ describe('Story Actions', () => {
       const fakeGetState = sinon.stub();
       fakeGetState.returns({ stories: { all: [editedStory] } });
 
-      await Story.saveStory(editedStory.id, projectId)
-        (fakeDispatch, fakeGetState, { Story: FakeStory });
+      await Story.saveStory(editedStory.id, projectId)(
+        fakeDispatch,
+        fakeGetState,
+        { Story: FakeStory },
+      );
 
       expect(fakeDispatch).toHaveBeenCalledWith(Story.addStory(story));
-      expect(fakeDispatch).not.toHaveBeenCalledWith(Story.updateStorySuccess(story));
-      expect(fakeDispatch).not.toHaveBeenCalledWith(Story.toggleStory(editedStory.id));
+      expect(fakeDispatch).not.toHaveBeenCalledWith(
+        Story.updateStorySuccess(story),
+      );
+      expect(fakeDispatch).not.toHaveBeenCalledWith(
+        Story.toggleStory(editedStory.id),
+      );
     });
 
     it('dispatches storyFailure when promise fails', async () => {
-      const error = { error: "boom" };
+      const error = { error: 'boom' };
 
       const editedStory = {
         ...story,
         _editing: {
           ...story,
           loading: true,
-          _isDirty: true
-        }
+          _isDirty: true,
+        },
       };
 
       const FakeStory = {
@@ -136,40 +161,46 @@ describe('Story Actions', () => {
         update: sinon.stub().rejects(error),
         isNew: sinon.stub().returns(false),
         withScope: sinon.stub().returns([story]),
-        needConfirmation: sinon.stub().returns(false)
+        needConfirmation: sinon.stub().returns(false),
       };
 
       const fakeDispatch = sinon.stub().resolves({});
       const fakeGetState = sinon.stub();
-      fakeGetState.returns({ stories: { all:  [editedStory] } });
+      fakeGetState.returns({ stories: { all: [editedStory] } });
 
-      await Story.saveStory(editedStory.id, projectId)
-        (fakeDispatch, fakeGetState, { Story: FakeStory });
+      await Story.saveStory(editedStory.id, projectId)(
+        fakeDispatch,
+        fakeGetState,
+        { Story: FakeStory },
+      );
 
-      expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(editedStory.id, error));
+      expect(fakeDispatch).toHaveBeenCalledWith(
+        Story.storyFailure(editedStory.id, error),
+      );
     });
   });
 
   describe('deleteStory', () => {
     const storyId = 420;
     const projectId = 42;
-    const story = { id: storyId, title: 'foo' }
+    const story = { id: storyId, title: 'foo' };
 
     it('calls Story.deleteStory with projectId and storyId', async () => {
       const FakeStory = {
         findById: sinon.stub().returns(story),
         deleteStory: sinon.stub().resolves({}),
-        withScope: sinon.stub().returns([story])
+        withScope: sinon.stub().returns([story]),
       };
       const fakeGetState = sinon.stub().returns({
         stories: {
-          all: [story]
-        }
+          all: [story],
+        },
       });
       const fakeDispatch = sinon.stub().resolves({});
 
-      await Story.deleteStory(storyId, projectId)
-        (fakeDispatch, fakeGetState, { Story: FakeStory });
+      await Story.deleteStory(storyId, projectId)(fakeDispatch, fakeGetState, {
+        Story: FakeStory,
+      });
 
       expect(FakeStory.deleteStory).toHaveBeenCalledWith(storyId, projectId);
     });
@@ -178,36 +209,42 @@ describe('Story Actions', () => {
       const FakeStory = {
         findById: sinon.stub().returns(story),
         deleteStory: sinon.stub().resolves({}),
-        withScope: sinon.stub().returns([story])
+        withScope: sinon.stub().returns([story]),
       };
       const fakeGetState = sinon.stub().returns({
-        stories: { all: [story] }
+        stories: { all: [story] },
       });
       const fakeDispatch = sinon.stub().resolves({});
 
-      await Story.deleteStory(storyId, projectId)
-        (fakeDispatch, fakeGetState, { Story: FakeStory });
+      await Story.deleteStory(storyId, projectId)(fakeDispatch, fakeGetState, {
+        Story: FakeStory,
+      });
 
-      expect(fakeDispatch).toHaveBeenCalledWith(Story.deleteStorySuccess(storyId));
+      expect(fakeDispatch).toHaveBeenCalledWith(
+        Story.deleteStorySuccess(storyId),
+      );
     });
 
     it('dispatches storyFailure when promise fails', async () => {
-      const error = { error: "boom" };
+      const error = { error: 'boom' };
 
       const FakeStory = {
         findById: sinon.stub().returns(story),
         deleteStory: sinon.stub().rejects(error),
-        withScope: sinon.stub().returns([story])
+        withScope: sinon.stub().returns([story]),
       };
       const fakeGetState = sinon.stub().returns({
-        stories: { all: [story] }
+        stories: { all: [story] },
       });
       const fakeDispatch = sinon.stub().resolves({});
 
-      await Story.deleteStory(storyId, projectId)
-        (fakeDispatch, fakeGetState, { Story: FakeStory });
+      await Story.deleteStory(storyId, projectId)(fakeDispatch, fakeGetState, {
+        Story: FakeStory,
+      });
 
-      expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(storyId, error));
+      expect(fakeDispatch).toHaveBeenCalledWith(
+        Story.storyFailure(storyId, error),
+      );
     });
   });
 
@@ -217,10 +254,76 @@ describe('Story Actions', () => {
       const fakeDispatch = sinon.stub().resolves({});
       const fakeGetState = sinon.stub().returns({});
 
-      Story.highlight(storyId)
-        (fakeDispatch, fakeGetState, {});
+      Story.highlight(storyId)(fakeDispatch, fakeGetState, {});
 
-      expect(fakeDispatch).toHaveBeenCalledWith(Story.updateHighlight(storyId, true));
+      expect(fakeDispatch).toHaveBeenCalledWith(
+        Story.updateHighlight(storyId, true),
+      );
+    });
+  });
+
+  describe('dragDropStory', () => {
+    const story = storyFactory();
+    const updatedStory = { ...story, position: 3.54 };
+
+    it('calls Story.updateStorySuccess with new position', async () => {
+      const FakeStory = {
+        findById: sinon.stub().returns(updatedStory),
+        update: sinon.stub().resolves(updatedStory),
+        isNew: sinon.stub().returns(false),
+        withScope: sinon.stub().returns([story]),
+        addNewAttributes: sinon.stub().returns(story)
+      };
+      const fakeGetState = sinon.stub();
+      fakeGetState.returns({
+        stories: { all: [updatedStory] },
+      });
+
+      const fakeDispatch = sinon.stub().resolves({});
+
+      await Story.dragDropStory(story.id, story.projectId, {
+        position: 3.54,
+      })(fakeDispatch, fakeGetState, { Story: FakeStory });
+
+      expect(fakeDispatch).toHaveBeenCalledWith(
+        Story.updateStorySuccess(updatedStory),
+      );
+    });
+
+    describe('when promise fails', () => {
+      const error = { error: 'boom' };
+
+      const FakeStory = {
+        findById: sinon.stub().returns(updatedStory),
+        update: sinon.stub().rejects(error),
+        isNew: sinon.stub().returns(false),
+        withScope: sinon.stub().returns([story]),
+        addNewAttributes: sinon.stub().returns(story)
+      };
+
+      const fakeGetState = sinon.stub().returns({
+        stories: { all: [updatedStory] },
+      });
+
+      const fakeDispatch = sinon.stub().resolves({});
+
+      beforeEach(async () => {
+        await Story.dragDropStory(story.id, story.projectId, {
+          position: 3.54,
+        })(fakeDispatch, fakeGetState, { Story: FakeStory });
+      });
+
+      it('dispatches storyFailure', () => {
+        expect(fakeDispatch).toHaveBeenCalledWith(
+          Story.storyFailure(updatedStory.id, error),
+        );
+      });
+
+      it('do not dispatch updateStorySuccess', () => {
+        expect(fakeDispatch).not.toHaveBeenCalledWith(
+          Story.updateStorySuccess(updatedStory),
+        );
+      });
     });
   });
 
@@ -236,7 +339,7 @@ describe('Story Actions', () => {
       let confirm;
 
       beforeEach(() => {
-        needConfirmation = sinon.stub().returns(false)
+        needConfirmation = sinon.stub().returns(false);
         confirm = sinon.stub();
       });
 
@@ -244,7 +347,12 @@ describe('Story Actions', () => {
         it('call callback.onConfirmed', async () => {
           const callback = { onConfirmed: sinon.stub() };
 
-          await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+          await Story.confirmBeforeSaveIfNeeded(
+            story,
+            confirm,
+            needConfirmation,
+            callback,
+          );
           expect(callback.onConfirmed).toHaveBeenCalled();
         });
       });
@@ -254,28 +362,43 @@ describe('Story Actions', () => {
         let callback;
 
         beforeEach(() => {
-          error = { error: "boom" };
-          callback = { 
-            onConfirmed: sinon.stub().rejects(error), 
+          error = { error: 'boom' };
+          callback = {
+            onConfirmed: sinon.stub().rejects(error),
             onError: sinon.stub(),
-            onCanceled: sinon.stub()
+            onCanceled: sinon.stub(),
           };
         });
 
         it('call callback.onConfirmed', async () => {
-          await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+          await Story.confirmBeforeSaveIfNeeded(
+            story,
+            confirm,
+            needConfirmation,
+            callback,
+          );
 
           expect(callback.onConfirmed).toHaveBeenCalled();
         });
 
         it('call callback.onError', async () => {
-          await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+          await Story.confirmBeforeSaveIfNeeded(
+            story,
+            confirm,
+            needConfirmation,
+            callback,
+          );
 
           expect(callback.onError).toHaveBeenCalled();
         });
 
         it('do not call callback.onCanceled', async () => {
-          await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+          await Story.confirmBeforeSaveIfNeeded(
+            story,
+            confirm,
+            needConfirmation,
+            callback,
+          );
 
           expect(callback.onCanceled).not.toHaveBeenCalled();
         });
@@ -289,19 +412,29 @@ describe('Story Actions', () => {
         let confirm;
 
         beforeEach(() => {
-          callback = { onConfirmed: sinon.stub(), onCanceled: sinon.stub()};
+          callback = { onConfirmed: sinon.stub(), onCanceled: sinon.stub() };
           needConfirmation = sinon.stub().returns(true);
           confirm = sinon.stub().returns(false);
         });
 
         it('do not call callback.onConfirmed', async () => {
-          await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+          await Story.confirmBeforeSaveIfNeeded(
+            story,
+            confirm,
+            needConfirmation,
+            callback,
+          );
 
           expect(callback.onConfirmed).not.toHaveBeenCalled();
         });
 
         it('call callback.onCanceled', async () => {
-          await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+          await Story.confirmBeforeSaveIfNeeded(
+            story,
+            confirm,
+            needConfirmation,
+            callback,
+          );
 
           expect(callback.onCanceled).toHaveBeenCalled();
         });
@@ -320,7 +453,12 @@ describe('Story Actions', () => {
           it('call callback.onConfirmed', async () => {
             const callback = { onConfirmed: sinon.stub() };
 
-            await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+            await Story.confirmBeforeSaveIfNeeded(
+              story,
+              confirm,
+              needConfirmation,
+              callback,
+            );
             expect(callback.onConfirmed).toHaveBeenCalled();
           });
         });
@@ -330,28 +468,43 @@ describe('Story Actions', () => {
           let callback;
 
           beforeEach(() => {
-            error = { error: "boom" };
-            callback = { 
-              onConfirmed: sinon.stub().rejects(error), 
+            error = { error: 'boom' };
+            callback = {
+              onConfirmed: sinon.stub().rejects(error),
               onError: sinon.stub(),
-              onCanceled: sinon.stub()
+              onCanceled: sinon.stub(),
             };
           });
 
           it('call callback.onConfirmed', async () => {
-            await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+            await Story.confirmBeforeSaveIfNeeded(
+              story,
+              confirm,
+              needConfirmation,
+              callback,
+            );
 
             expect(callback.onConfirmed).toHaveBeenCalled();
           });
 
           it('call callback.onError', async () => {
-            await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+            await Story.confirmBeforeSaveIfNeeded(
+              story,
+              confirm,
+              needConfirmation,
+              callback,
+            );
 
             expect(callback.onError).toHaveBeenCalled();
           });
 
           it('do not call callback.onCanceled', async () => {
-            await Story.confirmBeforeSaveIfNeeded(story, confirm, needConfirmation, callback);
+            await Story.confirmBeforeSaveIfNeeded(
+              story,
+              confirm,
+              needConfirmation,
+              callback,
+            );
 
             expect(callback.onCanceled).not.toHaveBeenCalled();
           });

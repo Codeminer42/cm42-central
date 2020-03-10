@@ -16,13 +16,6 @@ ActiveRecord::Base.transaction do
   )
 
   project.stories.create!(
-    title: 'A user should be able to create features',
-    story_type: 'feature',
-    requested_by: user,
-    labels: 'features'
-  )
-
-  project.stories.create!(
     title: 'A user should be able to create bugs',
     story_type: 'bug',
     requested_by: user,
@@ -49,6 +42,22 @@ ActiveRecord::Base.transaction do
     requested_by: user,
     estimate: 1,
     labels: 'estimates,features'
+  )
+
+  project.stories.create!(
+    title: 'A user should be able to create features',
+    story_type: 'feature',
+    state: 'unscheduled',
+    requested_by: user,
+    labels: 'features'
+  )
+
+  project.stories.create!(
+    title: 'A user should be able drag this story from chilly bean and drop to backlog',
+    story_type: 'bug',
+    state: 'unscheduled',
+    requested_by: user,
+    labels: 'bugs'
   )
 
   3.times do |n|

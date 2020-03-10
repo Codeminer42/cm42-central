@@ -1,5 +1,9 @@
 language: ruby
-cache: bundler
+cache: 
+  bundler: true
+  npm: true
+  directories:
+    - ~/.cache
 services:
   - postgresql
   - redis-server
@@ -10,6 +14,7 @@ addons:
   apt:
     packages:
       - chromium-chromedriver
+      - libgconf-2-4
   artifacts:
     paths:
       - $(ls -d -1 $PWD/tmp/capybara/* | tr "\n" ":")
@@ -32,5 +37,7 @@ rvm:
   - 2.6.0
 script:
   - "bundle exec rake travis"
+  - yarn start:test
+  - yarn cy:run 
   - "bundle exec codeclimate-test-reporter"
   - "yarn coveralls"

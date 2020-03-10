@@ -7,7 +7,7 @@ import { toggleStory } from '../../actions/story';
 import { releaseIsLate, isHighlighted, isAccepted } from '../../models/beta/story';
 import classNames from 'classnames';
 
-export const StoryItem = ({ story, toggleStory, from }) => {
+export const StoryItem = ({ story, toggleStory, from, index, sprintIndex, columnId}) => {
   const className = classNames({
     'Story--late-release': releaseIsLate(story),
     'Story--highlighted': isHighlighted(story),
@@ -20,7 +20,10 @@ export const StoryItem = ({ story, toggleStory, from }) => {
     onToggle: () => toggleStory(story.id, from),
     className,
     title,
-    from
+    from,
+    index,
+    sprintIndex,
+    columnId
   }
 
   return (
