@@ -249,7 +249,7 @@ export const deserialize = (data, options) => {
   });
 
   options = options || {};
-  const collapsed = options.collapse == undefined ? true : options.collapse;
+  const collapsed = options.collapse === undefined ? true : options.collapse;
 
   return {
     ...story,

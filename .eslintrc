@@ -11,4 +11,4 @@ rules:
   backbone/initialize-on-top: 0
   backbone/events-on-top: 0
   backbone/no-silent: 0
-
+  strict: 0
