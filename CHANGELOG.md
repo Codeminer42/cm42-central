@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [2.6.0] 2020-03-11
+
+### Added
+
+- [ V2 ] Drag-n-drop
+
 ### Fixed
 - Bug when change release date of story.
 
@@ -477,7 +483,7 @@ and CVE-2018-14567)
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v2.5.0...HEAD
+[Unreleased]: https://github.com/Codeminer42/cm42-central/compare/v2.6.0...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
@@ -516,3 +522,4 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [2.3.0]: https://github.com/Codeminer42/cm42-central/tree/v2.3.0
 [2.4.0]: https://github.com/Codeminer42/cm42-central/tree/v2.4.0
 [2.5.0]: https://github.com/Codeminer42/cm42-central/tree/v2.5.0
+[2.6.0]: https://github.com/Codeminer42/cm42-central/tree/v2.6.0
