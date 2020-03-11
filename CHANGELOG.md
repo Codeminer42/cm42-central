@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Fixed
+- Bug when change release date of story.
+
 ## [2.6.0] 2020-03-11
 
 ### Added
