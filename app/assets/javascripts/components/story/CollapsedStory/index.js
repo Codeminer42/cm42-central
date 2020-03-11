@@ -10,6 +10,7 @@ import CollapsedStoryEstimate from './CollapsedStoryEstimate';
 import CollapsedStoryStateActions from './CollapsedStoryStateActions';
 import CollapsedStoryInfo from './CollapsedStoryInfo';
 import StoryIcon from '../StoryIcon';
+import MDSpinner from "react-md-spinner";
 import * as Story from '../../../models/beta/story';
 import CollapsedStoryFocusButon from './CollapsedStoryFocusButton';
 import StoryPropTypes from '../../shapes/story';
@@ -41,49 +42,60 @@ export const Container = ({
   isHighlightable,
   isDragging,
   provided
-}) => (
-  <div
-    className={storyClassName(story, className, isDragging)}
-    onClick={onToggle}
-    title={title}
-    {...provided.draggableProps}
-    {...provided.dragHandleProps}
-    ref={provided.innerRef}
-  >
-    <StoryPopover story={story}>
-      <div className='Story__icons-block'>
-        <StoryIcon storyType={story.storyType} />
-        <CollapsedStoryEstimate estimate={story.estimate} />
-        <StoryDescriptionIcon description={story.description} />
-      </div>
-    </StoryPopover>
+}) => {
+  const isLoading = Boolean(story.loading);
 
-    <CollapsedStoryInfo story={story} />
+  return (
+    <div
+      className={storyClassName(story, className, isDragging)}
+      onClick={onToggle}
+      title={title}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
+      ref={provided.innerRef}
+    >
+      <StoryPopover story={story}>
+        <div className='Story__icons-block'>
+          <StoryIcon storyType={story.storyType} />
+          <CollapsedStoryEstimate estimate={story.estimate} />
+          <StoryDescriptionIcon description={story.description} />
+        </div>
+      </StoryPopover>
 
-    <CollapsedStoryStateActions story={story}
-      onUpdate={(newAttributes) =>
-        updateCollapsedStory(story.id, project.id, newAttributes)}
-    />
-    {
-      isHighlightable &&
-      <CollapsedStoryFocusButon onClick={() => highlight(story.id)} />
-    }
-  </div>
-)
+      <CollapsedStoryInfo story={story} />
 
-export const CollapsedStory = ({index, sprintIndex, columnId, ...props}) => {
+      {
+        isLoading ? (
+          <MDSpinner size={20} singleColor={"#333"} />
+        ) : (
+            <CollapsedStoryStateActions story={story}
+              onUpdate={(newAttributes) =>
+                updateCollapsedStory(story.id, project.id, newAttributes)}
+            />
+          )
+      }
+      {
+        isHighlightable &&
+        <CollapsedStoryFocusButon onClick={() => highlight(story.id)} />
+      }
+    </div>
+  )
+}
+
+export const CollapsedStory = ({ index, sprintIndex, columnId, ...props }) => {
   const { story } = { ...props }
-  const isDragDisabled = useMemo(() => 
+  const isDragDisabled = useMemo(() =>
     story.state === 'accepted' || columnId === 'search', [story, columnId]
   );
+
   return (
     <Draggable
-      draggableId={JSON.stringify({id: story.id.toString(), sprintIndex})}
-      index={index} 
+      draggableId={JSON.stringify({ id: story.id.toString(), sprintIndex })}
+      index={index}
       isDragDisabled={isDragDisabled}
     >
       {(provided, snapshot) => (
-        <Container {...props} provided={provided} isDragging={snapshot.isDragging}/>
+        <Container {...props} provided={provided} isDragging={snapshot.isDragging} />
       )}
     </Draggable>
   )
@@ -96,7 +108,7 @@ CollapsedStory.propTypes = {
   className: PropTypes.string,
   from: PropTypes.string,
   highlight: PropTypes.func,
-  index: PropTypes.number,  
+  index: PropTypes.number,
   sprintIndex: PropTypes.number,
   columnId: PropTypes.string
 };

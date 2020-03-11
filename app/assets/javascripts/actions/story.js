@@ -1,5 +1,6 @@
 import actionTypes from './actionTypes';
 import { sendSuccessNotification, sendErrorNotification } from './notifications';
+import { wait } from '../services/promises'
 
 export const createStory = (attributes, from) => ({
   type: actionTypes.CREATE_STORY,
@@ -56,6 +57,12 @@ export const updateStorySuccess = (story, from) => ({
   from
 });
 
+export const optimisticallyUpdate = (story, from) => ({
+  type: actionTypes.OPTIMISTICALLY_UPDATE,
+  story,
+  from
+});
+
 export const storyFailure = (id, error, from) => ({
   type: actionTypes.STORY_FAILURE,
   id,
@@ -90,8 +97,8 @@ export const setLoadingStory = (id, from) => ({
 
 export const confirmBeforeSaveIfNeeded = async (story, confirm, needConfirmation, callback) => {
   const confirmStoryChange = story => confirm(
-    I18n.t('story.definitive_sure', { 
-      action: I18n.t('story.change_to', { state: I18n.t(`story.state.${story.state}`) }) 
+    I18n.t('story.definitive_sure', {
+      action: I18n.t('story.change_to', { state: I18n.t(`story.state.${story.state}`) })
     })
   );
 
@@ -157,8 +164,13 @@ export const dragDropStory = (storyId, projectId, newAttributes, from) =>
     const newStory = Story.addNewAttributes(story, newAttributes);
 
     try {
+      dispatch(optimisticallyUpdate(newStory, from));
+
       const updatedStory = await Story.update(newStory, projectId);
-      return dispatch(updateStorySuccess(updatedStory, from))
+
+      await wait(300);
+
+      return dispatch(updateStorySuccess(updatedStory, from));
     }
     catch (error) {
       dispatch(sendErrorNotification(error))
