@@ -101,4 +101,17 @@ describe User do
       expect(story.requested_by).to be_nil
     end
   end
+
+  describe '#miner?' do
+    let(:regular_user) { build :user, email: 'dummy@example.com' }
+    let(:codeminer_user) { build :user, email: 'dummy@codeminer42.com' }
+
+    it 'returns true to members with codeminer42 email' do
+      expect(codeminer_user.miner?).to be(true)
+    end
+
+    it 'returns false to members with regular email' do
+      expect(regular_user.miner?).to be(false)
+    end
+  end
 end

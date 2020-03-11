@@ -2,8 +2,6 @@ class Beta::ProjectBoardsController < ApplicationController
   before_action :set_fluid_layout
 
   def show
-    authorize current_user
-
     result = Beta::ProjectBoardOperations::Read.call(
       params[:id],
       current_user,
@@ -11,6 +9,7 @@ class Beta::ProjectBoardsController < ApplicationController
       projects_scope: policy_scope(Project)
     )
 
+    authorize result.data.project, policy_class: Beta::ProjectPolicy
     render json: result.data.as_json(root: false)
   end
 

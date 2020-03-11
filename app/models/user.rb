@@ -125,4 +125,8 @@ class User < ApplicationRecord
     Story.where(owned_by_id: id).update_all(owned_by_id: nil, owned_by_name: nil)
     Membership.where(user_id: id).delete_all
   end
+
+  def miner?
+    /(\S)+\@codeminer42\.com/.match?(email)
+  end
 end
