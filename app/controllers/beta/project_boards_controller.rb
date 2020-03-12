@@ -9,7 +9,9 @@ class Beta::ProjectBoardsController < ApplicationController
       projects_scope: policy_scope(Project)
     )
 
-    authorize result.data.project, policy_class: Beta::ProjectPolicy
+    @project = result.data.project
+    authorize @project, policy_class: Beta::ProjectPolicy
+
     render json: result.data.as_json(root: false)
   end
 
