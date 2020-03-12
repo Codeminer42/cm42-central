@@ -102,16 +102,20 @@ describe User do
     end
   end
 
-  describe '#miner?' do
+  describe '#early_v2_user?' do
     let(:regular_user) { build :user, email: 'dummy@example.com' }
-    let(:codeminer_user) { build :user, email: 'dummy@codeminer42.com' }
+    let(:valid_v2_user) { build :user, email: 'dummy@early_v2_email.com' }
 
-    it 'returns true to members with codeminer42 email' do
-      expect(codeminer_user.miner?).to be(true)
+    before do
+      ENV["EARLY_V2_EMAIL"] = '@early_v2_email.com'
+    end
+
+    it 'returns true to members with early_v2_email' do
+      expect(valid_v2_user.early_v2_user?).to be(true)
     end
 
     it 'returns false to members with regular email' do
-      expect(regular_user.miner?).to be(false)
+      expect(regular_user.early_v2_user?).to be(false)
     end
   end
 end

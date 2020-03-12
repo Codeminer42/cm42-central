@@ -23,6 +23,7 @@ describe Beta::ProjectPolicy do
       before do
         project.users << current_user
         current_team.projects << project
+        ENV["EARLY_V2_EMAIL"] = '@early_v2_email.com'
       end
 
       context 'regular user' do
@@ -31,8 +32,8 @@ describe Beta::ProjectPolicy do
         it { should_not permit(:show) }
       end
 
-      context 'codeminer user' do
-        let(:current_user) { create :user, :with_team, email: 'dummy@codeminer42.com' }
+      context 'early v2 user' do
+        let(:current_user) { create :user, :with_team, email: 'dummy@early_v2_email.com' }
 
         it { should permit(:show) }
       end

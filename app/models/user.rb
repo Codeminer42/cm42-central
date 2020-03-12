@@ -126,7 +126,7 @@ class User < ApplicationRecord
     Membership.where(user_id: id).delete_all
   end
 
-  def miner?
-    /(\S)+\@codeminer42\.com/.match?(email)
+  def early_v2_user?
+    ENV['EARLY_V2_EMAIL'] && email.include?(ENV['EARLY_V2_EMAIL'])
   end
 end
