@@ -2,9 +2,10 @@ class Beta::ProjectsController < ApplicationController
   before_action :set_fluid_layout
 
   def show
-    authorize current_user
     @project_id = params[:id]
     @project = current_user.projects.friendly.find @project_id
+
+    authorize @project, policy_class: Beta::ProjectPolicy
     update_current_team
   end
 
