@@ -3,5 +3,7 @@
 }
 
 .Sprint {
-  height: 100%;
+  &:last-child {
+    height: 100%;
+  }
 }
