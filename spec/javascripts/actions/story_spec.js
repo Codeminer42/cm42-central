@@ -287,8 +287,6 @@ describe('Story Actions', () => {
         position: 3.54,
       }, from)(fakeDispatch, fakeGetState, { Story: FakeStory });
 
-      await wait(300);
-
       expect(fakeDispatch).toHaveBeenCalledWith(Story.updateStorySuccess(updatedStory, from));
 
     });

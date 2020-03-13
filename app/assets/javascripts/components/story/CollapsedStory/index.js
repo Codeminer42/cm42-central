@@ -42,10 +42,7 @@ export const Container = ({
   isHighlightable,
   isDragging,
   provided
-}) => {
-  const isLoading = Boolean(story.loading);
-
-  return (
+}) => (
     <div
       className={storyClassName(story, className, isDragging)}
       onClick={onToggle}
@@ -65,7 +62,7 @@ export const Container = ({
       <CollapsedStoryInfo story={story} />
 
       {
-        isLoading ? (
+        story.loading ? (
           <MDSpinner size={20} singleColor={"#333"} />
         ) : (
             <CollapsedStoryStateActions story={story}
@@ -80,13 +77,12 @@ export const Container = ({
       }
     </div>
   )
-}
 
 export const CollapsedStory = ({ index, sprintIndex, columnId, ...props }) => {
   const { story } = { ...props }
-  const isLoading = Boolean(story.loading);
+
   const isDragDisabled = useMemo(() =>
-    story.state === 'accepted' || columnId === 'search' || isLoading, [story, columnId]
+    story.state === 'accepted' || columnId === 'search' || story.loading, [story, columnId]
   );
 
   return (

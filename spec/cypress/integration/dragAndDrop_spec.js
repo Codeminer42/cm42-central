@@ -32,6 +32,9 @@ describe("DragAndDrop", () => {
 
       cy.waitUpdateStory(200);
 
+      // wait loading story
+      cy.wait(300);
+
       // check new order
       cy.getDraggableByIndex(2).should("contain", hoverStory);
       cy.getDraggableByIndex(3).should("contain", dragStory);
@@ -50,6 +53,11 @@ describe("DragAndDrop", () => {
 
       // reorder
       cy.moveStory("@second", Keys.arrowUp, Keys.space);
+
+      cy.waitUpdateStory(200);
+
+      // wait loading story
+      cy.wait(300);
 
       // check new order
       cy.getDraggableByIndex(2).should("contain", dragStory);
