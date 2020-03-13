@@ -45,7 +45,7 @@ export const Container = ({
 }) => (
     <div
       className={storyClassName(story, className, isDragging)}
-      onClick={onToggle}
+      onClick={!story.loading ? onToggle : () => { }}
       title={title}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
