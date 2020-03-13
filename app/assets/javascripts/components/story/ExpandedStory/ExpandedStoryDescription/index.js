@@ -22,14 +22,14 @@ const ExpandedStoryDescription = ({
       identifier="description"
     >
       {
-        editing
-          ? <ExpandedStoryDescriptionTextArea 
-              description={story._editing.description || ''}
-              onEdit={onEdit}
-              disabled={disabled}
-              users={users}
-              data-id="text-area"
-            />
+        editing || !story.description
+          ? <ExpandedStoryDescriptionTextArea
+            description={story._editing.description || ''}
+            onEdit={onEdit}
+            disabled={disabled}
+            users={users}
+            data-id="text-area"
+          />
           : (
             <ExpandedStoryContentArea
               onClick={toggleField}
