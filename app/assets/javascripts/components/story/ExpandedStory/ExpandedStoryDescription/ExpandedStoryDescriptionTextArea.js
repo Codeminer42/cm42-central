@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { MentionsInput, Mention } from 'react-mentions';
 import PropTypes from 'prop-types';
 
@@ -11,6 +11,15 @@ const ExpandedStoryDescriptionTextArea = ({
   const extractMentionData = (({ id, username }) => ({ id, display: username }));
   const formatMention = (_, display) => `@${display} `;
   const mentionableUsers = users.map(extractMentionData);
+  const inputEl = useRef(null);
+
+  useEffect(() => {
+    if (description) {
+      let strLength = inputEl.current.value.length;
+      inputEl.current.focus();
+      inputEl.current.setSelectionRange(strLength, strLength);
+    }
+  }, []);
 
   return (
     <MentionsInput
@@ -20,6 +29,7 @@ const ExpandedStoryDescriptionTextArea = ({
       value={description}
       data-id="text-area"
       markup="@{{__type__||__id__||__display__}}"
+      inputRef={inputEl}
     >
       <Mention
         displayTransform={formatMention}
@@ -37,5 +47,5 @@ ExpandedStoryDescriptionTextArea.propTypes = {
   users: PropTypes.array.isRequired,
   description: PropTypes.string.isRequired
 };
-  
+
 export default ExpandedStoryDescriptionTextArea;
