@@ -1,6 +1,5 @@
 import * as Story from 'actions/story';
 import storyFactory from '../support/factories/storyFactory';
-import { wait } from '../../../app/assets/javascripts/services/promises'
 
 describe('Story Actions', () => {
   describe('saveStory', () => {
