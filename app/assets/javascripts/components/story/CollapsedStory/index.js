@@ -15,17 +15,17 @@ import * as Story from '../../../models/beta/story';
 import CollapsedStoryFocusButon from './CollapsedStoryFocusButton';
 import StoryPropTypes from '../../shapes/story';
 
-const storyClassName = (story, additionalClassname = '', isDragging) => {
+const storyClassName = (story, additionalClassname = '', isDragging, isDragDisabled) => {
   const isStoryNotEstimated = Story.isStoryNotEstimated(story.storyType, story.estimate);
   const isRelease = Story.isRelease(story);
-
   return classname(
     'Story Story--collapsed',
     {
       'Story--release': isRelease,
       'Story--unestimated': isStoryNotEstimated,
       'Story--estimated': !isStoryNotEstimated,
-      'Story--isDragging': isDragging
+      'Story--isDragging': isDragging,
+      'Story--cantBeMoved': story.loading || isDragDisabled,
     },
     additionalClassname
   );
@@ -41,10 +41,11 @@ export const Container = ({
   highlight,
   isHighlightable,
   isDragging,
-  provided
+  provided,
+  isDragDisabled,
 }) => (
     <div
-      className={storyClassName(story, className, isDragging)}
+      className={storyClassName(story, className, isDragging, isDragDisabled)}
       onClick={!story.loading ? onToggle : () => { }}
       title={title}
       {...provided.draggableProps}
@@ -92,7 +93,7 @@ export const CollapsedStory = ({ index, sprintIndex, columnId, ...props }) => {
       isDragDisabled={isDragDisabled}
     >
       {(provided, snapshot) => (
-        <Container {...props} provided={provided} isDragging={snapshot.isDragging} />
+        <Container {...props} provided={provided} isDragging={snapshot.isDragging} isDragDisabled={isDragDisabled} />
       )}
     </Draggable>
   )

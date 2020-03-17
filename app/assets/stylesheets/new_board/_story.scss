@@ -66,6 +66,10 @@
         opacity: 0.8;
       }
 
+      &.Story--cantBeMoved {
+        cursor: pointer;
+      }
+
       .Story {
         &__description-icon {
           display: flex;
@@ -410,7 +414,7 @@
             @extend .btn-default;
             @extend .btn-xs;
           }
-          
+
           .infoToolTip {
             height: 22px;
             cursor: default;
