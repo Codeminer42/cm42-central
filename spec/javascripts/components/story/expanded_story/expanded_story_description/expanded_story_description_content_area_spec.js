@@ -16,33 +16,14 @@ describe('<ExpandedStoryContentArea />', () => {
 
     return { wrapper, descriptionContent, editButton }
   }
-    
+
 
   describe("when description isn't null", () => {
     const description = 'description example';
 
     it('renders <ExpandedStoryDescriptionContent />', () => {
-      const {  descriptionContent } = renderContent({ description });
-      expect(descriptionContent.exists()).toBeTruthy();
-    });
-
-    it('does not render <ExpandedStoryDescriptionEditButton />', () => {
-      const { editButton } = renderContent({ description });
-      expect(editButton.exists()).toBeFalsy();
-    });
-  });
-
-  describe("when description is ''", () => {
-    const description = '';
-
-    it('does not render <ExpandedStoryDescriptionContent />', () => {
       const { descriptionContent } = renderContent({ description });
-      expect(descriptionContent.exists()).toBeFalsy();
-    });
-  
-    it('renders <ExpandedStoryDescriptionEditButton />', () => {
-      const { editButton } = renderContent({ description });
-      expect(editButton.exists()).toBeTruthy();
+      expect(descriptionContent.exists()).toBeTruthy();
     });
   });
 });

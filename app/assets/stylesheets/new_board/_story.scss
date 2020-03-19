@@ -369,6 +369,10 @@
           }
 
           &__description {
+            .story-description-content {
+              cursor: text;
+            }
+
             .edit-description-button {
               font-size: 12px;
               border-radius: 5px;
@@ -382,6 +386,11 @@
             .edit-description-text {
               resize: vertical;
               min-height: 100px;
+              background-color: #fff;
+
+              &__input {
+                @extend .form-control;
+              }
 
               &__suggestions {
                 position: absolute !important;
@@ -410,7 +419,7 @@
             @extend .btn-default;
             @extend .btn-xs;
           }
-          
+
           .infoToolTip {
             height: 22px;
             cursor: default;
