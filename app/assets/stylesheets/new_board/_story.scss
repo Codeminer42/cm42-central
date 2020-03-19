@@ -66,6 +66,10 @@
         opacity: 0.8;
       }
 
+      &.Story--cantBeMoved {
+        cursor: pointer;
+      }
+
       .Story {
         &__description-icon {
           display: flex;

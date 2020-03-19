@@ -1,6 +1,6 @@
 import actionTypes from 'actions/actionTypes';
 import {
-  toggleStory, editStory, addNewAttributes, setLoadingStory, cloneStory,
+  toggleStory, editStory, addNewAttributes, setLoadingStory, setLoadingValue, cloneStory,
   storyFailure, withoutNewStory, createNewStory, replaceOrAddNewStory
 } from 'models/beta/story';
 import * as Note from 'models/beta/note';
@@ -19,13 +19,13 @@ const storiesReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.RECEIVE_STORIES:
       return {
-       ...state,
-       [action.from]: action.data
+        ...state,
+        [action.from]: action.data
       };
     case actionTypes.RECEIVE_PAST_STORIES:
       return {
         ...state,
-        [action.from]: [ ...state[action.from], ...action.stories]
+        [action.from]: [...state[action.from], ...action.stories]
       };
     case actionTypes.CREATE_STORY:
       const newStory = createNewStory(state[action.from], action.attributes);
@@ -70,9 +70,18 @@ const storiesReducer = (state = initialState, action) => {
       return allScopes(state, action.story.id, stories => {
         return stories.map(
           updateIfSameId(action.story.id, story =>
-            addNewAttributes(story, { ...action.story, needsToSave: false })
+            addNewAttributes(story, { ...action.story, needsToSave: false, loading: false })
           ))
-        })
+      })
+    case actionTypes.OPTIMISTICALLY_UPDATE:
+      return allScopes(state, action.story.id, stories => {
+        return stories.map(
+          updateIfSameId(action.story.id, story => {
+            const newStory = setLoadingValue(action.story, true);
+            return addNewAttributes(story, { ...newStory, needsToSave: false });
+          }
+          ))
+      })
     case actionTypes.STORY_FAILURE:
       return {
         ...state,
@@ -130,9 +139,9 @@ const storiesReducer = (state = initialState, action) => {
         ...state,
         [action.from]: state[action.from].map(story => {
           return story.id === action.storyId
-                  ? { ...story, highlighted: action.highlighted }
-                  : story
-          })
+            ? { ...story, highlighted: action.highlighted }
+            : story
+        })
       }
     case actionTypes.DELETE_NOTE:
       return {

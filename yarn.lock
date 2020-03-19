@@ -9505,6 +9505,13 @@ react-is@^16.8.1, react-is@^16.9.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.11.0.tgz#b85dfecd48ad1ce469ff558a882ca8e8313928fa"
   integrity sha512-gbBVYR2p8mnriqAwWx9LbuUrShnAuSCNnuPGyc7GJrMVQtPDAh8iLpv7FRuMPFb56KkaVZIYSz1PrjI9q0QPCw==
 
+react-md-spinner@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-md-spinner/-/react-md-spinner-1.0.0.tgz#14159e21b167af64bc9fb70c2558b5d9a5003820"
+  integrity sha512-W3akCl5v/qBKhsrRsIxMl+hNQojj+SiN0+wdMAsXDfoYhQhtyg9LAdsC7P/1r3bYAJsjDmi4f5qz0N5lh26FiQ==
+  dependencies:
+    stylis "^3.5.4"
+
 react-mentions@^3.1.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/react-mentions/-/react-mentions-3.3.1.tgz#b9e111443403de6a8c7e7f363d6d10939f0615f4"
@@ -10848,6 +10855,11 @@ stylehacks@^4.0.0:
     browserslist "^4.0.0"
     postcss "^7.0.0"
     postcss-selector-parser "^3.0.0"
+
+stylis@^3.5.4:
+  version "3.5.4"
+  resolved "https://registry.yarnpkg.com/stylis/-/stylis-3.5.4.tgz#f665f25f5e299cf3d64654ab949a57c768b73fbe"
+  integrity sha512-8/3pSmthWM7lsPBKv7NXkzn2Uc9W7NotcwGNpJaa3k7WMM1XDCA4MgT5k/8BIexd5ydZdboXtU90XH9Ec4Bv/Q==
 
 substyle@^6.3.1:
   version "6.3.1"

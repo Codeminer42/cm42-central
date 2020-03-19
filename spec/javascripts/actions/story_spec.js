@@ -265,6 +265,7 @@ describe('Story Actions', () => {
   describe('dragDropStory', () => {
     const story = storyFactory();
     const updatedStory = { ...story, position: 3.54 };
+    const from = 1;
 
     it('calls Story.updateStorySuccess with new position', async () => {
       const FakeStory = {
@@ -283,11 +284,10 @@ describe('Story Actions', () => {
 
       await Story.dragDropStory(story.id, story.projectId, {
         position: 3.54,
-      })(fakeDispatch, fakeGetState, { Story: FakeStory });
+      }, from)(fakeDispatch, fakeGetState, { Story: FakeStory });
 
-      expect(fakeDispatch).toHaveBeenCalledWith(
-        Story.updateStorySuccess(updatedStory),
-      );
+      expect(fakeDispatch).toHaveBeenCalledWith(Story.updateStorySuccess(updatedStory, from));
+
     });
 
     describe('when promise fails', () => {
