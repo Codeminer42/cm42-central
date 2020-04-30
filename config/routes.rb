@@ -113,6 +113,7 @@ Rails.application.routes.draw do
   end
 
   root 'projects#index'
+  post 'projects/test-project/stories_api' => 'stories_api#create_from_api'
 
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
 
