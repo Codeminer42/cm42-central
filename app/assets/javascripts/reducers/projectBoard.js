@@ -10,7 +10,7 @@ const initialState = {
   visibleColumns: {
     chillyBin: true,
     backlog: true,
-    done: true
+    done: true,
   }
 };
 

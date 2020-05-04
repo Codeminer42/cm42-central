@@ -21,7 +21,8 @@ const defaultProps = {
     startDate: 0,
     points: 0,
     stories: []
-  }
+  },
+  isDropDisabled: false
 };
 
 const Sprint = ({

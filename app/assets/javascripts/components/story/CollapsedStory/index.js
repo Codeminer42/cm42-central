@@ -43,6 +43,7 @@ export const Container = ({
   isDragging,
   provided,
   isDragDisabled,
+  onClickLabel
 }) => (
     <div
       className={storyClassName(story, className, isDragging, isDragDisabled)}
@@ -60,7 +61,7 @@ export const Container = ({
         </div>
       </StoryPopover>
 
-      <CollapsedStoryInfo story={story} />
+      <CollapsedStoryInfo story={story} onClickLabel={onClickLabel} />
 
       {
         story.loading ? (
@@ -108,7 +109,8 @@ CollapsedStory.propTypes = {
   highlight: PropTypes.func,
   index: PropTypes.number,
   sprintIndex: PropTypes.number,
-  columnId: PropTypes.string
+  columnId: PropTypes.string,
+  onClickLabel: PropTypes.func.isRequired
 };
 
 const mapStateToProps = ({

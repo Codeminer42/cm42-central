@@ -25,7 +25,8 @@ export const storyTypes = {
 
 export const storyScopes = {
   ALL: 'all',
-  SEARCH: 'search'
+  SEARCH: 'search',
+  EPIC: 'epic'
 }
 
 export const operands = {

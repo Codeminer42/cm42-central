@@ -512,4 +512,31 @@ describe('Story Actions', () => {
       });
     });
   });
+
+  describe('closeEpic', () => {
+    it('dispatch receiveStories with zero stories in epic scope', () => {
+      const fakeDispatch = jest.fn();
+
+      Story.closeEpic()(fakeDispatch);
+
+      expect(fakeDispatch).toHaveBeenCalledWith(Story.receiveStories([], 'epic'));
+    });
+  });
+
+  describe('toggleEpic', () => {
+    it('dispatch receiveStories with stories in epic scope', () => {
+      const stories = Array(3).fill(storyFactory());
+      const fakeDispatch = jest.fn();
+      const fakeStory = {
+        withScope: jest.fn().mockReturnValue(stories),
+        getByLabel: jest.fn().mockReturnValue(stories),
+      };
+      const fakeGetState = jest.fn().mockReturnValue({ stories });
+      const label = 'label';
+  
+      Story.toggleEpic(label)(fakeDispatch, fakeGetState, { Story: fakeStory });
+  
+      expect(fakeDispatch).toHaveBeenCalledWith(Story.receiveStories(stories, 'epic'));
+    });
+  });
 });

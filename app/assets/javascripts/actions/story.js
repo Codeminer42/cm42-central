@@ -1,6 +1,7 @@
 import actionTypes from './actionTypes';
 import { sendSuccessNotification, sendErrorNotification } from './notifications';
-import { wait } from '../services/promises'
+import { wait } from '../services/promises';
+import { storyScopes } from '../libs/beta/constants';
 
 export const createStory = (attributes, from) => ({
   type: actionTypes.CREATE_STORY,
@@ -94,6 +95,18 @@ export const setLoadingStory = (id, from) => ({
   id,
   from
 });
+
+export const closeEpic = () =>
+  dispatch => dispatch(receiveStories([], storyScopes.EPIC));
+
+export const toggleEpic = label =>
+  (dispatch, getState, { Story }) => {
+    const { stories } = getState();
+    const scopedStories = Story.withScope(stories);
+    const filteredStories = Story.getByLabel(scopedStories, label);
+
+    dispatch(receiveStories(filteredStories, storyScopes.EPIC));
+  }
 
 export const confirmBeforeSaveIfNeeded = async (story, confirm, needConfirmation, callback) => {
   const confirmStoryChange = story => confirm(

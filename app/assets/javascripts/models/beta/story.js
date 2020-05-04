@@ -5,7 +5,7 @@ import * as Label from './label';
 import PropTypes from 'prop-types';
 import StoryPropTypesShape, { storyPropTypes } from '../../components/shapes/story';
 import moment from 'moment';
-import { has, extend } from 'underscore';
+import { has } from 'underscore';
 import * as History from './history';
 
 const compareValues = (a, b) => {
@@ -427,3 +427,17 @@ export const editingStoryPropTypesShape = PropTypes.shape({
   ...storyPropTypes,
   _editing: StoryPropTypesShape
 });
+
+export const getByLabel = (stories, label) => {
+  const filteredStories = stories.filter(story => {
+    const storyLabels = Label.getNames(story.labels);
+
+    return Label.hasLabel(storyLabels, label);
+  });
+
+  return filteredStories;
+}
+
+export const donePoints = stories => stories.reduce((points, story) => getCompletedPoints(story) + points, 0);
+
+export const remainingPoints = stories => totalPoints(stories) - donePoints(stories);
