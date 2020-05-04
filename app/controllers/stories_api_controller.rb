@@ -1,26 +1,28 @@
-class StoriesApiController < ActionController::API
+class StoriesApiController < ApplicationController
   include ActionView::Helpers::TextHelper
   include Pundit
 
-  before_action :set_project, except: :create_from_api
+  before_action :set_project
   before_action :render_message, unless: :check_header
   skip_before_action :authenticate_user!, only: :create_from_api
   skip_after_action :verify_authorized
 
-  def create(story_params)
-    @story = policy_scope(Story).build(allowed_params(story_params))
-    if StoryOperations::Create.call(@story, User.first)
-      render json: @story
-    end
-  end
-
   def create_from_api
-    params[:stories].each do |story_params|
-      create(story_params)
+    @stories = stories_params.map do |story_params|
+      create(story_params.merge(project: @project))
     end
+
+    render json: @stories
   end
 
   private
+
+  def create(story_params)
+    story = @project.stories.build(allowed_params(story_params))
+
+
+    StoryOperations::Create.call(story, @project.users.first)
+  end
 
   def allowed_params(story)
     attachinary_params = %i[
@@ -36,13 +38,10 @@ class StoriesApiController < ActionController::API
     )
   end
 
-  def stories_params
-    attachinary_params = %i[
-      id public_id version signature width height format resource_type
-      created_at tags bytes type etag url secure_url original_filename
-    ]
+  private
 
-    params.require(:story)
+  def stories_params
+    params.require(:stories)
   end
 
   def render_message
@@ -51,5 +50,9 @@ class StoriesApiController < ActionController::API
 
   def check_header
     request.headers["x-api-key"] == ENV["EXPORT_API_TOKEN"]
+  end
+
+  def set_project
+    @project = Project.friendly.find(params[:project_id]) #TODO: User policy_scope(Project)
   end
 end

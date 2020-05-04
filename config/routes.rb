@@ -62,6 +62,7 @@ Rails.application.routes.draw do
     end
     resources :stories_bulk_destroy, only: [:create]
     resources :stories_bulk_update, only: [:create]
+    post '/stories_api', to: 'stories_api#create_from_api'
   end
 
   resources :project_boards, only: :show do
@@ -113,8 +114,6 @@ Rails.application.routes.draw do
   end
 
   root 'projects#index'
-  post 'projects/test-project/stories_api' => 'stories_api#create_from_api'
-
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
 
   mount GrapeSwaggerRails::Engine => '/api/v1/explore'
