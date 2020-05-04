@@ -62,7 +62,7 @@ Rails.application.routes.draw do
     end
     resources :stories_bulk_destroy, only: [:create]
     resources :stories_bulk_update, only: [:create]
-    post '/stories_api', to: 'stories_api#create_from_api'
+    post '/bulk_create', to: 'bulk_create#create_from_api'
   end
 
   resources :project_boards, only: :show do

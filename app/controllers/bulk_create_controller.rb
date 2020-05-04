@@ -1,4 +1,4 @@
-class StoriesApiController < ApplicationController
+class BulkCreateController < ApplicationController
   include ActionView::Helpers::TextHelper
   include Pundit
 
@@ -20,8 +20,7 @@ class StoriesApiController < ApplicationController
   def create(story_params)
     story = @project.stories.build(allowed_params(story_params))
 
-
-    StoryOperations::Create.call(story, @project.users.first)
+    StoryOperations::Create.call(story, nil)
   end
 
   def allowed_params(story)
@@ -34,8 +33,7 @@ class StoriesApiController < ApplicationController
       :state, :requested_by_id, :owned_by_id, :position, :labels,
       documents: attachinary_params,
       tasks_attributes: %i[id name done],
-      notes_attributes: %i[id note]
-    )
+      notes_attributes: %i[id note])
   end
 
   private
@@ -45,14 +43,14 @@ class StoriesApiController < ApplicationController
   end
 
   def render_message
-    render json: { message: "Missing the custom attribute in header" }
+    render json: { message: 'Missing the custom attribute in header' }
   end
 
   def check_header
-    request.headers["x-api-key"] == ENV["EXPORT_API_TOKEN"]
+    request.headers['x-api-key'] == ENV['EXPORT_API_TOKEN']
   end
 
   def set_project
-    @project = Project.friendly.find(params[:project_id]) #TODO: User policy_scope(Project)
+    @project = Project.friendly.find(params[:project_id]) # TODO: Use policy_scope(Project)
   end
 end
