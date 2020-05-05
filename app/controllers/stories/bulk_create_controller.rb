@@ -11,7 +11,7 @@ module Stories
     def create
       stories = StoryOperations::CreateMany.call(stories_params,nil)
 
-      render json: stories
+      render json: stories, status: :created
     end
 
     private
@@ -32,7 +32,7 @@ module Stories
     end
 
     def render_message
-      render json: { message: 'Missing the custom attribute in header' }
+      render json: { message: 'Missing the custom attribute in header' }, status: :unauthorized
     end
 
     def check_header
