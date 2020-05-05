@@ -9,9 +9,9 @@ module Stories
     skip_after_action :verify_authorized
 
     def create
-      stories = StoryOperations::CreateMany.call(stories_params,nil)
+      stories = StoryOperations::CreateMany.call(stories_params, nil)
 
-      render json: stories
+      render json: stories, status: :created
     end
 
     private
@@ -23,20 +23,21 @@ module Stories
       ]
 
       params.permit(stories: [:title, :description, :estimate, :story_type, :release_date,
-        :state, :requested_by_id, :owned_by_id, :position, :labels,
-        documents: attachinary_params,
-        tasks_attributes: %i[id name done],
-        notes_attributes: %i[id note]]).require(:stories).map do |story|
-          story.merge(project: @project)
-        end
+                              :state, :requested_by_id, :owned_by_id, :position, :labels,
+                              documents: attachinary_params,
+                              tasks_attributes: %i[id name done],
+                              notes_attributes: %i[id note]]).require(:stories).map do |story|
+                                story.merge(project: @project)
+                              end
     end
 
     def render_message
-      render json: { message: 'Missing the custom attribute in header' }
+      render json: { message: 'Missing the custom attribute in header' }, status: :unauthorized
     end
 
     def check_header
-      request.headers['x-api-key'] == ENV['EXPORT_API_TOKEN']
+      request_header = request.headers['HTTP_X_API_TOKEN']
+      request_header == ENV['X_API_KEY'] if request_header.present?
     end
 
     def set_project

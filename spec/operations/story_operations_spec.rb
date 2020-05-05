@@ -85,6 +85,24 @@ describe StoryOperations do
     end
   end
 
+  describe '::CreateMany' do
+
+    context 'with valid params' do
+      let(:story) { attributes_for :story, project: project }
+      subject { -> { StoryOperations::CreateMany.call([story], user) } }
+
+      it { expect { subject.call }.to change { Story.count } }
+    end
+
+    context 'with invalid params' do
+      let(:story) { attributes_for :story,title: '', project: project }
+      subject { -> { StoryOperations::CreateMany.call([story], user) } }
+
+
+      it { is_expected.to_not change { Story.count } }
+    end
+  end
+
   describe '#documents_attributes' do
     before { story.save! }
 
