@@ -9,7 +9,7 @@ module Stories
     skip_after_action :verify_authorized
 
     def create
-      stories = StoryOperations::CreateMany.call(stories_params,nil)
+      stories = StoryOperations::CreateMany.create_stories(stories_params)
 
       render json: stories, status: :created
     end

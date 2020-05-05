@@ -5,9 +5,11 @@ require 'story_operations/pusher_notification'
 require 'story_operations/state_ensurement'
 
 module StoryOperations
-  class CreateMany < BaseOperations::Create
-    def operate!
-      @model = Story.create(@model)
+  class CreateMany
+    class << self
+      def create_stories(stories)
+        Story.create(stories)
+      end
     end
   end
 
