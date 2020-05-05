@@ -5,6 +5,12 @@ require 'story_operations/pusher_notification'
 require 'story_operations/state_ensurement'
 
 module StoryOperations
+  class CreateMany < BaseOperations::Create
+    def operate!
+      @model = Story.create(@model)
+    end
+  end
+
   class Create < BaseOperations::Create
     include MemberNotification
     include PusherNotification
