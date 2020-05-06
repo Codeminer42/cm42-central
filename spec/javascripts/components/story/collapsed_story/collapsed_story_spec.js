@@ -23,7 +23,7 @@ describe('<CollapsedStory />', () => {
     snapshot: {
       isDragging: false,
     },
-    onClickLabel: sinon.stub()
+    onLabelClick: sinon.stub()
   });
 
   describe('when estimate isn\'t null', () => {

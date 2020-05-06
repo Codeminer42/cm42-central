@@ -287,7 +287,7 @@ describe('<ProjectBoard />', () => {
     });
   });
 
-  describe('when have epicStories', () => {
+  describe('when there are epicStories', () => {
     it('renders epic column', () => {
       const props = {
         epicStories: [storyFactory()],
@@ -310,9 +310,10 @@ describe('<ProjectBoard />', () => {
     });
   });
 
-  describe('when have not epicStories', () => {
+  describe('when epicStories is empty', () => {
     it('does not render epic column', () => {
       const props = {
+        epicStories: [ ],
         projectBoard: { 
           isFetched: true,
           search: {

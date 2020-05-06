@@ -26,7 +26,7 @@ export const StoryItem = ({
   const handleClickLabel = (e, label) => {
     e.stopPropagation();
 
-    toggleEpic(label);
+    toggleEpic(label, story.projectId);
   }
 
   const childProps = {
@@ -38,7 +38,7 @@ export const StoryItem = ({
     index,
     sprintIndex,
     columnId,
-    onClickLabel: handleClickLabel
+    onLabelClick: handleClickLabel
   }
 
   return (

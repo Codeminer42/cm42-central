@@ -12,7 +12,7 @@ StoryLabel.propTypes = {
   onClick: PropTypes.func.isRequired
 };
 
-const CollapsedStoryLabels = ({ story, onClickLabel }) => {
+const CollapsedStoryLabels = ({ story, onLabelClick }) => {
   if (!story.labels) {
     return null
   }
@@ -20,7 +20,7 @@ const CollapsedStoryLabels = ({ story, onClickLabel }) => {
   return (
     <span className='Story__labels'>
       {Labels.getNames(story.labels).map(label => (
-        <StoryLabel key={label} label={label} onClick={e => onClickLabel(e, label)} />
+        <StoryLabel key={label} label={label} onClick={e => onLabelClick(e, label)} />
       ))}
     </span>
   );
@@ -28,7 +28,7 @@ const CollapsedStoryLabels = ({ story, onClickLabel }) => {
 
 CollapsedStoryLabels.propTypes = {
   story: StoryPropTypes,
-  onClickLabel: PropTypes.func.isRequired
+  onLabelClick: PropTypes.func.isRequired
 };
 
 export default CollapsedStoryLabels;

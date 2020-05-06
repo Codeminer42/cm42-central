@@ -1,3 +1,4 @@
+import { sendDefaultErrorNotification } from 'actions/notifications';
 import * as Story from 'actions/story';
 import storyFactory from '../support/factories/storyFactory';
 
@@ -513,30 +514,38 @@ describe('Story Actions', () => {
     });
   });
 
-  describe('closeEpic', () => {
-    it('dispatch receiveStories with zero stories in epic scope', () => {
-      const fakeDispatch = jest.fn();
-
-      Story.closeEpic()(fakeDispatch);
-
-      expect(fakeDispatch).toHaveBeenCalledWith(Story.receiveStories([], 'epic'));
-    });
-  });
-
   describe('toggleEpic', () => {
-    it('dispatch receiveStories with stories in epic scope', () => {
-      const stories = Array(3).fill(storyFactory());
-      const fakeDispatch = jest.fn();
-      const fakeStory = {
-        withScope: jest.fn().mockReturnValue(stories),
-        getByLabel: jest.fn().mockReturnValue(stories),
-      };
-      const fakeGetState = jest.fn().mockReturnValue({ stories });
-      const label = 'label';
-  
-      Story.toggleEpic(label)(fakeDispatch, fakeGetState, { Story: fakeStory });
-  
-      expect(fakeDispatch).toHaveBeenCalledWith(Story.receiveStories(stories, 'epic'));
+    const projectId = 1;
+    const stories = Array(3).fill(storyFactory());
+    const fakeGetState = jest.fn();
+    const label = 'label';
+
+    let fakeDispatch;
+
+    beforeEach(() => {
+      fakeDispatch = jest.fn();
+    });
+
+    describe('when does not throws an error', () => {
+      let fakeStory;
+
+      beforeEach(() => {
+        fakeStory = {
+          getByLabel: jest.fn().mockResolvedValue(stories),
+        };
+      });
+
+      it('dispatch receiveStories with stories in epic scope', async () => {
+        await Story.toggleEpic(label, projectId)(fakeDispatch, fakeGetState, { Story: fakeStory });
+    
+        expect(fakeDispatch).toHaveBeenCalledWith(Story.receiveStories(stories, 'epic'));
+      });
+
+      it('does not dispatch sendDefaultErrorNotification', async () => {
+        await Story.toggleEpic(label, projectId)(fakeDispatch, fakeGetState, { Story: fakeStory });
+    
+        expect(fakeDispatch).not.toHaveBeenCalledWith(sendDefaultErrorNotification());
+      });
     });
   });
 });

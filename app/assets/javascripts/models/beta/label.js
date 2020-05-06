@@ -31,5 +31,3 @@ export const joinLabels = (labels) =>
 
 export const getNames = (labels) =>
   labels.map(label => label.name);
-
-export const hasLabel = (labels, label) => labels.includes(label);

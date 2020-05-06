@@ -12,7 +12,7 @@ describe('<CollapsedStoryLabels />', () => {
 
     const story = storyFactory({ labels });
 
-    const wrapper = shallow(<CollapsedStoryLabels story={story} onClickLabel={sinon.stub()} />);
+    const wrapper = shallow(<CollapsedStoryLabels story={story} onLabelClick={sinon.stub()} />);
     expect(wrapper).toHaveClassName('Story__labels');
   });
 
@@ -24,7 +24,7 @@ describe('<CollapsedStoryLabels />', () => {
 
     const story = storyFactory({ labels });
 
-    const wrapper = shallow(<CollapsedStoryLabels story={story} onClickLabel={sinon.stub()} />);
+    const wrapper = shallow(<CollapsedStoryLabels story={story} onLabelClick={sinon.stub()} />);
 
     labels.forEach((label) => {
       expect(wrapper.find(`StoryLabel[label="${label.name}"]`)).toExist();

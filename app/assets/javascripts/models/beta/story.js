@@ -142,6 +142,14 @@ export const search = async (queryParam, projectId) => {
   return data.map(item => deserialize(item.story));
 }
 
+export const getByLabel = async (label, projectId) => {
+  const { data } = await httpService
+    .get(`/projects/${projectId}/stories?label=${label}`, {
+      timeout: 1500
+    })
+  return data.map(item => deserialize(item.story));
+}
+
 export const getHistory = async (storyId, projectId, users) => {
   const { data } = await httpService
     .get(`/projects/${projectId}/stories/${storyId}/activities`)
@@ -427,16 +435,6 @@ export const editingStoryPropTypesShape = PropTypes.shape({
   ...storyPropTypes,
   _editing: StoryPropTypesShape
 });
-
-export const getByLabel = (stories, label) => {
-  const filteredStories = stories.filter(story => {
-    const storyLabels = Label.getNames(story.labels);
-
-    return Label.hasLabel(storyLabels, label);
-  });
-
-  return filteredStories;
-}
 
 export const donePoints = stories => stories.reduce((points, story) => getCompletedPoints(story) + points, 0);
 

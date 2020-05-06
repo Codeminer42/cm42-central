@@ -1,6 +1,5 @@
 import * as Story from 'models/beta/story';
 import moment from 'moment';
-import storyFactory from '../../support/factories/storyFactory';
 import { status, storyTypes, storyScopes } from 'libs/beta/constants';
 
 describe('Story model', function () {
@@ -1386,18 +1385,6 @@ describe('Story model', function () {
           expect(Story.needConfirmation(story)).toBeFalsy();
         });
       });
-    });
-  });
-
-  describe('getByLabel', () => {
-    it('returns all stories that includes the label', () => {
-      const label = 'label';
-      const labelObject = { name: label };
-      const storyWithLabel = storyFactory({ labels: [labelObject] });
-      const storyWithOutLabel = storyFactory();
-      const stories = [ storyWithLabel, storyWithOutLabel ];
-
-      expect(Story.getByLabel(stories, label)).toMatchObject([ storyWithLabel ]);
     });
   });
 });

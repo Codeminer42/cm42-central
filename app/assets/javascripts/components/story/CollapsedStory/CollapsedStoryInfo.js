@@ -4,16 +4,16 @@ import CollapsedStoryLabels from './CollapsedStoryLabels';
 import StoryPropTypes from '../../shapes/story';
 import PropTypes from 'prop-types';
 
-const CollapsedStoryInfo = ({ story, onClickLabel }) => (
+const CollapsedStoryInfo = ({ story, onLabelClick }) => (
   <div className="Story__info">
-    <CollapsedStoryLabels story={story} onClickLabel={onClickLabel} />
+    <CollapsedStoryLabels story={story} onLabelClick={onLabelClick} />
     <CollapsedStoryTitle story={story} />
   </div>
 );
 
 CollapsedStoryInfo.propTypes = {
   story: StoryPropTypes,
-  onClickLabel: PropTypes.func.isRequired
+  onLabelClick: PropTypes.func.isRequired
 };
 
 export default CollapsedStoryInfo;
