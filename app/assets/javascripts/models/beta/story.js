@@ -321,8 +321,10 @@ export const withScope = (stories, from) =>
 
 export const isSearch = from => from === storyScopes.SEARCH;
 
+export const isEpic = from => from === storyScopes.EPIC;
+
 export const haveHighlightButton = (stories, story, from) =>
-  isSearch(from) && haveStory(story, stories)
+  (isEpic(from) || isSearch(from)) && haveStory(story, stories);
 
 export const haveSearch = stories =>
   Boolean(stories[storyScopes.SEARCH].length)
