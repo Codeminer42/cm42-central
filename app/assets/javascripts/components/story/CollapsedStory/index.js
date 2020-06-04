@@ -83,8 +83,13 @@ export const Container = ({
 export const CollapsedStory = ({ index, sprintIndex, columnId, ...props }) => {
   const { story } = { ...props }
 
-  const isDragDisabled = useMemo(() =>
-    story.state === 'accepted' || columnId === 'search' || story.loading, [story, columnId]
+  const isDragDisabled = useMemo(
+    () =>
+      story.state === "accepted" ||
+      columnId === "epic" ||
+      columnId === "search" ||
+      story.loading,
+    [story, columnId]
   );
 
   return (

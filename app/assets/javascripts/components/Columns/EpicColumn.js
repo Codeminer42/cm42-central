@@ -27,11 +27,7 @@ const EpicColumn = ({ stories, receiveStories }) => (
         stories={stories}
       />
       <div className="Sprint__body">
-        <Stories
-          stories={stories}
-          isDropDisabled
-          from={EPIC}
-        />
+        <Stories columnId="epic" stories={stories} isDropDisabled from={EPIC} />
       </div>
     </div>
   </Column>
