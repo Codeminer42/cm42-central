@@ -515,13 +515,14 @@ describe('Story Actions', () => {
   });
 
   describe('fetchEpic', () => {
-    const stories = Array(3).fill(storyFactory());
+    let stories;
     let fakeGetState;
     let fakeDispatch;
     const label = 'label';
 
     beforeEach(() => {
       fakeGetState = jest.fn(() => ({ projectBoard: { projectId: 'test-project' } }));
+      stories = Array(3).fill(storyFactory());
       fakeDispatch = jest.fn();
     });
 
