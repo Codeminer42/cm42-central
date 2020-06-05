@@ -41,5 +41,6 @@ export const columns = {
   CHILLY_BIN: 'chillyBin',
   DONE: 'done',
   BACKLOG: 'backlog',
+  EPIC: 'epic',
   SEARCH: 'search'
 }

@@ -12,6 +12,8 @@ import CollapsedStoryInfo from './CollapsedStoryInfo';
 import StoryIcon from '../StoryIcon';
 import MDSpinner from "react-md-spinner";
 import * as Story from '../../../models/beta/story';
+import { status, columns } from '../../../libs/beta/constants';
+
 import CollapsedStoryFocusButon from './CollapsedStoryFocusButton';
 import StoryPropTypes from '../../shapes/story';
 
@@ -85,9 +87,9 @@ export const CollapsedStory = ({ index, sprintIndex, columnId, ...props }) => {
 
   const isDragDisabled = useMemo(
     () =>
-      story.state === "accepted" ||
-      columnId === "epic" ||
-      columnId === "search" ||
+      story.state === status.ACCEPTED ||
+      columnId === columns.EPIC ||
+      columnId === columns.SEARCH ||
       story.loading,
     [story, columnId]
   );
