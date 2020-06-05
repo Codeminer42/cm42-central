@@ -98,7 +98,10 @@ export const setLoadingStory = (id, from) => ({
 
 export const toggleEpic = (label, projectId) =>
   async (dispatch, _, { Story }) => {
+export const fetchEpic = (label) =>
+  async (dispatch, getState, { Story }) => {
     try {
+      const { projectId } = getState().projectBoard;
       const storiesByLabel = await Story.getByLabel(label, projectId);
 
       dispatch(receiveStories(storiesByLabel, storyScopes.EPIC));

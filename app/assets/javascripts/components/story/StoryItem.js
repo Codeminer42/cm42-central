@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import CollapsedStory from './CollapsedStory';
 import ExpandedStory from './ExpandedStory';
 import { connect } from 'react-redux';
-import { toggleStory, toggleEpic } from '../../actions/story';
+import { toggleStory, fetchEpic } from '../../actions/story';
 import { releaseIsLate, isHighlighted, isAccepted } from '../../models/beta/story';
 import classNames from 'classnames';
 
@@ -14,7 +14,7 @@ export const StoryItem = ({
   index,
   sprintIndex,
   columnId,
-  toggleEpic
+  fetchEpic
 }) => {
   const className = classNames({
     'Story--late-release': releaseIsLate(story),
@@ -25,8 +25,7 @@ export const StoryItem = ({
 
   const handleClickLabel = (e, label) => {
     e.stopPropagation();
-
-    toggleEpic(label, story.projectId);
+    fetchEpic(label);
   }
 
   const childProps = {
@@ -64,5 +63,5 @@ StoryItem.propTypes = {
 
 export default connect(
   null,
-  { toggleStory, toggleEpic }
+  { toggleStory, fetchEpic }
 )(StoryItem);

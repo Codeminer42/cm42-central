@@ -514,15 +514,14 @@ describe('Story Actions', () => {
     });
   });
 
-  describe('toggleEpic', () => {
-    const projectId = 1;
+  describe('fetchEpic', () => {
     const stories = Array(3).fill(storyFactory());
-    const fakeGetState = jest.fn();
+    let fakeGetState;
+    let fakeDispatch;
     const label = 'label';
 
-    let fakeDispatch;
-
     beforeEach(() => {
+      fakeGetState = jest.fn(() => ({ projectBoard: { projectId: 'test-project' } }));
       fakeDispatch = jest.fn();
     });
 
@@ -536,13 +535,13 @@ describe('Story Actions', () => {
       });
 
       it('dispatch receiveStories with stories in epic scope', async () => {
-        await Story.toggleEpic(label, projectId)(fakeDispatch, fakeGetState, { Story: fakeStory });
+        await Story.fetchEpic(label)(fakeDispatch, fakeGetState, { Story: fakeStory });
     
         expect(fakeDispatch).toHaveBeenCalledWith(Story.receiveStories(stories, 'epic'));
       });
 
       it('does not dispatch sendDefaultErrorNotification', async () => {
-        await Story.toggleEpic(label, projectId)(fakeDispatch, fakeGetState, { Story: fakeStory });
+        await Story.fetchEpic(label)(fakeDispatch, fakeGetState, { Story: fakeStory });
     
         expect(fakeDispatch).not.toHaveBeenCalledWith(sendDefaultErrorNotification());
       });
