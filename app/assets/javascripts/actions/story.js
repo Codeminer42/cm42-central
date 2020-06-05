@@ -96,8 +96,10 @@ export const setLoadingStory = (id, from) => ({
   from
 });
 
-export const toggleEpic = (label, projectId) =>
-  async (dispatch, _, { Story }) => {
+export const closeEpicColumn = () => ({
+  type: actionTypes.CLOSE_EPIC_COLUMN,
+});
+
 export const fetchEpic = (label) =>
   async (dispatch, getState, { Story }) => {
     try {

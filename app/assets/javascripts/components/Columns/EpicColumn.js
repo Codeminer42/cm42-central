@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import StoryPropTypes from '../shapes/story';
 import { totalPoints, donePoints, remainingPoints } from '../../models/beta/story';
 import { EPIC } from '../../models/beta/column';
-import { receiveStories } from '../../actions/story';
+import { closeEpicColumn } from '../../actions/story';
 import { connect } from "react-redux";
 
 export const EpicColumnHeader = ({ stories }) =>
@@ -15,9 +15,9 @@ export const EpicColumnHeader = ({ stories }) =>
     <span className="done-points">{I18n.t('projects.reports.points')}: { totalPoints(stories) }</span>
   </div>
 
-const EpicColumn = ({ stories, receiveStories }) => (
+const EpicColumn = ({ stories, closeEpicColumn }) => (
   <Column
-    onClose={() => receiveStories([], EPIC)}
+    onClose={closeEpicColumn}
     title={I18n.t('projects.show.epic')}
     canClose
     visible
@@ -34,7 +34,7 @@ const EpicColumn = ({ stories, receiveStories }) => (
 );
 
 EpicColumn.propTypes = {
-  receiveStories: PropTypes.func.isRequired,
+  closeEpicColumn: PropTypes.func.isRequired,
   stories: PropTypes.arrayOf(StoryPropTypes)
 }
 
@@ -43,7 +43,7 @@ EpicColumn.defaultProps = {
 }
 
 const mapDispatchToProps = {
-  receiveStories
+  closeEpicColumn
 };
 
 export default connect(

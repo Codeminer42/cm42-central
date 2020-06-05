@@ -39,6 +39,7 @@ export default keyMirror({
   REMOVE_NOTIFICATION: null,
   SEARCH_STORIES_SUCCESS: null,
   CLOSE_SEARCH: null,
+  CLOSE_EPIC_COLUMN: null,
   HIGHLIGHT_STORY: null,
   LOADING_SEARCH: null,
   REVERSE_COLUMNS: null,

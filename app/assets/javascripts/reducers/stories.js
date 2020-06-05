@@ -197,6 +197,11 @@ const storiesReducer = (state = initialState, action) => {
             needsToSave: true
           })))
       }
+    case actionTypes.CLOSE_EPIC_COLUMN:
+      return {
+        ...state,
+        [storyScopes.EPIC]: []
+      }
     default:
       return state;
   };
