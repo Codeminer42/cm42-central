@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Stories::BulkCreateController, type: :controller do
+RSpec.describe StoriesBulkCreateController, type: :controller do
   let(:project) { create :project }
   let(:story_1) { attributes_for :story, project: project }
   let(:story_2) { attributes_for :story, project: project }
@@ -22,6 +22,10 @@ RSpec.describe Stories::BulkCreateController, type: :controller do
 
     it 'should return created status' do
       expect(subject).to have_http_status :created
+    end
+
+    it 'create two stories' do
+      expect{ subject }.to change(Story, :count).by(2)
     end
 
     context 'when the title is missing' do

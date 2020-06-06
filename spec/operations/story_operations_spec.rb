@@ -86,7 +86,6 @@ describe StoryOperations do
   end
 
   describe '::CreateMany' do
-
     context 'with valid params' do
       let(:story) { attributes_for :story, project: project }
       subject { -> { StoryOperations::CreateMany.call([story], user) } }
@@ -98,8 +97,7 @@ describe StoryOperations do
       let(:story) { attributes_for :story,title: '', project: project }
       subject { -> { StoryOperations::CreateMany.call([story], user) } }
 
-
-      it { is_expected.to_not change { Story.count } }
+      it { expect(subject).to_not change(Story, :count) }
     end
   end
 
