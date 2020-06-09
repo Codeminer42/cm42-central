@@ -1,6 +1,7 @@
 import actionTypes from './actionTypes';
-import { sendSuccessNotification, sendErrorNotification } from './notifications';
-import { wait } from '../services/promises'
+import { sendSuccessNotification, sendErrorNotification, sendDefaultErrorNotification } from './notifications';
+import { wait } from '../services/promises';
+import { storyScopes } from '../libs/beta/constants';
 
 export const createStory = (attributes, from) => ({
   type: actionTypes.CREATE_STORY,
@@ -94,6 +95,22 @@ export const setLoadingStory = (id, from) => ({
   id,
   from
 });
+
+export const closeEpicColumn = () => ({
+  type: actionTypes.CLOSE_EPIC_COLUMN,
+});
+
+export const fetchEpic = (label) =>
+  async (dispatch, getState, { Story }) => {
+    try {
+      const { projectId } = getState().projectBoard;
+      const storiesByLabel = await Story.getByLabel(label, projectId);
+
+      dispatch(receiveStories(storiesByLabel, storyScopes.EPIC));
+    } catch {
+      dispatch(sendDefaultErrorNotification());
+    }
+  }
 
 export const confirmBeforeSaveIfNeeded = async (story, confirm, needConfirmation, callback) => {
   const confirmStoryChange = story => confirm(

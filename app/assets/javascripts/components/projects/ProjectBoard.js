@@ -6,7 +6,7 @@ import { Column } from "../Columns/ColumnItem";
 import History from "../stories/History";
 import { getColumns } from "../../selectors/columns";
 import { closeHistory, createStory, dragDropStory } from "../../actions/story";
-import { CHILLY_BIN, DONE, BACKLOG } from "../../models/beta/column";
+import { CHILLY_BIN, DONE, BACKLOG, EPIC } from "../../models/beta/column";
 import PropTypes from "prop-types";
 import {
   canCloseColumn,
@@ -28,6 +28,7 @@ import SearchResults from './../search/SearchResults';
 import ProjectLoading from './ProjectLoading';
 import SideBar from './SideBar';
 import Columns from '../Columns';
+import EpicColumn from '../Columns/EpicColumn';
 import { DragDropContext } from 'react-beautiful-dnd';
 
 export const ProjectBoard = ({
@@ -45,7 +46,8 @@ export const ProjectBoard = ({
   doneSprints,
   createStory,
   dragDropStory,
-  fetchPastStories
+  fetchPastStories,
+  epicStories
 }) => {
   const [newChillyBinStories, setNewChillyBinStories] = useState([]);
   const [newBacklogSprints, setNewBacklogSprints] = useState([]);
@@ -159,6 +161,15 @@ export const ProjectBoard = ({
         <SearchResults />
 
         {
+          epicStories.length && (
+            <EpicColumn
+              stories={epicStories}
+              data-id="epic-column"
+            />
+          )
+        }
+
+        {
           history.status !== historyStatus.DISABLED &&
           <Column
             onClose={closeHistory}
@@ -221,6 +232,10 @@ const mapStateToProps = ({
   doneSprints: getColumns({
     column: DONE,
     pastIterations,
+    stories
+  }),
+  epicStories: getColumns({
+    column: EPIC,
     stories
   }),
   notifications

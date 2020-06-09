@@ -28,6 +28,8 @@ export const getColumns = createSelector(
         return groupStoriesInSprints(orderedStories, project, firstSprintNumber);
       case Column.DONE:
         return mountPastIterations(pastIterations, withScope(stories));
+      case Column.EPIC:
+        return withScope(stories, Column.EPIC);
     };
   }
 );

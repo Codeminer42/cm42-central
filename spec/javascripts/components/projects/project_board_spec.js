@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { ProjectBoard } from 'components/projects/ProjectBoard';
+import storyFactory from '../../support/factories/storyFactory';
 
 describe('<ProjectBoard />', () => {
   const render = props => {
@@ -31,7 +32,8 @@ describe('<ProjectBoard />', () => {
       toggleColumn: sinon.stub(),
       reverseColumns: sinon.stub(),
       projectId: '1',
-      fetchPastStories: sinon.stub()
+      fetchPastStories: sinon.stub(),
+      epicStories: []
     };
 
     return shallow(<ProjectBoard {...defaultProps} {...props } />);
@@ -282,6 +284,52 @@ describe('<ProjectBoard />', () => {
       const wrapper = render(props);
 
       expect(wrapper.find('[data-id="project-loading"]')).toExist();
+    });
+  });
+
+  describe('when there are epicStories', () => {
+    it('renders epic column', () => {
+      const props = {
+        epicStories: [storyFactory()],
+        projectBoard: { 
+          isFetched: true,
+          search: {
+            loading: false
+          },
+          reverse: false,
+          visibleColumns: {
+            backlog: true,
+            done: true,
+            chillyBin: true
+          }
+        },
+      };
+      const wrapper = render(props);
+
+      expect(wrapper.find('[data-id="epic-column"]')).toExist();
+    });
+  });
+
+  describe('when epicStories is empty', () => {
+    it('does not render epic column', () => {
+      const props = {
+        epicStories: [ ],
+        projectBoard: { 
+          isFetched: true,
+          search: {
+            loading: false
+          },
+          reverse: false,
+          visibleColumns: {
+            backlog: true,
+            done: true,
+            chillyBin: true
+          }
+        },
+      };
+      const wrapper = render(props);
+
+      expect(wrapper.find('[data-id="epic-column"]')).not.toExist();
     });
   });
 });

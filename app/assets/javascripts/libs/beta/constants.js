@@ -25,7 +25,8 @@ export const storyTypes = {
 
 export const storyScopes = {
   ALL: 'all',
-  SEARCH: 'search'
+  SEARCH: 'search',
+  EPIC: 'epic'
 }
 
 export const operands = {
@@ -40,5 +41,6 @@ export const columns = {
   CHILLY_BIN: 'chillyBin',
   DONE: 'done',
   BACKLOG: 'backlog',
+  EPIC: 'epic',
   SEARCH: 'search'
 }

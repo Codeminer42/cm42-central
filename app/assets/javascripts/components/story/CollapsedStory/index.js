@@ -12,6 +12,8 @@ import CollapsedStoryInfo from './CollapsedStoryInfo';
 import StoryIcon from '../StoryIcon';
 import MDSpinner from "react-md-spinner";
 import * as Story from '../../../models/beta/story';
+import { status, columns } from '../../../libs/beta/constants';
+
 import CollapsedStoryFocusButon from './CollapsedStoryFocusButton';
 import StoryPropTypes from '../../shapes/story';
 
@@ -43,6 +45,7 @@ export const Container = ({
   isDragging,
   provided,
   isDragDisabled,
+  onLabelClick
 }) => (
     <div
       className={storyClassName(story, className, isDragging, isDragDisabled)}
@@ -60,7 +63,7 @@ export const Container = ({
         </div>
       </StoryPopover>
 
-      <CollapsedStoryInfo story={story} />
+      <CollapsedStoryInfo story={story} onLabelClick={onLabelClick} />
 
       {
         story.loading ? (
@@ -82,8 +85,13 @@ export const Container = ({
 export const CollapsedStory = ({ index, sprintIndex, columnId, ...props }) => {
   const { story } = { ...props }
 
-  const isDragDisabled = useMemo(() =>
-    story.state === 'accepted' || columnId === 'search' || story.loading, [story, columnId]
+  const isDragDisabled = useMemo(
+    () =>
+      story.state === status.ACCEPTED ||
+      columnId === columns.EPIC ||
+      columnId === columns.SEARCH ||
+      story.loading,
+    [story, columnId]
   );
 
   return (
@@ -108,7 +116,8 @@ CollapsedStory.propTypes = {
   highlight: PropTypes.func,
   index: PropTypes.number,
   sprintIndex: PropTypes.number,
-  columnId: PropTypes.string
+  columnId: PropTypes.string,
+  onLabelClick: PropTypes.func.isRequired
 };
 
 const mapStateToProps = ({

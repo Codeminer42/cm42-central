@@ -1,3 +1,4 @@
+import { sendDefaultErrorNotification } from 'actions/notifications';
 import * as Story from 'actions/story';
 import storyFactory from '../support/factories/storyFactory';
 
@@ -509,6 +510,41 @@ describe('Story Actions', () => {
             expect(callback.onCanceled).not.toHaveBeenCalled();
           });
         });
+      });
+    });
+  });
+
+  describe('fetchEpic', () => {
+    let stories;
+    let fakeGetState;
+    let fakeDispatch;
+    const label = 'label';
+
+    beforeEach(() => {
+      fakeGetState = jest.fn(() => ({ projectBoard: { projectId: 'test-project' } }));
+      stories = Array(3).fill(storyFactory());
+      fakeDispatch = jest.fn();
+    });
+
+    describe('when does not throws an error', () => {
+      let fakeStory;
+
+      beforeEach(() => {
+        fakeStory = {
+          getByLabel: jest.fn().mockResolvedValue(stories),
+        };
+      });
+
+      it('dispatch receiveStories with stories in epic scope', async () => {
+        await Story.fetchEpic(label)(fakeDispatch, fakeGetState, { Story: fakeStory });
+    
+        expect(fakeDispatch).toHaveBeenCalledWith(Story.receiveStories(stories, 'epic'));
+      });
+
+      it('does not dispatch sendDefaultErrorNotification', async () => {
+        await Story.fetchEpic(label)(fakeDispatch, fakeGetState, { Story: fakeStory });
+    
+        expect(fakeDispatch).not.toHaveBeenCalledWith(sendDefaultErrorNotification());
       });
     });
   });

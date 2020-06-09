@@ -21,5 +21,6 @@ export const DONE = 'done';
 export const BACKLOG = 'backlog';
 export const CHILLY_BIN = 'chilly_bin';
 export const SEARCH = 'search';
+export const EPIC = 'epic';
 
 export const isDropDisabled = column => isDone(column) || isSearch(column);

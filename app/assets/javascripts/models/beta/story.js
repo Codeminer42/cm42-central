@@ -5,7 +5,7 @@ import * as Label from './label';
 import PropTypes from 'prop-types';
 import StoryPropTypesShape, { storyPropTypes } from '../../components/shapes/story';
 import moment from 'moment';
-import { has, extend } from 'underscore';
+import { has } from 'underscore';
 import * as History from './history';
 
 const compareValues = (a, b) => {
@@ -137,6 +137,14 @@ export const addNewAttributes = (current, newAttributes) => {
 export const search = async (queryParam, projectId) => {
   const { data } = await httpService
     .get(`/projects/${projectId}/stories?q=${queryParam}`, {
+      timeout: 1500
+    })
+  return data.map(item => deserialize(item.story));
+}
+
+export const getByLabel = async (label, projectId) => {
+  const { data } = await httpService
+    .get(`/projects/${projectId}/stories?label=${label}`, {
       timeout: 1500
     })
   return data.map(item => deserialize(item.story));
@@ -313,8 +321,10 @@ export const withScope = (stories, from) =>
 
 export const isSearch = from => from === storyScopes.SEARCH;
 
+export const isEpic = from => from === storyScopes.EPIC;
+
 export const haveHighlightButton = (stories, story, from) =>
-  isSearch(from) && haveStory(story, stories)
+  (isEpic(from) || isSearch(from)) && haveStory(story, stories);
 
 export const haveSearch = stories =>
   Boolean(stories[storyScopes.SEARCH].length)
@@ -427,3 +437,7 @@ export const editingStoryPropTypesShape = PropTypes.shape({
   ...storyPropTypes,
   _editing: StoryPropTypesShape
 });
+
+export const donePoints = stories => stories.reduce((points, story) => getCompletedPoints(story) + points, 0);
+
+export const remainingPoints = stories => totalPoints(stories) - donePoints(stories);

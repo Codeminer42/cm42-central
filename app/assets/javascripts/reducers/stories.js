@@ -12,7 +12,8 @@ import { storyScopes } from './../libs/beta/constants';
 
 const initialState = {
   [storyScopes.ALL]: [],
-  [storyScopes.SEARCH]: []
+  [storyScopes.SEARCH]: [],
+  [storyScopes.EPIC]: []
 };
 
 const storiesReducer = (state = initialState, action) => {
@@ -196,6 +197,11 @@ const storiesReducer = (state = initialState, action) => {
             needsToSave: true
           })))
       }
+    case actionTypes.CLOSE_EPIC_COLUMN:
+      return {
+        ...state,
+        [storyScopes.EPIC]: []
+      }
     default:
       return state;
   };
@@ -210,7 +216,8 @@ const withScope = (reducer) => (state, action) => {
 
 const allScopes = (stories, storyId, mutation) => ({
   [storyScopes.ALL]: mutation(stories[storyScopes.ALL]),
-  [storyScopes.SEARCH]: mutation(stories[storyScopes.SEARCH])
+  [storyScopes.SEARCH]: mutation(stories[storyScopes.SEARCH]),
+  [storyScopes.EPIC]: mutation(stories[storyScopes.EPIC])
 })
 
 export default withScope(storiesReducer);
