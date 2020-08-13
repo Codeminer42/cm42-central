@@ -18,7 +18,6 @@ const ExpandedStoryAcceptedBy = ({ users, story }) => {
 ExpandedStoryAcceptedBy.propTypes = {
   users: PropTypes.array.isRequired,
   story: editingStoryPropTypesShape.isRequired,
-  disabled: PropTypes.bool.isRequired,
 };
 
 export default ExpandedStoryAcceptedBy;
