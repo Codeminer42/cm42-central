@@ -4,9 +4,7 @@ import { editingStoryPropTypesShape } from "../../../models/beta/story";
 import ExpandedStorySection from "./ExpandedStorySection";
 
 const ExpandedStoryAcceptedBy = ({ users, story }) => {
-  const user = users.find(
-    (u) => (console.log(u), u.id === story._editing.acceptedById)
-  );
+  const user = users.find((u) => u.id === story._editing.acceptedById);
 
   return user && story._editing.acceptedById ? (
     <ExpandedStorySection

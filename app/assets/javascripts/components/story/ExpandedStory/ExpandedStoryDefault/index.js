@@ -79,10 +79,8 @@ export const ExpandedStoryDefault = ({
     />
 
     <ExpandedStoryAcceptedBy
-      project={project}
       story={story}
       users={users}
-      onEdit={(requestedById) => onEdit({ requestedById })}
       disabled={disabled}
     />
 
