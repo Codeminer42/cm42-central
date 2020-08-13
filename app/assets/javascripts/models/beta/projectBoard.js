@@ -23,9 +23,12 @@ const deserialize = (data) => {
   return {
     ...projectBoard,
     project: Project.deserialize(projectBoard),
-    stories: projectBoard.stories.map(Story.deserialize)
-  }
-}
+    stories: projectBoard.stories
+      .map(Story.deserialize)
+      // TODO: Remove this stub when API is ready
+      .map((story) => ({ ...story, acceptedById: 1 })),
+  };
+};
 
 export const hasSearch = projectBoard => Boolean(projectBoard.search.keyWord);
 
