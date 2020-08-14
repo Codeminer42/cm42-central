@@ -24,8 +24,8 @@ const deserialize = (data) => {
     ...projectBoard,
     project: Project.deserialize(projectBoard),
     stories: projectBoard.stories.map(Story.deserialize)
-  };
-};
+  }
+}
 
 export const hasSearch = projectBoard => Boolean(projectBoard.search.keyWord);
 
