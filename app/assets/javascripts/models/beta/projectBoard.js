@@ -23,10 +23,7 @@ const deserialize = (data) => {
   return {
     ...projectBoard,
     project: Project.deserialize(projectBoard),
-    stories: projectBoard.stories
-      .map(Story.deserialize)
-      // TODO: Remove this stub when API is ready
-      .map((story) => ({ ...story, acceptedById: 1 })),
+    stories: projectBoard.stories.map(Story.deserialize)
   };
 };
 
