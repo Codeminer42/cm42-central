@@ -212,6 +212,7 @@ pt-BR:
         state:                'Estado'
         started_at:           'Iniciada em'
         accepted_at:          'Aceita em'
+        accepted_by:          'Aceita por'
         updated_at:           'Atualizado em'
         position:             'Posição'
         labels:               'Etiquetas'
