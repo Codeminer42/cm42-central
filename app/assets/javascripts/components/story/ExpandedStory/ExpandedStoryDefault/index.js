@@ -78,10 +78,7 @@ export const ExpandedStoryDefault = ({
       disabled={disabled}
     />
 
-    <ExpandedStoryAcceptedBy
-      story={story}
-      users={users}
-    />
+    <ExpandedStoryAcceptedBy story={story} />
 
     <ExpandedStoryOwnedBy
       story={story}
