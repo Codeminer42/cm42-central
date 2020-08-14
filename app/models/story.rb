@@ -190,10 +190,8 @@ has_attachments :documents,
     user_id = nil
     Activity.by_story(self).each do |activity|
       activity.subject_changes.each do |subject, change|
-        from, to = change
-        if subject == "state" && to == "accepted"
-          user_id = activity.user_id
-        end
+        _, to = change
+        user_id = activity.user_id if subject == 'state' && to == 'accepted'
       end
     end
     user_id
