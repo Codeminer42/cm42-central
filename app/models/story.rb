@@ -187,14 +187,13 @@ has_attachments :documents,
   end
 
   def accepted_by_id
-    user_id = nil
-    Activity.by_story(self).each do |activity|
+    Activity.by_story(self).order(updated_at: :desc).each do |activity|
       activity.subject_changes.each do |subject, change|
         _, to = change
-        user_id = activity.user_id if subject == 'state' && to == 'accepted'
+        return activity.user_id if subject == 'state' && to == 'accepted'
       end
     end
-    user_id
+    nil
   end
 
   def stakeholders_users
