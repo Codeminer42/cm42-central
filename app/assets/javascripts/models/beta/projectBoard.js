@@ -68,21 +68,35 @@ export const toggleColumn = (projectBoard, column, callback) => {
 }
 
 // Drag And drop utils
+const calculateNewPosition = (aboveStory, bellowStory, storyState) => {
+  const aboveStoryState = aboveStory?.state;
+  const bellowStoryState = bellowStory?.state;
+  const aboveStoryPosition = aboveStory?.newPosition;
+  const bellowStoryPosition = bellowStory?.newPosition;
+
+  if (!aboveStory) return 1;
+  if (!bellowStory) return Number(aboveStoryPosition) + 1;
+  if (aboveStoryState === storyState && bellowStoryState !== storyState) return Number(aboveStoryPosition) + 1;
+  if (bellowStoryState === storyState && aboveStoryState !== storyState) return Number(bellowStoryPosition) - 1;
+
+  return (Number(aboveStoryPosition)) + 1;
+};
+
 const calculatePosition = (aboveStory, bellowStory, storyState) => {
   const aboveStoryState = aboveStory?.state;
   const bellowStoryState = bellowStory?.state;
   const aboveStoryPosition = aboveStory?.position;
   const bellowStoryPosition = bellowStory?.position;
 
-  if (!bellowStory) return Number(aboveStoryPosition) + 1;
   if (!aboveStory) return Number(bellowStoryPosition) - 1;
+  if (!bellowStory) return Number(aboveStoryPosition) + 1;
   if (aboveStoryState === storyState && bellowStoryState !== storyState) return Number(aboveStoryPosition) + 1;
   if (bellowStoryState === storyState && aboveStoryState !== storyState) return Number(bellowStoryPosition) - 1;
 
   return (Number(bellowStoryPosition) + Number(aboveStoryPosition)) / 2;
 };
 
-export const getNewPosition = (
+export const getPositions = (
   destinationIndex,
   sourceIndex,
   storiesArray,
@@ -90,22 +104,36 @@ export const getNewPosition = (
   storyState,
 ) => {
   if (isEmpty(storiesArray)) {
-    return 1; // if array is empty than set 1 to story position
+    return [1, 1];
   }
 
   if (!isSameColumn || sourceIndex > destinationIndex) {
-    return calculatePosition(
-      storiesArray[destinationIndex - 1],
-      storiesArray[destinationIndex],
-      storyState,
-    );
+    return [
+      calculatePosition(
+        storiesArray[destinationIndex - 1],
+        storiesArray[destinationIndex],
+        storyState,
+      ),
+      calculateNewPosition(
+        storiesArray[destinationIndex - 1],
+        storiesArray[destinationIndex],
+        storyState,
+      )
+    ];
   }
 
-  return calculatePosition(
-    storiesArray[destinationIndex],
-    storiesArray[destinationIndex + 1],
-    storyState,
-  );
+  return [
+    calculatePosition(
+      storiesArray[destinationIndex],
+      storiesArray[destinationIndex + 1],
+      storyState,
+    ),
+    calculateNewPosition(
+      storiesArray[destinationIndex],
+      storiesArray[destinationIndex + 1],
+      storyState,
+    )
+  ];
 };
 
 // reorder the array
@@ -114,15 +142,31 @@ export const moveStory = (
   destinationArray,
   sourceIndex,
   destinationIndex,
+  isSameColumn
 ) => {
   const newSourceArray = [...sourceArray];
   const [removed] = newSourceArray.splice(sourceIndex, 1);
-  const newDestinationArray = [...destinationArray];
-  const filteredArray = newDestinationArray.filter((el, index) => index !== sourceIndex);
-  filteredArray.splice(destinationIndex, 0, removed);
 
-  return [...filteredArray];
+  let newDestinationArray = [...destinationArray];
+  if (isSameColumn) {
+    newDestinationArray = newDestinationArray.filter((el, index) => index !== sourceIndex);
+  }
+  newDestinationArray.splice(destinationIndex, 0, removed);
+  const sortedStories = sortStories(newDestinationArray, destinationIndex, isSameColumn);
+
+  return [...sortedStories];
 };
+
+export const sortStories = (destinationArray, destinationIndex, isSameColumn) => {
+  const newDestinationArray = [...destinationArray];
+  const formatedArray = newDestinationArray.map((item, index) => {
+      if (index >= destinationIndex) {
+        item.newPosition = item.newPosition + 1
+      };
+    return item;
+  });
+  return [...formatedArray];
+}
 
 export const getNewSprints = (newStories, sprints, sprintIndex) =>
   sprints.map((sprint, index) =>

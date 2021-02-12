@@ -58,6 +58,12 @@ export const updateStorySuccess = (story, from) => ({
   from
 });
 
+export const sortStoriesSuccess = (stories, from) => ({
+  type: actionTypes.SORT_STORIES_SUCCESS,
+  stories,
+  from
+});
+
 export const optimisticallyUpdate = (story, from) => ({
   type: actionTypes.OPTIMISTICALLY_UPDATE,
   story,
@@ -183,11 +189,11 @@ export const dragDropStory = (storyId, projectId, newAttributes, from) =>
     try {
       dispatch(optimisticallyUpdate(newStory, from));
 
-      const updatedStory = await Story.update(newStory, projectId);
+      const updatedStories = await Story.sort(newStory);
 
       await wait(300);
 
-      return dispatch(updateStorySuccess(updatedStory, from));
+      return dispatch(sortStoriesSuccess(updatedStories, from));
     }
     catch (error) {
       dispatch(sendErrorNotification(error))

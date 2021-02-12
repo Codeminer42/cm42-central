@@ -22,8 +22,8 @@ export const needConfirmation = story =>
   story.state === status.RELEASE
 
 export const comparePosition = (a, b) => {
-  const positionA = parseFloat(a.position);
-  const positionB = parseFloat(b.position);
+  const positionA = parseInt(a.newPosition);
+  const positionB = parseInt(b.newPosition);
 
   return compareValues(positionA, positionB);
 };
@@ -106,6 +106,16 @@ export const states = [
 
 export const findById = (stories, id) => {
   return stories.find(story => story.id === id)
+}
+
+export const sort = async (story) => {
+  const newStory = serialize(story);
+
+  const { data } = await httpService.post('/beta/stories/sort', { story: newStory });
+
+  const deserializedData = data.map((item) => (deserialize(item.story)));
+
+  return deserializedData;
 }
 
 export const update = async (story, projectId, options) => {
@@ -374,6 +384,7 @@ const emptyStory = {
   createdAt: '',
   updatedAt: '',
   position: '',
+  newPosition: null,
   labels: [],
   requestedByName: '',
   ownedByName: null,

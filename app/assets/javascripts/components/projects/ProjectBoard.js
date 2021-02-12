@@ -10,7 +10,7 @@ import { CHILLY_BIN, DONE, BACKLOG, EPIC } from "../../models/beta/column";
 import PropTypes from "prop-types";
 import {
   canCloseColumn,
-  getNewPosition,
+  getPositions,
   getNewSprints,
   getNewState,
   moveStory,
@@ -83,13 +83,14 @@ export const ProjectBoard = ({
     if (isSameColumn && sourceIndex === destinationIndex) return;
     if (!dropColumn) return;
 
-    const newPosition = getNewPosition(
+    const [position, newPosition] = getPositions(
       destinationIndex,
       sourceIndex,
       destinationArray,
       isSameColumn,
       dragStory.state,
     );
+
 
     const newStories = moveStory(
       sourceArray,
@@ -112,7 +113,8 @@ export const ProjectBoard = ({
     const newState = getNewState(isSameColumn, dropColumn, dragStory.state);
 
     return dragDropStory(dragStory.id, dragStory.projectId, {
-      position: newPosition,
+      position,
+      newPosition,
       state: newState,
     });
   };
