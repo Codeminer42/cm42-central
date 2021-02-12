@@ -7,11 +7,11 @@ describe('Story model', function () {
     describe('when position A is bigger then B', () => {
       it("return 1", () => {
         const storyA = {
-          position: "10.7"
+          newPosition: 10
         };
 
         const storyB = {
-          position: "4.3"
+          newPosition: 4
         }
 
         expect(Story.comparePosition(storyA, storyB)).toEqual(1)
@@ -21,11 +21,11 @@ describe('Story model', function () {
     describe('when position A is lower then B', () => {
       it("return -1", () => {
         const storyA = {
-          position: "3.4"
+          newPosition: 3
         };
 
         const storyB = {
-          position: "5.3"
+          newPosition: 5
         }
 
         expect(Story.comparePosition(storyA, storyB)).toEqual(-1)
@@ -35,11 +35,11 @@ describe('Story model', function () {
     describe('when position A is equal B', () => {
       it("return 0", () => {
         const storyA = {
-          position: "5.0"
+          newPosition: 5
         };
 
         const storyB = {
-          position: "5.0"
+          newPosition: 5
         }
 
         expect(Story.comparePosition(storyA, storyB)).toEqual(0)
@@ -257,7 +257,7 @@ describe('Story model', function () {
           const story = { _editing: { storyType: FEATURE, estimate: 1 } };
           const newAttributes = { storyType: noFeatureType }
           let changedStory;
-          
+
           beforeEach(() => {
             changedStory = Story.editStory(story, newAttributes);
           })
@@ -265,7 +265,7 @@ describe('Story model', function () {
           it('change story estimate to ""', () => {
             expect(changedStory._editing.estimate).toEqual('');
           })
-        
+
           it(`change story type is ${noFeatureType}`, () => {
             expect(changedStory._editing.storyType).toEqual(noFeatureType);
           })
@@ -281,8 +281,8 @@ describe('Story model', function () {
           beforeEach(() => {
             changedStory = Story.editStory(story, newAttributes);
           });
-          
-          it("keep estimate 1", () => {    
+
+          it("keep estimate 1", () => {
             expect(changedStory._editing.estimate).toEqual(1);
           });
 
@@ -303,7 +303,7 @@ describe('Story model', function () {
               changedStory = Story.editStory(story, newAttributes);
             });
 
-            it(`change state to unscheduled `, () => {    
+            it(`change state to unscheduled `, () => {
               expect(changedStory._editing.state).toEqual(UNSCHEDULED);
             });
 
@@ -320,7 +320,7 @@ describe('Story model', function () {
             const story = { _editing: { storyType: FEATURE, estimate: '', state: UNSCHEDULED } };
             const newAttributes = { estimate: estimatedValue };
             let changedStory;
-            
+
             beforeEach(() => {
               changedStory = Story.editStory(story, newAttributes);
             });
@@ -341,12 +341,12 @@ describe('Story model', function () {
       describe(`when story type is ${noFeatureType}`, () => {
         const otherNotFeatureTypes = notFeatureTypes.filter(type => type !== noFeatureType);
 
-        otherNotFeatureTypes.forEach(otherNotFeatureType => {          
+        otherNotFeatureTypes.forEach(otherNotFeatureType => {
           describe(`and new story type is ${otherNotFeatureType}`, () => {
             const story = { _editing: { storyType: noFeatureType, estimate: '' } };
             const newAttributes = { storyType: otherNotFeatureType }
             let changedStory;
-          
+
             beforeEach(() => {
               changedStory = Story.editStory(story, newAttributes);
             });
@@ -379,10 +379,10 @@ describe('Story model', function () {
 
         describe(`and story status is ${UNSCHEDULED}`, () => {
           describe(`and new story type is feature`, () => {
-            const story = { _editing: { 
-              storyType: noFeatureType, 
-              estimate: '', 
-              state: UNSCHEDULED } 
+            const story = { _editing: {
+              storyType: noFeatureType,
+              estimate: '',
+              state: UNSCHEDULED }
             };
             const newAttributes = { storyType: FEATURE }
             let changedStory;
@@ -391,7 +391,7 @@ describe('Story model', function () {
               changedStory = Story.editStory(story, newAttributes);
             });
 
-            it('change estimate to ""', () => {    
+            it('change estimate to ""', () => {
               expect(changedStory._editing.estimate).toEqual('');
             });
 
@@ -407,11 +407,11 @@ describe('Story model', function () {
 
         describe(`when story status is ${UNSTARTED}`, () => {
           describe(`when new story type is feature`, () => {
-            const story = { _editing: { 
+            const story = { _editing: {
                 storyType: noFeatureType,
                 estimate: 2,
                 state: UNSTARTED
-              } 
+              }
             };
             const newAttributes = { storyType: FEATURE }
             let changedStory;
@@ -444,7 +444,7 @@ describe('Story model', function () {
               changedStory = Story.editStory(story, newAttributes);
             });
 
-            it("change estimate to ''", () => {            
+            it("change estimate to ''", () => {
               expect(changedStory._editing.estimate).toEqual('');
             });
 
@@ -1140,7 +1140,7 @@ describe('Story model', function () {
     describe('when highlighted is false', () => {
       it('returns falsy', () => {
         const story = { highlighted: false };
-        
+
         expect(Story.isHighlighted(story)).toBeFalsy();
       });
     });
@@ -1159,7 +1159,7 @@ describe('Story model', function () {
 
         expect(Story.isHighlighted(story)).toBeFalsy();
       });
-    }); 
+    });
   });
 
   describe('isSearch', () => {
@@ -1228,8 +1228,8 @@ describe('Story model', function () {
 
   describe('haveSearch', () => {
     describe('when have zero search stories', () => {
-      const stories = { 
-        [storyScopes.SEARCH]: [] 
+      const stories = {
+        [storyScopes.SEARCH]: []
       };
 
       it('returns falsy', () => {
@@ -1341,7 +1341,7 @@ describe('Story model', function () {
           const story = { _editing: { id: 1, storyType: noFeatureType, estimate: '' } };
           const newAttributes = { estimate: 2 };
           const newStory = { ...story, ...newAttributes };
-  
+
           it('return an empty string', () => {
             expect(Story.estimateFor(story, newAttributes, newStory)).toEqual('');
           });

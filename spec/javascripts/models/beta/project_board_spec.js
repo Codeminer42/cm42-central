@@ -166,8 +166,8 @@ describe('ProjectBoard model', () => {
 
 
   describe('Drag and Drop', () => {
-    describe('getNewPosition', () => {
-      const array = [{ position: 24, state: 'finished' }, { position: 20, state: 'finished' }, { position: 16, state: 'unstarted' }, { position: 12, state: 'unstarted' }, { position: 8, state: 'started' }, { position: 4, state: 'started' }];
+    describe('getPositions', () => {
+      const array = [{ newPosition: 24, position: 24, state: 'finished' }, { newPosition: 20, position: 20, state: 'finished' }, { newPosition: 16, position: 16, state: 'unstarted' }, { newPosition: 12, position: 12, state: 'unstarted' }, { newPosition: 8, position: 8, state: 'started' }, { newPosition: 4, position: 4, state: 'started' }];
 
       describe('same column', () => {
         const isSameColumn = true;
@@ -176,14 +176,14 @@ describe('ProjectBoard model', () => {
           const destinationIndex = 2;
           it('returns a new position', () => {
             expect(
-              ProjectBoard.getNewPosition(
+              ProjectBoard.getPositions(
                 destinationIndex,
                 sourceIndex,
                 array,
                 isSameColumn,
                 'unstarted',
               ),
-            ).toEqual(15);
+            ).toEqual([15,15]);
           });
         });
 
@@ -192,14 +192,14 @@ describe('ProjectBoard model', () => {
           const destinationIndex = 1;
           it('returns a new position', () => {
             expect(
-              ProjectBoard.getNewPosition(
+              ProjectBoard.getPositions(
                 destinationIndex,
                 sourceIndex,
                 array,
                 isSameColumn,
                 'finished',
               ),
-            ).toEqual(21);
+            ).toEqual([21,21]);
           });
         });
 
@@ -208,14 +208,14 @@ describe('ProjectBoard model', () => {
           const destinationIndex = 0;
           it('returns a new position', () => {
             expect(
-              ProjectBoard.getNewPosition(
+              ProjectBoard.getPositions(
                 destinationIndex,
                 sourceIndex,
                 array,
                 isSameColumn,
                 'finished',
               ),
-            ).toEqual(23);
+            ).toEqual([23,1]);
           });
         });
 
@@ -224,14 +224,14 @@ describe('ProjectBoard model', () => {
           const destinationIndex = 5;
           it('returns a new position', () => {
             expect(
-              ProjectBoard.getNewPosition(
+              ProjectBoard.getPositions(
                 destinationIndex,
                 sourceIndex,
                 array,
                 isSameColumn,
                 'started',
               ),
-            ).toEqual(5);
+            ).toEqual([5,5]);
           });
         });
       });
@@ -243,14 +243,14 @@ describe('ProjectBoard model', () => {
           const destinationIndex = 2;
           it('returns a new position', () => {
             expect(
-              ProjectBoard.getNewPosition(
+              ProjectBoard.getPositions(
                 destinationIndex,
                 sourceIndex,
                 array,
                 isSameColumn,
                 'unstarted',
               ),
-            ).toEqual(15);
+            ).toEqual([15,15]);
           });
         });
 
@@ -259,14 +259,14 @@ describe('ProjectBoard model', () => {
           const destinationIndex = 0;
           it('returns a new position', () => {
             expect(
-              ProjectBoard.getNewPosition(
+              ProjectBoard.getPositions(
                 destinationIndex,
                 sourceIndex,
                 array,
                 isSameColumn,
                 'finished',
               ),
-            ).toEqual(23);
+            ).toEqual([23,1]);
           });
         });
 
@@ -275,14 +275,14 @@ describe('ProjectBoard model', () => {
           const destinationIndex = 6;
           it('returns a new position', () => {
             expect(
-              ProjectBoard.getNewPosition(
+              ProjectBoard.getPositions(
                 destinationIndex,
                 sourceIndex,
                 array,
                 isSameColumn,
                 'started',
               ),
-            ).toEqual(5);
+            ).toEqual([5,5]);
           });
         });
       });
