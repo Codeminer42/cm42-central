@@ -5,6 +5,12 @@
 ### Fixed
 - Bug when change release date of story.
 
+### Added
+- New position column to Story
+
+### Changed
+- Change drag and drop logic in beta version
+
 ## [2.6.0] 2020-03-11
 
 ### Added
