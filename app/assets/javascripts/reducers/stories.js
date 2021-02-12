@@ -74,6 +74,18 @@ const storiesReducer = (state = initialState, action) => {
             addNewAttributes(story, { ...action.story, needsToSave: false, loading: false })
           ))
       })
+    case actionTypes.SORT_STORIES_SUCCESS:
+      return allScopes(state, null, stories => {
+        return stories.map((story) => {
+          for(let i = 0; i < action.stories.length; i+=1) {
+            const incomingStory = action.stories[i];
+            if (incomingStory.id === story.id) {
+              return addNewAttributes(story, { ...incomingStory, needsToSave: false, loading: false })
+            }
+          }
+          return story;
+        })
+      })
     case actionTypes.OPTIMISTICALLY_UPDATE:
       return allScopes(state, action.story.id, stories => {
         return stories.map(
@@ -81,7 +93,7 @@ const storiesReducer = (state = initialState, action) => {
             const newStory = setLoadingValue(action.story, true);
             return addNewAttributes(story, { ...newStory, needsToSave: false });
           }
-          ))
+        ))
       })
     case actionTypes.STORY_FAILURE:
       return {
