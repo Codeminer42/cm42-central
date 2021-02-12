@@ -190,7 +190,7 @@ export const dragDropStory = (storyId, projectId, newAttributes, from) =>
       dispatch(optimisticallyUpdate(newStory, from));
 
       const updatedStories = await Story.sort(newStory);
-      console.log(updatedStories)
+
       await wait(300);
 
       return dispatch(sortStoriesSuccess(updatedStories, from));
