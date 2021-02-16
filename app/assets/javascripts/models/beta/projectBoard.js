@@ -68,7 +68,7 @@ export const toggleColumn = (projectBoard, column, callback) => {
 }
 
 // Drag And drop utils
-const calculatePositions = ({ aboveStory = {}, belowStory = {}, storyState }) => {
+const calculatePositions = (aboveStory, belowStory, storyState) => {
   const aboveStoryState = aboveStory?.state;
   const belowStoryState = belowStory?.state;
   const aboveStoryPosition = Number(aboveStory?.position);
@@ -101,18 +101,11 @@ export const getPositions = (
     return [1, 1];
   }
 
-  const calculateArguments = {
-    aboveStory: storiesArray[destinationIndex],
-    belowStory: storiesArray[destinationIndex + 1],
-    storyState: storyState
-  };
-
   if (!isSameColumn || sourceIndex > destinationIndex) {
-    calculateArguments.aboveStory = storiesArray[destinationIndex - 1];
-    calculateArguments.belowStory = storiesArray[destinationIndex];
+    return calculatePositions(storiesArray[destinationIndex - 1], storiesArray[destinationIndex], storyState);
   }
 
-  return calculatePositions(calculateArguments);
+  return calculatePositions(storiesArray[destinationIndex], storiesArray[destinationIndex + 1], storyState);
 };
 
 // reorder the array
