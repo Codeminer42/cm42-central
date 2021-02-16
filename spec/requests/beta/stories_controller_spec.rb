@@ -13,7 +13,6 @@ RSpec.describe 'Ordering stories', type: :request do
 
     before do
       sign_in user
-      PunditContext.new(user.teams.first, user, current_project: project)
       post sort_beta_stories_path, params: { story: { position: 4, new_position: 4, id: chore.id, state: 'started', project_id: project.id } }
     end
 
