@@ -77,13 +77,11 @@ const storiesReducer = (state = initialState, action) => {
     case actionTypes.SORT_STORIES_SUCCESS:
       return allScopes(state, null, stories => {
         return stories.map((story) => {
-          for(let i = 0; i < action.stories.length; i+=1) {
-            const incomingStory = action.stories[i];
-            if (incomingStory.id === story.id) {
-              return addNewAttributes(story, { ...incomingStory, needsToSave: false, loading: false })
-            }
-          }
-          return story;
+          const editingStory = action.stories.find((incomingStory) => story.id === incomingStory.id)
+
+          return editingStory
+            ? addNewAttributes(story, { ...editingStory, needsToSave: false, loading: false })
+            : story
         })
       })
     case actionTypes.OPTIMISTICALLY_UPDATE:
