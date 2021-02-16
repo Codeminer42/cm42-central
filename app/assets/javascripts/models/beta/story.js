@@ -22,8 +22,8 @@ export const needConfirmation = story =>
   story.state === status.RELEASE
 
 export const comparePosition = (a, b) => {
-  const positionA = parseInt(a.newPosition);
-  const positionB = parseInt(b.newPosition);
+  const positionA = a.newPosition;
+  const positionB = b.newPosition;
 
   return compareValues(positionA, positionB);
 };
@@ -108,10 +108,10 @@ export const findById = (stories, id) => {
   return stories.find(story => story.id === id)
 }
 
-export const sort = async (story) => {
-  const newStory = serialize(story);
+export const updatePosition = async (story) => {
+  const serializedStory = serialize(story);
 
-  const { data } = await httpService.post('/beta/stories/sort', { story: newStory });
+  const { data } = await httpService.post(`/beta/stories/${story.id}/position`, { story: serializedStory });
 
   const deserializedData = data.map((item) => (deserialize(item.story)));
 
@@ -119,19 +119,19 @@ export const sort = async (story) => {
 }
 
 export const update = async (story, projectId, options) => {
-  const newStory = serialize(story);
+  const serializedStory = serialize(story);
 
   const { data } = await httpService
-    .put(`/projects/${projectId}/stories/${story.id}`, { story: newStory });
+    .put(`/projects/${projectId}/stories/${story.id}`, { story: serializedStory });
 
   return deserialize(data.story, options);
 };
 
 export const post = async (story, projectId) => {
-  const newStory = serialize(story);
+  const serializedStory = serialize(story);
 
   const { data } = await httpService
-    .post(`/projects/${projectId}/stories`, { story: newStory });
+    .post(`/projects/${projectId}/stories`, { story: serializedStory });
 
   return deserialize(data.story);
 };

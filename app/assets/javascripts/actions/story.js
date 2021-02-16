@@ -189,10 +189,9 @@ export const dragDropStory = (storyId, projectId, newAttributes, from) =>
     try {
       dispatch(optimisticallyUpdate(newStory, from));
 
-      const updatedStories = await Story.sort(newStory);
+      const updatedStories = await Story.updatePosition(newStory);
 
       await wait(300);
-
       return dispatch(sortStoriesSuccess(updatedStories, from));
     }
     catch (error) {

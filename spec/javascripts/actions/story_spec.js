@@ -272,7 +272,7 @@ describe('Story Actions', () => {
     it('calls Story.sortStoriesSuccess with new position', async () => {
       const FakeStory = {
         findById: sinon.stub().returns(updatedStory),
-        sort: sinon.stub().resolves(updatedStories),
+        updatePosition: sinon.stub().resolves(updatedStories),
         isNew: sinon.stub().returns(false),
         withScope: sinon.stub().returns([story]),
         addNewAttributes: sinon.stub().returns(story)
@@ -297,7 +297,7 @@ describe('Story Actions', () => {
 
       const FakeStory = {
         findById: sinon.stub().returns(updatedStory),
-        sort: sinon.stub().rejects(error),
+        updatePosition: sinon.stub().rejects(error),
         isNew: sinon.stub().returns(false),
         withScope: sinon.stub().returns([story]),
         addNewAttributes: sinon.stub().returns(story)

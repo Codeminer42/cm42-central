@@ -1,8 +1,8 @@
 class Beta::StoriesController < ApplicationController
   before_action :set_project_and_story
-  def sort
+  def position
     authorize Story
-    stories = Beta::SortStories.new(allowed_params).call
+    stories = Beta::SortStories.new(@story, allowed_params).call
     render json: stories
   end
 

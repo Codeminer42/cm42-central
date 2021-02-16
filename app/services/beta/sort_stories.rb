@@ -1,18 +1,22 @@
 class Beta::SortStories
-  def initialize(sort_params)
-    @story = Story.find(sort_params[:id])
+  def initialize(story, sort_params)
+    @story = story
     @new_position = sort_params[:new_position]
     @new_state = sort_params[:state]
     @position = sort_params[:position]
   end
 
   def call
-    @story.update(new_position: @new_position, state: @new_state, position: @position)
+    update_current_story
     update_stories_positions
     stories
   end
 
   private
+
+  def update_current_story
+    @story.update(new_position: @new_position, state: @new_state, position: @position)
+  end
 
   def stories_to_update
     stories.where.not(id: @story.id)

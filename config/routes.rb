@@ -74,8 +74,8 @@ Rails.application.routes.draw do
     resources :projects, only: :show
     resources :project_boards, only: :show
     resources :stories, only: [] do
-      collection do
-        post :sort
+      member do
+        post :position
       end
     end
   end
