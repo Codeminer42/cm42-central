@@ -68,13 +68,13 @@ export const toggleColumn = (projectBoard, column, callback) => {
 }
 
 // Drag And drop utils
-const calculatePositions = (aboveStory, belowStory, storyState) => {
-  const aboveStoryState = aboveStory?.state;
-  const belowStoryState = belowStory?.state;
-  const aboveStoryPosition = Number(aboveStory?.position);
-  const belowStoryPosition = Number(belowStory?.position);
-  const aboveStoryNewPosition = aboveStory?.newPosition;
-  const belowStoryNewPosition = belowStory?.newPosition;
+const calculatePositions = (aboveStory = {}, belowStory = {}, storyState = {}) => {
+  const aboveStoryState = aboveStory.state;
+  const belowStoryState = belowStory.state;
+  const aboveStoryPosition = Number(aboveStory.position);
+  const belowStoryPosition = Number(belowStory.position);
+  const aboveStoryNewPosition = aboveStory.newPosition;
+  const belowStoryNewPosition = belowStory.newPosition;
 
   const isFirstStory = !aboveStoryState;
   const isLastStory = !belowStoryState;
