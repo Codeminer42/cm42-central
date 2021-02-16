@@ -68,33 +68,27 @@ export const toggleColumn = (projectBoard, column, callback) => {
 }
 
 // Drag And drop utils
-const calculateNewPosition = (aboveStory, bellowStory, storyState) => {
+const calculatePositions = ({ aboveStory = {}, belowStory = {}, storyState }) => {
   const aboveStoryState = aboveStory?.state;
-  const bellowStoryState = bellowStory?.state;
-  const aboveStoryPosition = aboveStory?.newPosition;
-  const bellowStoryPosition = bellowStory?.newPosition;
+  const belowStoryState = belowStory?.state;
+  const aboveStoryPosition = Number(aboveStory?.position);
+  const belowStoryPosition = Number(belowStory?.position);
+  const aboveStoryNewPosition = aboveStory?.newPosition;
+  const belowStoryNewPosition = belowStory?.newPosition;
 
-  if (!aboveStory) return 1;
-  if (!bellowStory) return Number(aboveStoryPosition) + 1;
-  if (aboveStoryState === storyState && bellowStoryState !== storyState) return Number(aboveStoryPosition) + 1;
-  if (bellowStoryState === storyState && aboveStoryState !== storyState) return Number(bellowStoryPosition) - 1;
+  const isFirstStory = !aboveStoryState;
+  const isLastStory = !belowStoryState;
+  const isLastStoryInSameState = aboveStoryState === storyState && belowStoryState !== storyState;
+  const isFirstStoryInSameState = belowStoryState === storyState && aboveStoryState !== storyState;
 
-  return (Number(aboveStoryPosition)) + 1;
-};
+  // return [position, newPosition]
+  if (isFirstStory) return [belowStoryPosition - 1, 1];
+  if (isLastStory) return [aboveStoryPosition + 1, aboveStoryNewPosition + 1];
+  if (isLastStoryInSameState) return [aboveStoryPosition + 1, aboveStoryNewPosition + 1];
+  if (isFirstStoryInSameState) return [belowStoryPosition - 1, belowStoryNewPosition - 1];
 
-const calculatePosition = (aboveStory, bellowStory, storyState) => {
-  const aboveStoryState = aboveStory?.state;
-  const bellowStoryState = bellowStory?.state;
-  const aboveStoryPosition = aboveStory?.position;
-  const bellowStoryPosition = bellowStory?.position;
-
-  if (!aboveStory) return Number(bellowStoryPosition) - 1;
-  if (!bellowStory) return Number(aboveStoryPosition) + 1;
-  if (aboveStoryState === storyState && bellowStoryState !== storyState) return Number(aboveStoryPosition) + 1;
-  if (bellowStoryState === storyState && aboveStoryState !== storyState) return Number(bellowStoryPosition) - 1;
-
-  return (Number(bellowStoryPosition) + Number(aboveStoryPosition)) / 2;
-};
+  return [(belowStoryPosition + aboveStoryPosition) / 2, aboveStoryNewPosition + 1];
+}
 
 export const getPositions = (
   destinationIndex,
@@ -107,33 +101,18 @@ export const getPositions = (
     return [1, 1];
   }
 
+  const calculateArguments = {
+    aboveStory: storiesArray[destinationIndex],
+    belowStory: storiesArray[destinationIndex + 1],
+    storyState: storyState
+  };
+
   if (!isSameColumn || sourceIndex > destinationIndex) {
-    return [
-      calculatePosition(
-        storiesArray[destinationIndex - 1],
-        storiesArray[destinationIndex],
-        storyState,
-      ),
-      calculateNewPosition(
-        storiesArray[destinationIndex - 1],
-        storiesArray[destinationIndex],
-        storyState,
-      )
-    ];
+    calculateArguments.aboveStory = storiesArray[destinationIndex - 1];
+    calculateArguments.belowStory = storiesArray[destinationIndex];
   }
 
-  return [
-    calculatePosition(
-      storiesArray[destinationIndex],
-      storiesArray[destinationIndex + 1],
-      storyState,
-    ),
-    calculateNewPosition(
-      storiesArray[destinationIndex],
-      storiesArray[destinationIndex + 1],
-      storyState,
-    )
-  ];
+  return calculatePositions(calculateArguments);
 };
 
 // reorder the array
@@ -144,28 +123,24 @@ export const moveStory = (
   destinationIndex,
   isSameColumn
 ) => {
-  const newSourceArray = [...sourceArray];
-  const [removed] = newSourceArray.splice(sourceIndex, 1);
+  const removed = sourceArray[sourceIndex];
 
-  let newDestinationArray = [...destinationArray];
-  if (isSameColumn) {
-    newDestinationArray = newDestinationArray.filter((el, index) => index !== sourceIndex);
-  }
+  const newDestinationArray = isSameColumn
+    ? destinationArray.filter((_, index) => index !== sourceIndex)
+    : [...destinationArray];
+
   newDestinationArray.splice(destinationIndex, 0, removed);
-  const sortedStories = sortStories(newDestinationArray, destinationIndex, isSameColumn);
 
-  return [...sortedStories];
+  return sortStories(newDestinationArray, destinationIndex);
 };
 
-export const sortStories = (destinationArray, destinationIndex, isSameColumn) => {
-  const newDestinationArray = [...destinationArray];
-  const formatedArray = newDestinationArray.map((item, index) => {
+export const sortStories = (destinationArray, destinationIndex) => {
+  return destinationArray.map((item, index) => {
       if (index >= destinationIndex) {
-        item.newPosition = item.newPosition + 1
+        return { ...item, newPosition: item.newPosition + 1 }
       };
     return item;
   });
-  return [...formatedArray];
 }
 
 export const getNewSprints = (newStories, sprints, sprintIndex) =>
