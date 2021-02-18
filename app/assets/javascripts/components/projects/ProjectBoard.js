@@ -17,7 +17,7 @@ import {
   getSprintColumn,
   dragStory
 } from '../../models/beta/projectBoard';
-import { historyStatus, columns } from 'libs/beta/constants';
+import { historyStatus, columns, storyTypes } from 'libs/beta/constants';
 import StoryPropTypes from '../shapes/story';
 import ProjectBoardPropTypes from '../shapes/projectBoard';
 import Notifications from '../Notifications';
@@ -82,6 +82,7 @@ export const ProjectBoard = ({
 
     if (isSameColumn && sourceIndex === destinationIndex) return;
     if (!dropColumn) return;
+    if (!isSameColumn && dragStory.storyType === storyTypes.FEATURE && !dragStory.estimate) return;
 
     const [position, newPosition] = getPositions(
       destinationIndex,
