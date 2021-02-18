@@ -23,17 +23,17 @@ class Beta::SortStories
   end
 
   def update_stories_positions
-    stories_to_update.update_all("new_position = new_position + 1")
+    stories_to_update.update_all('new_position = new_position + 1')
   end
 
   def stories
     case @new_state
-    when "started", "finished", "delivered"
-      @story.project.stories.in_progress.where("new_position >= ?", @new_position)
-    when "unstarted"
-      @story.project.stories.backlog.where("new_position >= ?", @new_position)
-    when "unscheduled"
-      @story.project.stories.chilly_bin.where("new_position >= ?", @new_position)
+    when 'started', 'finished', 'delivered'
+      @story.project.stories.in_progress.where('new_position >= ?', @new_position)
+    when 'unstarted'
+      @story.project.stories.backlog.where('new_position >= ?', @new_position)
+    when 'unscheduled'
+      @story.project.stories.chilly_bin.where('new_position >= ?', @new_position)
     end
   end
 end

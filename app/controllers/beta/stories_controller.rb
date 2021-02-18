@@ -7,6 +7,7 @@ class Beta::StoriesController < ApplicationController
   end
 
   private
+
   def allowed_params
     params.require(:story).permit(:position, :new_position, :id, :state, :project_id)
   end

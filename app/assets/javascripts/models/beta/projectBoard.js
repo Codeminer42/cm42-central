@@ -83,9 +83,8 @@ const calculatePositions = (aboveStory = {}, belowStory = {}, storyState = {}) =
 
   // return [position, newPosition]
   if (isFirstStory) return [belowStoryPosition - 1, 1];
-  if (isLastStory) return [aboveStoryPosition + 1, aboveStoryNewPosition + 1];
-  if (isLastStoryInSameState) return [aboveStoryPosition + 1, aboveStoryNewPosition + 1];
   if (isFirstStoryInSameState) return [belowStoryPosition - 1, belowStoryNewPosition - 1];
+  if (isLastStory || isLastStoryInSameState) return [aboveStoryPosition + 1, aboveStoryNewPosition + 1];
 
   return [(belowStoryPosition + aboveStoryPosition) / 2, aboveStoryNewPosition + 1];
 }

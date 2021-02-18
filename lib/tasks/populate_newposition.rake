@@ -6,9 +6,9 @@ task populate_newposition: :environment do
     new_position = 1
     stories.each_with_index do |story|
       story.update_column(:new_position, new_position)
-      new_position = new_position + 1
+      new_position += 1
     end
-    puts "✓ Updated #{stories.length()} stories.\n\n"
+    puts "✓ Updated #{stories.length} stories.\n\n"
   end
 
   Project.find_each do |project|
