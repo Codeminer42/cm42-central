@@ -22,6 +22,7 @@ export default keyMirror({
   RECEIVE_HISTORY_ERROR: null,
   CLOSE_HISTORY: null,
   UPDATE_STORY_SUCCESS: null,
+  SORT_STORIES_SUCCESS: null,
   STORY_FAILURE: null,
   SET_LOADING_STORY: null,
   ADD_TASK: null,

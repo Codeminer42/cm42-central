@@ -73,6 +73,11 @@ Rails.application.routes.draw do
   namespace :beta do
     resources :projects, only: :show
     resources :project_boards, only: :show
+    resources :stories, only: [] do
+      member do
+        post :position
+      end
+    end
   end
 
   resources :tag_groups

@@ -265,29 +265,30 @@ describe('Story Actions', () => {
 
   describe('dragDropStory', () => {
     const story = storyFactory();
-    const updatedStory = { ...story, position: 3.54 };
+    const updatedStories = [{ ...story, newPosition: 4, id: 42 }, { ...story, newPosition: 6, id: 43 }]
+    const updatedStory = { ...story, newPosition: 4 };
     const from = 1;
 
-    it('calls Story.updateStorySuccess with new position', async () => {
+    it('calls Story.sortStoriesSuccess with new position', async () => {
       const FakeStory = {
         findById: sinon.stub().returns(updatedStory),
-        update: sinon.stub().resolves(updatedStory),
+        updatePosition: sinon.stub().resolves(updatedStories),
         isNew: sinon.stub().returns(false),
         withScope: sinon.stub().returns([story]),
         addNewAttributes: sinon.stub().returns(story)
       };
-      const fakeGetState = sinon.stub();
-      fakeGetState.returns({
-        stories: { all: [updatedStory] },
+      const fakeGetState = sinon.stub().returns({
+        stories: { all: updatedStories },
       });
 
       const fakeDispatch = sinon.stub().resolves({});
 
       await Story.dragDropStory(story.id, story.projectId, {
         position: 3.54,
+        newPosition: 4,
       }, from)(fakeDispatch, fakeGetState, { Story: FakeStory });
 
-      expect(fakeDispatch).toHaveBeenCalledWith(Story.updateStorySuccess(updatedStory, from));
+      expect(fakeDispatch).toHaveBeenCalledWith(Story.sortStoriesSuccess(updatedStories, from));
 
     });
 
@@ -296,14 +297,14 @@ describe('Story Actions', () => {
 
       const FakeStory = {
         findById: sinon.stub().returns(updatedStory),
-        update: sinon.stub().rejects(error),
+        updatePosition: sinon.stub().rejects(error),
         isNew: sinon.stub().returns(false),
         withScope: sinon.stub().returns([story]),
         addNewAttributes: sinon.stub().returns(story)
       };
 
       const fakeGetState = sinon.stub().returns({
-        stories: { all: [updatedStory] },
+        stories: { all: updatedStories },
       });
 
       const fakeDispatch = sinon.stub().resolves({});
@@ -320,9 +321,9 @@ describe('Story Actions', () => {
         );
       });
 
-      it('do not dispatch updateStorySuccess', () => {
+      it('do not dispatch sortStoriesSuccess', () => {
         expect(fakeDispatch).not.toHaveBeenCalledWith(
-          Story.updateStorySuccess(updatedStory),
+          Story.sortStoriesSuccess(updatedStory),
         );
       });
     });
@@ -537,13 +538,13 @@ describe('Story Actions', () => {
 
       it('dispatch receiveStories with stories in epic scope', async () => {
         await Story.fetchEpic(label)(fakeDispatch, fakeGetState, { Story: fakeStory });
-    
+
         expect(fakeDispatch).toHaveBeenCalledWith(Story.receiveStories(stories, 'epic'));
       });
 
       it('does not dispatch sendDefaultErrorNotification', async () => {
         await Story.fetchEpic(label)(fakeDispatch, fakeGetState, { Story: fakeStory });
-    
+
         expect(fakeDispatch).not.toHaveBeenCalledWith(sendDefaultErrorNotification());
       });
     });

@@ -53,6 +53,7 @@ RSpec.configure do |config|
   config.default_retry_count = 2
   config.exceptions_to_retry = [Net::ReadTimeout]
 
-  config.include Devise::Test::ControllerHelpers, type: :controller
-  config.include IntegrationHelpers,            type: :feature
+  config.include Devise::Test::ControllerHelpers,  type: :controller
+  config.include IntegrationHelpers,               type: :feature
+  config.include Devise::Test::IntegrationHelpers, type: :request
 end

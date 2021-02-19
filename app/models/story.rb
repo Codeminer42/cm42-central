@@ -103,7 +103,7 @@ has_attachments :documents,
     title release_date accepted_at created_at updated_at delivered_at description
     project_id story_type owned_by_id requested_by_id
     owned_by_name owned_by_initials requested_by_name estimate
-    state position id labels
+    state position id labels new_position
   ].freeze
 
   JSON_METHODS = %w[errors notes documents tasks].freeze

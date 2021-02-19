@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_14_123043) do
+ActiveRecord::Schema.define(version: 2021_02_01_140311) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -186,6 +186,7 @@ ActiveRecord::Schema.define(version: 2019_01_14_123043) do
     t.date "release_date"
     t.datetime "delivered_at"
     t.string "branch"
+    t.integer "new_position"
   end
 
   create_table "tag_groups", id: :serial, force: :cascade do |t|

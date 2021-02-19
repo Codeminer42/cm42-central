@@ -27,6 +27,10 @@ class StoryPolicy < ApplicationPolicy
     update?
   end
 
+  def position?
+    update?
+  end
+
   def backlog?
     update?
   end

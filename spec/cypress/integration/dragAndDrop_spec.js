@@ -10,9 +10,11 @@ describe("DragAndDrop", () => {
   beforeEach(() => {
     cy.app("clean"); //clean the db
     cy.app("load_seed"); // load the seeds
+    cy.exec("bundle exec rake populate_newposition");
     cy.loginWith("foo@bar.com", "asdfasdf");
 
     cy.aliasUpdateStory();
+    cy.aliasUpdateStoryPosition();
   });
 
   describe("Drag and drop in same column", () => {
@@ -30,7 +32,7 @@ describe("DragAndDrop", () => {
       // reorder
       cy.moveStory("@first", Keys.arrowDown, Keys.space);
 
-      cy.waitUpdateStory(200);
+      cy.waitUpdateStoryPosition(200);
 
       // wait loading story
       cy.wait(300);
@@ -54,7 +56,7 @@ describe("DragAndDrop", () => {
       // reorder
       cy.moveStory("@second", Keys.arrowUp, Keys.space);
 
-      cy.waitUpdateStory(200);
+      cy.waitUpdateStoryPosition(200);
 
       // wait loading story
       cy.wait(300);
@@ -83,7 +85,7 @@ describe("DragAndDrop", () => {
         .as("drag-story")
         .moveStory("@drag-story", Keys.arrowLeft, Keys.space);
 
-      cy.waitUpdateStory(200);
+      cy.waitUpdateStoryPosition(200);
 
       // check new order
       cy.getDraggablesFromColumn(backlog).should("not.contain", dragStory);
@@ -112,7 +114,7 @@ describe("DragAndDrop", () => {
           .as("drag-element")
           .moveStory("@drag-element", Keys.arrowRight, Keys.space);
 
-        cy.waitUpdateStory(200);
+        cy.waitUpdateStoryPosition(200);
 
         // check new order
         cy.getDraggablesFromColumn(chillyBin).should("not.contain", dragStory);
@@ -133,7 +135,7 @@ describe("DragAndDrop", () => {
           .as("drag-element")
           .moveStory("@drag-element", Keys.arrowRight, Keys.space);
 
-        cy.waitUpdateStory(200);
+        cy.waitUpdateStoryPosition(200);
 
         // check new order
         cy.getDraggablesFromColumn(chillyBin).should("not.contain", dragStory);
@@ -153,8 +155,6 @@ describe("DragAndDrop", () => {
           .first()
           .as("drag-element")
           .moveStory("@drag-element", Keys.arrowRight, Keys.space);
-
-        cy.waitUpdateStory(200);
 
         // check new order
         cy.getDraggablesFromColumn(chillyBin).should("contain", dragStory);
