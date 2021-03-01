@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~>5.2.2'
+gem 'rails', '~>5.2.4.5'
 
 gem 'activeadmin'
 gem 'api-pagination'
