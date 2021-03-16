@@ -30,7 +30,7 @@ const renderSprints = (sprints, fetchStories, columnId) => (
 )
 
 const droppableContainer = columnId => (
-  <Droppable droppableId={JSON.stringify({columnId, sprintIndex: 0})}>
+  <Droppable droppableId={JSON.stringify({columnId, sprintIndex: 0})} type='sprints'>
     {provided => (
       <div className='Sprints' ref={provided.innerRef} {...provided.droppableProps}>
         {provided.placeholder}

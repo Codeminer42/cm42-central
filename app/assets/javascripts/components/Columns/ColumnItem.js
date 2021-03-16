@@ -33,7 +33,7 @@ export const Column = ({ title, children, renderAction, onClose, canClose, provi
 
 const DroppableColumn = ({ title, children, renderAction, onClose, visible, canClose, columnId }) => (
   visible && (
-    <Droppable droppableId={JSON.stringify({ columnId })} isDropDisabled={isDone(columnId)}>
+    <Droppable droppableId={JSON.stringify({ columnId })} isDropDisabled={isDone(columnId)} type='column'>
       {provided => (
         <Column
           canClose={canClose}

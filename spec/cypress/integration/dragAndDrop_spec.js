@@ -179,6 +179,38 @@ describe("DragAndDrop", () => {
       // check new order
       cy.getDraggablesFromColumn(backlog).should("contain", dragStory);
       cy.getDraggablesFromColumn(done).should("not.contain", dragStory);
-    })
+    });
+
+    it("Drags to closed and reopened columns", () => {
+      const dragStory =
+        "A user should be able drag this story from chilly bean and drop to backlog";
+
+      // close first column
+      cy.contains("close").click();
+
+      cy.wait(300);
+
+      // close second column
+      cy.contains("close").click();
+
+      cy.wait(300);
+
+      // reopen chillybin column
+      cy.get('i[class$="fa-snowflake"]').click();
+
+      cy.wait(300);
+
+      //reopen backlog/current sprint column
+      cy.get('i[class$="fa-th-list"]').click();
+
+      // move story
+      cy.getDraggablesFromColumn(chillyBin)
+        .eq(1)
+        .as("drag-element")
+        .moveStory("@drag-element", Keys.arrowRight, Keys.space);
+
+      cy.getDraggablesFromColumn(backlog).should("contain", dragStory);
+
+    });
   });
 });
