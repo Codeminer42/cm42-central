@@ -92,7 +92,6 @@ export const ProjectBoard = ({
       dragStory.state,
     );
 
-
     const newStories = moveStory(
       sourceArray,
       destinationArray,

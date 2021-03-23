@@ -8,6 +8,7 @@ const Stories = ({ stories, from, sprintIndex, columnId, isDropDisabled }) => (
   <Droppable
     droppableId={JSON.stringify({ columnId, sprintIndex })}
     isDropDisabled={isDropDisabled}
+    type='stories'
   >
     {provided => (
       <div
