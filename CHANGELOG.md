@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [2.7.1] 2021-07-12
+
+### Update
+
+- Ruby to 2.6.8
+- Rails to 5.2.5
+
 ## [2.7.0] 2021-07-12
 
 ### Fixed
@@ -615,7 +622,7 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[unreleased]: https://github.com/Codeminer42/cm42-central/compare/v2.7.0...HEAD
+[unreleased]: https://github.com/Codeminer42/cm42-central/compare/v2.7.1...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
@@ -656,3 +663,4 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [2.5.0]: https://github.com/Codeminer42/cm42-central/tree/v2.5.0
 [2.6.0]: https://github.com/Codeminer42/cm42-central/tree/v2.6.0
 [2.7.0]: https://github.com/Codeminer42/cm42-central/tree/v2.7.0
+[2.7.1]: https://github.com/Codeminer42/cm42-central/tree/v2.7.1
