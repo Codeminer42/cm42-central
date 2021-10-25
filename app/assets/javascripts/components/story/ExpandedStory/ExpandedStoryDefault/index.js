@@ -20,6 +20,7 @@ import ExpandedStoryAttachments from '../ExpandedStoryAttachments';
 import ExpandedStoryTask from '../ExpandedStoryTask';
 import ExpandedStoryRequestedBy from '../ExpandedStoryRequestedBy';
 import ExpandedStoryOwnedBy from '../ExpandedStoryOwnedBy';
+import ExpandedStoryAcceptedBy from '../ExpandedStoryAcceptedBy';
 
 export const ExpandedStoryDefault = ({
   titleRef,
@@ -83,6 +84,14 @@ export const ExpandedStoryDefault = ({
       onEdit={(ownedById) => onEdit({ ownedById })}
       disabled={disabled}
     />
+
+    {
+      story.acceptedAt !== null &&
+        <ExpandedStoryAcceptedBy
+          story={story}
+          users={users}
+        />
+    }
 
     <ExpandedStoryLabels
       onAddLabel={(label) => addLabel(story.id, label)}

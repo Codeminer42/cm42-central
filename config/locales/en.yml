@@ -214,6 +214,7 @@ en:
         state:                'State'
         started_at:           'Started at'
         accepted_at:          'Accepted at'
+        accepted_by:          'Accepted by'
         updated_at:           'Updated at'
         position:             'Position'
         labels:               'Labels'

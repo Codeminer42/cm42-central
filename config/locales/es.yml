@@ -204,6 +204,7 @@ es:
         state:                'Estado'
         started_at:           'Empezó a las'
         accepted_at:          'Aceptada en'
+        accepted_by:          'Aceptada por'
         updated_at:           'Actualizado en'
         position:             'Posición'
         labels:               'Etiquetas'
