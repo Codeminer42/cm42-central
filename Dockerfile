@@ -8,8 +8,7 @@ run sed -i '/deb-src/d' /etc/apt/sources.list && \
 
 run apt-get install -y build-essential postgresql-client
 run gem install bundler
-RUN curl -sSL "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" | tar xfJ - -C /usr/local --strip-components=1 && \
-  npm install npm -g
+RUN curl -sSL "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" | tar xfJ - -C /usr/local --strip-components=1
 run npm install --global yarn
 
 workdir /tmp
