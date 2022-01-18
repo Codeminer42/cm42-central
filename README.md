@@ -164,7 +164,7 @@ You will need a Heroku Postgresql plan, and you will also need:
 - Postgresql (ex. Heroku Postgresql)
 - Redis (ex. Heroku Redis)
 - Memcached (ex. Memcachier)
-- Sendgrid (for email notifications)
+- Mailgun (for email notifications)
 - Cloudinary (for direct client-side uploads, we don't want Carrierwave)
 - Google Recaptcha keys (create for free [here](https://www.google.com/recaptcha/admin))
 
@@ -218,7 +218,7 @@ to the previous section for instructions. Then:
     $ heroku addons:add memcachier:dev
 
     # Allow emails to be sent
-    $ heroku addons:add sendgrid:starter
+    $ heroku addons:add mailgun:starter
 
     # Add Cloudinary
     $ heroku addons:create cloudinary:starter
