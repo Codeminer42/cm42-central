@@ -1,5 +1,5 @@
 class Story < ApplicationRecord
-  include ActiveRecord::Transitions
+  include ActiveModel::Transitions
   extend Enumerize
 
   module ReadOnlyDocuments

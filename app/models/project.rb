@@ -143,7 +143,7 @@ class Project < ApplicationRecord
   end
 
   def iteration_service(since: nil, current_time: Time.current)
-    @iteration_service ||= Central::Support::IterationService.new(self, since: since, current_time: current_time)
+    @iteration_service ||= IterationService.new(self, since: since, current_time: current_time)
   end
 
   def point_values
