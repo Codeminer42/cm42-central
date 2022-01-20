@@ -24,7 +24,7 @@ class IterationService
     calculate_iterations!
     fix_owner!
 
-    @backlog = ( @stories - @accepted_stories ).sort_by(&:position)
+    @backlog = ( @stories - @accepted_stories ).guaranteed_sort_by(&:position)
   end
 
   def fetch_stories!(since = nil)
