@@ -4,8 +4,8 @@ require 'selenium-webdriver'
 
 Capybara.register_driver :chrome do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-    chromeOptions: {
-      args: %w[ no-sandbox headless disable-popup-blocking disable-gpu disable-infobars window-size=1280,1024]
+    "goog:chromeOptions" => {
+      args: %w[no-sandbox headless disable-popup-blocking disable-gpu disable-infobars window-size=1280,1024]
     }
   )
 
