@@ -1,5 +1,5 @@
 require 'capybara/rspec'
-require 'capybara-screenshot/rspec'
+require 'capybara-screenshot/rspec' unless ENV["CI"]
 require 'selenium-webdriver'
 
 Capybara.register_driver :chrome do |app|
@@ -19,8 +19,10 @@ Capybara.register_driver :chrome do |app|
   )
 end
 
-Capybara::Screenshot.register_driver :chrome do |driver, path|
-  driver.save_screenshot(path)
+unless ENV["CI"]
+  Capybara::Screenshot.register_driver :chrome do |driver, path|
+    driver.save_screenshot(path)
+  end
 end
 
 Capybara.default_driver = :chrome

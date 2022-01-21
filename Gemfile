@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.6.8'
+ruby '~> 2.6'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -100,8 +100,6 @@ group :development do
   gem 'bullet'
   gem 'letter_opener'
   gem 'letter_opener_web'
-  gem 'rubocop', '0.63.1'
-  gem 'rubocop-rspec'
 end
 
 group :development, :test do
@@ -109,4 +107,6 @@ group :development, :test do
   gem 'pry-remote'
   gem 'cypress-on-rails', '~> 1.0'
   gem "pusher-fake", "~> 1.10"
+  gem 'rubocop', '0.63.1'
+  gem 'rubocop-rspec'
 end
