@@ -50,8 +50,7 @@ http_interactions:
       - keep-alive
     body:
       encoding: ASCII-8BIT
-      string: !binary |-
-        H4sIAAAAAAAAAwAAAP//qlYqKE3KyUyOz0wpVrKKjq0FAAAA//8DANqCv0cRAAAA
+      string: '{}'
     http_version: 
   recorded_at: Wed, 06 Nov 2019 17:55:37 GMT
 recorded_with: VCR 4.0.0

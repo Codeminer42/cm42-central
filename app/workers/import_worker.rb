@@ -1,7 +1,8 @@
-require 'dalli'
 class ImportWorker
   include Sidekiq::Worker
 
+  # FIXME: Change this to use connection pool
+  # https://github.com/mperham/connection_pool/blob/master/README.md
   MEMCACHED_POOL = ConnectionPool.new(size: 10, timeout: 3) do
     if ENV['MEMCACHIER_SERVERS'].present?
       Dalli::Client.new(ENV['MEMCACHIER_SERVERS'].split(','),

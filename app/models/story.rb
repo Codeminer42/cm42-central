@@ -81,7 +81,7 @@ has_attachments :documents,
   attr_accessor :documents_attributes_was
   prepend ReadOnlyDocuments
 
-  include PgSearch
+  include PgSearch::Model
   pg_search_scope :search,
                   against: {
                     title: 'A',
