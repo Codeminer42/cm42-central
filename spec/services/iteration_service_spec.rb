@@ -222,19 +222,19 @@ describe IterationService do
     end
 
     it '#standard_deviation' do
-      standard_deviation = Central::Support::Statistics.standard_deviation([])
+      standard_deviation = Statistics.standard_deviation([])
       expect(standard_deviation).to eq(0)
 
       # calculate for population
-      standard_deviation = Central::Support::Statistics.standard_deviation(service.group_by_velocity.values)
+      standard_deviation = Statistics.standard_deviation(service.group_by_velocity.values)
       expect("%.4f" % standard_deviation).to eq("8.0890")
 
       # calculate for sample (N - 1) for correction
-      standard_deviation = Central::Support::Statistics.standard_deviation(service.group_by_velocity.values, 8)
+      standard_deviation = Statistics.standard_deviation(service.group_by_velocity.values, 8)
       expect("%.4f" % standard_deviation).to eq("8.2278")
 
       # last 3 iterations
-      standard_deviation = Central::Support::Statistics.standard_deviation(service.group_by_velocity.values, 3)
+      standard_deviation = Statistics.standard_deviation(service.group_by_velocity.values, 3)
       expect("%.4f" % standard_deviation).to eq("9.4516")
     end
 

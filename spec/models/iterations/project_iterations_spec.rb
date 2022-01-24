@@ -199,16 +199,21 @@ module Iterations
 
       context 'Iteration points' do
         let!(:user) { create(:user, :with_team) }
+
+        # Uses nearest monday as base date. This is necessary to avoid false
+        # negatives when running the suite on Sundays.
+        let(:date) { Time.current.monday }
+
         let!(:project) do
           create(:project,
-                  start_date: Time.current.days_ago(21),
-                  users: [user],
-                  teams: [user.teams.first])
+                 start_date: date.days_ago(21),
+                 users: [user],
+                 teams: [user.teams.first])
         end
 
         let!(:stories) do
           create_list(:story, 4,
-                      accepted_at: Time.current.days_ago(21),
+                      accepted_at: date.days_ago(21),
                       state: 'accepted',
                       project: project,
                       estimate: 8,

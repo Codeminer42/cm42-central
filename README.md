@@ -4,14 +4,11 @@ CM42 Central
 [CM42 Central](http://www.centralcm42.com/) is an application to provide a user story based backlog management
 system for agile development teams.
 
+[![Build Status](https://github.com/Codeminer42/cm42-central/actions/workflows/cm42-central.yml/badge.svg)](https://github.com/Codeminer42/cm42-central/actions/workflows/cm42-central.yml)
 [![Code Climate](https://codeclimate.com/github/Codeminer42/cm42-central/badges/gpa.svg)](https://codeclimate.com/github/Codeminer42/cm42-central)
-[![Build Status](https://travis-ci.org/Codeminer42/cm42-central.svg?branch=master)](https://travis-ci.org/Codeminer42/cm42-central)
 [![JavaScript Coverage Status](https://coveralls.io/repos/github/Codeminer42/cm42-central/badge.svg?branch=master)](https://coveralls.io/github/Codeminer42/cm42-central?branch=master)
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
-
 ![Project Screenshot](https://raw.githubusercontent.com/Codeminer42/cm42-central/master/doc/cm42-central-screenshot.png)
-
 ![Reports Screenshot](https://raw.githubusercontent.com/Codeminer42/cm42-central/master/doc/cm42-central-reports.png)
 
 The Codeminer 42 Feature Set
@@ -287,15 +284,14 @@ Here are some general guidelines for contributing:
 * All patches changes be covered by tests, and should not break the existing
   tests, unless a current test is invalidated by a code change.  This includes
   Javascript, which is covered with a Jasmine test suite in `spec/javascripts/`.
-* Run `rake spec` to check the Rails test suite is green. You will need
-  Firefox with Selenium installed to run the integration tests.
+* Run `bundle exec rspec spec/` to check the Rails test suite is green. You will need
+  Chrome installed to run the integration tests.
 * To run the Javascript test suite, run `npm test`.
 
 License
 -------
 Copyright 2011-2015, Malcolm Locke.
-
-Copyright 2015-2017, Codeminer 42.
+Copyright 2015-2022, [Codeminer42](https://www.codeminer42.com).
 
 CM42-Central is made available under the Affero GPL license version 3, see
 [LICENSE.txt](https://github.com/Codeminer42/cm42-central/blob/master/LICENCE.txt).
