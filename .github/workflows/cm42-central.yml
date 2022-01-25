@@ -67,7 +67,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v2
         with:
-          node-version: 10.17
+          node-version: 14.18
           cache: 'yarn'
       - name: Install JS dependencies
         run: yarn install
@@ -119,7 +119,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v2
         with:
-          node-version: 10.17
+          node-version: 14.18
           cache: 'yarn'
       - name: Install JS dependencies
         run: yarn install

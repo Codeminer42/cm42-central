@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~>5.2.5'
+gem 'rails', '~> 5.2.5'
 
 gem 'activeadmin'
 gem 'api-pagination'
@@ -18,9 +18,9 @@ gem 'chartkick'
 gem 'chronic'
 gem 'cloudinary'
 gem 'coffee-rails'
-gem 'compass-rails'
+gem 'compass-rails', '~> 3.1.0'
 gem 'configuration'
-gem 'dalli'
+gem 'dalli', '~> 2.7.11'
 gem 'devise'
 gem 'devise-async'
 gem 'devise-authy', '~> 1.10.0'
@@ -36,7 +36,7 @@ gem 'grape-entity'
 gem 'grape-swagger'
 gem 'grape-swagger-rails'
 gem 'gravtastic'
-gem 'i18n-js', '>= 3.0.0.rc8'
+gem 'i18n-js', '~> 3.9.0'
 gem 'jquery-atwho-rails'
 gem 'jquery-ui-rails'
 gem 'kaminari'
@@ -60,7 +60,7 @@ gem 'transitions', require: ["transitions", "active_model/transitions"]
 gem 'uglifier', '>= 2.5.3'
 gem 'user_impersonate2', require: 'user_impersonate'
 gem 'virtus'
-gem 'webpacker', '>= 4.0.x'
+gem 'webpacker', '~> 5.4.3'
 gem 'pusher'
 
 source 'https://rails-assets.org' do
