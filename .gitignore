@@ -28,3 +28,6 @@ public/packs-test/*
 js_coverage/
 coverage
 package-lock.json
+.nvmrc
+.rspec
+.tool-versions
