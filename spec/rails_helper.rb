@@ -50,6 +50,7 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   config.verbose_retry = true
+  config.display_try_failure_messages = true
   config.default_retry_count = 2
   config.exceptions_to_retry = [Net::ReadTimeout]
 
