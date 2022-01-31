@@ -6,6 +6,18 @@ RSpec.configure do |config|
     Webpacker.compile
   end
 
+  config.around(:each) do |ex|
+    ex.run_with_retry retry: 3
+  end
+
+  config.retry_callback = proc do |ex|
+    # run some additional clean up task
+    Capybara.reset!
+  end
+
+  # All exceptions will trigger a retry
+  config.exceptions_to_retry = []
+
   config.include Warden::Test::Helpers
 
   def story_selector(story)
