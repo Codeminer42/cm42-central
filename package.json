@@ -85,7 +85,7 @@
     "keymirror": "^0.1.1",
     "memoizee": "^0.4.14",
     "moment": "^2.24.0",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "path-complete-extname": "^1.0.0",
     "postcss-loader": "^3.0.0",
     "postcss-smart-import": "^0.7.6",
