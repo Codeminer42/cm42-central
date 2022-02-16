@@ -7,6 +7,7 @@
 ### Update
 
 - Rails to 5.2.6.2
+- Puma to 5.6.2
 ## [2.7.1] 2021-07-12
 
 ### Update
