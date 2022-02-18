@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 5.2.5'
+gem 'rails', '~> 5.2.6.2'
 
 gem 'activeadmin'
 gem 'api-pagination'
@@ -45,7 +45,7 @@ gem 'newrelic_rpm'
 gem 'pg'
 gem 'pg_search'
 gem 'platform-api'
-gem 'puma'
+gem 'puma', '~> 5.6.2'
 gem 'pundit'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rails-i18n'
