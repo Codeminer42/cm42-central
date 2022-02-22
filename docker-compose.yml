@@ -10,10 +10,15 @@ services:
 
   postgres:
     image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     volumes:
       - db:/var/lib/postgresql/data
     expose:
       - '5432'
+    networks:
+      - postgresnetwork    
 
   redis:
     image: redis
@@ -23,6 +28,7 @@ services:
       - redis:/data
 
   web:
+    restart: always
     build: .
     environment:
       WEBPACK_HOST: "0.0.0.0"
@@ -31,7 +37,7 @@ services:
       WEBPACK_PORT: "3808"
       MAIN_HOST: "localhost:3000"
       DB_USERNAME: 'postgres'
-      DB_PASSWORD: ''
+      DB_PASSWORD: 'postgres'
       DB_HOST: 'postgres'
       REDISCLOUD_URL: 'redis://redis:6379'
       VIRTUAL_HOST: 'cm42-central.localhost'
@@ -47,13 +53,17 @@ services:
       - redis
       - webpack
       - memcached
+    depends_on:
+      - postgres
+    networks:
+      - postgresnetwork   
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
 
   worker:
     build: .
     environment:
       DB_USERNAME: 'postgres'
-      DB_PASSWORD: ''
+      DB_PASSWORD: 'postgres'
       DB_HOST: 'postgres'
       REDISCLOUD_URL: 'redis://redis:6379/0'
       MEMCACHIER_SERVERS: memcached:11211
@@ -63,6 +73,10 @@ services:
       - postgres
       - redis
     command: sidekiq
+    depends_on:
+      - postgres
+    networks:
+      - postgresnetwork 
 
   webpack:
     build: .
@@ -87,3 +101,7 @@ volumes:
   db:
   redis:
   node_modules:
+
+networks:
+  postgresnetwork:
+    driver: bridge
