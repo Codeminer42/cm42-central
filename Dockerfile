@@ -1,7 +1,7 @@
 FROM ruby:2.6.10
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV NODE_VERSION=12.22.12
+ENV NODE_VERSION=14.18.3
 
 RUN sed -i '/deb-src/d' /etc/apt/sources.list && \
   apt-get update
