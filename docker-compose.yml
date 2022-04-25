@@ -9,7 +9,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
   postgres:
-    image: postgres
+    image: postgres:14.2
     volumes:
       - db:/var/lib/postgresql/data
     environment:
@@ -18,7 +18,7 @@ services:
       - '5432'
 
   redis:
-    image: redis
+    image: redis:6.2
     expose:
       - "6379"
     volumes:
@@ -74,7 +74,7 @@ services:
     command: ruby ./bin/webpack-dev-server
 
   adminer:
-    image: adminer
+    image: adminer:4.8.1
     environment:
       - VIRTUAL_HOST=adminer.cm42-central.localhost
 
