@@ -1,4 +1,4 @@
-from ruby:2.6.0
+from ruby:2.6.10
 
 env DEBIAN_FRONTEND noninteractive
 ENV NODE_VERSION=7.7.2
