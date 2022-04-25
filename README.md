@@ -151,6 +151,10 @@ To manage the postgres database, you can access http://adminer.cm42-central.loca
 - **username**: postgres
 - **passowrd**: postgres
 
+If you need to cleanup your docker install, run:
+
+    $ docker compose down -v
+
 Heroku setup
 ------------
 
