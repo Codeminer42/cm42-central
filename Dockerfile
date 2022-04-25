@@ -21,5 +21,3 @@ run bundle install
 
 run mkdir /app
 workdir /app
-
-cmd ["bundle", "exec", "foreman", "start", "-f" , "Procfile.development"]
