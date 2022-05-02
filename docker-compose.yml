@@ -1,4 +1,4 @@
-version: '2'
+version: '2.4'
 
 services:
   nginx-proxy:
@@ -9,14 +9,16 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
   postgres:
-    image: postgres
+    image: postgres:14.2
     volumes:
       - db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
     expose:
       - '5432'
 
   redis:
-    image: redis
+    image: redis:6.2
     expose:
       - "6379"
     volumes:
@@ -31,37 +33,35 @@ services:
       WEBPACK_PORT: "3808"
       MAIN_HOST: "localhost:3000"
       DB_USERNAME: 'postgres'
-      DB_PASSWORD: ''
+      DB_PASSWORD: 'postgres'
       DB_HOST: 'postgres'
       REDISCLOUD_URL: 'redis://redis:6379'
       VIRTUAL_HOST: 'cm42-central.localhost'
       VIRTUAL_PORT: 3000
       MEMCACHIER_SERVERS: memcached:11211
+    depends_on:
+      - postgres
+      - redis
     ports:
       - 3000
     volumes:
       - .:/app
       - ./node_modules:/app/node_modules
-    links:
-      - postgres
-      - redis
-      - webpack
-      - memcached
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
 
   worker:
     build: .
     environment:
       DB_USERNAME: 'postgres'
-      DB_PASSWORD: ''
+      DB_PASSWORD: 'postgres'
       DB_HOST: 'postgres'
       REDISCLOUD_URL: 'redis://redis:6379/0'
       MEMCACHIER_SERVERS: memcached:11211
-    volumes:
-      - .:/app
-    links:
+    depends_on:
       - postgres
       - redis
+    volumes:
+      - .:/app
     command: sidekiq
 
   webpack:
@@ -74,12 +74,10 @@ services:
     command: ruby ./bin/webpack-dev-server
 
   adminer:
-    image: adminer
-    links:
-      - postgres
+    image: adminer:4.8.1
     environment:
       - VIRTUAL_HOST=adminer.cm42-central.localhost
-  
+
   memcached:
     image: memcached
 
