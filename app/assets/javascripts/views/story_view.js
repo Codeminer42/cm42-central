@@ -22,6 +22,7 @@ import storyTemplate from 'templates/story.ejs';
 import alertTemplate from 'templates/alert.ejs';
 import storyHoverTemplate from 'templates/story_hover.ejs';
 import noteTemplate from 'templates/note.ejs';
+import StoryCopyIdClipboard from '../components/story/StoryCopyIdClipboard';
 
 const LOCAL_STORY_REGEXP = /(?!\s|\b)(#\d+)(?!\w)/g;
 
@@ -567,6 +568,15 @@ const StoryView = FormView.extend({
         />,
         estimateButtons
       );
+    }
+
+    const copyStoryIdClipboardLink = this.$('[data-story-id-copy-clipboard]').get(0)
+    if(copyStoryIdClipboardLink) {
+      ReactDOM.render(
+        <StoryCopyIdClipboard id={this.id} />,
+        copyStoryIdClipboardLink
+      )
+      new Clipboard('.story-id');
     }
 
     if (isGuest) { this.$el.find('.state-actions').find('.transition').prop('disabled', true) }
