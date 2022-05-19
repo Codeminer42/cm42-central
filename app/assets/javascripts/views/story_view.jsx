@@ -542,7 +542,21 @@ const StoryView = FormView.extend({
     );
   },
 
-  renderCollapsed: function (isGuest) {
+  appendAttachments: function() {
+    this.$el.append(
+      this.makeFormControl(function(div) {
+        const $storyAttachments = $('<div class="story-attachments"></div>');
+        $(div).append($storyAttachments);
+
+        if(process.env.NODE_ENV !== 'test') {
+          clearTimeout(window.executeAttachinaryTimeout);
+          window.executeAttachinaryTimeout = setTimeout(ExecuteAttachinary, 1000);
+        }
+      })
+    );
+  },
+
+  renderCollapsed: function(isGuest) {
     this.$el.removeClass('editing');
     this.$el.html(this.template({ story: this.model, view: this }));
     this.$el.toggleClass(
@@ -561,20 +575,14 @@ const StoryView = FormView.extend({
     const estimateButtons = this.$('[data-story-estimate-buttons]').get(0);
     if (estimateButtons) {
       ReactDOM.render(
-        <StoryEstimateButtons
-          points={this.model.point_values()}
-          onClick={this.estimate}
-        />,
+        <StoryEstimateButtons points={this.model.point_values()} onClick={this.estimate} />,
         estimateButtons
       );
     }
 
     const copyStoryIdClipboardLink = this.$('[data-story-id-copy-clipboard]').get(0)
     if(copyStoryIdClipboardLink) {
-      ReactDOM.render(
-        <StoryCopyIdClipboard id={this.id} />,
-        copyStoryIdClipboardLink
-      )
+      ReactDOM.render(<StoryCopyIdClipboard id={this.id} />, copyStoryIdClipboardLink)
       new Clipboard('.story-id');
     }
 
