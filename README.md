@@ -133,14 +133,14 @@ Or using docker:
     $ cp config/database.yml.example config/database.yml
 
     # Prepare container
-    $ docker-compose build
-    $ docker-compose run --rm web yarn install
-    $ docker-compose run --rm web bundle exec rake db:create
-    $ docker-compose run --rm web bundle exec rake db:migrate
-    $ docker-compose run --rm web bundle exec rake db:seed
+    $ docker compose build
+    $ docker compose run --rm web yarn install
+    $ docker compose run --rm web bundle exec rake db:create
+    $ docker compose run --rm web bundle exec rake db:migrate
+    $ docker compose run --rm web bundle exec rake db:seed
 
     # Up container
-    $ docker-compose up
+    $ docker compose up
 
 You should then be able to navigate to http://cm42-central.localhost/ in a web browser.
 You can log in with the test username `foo@bar.com`, password `asdfasdf`.
@@ -150,6 +150,10 @@ To manage the postgres database, you can access http://adminer.cm42-central.loca
 - **server**: postgres
 - **username**: postgres
 - **passowrd**: postgres
+
+If you need to cleanup your docker install, run:
+
+    $ docker compose down -v
 
 Heroku setup
 ------------
