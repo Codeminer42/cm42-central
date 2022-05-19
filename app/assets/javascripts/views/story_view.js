@@ -542,38 +542,26 @@ const StoryView = FormView.extend({
   },
 
   renderCollapsed: function(isGuest) {
-
     this.$el.removeClass('editing');
     this.$el.html(this.template({story: this.model, view: this}));
     this.$el.toggleClass('collapsed-iteration', !this.model.get('isVisible') && !this.isSearchResult);
 
     const stateButtons = this.$('[data-story-state-buttons]').get(0)
     if(stateButtons) {
-      ReactDOM.render(
-        <StoryStateButtons
-          events={this.model.events()}
-        />,
-        stateButtons
-      );
+      ReactDOM.render(<StoryStateButtons events={this.model.events()} />, stateButtons);
     }
 
     const estimateButtons = this.$('[data-story-estimate-buttons]').get(0)
     if(estimateButtons) {
       ReactDOM.render(
-        <StoryEstimateButtons
-          points={this.model.point_values()}
-          onClick={this.estimate}
-        />,
+        <StoryEstimateButtons points={this.model.point_values()} onClick={this.estimate} />,
         estimateButtons
       );
     }
 
     const copyStoryIdClipboardLink = this.$('[data-story-id-copy-clipboard]').get(0)
     if(copyStoryIdClipboardLink) {
-      ReactDOM.render(
-        <StoryCopyIdClipboard id={this.id} />,
-        copyStoryIdClipboardLink
-      )
+      ReactDOM.render(<StoryCopyIdClipboard id={this.id} />, copyStoryIdClipboardLink)
       new Clipboard('.story-id');
     }
 
