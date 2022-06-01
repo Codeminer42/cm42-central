@@ -10,6 +10,17 @@
   <%= stylesheet_link_tag "https://www.authy.com/form.authy.min.css" %>
   <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Noto+Sans:400,700" %>
   <%= stylesheet_link_tag "https://use.fontawesome.com/releases/v5.5.0/css/all.css" %>
+  <% if ENV['GOOGLE_ANALYTICS_ID'] %>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= ENV['GOOGLE_ANALYTICS_ID'] %>"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '<%= ENV['GOOGLE_ANALYTICS_ID'] %>');
+    </script>
+  <% end %>
 </head>
 <body class='<%= "board" if @layout_settings[:fluid] %>'
       data-page='<%= "#{params[:controller]}.#{params[:action]}" %>'
