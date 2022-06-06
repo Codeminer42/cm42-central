@@ -497,3 +497,7 @@ pt-BR:
         default_cancel: "Ação cancelada"
     attachments:
       needs_to_save: "Você precisa salvar a história para excluir o anexo"
+
+  cookies_banner:
+    message: "Nós usamos cookies e outras tecnologias semelhantes para melhorar a sua experiência em nossos serviços. Ao utilizar nossos serviços, você concorda com tal monitoramento."
+    button: "Aceitar"
