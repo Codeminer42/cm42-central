@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import ExecuteAttachinary from './libs/execute_attachinary';
 import KeycutView from './views/keycut_view';
 
@@ -5,6 +6,16 @@ var $navbar = $(".navbar");
 var $navbarToggle = $('.toggle-navbar.more');
 var $sidebarToggleIcon = $("#sidebar-toggle").children('.mi');
 var $sidebarWrapper = $("#sidebar-wrapper");
+var $cookiesBanner = $(".cookies-banner");
+var $cookiesBannerBtn = $(".cookies-banner__btn");
+
+window.onload = function() {
+  var isCookiesAllowed = Cookies.get('allow_cookies') === 'allowed';
+
+  if (!isCookiesAllowed) {
+    $($cookiesBanner).css('display', 'flex');
+  }
+};
 
 $(function() {
   $('[data-toggle="tooltip"]').tooltip();
@@ -12,6 +23,14 @@ $(function() {
   $('#story-flow-toggle').click(function() {
     window.projectView.model.toggleStoryFlow();
     $(this).toggleClass('pressed');
+  });
+
+  $($cookiesBannerBtn).click(function(e) {
+    e.preventDefault();
+
+    Cookies.set('allow_cookies', 'allowed', { expires: 365 });
+
+    $cookiesBanner.hide();
   });
 
   $('.toggle-navbar').click(function(e) {
