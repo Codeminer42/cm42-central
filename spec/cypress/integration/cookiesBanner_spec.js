@@ -2,31 +2,25 @@ describe("cookiesBanner", () => {
 
   beforeEach(() => {
     cy.visit('/');
-    
-    cy.get('#user_email').type("foo@bar.com");
-
-    cy.get('#user_password').type("asdfasdf");
-
-    cy.get('.auth-button-submit').click();
   });
 
-  it("should be visible when accept button was not clicked", () => {
+  it("displays cookies consent banner when user hasn't accepted yet", () => {
     cy.get('.cookies-banner').should('be.visible');
   });
 
-  it("should become hidden when accept button is clicked", () => {
+  it("hides cookies consent banner when user clicks accept button", () => {
     cy.get('.cookies-banner__btn').click();
 
     cy.get('.cookies-banner').should('not.be.visible');
   });
 
-  it("should be visible when going to a different page", () => {
-    cy.contains('New Project').click();
+  it("displays cookies consent banner when user goes to a different page", () => {
+    cy.contains('Sign up').click();
 
     cy.get('.cookies-banner').should('be.visible');
   });
 
-  it("should be hidden when cookie already exists", () => {
+  it("hides the cookies consent banner when they have already been accepted", () => {
     cy.setCookie('allow_cookies', 'allowed');
     cy.reload();
 
