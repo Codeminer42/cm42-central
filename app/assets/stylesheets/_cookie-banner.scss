@@ -1,7 +1,7 @@
 .cookies-banner {
   background-color: $lightgrey-10;
   position: fixed;
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: space-evenly;  
   border-radius: 4px;
@@ -10,9 +10,11 @@
   left: 20px;
   right: 20px;
   max-width: fit-content;
-  bottom: 10px;
+  bottom: -400px;
   box-shadow: $lightgrey-16 0px 0px 12px 0px;
   z-index: 1000;
+  visibility: hidden;
+  transition: all 0.8s ease-in-out;  
 
   .cookies-banner__msg {
     margin: 0 20px 0 0;
@@ -46,4 +48,9 @@
       width: 100%;
     }
   }
+}
+
+.visible-banner {
+  visibility: visible;
+  bottom: 10px;
 }

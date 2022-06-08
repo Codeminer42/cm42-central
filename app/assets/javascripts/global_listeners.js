@@ -13,7 +13,7 @@ window.onload = function() {
   var isCookiesAllowed = Cookies.get('allow_cookies') === 'allowed';
 
   if (!isCookiesAllowed) {
-    $($cookiesBanner).css('display', 'flex');
+    $($cookiesBanner).addClass('visible-banner');
   }
 };
 
@@ -30,7 +30,7 @@ $(function() {
 
     Cookies.set('allow_cookies', 'allowed', { expires: 365 });
 
-    $cookiesBanner.hide();
+    $cookiesBanner.removeClass('visible-banner');
   });
 
   $('.toggle-navbar').click(function(e) {
