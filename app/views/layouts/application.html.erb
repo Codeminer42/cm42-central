@@ -127,14 +127,7 @@
   </div>
 </div>
 
-<div class="cookies-banner">
-  <p class="cookies-banner__msg">
-    <%= t('cookies_banner.message') %>
-  </p>
-  <button class="cookies-banner__btn">
-    <%= t('cookies_banner.button') %>
-  </button>
-</div>
+<%= render 'shared/cookies_banner' %>
 
 <script>
   window._railsEnv = "<%= Rails.env %>";
