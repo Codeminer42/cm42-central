@@ -7,13 +7,13 @@ var $navbarToggle = $('.toggle-navbar.more');
 var $sidebarToggleIcon = $("#sidebar-toggle").children('.mi');
 var $sidebarWrapper = $("#sidebar-wrapper");
 var $cookiesBanner = $(".cookies-banner");
-var $cookiesBannerBtn = $(".cookies-banner__btn");
+var $cookiesBannerBtn = $cookiesBanner.find(".cookies-banner__btn");
 
 window.onload = function() {
   var isCookiesAllowed = Cookies.get('allow_cookies') === 'allowed';
 
   if (!isCookiesAllowed) {
-    $($cookiesBanner).addClass('visible-banner');
+    $($cookiesBanner).addClass('cookies-banner--visible');
   }
 };
 
@@ -30,7 +30,7 @@ $(function() {
 
     Cookies.set('allow_cookies', 'allowed', { expires: 365 });
 
-    $cookiesBanner.removeClass('visible-banner');
+    $cookiesBanner.removeClass('cookies-banner--visible');
   });
 
   $('.toggle-navbar').click(function(e) {

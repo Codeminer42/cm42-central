@@ -14,14 +14,14 @@
   box-shadow: $lightgrey-16 0px 0px 12px 0px;
   z-index: 1000;
   visibility: hidden;
-  transition: all 0.8s ease-in-out;  
+  transition: bottom 0.8s ease-in-out,
+              visibility 0.8s ease-in-out;  
 
-  .cookies-banner__msg {
+  &__msg {
     margin: 0 20px 0 0;
-    text-align: justify;
   }
 
-  .cookies-banner__btn {
+  &__btn {
     background-color: $blue;
     color: $lightgrey-20;
     border: none;
@@ -40,17 +40,17 @@
   .cookies-banner {
     flex-direction: column;
 
-    .cookies-banner__msg {
+    &__msg {
       margin: 0 0 10px 0;
     }
 
-    .cookies-banner__btn {
+    &__btn {
       width: 100%;
     }
   }
 }
 
-.visible-banner {
+.cookies-banner--visible {
   visibility: visible;
   bottom: 10px;
 }

@@ -21,7 +21,7 @@ describe("cookiesBanner", () => {
   });
 
   it("hides the cookies consent banner when they have already been accepted", () => {
-    cy.setCookie('allow_cookies', 'allowed');
+    cy.get('.cookies-banner__btn').click();
     cy.reload();
 
     cy.get('.cookies-banner').should('not.be.visible');
