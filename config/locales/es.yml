@@ -485,3 +485,7 @@ es:
         default_cancel: "Operación cancelada"
     attachments:
       needs_to_save: "Debes guardar la historia para eliminar el archivo adjunto."
+
+  cookies_banner:
+    message: "Utilizamos cookies y otras tecnologías similares para mejorar su experiencia en nuestros servicios. Al utilizar nuestros servicios, usted da su consentimiento para dicho control."
+    button: "Aceptar"
