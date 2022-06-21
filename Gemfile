@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '~> 2.6'
+ruby '~> 3.1'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -64,6 +64,7 @@ gem 'webpacker', '~> 5.4.3'
 gem 'pusher'
 
 source 'https://rails-assets.org' do
+  gem 'rails-assets-jquery'
   gem 'rails-assets-jquery.gritter'
 end
 
