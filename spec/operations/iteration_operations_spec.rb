@@ -15,7 +15,7 @@ describe IterationOperations do
 
     describe '.call' do
       it 'returns done stories' do
-        expect(result[:stories]).to eq(stories)
+        expect(result[:stories]).to match_array(stories)
       end
 
       it 'return story accepted in the end of the day of the last day' do
