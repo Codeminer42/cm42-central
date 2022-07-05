@@ -660,6 +660,7 @@ DEPENDENCIES
   rack-cors
   rack-timeout
   rails (~> 5.2.6.3)
+  rails-assets-jquery!
   rails-assets-jquery.gritter!
   rails-controller-testing
   rails-i18n
@@ -690,7 +691,7 @@ DEPENDENCIES
   webpacker (~> 5.4.3)
 
 RUBY VERSION
-   ruby 2.6.8p205
+   ruby 3.1.2p20
 
 BUNDLED WITH
    1.17.3
