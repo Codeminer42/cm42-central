@@ -20,7 +20,7 @@ class TagGroupsController < ApplicationController
     @tag_group = current_team.tag_groups.find(params[:id])
     authorize @tag_group
 
-    @tag_group.update_attributes(allowed_params)
+    @tag_group.update(allowed_params)
 
     redirect_to tag_groups_path
   end
