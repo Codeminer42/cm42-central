@@ -29,7 +29,7 @@ class Admin::UsersController < ApplicationController
   # PATCH /admin/users/1/enrollment
   def enrollment
     @enrollment = @user.enrollments.where(team: current_team).first
-    if @enrollment.update_attributes(is_admin: params[:is_admin])
+    if @enrollment.update(is_admin: params[:is_admin])
       redirect_to admin_users_path, notice: 'User was successfully updated.'
     else
       render :edit

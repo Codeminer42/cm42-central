@@ -16,10 +16,10 @@ class CreateMemberships < ActiveRecord::Migration[4.2]
     add_column :users, :memberships_count, :integer, default: 0
 
     Project.find_each do |p|
-      p.update_attributes(stories_count: p.stories.count, memberships_count: p.users.count)
+      p.update(stories_count: p.stories.count, memberships_count: p.users.count)
     end
     User.find_each do |u|
-      u.update_attributes(memberships_count: u.projects.count)
+      u.update(memberships_count: u.projects.count)
     end
   end
 

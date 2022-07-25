@@ -22,7 +22,7 @@ class TasksController < ApplicationController
   def update
     @task = policy_scope(Task).find(params[:id])
     authorize @task
-    @task.update_attributes(allowed_params)
+    @task.update(allowed_params)
     render json: @task
   end
 

@@ -110,7 +110,7 @@ describe StoriesController do
         end
 
         it 'responds correct filename' do
-          expect(response.headers['Content-Disposition']).to eq "attachment; filename=\"Test Project-20190101_1200.csv\""
+          expect(response.headers['Content-Disposition']).to include("attachment; filename=\"Test Project-20190101_1200.csv\"")
         end
 
         it 'responds correct content' do

@@ -27,7 +27,7 @@ module TeamOperations
 
     def operate!
       # do not delete from the database, just mark as archived
-      model.update_attributes!(archived_at: Time.current)
+      model.update!(archived_at: Time.current)
     end
   end
 
@@ -41,7 +41,7 @@ module TeamOperations
     end
 
     def run
-      @model.update_attributes!(archived_at: nil)
+      @model.update!(archived_at: nil)
     end
   end
 end

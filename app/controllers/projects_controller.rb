@@ -157,7 +157,7 @@ class ProjectsController < ApplicationController
     else
       session[:import_job] = { id: ImportWorker.new_job_id, created_at: Time.current }
 
-      @project.update_attributes(allowed_params)
+      @project.update(allowed_params)
       ImportWorker.perform_async(session[:import_job][:id], params[:id])
 
       flash[:notice] = I18n.t('projects.uploads.being_processed')

@@ -331,7 +331,7 @@ describe Story do
     let(:requested_by)  { mock_model(User) }
     let(:owned_by)      { mock_model(User) }
     let(:note_user)     { mock_model(User) }
-    let(:notes)         { [mock_model(Note, user: note_user)] }
+    let(:notes)         { [build_stubbed(:note, user: note_user)] }
 
     before do
       subject.requested_by  = requested_by

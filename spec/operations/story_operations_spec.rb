@@ -220,7 +220,6 @@ describe StoryOperations do
         allow(story).to receive_messages(acting_user: acting_user)
         allow(story).to receive_messages(requested_by: requested_by)
         allow(story).to receive_messages(owned_by: owned_by)
-        allow(project).to receive_messages(start_date: true)
         allow(project).to receive_message_chain(:integrations, :count).and_return(1)
         allow(story).to receive_messages(base_uri: 'http://foo.com/projects/123')
         expect(notifier).to receive(:deliver_later)
