@@ -16,7 +16,7 @@ describe('<StoryCopyIdClipboard />', function() {
     const wrapper = mount(
       <StoryCopyIdClipboard id={70} />
     );
-    expect(wrapper.find('.story-id').text()).toBe('#70');
+    expect(wrapper.find('.story-id').at(0).text()).toBe('#70');
   });
 
   it("should render story id data-clipboard-text", function() {
