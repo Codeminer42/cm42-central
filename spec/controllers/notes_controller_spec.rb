@@ -51,7 +51,7 @@ describe NotesController do
           expect(assigns[:project]).to eq(project)
           expect(assigns[:story]).to eq(story)
           expect(assigns[:notes]).to eq(story.notes)
-          expect(response.content_type).to eq('application/json')
+          expect(response.content_type).to include('application/json')
           expect(response.body).to eq(story.notes.to_json)
         end
       end
@@ -63,7 +63,7 @@ describe NotesController do
           expect(assigns[:project]).to eq(project)
           expect(assigns[:story]).to eq(story)
           expect(assigns[:note]).to_not be_nil
-          expect(response.content_type).to eq('application/json')
+          expect(response.content_type).to include('application/json')
           expect(response.body).to eq(Note.last.to_json)
         end
 
@@ -89,7 +89,7 @@ describe NotesController do
           expect(assigns[:project]).to eq(project)
           expect(assigns[:story]).to eq(story)
           expect(assigns[:note]).to eq(note)
-          expect(response.content_type).to eq('application/json')
+          expect(response.content_type).to include('application/json')
           expect(response.body).to eq(note.to_json)
         end
       end

@@ -378,7 +378,7 @@ describe Project, type: :model do
     it 'should return a message error when a slug is reserved word' do
       project = build(:project, name: 'new')
       expect(project.save).to be_falsey
-      expect(project.errors.messages).to include(friendly_id: ['is reserved'])
+      expect(project.errors.messages.to_h).to include(friendly_id: ['is reserved'])
     end
   end
 end

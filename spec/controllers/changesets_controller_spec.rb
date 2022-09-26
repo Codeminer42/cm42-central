@@ -29,7 +29,7 @@ describe ChangesetsController do
         expect(response).to be_successful
         expect(assigns[:project]).to eq(project)
         expect(assigns[:changesets].count).to eq(2)
-        expect(response.content_type).to eq('application/json')
+        expect(response.content_type).to include('application/json')
         cs1, cs2 = JSON.parse(response.body)
         expect(cs1['changeset']['id']).to eq(@changeset1.id)
         expect(cs1['changeset']['story_id']).to eq(@changeset1.story_id)

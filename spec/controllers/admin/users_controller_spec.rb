@@ -45,7 +45,7 @@ describe Admin::UsersController do
 
       describe '#update' do
         before do
-          allow(user).to receive(:update_attributes).with({}) { true }
+          allow(user).to receive(:update).with({}) { true }
         end
 
         specify do
@@ -62,7 +62,7 @@ describe Admin::UsersController do
 
         context 'when update fails' do
           before do
-            allow(user).to receive(:update_attributes).with({}) { false }
+            allow(user).to receive(:update).with({}) { false }
           end
 
           specify do

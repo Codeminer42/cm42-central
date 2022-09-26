@@ -100,7 +100,7 @@ class V1::Projects < Grape::API
     end
     put '/:slug' do
       project = Project.find_by(slug: params[:slug])
-      project.update_attributes(allowed_update_params)
+      project.update(allowed_update_params)
 
       present project, with: Entities::Project, type: :full
     end

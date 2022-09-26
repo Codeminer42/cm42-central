@@ -44,5 +44,7 @@ module Fulcrum
     config.paths.add Rails.root.join('lib').to_s, eager_load: true
     config.active_job.queue_adapter = :sidekiq
     config.exceptions_app = self.routes
+
+    config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time, BigDecimal]
   end
 end

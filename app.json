@@ -75,6 +75,9 @@
     },
     "CLOUDINARY_UPLOAD_PRESET": {
       "required": true
+    },
+    "GOOGLE_ANALYTICS_ID": {
+      "required": false
     }
   },
   "formation": {

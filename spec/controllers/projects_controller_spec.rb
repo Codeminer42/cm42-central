@@ -272,7 +272,7 @@ describe ProjectsController do
         end
 
         describe '#unarchive' do
-          before { project.update_attributes(archived_at: Time.current) }
+          before { project.update(archived_at: Time.current) }
 
           specify do
             patch :unarchive, params: { id: project.id }
@@ -388,7 +388,7 @@ describe ProjectsController do
             let(:csv) { fixture_file_upload('csv/stories.csv') }
 
             before do
-              expect(project).to receive(:update_attributes).and_return(true)
+              expect(project).to receive(:update).and_return(true)
             end
 
             specify do
