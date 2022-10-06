@@ -562,7 +562,6 @@ const StoryView = FormView.extend({
     const copyStoryIdClipboardLink = this.$('[data-story-id-copy-clipboard]').get(0)
     if(copyStoryIdClipboardLink) {
       ReactDOM.render(<StoryCopyIdClipboard id={this.id} />, copyStoryIdClipboardLink)
-      new Clipboard('.story-id');
     }
 
     if (isGuest) { this.$el.find('.state-actions').find('.transition').prop('disabled', true) }
