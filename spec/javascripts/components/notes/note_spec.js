@@ -1,59 +1,69 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render } from "@testing-library/react";
+import { screen } from '@testing-library/dom';
+import userEvent from "@testing-library/user-event";
 import NoteComponent from 'components/notes/Note';
 import Note from 'models/note.js';
 
-describe('<Note />', function() {
-  let note;
+window.document.getSelection = jest.fn()
 
-  beforeEach(function() {
-    sinon.stub(I18n, 't');
-    sinon.stub(window.md, 'makeHtml');
-    note = new Note({note: 'Test Note'});
+global.document.createRange = () => ({
+  setStart: () => { },
+  setEnd: () => { },
+  commonAncestorContainer: {
+    nodeName: 'BODY',
+    ownerDocument: document,
+  },
+});
+
+describe('<Note />', () => {
+  const setup = (disabled) => {
+    let note;
+
+    jest.spyOn(I18n, 't');
+    jest.spyOn(window.md, 'makeHtml');
+    note = new Note({ note: 'Test Note' });
+    const handleDelete = jest.fn();
+
+    render(<NoteComponent note={note} disabled={disabled} handleDelete={handleDelete}/>);
+
+    return handleDelete;
+  }
+
+  afterEach(() => {
+    I18n.t.mockClear();
+    window.md.makeHtml.mockClear();
   });
 
-  afterEach(function() {
-    I18n.t.restore();
-    window.md.makeHtml.restore();
-  });
-
-  it("should have its content parsed", function() {
-    const wrapper = shallow(<NoteComponent note={note} />);
+  it("should have its content parsed", () => {
+    setup();
     const expectedNote = 'Test Note';
     expect(window.md.makeHtml).toHaveBeenCalledWith(expectedNote);
   });
 
-  it("should be able to call handleDelete", function() {
-    const handleDelete = sinon.stub();
-    const wrapper = shallow(
-      <NoteComponent
-        note={note}
-        disabled={false}
-        handleDelete={handleDelete}
-      />
-    );
-    wrapper.find('.delete-note').simulate('click');
+  it("should be able to call handleDelete", async () => {
+    const handleDelete = setup();
+    const deleteButton = screen.getByTestId("delete-btn");
+    await userEvent.click(deleteButton);
     expect(handleDelete).toHaveBeenCalled();
   });
 
-  describe("when not disabled", function() {
+  describe("when not disabled", () => {
 
-    it("should have an delete button", function() {
-      const wrapper = shallow(
-        <NoteComponent note={note} disabled={false} />
-      );
-      expect(wrapper.find('.delete-note')).toExist();
+    it("should have an delete button", () => {
+      setup();
+      const deleteButton = screen.getByTestId("delete-btn");
+      expect(deleteButton).toBeInTheDocument();
     });
 
   });
 
-  describe("when disabled", function() {
+  describe("when disabled", () => {
 
-    it("should not have a delete button", function() {
-      const wrapper = shallow(
-        <NoteComponent note={note} disabled={true} />
-      );
-      expect(wrapper.find('.delete-note')).not.toExist();
+    it("should not have a delete button", () => {
+      setup(true);
+      const deleteButton = screen.queryByTestId("delete-btn");
+      expect(deleteButton).not.toBeInTheDocument();
     });
 
   });
