@@ -5,8 +5,6 @@ import userEvent from "@testing-library/user-event";
 import NoteComponent from 'components/notes/Note';
 import Note from 'models/note.js';
 
-window.document.getSelection = jest.fn()
-
 global.document.createRange = () => ({
   setStart: () => { },
   setEnd: () => { },
@@ -17,15 +15,19 @@ global.document.createRange = () => ({
 });
 
 describe('<Note />', () => {
-  const setup = (disabled) => {
-    let note;
-
+  beforeEach(() => {
+    window.document.getSelection = jest.fn();
     jest.spyOn(I18n, 't');
     jest.spyOn(window.md, 'makeHtml');
+  });
+
+  const setup = (data) => {
+    let note;
+
     note = new Note({ note: 'Test Note' });
     const onDelete = jest.fn();
 
-    render(<NoteComponent note={note} disabled={disabled} onDelete={onDelete}/>);
+    render(<NoteComponent note={note} disabled={data?.disabled} onDelete={onDelete}/>);
 
     return { onDelete };
   }
@@ -61,7 +63,7 @@ describe('<Note />', () => {
   describe("when disabled", () => {
 
     it("should not have a delete button", () => {
-      setup(true);
+      setup({ disabled: true });
       const deleteButton = screen.queryByRole("button", { name: /Delete/i });
       expect(deleteButton).not.toBeInTheDocument();
     });
