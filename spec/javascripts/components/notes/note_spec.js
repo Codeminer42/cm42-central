@@ -23,11 +23,11 @@ describe('<Note />', () => {
     jest.spyOn(I18n, 't');
     jest.spyOn(window.md, 'makeHtml');
     note = new Note({ note: 'Test Note' });
-    const handleDelete = jest.fn();
+    const onDelete = jest.fn();
 
-    render(<NoteComponent note={note} disabled={disabled} handleDelete={handleDelete}/>);
+    render(<NoteComponent note={note} disabled={disabled} onDelete={onDelete}/>);
 
-    return handleDelete;
+    return { onDelete };
   }
 
   afterEach(() => {
@@ -41,18 +41,18 @@ describe('<Note />', () => {
     expect(window.md.makeHtml).toHaveBeenCalledWith(expectedNote);
   });
 
-  it("should be able to call handleDelete", async () => {
-    const handleDelete = setup();
-    const deleteButton = screen.getByTestId("delete-btn");
+  it("should be able to call onDelete", async () => {
+    const { onDelete } = setup();
+    const deleteButton = screen.getByRole("button", { name: /Delete/i });
     await userEvent.click(deleteButton);
-    expect(handleDelete).toHaveBeenCalled();
+    expect(onDelete).toHaveBeenCalled();
   });
 
   describe("when not disabled", () => {
 
     it("should have an delete button", () => {
       setup();
-      const deleteButton = screen.getByTestId("delete-btn");
+      const deleteButton = screen.getByRole("button", { name: /Delete/i });
       expect(deleteButton).toBeInTheDocument();
     });
 
@@ -62,7 +62,7 @@ describe('<Note />', () => {
 
     it("should not have a delete button", () => {
       setup(true);
-      const deleteButton = screen.queryByTestId("delete-btn");
+      const deleteButton = screen.queryByRole("button", { name: /Delete/i });
       expect(deleteButton).not.toBeInTheDocument();
     });
 
