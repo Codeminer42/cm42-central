@@ -127,6 +127,8 @@
     "@babel/plugin-proposal-optional-chaining": "^7.8.3",
     "@babel/plugin-transform-modules-commonjs": "^7.7.4",
     "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "12",
+    "@testing-library/user-event": "^14.4.3",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^24.9.0",
     "core-js": "^2.6.3",

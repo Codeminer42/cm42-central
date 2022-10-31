@@ -764,7 +764,7 @@ const StoryView = FormView.extend({
         <StoryNotes
           notes={isReadonly ? notes : notes.slice(0,-1)}
           disabled={isReadonly}
-          handleDelete={this.handleNoteDelete}
+          onDelete={this.handleNoteDelete}
         />,
         $storyNotes.get(0)
       );

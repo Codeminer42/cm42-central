@@ -1,12 +1,12 @@
 import React from 'react';
 import Note from 'components/notes/Note';
 
-const renderNotes = ({ notes, disabled, handleDelete }) =>
+const renderNotes = ({ notes, disabled, onDelete }) =>
   notes.map((note) =>
     <Note
       note={note}
       disabled={disabled}
-      handleDelete={handleDelete}
+      onDelete={onDelete}
       key={note.get('id')}
     />
   );
