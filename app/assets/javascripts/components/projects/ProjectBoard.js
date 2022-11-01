@@ -30,6 +30,7 @@ import SideBar from './SideBar';
 import Columns from '../Columns';
 import EpicColumn from '../Columns/EpicColumn';
 import { DragDropContext } from 'react-beautiful-dnd';
+import { subscribeToProjectChanges } from '../../pusherSockets';
 
 export const ProjectBoard = ({
   fetchProjectBoard,
@@ -63,6 +64,12 @@ export const ProjectBoard = ({
   useEffect(() => {
     fetchProjectBoard(projectId);
   }, [fetchProjectBoard, projectId]);
+
+  useEffect(() => {
+    subscribeToProjectChanges({id: projectId}, () => {
+      fetchProjectBoard(projectId);
+    });
+  },[]);
 
   if (!projectBoard.isFetched) {
     return <ProjectLoading data-id="project-loading" />;
