@@ -44,10 +44,12 @@ services:
       - redis
     ports:
       - 3000
+      - ${PUSHER_WS_PORT:-45449}
+      - ${PUSHER_PORT:-8888}
     volumes:
       - .:/app
       - ./node_modules:/app/node_modules
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    command: ./run.sh
 
   worker:
     build: .
