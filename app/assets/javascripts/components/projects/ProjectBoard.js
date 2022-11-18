@@ -66,7 +66,7 @@ export const ProjectBoard = ({
   }, [fetchProjectBoard, projectId]);
 
   useEffect(() => {
-    subscribeToProjectChanges({id: projectId}, () => {
+    subscribeToProjectChanges({ id: projectId }, () => {
       fetchProjectBoard(projectId);
     });
   },[]);
