@@ -2,6 +2,8 @@ import actionTypes from './actionTypes';
 import { sendSuccessNotification, sendErrorNotification, sendDefaultErrorNotification } from './notifications';
 import { wait } from '../services/promises';
 import { storyScopes } from '../libs/beta/constants';
+import httpService from '../services/httpService';
+import changeCase from 'change-object-case';
 
 export const createStory = (attributes, from) => ({
   type: actionTypes.CREATE_STORY,
@@ -178,6 +180,21 @@ export const updateCollapsedStory = (storyId, projectId, newAttributes, from) =>
       }
     });
   }
+
+export const expandOrCollapseStory =
+  (currentStory, from) =>
+  async (dispatch, getState, { Story }) => {
+    if (currentStory.collapsed) {
+      dispatch(setLoadingStory(currentStory.id, from));
+      const { data } = await httpService.get(
+        `/projects/${currentStory.projectId}/stories/${currentStory.id}`
+      );
+      const fullStory = { ...Story.deserialize(data.story), ...currentStory };
+      dispatch(updateStorySuccess(fullStory, from));
+    }
+
+    dispatch(toggleStory(currentStory.id, from));
+  };
 
 export const dragDropStory = (storyId, projectId, newAttributes, from) =>
   async (dispatch, getState, { Story }) => {

@@ -33,7 +33,7 @@ export const StoryPopoverContent = ({ story }) => (
       )}
 
     {
-      Boolean(story.notes.length) && (
+      Boolean(story.notes?.length) && (
         <Fragment>
           <h1 className='popover__content__title'>
             {I18n.t('notes')}
