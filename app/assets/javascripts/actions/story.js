@@ -216,7 +216,7 @@ export const updateCollapsedStory =
 
 export const expandOrCollapseStory =
   (currentStory, from) =>
-  async (dispatch, getState, { Story }) => {
+  async (dispatch, _, { Story }) => {
     if (currentStory.collapsed) {
       dispatch(setLoadingStory(currentStory.id, from));
       const { data } = await httpService.get(
