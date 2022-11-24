@@ -217,16 +217,21 @@ export const updateCollapsedStory =
 export const expandOrCollapseStory =
   (currentStory, from) =>
   async (dispatch, _, { Story }) => {
-    if (currentStory.collapsed) {
+    if (!currentStory.collapsed) {
+      dispatch(toggleStory(currentStory.id, from));
+    } else {
       dispatch(setLoadingStory(currentStory.id, from));
-      const { data } = await httpService.get(
-        `/projects/${currentStory.projectId}/stories/${currentStory.id}`
-      );
-      const fullStory = { ...Story.deserialize(data.story), ...currentStory };
-      dispatch(updateStorySuccess(fullStory, from));
+      try {
+        const { data } = await httpService.get(
+          `/projects/${currentStory.projectId}/stories/${currentStory.id}`
+        );
+        const fullStory = { ...Story.deserialize(data.story), ...currentStory };
+        dispatch(updateStorySuccess(fullStory, from));
+        dispatch(toggleStory(currentStory.id, from));
+      } catch (error) {
+        dispatch(sendErrorNotification(error));
+      }
     }
-
-    dispatch(toggleStory(currentStory.id, from));
   };
 
 export const dragDropStory = (storyId, projectId, newAttributes, from) =>
