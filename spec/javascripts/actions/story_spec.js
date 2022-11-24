@@ -1,6 +1,11 @@
 import { sendDefaultErrorNotification } from 'actions/notifications';
 import * as Story from 'actions/story';
+import actionTypes from 'actions/actionTypes';
 import storyFactory from '../support/factories/storyFactory';
+import httpService from '../../../app/assets/javascripts/services/httpService';
+import { sendErrorNotification } from 'actions/notifications';
+jest.mock('actions/notifications');
+jest.mock('../../../app/assets/javascripts/services/httpService');
 
 describe('Story Actions', () => {
   describe('saveStory', () => {
@@ -546,6 +551,96 @@ describe('Story Actions', () => {
         await Story.fetchEpic(label)(fakeDispatch, fakeGetState, { Story: fakeStory });
 
         expect(fakeDispatch).not.toHaveBeenCalledWith(sendDefaultErrorNotification());
+      });
+    });
+  });
+
+  describe('expandOrCollapseStory', () => {
+    const fakeDispatch = jest.fn();
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+    const expandedStory = { id: 5 };
+    const collapsedStory = { id: 5, collapsed: true };
+    const dependencies = { Story: { deserialize: () => {} } };
+
+    describe('when is expanded', () => {
+      it('should dispatch toggleStory', async () => {
+        const thunkFunction = Story.expandOrCollapseStory(expandedStory, undefined);
+        await thunkFunction(fakeDispatch, null, dependencies);
+        expect(fakeDispatch).toHaveBeenCalledWith({
+          type: actionTypes.TOGGLE_STORY,
+          id: expandedStory.id,
+          from: undefined
+        });
+      });
+
+      it('should not dispatch "updateStorySuccess"', async () => {
+        const thunkFunction = Story.expandOrCollapseStory(expandedStory, undefined);
+        await thunkFunction(fakeDispatch, null, dependencies);
+        expect(fakeDispatch).not.toHaveBeenCalledWith({
+          type: actionTypes.UPDATE_STORY_SUCCESS,
+          story: expandedStory,
+          from: undefined
+        });
+      });
+
+      it('should not dispatch loading', async () => {
+        const thunkFunction = Story.expandOrCollapseStory(expandedStory, undefined);
+        await thunkFunction(fakeDispatch, null, dependencies);
+        expect(fakeDispatch).not.toHaveBeenCalledWith({
+          type: actionTypes.SET_LOADING_STORY,
+          id: expandedStory.id,
+          from: undefined,
+        });
+      });
+    });
+
+    describe('when is collapsed', () => {
+      it('should dispatch loading', async () => {
+        const thunkFunction = Story.expandOrCollapseStory(collapsedStory, undefined);
+        await thunkFunction(fakeDispatch, null, dependencies);
+        expect(fakeDispatch).toHaveBeenCalledWith({
+          type: actionTypes.SET_LOADING_STORY,
+          id: collapsedStory.id,
+          from: undefined,
+        });
+      });
+
+      describe('when request is successful', () => {
+        beforeEach(() => {
+          httpService.get.mockImplementationOnce(() => Promise.resolve({ data: { story: { } } }));
+        });
+        it('should dispatch "updateStorySuccess"', async () => {
+          const thunkFunction = Story.expandOrCollapseStory(collapsedStory, undefined);
+          await thunkFunction(fakeDispatch, null, dependencies);
+          expect(fakeDispatch).toHaveBeenCalledWith({
+            type: actionTypes.UPDATE_STORY_SUCCESS,
+            story: collapsedStory,
+            from: undefined
+          });
+        });
+
+        it('should dispatch toggleStory on success', async () => {
+          const thunkFunction = Story.expandOrCollapseStory(collapsedStory, undefined);
+          await thunkFunction(fakeDispatch, null, dependencies);
+          expect(fakeDispatch).toHaveBeenCalledWith({
+            type: actionTypes.TOGGLE_STORY,
+            id: collapsedStory.id,
+            from: undefined
+          });
+        });
+      });
+
+      describe('when request fails', () => {
+        beforeEach(() => {
+          httpService.get.mockImplementation(() => Promise.reject());
+        });
+        it('should handle fetch error', async () => {
+          const thunkFunction = Story.expandOrCollapseStory(collapsedStory, undefined);
+          await thunkFunction(fakeDispatch, null, dependencies);
+          expect(sendErrorNotification).toHaveBeenCalled();
+        });
       });
     });
   });
