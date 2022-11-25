@@ -184,16 +184,17 @@ export const expandOrCollapseStory =
   async (dispatch, _, { Story }) => {
     if (!currentStory.collapsed) {
       dispatch(toggleStory(currentStory.id, from));
-    } else {
-      dispatch(setLoadingStory(currentStory.id, from));
-      try {
-        const { data } = await projectStoriesService.fetchStory(currentStory);
-        const fullStory = { ...Story.deserialize(data.story), ...currentStory };
-        dispatch(updateStorySuccess(fullStory, from));
-        dispatch(toggleStory(currentStory.id, from));
-      } catch (error) {
-        dispatch(sendErrorNotification(error));
-      }
+      return;
+    } 
+    
+    dispatch(setLoadingStory(currentStory.id, from));
+    try {
+      const { data } = await projectStoriesService.fetchStory(currentStory);
+      const fullStory = { ...Story.deserialize(data.story), ...currentStory };
+      dispatch(updateStorySuccess(fullStory, from));
+      dispatch(toggleStory(currentStory.id, from));
+    } catch (error) {
+      dispatch(sendErrorNotification(error));
     }
   };
 
