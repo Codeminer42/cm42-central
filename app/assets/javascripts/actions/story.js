@@ -114,7 +114,6 @@ export const fetchEpic =
     try {
       const { projectId } = getState().projectBoard;
       const storiesByLabel = await Story.getByLabel(label, projectId);
-
       dispatch(receiveStories(storiesByLabel, storyScopes.EPIC));
     } catch {
       dispatch(sendDefaultErrorNotification());
@@ -247,11 +246,8 @@ export const dragDropStory = (storyId, projectId, newAttributes, from) =>
     );
 
     try {
-      // Optimistic Update:
-      dispatch(sortStories(storiesWithUpdatedPositions, from));
-
+      dispatch(optimisticallyUpdate(newStory, from));
       const updatedStories = await Story.updatePosition(newStory);
-
       await wait(300);
       return dispatch(sortStories(updatedStories, from));
     } catch (error) {
@@ -376,7 +372,6 @@ export const deleteStory =
       ).title;
 
       await Story.deleteStory(storyId, projectId);
-
       dispatch(deleteStorySuccess(storyId, from));
 
       return dispatch(
