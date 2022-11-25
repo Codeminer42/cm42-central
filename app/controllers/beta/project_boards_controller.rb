@@ -12,7 +12,7 @@ class Beta::ProjectBoardsController < ApplicationController
     @project = result.success.project
     authorize @project, policy_class: Beta::ProjectPolicy
     response = result.data.as_json(root: false)
-    render json: set_collapsed_story_in_response(response)
+    render json: collapse_response_stories(response)
   end
 
   private
@@ -21,9 +21,9 @@ class Beta::ProjectBoardsController < ApplicationController
     @layout_settings[:fluid] = true
   end
 
-  def set_collapsed_story_in_response(response)
-    stories = response["stories"]
-    response["stories"] = ProjectBoardsSerializer.collapsed_stories(stories)
+  def collapse_response_stories(response)
+    stories = response['stories']
+    response['stories'] = ProjectBoardsSerializer.collapsed_stories(stories)
     response
   end
 end
