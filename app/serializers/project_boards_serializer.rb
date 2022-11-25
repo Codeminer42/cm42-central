@@ -15,4 +15,3 @@ class ProjectBoardsSerializer
     end
   end
 end
-  
