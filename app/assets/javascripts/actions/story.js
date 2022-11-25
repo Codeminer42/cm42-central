@@ -114,7 +114,6 @@ export const fetchEpic = (label) =>
     try {
       const { projectId } = getState().projectBoard;
       const storiesByLabel = await Story.getByLabel(label, projectId);
-
       dispatch(receiveStories(storiesByLabel, storyScopes.EPIC));
     } catch {
       dispatch(sendDefaultErrorNotification());
@@ -164,9 +163,7 @@ export const updateCollapsedStory = (storyId, projectId, newAttributes, from) =>
     return await confirmBeforeSaveIfNeeded(newStory, window.confirm, Story.needConfirmation, {
       onConfirmed: async () => {
         const updatedStory = await Story.update(newStory, projectId);
-
         dispatch(updateStorySuccess(updatedStory, from))
-
         dispatch(sendSuccessNotification(
           I18n.t('messages.operations.success.story.save', { story: updatedStory.title })
         ));
@@ -204,14 +201,11 @@ export const dragDropStory = (storyId, projectId, newAttributes, from) =>
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
     const story = Story.findById(Story.withScope(stories, from), storyId);
-
     const newStory = Story.addNewAttributes(story, newAttributes);
 
     try {
       dispatch(optimisticallyUpdate(newStory, from));
-
       const updatedStories = await Story.updatePosition(newStory);
-
       await wait(300);
       return dispatch(sortStoriesSuccess(updatedStories, from));
     }
@@ -224,16 +218,13 @@ export const dragDropStory = (storyId, projectId, newAttributes, from) =>
 export const saveStory = (storyId, projectId, from, options) =>
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
-
     const story = Story.findById(Story.withScope(stories, from), storyId);
-
     dispatch(setLoadingStory(story.id, from));
 
     if (Story.isNew(story)) {
       return await confirmBeforeSaveIfNeeded(story._editing, window.confirm, Story.needConfirmation, {
         onConfirmed: async () => {
           const newStory = await Story.post(story._editing, projectId)
-
           dispatch(addStory(newStory, from));
           dispatch(sendSuccessNotification(
             I18n.t('messages.operations.success.story.create', { story: story._editing.title })
@@ -254,7 +245,6 @@ export const saveStory = (storyId, projectId, from, options) =>
       return await confirmBeforeSaveIfNeeded(story._editing, window.confirm, Story.needConfirmation, {
         onConfirmed: async () => {
           const updatedStory = await Story.update(story._editing, projectId, options);
-
           dispatch(updateStorySuccess(updatedStory, from));
           dispatch(sendSuccessNotification(
             I18n.t('messages.operations.success.story.save', { story: updatedStory.title })
@@ -280,9 +270,7 @@ export const deleteStory = (storyId, projectId, from) =>
     try {
       const { stories } = getState();
       const storyTitle = Story.findById(Story.withScope(stories, from), storyId).title;
-
       await Story.deleteStory(storyId, projectId);
-
       dispatch(deleteStorySuccess(storyId, from));
 
       return dispatch(sendSuccessNotification(
