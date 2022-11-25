@@ -186,7 +186,7 @@ export const expandOrCollapseStory =
       dispatch(toggleStory(currentStory.id, from));
       return;
     } 
-    
+  
     dispatch(setLoadingStory(currentStory.id, from));
     try {
       const { data } = await projectStoriesService.fetchStory(currentStory);
