@@ -3,6 +3,7 @@ import { sendSuccessNotification, sendErrorNotification, sendDefaultErrorNotific
 import { wait } from '../services/promises';
 import { storyScopes } from '../libs/beta/constants';
 import httpService from '../services/httpService';
+import projectStoriesService from '../services/stories';
 import changeCase from 'change-object-case';
 
 export const createStory = (attributes, from) => ({
@@ -189,9 +190,7 @@ export const expandOrCollapseStory =
     } else {
       dispatch(setLoadingStory(currentStory.id, from));
       try {
-        const { data } = await httpService.get(
-          `/projects/${currentStory.projectId}/stories/${currentStory.id}`
-        );
+        const { data } = await projectStoriesService.fetchStory(currentStory);
         const fullStory = { ...Story.deserialize(data.story), ...currentStory };
         dispatch(updateStorySuccess(fullStory, from));
         dispatch(toggleStory(currentStory.id, from));
