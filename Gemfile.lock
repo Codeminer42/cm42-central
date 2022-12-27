@@ -163,7 +163,7 @@ GEM
     cypress-on-rails (1.13.1)
       rack
     daemons (1.4.1)
-    dalli (3.2.2)
+    dalli (3.2.3)
     database_cleaner (2.0.1)
       database_cleaner-active_record (~> 2.0.0)
     database_cleaner-active_record (2.0.1)
@@ -621,7 +621,7 @@ DEPENDENCIES
   compass-rails (~> 3.1.0)
   configuration
   cypress-on-rails (~> 1.0)
-  dalli (~> 3.2.2)
+  dalli (~> 3.2.3)
   database_cleaner
   devise
   devise-async
