@@ -648,7 +648,7 @@ DEPENDENCIES
   letter_opener
   letter_opener_web
   material_icons
-  newrelic_rpm (~> 8.9.0)
+  newrelic_rpm
   pg
   pg_search
   platform-api
