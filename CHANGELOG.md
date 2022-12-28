@@ -2,12 +2,13 @@
 
 ## [Unreleased]
 
-## [2.7.2] 2022-02-15
+## [2.7.2] 2022-12-28
 
 ### Update
 
 - Rails to 5.2.6.2
 - Puma to 5.6.2
+
 ## [2.7.1] 2021-07-12
 
 ### Update
@@ -670,3 +671,4 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [2.6.0]: https://github.com/Codeminer42/cm42-central/tree/v2.6.0
 [2.7.0]: https://github.com/Codeminer42/cm42-central/tree/v2.7.0
 [2.7.1]: https://github.com/Codeminer42/cm42-central/tree/v2.7.1
+[2.7.2]: https://github.com/Codeminer42/cm42-central/tree/v2.7.2
