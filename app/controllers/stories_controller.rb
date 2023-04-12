@@ -77,7 +77,7 @@ class StoriesController < ApplicationController
     @story = policy_scope(Story).build(allowed_params)
     authorize @story
     @story.requested_by_id = current_user.id unless @story.requested_by_id
-    story = BetaStoryOperations::Create.new.call(story: @story, current_user: current_user)
+    story = StoryOperations::Create.new.call(story: @story, current_user: current_user)
     Dry::Matcher::ResultMatcher.(story) do |on|
       on.success do |story|
         respond_to do |format|
