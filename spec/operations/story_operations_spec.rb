@@ -54,7 +54,7 @@ describe StoryOperations do
       it { expect(Notifications).to_not receive(:story_mention) }
     end
 
-    context '::MemberNotification' do
+    context '::UserNotification' do
       let(:mailer) { double('mailer') }
       let(:username_user) do
         project.users.create(

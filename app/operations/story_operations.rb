@@ -1,4 +1,4 @@
-require 'story_operations/member_notification'
+require 'story_operations/legacy_member_notification'
 require 'story_operations/state_change_notification'
 require 'story_operations/legacy_fixes'
 require 'story_operations/pusher_notification'
@@ -19,7 +19,7 @@ module StoryOperations
   end
 
   class Update < BaseOperations::Update
-    include MemberNotification
+    include LegacyMemberNotification
     include StateChangeNotification
     include LegacyFixes
     include PusherNotification
