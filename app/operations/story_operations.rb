@@ -5,16 +5,50 @@ require 'story_operations/legacy_pusher_notification'
 require 'story_operations/state_ensurement'
 
 module StoryOperations
-  class Create < BaseOperations::Create
-    include MemberNotification
-    include PusherNotification
-    include StateEnsurement
+  class Create
+    include Dry::Monads[:result, :do]
 
-    def after_save
-      model.changesets.create!
+    def call(params)
+      ActiveRecord::Base.transaction do
+        story = yield save_story(params[:story])
+        changesets = yield create_changesets(story)
 
-      notify_users
-      notify_changes
+        yield create_activity(story, params[:current_user])
+
+        yield notify_users(story)
+        yield notify_changes(story)
+
+        Success(story)
+      end
+    rescue
+      Failure(params[:story])
+    end
+
+    private
+
+    def save_story(story)
+      if story.save
+        Success(story)
+      else
+        Failure(story)
+      end
+    end
+
+    def create_changesets(story)
+      story.changesets.create
+      Success(story)
+    end
+
+    def notify_users(story)
+      Success StoryOperations::UserNotification.notify_users(story)
+    end
+
+    def notify_changes(story)
+      Success StoryOperations::PusherNotification.notify_changes(story)
+    end
+
+    def create_activity(story, current_user)
+      Success ::Base::ActivityRecording.create_activity(story, current_user)
     end
   end
 
