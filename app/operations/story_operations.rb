@@ -1,7 +1,7 @@
 require 'story_operations/legacy_member_notification'
 require 'story_operations/state_change_notification'
 require 'story_operations/legacy_fixes'
-require 'story_operations/pusher_notification'
+require 'story_operations/legacy_pusher_notification'
 require 'story_operations/state_ensurement'
 
 module StoryOperations
@@ -22,7 +22,7 @@ module StoryOperations
     include LegacyMemberNotification
     include StateChangeNotification
     include LegacyFixes
-    include PusherNotification
+    include LegacyPusherNotification
     include StateEnsurement
 
     def before_save
@@ -59,7 +59,7 @@ module StoryOperations
   class UpdateAll < BaseOperations::UpdateAll; end
 
   class Destroy < BaseOperations::Destroy
-    include PusherNotification
+    include LegacyPusherNotification
 
     def after_save
       notify_changes
