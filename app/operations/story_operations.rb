@@ -11,7 +11,7 @@ module StoryOperations
     def call(params)
       ActiveRecord::Base.transaction do
         story = yield save_story(params[:story])
-        changesets = yield create_changesets(story)
+        yield create_changesets(story)
 
         yield create_activity(story, params[:current_user])
 

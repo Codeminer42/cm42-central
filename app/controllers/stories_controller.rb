@@ -1,4 +1,4 @@
-require "dry/matcher/result_matcher"
+require 'dry/matcher/result_matcher'
 
 class StoriesController < ApplicationController
   include ActionView::Helpers::TextHelper
@@ -78,7 +78,7 @@ class StoriesController < ApplicationController
     authorize @story
     @story.requested_by_id = current_user.id unless @story.requested_by_id
     result = StoryOperations::Create.new.call(story: @story, current_user: current_user)
-    Dry::Matcher::ResultMatcher.(result) do |on|
+    Dry::Matcher::ResultMatcher.call(result) do |on|
       on.success do |story|
         respond_to do |format|
           format.html { redirect_to project_url(@project) }

@@ -1,6 +1,5 @@
 module StoryOperations
   class PusherNotification
-
     def self.notify_changes(story)
       new(story).notify_changes
     end

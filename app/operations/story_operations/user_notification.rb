@@ -1,4 +1,4 @@
-module StoryOperations 
+module StoryOperations
   class UserNotification
     def self.notify_users(story)
       new(story).notify_users
@@ -9,7 +9,7 @@ module StoryOperations
     end
 
     def notify_users
-      return if !notify_mentioned_users?
+      return unless notify_mentioned_users?
       Notifications.story_mention(story, users_to_notify.pluck(:email)).deliver_later
     end
 
@@ -19,9 +19,7 @@ module StoryOperations
 
     def users_to_notify
       usernames = UsernameParser.parse(story.description)
-      
       return [] if usernames.empty?
-
       story.users.where(username: usernames).all
     end
 

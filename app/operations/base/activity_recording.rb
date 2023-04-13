@@ -9,8 +9,6 @@ module Base
       )
     end
 
-    private
-
     def self.fetch_project(model)
       case model
       when Project
@@ -21,5 +19,7 @@ module Base
         model.story.project
       end
     end
+
+    private_class_method :fetch_project
   end
 end
