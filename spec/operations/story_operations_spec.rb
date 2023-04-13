@@ -12,12 +12,12 @@ describe StoryOperations do
   let(:story)       { project.stories.build(story_params) }
 
   describe '::Create' do
-    subject { -> { StoryOperations::Create.call(story, user) } }
+    subject { -> { StoryOperations::Create.new.call(story: story, current_user: user) } }
 
     context 'with valid params' do
       it { expect { subject.call }.to change { Story.count } }
       it { expect { subject.call }.to change { Changeset.count } }
-      it { expect(subject.call).to be_eql Story.last }
+      it { expect(subject.call.value!).to be_eql Story.last }
 
       Story::ESTIMABLE_TYPES.each do |story_type|
         context "a #{story_type} story" do
@@ -50,11 +50,11 @@ describe StoryOperations do
       before { story.title = '' }
 
       it { is_expected.to_not change { Story.count } }
-      it { expect(subject.call).to be_falsy }
+      it { expect(subject.call.success?).to be_falsy }
       it { expect(Notifications).to_not receive(:story_mention) }
     end
 
-    context '::MemberNotification' do
+    context '::UserNotification' do
       let(:mailer) { double('mailer') }
       let(:username_user) do
         project.users.create(

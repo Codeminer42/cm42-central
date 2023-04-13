@@ -1,5 +1,5 @@
 module StoryOperations
-  module MemberNotification
+  module LegacyMemberNotification
     def self.included(base)
       base.class_eval do
         attr_reader :users_to_notify

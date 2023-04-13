@@ -1,3 +1,5 @@
+require 'dry/matcher/result_matcher'
+
 class StoriesController < ApplicationController
   include ActionView::Helpers::TextHelper
 
@@ -75,13 +77,19 @@ class StoriesController < ApplicationController
     @story = policy_scope(Story).build(allowed_params)
     authorize @story
     @story.requested_by_id = current_user.id unless @story.requested_by_id
-    respond_to do |format|
-      if StoryOperations::Create.call(@story, current_user)
-        format.html { redirect_to project_url(@project) }
-        format.js   { render json: @story }
-      else
-        format.html { render action: 'new' }
-        format.js   { render json: @story, status: :unprocessable_entity }
+    result = StoryOperations::Create.new.call(story: @story, current_user: current_user)
+    Dry::Matcher::ResultMatcher.call(result) do |on|
+      on.success do |story|
+        respond_to do |format|
+          format.html { redirect_to project_url(@project) }
+          format.js   { render json: story }
+        end
+      end
+      on.failure do |story|
+        respond_to do |format|
+          format.html { render action: 'new' }
+          format.js   { render json: story, status: :unprocessable_entity }
+        end
       end
     end
   end

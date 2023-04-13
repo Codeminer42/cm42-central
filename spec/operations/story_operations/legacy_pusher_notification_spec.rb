@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe StoryOperations::PusherNotification do
+describe StoryOperations::LegacyPusherNotification do
   class PusherClass
-    include StoryOperations::PusherNotification
+    include StoryOperations::LegacyPusherNotification
     attr_reader :user, :model
 
     def initialize(model, user)
