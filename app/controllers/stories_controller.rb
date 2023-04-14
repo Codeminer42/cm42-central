@@ -41,7 +41,7 @@ class StoriesController < ApplicationController
     result = StoryOperations::Update.new.call(story: @story, data: allowed_params, current_user: current_user)
 
     respond_to do |format|
-      Dry::Matcher::ResultMatcher.call(result) do |on|
+      match_result(result) do |on|
         on.success do |story|
           format.html { redirect_to project_url(@project) }
           format.js   { render json: story }
@@ -90,7 +90,7 @@ class StoriesController < ApplicationController
     result = StoryOperations::Create.new.call(story: @story, current_user: current_user)
 
     respond_to do |format|
-      Dry::Matcher::ResultMatcher.call(result) do |on|
+      match_result(result) do |on|
         on.success do |story|
           format.html { redirect_to project_url(@project) }
           format.js   { render json: story }

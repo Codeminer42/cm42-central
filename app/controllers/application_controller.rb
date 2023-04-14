@@ -103,4 +103,8 @@ class ApplicationController < ActionController::Base
     ENV.fetch('ENABLE_RECAPTCHA', false)
   end
   helper_method :show_recaptcha?
+
+  def match_result(result)
+    Dry::Matcher::ResultMatcher.call(result) { |on| yield on }
+  end
 end
