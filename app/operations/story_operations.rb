@@ -47,7 +47,11 @@ module StoryOperations
     end
 
     def create_activity(story, current_user:)
-      Success ::Base::ActivityRecording.create_activity(story, current_user: current_user, action: 'create')
+      Success ::Base::ActivityRecording.create_activity(
+        story,
+        current_user: current_user,
+        action: 'create'
+      )
     end
   end
 
@@ -82,7 +86,11 @@ module StoryOperations
     end
 
     def ensure_valid_state(data)
-      return Success(data) unless should_be_unscheduled?(estimate: data['estimate'], type: data['story_type'])
+      return Success(data) unless should_be_unscheduled?(
+        estimate: data['estimate'],
+        type: data['story_type']
+      )
+
       data['state'] = 'unscheduled'
       Success(data)
     end
@@ -126,7 +134,11 @@ module StoryOperations
     end
 
     def create_activity(story, current_user:)
-      Success ::Base::ActivityRecording.create_activity(story, current_user: current_user, action: 'update')
+      Success ::Base::ActivityRecording.create_activity(
+        story,
+        current_user: current_user,
+        action: 'update'
+      )
     end
   end
 
