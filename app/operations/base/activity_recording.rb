@@ -1,12 +1,12 @@
 module Base
   class ActivityRecording
-    def self.create_activity(model, current_user, action)
-      Array(model).map do |record|
+    def self.create_activity(one_or_many_models, current_user:, action:)
+      Array(one_or_many_models).map do |model|
         Activity.create(
-          project: fetch_project(record),
+          project: fetch_project(model),
           user: current_user,
           action: action,
-          subject: record
+          subject: model
         )
       end
     end

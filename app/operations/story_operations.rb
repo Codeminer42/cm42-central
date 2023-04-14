@@ -12,7 +12,7 @@ module StoryOperations
       ActiveRecord::Base.transaction do
         story = yield save_story(params[:story])
         yield create_changesets(story)
-        yield create_activity(story, params[:current_user])
+        yield create_activity(story, current_user: params[:current_user])
 
         yield notify_users(story)
         yield notify_changes(story)
@@ -46,8 +46,8 @@ module StoryOperations
       Success StoryOperations::PusherNotification.notify_changes(story)
     end
 
-    def create_activity(story, current_user)
-      Success ::Base::ActivityRecording.create_activity(story, current_user, 'create')
+    def create_activity(story, current_user:)
+      Success ::Base::ActivityRecording.create_activity(story, current_user: current_user, action: 'create')
     end
   end
 
@@ -67,7 +67,7 @@ module StoryOperations
         yield notify_users(story)
         yield notify_changes(story)
 
-        yield create_activity(story, params[:current_user])
+        yield create_activity(story, current_user: params[:current_user])
 
         Success(story)
       end
@@ -125,8 +125,8 @@ module StoryOperations
       Success StoryOperations::PusherNotification.notify_changes(story)
     end
 
-    def create_activity(story, current_user)
-      Success ::Base::ActivityRecording.create_activity(story, current_user, 'update')
+    def create_activity(story, current_user:)
+      Success ::Base::ActivityRecording.create_activity(story, current_user: current_user, action: 'update')
     end
   end
 
