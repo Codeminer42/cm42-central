@@ -12,7 +12,6 @@ module StoryOperations
       ActiveRecord::Base.transaction do
         story = yield save_story(params[:story])
         yield create_changesets(story)
-
         yield create_activity(story, params[:current_user])
 
         yield notify_users(story)
@@ -48,45 +47,86 @@ module StoryOperations
     end
 
     def create_activity(story, current_user)
-      Success ::Base::ActivityRecording.create_activity(story, current_user)
+      Success ::Base::ActivityRecording.create_activity(story, current_user, 'create')
     end
   end
 
-  class Update < BaseOperations::Update
-    include LegacyMemberNotification
-    include StateChangeNotification
-    include LegacyFixes
-    include LegacyPusherNotification
-    include StateEnsurement
+  class Update
+    include Dry::Monads[:result, :do]
 
-    def before_save
-      ensure_valid_state
+    def call(params)
+      ActiveRecord::Base.transaction do
+        data = yield ensure_valid_state(params[:data].to_hash)
+        story = yield documents_attributes_changes(params[:story])
+        story = yield update_story(story: story, data: data)
 
-      model.documents_attributes_was = model.documents_attributes
-    end
+        yield create_changesets(story)
+        yield apply_fixes(story)
 
-    def after_save
-      create_changesets
-      apply_fixes
-      notify_state_changed
-      notify_users
-      notify_changes
+        yield notify_state_changed(story)
+        yield notify_users(story)
+        yield notify_changes(story)
+
+        yield create_activity(story, params[:current_user])
+
+        Success(story)
+      end
+    rescue
+      Failure(params[:story])
     end
 
     private
 
-    def ensure_valid_state
-      return unless should_be_unscheduled? estimate: params['estimate'], type: params['story_type']
-
-      params['state'] = 'unscheduled'
+    def should_be_unscheduled?(estimate:, type:)
+      Story.can_be_estimated?(type) && estimate.blank?
     end
 
-    def documents_changed?
-      model.documents_attributes != model.documents_attributes_was
+    def ensure_valid_state(data)
+      return Success(data) unless should_be_unscheduled?(estimate: data['estimate'], type: data['story_type'])
+      data['state'] = 'unscheduled'
+      Success(data)
     end
 
-    def create_changesets
-      model.changesets.create!
+    def documents_attributes_changes(story)
+      story.documents_attributes_was = story.documents_attributes
+      Success(story)
+    end
+
+    def update_story(story:, data:)
+      story.attributes = data
+      if story.save
+        Success(story)
+      else
+        Failure(story)
+      end
+    end
+
+    def create_changesets(story)
+      story.changesets.create
+      Success(story)
+    end
+
+    def apply_fixes(story)
+      story.fix_project_start_date
+      story.fix_story_accepted_at
+      story.project.save if story.project.start_date_previously_changed?
+      Success(story)
+    end
+
+    def notify_state_changed(story)
+      Success StoryOperations::StateChangeNotification.notify_state_changed(story)
+    end
+
+    def notify_users(story)
+      Success StoryOperations::UserNotification.notify_users(story)
+    end
+
+    def notify_changes(story)
+      Success StoryOperations::PusherNotification.notify_changes(story)
+    end
+
+    def create_activity(story, current_user)
+      Success ::Base::ActivityRecording.create_activity(story, current_user, 'update')
     end
   end
 
