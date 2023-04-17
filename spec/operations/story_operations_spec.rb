@@ -442,7 +442,7 @@ describe StoryOperations do
       it 'notifies the pusher that the board has changes' do
         expect(PusherNotificationWorker).to receive(:perform_async)
 
-        StoryOperations::Destroy.call(story, user)
+        StoryOperations::Destroy.new.call(story: story, current_user: user)
       end
     end
   end

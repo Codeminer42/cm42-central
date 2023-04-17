@@ -144,11 +144,31 @@ module StoryOperations
 
   class UpdateAll < BaseOperations::UpdateAll; end
 
-  class Destroy < BaseOperations::Destroy
-    include LegacyPusherNotification
+  class Destroy
+    include Dry::Monads[:result, :do]
 
-    def after_save
-      notify_changes
+    def call(params)
+      story = yield delete_story(params[:story])
+      yield notify_changes(story)
+      yield create_activity(story, current_user: params[:current_user])
+
+      Success(story)
+    end
+
+    def delete_story(story)
+      Success(story.destroy)
+    end
+
+    def notify_changes(story)
+      Success ::StoryOperations::PusherNotification.notify_changes(story)
+    end
+
+    def create_activity(story, current_user:)
+      Success ::Base::ActivityRecording.create_activity(
+        story,
+        current_user: current_user,
+        action: 'destroy'
+      )
     end
   end
 
