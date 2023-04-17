@@ -1,12 +1,14 @@
 module Base
   class ActivityRecording
-    def self.create_activity(model, current_user)
-      Activity.create(
-        project: fetch_project(model),
-        user: current_user,
-        action: self.class.name.split('::').last.downcase,
-        subject: model
-      )
+    def self.create_activity(one_or_many_models, current_user:, action:)
+      Array(one_or_many_models).map do |model|
+        Activity.create(
+          project: fetch_project(model),
+          user: current_user,
+          action: action,
+          subject: model
+        )
+      end
     end
 
     def self.fetch_project(model)

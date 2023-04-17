@@ -34,15 +34,26 @@ class StoriesController < ApplicationController
   def update
     @story = policy_scope(Story).find(params[:id])
     authorize @story
+
     @story.acting_user = current_user
     @story.base_uri = project_url(@story.project)
+
+    result = StoryOperations::Update.new.call(
+      story: @story,
+      data: allowed_params,
+      current_user: current_user
+    )
+
     respond_to do |format|
-      if StoryOperations::Update.call(@story, allowed_params, current_user)
-        format.html { redirect_to project_url(@project) }
-        format.js   { render json: @story }
-      else
-        format.html { render action: 'edit' }
-        format.js   { render json: @story, status: :unprocessable_entity }
+      match_result(result) do |on|
+        on.success do |story|
+          format.html { redirect_to project_url(@project) }
+          format.js   { render json: story }
+        end
+        on.failure do |story|
+          format.html { render action: 'edit' }
+          format.js   { render json: story, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -74,19 +85,21 @@ class StoriesController < ApplicationController
 
   def create
     update_current_team
+
     @story = policy_scope(Story).build(allowed_params)
     authorize @story
+
     @story.requested_by_id = current_user.id unless @story.requested_by_id
+
     result = StoryOperations::Create.new.call(story: @story, current_user: current_user)
-    Dry::Matcher::ResultMatcher.call(result) do |on|
-      on.success do |story|
-        respond_to do |format|
+
+    respond_to do |format|
+      match_result(result) do |on|
+        on.success do |story|
           format.html { redirect_to project_url(@project) }
           format.js   { render json: story }
         end
-      end
-      on.failure do |story|
-        respond_to do |format|
+        on.failure do |story|
           format.html { render action: 'new' }
           format.js   { render json: story, status: :unprocessable_entity }
         end

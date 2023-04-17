@@ -88,7 +88,7 @@ describe StoryOperations do
   describe '#documents_attributes' do
     before { story.save! }
 
-    subject { -> { StoryOperations::Update.call(story, { documents: new_documents }, user) } }
+    subject { -> { StoryOperations::Update.new.call(story: story, data: { documents: new_documents }, current_user: user) } }
 
     let(:attachments) do
       [
@@ -151,7 +151,7 @@ describe StoryOperations do
 
     let(:params) { { state: 'accepted', accepted_at: Date.current } }
 
-    subject { -> { StoryOperations::Update.call(story, params, user) } }
+    subject { -> { StoryOperations::Update.new.call(story: story, data: params, current_user: user) } }
 
     Story::ESTIMABLE_TYPES.each do |story_type|
       context "when estimate #{story_type} story" do
@@ -190,12 +190,12 @@ describe StoryOperations do
     context '::LegacyFixes' do
       it "sets the project start date if it doesn't exist" do
         story.project.update_attribute(:start_date, nil)
-        expect(subject.call.project.start_date).to_not be_nil
+        expect(subject.call.value!.project.start_date).to_not be_nil
       end
 
       it "sets the project start date if it's newer than the accepted story" do
         story.project.update_attribute(:start_date, Date.current + 2.days)
-        expect(subject.call.project.start_date).to eq(story.accepted_at.to_date)
+        expect(subject.call.value!.project.start_date).to eq(story.accepted_at.to_date)
       end
     end
 
