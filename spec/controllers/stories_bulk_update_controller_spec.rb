@@ -59,7 +59,7 @@ describe StoriesBulkUpdateController do
 
       context 'when set invalid owner' do
         before do
-          post :create, params: params.merge(owned_by_id: user_4)
+          post :create, params: params.merge(owned_by_id: user_4.id)
         end
 
         it 'responds with 422' do
