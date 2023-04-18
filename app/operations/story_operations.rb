@@ -8,11 +8,11 @@ module StoryOperations
   class Create
     include Dry::Monads[:result, :do]
 
-    def call(params)
+    def call(story:, current_user:)
       ActiveRecord::Base.transaction do
-        story = yield save_story(params[:story])
+        story = yield save_story(story)
         yield create_changesets(story)
-        yield create_activity(story, current_user: params[:current_user])
+        yield create_activity(story, current_user: current_user)
 
         yield notify_users(story)
         yield notify_changes(story)
@@ -20,7 +20,7 @@ module StoryOperations
         Success(story)
       end
     rescue
-      Failure(params[:story])
+      Failure(story)
     end
 
     private
@@ -58,10 +58,10 @@ module StoryOperations
   class Update
     include Dry::Monads[:result, :do]
 
-    def call(params)
+    def call(story:, data:, current_user:)
       ActiveRecord::Base.transaction do
-        data = yield ensure_valid_state(params[:data].to_hash)
-        story = yield documents_attributes_changes(params[:story])
+        data = yield ensure_valid_state(data.to_hash)
+        story = yield documents_attributes_changes(story)
         story = yield update_story(story: story, data: data)
 
         yield create_changesets(story)
@@ -71,12 +71,12 @@ module StoryOperations
         yield notify_users(story)
         yield notify_changes(story)
 
-        yield create_activity(story, current_user: params[:current_user])
+        yield create_activity(story, current_user: current_user)
 
         Success(story)
       end
     rescue
-      Failure(params[:story])
+      Failure(story)
     end
 
     private
@@ -144,11 +144,31 @@ module StoryOperations
 
   class UpdateAll < BaseOperations::UpdateAll; end
 
-  class Destroy < BaseOperations::Destroy
-    include LegacyPusherNotification
+  class Destroy
+    include Dry::Monads[:result, :do]
 
-    def after_save
-      notify_changes
+    def call(story:, current_user:)
+      story = yield delete_story(story)
+      yield notify_changes(story)
+      yield create_activity(story, current_user: current_user)
+
+      Success(story)
+    end
+
+    def delete_story(story)
+      Success(story.destroy)
+    end
+
+    def notify_changes(story)
+      Success ::StoryOperations::PusherNotification.notify_changes(story)
+    end
+
+    def create_activity(story, current_user:)
+      Success ::Base::ActivityRecording.create_activity(
+        story,
+        current_user: current_user,
+        action: 'destroy'
+      )
     end
   end
 
