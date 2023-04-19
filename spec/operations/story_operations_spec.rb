@@ -544,17 +544,17 @@ describe StoryOperations do
     let(:story_2)   { create(:story, project: project_1, requested_by: user_2) }
     let(:story_3)   { create(:story, project: project_2, requested_by: user_3) }
 
-    subject { StoryOperations::UpdateAll }
+    subject { StoryOperations::UpdateAll.new }
 
     let(:result) do
       stories = [story_1, story_2, story_3]
       params = { labels: 'backend', requested_by_id: user_2.id, owned_by_id: user_1.id }
-      subject.call(stories, params, user_1)
+      subject.call(stories: stories, data: params, current_user: user_1)
     end
 
     context 'when the user is not of the same project' do
       it 'does not update any story' do
-        expect(result).to eq(false)
+        expect(result.success?).to be_falsy
       end
     end
   end
