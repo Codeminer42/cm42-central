@@ -159,6 +159,7 @@ module StoryOperations
 
     private
 
+    # TODO: we should probably use a transaction here
     def update_stories(stories:, data:, current_user:)
       updated_stories = stories.map do |story|
         Update.new.call(story: story, data: data, current_user: current_user)
