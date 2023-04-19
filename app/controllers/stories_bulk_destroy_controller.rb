@@ -8,7 +8,7 @@ class StoriesBulkDestroyController < ApplicationController
     )
 
     match_result(result) do |on|
-      on.success do |stories|
+      on.success do
         render json: { message: t(:stories_destroy_success) }, status: :ok
       end
       on.failure do
