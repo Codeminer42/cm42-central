@@ -164,7 +164,7 @@ module StoryOperations
         Update.new.call(story: story, data: data, current_user: current_user)
       end
 
-      return Failure(updated_stories) if updated_stories.map(&:success?).include?(false)
+      return Failure(updated_stories) unless updated_stories.all?(&:success?)
 
       Success(updated_stories)
     end
