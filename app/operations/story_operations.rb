@@ -199,7 +199,27 @@ module StoryOperations
     end
   end
 
-  class DestroyAll < BaseOperations::DestroyAll; end
+  class DestroyAll
+    include Dry::Monads[:result, :do]
+
+    def call(stories:, current_user:)
+      stories = yield destroy_stories(
+        stories: stories,
+        current_user: current_user
+      )
+
+      Success(stories)
+    rescue
+      Failure(false)
+    end
+
+    private
+
+    def destroy_stories(stories:, current_user:)
+      deleted_stories = stories.destroy_all
+      Success(deleted_stories)
+    end
+  end
 
   class ReadAll
     delegate :past_iterations, :current_iteration_start, to: :iterations
