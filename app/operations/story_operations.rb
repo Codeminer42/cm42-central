@@ -231,26 +231,34 @@ module StoryOperations
   end
 
   class ReadAll
+    include Dry::Monads[:result, :do]
+
     delegate :past_iterations, :current_iteration_start, to: :iterations
 
-    def self.call(*args)
-      new(*args).run
-    end
-
-    def initialize(project:)
+    def call(project:)
       @project = project
-    end
 
-    def run
-      {
-        active_stories: active_stories,
+      yield active_stories
+      yield get_project_iterations
+
+      Success({
+        active_stories: @active_stories,
         past_iterations: past_iterations
-      }
+      })
     end
 
     private
 
     attr_reader :project
+
+    def iterations
+      @project_iterations ||= Iterations::ProjectIterations.new(project: project)
+    end
+
+    def get_project_iterations
+      @project_iterations ||= iterations
+      Success(@project_iterations)
+    end
 
     def active_stories
       @active_stories ||= begin
@@ -260,10 +268,8 @@ module StoryOperations
           .where("state != 'accepted' OR accepted_at >= ?", current_iteration_start)
           .order('updated_at DESC')
       end
-    end
 
-    def iterations
-      @iterations ||= Iterations::ProjectIterations.new(project: project)
+      Success(@active_stories)
     end
   end
 end

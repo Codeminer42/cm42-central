@@ -13,8 +13,11 @@ describe Beta::ProjectBoardOperations do
 
       let(:user) { create(:user, :with_team) }
 
+      let(:story_operations_read_all_instance) { StoryOperations::ReadAll.new }
+
       before do
-        allow(StoryOperations::ReadAll)
+        allow(StoryOperations::ReadAll).to receive(:new).and_return(story_operations_read_all_instance)
+        allow(story_operations_read_all_instance)
           .to receive(:call).with(project: project)
           .and_return(
             active_stories: stories,
