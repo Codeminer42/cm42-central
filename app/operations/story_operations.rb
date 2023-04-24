@@ -239,12 +239,12 @@ module StoryOperations
       @project = project
 
       yield active_stories
-      yield get_project_iterations
+      yield project_iterations
 
-      Success({
+      Success(
         active_stories: @active_stories,
         past_iterations: past_iterations
-      })
+      )
     end
 
     private
@@ -255,7 +255,7 @@ module StoryOperations
       @project_iterations ||= Iterations::ProjectIterations.new(project: project)
     end
 
-    def get_project_iterations
+    def project_iterations
       @project_iterations ||= iterations
       Success(@project_iterations)
     end
