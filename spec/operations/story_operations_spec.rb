@@ -470,8 +470,8 @@ describe StoryOperations do
                                     points: done_story.estimate)
     end
 
-    subject      { StoryOperations::ReadAll }
-    let(:result) { subject.call(project: project) }
+    subject      { StoryOperations::ReadAll.new }
+    let(:result) { subject.call(project: project).value! }
 
     context 'when there are stories in the done column' do
       let(:project) { create(:project, :with_past_iteration, users: [user], teams: [current_team]) }

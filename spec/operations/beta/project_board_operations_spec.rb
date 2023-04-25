@@ -13,13 +13,10 @@ describe Beta::ProjectBoardOperations do
 
       let(:user) { create(:user, :with_team) }
 
+      let(:story_operations_read_all_instance) { instance_double(StoryOperations::ReadAll, call: { active_stories: stories, past_iterations: 'Past Iterations' }) }
+
       before do
-        allow(StoryOperations::ReadAll)
-          .to receive(:call).with(project: project)
-          .and_return(
-            active_stories: stories,
-            past_iterations: 'Past Iterations'
-          )
+        allow(StoryOperations::ReadAll).to receive(:new).and_return(story_operations_read_all_instance)
       end
 
       it 'returns all the project board data' do
