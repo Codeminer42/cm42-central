@@ -187,7 +187,7 @@ describe StoryOperations do
       end
     end
 
-    context '::LegacyFixes' do
+    context '#apply_fixes' do
       it "sets the project start date if it doesn't exist" do
         story.project.update_attribute(:start_date, nil)
         expect(subject.call.value!.project.start_date).to_not be_nil
