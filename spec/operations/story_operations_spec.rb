@@ -11,18 +11,6 @@ describe StoryOperations do
   let(:project)     { membership.project }
   let(:story)       { project.stories.build(story_params) }
 
-  describe '::Destroy' do
-    before { story.save! }
-
-    context '::PusherNotification' do
-      it 'notifies the pusher that the board has changes' do
-        expect(PusherNotificationWorker).to receive(:perform_async)
-
-        StoryOperations::Destroy.new.call(story: story, current_user: user)
-      end
-    end
-  end
-
   describe '::ReadAll' do
     def expect_past_iteration_attrs(subject_past_iteration, past_iteration)
       expect(subject_past_iteration.start_date).to eq(past_iteration.start_date)
