@@ -1,84 +1,119 @@
 require 'rails_helper'
 
 describe StoryOperations::Create do
-  let(:story_params) do
-    { title: 'Test Story', requested_by: user, state: 'unstarted', accepted_at: nil }
-  end
+  describe '#call' do
+    subject { -> { StoryOperations::Create.call(story: story, current_user: user) } }
 
-  let!(:membership) { create(:membership) }
-  let(:user)        { membership.user }
-  let(:project)     { membership.project }
-  let(:story)       { project.stories.build(story_params) }
+    let(:membership) { create(:membership) }
+    let(:user)        { membership.user }
+    let(:project)     { membership.project }
+    let(:story)       { project.stories.build(story_params) }
 
-  subject { -> { StoryOperations::Create.new.call(story: story, current_user: user) } }
+    context 'with valid story' do
+      let(:story_params) do
+        { title: 'Story', requested_by: user, state: 'unstarted', accepted_at: nil }
+      end
 
-  context 'with valid params' do
-    it { expect { subject.call }.to change { Story.count } }
-    it { expect { subject.call }.to change { Changeset.count } }
-    it { expect(subject.call.value!).to be_eql Story.last }
+      it 'saves story' do
+        expect { subject.call }.to change { Story.count }.by(1)
+      end
 
-    Story::ESTIMABLE_TYPES.each do |story_type|
-      context "a #{story_type} story" do
-        it 'keeps the story state unscheduled' do
-          story.attributes = { state: 'unscheduled', story_type: story_type, estimate: 1 }
+      it 'creates changesets' do
+        expect { subject.call }.to change { Changeset.count }.by(1)
+      end
+
+      it 'creates activity recording' do
+        expect { subject.call }.to change { Activity.count }.by(1)
+      end
+
+      it 'sends user notification' do
+        expect(StoryOperations::UserNotification).to receive(:notify_users).with(story)
+        subject.call
+      end
+
+      it 'sends pusher notification' do
+        expect(StoryOperations::PusherNotification).to receive(:notify_changes).with(story)
+        subject.call
+      end
+
+      it 'returns success' do
+        expect(subject.call.success?).to be(true)
+      end
+
+      it 'returns created story' do
+        expect(subject.call.success).to eq(Story.last)
+      end
+
+      context 'when estimable_type is feature' do
+        context 'and state is started' do
+          let(:story_params) do
+            { title: 'Story', requested_by: user, accepted_at: nil, story_type: 'feature', state: 'started', estimate: 1 }
+          end
+
+          it 'keeps story state as started' do
+            subject.call
+            expect(story.state).to eq('started')
+          end
+        end
+
+        context 'and state is unscheduled' do
+          let(:story_params) do
+            { title: 'Story', requested_by: user, accepted_at: nil, story_type: 'feature', state: 'unscheduled', estimate: 1 }
+          end
+
+          it 'keeps story state as unscheduled' do
+            subject.call
+            expect(story.state).to eq('unscheduled')
+          end
+        end
+      end
+
+      context 'when story is not estimable' do
+        let(:story_params) do
+          { title: 'Story', requested_by: user, accepted_at: nil, story_type: 'release', state: 'unscheduled', estimate: 1 }
+        end
+
+        it 'keeps story state as unscheduled' do
           subject.call
           expect(story.state).to eq('unscheduled')
         end
       end
-
-      context "a started #{story_type} story" do
-        it 'sets the story state as started' do
-          story.attributes = { state: 'started', story_type: story_type, estimate: 1 }
-          subject.call
-          expect(story.state).to eq('started')
-        end
-      end
     end
 
-    context 'a non estimable story' do
-      it 'keeps the story state as unscheduled' do
-        story.attributes = { state: 'unscheduled', story_type: 'release' }
+    context 'with invalid story' do
+      let(:story_params) do
+        { title: '', requested_by: user, state: 'unstarted', accepted_at: nil }
+      end
+
+      it 'does not save story' do
+        expect { subject.call }.to_not change { Story.count }
+      end
+
+      it 'does not create changesets' do
+        expect { subject.call }.to_not change { Changeset.count }
+      end
+
+      it 'does not create activity recording' do
+        expect { subject.call }.to_not change { Activity.count }
+      end
+
+      it 'does not send user notification' do
+        expect(StoryOperations::UserNotification).to_not receive(:notify_users).with(story)
         subject.call
-        expect(story.state).to eq('unscheduled')
       end
-    end
-  end
 
-  context 'with invalid params' do
-    before { story.title = '' }
+      it 'does not sends pusher notification' do
+        expect(StoryOperations::PusherNotification).to_not receive(:notify_changes).with(story)
+        subject.call
+      end
 
-    it { is_expected.to_not change { Story.count } }
-    it { expect(subject.call.success?).to be_falsy }
-    it { expect(Notifications).to_not receive(:story_mention) }
-  end
+      it 'returns failure' do
+        expect(subject.call.failure?).to be(true)
+      end
 
-  context '::UserNotification' do
-    let(:mailer) { double('mailer') }
-    let(:username_user) do
-      project.users.create(
-        build(:unconfirmed_user, username: 'username').attributes
-      )
-    end
-    let(:story) do
-      project.stories.create(
-        story_params.merge(description: 'Foo @username')
-      )
-    end
-
-    it 'also sends notification for the found username' do
-      expect(Notifications).to receive(:story_mention)
-        .with(story, [username_user.email]).and_return(mailer)
-      expect(mailer).to receive(:deliver_later)
-
-      subject.call
-    end
-  end
-
-  context '::PusherNotification' do
-    it 'notifies the pusher that the board has changes' do
-      expect(PusherNotificationWorker).to receive(:perform_async)
-
-      subject.call
+      it 'returns story with errors' do
+        expect(subject.call.failure.errors.full_messages).to eq(['Title can\'t be blank'])
+      end
     end
   end
 end

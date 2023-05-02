@@ -91,7 +91,7 @@ class StoriesController < ApplicationController
 
     @story.requested_by_id = current_user.id unless @story.requested_by_id
 
-    result = StoryOperations::Create.new.call(story: @story, current_user: current_user)
+    result = StoryOperations::Create.call(story: @story, current_user: current_user)
 
     respond_to do |format|
       match_result(result) do |on|
