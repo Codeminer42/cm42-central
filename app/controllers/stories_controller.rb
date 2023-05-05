@@ -61,7 +61,7 @@ class StoriesController < ApplicationController
   def destroy
     @story = policy_scope(Story).find(params[:id])
     authorize @story
-    StoryOperations::Destroy.new.call(story: @story, current_user: current_user)
+    StoryOperations::Destroy.call(story: @story, current_user: current_user)
     head :ok
   end
 

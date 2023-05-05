@@ -1,24 +1,35 @@
 module StoryOperations
   class Destroy
-    include Dry::Monads[:result, :do]
+    include Operation
 
-    def call(story:, current_user:)
-      story = yield delete_story(story)
-      yield notify_changes(story)
-      yield create_activity(story, current_user: current_user)
-
-      Success(story)
+    def initialize(story:, current_user:)
+      @story = story
+      @current_user = current_user
     end
 
-    def delete_story(story)
+    def call
+      ActiveRecord::Base.transaction do
+        yield delete_story
+        yield notify_changes
+        yield create_activity
+
+        Success(story)
+      end
+    end
+
+    private
+
+    attr_reader :story, :current_user
+
+    def delete_story
       Success(story.destroy)
     end
 
-    def notify_changes(story)
+    def notify_changes
       Success ::StoryOperations::PusherNotification.notify_changes(story)
     end
 
-    def create_activity(story, current_user:)
+    def create_activity
       Success ::Base::ActivityRecording.create_activity(
         story,
         current_user: current_user,
