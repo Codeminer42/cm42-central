@@ -4,7 +4,7 @@ class StoriesBulkUpdateController < ApplicationController
 
     return render(json: { message: 'Stories not found' }, status: :not_found) if stories.blank?
 
-    result = StoryOperations::UpdateAll.new.call(
+    result = StoryOperations::UpdateAll.call(
       stories: stories,
       data: allowed_params,
       current_user: current_user

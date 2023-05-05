@@ -1,26 +1,124 @@
 require 'rails_helper'
 
 describe StoryOperations::UpdateAll do
-  let(:user_1)    { create(:user, :with_team) }
-  let(:user_2)    { create(:user, :with_team) }
-  let(:user_3)    { create(:user, :with_team) }
-  let(:project_1) { create(:project, users: [user_1, user_2], teams: [user_1.teams.first]) }
-  let(:project_2) { create(:project, users: [user_3], teams: [user_3.teams.first]) }
-  let(:story_1)   { create(:story, project: project_1, requested_by: user_1) }
-  let(:story_2)   { create(:story, project: project_1, requested_by: user_2) }
-  let(:story_3)   { create(:story, project: project_2, requested_by: user_3) }
+  describe '#call' do
+    subject { -> { StoryOperations::UpdateAll.call(stories: stories, data: story_params, current_user: user) } }
 
-  subject { StoryOperations::UpdateAll.new }
+    let(:membership)  { create(:membership) }
+    let(:user)        { membership.user }
+    let(:project)     { membership.project }
+    let(:story_1)     { create(:story, project: project, requested_by: user) }
+    let(:story_2)     { create(:story, project: project, requested_by: user) }
+    let(:story_3)     { create(:story, project: project, requested_by: user) }
+    let(:stories_ids) { [story_1, story_2, story_3].map(&:id) }
+    let(:stories)     { Story.where(id: stories_ids) }
 
-  let(:result) do
-    stories = [story_1, story_2, story_3]
-    params = { labels: 'backend', requested_by_id: user_2.id, owned_by_id: user_1.id }
-    subject.call(stories: stories, data: params, current_user: user_1)
-  end
+    context 'with all valid stories' do
+      let(:story_params) do
+        { title: 'Updated Story', story_type: 'feature', state: 'started', estimate: 1 }
+      end
 
-  context 'when the user is not of the same project' do
-    it 'does not update any story' do
-      expect(result.success?).to be_falsy
+      it 'updates all stories', :aggregate_failures do
+        updated_story_1, updated_story_2, updated_story_3 = *subject.call.success
+
+        expect(updated_story_1.title).to eq(story_params[:title])
+        expect(updated_story_2.title).to eq(story_params[:title])
+        expect(updated_story_3.title).to eq(story_params[:title])
+      end
+
+      it 'creates changesets' do
+        expect { subject.call }.to change { Changeset.count }.by(3)
+      end
+
+      it 'creates activity recording' do
+        expect { subject.call }.to change { Activity.count }.by(3)
+      end
+
+      it 'calls StoryOperations::Update', :aggregate_failures do
+        expect(StoryOperations::Update).to receive(:call).with(story: story_1, data: story_params, current_user: user)
+        expect(StoryOperations::Update).to receive(:call).with(story: story_2, data: story_params, current_user: user)
+        expect(StoryOperations::Update).to receive(:call).with(story: story_3, data: story_params, current_user: user)
+
+        subject.call
+      end
+
+      it 'sends state changed notification', :aggregate_failures do
+        expect(StoryOperations::StateChangeNotification).to receive(:notify_state_changed).with(story_1)
+        expect(StoryOperations::StateChangeNotification).to receive(:notify_state_changed).with(story_2)
+        expect(StoryOperations::StateChangeNotification).to receive(:notify_state_changed).with(story_3)
+
+        subject.call
+      end
+
+      it 'sends user notification', :aggregate_failures do
+        expect(StoryOperations::UserNotification).to receive(:notify_users).with(story_1)
+        expect(StoryOperations::UserNotification).to receive(:notify_users).with(story_2)
+        expect(StoryOperations::UserNotification).to receive(:notify_users).with(story_3)
+
+        subject.call
+      end
+
+      it 'sends pusher notification', :aggregate_failures do
+        expect(StoryOperations::PusherNotification).to receive(:notify_changes).with(story_1)
+        expect(StoryOperations::PusherNotification).to receive(:notify_changes).with(story_2)
+        expect(StoryOperations::PusherNotification).to receive(:notify_changes).with(story_3)
+
+        subject.call
+      end
+
+      it 'returns success' do
+        expect(subject.call.success?).to be(true)
+      end
+    end
+
+    context 'with invalid story title' do
+      let(:story_params) do
+        { title: '', story_type: 'feature', state: 'started', estimate: 1 }
+      end
+
+      it 'does not create changesets' do
+        expect { subject.call }.to_not change { Changeset.count }
+      end
+
+      it 'does not create activity recordings' do
+        expect { subject.call }.to_not change { Activity.count }
+      end
+
+      it 'calls StoryOperations::Update', :aggregate_failures do
+        expect(StoryOperations::Update).to receive(:call).with(story: story_1, data: story_params, current_user: user)
+        expect(StoryOperations::Update).to receive(:call).with(story: story_2, data: story_params, current_user: user)
+        expect(StoryOperations::Update).to receive(:call).with(story: story_3, data: story_params, current_user: user)
+
+        subject.call
+      end
+
+      it 'does not send state changed notification', :aggregate_failures do
+        expect(StoryOperations::StateChangeNotification).to_not receive(:notify_state_changed).with(story_1)
+        expect(StoryOperations::StateChangeNotification).to_not receive(:notify_state_changed).with(story_2)
+        expect(StoryOperations::StateChangeNotification).to_not receive(:notify_state_changed).with(story_3)
+
+        subject.call
+      end
+
+      it 'does not send user notification', :aggregate_failures do
+        expect(StoryOperations::UserNotification).to_not receive(:notify_users).with(story_1)
+        expect(StoryOperations::UserNotification).to_not receive(:notify_users).with(story_2)
+        expect(StoryOperations::UserNotification).to_not receive(:notify_users).with(story_3)
+
+        subject.call
+      end
+
+      it 'does not send pusher notification', :aggregate_failures do
+        expect(StoryOperations::PusherNotification).to_not receive(:notify_changes).with(story_1)
+        expect(StoryOperations::PusherNotification).to_not receive(:notify_changes).with(story_2)
+        expect(StoryOperations::PusherNotification).to_not receive(:notify_changes).with(story_3)
+
+        subject.call
+      end
+
+      it 'returns failure' do
+        expect(subject.call.failure?).to be(true)
+      end
     end
   end
 end
