@@ -38,7 +38,7 @@ class StoriesController < ApplicationController
     @story.acting_user = current_user
     @story.base_uri = project_url(@story.project)
 
-    result = StoryOperations::Update.new.call(
+    result = StoryOperations::Update.call(
       story: @story,
       data: allowed_params,
       current_user: current_user
