@@ -1,29 +1,33 @@
 module StoryOperations
   class DestroyAll
-    include Dry::Monads[:result, :do]
+    include Operation
 
-    def call(stories:, current_user:)
-      deleted_stories = yield destroy_stories(
-        stories: stories
-      )
+    def initialize(stories:, current_user:)
+      @stories = stories
+      @current_user = current_user
+    end
 
-      yield create_activity(deleted_stories, current_user: current_user)
+    def call
+      yield destroy_stories
+      yield create_activity
 
-      Success(deleted_stories)
+      Success(stories)
     rescue
       Failure(false)
     end
 
     private
 
-    def destroy_stories(stories:)
-      deleted_stories = stories.destroy_all
-      Success(deleted_stories)
+    attr_reader :stories, :current_user, :deleted_stories
+
+    def destroy_stories
+      @deleted_stories = stories.destroy_all
+      Success(stories)
     end
 
-    def create_activity(stories, current_user:)
+    def create_activity
       Success ::Base::ActivityRecording.create_activity(
-        stories,
+        deleted_stories,
         current_user: current_user,
         action: 'destroy'
       )

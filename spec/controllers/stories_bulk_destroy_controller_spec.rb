@@ -37,11 +37,8 @@ describe StoriesBulkDestroyController do
     end
 
     context 'when bulk destroy fails' do
-      let(:story_operations_destroy_all_instance) { StoryOperations::DestroyAll.new }
-
       before do
-        allow(StoryOperations::DestroyAll).to receive(:new).and_return(story_operations_destroy_all_instance)
-        allow(story_operations_destroy_all_instance).to receive(:call).and_return(Dry::Monads::Failure(false))
+        allow(StoryOperations::DestroyAll).to receive(:call).and_return(Dry::Monads::Failure(false))
         post :create, params: { project_id: project.id, story_ids: [story_1.id, story_2.id] }
       end
 
