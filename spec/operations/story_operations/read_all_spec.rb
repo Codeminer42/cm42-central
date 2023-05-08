@@ -1,18 +1,10 @@
 require 'rails_helper'
 
 describe StoryOperations::ReadAll do
-  def expect_past_iteration_attrs(subject_past_iteration, past_iteration)
-    expect(subject_past_iteration.start_date).to eq(past_iteration.start_date)
-    expect(subject_past_iteration.end_date).to eq(past_iteration.end_date)
-    expect(subject_past_iteration.points).to eq(past_iteration.points)
-    expect(subject_past_iteration.stories).to eq(past_iteration.stories)
-    expect(subject_past_iteration.iteration_number).to eq(1)
-  end
-
-  let(:user)          { create(:user, :with_team) }
-  let(:current_team)  { user.teams.first }
-  let!(:done_story)   { create(:story, :done, project: project, requested_by: user) }
-  let!(:active_story) { create(:story, :active, project: project, requested_by: user) }
+  let(:user)         { create(:user, :with_team) }
+  let(:current_team) { user.teams.first }
+  let(:done_story)   { create(:story, :done, project: project, requested_by: user) }
+  let(:active_story) { create(:story, :active, project: project, requested_by: user) }
 
   let!(:past_iteration) do
     iteration_start = project.created_at.to_date
@@ -23,11 +15,12 @@ describe StoryOperations::ReadAll do
                                   points: done_story.estimate)
   end
 
-  subject      { StoryOperations::ReadAll.new }
-  let(:result) { subject.call(project: project).value! }
+  subject      { -> { StoryOperations::ReadAll.call(project: project) } }
+  let(:result) { subject.call.success }
 
   context 'when there are stories in the done column' do
     let(:project) { create(:project, :with_past_iteration, users: [user], teams: [current_team]) }
+    let(:subject_past_iteration) { result[:past_iterations].first }
 
     it 'does not return done stories as Story objects' do
       expect(result[:active_stories]).to_not include(done_story)
@@ -37,10 +30,12 @@ describe StoryOperations::ReadAll do
       expect(result[:active_stories]).to contain_exactly(active_story)
     end
 
-    it 'returns the past iterations with its iteration number, points and dates' do
-      subject_past_iteration = result[:past_iterations].first
-
-      expect_past_iteration_attrs(subject_past_iteration, past_iteration)
+    it 'returns the past iterations with its iteration number, points and dates', :aggregate_failures do
+      expect(subject_past_iteration.start_date).to eq(past_iteration.start_date)
+      expect(subject_past_iteration.end_date).to eq(past_iteration.end_date)
+      expect(subject_past_iteration.points).to eq(past_iteration.points)
+      expect(subject_past_iteration.stories).to eq(past_iteration.stories)
+      expect(subject_past_iteration.iteration_number).to eq(1)
     end
   end
 
@@ -59,15 +54,18 @@ describe StoryOperations::ReadAll do
   context 'when there are no active stories' do
     let(:project) { create(:project, :with_past_iteration, users: [user], teams: [current_team]) }
     let(:active_story) { done_story }
+    let(:subject_past_iteration) { result[:past_iterations].first }
 
     it 'does not return active stories' do
       expect(result[:active_stories]).to be_empty
     end
 
-    it 'returns the past iterations with its iteration number, points and dates' do
-      subject_past_iteration = result[:past_iterations].first
-
-      expect_past_iteration_attrs(subject_past_iteration, past_iteration)
+    it 'returns the past iterations with its iteration number, points and dates', :aggregate_failures do
+      expect(subject_past_iteration.start_date).to eq(past_iteration.start_date)
+      expect(subject_past_iteration.end_date).to eq(past_iteration.end_date)
+      expect(subject_past_iteration.points).to eq(past_iteration.points)
+      expect(subject_past_iteration.stories).to eq(past_iteration.stories)
+      expect(subject_past_iteration.iteration_number).to eq(1)
     end
   end
 

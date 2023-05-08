@@ -1,12 +1,14 @@
 module StoryOperations
   class ReadAll
-    include Dry::Monads[:result, :do]
+    include Operation
 
     delegate :past_iterations, :current_iteration_start, to: :iterations
 
-    def call(project:)
+    def initialize(project:)
       @project = project
+    end
 
+    def call
       yield active_stories
       yield project_iterations
 
