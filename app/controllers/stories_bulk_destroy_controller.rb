@@ -2,7 +2,7 @@ class StoriesBulkDestroyController < ApplicationController
   def create
     authorize stories
 
-    result = StoryOperations::DestroyAll.new.call(
+    result = StoryOperations::DestroyAll.call(
       stories: stories,
       current_user: current_user
     )

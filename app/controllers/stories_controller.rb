@@ -38,9 +38,9 @@ class StoriesController < ApplicationController
     @story.acting_user = current_user
     @story.base_uri = project_url(@story.project)
 
-    result = StoryOperations::Update.new.call(
+    result = StoryOperations::Update.call(
       story: @story,
-      data: allowed_params,
+      story_attrs: allowed_params,
       current_user: current_user
     )
 
@@ -61,7 +61,7 @@ class StoriesController < ApplicationController
   def destroy
     @story = policy_scope(Story).find(params[:id])
     authorize @story
-    StoryOperations::Destroy.new.call(story: @story, current_user: current_user)
+    StoryOperations::Destroy.call(story: @story, current_user: current_user)
     head :ok
   end
 
@@ -91,7 +91,7 @@ class StoriesController < ApplicationController
 
     @story.requested_by_id = current_user.id unless @story.requested_by_id
 
-    result = StoryOperations::Create.new.call(story: @story, current_user: current_user)
+    result = StoryOperations::Create.call(story: @story, current_user: current_user)
 
     respond_to do |format|
       match_result(result) do |on|

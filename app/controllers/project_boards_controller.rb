@@ -2,7 +2,7 @@ class ProjectBoardsController < ApplicationController
   def show
     authorize project
 
-    result = StoryOperations::ReadAll.new.call(project: project)
+    result = StoryOperations::ReadAll.call(project: project)
     project_board = result.value!
 
     render json: project_board
