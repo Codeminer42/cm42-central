@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe StoryOperations::UpdateAll do
   describe '#call' do
-    subject { -> { StoryOperations::UpdateAll.call(stories: stories, data: story_params, current_user: user) } }
+    subject { -> { StoryOperations::UpdateAll.call(stories: stories, stories_attrs: story_params, current_user: user) } }
 
     let(:membership)  { create(:membership) }
     let(:user)        { membership.user }
@@ -35,9 +35,9 @@ describe StoryOperations::UpdateAll do
       end
 
       it 'calls StoryOperations::Update', :aggregate_failures do
-        expect(StoryOperations::Update).to receive(:call).with(story: story_1, data: story_params, current_user: user)
-        expect(StoryOperations::Update).to receive(:call).with(story: story_2, data: story_params, current_user: user)
-        expect(StoryOperations::Update).to receive(:call).with(story: story_3, data: story_params, current_user: user)
+        expect(StoryOperations::Update).to receive(:call).with(story: story_1, story_attrs: story_params, current_user: user)
+        expect(StoryOperations::Update).to receive(:call).with(story: story_2, story_attrs: story_params, current_user: user)
+        expect(StoryOperations::Update).to receive(:call).with(story: story_3, story_attrs: story_params, current_user: user)
 
         subject.call
       end
@@ -85,9 +85,9 @@ describe StoryOperations::UpdateAll do
       end
 
       it 'calls StoryOperations::Update', :aggregate_failures do
-        expect(StoryOperations::Update).to receive(:call).with(story: story_1, data: story_params, current_user: user)
-        expect(StoryOperations::Update).to receive(:call).with(story: story_2, data: story_params, current_user: user)
-        expect(StoryOperations::Update).to receive(:call).with(story: story_3, data: story_params, current_user: user)
+        expect(StoryOperations::Update).to receive(:call).with(story: story_1, story_attrs: story_params, current_user: user)
+        expect(StoryOperations::Update).to receive(:call).with(story: story_2, story_attrs: story_params, current_user: user)
+        expect(StoryOperations::Update).to receive(:call).with(story: story_3, story_attrs: story_params, current_user: user)
 
         subject.call
       end

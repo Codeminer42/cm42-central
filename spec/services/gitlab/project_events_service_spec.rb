@@ -11,7 +11,7 @@ describe Gitlab::ProjectEventsService do
       allow(Story).to receive(:find_by).with(branch: 'test-branch').and_return(story)
       allow(StoryOperations::Update).to receive(:call).with(
         story: story,
-        data: { state: 'delivered' },
+        story_attrs: { state: 'delivered' },
         current_user: story.requested_by
       ).and_return(true)
     end

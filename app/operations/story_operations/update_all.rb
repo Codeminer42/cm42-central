@@ -2,9 +2,9 @@ module StoryOperations
   class UpdateAll
     include Operation
 
-    def initialize(stories:, data:, current_user:)
+    def initialize(stories:, stories_attrs:, current_user:)
       @stories = stories
-      @data = data
+      @stories_attrs = stories_attrs
       @current_user = current_user
     end
 
@@ -18,12 +18,12 @@ module StoryOperations
 
     private
 
-    attr_reader :stories, :updated_stories, :data, :current_user
+    attr_reader :stories, :updated_stories, :stories_attrs, :current_user
 
     # TODO: we should probably use a transaction here
     def update_stories
-      @updated_stories = stories.map do |story|
-        Update.call(story: story, data: data, current_user: current_user)
+      updated_stories = stories.map do |story|
+        Update.call(story: story, story_attrs: stories_attrs, current_user: current_user)
       end
 
       return Failure(updated_stories) unless updated_stories.all?(&:success?)

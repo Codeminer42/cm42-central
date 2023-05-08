@@ -6,7 +6,7 @@ class StoriesBulkUpdateController < ApplicationController
 
     result = StoryOperations::UpdateAll.call(
       stories: stories,
-      data: allowed_params,
+      stories_attrs: allowed_params,
       current_user: current_user
     )
 

@@ -40,7 +40,7 @@ class StoriesController < ApplicationController
 
     result = StoryOperations::Update.call(
       story: @story,
-      data: allowed_params,
+      story_attrs: allowed_params,
       current_user: current_user
     )
 

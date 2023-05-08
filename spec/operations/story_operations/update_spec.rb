@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe StoryOperations::Update do
   describe '#call' do
-    subject { -> { StoryOperations::Update.call(story: story, data: story_params, current_user: user) } }
+    subject { -> { StoryOperations::Update.call(story: story, story_attrs: story_params, current_user: user) } }
 
     let(:membership) { create(:membership) }
     let(:user)        { membership.user }

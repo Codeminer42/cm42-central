@@ -2,9 +2,9 @@ module StoryOperations
   class Update
     include Operation
 
-    def initialize(story:, data:, current_user:)
+    def initialize(story:, story_attrs:, current_user:)
       @story = story
-      @data = data
+      @story_attrs = story_attrs
       @current_user = current_user
     end
 
@@ -31,19 +31,19 @@ module StoryOperations
 
     private
 
-    attr_reader :story, :data, :current_user
+    attr_reader :story, :story_attrs, :current_user
 
     def should_be_unscheduled?(estimate:, type:)
       Story.can_be_estimated?(type) && estimate.blank?
     end
 
     def ensure_valid_state
-      data[:state] = 'unscheduled' if should_be_unscheduled?(
-        estimate: data[:estimate],
-        type: data[:story_type]
+      story_attrs[:state] = 'unscheduled' if should_be_unscheduled?(
+        estimate: story_attrs[:estimate],
+        type: story_attrs[:story_type]
       )
 
-      Success(data)
+      Success(story_attrs)
     end
 
     def documents_attributes_changes
@@ -52,7 +52,7 @@ module StoryOperations
     end
 
     def update_story
-      story.attributes = data
+      story.attributes = story_attrs
       if story.save
         Success(story)
       else
