@@ -27,8 +27,7 @@ module StoryOperations
     end
 
     def project_iterations
-      @project_iterations ||= iterations
-      Success(@project_iterations)
+      Success(iterations)
     end
 
     def active_stories
