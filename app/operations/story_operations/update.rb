@@ -38,12 +38,11 @@ module StoryOperations
     end
 
     def ensure_valid_state
-      return Success(data) unless should_be_unscheduled?(
+      data[:state] = 'unscheduled' if should_be_unscheduled?(
         estimate: data[:estimate],
         type: data[:story_type]
       )
 
-      data[:state] = 'unscheduled'
       Success(data)
     end
 
