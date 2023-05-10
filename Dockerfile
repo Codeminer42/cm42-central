@@ -1,4 +1,4 @@
-FROM ruby:2.6.10
+FROM ruby:2.7.8
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV NODE_VERSION=14.18.3
@@ -19,7 +19,6 @@ RUN wget http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/
   && wget https://chromedriver.storage.googleapis.com/${CHROME_VERSION}/chromedriver_linux64.zip \
   && unzip chromedriver_linux64.zip -d /usr/local/bin \
   && rm chromedriver_linux64.zip
-
 
 WORKDIR /tmp
 COPY Gemfile Gemfile
