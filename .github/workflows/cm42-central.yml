@@ -46,6 +46,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 2.7.8
+        run: bundle install
       # Add or replace database setup steps here
       - name: Set up database schema
         run: bin/rake db:setup
@@ -114,6 +115,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 2.7.8
+        run: bundle install
       - name: Install Node
         uses: actions/setup-node@v2
         with:
