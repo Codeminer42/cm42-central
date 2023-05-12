@@ -13,7 +13,7 @@ describe Beta::ProjectBoardOperations do
 
       let(:user) { create(:user, :with_team) }
 
-      let(:story_operations_read_all_instance) { instance_double(StoryOperations::ReadAll, call: { active_stories: stories, past_iterations: 'Past Iterations' }) }
+      let(:story_operations_read_all_instance) { instance_double(StoryOperations::ReadAll, call: Dry::Monads::Success({ active_stories: stories, past_iterations: 'Past Iterations' })) }
 
       before do
         allow(StoryOperations::ReadAll).to receive(:new).and_return(story_operations_read_all_instance)
