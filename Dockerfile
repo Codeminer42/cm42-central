@@ -1,7 +1,7 @@
 FROM ruby:2.7.8
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV NODE_VERSION=14.18.3
+ENV NODE_VERSION=16.20.0
 
 RUN sed -i '/deb-src/d' /etc/apt/sources.list && \
   apt-get update
@@ -23,6 +23,7 @@ RUN wget http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/
 WORKDIR /tmp
 COPY Gemfile Gemfile
 COPY Gemfile.lock Gemfile.lock
+COPY yarn.lock yarn.lock
 COPY .env.sample .env
 
 RUN bundle install
