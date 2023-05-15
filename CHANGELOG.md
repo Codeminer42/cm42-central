@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [2.8.0] 2023-05-15
+
+- Update Ruby to version 2.7.8
+- Upgrade Node to 16.20
+
 ## [2.7.3] 2023-05-09
 
 - Refactor Story operations to use dry-monads
@@ -633,7 +638,7 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[unreleased]: https://github.com/Codeminer42/cm42-central/compare/v2.7.3...HEAD
+[unreleased]: https://github.com/Codeminer42/cm42-central/compare/v2.8.0...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
@@ -677,3 +682,4 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [2.7.1]: https://github.com/Codeminer42/cm42-central/tree/v2.7.1
 [2.7.2]: https://github.com/Codeminer42/cm42-central/tree/v2.7.2
 [2.7.3]: https://github.com/Codeminer42/cm42-central/tree/v2.7.3
+[2.7.3]: https://github.com/Codeminer42/cm42-central/tree/v2.8.0
