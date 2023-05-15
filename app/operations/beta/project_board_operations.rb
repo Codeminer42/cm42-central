@@ -47,7 +47,8 @@ module Beta
       end
 
       def stories_and_past_iterations
-        read_all_response = ::StoryOperations::ReadAll.call(project: project)
+        read_all_result = ::StoryOperations::ReadAll.call(project: project)
+        read_all_response = read_all_result.success
         read_all_response[:stories] = read_all_response.delete(:active_stories)
         read_all_response
       end
