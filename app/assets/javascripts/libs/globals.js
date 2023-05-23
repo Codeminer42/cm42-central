@@ -11,6 +11,8 @@ import Backbone from "backbone";
 
 window.$ = window.jQuery = jQUery;
 
+console.log("GLOBALS");
+
 window.Backbone = Backbone;
 
 window.I18n = I18nJs;
