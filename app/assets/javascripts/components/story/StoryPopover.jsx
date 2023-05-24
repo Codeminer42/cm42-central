@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Markdown from '../Markdown';
-import Popover from 'components/jquery_wrappers/Popover.js';
+import Popover from 'components/jquery_wrappers/Popover';
 
 export const StoryPopoverContent = ({ story }) => (
   <div className='popover__content'>

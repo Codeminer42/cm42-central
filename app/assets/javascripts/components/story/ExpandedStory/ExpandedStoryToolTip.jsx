@@ -1,5 +1,5 @@
 import React from 'react';
-import Popover from 'components/jquery_wrappers/Popover.js';
+import Popover from 'components/jquery_wrappers/Popover';
 
 const ExpandedStoryToolTip = ({ text }) => (
 

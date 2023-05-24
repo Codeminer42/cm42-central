@@ -15,11 +15,39 @@ const rollupPlugin = (matchers) => ({
   }
 });
 
+const aliasMap = {
+  vendor: path.join(__dirname, 'vendor/assets/javascripts'),
+  collections: path.join(__dirname, 'app/assets/javascripts/collections'),
+  mixins: path.join(__dirname, 'app/assets/javascripts/mixins'),
+  models: path.join(__dirname, 'app/assets/javascripts/models'),
+  templates: path.join(__dirname, 'app/assets/javascripts/templates'),
+  views: path.join(__dirname, 'app/assets/javascripts/views'),
+  libs: path.join(__dirname, 'app/assets/javascripts/libs'),
+  components: path.join(__dirname, 'app/assets/javascripts/components'),
+  controllers: path.join(__dirname, 'app/assets/javascripts/controllers'),
+  reducers: path.join(__dirname, 'app/assets/javascripts/reducers'),
+  actions: path.join(__dirname, 'app/assets/javascripts/actions'),
+  central: path.join(__dirname, 'app/assets/javascripts/central'),
+  store: path.join(__dirname, 'app/assets/javascripts/store'),
+  gritter: 'gritter/js/jquery.gritter.min.js',
+}
+
+const alias = Object.entries(aliasMap).map(([key, value]) => ({ find: key, replacement: value }))
+
 export default defineConfig({
   plugins: [
     RubyPlugin(),
     PrecompileEjs()
   ],
+  // build: {
+  //   rollupOptions: {
+  //     external: [
+  //       'cloudinary_js/js/jquery.ui.widget',
+  //       'cloudinary_js/js/jquery.iframe-transport',
+  //       'cloudinary_js/js/jquery.fileupload'
+  //     ]
+  //   }
+  // },
   esbuild: {
     loader: "jsx",
     include: [
@@ -39,21 +67,12 @@ export default defineConfig({
     exclude: [],
   },
   resolve: {
-    alias: {
-      vendor: path.join(__dirname, 'vendor/assets/javascripts'),
-      collections: path.join(__dirname, 'app/assets/javascripts/collections'),
-      mixins: path.join(__dirname, 'app/assets/javascripts/mixins'),
-      models: path.join(__dirname, 'app/assets/javascripts/models'),
-      templates: path.join(__dirname, 'app/assets/javascripts/templates'),
-      views: path.join(__dirname, 'app/assets/javascripts/views'),
-      libs: path.join(__dirname, 'app/assets/javascripts/libs'),
-      components: path.join(__dirname, 'app/assets/javascripts/components'),
-      controllers: path.join(__dirname, 'app/assets/javascripts/controllers'),
-      reducers: path.join(__dirname, 'app/assets/javascripts/reducers'),
-      actions: path.join(__dirname, 'app/assets/javascripts/actions'),
-      central: path.join(__dirname, 'app/assets/javascripts/central'),
-      store: path.join(__dirname, 'app/assets/javascripts/store'),
-      gritter: 'gritter/js/jquery.gritter.min.js'
-    }
+    alias: [
+      ...alias,
+      // {
+      //   find: /jquery\.ui\.widget/,
+      //   replacement: require.resolve('cloudinary_js/js/jquery.ui.widget_ajkshdkja')
+      // }
+    ]
   }
 })

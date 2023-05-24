@@ -2949,6 +2949,30 @@ bluebird@^3.7.2:
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
   integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
 
+blueimp-canvas-to-blob@3:
+  version "3.29.0"
+  resolved "https://registry.yarnpkg.com/blueimp-canvas-to-blob/-/blueimp-canvas-to-blob-3.29.0.tgz#d965f06cb1a67fdae207a2be56683f55ef531466"
+  integrity sha512-0pcSSGxC0QxT+yVkivxIqW0Y4VlO2XSDPofBAqoJ1qJxgH9eiUDLv50Rixij2cDuEfx4M6DpD9UGZpRhT5Q8qg==
+
+blueimp-file-upload@^10.32.0:
+  version "10.32.0"
+  resolved "https://registry.yarnpkg.com/blueimp-file-upload/-/blueimp-file-upload-10.32.0.tgz#897c91f813ccf4b6cd14db2da3da237ce433e04e"
+  integrity sha512-3WMJw5Cbfz94Adl1OeyH+rRpGwHiNHzja+CR6aRWPoAtwrUwvP5gXKo0XdX+sdPE+iCU63Xmba88hoHQmzY8RQ==
+  optionalDependencies:
+    blueimp-canvas-to-blob "3"
+    blueimp-load-image "5"
+    blueimp-tmpl "3"
+
+blueimp-load-image@5:
+  version "5.16.0"
+  resolved "https://registry.yarnpkg.com/blueimp-load-image/-/blueimp-load-image-5.16.0.tgz#16b763f57e6725f8865517bca8eb7c3dc7d41e09"
+  integrity sha512-3DUSVdOtlfNRk7moRZuTwDmA3NnG8KIJuLcq3c0J7/BIr6X3Vb/EpX3kUH1joxUhmoVF4uCpDfz7wHkz8pQajA==
+
+blueimp-tmpl@3:
+  version "3.20.0"
+  resolved "https://registry.yarnpkg.com/blueimp-tmpl/-/blueimp-tmpl-3.20.0.tgz#bed897db362c70d3740e0ad1020ce84bfa15ceaa"
+  integrity sha512-g6ln9L+VX8ZA4WA8mgKMethYH+5teroJ2uOkCvcthy9Y9d9LrQ42OAMn+r3ECKu9CB+xe9GOChlIUJBSxwkI6g==
+
 boolbase@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
@@ -3426,10 +3450,15 @@ clone-deep@^4.0.1:
     kind-of "^6.0.2"
     shallow-clone "^3.0.0"
 
-cloudinary_js@2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/cloudinary_js/-/cloudinary_js-2.1.2.tgz#17b4a29ae9791f1adcc99192bc57a224dd67c1be"
-  integrity sha512-9iUv1DWwEu+/0Uvp/ZmjrburjiURqY6CBA21sGlbnxfyEJjwY8zlHMEENfMGbr8oqineaWnsy3ZyrNtc+MDXnQ==
+cloudinary-jquery-file-upload@^2.13.0:
+  version "2.13.0"
+  resolved "https://registry.yarnpkg.com/cloudinary-jquery-file-upload/-/cloudinary-jquery-file-upload-2.13.0.tgz#17b9bc63daea46f02acdb2601356191e87ca52a9"
+  integrity sha512-JJ9PM4XV1ZgffSBlW8SEVCqeNfYtPTGAtRJ/UihnR7nD+jepicF03g8B2oeY2g2T1Vj4CEQIz1kxLrjI7vjfzQ==
+
+cloudinary-jquery@^2.13.0:
+  version "2.13.0"
+  resolved "https://registry.yarnpkg.com/cloudinary-jquery/-/cloudinary-jquery-2.13.0.tgz#482586c48099666ae30b945633e9ea9d5c79c621"
+  integrity sha512-gkUEPIxIxIFJWQxfuq0Xvp9GQ0WN3cd7cGq/z7zkZe3QvLkfJxboqLd5HRlwgh2JIccUQV4z9ZnlB+lyCu9iGg==
 
 co@^4.6.0:
   version "4.6.0"
