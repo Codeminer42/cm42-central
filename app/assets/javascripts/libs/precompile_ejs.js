@@ -5,7 +5,6 @@ export default function precompileEjs() {
   return {
     name: "precompile-ejs",
     enforce: "pre",
-
     load: function (id) {
       if (!id.endsWith(".ejs")) {
         return null;
@@ -18,7 +17,6 @@ export default function precompileEjs() {
         strict: true,
         rmWhitespace: true,
       });
-
       const transpiled =
         "/** eslint-disable */\nexport default " + template.toString() + ";";
 
@@ -26,7 +24,6 @@ export default function precompileEjs() {
         code: transpiled,
       };
     },
-
     transform: function (src, id) {
       if (!id.endsWith(".ejs")) {
         return null;
