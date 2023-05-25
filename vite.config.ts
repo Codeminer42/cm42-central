@@ -2,8 +2,6 @@ import { defineConfig } from 'vite'
 import RubyPlugin from 'vite-plugin-ruby'
 import path from 'path'
 import PrecompileEjs from './app/assets/javascripts/libs/precompile_ejs'
-import * as esbuild from 'esbuild'
-import fs from 'fs'
 
 const aliasMap = {
   vendor: path.join(__dirname, 'vendor/assets/javascripts'),
