@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.configure do |config|
+  config.before(:suite) do
+    `bundle exec rake assets:precompile`
+  end
+
   config.around(:each) do |ex|
     ex.run_with_retry retry: 3
   end
