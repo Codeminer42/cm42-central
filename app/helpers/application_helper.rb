@@ -9,10 +9,10 @@ module ApplicationHelper
   end
 
   CLOUDINARY_JS_CONFIG_PARAMS = %i[
-    api_key,
-    cloud_name,
-    private_cdn,
-    secure_distribution,
+    api_key
+    cloud_name
+    private_cdn
+    secure_distribution
     cdn_subdomain
   ]
 
