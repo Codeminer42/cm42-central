@@ -21,10 +21,7 @@ dump.rdb
 public/test_assets/
 public/javascripts/*
 public/javascripts-test/*
-public/packs/*
-public/packs-test/*
 /node_modules
-/public/webpack
 js_coverage/
 coverage
 package-lock.json
