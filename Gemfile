@@ -59,10 +59,10 @@ gem 'transitions', require: ["transitions", "active_model/transitions"]
 gem 'uglifier', '>= 2.5.3'
 gem 'user_impersonate2', require: 'user_impersonate'
 gem 'virtus'
-gem 'webpacker', '~> 5.4.3'
 gem 'pusher'
 gem 'dry-monads'
 gem 'dry-matcher'
+gem 'vite_rails'
 
 source 'http://insecure.rails-assets.org/' do
   gem 'rails-assets-jquery.gritter'

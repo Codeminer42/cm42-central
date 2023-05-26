@@ -1,4 +1,4 @@
-import jQUery from "jquery";
+import jQuery from "jquery";
 import I18nJs from "i18n-js";
 import Underscore from "underscore";
 import Markdown from "vendor/Markdown.Converter";
@@ -9,7 +9,7 @@ import CoreJsMap from "core-js/library/fn/map";
 import CoreJsSet from "core-js/library/fn/set";
 import Backbone from "backbone";
 
-window.$ = window.jQuery = jQUery;
+window.$ = window.jQuery = jQuery;
 
 window.Backbone = Backbone;
 

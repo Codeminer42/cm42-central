@@ -1,16 +1,16 @@
-import 'vendor/backbone.rails';
+import "vendor/backbone.rails";
 
-Backbone.View = (function(View) {
+Backbone.View = (function (View) {
   return View.extend({
-    constructor: function(options) {
+    constructor: function (options) {
       this.options = options || {};
       View.apply(this, arguments);
     },
-    make: function(tagName, attributes, content) {
+    make: function (tagName, attributes, content) {
       var el = document.createElement(tagName);
       if (attributes) $(el).attr(attributes);
       if (content) $(el).html(content);
       return el;
-    }
+    },
   });
 })(Backbone.View);
