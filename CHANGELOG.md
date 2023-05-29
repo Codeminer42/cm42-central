@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [2.9.0] 2023-05-26
+
+- Migrate from Webpacker to Vite Ruby
+
 ## [2.8.0] 2023-05-15
 
 - Update Ruby to version 2.7.8
@@ -682,4 +686,5 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [2.7.1]: https://github.com/Codeminer42/cm42-central/tree/v2.7.1
 [2.7.2]: https://github.com/Codeminer42/cm42-central/tree/v2.7.2
 [2.7.3]: https://github.com/Codeminer42/cm42-central/tree/v2.7.3
-[2.7.3]: https://github.com/Codeminer42/cm42-central/tree/v2.8.0
+[2.8.0]: https://github.com/Codeminer42/cm42-central/tree/v2.8.0
+[2.9.0]: https://github.com/Codeminer42/cm42-central/tree/v2.9.0
