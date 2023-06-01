@@ -110,7 +110,7 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1.xml
   def destroy
     if valid_name_confirmation?
-      ProjectOperations::Destroy.call(@project, current_user)
+      ProjectOperations::Destroy.call(project: @project, current_user: current_user)
 
       redirect_to(projects_url)
     else

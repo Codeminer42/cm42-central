@@ -45,7 +45,7 @@ describe ProjectOperations do
   describe 'Destroy' do
     before { project.save! }
 
-    subject { -> { ProjectOperations::Destroy.call(project, user) } }
+    subject { -> { ProjectOperations::Destroy.call(project: project, current_user: user) } }
 
     it { expect { subject.call }.to change { Project.count }.by(-1) }
   end
@@ -93,7 +93,7 @@ describe ProjectOperations do
     context 'Destroy' do
       before { project.save! }
 
-      subject { -> { ProjectOperations::Destroy.call(project, user) } }
+      subject { -> { ProjectOperations::Destroy.call(project: project, current_user: user) } }
 
       it 'must record an activity' do
         old_attributes = project.attributes
