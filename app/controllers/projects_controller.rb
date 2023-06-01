@@ -61,16 +61,22 @@ class ProjectsController < ApplicationController
     @project = policy_scope(Project).new(allowed_params)
     authorize @project
     @project.users << current_user
+
+    result = ProjectOperations::Create.call(project: @project, current_user: current_user)
+
     respond_to do |format|
-      if ProjectOperations::Create.call(@project, current_user)
-        current_team.ownerships.create(project: @project, is_owner: true)
+      match_result(result) do |on|
+        on.success do |project|
+          current_team.ownerships.create(project: project, is_owner: true)
         format.html do
-          redirect_to(@project, notice: t('projects.project was successfully created'))
+            redirect_to(project, notice: t('projects.project was successfully created'))
         end
-        format.xml { render xml: @project, status: :created, location: @project }
-      else
+          format.xml { render xml: project, status: :created, location: project }
+        end
+        on.failure do |project|
         format.html { render action: 'new' }
-        format.xml  { render xml: @project.errors, status: :unprocessable_entity }
+          format.xml  { render xml: project.errors, status: :unprocessable_entity }
+        end
       end
     end
   end

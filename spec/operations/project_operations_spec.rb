@@ -7,19 +7,19 @@ describe ProjectOperations do
 
   describe 'Create' do
     context 'with valid params' do
-      subject { -> { ProjectOperations::Create.call(project, user) } }
+      subject { -> { ProjectOperations::Create.call(project: project, current_user: user) } }
 
       it { expect { subject.call }.to change { Project.count } }
-      it { expect(subject.call).to be_eql Project.last }
+      it { expect(subject.call.success).to be_eql Project.last }
     end
 
     context 'with invalid params' do
       before { project.name = nil }
 
-      subject { -> { ProjectOperations::Create.call(project, user) } }
+      subject { -> { ProjectOperations::Create.call(project: project, current_user: user) } }
 
       it { is_expected.to_not change { Project.count } }
-      it { expect(subject.call).to be_falsy }
+      it { expect(subject.call.success?).to be_falsy }
     end
   end
 
@@ -52,7 +52,7 @@ describe ProjectOperations do
 
   describe '::ActivityRecording' do
     context 'Create' do
-      subject { -> { ProjectOperations::Create.call(project, user) } }
+      subject { -> { ProjectOperations::Create.call(project: project, current_user: user) } }
 
       it 'must record an activity' do
         expect { subject.call }.to change { Activity.count }

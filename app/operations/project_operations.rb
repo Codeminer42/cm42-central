@@ -1,7 +1,4 @@
 module ProjectOperations
-  class Create < BaseOperations::Create
-  end
-
   class Update < BaseOperations::Update
   end
 
