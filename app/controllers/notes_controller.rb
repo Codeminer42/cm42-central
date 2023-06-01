@@ -27,11 +27,11 @@ class NotesController < ApplicationController
     result = NoteOperations::Create.call(note: @note, current_user: current_user)
 
     match_result(result) do |on|
-      on.success do |story|
-        render json: @note
+      on.success do |note|
+        render json: note
       end
-      on.failure do |story|
-        render json: @note, status: :unprocessable_entity
+      on.failure do |note|
+        render json: note, status: :unprocessable_entity
       end
     end
   end
