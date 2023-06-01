@@ -67,6 +67,7 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       match_result(result) do |on|
         on.success do |project|
+          # TODO: move from here
           current_team.ownerships.create(project: project, is_owner: true)
           format.html do
             redirect_to(project, notice: t('projects.project was successfully created'))
