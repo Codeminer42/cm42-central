@@ -1,7 +1,4 @@
 module ProjectOperations
-  class Update < BaseOperations::Update
-  end
-
   class Destroy < BaseOperations::Destroy
     protected
 

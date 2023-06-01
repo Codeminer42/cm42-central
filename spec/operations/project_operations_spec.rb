@@ -27,18 +27,18 @@ describe ProjectOperations do
     before { project.save! }
 
     context 'with valid params' do
-      subject { -> { ProjectOperations::Update.call(project, { name: 'Hello World' }, user) } }
+      subject { -> { ProjectOperations::Update.call(project: project, project_attrs: { name: 'Hello World' }, current_user: user) } }
 
       it { expect { subject.call }.to_not change { Project.count } }
-      it { expect(subject.call.name).to be_eql 'Hello World' }
+      it { expect(subject.call.success.name).to be_eql 'Hello World' }
     end
 
     context 'with invalid params' do
       before { project.name = nil }
 
-      subject { -> { ProjectOperations::Update.call(project, { name: nil }, user) } }
+      subject { -> { ProjectOperations::Update.call(project: project, project_attrs: { name: nil }, current_user: user) } }
 
-      it { expect(subject.call).to be_falsy }
+      it { expect(subject.call.success?).to be_falsy }
     end
   end
 
@@ -69,9 +69,9 @@ describe ProjectOperations do
       subject do
         lambda do
           ProjectOperations::Update.call(
-            project,
-            { name: 'Hello World', point_scale: 'linear', iteration_start_day: 4 },
-            user
+            project: project,
+            project_attrs: { name: 'Hello World', point_scale: 'linear', iteration_start_day: 4 },
+            current_user: user
           )
         end
       end
