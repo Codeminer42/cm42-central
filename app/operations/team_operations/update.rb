@@ -9,20 +9,6 @@ module TeamOperations
     end
 
     def call
-      ActiveRecord::Base.transaction do
-        yield update_story
-
-        Success(team)
-      end
-    rescue
-      Failure(team)
-    end
-
-    private
-
-    attr_reader :team, :team_attrs, :current_user
-
-    def update_story
       team.attributes = team_attrs
       if team.save
         Success(team)
@@ -30,5 +16,9 @@ module TeamOperations
         Failure(team)
       end
     end
+
+    private
+
+    attr_reader :team, :team_attrs, :current_user
   end
 end
