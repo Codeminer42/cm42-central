@@ -64,24 +64,24 @@ class TeamsController < ApplicationController
     @team = Team.new(allowed_params)
     authorize @team
 
-    if check_recaptcha
-      result = TeamOperations::Create.call(team: @team, current_user: current_user)
+    return unless check_recaptcha
 
-      respond_to do |format|
-        match_result(result) do |on|
-          on.success do |team|
-            format.html do
-              session[:current_team_slug] = team.slug
-              flash[:notice] = t('teams.team was successfully created')
-              redirect_to(root_path)
-            end
-            format.xml  { render xml: team, status: :created, location: team }
-          end
+    result = TeamOperations::Create.call(team: @team, current_user: current_user)
 
-          on.failure do |team|
-            format.html { render action: 'new' }
-            format.xml  { render xml: @team.errors, status: :unprocessable_entity }
+    respond_to do |format|
+      match_result(result) do |on|
+        on.success do |team|
+          format.html do
+            session[:current_team_slug] = team.slug
+            flash[:notice] = t('teams.team was successfully created')
+            redirect_to(root_path)
           end
+          format.xml  { render xml: team, status: :created, location: team }
+        end
+
+        on.failure do
+          format.html { render action: 'new' }
+          format.xml  { render xml: @team.errors, status: :unprocessable_entity }
         end
       end
     end
@@ -93,7 +93,11 @@ class TeamsController < ApplicationController
     @team = current_team
     authorize @team
 
-    result = TeamOperations::Update.call(team: @team, team_attrs: allowed_params, current_user: current_user)
+    result = TeamOperations::Update.call(
+      team: @team,
+      team_attrs: allowed_params,
+      current_user: current_user
+    )
 
     respond_to do |format|
       match_result(result) do |on|
