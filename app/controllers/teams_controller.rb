@@ -157,10 +157,6 @@ class TeamsController < ApplicationController
     )
   end
 
-  def can_create?
-    check_recaptcha && TeamOperations::Create.call(team: @team, current_user: current_user).success?
-  end
-
   def add_team_for(user)
     if user.teams.include?(current_team)
       flash[:notice] = t('teams.user_is_already_in_this_team')
