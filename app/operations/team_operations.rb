@@ -1,17 +1,4 @@
 module TeamOperations
-  class Create < BaseOperations::Create
-    def create_activity
-      # bypass (no current_user)
-    end
-
-    protected
-
-    def after_save
-      return if current_user.blank?
-      model.enrollments.create user: current_user, is_admin: true
-    end
-  end
-
   class Update < BaseOperations::Update
     def create_activity
       # bypass (no current_project)

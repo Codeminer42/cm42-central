@@ -63,17 +63,26 @@ class TeamsController < ApplicationController
   def create
     @team = Team.new(allowed_params)
     authorize @team
-    respond_to do |format|
-      if can_create?
-        format.html do
-          session[:current_team_slug] = @team.slug
-          flash[:notice] = t('teams.team was successfully created')
-          redirect_to(root_path)
+
+    if check_recaptcha
+      result = TeamOperations::Create.call(team: @team, current_user: current_user)
+
+      respond_to do |format|
+        match_result(result) do |on|
+          on.success do |team|
+            format.html do
+              session[:current_team_slug] = team.slug
+              flash[:notice] = t('teams.team was successfully created')
+              redirect_to(root_path)
+            end
+            format.xml  { render xml: team, status: :created, location: team }
+          end
+
+          on.failure do |team|
+            format.html { render action: 'new' }
+            format.xml  { render xml: @team.errors, status: :unprocessable_entity }
+          end
         end
-        format.xml  { render xml: @team, status: :created, location: @team }
-      else
-        format.html { render action: 'new' }
-        format.xml  { render xml: @team.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -143,7 +152,7 @@ class TeamsController < ApplicationController
   end
 
   def can_create?
-    check_recaptcha && TeamOperations::Create.call(@team, current_user)
+    check_recaptcha && TeamOperations::Create.call(team: @team, current_user: current_user).success?
   end
 
   def add_team_for(user)

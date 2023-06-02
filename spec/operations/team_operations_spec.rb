@@ -4,24 +4,6 @@ describe TeamOperations do
   let(:team_params) { { name: 'Test Team' } }
   let(:team) { Team.new(team_params) }
 
-  describe 'Create' do
-    context 'with valid params' do
-      subject { -> { TeamOperations::Create.call(team, nil) } }
-
-      it { expect { subject.call }.to change { Team.count }.by(1) }
-      it { expect(subject.call).to be_eql Team.last }
-    end
-
-    context 'with invalid params' do
-      before { team.name = nil }
-
-      subject { -> { TeamOperations::Create.call(team, nil) } }
-
-      it { is_expected.to_not change { Team.count } }
-      it { expect(subject.call).to be_falsy }
-    end
-  end
-
   describe 'Update' do
     before { team.save! }
 
