@@ -135,10 +135,11 @@ class TeamsController < ApplicationController
   def unarchive
     archived_team = Team.find_by(id: params[:id])
     authorize archived_team, :update?
-    unarchived_team = TeamOperations::Unarchive.call(archived_team)
+
+    result = TeamOperations::Unarchive.call(team: archived_team)
 
     respond_to do |format|
-      if unarchived_team
+      if result.success?
         format.html do
           flash[:notice] = t('teams.successfully_unarchived')
           redirect_to teams_path
