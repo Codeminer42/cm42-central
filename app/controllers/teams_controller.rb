@@ -120,7 +120,7 @@ class TeamsController < ApplicationController
     @team = current_team
     authorize @team
 
-    TeamOperations::Destroy.call(@team, current_user)
+    TeamOperations::Destroy.call(team: @team, current_user: current_user)
     unselect_slug
     send_notification
 
