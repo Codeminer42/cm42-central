@@ -1,10 +1,4 @@
 module TeamOperations
-  class Update < BaseOperations::Update
-    def create_activity
-      # bypass (no current_project)
-    end
-  end
-
   class Destroy < BaseOperations::Destroy
     def create_activity
       # bypass (no current_project)

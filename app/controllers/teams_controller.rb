@@ -93,18 +93,23 @@ class TeamsController < ApplicationController
     @team = current_team
     authorize @team
 
-    respond_to do |format|
-      if TeamOperations::Update.call(@team, allowed_params, current_user)
-        @team.reload
+    result = TeamOperations::Update.call(team: @team, team_attrs: allowed_params, current_user: current_user)
 
-        format.html do
-          flash[:notice] = t('teams.team_was_successfully_updated')
-          redirect_to edit_team_path(@team)
+    respond_to do |format|
+      match_result(result) do |on|
+        on.success do |team|
+          team.reload
+
+          format.html do
+            flash[:notice] = t('teams.team_was_successfully_updated')
+            redirect_to edit_team_path(team)
+          end
+          format.xml  { head :ok }
         end
-        format.xml  { head :ok }
-      else
-        format.html { render action: 'edit' }
-        format.xml  { render xml: @team.errors, status: :unprocessable_entity }
+        on.failure do |team|
+          format.html { render action: 'edit' }
+          format.xml  { render xml: team.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
