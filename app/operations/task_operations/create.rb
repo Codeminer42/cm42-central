@@ -36,11 +36,11 @@ module TaskOperations
     end
 
     def create_activity
-      Success(::Base::ActivityRecording.create_activity(
+      Success ::Base::ActivityRecording.create_activity(
         task,
         current_user: current_user,
         action: 'create'
-      ))
+      )
     end
   end
 end
