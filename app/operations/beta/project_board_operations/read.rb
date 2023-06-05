@@ -55,10 +55,10 @@ module Beta
 
       def project
         @project ||= current_user
-                      .projects
-                      .friendly
-                      .preload(:users, stories: %i[notes document_files tasks])
-                      .find(project_id)
+                        .projects
+                        .friendly
+                        .preload(:users, stories: %i[notes document_files tasks])
+                        .find(project_id)
       end
 
       def default_flow
