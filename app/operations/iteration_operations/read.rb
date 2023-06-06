@@ -1,8 +1,6 @@
 module IterationOperations
   class Read
-    def self.call(*args)
-      new(*args).run
-    end
+    include Operation
 
     def initialize(start_date:, end_date:, project:)
       @start_date = start_date
@@ -10,23 +8,13 @@ module IterationOperations
       @project = project
     end
 
-    def run
-      {
-        stories: past_iteration.stories
-      }
+    def call
+      Success(stories: stories)
     end
 
     private
 
-    attr_reader :project, :start_date, :end_date
-
-    def past_iteration
-      Iterations::PastIteration.new(
-        start_date: start_date,
-        end_date: end_date,
-        stories: stories
-      )
-    end
+    attr_reader :start_date, :end_date, :project
 
     def stories
       @stories ||= begin
