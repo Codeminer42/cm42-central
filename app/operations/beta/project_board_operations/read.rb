@@ -11,11 +11,9 @@ module Beta
       end
 
       def call
-        ActiveRecord::Base.transaction do
-          project_board = yield create_project_board
+        project_board = yield create_project_board
 
-          Success(project_board)
-        end
+        Success(project_board)
       rescue ActiveRecord::RecordNotFound => e
         Failure(e)
       end
@@ -42,10 +40,9 @@ module Beta
       end
 
       def stories_and_past_iterations
-        read_all_result = ::StoryOperations::ReadAll.call(project: project)
-        read_all_response = read_all_result.success
-        read_all_response[:stories] = read_all_response.delete(:active_stories)
-        read_all_response
+        read_all_result = yield ::StoryOperations::ReadAll.call(project: project)
+        read_all_result[:stories] = read_all_result.delete(:active_stories)
+        read_all_result
       end
 
       def project_labels
