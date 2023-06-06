@@ -46,8 +46,9 @@ module Beta
       end
 
       def project_labels
-        labels = project.stories.map(&:labels).reject { |label| label.to_s.empty? }
-        labels.join(',').split(',').uniq.join(',')
+        possibly_duplicated_labels = project.stories.map(&:labels).reject { |label| label.blank? }
+        uniq_labels = possibly_duplicated_labels.join(',').split(',').uniq.join(',')
+        uniq_labels
       end
 
       def project
