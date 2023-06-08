@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+## [2.10.0] 2023-06-08
+
+- Refactor Note Operations to use dry-monads
+- Refactor Project Operations to use dry-monads
+- Refactor Team Operations to use dry-monads
+- Refactor Task Operations to use dry-monads
+- Refactor Project Board Operations to use dry-monads
+- Refactor Iteration Operations to use dry-monads
+- Remove Grape Gem
+- Add global message about attachments feature removal
+
 ## [2.9.0] 2023-05-26
 
 - Migrate from Webpacker to Vite Ruby
@@ -688,3 +699,4 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [2.7.3]: https://github.com/Codeminer42/cm42-central/tree/v2.7.3
 [2.8.0]: https://github.com/Codeminer42/cm42-central/tree/v2.8.0
 [2.9.0]: https://github.com/Codeminer42/cm42-central/tree/v2.9.0
+[2.10.0]: https://github.com/Codeminer42/cm42-central/tree/v2.10.0
