@@ -18,10 +18,9 @@
       data-page='<%= "#{params[:controller]}.#{params[:action]}" %>'
       data-notification-icon-url="<%= asset_url('notification.ico') %>"
       data-favicon-icon-url="<%= asset_url('favicon.ico') %>">
-
 <div class="click-overlay"></div>
 <div class="content-wrapper">
-
+  <%= global_alert %>
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">

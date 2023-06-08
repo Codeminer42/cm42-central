@@ -22,8 +22,6 @@ class ProjectsController < ApplicationController
       @projects[:unjoined] = serialize_from_collection(projects_unjoined.order(:updated_at))
     end
 
-    flash[:alert] = 'ATTACHMENT FEATURE MESSAGE'
-
     @activities_group = Activity.grouped_activities(projects_joined, 1.week.ago)
   end
 
