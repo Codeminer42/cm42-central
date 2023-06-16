@@ -11,7 +11,6 @@ module StoryOperations
     def call
       ActiveRecord::Base.transaction do
         yield ensure_valid_state
-        yield documents_attributes_changes
         yield update_story
 
         yield create_changesets
@@ -44,11 +43,6 @@ module StoryOperations
       )
 
       Success(story_attrs)
-    end
-
-    def documents_attributes_changes
-      story.documents_attributes_was = story.documents_attributes
-      Success(story)
     end
 
     def update_story

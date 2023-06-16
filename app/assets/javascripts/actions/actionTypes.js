@@ -34,8 +34,6 @@ export default keyMirror({
   ADD_LABEL_TO_PROJECT: null,
   ADD_LABEL: null,
   DELETE_LABEL: null,
-  ADD_ATTACHMENT: null,
-  DELETE_ATTACHMENT: null,
   ADD_NOTIFICATION: null,
   REMOVE_NOTIFICATION: null,
   SEARCH_STORIES_SUCCESS: null,
@@ -47,5 +45,5 @@ export default keyMirror({
   TOGGLE_COLUMN_VISIBILITY: null,
   REVERT_TO_CALCULATED_VELOCITY: null,
   SIMULATE_SPRINT_VELOCITY: null,
-  OPTIMISTICALLY_UPDATE: null
+  OPTIMISTICALLY_UPDATE: null,
 });
