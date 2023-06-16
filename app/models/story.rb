@@ -246,7 +246,7 @@ class Story < ApplicationRecord
   end
 
   def saved_changes
-    return super
+    super
   end
 
   def saved_changes?
