@@ -4,61 +4,38 @@ import PropTypes from 'prop-types';
 import { editingStoryPropTypesShape } from '../../../models/beta/story';
 import ExpandedStorySection from './ExpandedStorySection';
 
-class ExpandedStoryLabels extends React.Component {
-  constructor(props) {
-    super(props);
+function ExpandedStoryLabels({ story, projectLabels, disabled, onRemoveLabel, onAddLabel }) {
+  const { labels } = story._editing;
 
-    this.handleAddition = this.handleAddition.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
-  }
+  if (disabled && !story.labels.length) return null
 
-  handleDelete(index) {
-    const { story, onRemoveLabel, disabled } = this.props;
-    const { labels } = story._editing;
+  const handleDelete = (index) => {
+    if (disabled) return;
 
-    if(disabled) return;
-
-    const label = labels.find(
-      (label, labelIndex) => labelIndex === index
-    );
+    const label = labels.find((_, labelIndex) => labelIndex === index);
 
     onRemoveLabel(label.name);
   }
 
-  handleAddition(label) {
-    const { onAddLabel } = this.props;
-
-    onAddLabel(label);
-  }
-
-  render() {
-    const { projectLabels, story, disabled } = this.props;
-    const { labels } = story._editing;
-
-    if(disabled && !story.labels.length) return null
-
-    return (
-      <ExpandedStorySection
-        title={I18n.t('activerecord.attributes.story.labels')}
-      >
-        <ReactTags
-          tags={labels}
-          handleDelete={this.handleDelete}
-          suggestions={projectLabels}
-          handleAddition={this.handleAddition}
-          allowNew={!disabled}
-          inputAttributes={{readOnly: disabled}}
-          placeholder={disabled ? "" : I18n.t('add new label')}
-          allowBackspace={false}
-          addOnBlur={true}
-          delimiterChars={[',', ' ']}
-          autoresize={false}
-          autofocus={false}
-        />
-      </ExpandedStorySection>
-    )
-  }
-};
+  return (
+    <ExpandedStorySection title={I18n.t('activerecord.attributes.story.labels')}>
+      <ReactTags
+        tags={labels}
+        placeholder={disabled ? "" : I18n.t('add new label')}
+        suggestions={projectLabels}
+        inputAttributes={{ readOnly: disabled }}
+        delimiterChars={[',', ' ']}
+        allowNew={!disabled}
+        allowBackspace={false}
+        autoresize={false}
+        autofocus={false}
+        addOnBlur={true}
+        handleAddition={onAddLabel}
+        handleDelete={handleDelete}
+      />
+    </ExpandedStorySection>
+  )
+}
 
 ExpandedStoryLabels.propTypes = {
   story: editingStoryPropTypesShape.isRequired,
