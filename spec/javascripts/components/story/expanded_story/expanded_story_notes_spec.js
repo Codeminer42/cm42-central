@@ -62,7 +62,7 @@ describe('<ExpandedStoryNotes />', () => {
   
         const onCreateSpy = sinon.spy();
   
-        const wrapper = shallow(
+        const wrapper = mount(
           <ExpandedStoryNotes
             story={story}
             onCreate={onCreateSpy}
