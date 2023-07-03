@@ -2,67 +2,61 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ExpandedStoryToolTip from './ExpandedStoryToolTip';
 
-class ExpandedStoryControls extends Component {
-  constructor(props) {
-    super(props);
-
-    this.handleDelete = this.handleDelete.bind(this);
-    this.handleCancel = this.handleCancel.bind(this);
-  }
-
-  handleDelete() {
-    const { onDelete } = this.props;
-
-    if (window.confirm(I18n.t('story destroy confirm'))) {
-      onDelete();
+const ExpandedStoryControls = ({ 
+  onDelete,
+  onCancel,
+  isDirty,
+  onSave,
+  canSave,
+  canDelete,
+  disabled
+}) => {
+  const handleDelete = () => {
+    if (!window.confirm(I18n.t('story destroy confirm'))) {
+      return;
     }
+    onDelete();
   }
 
-  handleCancel() {
-    const { onCancel, isDirty } = this.props;
-
-    if (isDirty && !this.hasUnsavedChanges()) {
+  const handleCancel = () => {
+    if (isDirty && !hasUnsavedChanges()) {
       return;
     }
     onCancel();
   }
 
-  hasUnsavedChanges() {
+  const hasUnsavedChanges = () => {
     return window.confirm(I18n.t('story unsaved changes'));
   }
 
-  render() {
-    const { onSave, canSave, canDelete, disabled } = this.props;
+  return (
+    <div className="form-group Story__controls">
+      <input className="save"
+        onClick={onSave}
+        type="button"
+        value={I18n.t('save')}
+        disabled={!canSave}
+      />
 
-    return (
-      <div className="form-group Story__controls">
-        <input className="save"
-          onClick={onSave}
-          type="button"
-          value={I18n.t('save')}
-          disabled={!canSave}
-        />
+      <input className="delete"
+        onClick={handleDelete}
+        type="button"
+        value={I18n.t('delete')}
+        disabled={!canDelete}
+      />
 
-        <input className="delete"
-          onClick={this.handleDelete}
-          type="button"
-          value={I18n.t('delete')}
-          disabled={!canDelete}
-        />
+      <input className="cancel"
+        onClick={handleCancel}
+        type="button"
+        value={I18n.t('cancel')}
+      />
 
-        <input className="cancel"
-          onClick={this.handleCancel}
-          type="button"
-          value={I18n.t('cancel')}
-        />
+      {
+        disabled && <ExpandedStoryToolTip text={I18n.t('accepted_tooltip')} />
+      }
 
-        {
-          disabled && <ExpandedStoryToolTip text={I18n.t('accepted_tooltip')} />
-        }
-
-      </div>
-    );
-  }
+    </div>
+  );
 };
 
 ExpandedStoryControls.propTypes = {
