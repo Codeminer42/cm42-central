@@ -1,15 +1,22 @@
 class StoriesBulkDestroyController < ApplicationController
   def create
     authorize stories
-    destroyed_stories = StoryOperations::DestroyAll.call(stories, current_user)
 
-    if destroyed_stories
-      render json: { message: t(:stories_destroy_success) }, status: :ok
-    else
-      render(
-        json: { errors: t(:stories_destroy_fail) },
-        status: :unprocessable_entity
-      )
+    result = StoryOperations::DestroyAll.call(
+      stories: stories,
+      current_user: current_user
+    )
+
+    match_result(result) do |on|
+      on.success do
+        render json: { message: t(:stories_destroy_success) }, status: :ok
+      end
+      on.failure do
+        render(
+          json: { errors: t(:stories_destroy_fail) },
+          status: :unprocessable_entity
+        )
+      end
     end
   end
 

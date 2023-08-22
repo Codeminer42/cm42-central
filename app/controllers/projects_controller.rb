@@ -61,16 +61,23 @@ class ProjectsController < ApplicationController
     @project = policy_scope(Project).new(allowed_params)
     authorize @project
     @project.users << current_user
+
+    result = ProjectOperations::Create.call(project: @project, current_user: current_user)
+
     respond_to do |format|
-      if ProjectOperations::Create.call(@project, current_user)
-        current_team.ownerships.create(project: @project, is_owner: true)
-        format.html do
-          redirect_to(@project, notice: t('projects.project was successfully created'))
+      match_result(result) do |on|
+        on.success do |project|
+          # TODO: move from here
+          current_team.ownerships.create(project: project, is_owner: true)
+          format.html do
+            redirect_to(project, notice: t('projects.project was successfully created'))
+          end
+          format.xml { render xml: project, status: :created, location: project }
         end
-        format.xml { render xml: @project, status: :created, location: @project }
-      else
-        format.html { render action: 'new' }
-        format.xml  { render xml: @project.errors, status: :unprocessable_entity }
+        on.failure do |project|
+          format.html { render action: 'new' }
+          format.xml  { render xml: project.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -78,15 +85,24 @@ class ProjectsController < ApplicationController
   # PUT /projects/1
   # PUT /projects/1.xml
   def update
+    result = ProjectOperations::Update.call(
+      project: @project,
+      project_attrs: allowed_params,
+      current_user: current_user
+    )
+
     respond_to do |format|
-      if ProjectOperations::Update.call(@project, allowed_params, current_user)
-        format.html do
-          redirect_to(@project, notice: t('projects.project was successfully updated'))
+      match_result(result) do |on|
+        on.success do |project|
+          format.html do
+            redirect_to(project, notice: t('projects.project was successfully updated'))
+          end
+          format.xml { head :ok }
         end
-        format.xml { head :ok }
-      else
-        format.html { render action: 'edit' }
-        format.xml  { render xml: @project.errors, status: :unprocessable_entity }
+        on.failure do |project|
+          format.html { render action: 'edit' }
+          format.xml  { render xml: project.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -95,7 +111,7 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1.xml
   def destroy
     if valid_name_confirmation?
-      ProjectOperations::Destroy.call(@project, current_user)
+      ProjectOperations::Destroy.call(project: @project, current_user: current_user)
 
       redirect_to(projects_url)
     else
@@ -203,24 +219,27 @@ class ProjectsController < ApplicationController
     @project = policy_scope(Project).archived.friendly.find(params[:id]) unless @project
     authorize @project
 
-    respond_to do |format|
-      @project = ProjectOperations::Update.call(
-        @project,
-        { archived: archive ? Time.current : '0' },
-        current_user
-      )
+    result = ProjectOperations::Update.call(
+      project: @project,
+      project_attrs: { archived: archive ? Time.current : '0' },
+      current_user: current_user
+    )
 
-      if @project
-        format.html do
-          redirect_to(
-            @project.archived ? projects_path : @project,
-            notice: t("projects.project was successfully #{archive ? 'archived' : 'unarchived'}")
-          )
+    respond_to do |format|
+      match_result(result) do |on|
+        on.success do |project|
+          format.html do
+            redirect_to(
+              project.archived ? projects_path : project,
+              notice: t("projects.project was successfully #{archive ? 'archived' : 'unarchived'}")
+            )
+          end
+          format.xml { head :ok }
         end
-        format.xml { head :ok }
-      else
-        format.html { render action: 'edit' }
-        format.xml  { render xml: @project.errors, status: :unprocessable_entity }
+        on.failure do |project|
+          format.html { render action: 'edit' }
+          format.xml  { render xml: project.errors, status: :unprocessable_entity }
+        end
       end
     end
   end

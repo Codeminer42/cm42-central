@@ -1,13 +1,13 @@
 source 'https://rubygems.org'
 
-ruby '~> 2.6'
+ruby '2.7.8'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 6.1.6'
+gem 'rails', '~> 6.1.7'
 
 gem 'activeadmin'
 gem 'api-pagination'
@@ -20,7 +20,7 @@ gem 'cloudinary'
 gem 'coffee-rails'
 gem 'compass-rails', '~> 3.1.0'
 gem 'configuration'
-gem 'dalli', '~> 3.2.2'
+gem 'dalli', '~> 3.2.3'
 gem 'devise'
 gem 'devise-async'
 gem 'devise-authy', '~> 1.10.0'
@@ -31,17 +31,12 @@ gem 'enumerize', '~> 2.5.0'
 gem 'faraday'
 gem 'foreman'
 gem 'friendly_id', '~> 5.2.5'
-gem 'grape', '~> 1.3.0'
-gem 'grape-entity'
-gem 'grape-swagger'
-gem 'grape-swagger-rails'
 gem 'gravtastic'
 gem 'i18n-js', '~> 3.9.0'
 gem 'jquery-atwho-rails'
 gem 'jquery-ui-rails'
 gem 'kaminari'
 gem 'material_icons'
-gem 'newrelic_rpm', '~> 8.9.0'
 gem 'pg'
 gem 'pg_search'
 gem 'platform-api'
@@ -60,16 +55,19 @@ gem 'transitions', require: ["transitions", "active_model/transitions"]
 gem 'uglifier', '>= 2.5.3'
 gem 'user_impersonate2', require: 'user_impersonate'
 gem 'virtus'
-gem 'webpacker', '~> 5.4.3'
 gem 'pusher'
+gem 'dry-monads'
+gem 'dry-matcher'
+gem 'vite_rails'
 
-source 'https://rails-assets.org' do
+source 'http://insecure.rails-assets.org/' do
   gem 'rails-assets-jquery.gritter'
 end
 
 group :production do
   gem 'kgio'
   gem 'letsencrypt-rails-heroku'
+  gem 'newrelic_rpm'
   gem 'rack-cache'
   gem 'rack-timeout'
   gem 'rails_12factor'

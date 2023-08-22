@@ -121,6 +121,16 @@ describe UsersController do
             delete :destroy, params: { project_id: project.id, id: another_user.id }
             expect(response).to redirect_to(root_url)
           end
+
+          context 'user has accepted stories attached' do
+            let!(:story) { create(:story, :done, project: project, owned_by: another_user, requested_by: user) }
+
+            it 'deletes user membership' do
+              expect {
+                delete :destroy, params: { project_id: project.id, id: another_user.id }
+              }.to change{ project.users.reload.include? another_user }.from(true).to(false)
+            end
+          end
         end
       end
     end

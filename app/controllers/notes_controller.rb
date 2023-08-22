@@ -23,10 +23,16 @@ class NotesController < ApplicationController
     @note = policy_scope(Note).build(allowed_params)
     authorize @note
     @note.user = current_user
-    if NoteOperations::Create.call(@note, current_user)
-      render json: @note
-    else
-      render json: @note, status: :unprocessable_entity
+
+    result = NoteOperations::Create.call(note: @note, current_user: current_user)
+
+    match_result(result) do |on|
+      on.success do |note|
+        render json: note
+      end
+      on.failure do |note|
+        render json: note, status: :unprocessable_entity
+      end
     end
   end
 
