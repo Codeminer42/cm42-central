@@ -9,7 +9,7 @@ function ExpandedStoryLabels({ story, projectLabels, disabled, onRemoveLabel, on
 
   if (disabled && !story.labels.length) return null
 
-  const handleDelete = (index) => {
+  const onDelete = (index) => {
     if (disabled) return;
 
     const label = labels.find((_, labelIndex) => labelIndex === index);
@@ -31,7 +31,7 @@ function ExpandedStoryLabels({ story, projectLabels, disabled, onRemoveLabel, on
         autofocus={false}
         addOnBlur={true}
         handleAddition={onAddLabel}
-        handleDelete={handleDelete}
+        handleDelete={onDelete}
       />
     </ExpandedStorySection>
   )
