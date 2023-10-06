@@ -327,7 +327,8 @@ export const cloneStory = (story) => {
 
 export const manageUserLocalEditsAndAdditions = (
   stateStories,
-  serverStories
+  serverStories,
+  storyIds
 ) => {
   const storyInCreationProcess = stateStories.filter(
     (story) => story.id === null
@@ -347,8 +348,11 @@ export const manageUserLocalEditsAndAdditions = (
       ...receivedStory,
     };
   });
+  const pastStories = storyIds
+    .map((id) => stateStories.find((story) => story.id === id))
+    .filter((story) => story !== undefined);
 
-  return [...storyInCreationProcess, ...editedStories];
+  return [...storyInCreationProcess, ...editedStories, ...pastStories];
 };
 
 export const createNewStory = (stories, storyAttributes) => {

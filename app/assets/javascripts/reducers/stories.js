@@ -32,7 +32,8 @@ const storiesReducer = (state = initialState, action) => {
         ...state,
         [action.from]: manageUserLocalEditsAndAdditions(
           state[action.from],
-          action.data
+          action.data.stories,
+          action.data.storyIds
         ),
       };
     case actionTypes.RECEIVE_PAST_STORIES:
