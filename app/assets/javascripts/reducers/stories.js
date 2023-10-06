@@ -17,7 +17,7 @@ import * as Label from "models/beta/label";
 import * as Attachment from "models/beta/attachment";
 import { updateIfSameId } from "../services/updateIfSameId";
 import { storyScopes } from "./../libs/beta/constants";
-import { manageUserLocalEditsAndAdditions } from "../models/beta/story";
+import { mergeWithFetchedStories } from "../models/beta/story";
 
 const initialState = {
   [storyScopes.ALL]: [],
@@ -30,7 +30,7 @@ const storiesReducer = (state = initialState, action) => {
     case actionTypes.RECEIVE_STORIES:
       return {
         ...state,
-        [action.from]: manageUserLocalEditsAndAdditions(
+        [action.from]: mergeWithFetchedStories(
           state[action.from],
           action.data.stories,
           action.data.storyIds

@@ -325,34 +325,32 @@ export const cloneStory = (story) => {
   };
 };
 
-export const manageUserLocalEditsAndAdditions = (
-  stateStories,
-  serverStories,
-  storyIds
+export const mergeWithFetchedStories = (
+  currentStories,
+  fetchedStories,
+  PastStoryIds
 ) => {
-  const storyInCreationProcess = stateStories.filter(
-    (story) => story.id === null
-  );
-  const editedStories = serverStories.map((receivedStory) => {
-    const existingStory = stateStories.find(
-      (story) => story.id === receivedStory.id
+  const storyNotSaved = currentStories.filter(isNew);
+
+  const editedStories = fetchedStories.map((fetchedStory) => {
+    const existingStory = currentStories.find(
+      (story) => story.id === fetchedStory.id
     );
-    if (existingStory && existingStory.collapsed === false) {
+    if (existingStory && !existingStory.collapsed) {
       return {
-        ...receivedStory,
+        ...fetchedStory,
         collapsed: false,
         _editing: existingStory._editing,
       };
     }
-    return {
-      ...receivedStory,
-    };
+    return fetchedStory;
   });
-  const pastStories = storyIds
-    .map((id) => stateStories.find((story) => story.id === id))
-    .filter((story) => story !== undefined);
 
-  return [...storyInCreationProcess, ...editedStories, ...pastStories];
+  const pastStories = PastStoryIds.map((id) =>
+    currentStories.find((story) => story.id === id)
+  ).filter((story) => story !== undefined);
+
+  return [...storyNotSaved, ...editedStories, ...pastStories];
 };
 
 export const createNewStory = (stories, storyAttributes) => {
