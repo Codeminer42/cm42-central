@@ -56,7 +56,6 @@ export const ProjectBoard = ({
 }) => {
   const [newChillyBinStories, setNewChillyBinStories] = useState([]);
   const [newBacklogSprints, setNewBacklogSprints] = useState([]);
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
 
   useEffect(() => {
     setNewBacklogSprints(backlogSprints);
@@ -69,9 +68,7 @@ export const ProjectBoard = ({
   useEffect(() => {
     const project = { id: projectId };
     const unsubscribe = subscribeToProjectChanges(project, () => {
-      fetchProjectBoard(projectId).then(() => {
-        if (isInitialLoading) setIsInitialLoading(false);
-      });
+      fetchProjectBoard(projectId)
     });
 
     return () => {
@@ -79,7 +76,7 @@ export const ProjectBoard = ({
     };
   }, [projectId, fetchProjectBoard]);
 
-  if (!projectBoard.isFetched && isInitialLoading) {
+  if (!projectBoard.isFetched && projectBoard.isInitialLoading) {
     return <ProjectLoading data-id="project-loading" />;
   }
 

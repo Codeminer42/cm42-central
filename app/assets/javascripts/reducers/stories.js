@@ -17,8 +17,7 @@ import * as Label from "models/beta/label";
 import * as Attachment from "models/beta/attachment";
 import { updateIfSameId } from "../services/updateIfSameId";
 import { storyScopes } from "./../libs/beta/constants";
-import { mergeWithFetchedStories } from "../models/beta/story";
-import { EPIC } from "../models/beta/column";
+import { isEpic, mergeWithFetchedStories } from "../models/beta/story";
 
 const initialState = {
   [storyScopes.ALL]: [],
@@ -29,10 +28,10 @@ const initialState = {
 const storiesReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.RECEIVE_STORIES:
-      if (action.from === EPIC) {
+      if (isEpic(action.from)) {
         return {
           ...state,
-          [action.from]: action.data.stories,
+          [action.from]: action.data,
         };
       }
       return {

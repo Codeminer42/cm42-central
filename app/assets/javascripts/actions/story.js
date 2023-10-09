@@ -112,7 +112,7 @@ export const fetchEpic = (label) =>
       const { projectId } = getState().projectBoard;
       const storiesByLabel = await Story.getByLabel(label, projectId);
 
-      dispatch(receiveStories({stories: storiesByLabel}, storyScopes.EPIC));
+      dispatch(receiveStories(storiesByLabel, storyScopes.EPIC));
     } catch {
       dispatch(sendDefaultErrorNotification());
     }

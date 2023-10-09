@@ -1,12 +1,7 @@
 import actionTypes from "./actionTypes";
 import { receiveUsers } from "./user";
 import { receiveStories, toggleStory } from "./story";
-import {
-  fetchPastStories,
-  receivePastIterations,
-  receivePastStories,
-  requestPastStories,
-} from "./pastIterations";
+import { receivePastIterations } from "./pastIterations";
 import { storyScopes } from "../libs/beta/constants";
 import { sendErrorNotification } from "./notifications";
 
