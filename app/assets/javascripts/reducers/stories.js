@@ -14,7 +14,6 @@ import {
 import * as Note from "models/beta/note";
 import * as Task from "models/beta/task";
 import * as Label from "models/beta/label";
-import * as Attachment from "models/beta/attachment";
 import { updateIfSameId } from "../services/updateIfSameId";
 import { storyScopes } from "./../libs/beta/constants";
 import { isEpic, mergeWithFetchedStories } from "../models/beta/story";
