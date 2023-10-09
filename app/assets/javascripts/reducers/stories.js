@@ -14,8 +14,10 @@ import {
 import * as Note from "models/beta/note";
 import * as Task from "models/beta/task";
 import * as Label from "models/beta/label";
+import * as Attachment from "models/beta/attachment";
 import { updateIfSameId } from "../services/updateIfSameId";
 import { storyScopes } from "./../libs/beta/constants";
+import { manageUserLocalEditsAndAdditions } from "../models/beta/story";
 
 const initialState = {
   [storyScopes.ALL]: [],
@@ -28,7 +30,10 @@ const storiesReducer = (state = initialState, action) => {
     case actionTypes.RECEIVE_STORIES:
       return {
         ...state,
-        [action.from]: action.data,
+        [action.from]: manageUserLocalEditsAndAdditions(
+          state[action.from],
+          action.data
+        ),
       };
     case actionTypes.RECEIVE_PAST_STORIES:
       return {

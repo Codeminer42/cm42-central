@@ -325,6 +325,32 @@ export const cloneStory = (story) => {
   };
 };
 
+export const manageUserLocalEditsAndAdditions = (
+  stateStories,
+  serverStories
+) => {
+  const storyInCreationProcess = stateStories.filter(
+    (story) => story.id === null
+  );
+  const editedStories = serverStories.map((receivedStory) => {
+    const existingStory = stateStories.find(
+      (story) => story.id === receivedStory.id
+    );
+    if (existingStory && existingStory.collapsed === false) {
+      return {
+        ...receivedStory,
+        collapsed: false,
+        _editing: existingStory._editing,
+      };
+    }
+    return {
+      ...receivedStory,
+    };
+  });
+
+  return [...storyInCreationProcess, ...editedStories];
+};
+
 export const createNewStory = (stories, storyAttributes) => {
   const story = stories.find(isNew);
 
