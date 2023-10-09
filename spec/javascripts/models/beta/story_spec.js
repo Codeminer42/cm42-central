@@ -1,6 +1,7 @@
-import * as Story from "models/beta/story";
-import moment from "moment";
-import { status, storyTypes, storyScopes } from "libs/beta/constants";
+import * as Story from 'models/beta/story';
+import moment from 'moment';
+import { status, storyTypes, storyScopes } from 'libs/beta/constants';
+import { mergeWithFetchedStories } from '../../../../app/assets/javascripts/models/beta/story';
 
 describe("Story model", function () {
   describe("comparePosition", () => {
@@ -1457,4 +1458,55 @@ describe("Story model", function () {
       });
     });
   });
+
+  describe("mergeWithFetchedStories", () => {
+    const currentStories = [
+      { id: 1, title: 'Story 1', collapsed: false, _editing: { id: 1 } },
+      { id: 2, title: 'Story 2', collapsed: true },
+      { id: null, title: 'New Story', collapsed: false, _editing: { id: null } },
+    ]
+
+    const fetchedStories = [
+      { id: 1, title: 'Story 1', collapsed: true },
+      { id: 2, title: 'Story 2', collapsed: true },
+      { id: 3, title: 'Story 3', collapsed: true },
+      { id: 4, title: 'Story 4', collapsed: true },
+    ]
+
+    const PastStoryIds = [3, 4]
+
+    it("merge fetched stories with current stories", () => {
+      const mergedStories = mergeWithFetchedStories(
+        currentStories,
+        fetchedStories,
+        PastStoryIds
+      );
+
+      expect(mergedStories).toHaveLength(5);
+      expect(mergedStories).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: 1, title: 'Story 1' }),
+          expect.objectContaining({ id: 2, title: 'Story 2' }),
+          expect.objectContaining({ id: 3, title: 'Story 3' }),
+          expect.objectContaining({ id: 4, title: 'Story 4' }),
+          expect.objectContaining({ id: null, title: 'New Story' }),
+        ])
+      );
+    });
+
+    it('handle stories with collapsed property equal false based on the current state', () => {
+      const mergedStories = mergeWithFetchedStories(
+        currentStories,
+        fetchedStories,
+        PastStoryIds
+      );
+
+      expect(mergedStories).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: 1, collapsed: false, _editing: { id: 1 } }),
+          expect.objectContaining({ id: null, collapsed: false, _editing: { id: null } }),
+        ])
+      );
+    });
+  })
 });
