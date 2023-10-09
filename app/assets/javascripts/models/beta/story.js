@@ -328,7 +328,7 @@ export const cloneStory = (story) => {
 export const mergeWithFetchedStories = (
   currentStories,
   fetchedStories,
-  PastStoryIds
+  pastStoryIds
 ) => {
   const storyNotSaved = currentStories.filter(isNew);
 
@@ -346,7 +346,7 @@ export const mergeWithFetchedStories = (
     return fetchedStory;
   });
 
-  const pastStories = PastStoryIds.map((id) =>
+  const pastStories = pastStoryIds.map((id) =>
     currentStories.find((story) => story.id === id)
   ).filter((story) => story !== undefined);
 
