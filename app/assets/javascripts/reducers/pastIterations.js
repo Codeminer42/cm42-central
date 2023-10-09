@@ -10,7 +10,7 @@ const pastIterationsReducer = (state = initialState, action) => {
           (currentIteration) =>
             currentIteration.iterationNumber === iteration.iterationNumber
         );
-        if (currentState && currentState.fetched) {
+        if (currentState?.fetched) {
           return {
             ...iteration,
             error: null,
