@@ -1,34 +1,33 @@
-import ActivityCollection from '../collections/activity_collection';
-import NoteCollection from '../collections/note_collection';
-import TaskCollection from '../collections/task_collection';
-import SharedModelMethods from '../mixins/shared_model_methods';
+import ActivityCollection from "../collections/activity_collection";
+import NoteCollection from "../collections/note_collection";
+import TaskCollection from "../collections/task_collection";
+import SharedModelMethods from "../mixins/shared_model_methods";
 
 const Story = Backbone.Model.extend({
   defaults: {
     events: [],
-    documents: [],
     state: "unscheduled",
     story_type: "feature",
-    isVisible: true
+    isVisible: true,
   },
 
-  name: 'story',
+  name: "story",
 
-  i18nScope: 'activerecord.attributes.story',
+  i18nScope: "activerecord.attributes.story",
 
-  timestampFormat: 'd mmm yyyy, h:MMtt',
+  timestampFormat: "d mmm yyyy, h:MMtt",
 
   isReadonly: false,
 
-  initialize: function(args) {
-    _.bindAll(this, 'changeState', 'populateNotes', 'populateTasks');
+  initialize: function (args) {
+    _.bindAll(this, "changeState", "populateNotes", "populateTasks");
 
     this.views = [];
     this.clickFromSearchResult = false;
 
-    this.on('change:state', this.changeState, this);
-    this.on('change:notes', this.populateNotes, this);
-    this.on('change:tasks', this.populateTasks, this);
+    this.on("change:state", this.changeState, this);
+    this.on("change:notes", this.populateNotes, this);
+    this.on("change:tasks", this.populateTasks, this);
 
     // FIXME Call super()?
     this.maybeUnwrap(args);
@@ -42,58 +41,61 @@ const Story = Backbone.Model.extend({
   },
 
   setReadonly: function () {
-    var accepted = this.get('state') === 'accepted' && this.get('accepted_at') !== undefined;
-    var isGuest = (
+    var accepted =
+      this.get("state") === "accepted" && this.get("accepted_at") !== undefined;
+    var isGuest =
       this.collection !== undefined &&
       this.collection.project.current_user !== undefined &&
-      this.collection.project.current_user.get('guest?')
-    );
+      this.collection.project.current_user.get("guest?");
 
     if (isGuest || accepted) {
-      this.isReadonly = true
+      this.isReadonly = true;
     }
   },
 
-  changeState: function(model, newValue) {
-    if (newValue === 'started') {
-      model.set({ owned_by_id: model.collection.project.current_user.id }, true);
+  changeState: function (model, newValue) {
+    if (newValue === "started") {
+      model.set(
+        { owned_by_id: model.collection.project.current_user.id },
+        true
+      );
     }
 
     model.setAcceptedAt();
     model.setColumn();
   },
 
-  moveBetween: function(before, after) {
+  moveBetween: function (before, after) {
     var beforeStory = this.collection.get(before);
     var afterStory = this.collection.get(after);
     var difference = (afterStory.position() - beforeStory.position()) / 2;
     var newPosition = difference + beforeStory.position();
-    this.set({position: newPosition});
+    this.set({ position: newPosition });
     this.collection.sort();
     return this;
   },
 
-  moveAfter: function(beforeId) {
+  moveAfter: function (beforeId) {
     var before = this.collection.get(beforeId);
     var after = this.collection.nextOnColumn(before);
     var afterPosition;
-    if (typeof after === 'undefined') {
+    if (typeof after === "undefined") {
       afterPosition = before.position() + 2;
     } else {
       afterPosition = after.position();
     }
     var difference = (afterPosition - before.position()) / 2;
     var newPosition = difference + before.position();
-    this.set({position: newPosition});
+    this.set({ position: newPosition });
     this.saveSorting();
     return this;
   },
 
-  moveBefore: function(afterId) {
+  moveBefore: function (afterId) {
     var after = this.collection.get(afterId);
     var before = this.collection.previousOnColumn(after);
     var beforePosition;
-    if (typeof before === 'undefined') {
+    if (typeof before === "undefined") {
       beforePosition = 0.0;
     } else {
       beforePosition = before.position();
@@ -101,34 +103,37 @@ const Story = Backbone.Model.extend({
     var difference = (after.position() - beforePosition) / 2;
     var newPosition = difference + beforePosition;
 
-    this.set({position: newPosition});
-    this.collection.sort({silent: true});
+    this.set({ position: newPosition });
+    this.collection.sort({ silent: true });
     this.saveSorting();
     return this;
   },
 
-  saveSorting: function() {
+  saveSorting: function () {
     this.save();
     this.collection.saveSorting(this.column);
   },
 
-  setColumn: function() {
-    var column = '#in_progress';
+  setColumn: function () {
+    var column = "#in_progress";
 
-    switch(this.get('state')) {
-      case 'unscheduled':
-        column = '#chilly_bin';
+    switch (this.get("state")) {
+      case "unscheduled":
+        column = "#chilly_bin";
         break;
-      case 'unstarted':
-        column = '#backlog';
+      case "unstarted":
+        column = "#backlog";
         break;
-      case 'accepted':
+      case "accepted":
         // Accepted stories remain in the in progress column if they were
         // completed within the current iteration.
-        if (this.collection.project.currentIterationNumber() === this.iterationNumber()) {
-          column = '#in_progress';
+        if (
+          this.collection.project.currentIterationNumber() ===
+          this.iterationNumber()
+        ) {
+          column = "#in_progress";
         } else {
-          column = '#done';
+          column = "#done";
         }
         break;
     }
@@ -136,47 +141,47 @@ const Story = Backbone.Model.extend({
     this.column = column;
   },
 
-  clear: function() {
+  clear: function () {
     this.destroy();
-    _.each(this.views, function(view) {
+    _.each(this.views, function (view) {
       view.remove();
     });
   },
 
-  estimable: function() {
-    if (this.get('story_type') === 'feature') {
+  estimable: function () {
+    if (this.get("story_type") === "feature") {
       return !this.estimated();
     } else {
       return false;
     }
   },
 
-  estimated: function() {
-    var estimate = this.get('estimate');
+  estimated: function () {
+    var estimate = this.get("estimate");
     return !(_.isUndefined(estimate) || _.isNull(estimate));
   },
 
   notEstimable: function () {
-    var storyType = this.get('story_type');
-    return (storyType !== 'feature');
+    var storyType = this.get("story_type");
+    return storyType !== "feature";
   },
 
-  point_values: function() {
-    return this.collection.project.get('point_values');
+  point_values: function () {
+    return this.collection.project.get("point_values");
   },
 
   // List available state transitions for this story
-  events: function() {
-    switch (this.get('state')) {
-      case 'started':
+  events: function () {
+    switch (this.get("state")) {
+      case "started":
         return ["finish"];
-      case 'finished':
+      case "finished":
         return ["deliver"];
-      case 'delivered':
+      case "delivered":
         return ["accept", "reject"];
-      case 'rejected':
+      case "rejected":
         return ["restart"];
-      case 'accepted':
+      case "accepted":
         return [];
       default:
         return ["start"];
@@ -184,68 +189,70 @@ const Story = Backbone.Model.extend({
   },
 
   // State machine transitions
-  start: function() {
-    this.set({state: "started"});
+  start: function () {
+    this.set({ state: "started" });
   },
 
-  finish: function() {
-    this.set({state: "finished"});
+  finish: function () {
+    this.set({ state: "finished" });
   },
 
-  deliver: function() {
-    this.set({state: "delivered"});
+  deliver: function () {
+    this.set({ state: "delivered" });
   },
 
-  accept: function() {
-    this.set({state: "accepted"});
+  accept: function () {
+    this.set({ state: "accepted" });
   },
 
-  reject: function() {
-    this.set({state: "rejected"});
+  reject: function () {
+    this.set({ state: "rejected" });
   },
 
-  restart: function() {
-    this.set({state: "started"});
+  restart: function () {
+    this.set({ state: "started" });
   },
 
-  position: function() {
-    return parseFloat(this.get('position'));
+  position: function () {
+    return parseFloat(this.get("position"));
   },
 
-  className: function() {
-    var className = 'story ' + this.get('story_type');
+  className: function () {
+    var className = "story " + this.get("story_type");
     if (this.estimable() && !this.estimated()) {
-      className += ' unestimated';
+      className += " unestimated";
     }
     return className;
   },
 
   // Returns the user that owns this Story, or undefined if no user owns
   // the Story
-  owned_by: function() {
-    return this.collection.project.users.get(this.get('owned_by_id'));
+  owned_by: function () {
+    return this.collection.project.users.get(this.get("owned_by_id"));
   },
 
-  requested_by: function() {
-    return this.collection.project.users.get(this.get('requested_by_id'));
+  requested_by: function () {
+    return this.collection.project.users.get(this.get("requested_by_id"));
   },
 
-  created_at: function() {
-    var d = new Date(this.get('created_at'));
+  created_at: function () {
+    var d = new Date(this.get("created_at"));
     return d.format(this.timestampFormat);
   },
 
-  hasDetails: function() {
-    return (_.isString(this.get('description')) || this.hasNotes());
+  hasDetails: function () {
+    return _.isString(this.get("description")) || this.hasNotes();
   },
 
-  iterationNumber: function() {
-    if (this.get('state') === "accepted") {
-      return this.collection.project.getIterationNumberForDate(this.acceptedAtBeginningOfDay());
+  iterationNumber: function () {
+    if (this.get("state") === "accepted") {
+      return this.collection.project.getIterationNumberForDate(
+        this.acceptedAtBeginningOfDay()
+      );
     }
   },
 
-  acceptedAtBeginningOfDay: function() {
+  acceptedAtBeginningOfDay: function () {
     var accepted_at = this.get("accepted_at");
     if (!_.isUndefined(accepted_at)) {
       accepted_at = new Date(accepted_at);
@@ -259,93 +266,74 @@ const Story = Backbone.Model.extend({
 
   // If the story state is 'accepted', and the 'accepted_at' attribute is not
   // set, set it to today's date.
-  setAcceptedAt: function() {
-    if (this.get('state') === "accepted" && !this.get('accepted_at')) {
+  setAcceptedAt: function () {
+    if (this.get("state") === "accepted" && !this.get("accepted_at")) {
       var today = new Date();
       today.setHours(0);
       today.setMinutes(0);
       today.setSeconds(0);
       today.setMilliseconds(0);
-      this.set({accepted_at: today});
+      this.set({ accepted_at: today });
     }
   },
 
-  labels: function() {
-    if (!_.isString(this.get('labels'))) {
+  labels: function () {
+    if (!_.isString(this.get("labels"))) {
       return [];
     }
-    return _.map(this.get('labels').split(','), function(label) {
+    return _.map(this.get("labels").split(","), function (label) {
       return $.trim(label);
     });
   },
 
   // Initialize the notes collection on this story, and populate if necessary
-  initNotes: function() {
+  initNotes: function () {
     this.notes = new NoteCollection();
     this.notes.story = this;
     this.populateNotes();
   },
 
   // Resets this stories notes collection
-  populateNotes: function() {
+  populateNotes: function () {
     var notes = this.get("notes") || [];
     this.notes.reset(notes);
   },
 
   // Returns true if any of the story has any saved notes.
-  hasNotes: function() {
-    return this.notes.any(function(note) {
+  hasNotes: function () {
+    return this.notes.any(function (note) {
       return !note.isNew();
     });
   },
 
   // Initialize the tasks collection on this story, and populate if necessary
-  initTasks: function() {
+  initTasks: function () {
     this.tasks = new TaskCollection();
     this.tasks.story = this;
     this.populateTasks();
   },
 
-  populateTasks: function() {
-    var tasks = this.get('tasks') || [];
+  populateTasks: function () {
+    var tasks = this.get("tasks") || [];
     this.tasks.reset(tasks);
   },
 
-  sync: function(method, model, options) {
-    var documents;
-
-    if( model.isReadonly ) {
+  sync: function (method, model, options) {
+    if (model.isReadonly) {
       return true;
     }
 
-    documents = options.documents;
-    if(!_.isUndefined(documents)) {
-      if(documents && documents.length > 0 && documents.val()) {
-        model.set('documents', JSON.parse(documents.val()));
-      } else {
-        // model.set('documents', [{}]);
-        model.set('documents', []);
-      }
-    } else {
-      documents = model.get('documents');
-      if(!_.isUndefined(documents)) {
-        documents = _.map(documents, function(elem) {
-          return elem["file"];
-        });
-        model.set('documents', documents);
-      }
-    }
     Backbone.sync(method, model, options);
   },
 
-  initHistory: function() {
+  initHistory: function () {
     this.history = new ActivityCollection();
     this.history.story = this;
   },
 
-  showHistory: function() {
+  showHistory: function () {
     window.projectView.historyView.setStory(this);
-  }
+  },
 });
 
 _.defaults(Story.prototype, SharedModelMethods);

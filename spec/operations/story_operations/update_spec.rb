@@ -70,67 +70,6 @@ describe StoryOperations::Update do
         end
       end
 
-      context 'when documents changes' do
-        let(:story_params) do
-          { documents: new_documents }
-        end
-
-        let(:attachments) do
-          [
-            {
-              'id' => 30,
-              'public_id' => 'hello.jpg',
-              'version' => '1471624237',
-              'format' => 'png',
-              'resource_type' => 'image'
-            },
-            {
-              'id' => 31,
-              'public_id' => 'hello2.jpg',
-              'version' => '1471624237',
-              'format' => 'png',
-              'resource_type' => 'image'
-            }
-          ]
-        end
-
-        let(:new_documents) do
-          [
-            {
-              'public_id' => 'hello3.jpg',
-              'version' => '1471624237',
-              'format' => 'png',
-              'resource_type' => 'image'
-            },
-            {
-              'id' => 31,
-              'public_id' => 'hello2.jpg',
-              'version' => '1471624237',
-              'format' => 'png',
-              'resource_type' => 'image'
-            }
-          ]
-        end
-
-        before do
-          attachments.each do |a|
-            Story.connection.execute(
-              'insert into attachinary_files ' \
-              "(#{a.keys.join(', ')}, scope, attachinariable_id, attachinariable_type) " \
-              "values ('#{a.values.join("', '")}', 'documents', #{story.id}, 'Story')"
-            )
-          end
-        end
-
-        it 'records the documents attributes changes' do
-          VCR.use_cassette('cloudinary_upload_activity', match_requests_on: %i[uri method]) do
-            subject.call
-          end
-          expect(Activity.last.subject_changes['documents_attributes'].map(&:sort))
-            .to eq([%w[hello.jpg hello2.jpg], %w[hello2.jpg hello3.jpg]])
-        end
-      end
-
       context 'when project start_date is nil' do
         let(:story_params) do
           { state: 'accepted', accepted_at: Date.current }
