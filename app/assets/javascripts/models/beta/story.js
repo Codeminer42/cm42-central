@@ -348,7 +348,7 @@ export const mergeWithFetchedStories = (
 
   const pastStories = pastStoryIds.map((id) =>
     currentStories.find((story) => story.id === id)
-  ).filter((story) => story !== undefined);
+  );
 
   return [...storyNotSaved, ...editedStories, ...pastStories];
 };
