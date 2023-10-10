@@ -2,11 +2,11 @@ class DeviseCreateAdminUsers < ActiveRecord::Migration[4.2]
   def change
     create_table(:admin_users) do |t|
       ## Database authenticatable
-      t.string :email,              null: false, default: ""
-      t.string :encrypted_password, null: false, default: ""
+      t.string :email, limit: 255, null: false, default: ""
+      t.string :encrypted_password, limit: 255, null: false, default: ""
 
       ## Recoverable
-      t.string   :reset_password_token
+      t.string   :reset_password_token, limit: 255
       t.datetime :reset_password_sent_at
 
       ## Rememberable

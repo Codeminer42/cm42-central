@@ -4,10 +4,10 @@ class CreateActivities < ActiveRecord::Migration[4.2]
       t.references :project, null: false
       t.references :user, null: false
       t.integer :subject_id
-      t.string :subject_type
-      t.string :action
+      t.string :subject_type, limit: 255
+      t.string :action, limit: 255
       t.text :subject_changes, default: nil
-      t.string :subject_destroyed_type
+      t.string :subject_destroyed_type, limit: 255
 
       t.timestamps
     end

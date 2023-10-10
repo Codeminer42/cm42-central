@@ -1,11 +1,12 @@
 class CreateActiveAdminComments < ActiveRecord::Migration[4.2]
   def self.up
     create_table :active_admin_comments do |t|
-      t.string :namespace
+      t.string :namespace, limit: 255
       t.text   :body
-      t.string :resource_id,   null: false
-      t.string :resource_type, null: false
-      t.references :author, polymorphic: true
+      t.string :resource_id, limit: 255, null: false
+      t.string :resource_type, limit: 255, null: false
+      t.integer  :author_id
+      t.string  :author_type, limit: 255
       t.timestamps
     end
     add_index :active_admin_comments, [:namespace]

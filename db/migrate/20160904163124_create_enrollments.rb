@@ -7,8 +7,8 @@ class CreateEnrollments < ActiveRecord::Migration[4.2]
 
       t.timestamps
     end
-    add_foreign_key :enrollments, :teams, dependent: :delete
-    add_foreign_key :enrollments, :users, dependent: :delete
+    add_foreign_key :enrollments, :teams, name: "enrollments_team_id_fk", on_delete: :cascade
+    add_foreign_key :enrollments, :users, name: "enrollments_user_id_fk", on_delete: :cascade
     add_index :enrollments, [:team_id, :user_id], unique: true
 
     unless Rails.env.production?
@@ -21,8 +21,8 @@ class CreateEnrollments < ActiveRecord::Migration[4.2]
 
   def down
     remove_index :enrollments, [:team_id, :user_id]
-    remove_foreign_key :enrollments, :teams
-    remove_foreign_key :enrollments, :users
+    remove_foreign_key :enrollments, :teams, name: "enrollments_team_id_fk"
+    remove_foreign_key :enrollments, :users, name: "enrollments_user_id_fk"
     drop_table :enrollments
   end
 end

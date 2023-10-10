@@ -1,9 +1,9 @@
 class CreateTeams < ActiveRecord::Migration[4.2]
   def up
     create_table :teams do |t|
-      t.string :name, null: false
-      t.string :slug
-      t.string :logo
+      t.string :name, limit: 255, null: false
+      t.string :slug, limit: 255
+      t.string :logo, limit: 255
       t.datetime :archived_at
 
       t.timestamps

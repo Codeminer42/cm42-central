@@ -2,7 +2,7 @@ class CreateTasks < ActiveRecord::Migration[4.2]
   def self.up
     create_table :tasks do |t|
       t.references :story
-      t.string :name
+      t.string :name, limit: 255
       t.boolean :done, default: false
 
       t.timestamps

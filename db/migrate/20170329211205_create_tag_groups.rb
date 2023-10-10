@@ -5,6 +5,7 @@ class CreateTagGroups < ActiveRecord::Migration[4.2]
       t.string :name, limit: 15
       t.text :description
       t.string :bg_color, default: "#2075F3"
+      t.string :foreground_color
       t.timestamps null: false
     end
   end
