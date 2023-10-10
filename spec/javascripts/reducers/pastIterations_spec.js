@@ -3,28 +3,63 @@ import reducer from "../../../app/assets/javascripts/reducers/pastIterations";
 
 describe("Past Iterations Reducer", () => {
   describe("RECEIVE_PAST_ITERATIONS", () => {
-    it("returns formatted past iterations", () => {
-      const state = [];
+    describe("when past interactions is not fetched", () => {
+      it("returns formatted past iterations", () => {
+        const state = [];
 
-      const action = {
-        type: actionTypes.RECEIVE_PAST_ITERATIONS,
-        data: [{
+        const action = {
+          type: actionTypes.RECEIVE_PAST_ITERATIONS,
+          data: [{
+            hasStories: true,
+            iterationNumber: 1,
+            stories: []
+          }]
+        };
+
+        expect(reducer(state, action)).toEqual([{
           hasStories: true,
           iterationNumber: 1,
-          stories: []
-        }]
-      };
+          error: null,
+          storyIds: [],
+          fetched: false,
+          isFetching: false,
+          stories: undefined
+        }]);
+      });
+    })
 
-      expect(reducer(state, action)).toEqual([{
-        hasStories: true,
-        iterationNumber: 1,
-        error: null,
-        storyIds: [],
-        fetched: false,
-        isFetching: false,
-        stories: undefined
-      }]);
-    });
+    describe("when past interactions is fetched", () => {
+      it("returns the fetched state", () => {
+        const state = [{
+          hasStories: true,
+          iterationNumber: 1,
+          error: null,
+          storyIds: [1, 2, 3],
+          fetched: true,
+          isFetching: false,
+          stories: undefined
+        }];
+
+        const action = {
+          type: actionTypes.RECEIVE_PAST_ITERATIONS,
+          data: [{
+            hasStories: true,
+            iterationNumber: 1,
+            stories: []
+          }]
+        };
+
+        expect(reducer(state, action)).toEqual([{
+          hasStories: true,
+          iterationNumber: 1,
+          error: null,
+          storyIds: [1, 2, 3],
+          fetched: true,
+          isFetching: false,
+          stories: undefined
+        }]);
+      })
+    })
   });
 
   describe("REQUEST_PAST_STORIES", () => {
