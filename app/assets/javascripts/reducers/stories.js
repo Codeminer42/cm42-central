@@ -16,6 +16,7 @@ import * as Task from "models/beta/task";
 import * as Label from "models/beta/label";
 import { updateIfSameId } from "../services/updateIfSameId";
 import { storyScopes } from "./../libs/beta/constants";
+import { isEpic, mergeWithFetchedStories } from "../models/beta/story";
 
 const initialState = {
   [storyScopes.ALL]: [],
@@ -26,9 +27,19 @@ const initialState = {
 const storiesReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.RECEIVE_STORIES:
+      if (isEpic(action.from)) {
+        return {
+          ...state,
+          [action.from]: action.data,
+        };
+      }
       return {
         ...state,
-        [action.from]: action.data,
+        [action.from]: mergeWithFetchedStories(
+          state[action.from],
+          action.data.stories,
+          action.data.storyIds
+        ),
       };
     case actionTypes.RECEIVE_PAST_STORIES:
       return {

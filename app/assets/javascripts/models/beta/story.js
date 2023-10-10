@@ -325,6 +325,34 @@ export const cloneStory = (story) => {
   };
 };
 
+export const mergeWithFetchedStories = (
+  currentStories,
+  fetchedStories,
+  pastStoryIds
+) => {
+  const storyNotSaved = currentStories.filter(isNew);
+
+  const editedStories = fetchedStories.map((fetchedStory) => {
+    const existingStory = currentStories.find(
+      (story) => story.id === fetchedStory.id
+    );
+    if (existingStory && !existingStory.collapsed) {
+      return {
+        ...fetchedStory,
+        collapsed: false,
+        _editing: existingStory._editing,
+      };
+    }
+    return fetchedStory;
+  });
+
+  const pastStories = pastStoryIds.map((id) =>
+    currentStories.find((story) => story.id === id)
+  ).filter((story) => story !== undefined);
+
+  return [...storyNotSaved, ...editedStories, ...pastStories];
+};
+
 export const createNewStory = (stories, storyAttributes) => {
   const story = stories.find(isNew);
 
