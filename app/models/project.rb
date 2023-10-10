@@ -28,7 +28,7 @@ class Project < ApplicationRecord
   has_many :integrations, dependent: :destroy
   has_many :changesets, dependent: :destroy
   has_many :integrations, dependent: :destroy
-  has_many :ownerships
+  has_many :ownerships, dependent: :destroy
   has_many :teams, through: :ownerships
   has_many :memberships, dependent: :destroy
   has_many :users, -> { distinct }, through: :memberships
