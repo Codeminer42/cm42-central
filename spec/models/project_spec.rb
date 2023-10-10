@@ -289,6 +289,7 @@ describe Project, type: :model do
     subject { build :project }
     it { is_expected.to belong_to(:tag_group) }
     it { is_expected.to have_many(:changesets) }
+    it { is_expected.to have_many(:ownerships).dependent(:destroy) }
   end
 
   describe '#as_json' do
