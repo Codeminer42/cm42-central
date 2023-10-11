@@ -26,7 +26,7 @@ COPY Gemfile.lock Gemfile.lock
 COPY yarn.lock yarn.lock
 COPY .env.sample .env
 
-ADD entrypoint.sh /tmp/entrypoint.sh
+ADD pusher-fake-entrypoint.sh /tmp/pusher-fake-entrypoint.sh
 
 ENV PUSHER_APP_ID=1234 \
     PUSHER_APP_KEY=123456 \
@@ -36,7 +36,7 @@ ENV PUSHER_APP_ID=1234 \
 
 EXPOSE $PUSHER_WS_PORT $PUSHER_PORT
 
-CMD ["/tmp/entrypoint.sh"]
+CMD ["/tmp/pusher-fake-entrypoint.sh"]
 
 RUN bundle install
 
