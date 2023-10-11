@@ -62,7 +62,8 @@ class ProjectsController < ApplicationController
     authorize @project
     @project.users << current_user
 
-    result = ProjectOperations::Create.call(project: @project, current_user: current_user, current_team: current_team)
+    result = ProjectOperations::Create.call(project: @project, current_user: current_user,
+                                            current_team: current_team)
 
     respond_to do |format|
       match_result(result) do |on|
