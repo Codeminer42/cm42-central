@@ -40,12 +40,7 @@ module ProjectOperations
     end
 
     def create_ownership
-      begin
-        ownership = current_team.ownerships.create!(project: project, is_owner: true)
-        Success(ownership)
-      rescue StandardError => e
-        Failure(ownership)
-      end
+      Success(current_team.ownerships.create!(project: project, is_owner: true))
     end
   end
 end
