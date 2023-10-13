@@ -13,6 +13,7 @@ module ProjectOperations
         yield save_project
         yield create_activity
         yield create_ownership
+
         Success(project)
       end
     rescue
