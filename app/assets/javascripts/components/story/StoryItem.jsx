@@ -37,7 +37,7 @@ export const StoryItem = ({
 
   const childProps = {
     story,
-    onToggle: async () => {
+    onToggle: () => {
         expandOrCollapseStory(story, from);
     },
     className,

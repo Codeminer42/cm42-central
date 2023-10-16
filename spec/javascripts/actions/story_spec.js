@@ -621,7 +621,7 @@ describe('Story Actions', () => {
 
       describe('when request is successful', () => {
         beforeEach(() => {
-          httpService.get.mockImplementationOnce(() => Promise.resolve({ data: { story: { } } }));
+          httpService.get.mockResolvedValue({ data: { story: { } } });
         });
         it('should dispatch "updateStorySuccess"', async () => {
           const thunkFunction = Story.expandOrCollapseStory(collapsedStory, undefined);
@@ -646,7 +646,7 @@ describe('Story Actions', () => {
 
       describe('when request fails', () => {
         beforeEach(() => {
-          httpService.get.mockImplementation(() => Promise.reject());
+          httpService.get.mockRejectedValue();
         });
         it('should handle fetch error', async () => {
           const thunkFunction = Story.expandOrCollapseStory(collapsedStory, undefined);

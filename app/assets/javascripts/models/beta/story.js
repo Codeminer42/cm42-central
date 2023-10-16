@@ -303,7 +303,7 @@ export const deserialize = (data, options) => {
     ...story,
     labels: Label.splitLabels(story.labels),
     estimate: story.estimate || '',
-    documents: story.documents ? story.documents.map(document => document.file) : [],
+    documents: (story.documents ?? []).map(document => document.file),
     collapsed
   };
 };
