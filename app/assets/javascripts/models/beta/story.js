@@ -330,27 +330,38 @@ export const mergeWithFetchedStories = (
   fetchedStories,
   pastStoryIds
 ) => {
-  const storyNotSaved = currentStories.filter(isNew);
+  const mergedStories = { ...fetchedStories };
 
-  const editedStories = fetchedStories.map((fetchedStory) => {
-    const existingStory = currentStories.find(
-      (story) => story.id === fetchedStory.id
-    );
-    if (existingStory && !existingStory.collapsed) {
-      return {
-        ...fetchedStory,
+  if (Object.values(currentStories).length === 0) {
+    return mergedStories;
+  }
+
+  if (currentStories.stories[null]) {
+    mergedStories.stories[null] = currentStories.stories[null];
+  }
+
+  Object.values(fetchedStories.stories).map((fetchedStory) => {
+    const storyId = fetchedStory.id;
+
+    if (
+      currentStories.stories[storyId] &&
+      !currentStories.stories[storyId].collapsed
+    ) {
+      mergedStories.stories[storyId] = {
+        ...fetchedStories.stories[storyId],
         collapsed: false,
-        _editing: existingStory._editing,
+        _editing: currentStories.stories[storyId]._editing,
       };
     }
-    return fetchedStory;
   });
 
-  const pastStories = pastStoryIds.map((id) =>
-    currentStories.find((story) => story.id === id)
-  ).filter((story) => story !== undefined);
+  pastStoryIds.forEach((storyId) => {
+    if (currentStories.stories[storyId]) {
+      mergedStories.stories[storyId] = currentStories.stories[storyId];
+    }
+  });
 
-  return [...storyNotSaved, ...editedStories, ...pastStories];
+  return mergedStories;
 };
 
 export const createNewStory = (stories, storyAttributes) => {
@@ -382,8 +393,10 @@ export const isEpic = (from) => from === storyScopes.EPIC;
 export const haveHighlightButton = (stories, story, from) =>
   (isEpic(from) || isSearch(from)) && haveStory(story, stories);
 
-export const haveSearch = (stories) =>
-  Boolean(stories[storyScopes.SEARCH].length);
+export const haveSearch = (stories) => {
+  const denormalized = denormalizeStories(stories[storyScopes.SEARCH]);
+  return Boolean(denormalized.length);
+};
 
 export const haveStory = (story, stories) =>
   stories.some((item) => item.id === story.id);
@@ -493,3 +506,41 @@ export const donePoints = (stories) =>
 
 export const remainingPoints = (stories) =>
   totalPoints(stories) - donePoints(stories);
+
+export const normalizeStories = (data) => {
+  const normalizedState = {
+    stories: {},
+  };
+
+  data.forEach((story) => {
+    const storyId = story.id;
+
+    normalizedState.stories[storyId] = {
+      ...story,
+    };
+  });
+
+  return normalizedState;
+};
+
+export const denormalizeStories = (stories) => {
+  const normalizedStories = stories.stories;
+
+  if (!normalizedStories || Object.keys(normalizedStories).length === 0) {
+    return [];
+  }
+
+  return Object.values(normalizedStories);
+};
+
+export const denormalizeState = (state) => ({
+  epic: denormalizeStories(state[storyScopes.EPIC]),
+  all: denormalizeStories(state[storyScopes.ALL]),
+  search: denormalizeStories(state[storyScopes.SEARCH]),
+});
+
+export const normalizeState = (state) => ({
+  epic: normalizeStories(state.epic),
+  all: normalizeStories(state.all),
+  search: normalizeStories(state.search),
+});
