@@ -3,10 +3,6 @@ import { getColumns } from "../../../app/assets/javascripts/selectors/columns";
 import * as Column from "../../../app/assets/javascripts/models/beta/column";
 import moment from "moment";
 
-// jest.mock("../../../app/assets/javascripts/models/beta/story", () => ({
-//   denormalizeState: jest.fn((stories) => stories),
-// }));
-
 describe("Columns Selector", () => {
   const unscheduledStory = storyFactory({
     id: 1,
