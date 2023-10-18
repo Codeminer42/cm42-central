@@ -36,21 +36,24 @@ const storiesReducer = (state = initialState, action) => {
   const denormalizedStories = denormalizeStories(state[action.from]);
 
   switch (action.type) {
-    case actionTypes.RECEIVE_STORIES:
+    case actionTypes.RECEIVE_STORIES: {
+      const normalizedData = normalizeStories(action.data);
+
       if (isEpic(action.from) || isSearch(action.from)) {
         return {
           ...state,
-          [action.from]: normalizeStories(action.data),
+          [action.from]: normalizedData,
         };
       }
+
       return {
         ...state,
         [action.from]: mergeWithFetchedStories(
           state[action.from],
-          normalizeStories(action.data.stories),
-          action.data.storyIds
+          normalizedData
         ),
       };
+    }
     case actionTypes.RECEIVE_PAST_STORIES:
       const normalizedPastStories = normalizeStories(action.stories);
 

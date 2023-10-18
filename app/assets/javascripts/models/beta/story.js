@@ -325,20 +325,12 @@ export const cloneStory = (story) => {
   };
 };
 
-export const mergeWithFetchedStories = (
-  currentStories,
-  fetchedStories,
-  pastStoryIds
-) => {
-  const mergedStories = { ...fetchedStories };
-
+export const mergeWithFetchedStories = (currentStories, fetchedStories) => {
   if (Object.values(currentStories).length === 0) {
-    return mergedStories;
+    return fetchedStories;
   }
 
-  if (currentStories.stories[null]) {
-    mergedStories.stories[null] = currentStories.stories[null];
-  }
+  const mergedStories = { ...currentStories };
 
   Object.values(fetchedStories.stories).map((fetchedStory) => {
     const storyId = fetchedStory.id;
@@ -352,12 +344,10 @@ export const mergeWithFetchedStories = (
         collapsed: false,
         _editing: currentStories.stories[storyId]._editing,
       };
-    }
-  });
-
-  pastStoryIds.forEach((storyId) => {
-    if (currentStories.stories[storyId]) {
-      mergedStories.stories[storyId] = currentStories.stories[storyId];
+    } else {
+      mergedStories.stories[storyId] = {
+        ...fetchedStories.stories[storyId],
+      };
     }
   });
 
@@ -508,19 +498,18 @@ export const remainingPoints = (stories) =>
   totalPoints(stories) - donePoints(stories);
 
 export const normalizeStories = (data) => {
-  const normalizedState = {
-    stories: {},
-  };
+  return data.reduce(
+    (accumulator, story) => {
+      const storyId = story.id;
 
-  data.forEach((story) => {
-    const storyId = story.id;
+      accumulator.stories[storyId] = { ...story };
 
-    normalizedState.stories[storyId] = {
-      ...story,
-    };
-  });
-
-  return normalizedState;
+      return accumulator;
+    },
+    {
+      stories: {},
+    }
+  );
 };
 
 export const denormalizeStories = (stories) => {

@@ -80,24 +80,16 @@ export const fetchProjectBoard =
   (projectId) =>
   async (dispatch, getState, { ProjectBoard, UrlService }) => {
     dispatch(requestProjectBoard());
-    const currentState = getState();
-
-    const fetchedIterations = currentState.pastIterations.filter(
-      (iteration) => iteration.fetched === true
-    );
-
-    const storyIds = fetchedIterations.flatMap(
-      (iterations) => iterations.storyIds
-    );
 
     try {
       const { project, users, stories, pastIterations } =
         await ProjectBoard.get(projectId);
 
+      console.log(stories);
       dispatch(receiveProject(project));
       dispatch(receivePastIterations(pastIterations));
       dispatch(receiveUsers(users));
-      dispatch(receiveStories({ stories, storyIds }));
+      dispatch(receiveStories(stories));
       dispatch(receiveProjectBoard(projectId));
       expandStoryIfNeeded(dispatch, UrlService.getHash);
     } catch (error) {
