@@ -342,13 +342,29 @@ export const mergeWithFetchedStories = (currentStories, fetchedStories) => {
       mergedStories.stories[storyId] = {
         ...fetchedStories.stories[storyId],
         collapsed: false,
+        serverBased: true,
         _editing: currentStories.stories[storyId]._editing,
       };
     } else {
       mergedStories.stories[storyId] = {
         ...fetchedStories.stories[storyId],
+        serverBased: true,
       };
     }
+  });
+
+  const serverBasedIds = Object.values(mergedStories.stories)
+    .filter((story) => story.serverBased)
+    .map((story) => String(story.id));
+
+  const allFetchedStoryIds = Object.keys(fetchedStories.stories);
+
+  const storiesToRemove = serverBasedIds.filter(
+    (id) => !allFetchedStoryIds.includes(id)
+  );
+
+  storiesToRemove.forEach((storyId) => {
+    delete mergedStories.stories[storyId];
   });
 
   return mergedStories;
