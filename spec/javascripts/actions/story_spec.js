@@ -140,7 +140,9 @@ describe("Story Actions", () => {
         { Story: FakeStory }
       );
 
-      expect(fakeDispatch).toHaveBeenCalledWith(Story.addStory(story));
+      expect(fakeDispatch).toHaveBeenCalledWith(
+        Story.addStory({ story, id: editedStory.id })
+      );
       expect(fakeDispatch).not.toHaveBeenCalledWith(
         Story.updateStorySuccess(story)
       );

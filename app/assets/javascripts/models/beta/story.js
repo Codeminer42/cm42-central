@@ -411,8 +411,7 @@ export const haveStory = (story, stories) =>
   stories.some((item) => item.id === story.id);
 
 export const isNew = (story) => {
-  const idString = story.id.toString();
-  return idString.startsWith("Symbol(new-");
+  return typeof story.id === "symbol";
 };
 
 export const canSave = (story) =>

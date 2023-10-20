@@ -582,13 +582,13 @@ describe("Story model", function () {
   });
 
   describe("isNew", () => {
-    it("returns true when story id is null", () => {
-      const story = { id: null };
+    it("returns true when story id is new", () => {
+      const story = { id: Symbol(`new-${Date.now()}`) };
 
       expect(Story.isNew(story)).toBe(true);
     });
 
-    it("returns false when story id isn't null", () => {
+    it("returns false when story id isn't new", () => {
       const story = { id: 42 };
 
       expect(Story.isNew(story)).toBe(false);
@@ -609,7 +609,7 @@ describe("Story model", function () {
     });
 
     it("returns false when story is new", () => {
-      const story = { id: null, state: "started" };
+      const story = { id: Symbol(`new-${Date.now()}`), state: "started" };
 
       expect(Story.canDelete(story)).toBe(false);
     });
@@ -700,15 +700,22 @@ describe("Story model", function () {
   });
 
   describe("withoutNewStory", () => {
-    it("remove a story with null id from a stories array", () => {
+    it("remove a story with a new id (symbol) from a stories array", () => {
+      const newStoryId = Symbol(`new-${Date.now()}`);
       const stories = [{ id: 1 }, { id: 2 }];
-      const newStory = { id: null };
+      const newStory = { id: newStoryId };
 
       const storiesWithEmptyStories = [stories[0], newStory, stories[1]];
 
-      expect(Story.withoutNewStory([...stories, newStory])).toEqual(stories);
-      expect(Story.withoutNewStory([newStory, ...stories])).toEqual(stories);
-      expect(Story.withoutNewStory(storiesWithEmptyStories)).toEqual(stories);
+      expect(Story.withoutNewStory([...stories, newStory], newStoryId)).toEqual(
+        stories
+      );
+      expect(Story.withoutNewStory([newStory, ...stories], newStoryId)).toEqual(
+        stories
+      );
+      expect(
+        Story.withoutNewStory(storiesWithEmptyStories, newStoryId)
+      ).toEqual(stories);
     });
   });
 
@@ -718,7 +725,7 @@ describe("Story model", function () {
     it("returns an empty story", () => {
       const story = Story.createNewStory(stories, {});
 
-      expect(story.id).toBe(null);
+      expect(typeof story.id).toBe("symbol");
     });
 
     it("returns an expanded story", () => {
@@ -741,11 +748,16 @@ describe("Story model", function () {
 
   describe("replaceOrAddNewStory", () => {
     it("replace an empty for a new story", () => {
-      const stories = [{ id: 1 }, { id: null }, { id: 3 }];
+      const newStoryId = Symbol(`new-${Date.now()}`);
+      const stories = [{ id: 1 }, { id: newStoryId }, { id: 3 }];
       const newStory = { id: 2 };
       const expectedArray = [stories[0], newStory, stories[2]];
 
-      const newStoryArray = Story.replaceOrAddNewStory(stories, newStory);
+      const newStoryArray = Story.replaceOrAddNewStory(
+        stories,
+        newStory,
+        newStoryId
+      );
 
       expect(newStoryArray).toEqual(expectedArray);
     });

@@ -51,9 +51,10 @@ describe("<ExpandedStoryDefault />", () => {
   });
 
   it("not renders some components when it is a new story", () => {
+    const id = Symbol(`new-${Date.now()}`);
     const story = {
-      ...storyFactory({ id: null }),
-      _editing: storyFactory({ id: null }),
+      ...storyFactory({ id }),
+      _editing: storyFactory({ id }),
     };
 
     const wrapper = shallow(
