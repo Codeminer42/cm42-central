@@ -8,6 +8,7 @@ import {
   withScope,
 } from "../models/beta/story";
 import { property, last } from "underscore";
+import { denormalizePastIterations } from "../models/beta/pastIteration";
 
 const getStories = property("stories");
 const getColumn = property("column");
@@ -18,6 +19,8 @@ export const getColumns = createSelector(
   [getColumn, getStories, getProject, getPastIterations],
   (column, stories, project, pastIterations) => {
     const denormalizedStories = denormalizeState(stories);
+    const denormalizedPastIterations =
+      denormalizePastIterations(pastIterations);
 
     switch (column) {
       case Column.CHILLY_BIN:
@@ -31,7 +34,7 @@ export const getColumns = createSelector(
           )
         );
 
-        const lastPastIteration = last(pastIterations);
+        const lastPastIteration = last(denormalizedPastIterations);
         const firstSprintNumber = lastPastIteration
           ? lastPastIteration.iterationNumber + 1
           : 1;
@@ -42,7 +45,7 @@ export const getColumns = createSelector(
         );
       case Column.DONE:
         return mountPastIterations(
-          pastIterations,
+          denormalizedPastIterations,
           withScope(denormalizedStories)
         );
       case Column.EPIC:
