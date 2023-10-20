@@ -272,7 +272,9 @@ export const saveStory =
         {
           onConfirmed: async () => {
             const newStory = await Story.post(story._editing, projectId);
-            dispatch(addStory(newStory, from));
+            dispatch(
+              addStory({ story: newStory, id: story._editing.id }, from)
+            );
             dispatch(
               sendSuccessNotification(
                 I18n.t("messages.operations.success.story.create", {

@@ -24,6 +24,7 @@ import {
   mergeWithFetchedStories,
   normalizeState,
   normalizeStories,
+  isNew,
 } from "../models/beta/story";
 
 const initialState = {
@@ -79,7 +80,11 @@ const storiesReducer = (state = initialState, action) => {
       return {
         ...state,
         [action.from]: normalizeStories(
-          replaceOrAddNewStory(denormalizedStories, action.story)
+          replaceOrAddNewStory(
+            denormalizedStories,
+            action.story.story,
+            action.story.id
+          )
         ),
       };
     case actionTypes.CLONE_STORY:
@@ -92,10 +97,12 @@ const storiesReducer = (state = initialState, action) => {
         ),
       };
     case actionTypes.TOGGLE_STORY:
-      if (action.id === null) {
+      if (isNew(action)) {
         return {
           ...state,
-          [action.from]: normalizeStories(withoutNewStory(denormalizedStories)),
+          [action.from]: normalizeStories(
+            withoutNewStory(denormalizedStories, action.id)
+          ),
         };
       }
 

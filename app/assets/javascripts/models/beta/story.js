@@ -361,15 +361,18 @@ export const createNewStory = (stories, storyAttributes) => {
     editStory(story, storyAttributes);
   }
 
+  const newId = Symbol(`new-${Date.now()}`);
+
   const newStory = {
     ...emptyStory,
     ...storyAttributes,
     collapsed: false,
+    id: newId,
   };
 
   return {
     ...newStory,
-    _editing: newStory,
+    _editing: { ...newStory, id: newId },
   };
 };
 
@@ -391,7 +394,10 @@ export const haveSearch = (stories) => {
 export const haveStory = (story, stories) =>
   stories.some((item) => item.id === story.id);
 
-export const isNew = (story) => story.id === null;
+export const isNew = (story) => {
+  const idString = story.id.toString();
+  return idString.startsWith("Symbol(new-");
+};
 
 export const canSave = (story) =>
   !isAccepted(story) && story._editing.title !== "";
@@ -400,21 +406,18 @@ export const canDelete = (story) => !isAccepted(story) && !isNew(story);
 
 export const canEdit = (story) => !isAccepted(story);
 
-export const withoutNewStory = (stories) =>
-  stories.filter((story) => !isNew(story));
+export const withoutNewStory = (stories, id) =>
+  stories.filter((story) => story.id !== id);
 
-export const replaceOrAddNewStory = (stories, newStory) => {
-  if (shouldReplace(stories)) {
-    return stories.map((story) => (isNew(story) ? newStory : story));
+export const replaceOrAddNewStory = (stories, newStory, id) => {
+  if (id) {
+    return stories.map((story) => (story.id === id ? newStory : story));
   }
 
   return [newStory, ...stories];
 };
 
-const shouldReplace = (stories) => stories.some(isNew);
-
 const emptyStory = {
-  id: null,
   title: "",
   description: null,
   estimate: "",
@@ -519,7 +522,14 @@ export const denormalizeStories = (stories) => {
     return [];
   }
 
-  return Object.values(normalizedStories);
+  const denormalizedStories = Object.values(normalizedStories);
+
+  const symbolicProperties = Object.getOwnPropertySymbols(stories.stories);
+  for (const symbol of symbolicProperties) {
+    denormalizedStories.push(stories.stories[symbol]);
+  }
+
+  return denormalizedStories;
 };
 
 export const denormalizeState = (state) => ({
