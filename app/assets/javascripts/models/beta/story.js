@@ -515,14 +515,14 @@ export const donePoints = (stories) =>
 export const remainingPoints = (stories) =>
   totalPoints(stories) - donePoints(stories);
 
-export const normalizeStories = (data) => {
-  return data.reduce(
-    (accumulator, story) => {
+export const normalizeStories = (stories) => {
+  return stories.reduce(
+    (acc, story) => {
       const storyId = story.id;
 
-      accumulator.stories[storyId] = { ...story };
+      acc.stories[storyId] = { ...story };
 
-      return accumulator;
+      return acc;
     },
     {
       stories: {},
