@@ -533,15 +533,19 @@ export const normalizeStories = (stories) => {
 export const denormalizeStories = (stories) => {
   const normalizedStories = stories.stories;
 
-  if (!normalizedStories || Object.keys(normalizedStories).length === 0) {
+  if (
+    !normalizedStories ||
+    (Object.keys(normalizedStories).length === 0 &&
+      Object.getOwnPropertySymbols(normalizedStories) === 0)
+  ) {
     return [];
   }
 
   const denormalizedStories = Object.values(normalizedStories);
 
-  const symbolicProperties = Object.getOwnPropertySymbols(stories.stories);
+  const symbolicProperties = Object.getOwnPropertySymbols(normalizedStories);
   for (const symbol of symbolicProperties) {
-    denormalizedStories.push(stories.stories[symbol]);
+    denormalizedStories.push(normalizedStories[symbol]);
   }
 
   return denormalizedStories;
@@ -554,7 +558,7 @@ export const denormalizeState = (state) => ({
 });
 
 export const normalizeState = (state) => ({
-  epic: normalizeStories(state.epic),
-  all: normalizeStories(state.all),
-  search: normalizeStories(state.search),
+  epic: normalizeStories(state[storyScopes.EPIC]),
+  all: normalizeStories(state[storyScopes.ALL]),
+  search: normalizeStories(state[storyScopes.SEARCH]),
 });

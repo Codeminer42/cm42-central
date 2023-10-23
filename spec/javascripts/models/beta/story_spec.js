@@ -1,7 +1,13 @@
 import * as Story from "models/beta/story";
 import moment from "moment";
 import { status, storyTypes, storyScopes } from "libs/beta/constants";
-import { mergeWithFetchedStories } from "../../../../app/assets/javascripts/models/beta/story";
+import {
+  denormalizeState,
+  denormalizeStories,
+  mergeWithFetchedStories,
+  normalizeState,
+  normalizeStories,
+} from "../../../../app/assets/javascripts/models/beta/story";
 
 describe("Story model", function () {
   describe("comparePosition", () => {
@@ -1536,6 +1542,108 @@ describe("Story model", function () {
           }),
         })
       );
+    });
+  });
+  describe("normalizeStories", () => {
+    it("normalize an array of stories by their IDs", () => {
+      const symbolKey = Symbol("new");
+      const stories = [{ id: 1 }, { id: 2 }, { id: symbolKey }];
+      const normalizedStories = normalizeStories(stories);
+
+      expect(normalizedStories).toEqual({
+        stories: {
+          1: { id: 1 },
+          2: { id: 2 },
+          [symbolKey]: { id: symbolKey },
+        },
+      });
+    });
+  });
+  describe("denormalizeStories", () => {
+    it("denormalize a set of stories, including a Symbol as a key", () => {
+      const symbolKey = Symbol("new");
+      const normalizedStories = {
+        stories: {
+          1: { id: 1 },
+          2: { id: 2 },
+          [symbolKey]: { id: symbolKey },
+        },
+      };
+      const denormalizedStories = denormalizeStories(normalizedStories);
+
+      expect(denormalizedStories).toEqual([
+        { id: 1 },
+        { id: 2 },
+        { id: symbolKey },
+      ]);
+    });
+    it("handle an empty object", () => {
+      const normalizedStories = {
+        stories: {},
+      };
+      const denormalizedStories = denormalizeStories(normalizedStories);
+
+      expect(denormalizedStories).toEqual([]);
+    });
+  });
+  describe("normalizeState", () => {
+    it("normalize the state object", () => {
+      const symbolKey = Symbol("new");
+      const state = {
+        epic: [{ id: 2 }],
+        all: [{ id: 1 }],
+        search: [{ id: symbolKey }],
+      };
+      const normalizedState = normalizeState(state);
+      const expectedNormalizedState = {
+        epic: {
+          stories: {
+            2: { id: 2 },
+          },
+        },
+        all: {
+          stories: {
+            1: { id: 1 },
+          },
+        },
+        search: {
+          stories: {
+            [symbolKey]: { id: symbolKey },
+          },
+        },
+      };
+
+      expect(normalizedState).toEqual(expectedNormalizedState);
+    });
+  });
+  describe("denormalizeState", () => {
+    it("denormalize the state object", () => {
+      const symbolKey = Symbol("new");
+      const normalizedState = {
+        epic: {
+          stories: {
+            2: { id: 2 },
+          },
+        },
+        all: {
+          stories: {
+            1: { id: 1 },
+          },
+        },
+        search: {
+          stories: {
+            [symbolKey]: { id: symbolKey },
+          },
+        },
+      };
+      const denormalizedState = denormalizeState(normalizedState);
+      const expectedDenormalizedState = {
+        epic: [{ id: 2 }],
+        all: [{ id: 1 }],
+        search: [{ id: symbolKey }],
+      };
+
+      expect(denormalizedState).toEqual(expectedDenormalizedState);
     });
   });
 });
