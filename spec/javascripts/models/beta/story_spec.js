@@ -2,6 +2,7 @@ import * as Story from "models/beta/story";
 import moment from "moment";
 import { status, storyTypes, storyScopes } from "libs/beta/constants";
 import {
+  createTemporaryId,
   denormalizeState,
   denormalizeStories,
   mergeWithFetchedStories,
@@ -589,7 +590,7 @@ describe("Story model", function () {
 
   describe("isNew", () => {
     it("returns true when story id is new", () => {
-      const story = { id: Symbol(`new-${Date.now()}`) };
+      const story = { id: createTemporaryId() };
 
       expect(Story.isNew(story)).toBe(true);
     });
@@ -615,7 +616,7 @@ describe("Story model", function () {
     });
 
     it("returns false when story is new", () => {
-      const story = { id: Symbol(`new-${Date.now()}`), state: "started" };
+      const story = { id: createTemporaryId(), state: "started" };
 
       expect(Story.canDelete(story)).toBe(false);
     });
@@ -707,7 +708,7 @@ describe("Story model", function () {
 
   describe("withoutNewStory", () => {
     it("remove a story with a new id (symbol) from a stories array", () => {
-      const newStoryId = Symbol(`new-${Date.now()}`);
+      const newStoryId = createTemporaryId();
       const stories = [{ id: 1 }, { id: 2 }];
       const newStory = { id: newStoryId };
 
@@ -754,7 +755,7 @@ describe("Story model", function () {
 
   describe("replaceOrAddNewStory", () => {
     it("replace an empty for a new story", () => {
-      const newStoryId = Symbol(`new-${Date.now()}`);
+      const newStoryId = createTemporaryId();
       const stories = [{ id: 1 }, { id: newStoryId }, { id: 3 }];
       const newStory = { id: 2 };
       const expectedArray = [stories[0], newStory, stories[2]];
@@ -1301,13 +1302,11 @@ describe("Story model", function () {
 
     describe("when have more than one search story", () => {
       const stories = {
-        [storyScopes.SEARCH]: {
-          stories: {
-            1: { id: 1, storyType: storyTypes.FEATURE },
-            2: { id: 2, storyType: storyTypes.FEATURE },
-            3: { id: 3, storyType: storyTypes.FEATURE },
-          },
-        },
+        [storyScopes.SEARCH]: [
+          { id: 1, storyType: storyTypes.FEATURE },
+          { id: 2, storyType: storyTypes.FEATURE },
+          { id: 3, storyType: storyTypes.FEATURE },
+        ],
       };
 
       it("returns truthy", () => {

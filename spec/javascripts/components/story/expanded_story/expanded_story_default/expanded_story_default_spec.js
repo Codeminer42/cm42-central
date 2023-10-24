@@ -2,6 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import { ExpandedStoryDefault } from "components/story/ExpandedStory/ExpandedStoryDefault";
 import storyFactory from "../../../../support/factories/storyFactory";
+import { createTemporaryId } from "../../../../../../app/assets/javascripts/models/beta/story";
 
 describe("<ExpandedStoryDefault />", () => {
   const defaultProps = () => ({
@@ -51,7 +52,7 @@ describe("<ExpandedStoryDefault />", () => {
   });
 
   it("not renders some components when it is a new story", () => {
-    const id = Symbol(`new-${Date.now()}`);
+    const id = createTemporaryId();
     const story = {
       ...storyFactory({ id }),
       _editing: storyFactory({ id }),

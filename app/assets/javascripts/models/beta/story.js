@@ -377,7 +377,7 @@ export const createNewStory = (stories, storyAttributes) => {
     editStory(story, storyAttributes);
   }
 
-  const newId = Symbol(`new-${Date.now()}`);
+  const newId = createTemporaryId();
 
   const newStory = {
     ...emptyStory,
@@ -391,6 +391,8 @@ export const createNewStory = (stories, storyAttributes) => {
     _editing: newStory,
   };
 };
+
+export const createTemporaryId = () => Symbol(`new-${Date.now()}`);
 
 export const withScope = (stories, from) =>
   Boolean(from) ? stories[from] : stories[storyScopes.ALL];
