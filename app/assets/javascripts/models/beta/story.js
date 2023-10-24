@@ -343,7 +343,7 @@ export const mergeWithFetchedStories = (currentStories, fetchedStories) => {
         ...fetchedStories.stories[storyId],
         collapsed: false,
         serverBased: true,
-        _editing: currentStories.stories[storyId]._editing,
+        _editing: { ...currentStories.stories[storyId]._editing },
       };
     } else {
       mergedStories.stories[storyId] = {
@@ -388,7 +388,7 @@ export const createNewStory = (stories, storyAttributes) => {
 
   return {
     ...newStory,
-    _editing: { ...newStory, id: newId },
+    _editing: newStory,
   };
 };
 
@@ -402,10 +402,8 @@ export const isEpic = (from) => from === storyScopes.EPIC;
 export const haveHighlightButton = (stories, story, from) =>
   (isEpic(from) || isSearch(from)) && haveStory(story, stories);
 
-export const haveSearch = (stories) => {
-  const denormalized = denormalizeStories(stories[storyScopes.SEARCH]);
-  return Boolean(denormalized.length);
-};
+export const haveSearch = (stories) =>
+  Boolean(stories[storyScopes.SEARCH].length);
 
 export const haveStory = (story, stories) =>
   stories.some((item) => item.id === story.id);

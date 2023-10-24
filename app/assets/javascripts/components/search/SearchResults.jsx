@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { closeSearch } from "actions/projectBoard";
 import Search from "./Search";
 import {
-  denormalizeStories,
+  denormalizeState,
   haveSearch,
   withScope,
 } from "./../../models/beta/story";
@@ -38,11 +38,14 @@ SearchResults.propTypes = {
   closeSearch: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ stories, projectBoard }) => ({
-  isEnabled: haveSearch(stories),
-  searchResults: denormalizeStories(withScope(stories, storyScopes.SEARCH)),
-  projectBoard: projectBoard,
-});
+const mapStateToProps = ({ stories, projectBoard }) => {
+  const denormalizedState = denormalizeState(stories);
+  return {
+    isEnabled: haveSearch(denormalizedState),
+    searchResults: withScope(denormalizedState, storyScopes.SEARCH),
+    projectBoard: projectBoard,
+  };
+};
 
 const mapDispatchToProps = {
   closeSearch,
