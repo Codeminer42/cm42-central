@@ -10,12 +10,9 @@ import NoteForm from 'components/notes/NoteForm';
 import StoryLabels from 'components/story/StoryLabels';
 import StoryTasks from 'components/story/StoryTasks';
 import TaskForm from 'components/tasks/TaskForm';
-import StoryAttachment from 'components/story/StoryAttachment';
 import StoryStateButtons from 'components/story/StoryStateButtons';
 import StoryEstimateButtons from 'components/story/StoryEstimateButtons';
-import AttachmentOptions from 'models/attachmentOptions'
 import Clipboard from 'clipboard';
-import ExecuteAttachinary from '../libs/execute_attachinary';
 import FormView from './form_view';
 import EpicView from './epic_view';
 import storyTemplate from 'templates/story.ejs';
@@ -39,8 +36,8 @@ const StoryView = FormView.extend({
       "transition", "estimate", "disableForm", "renderNotes",
       "hoverBox", "renderTasks", "handleNoteDelete", "handleSaveError",
       "addEmptyTask", "handleNoteSubmit", "renderTaskForm", "handleTaskSubmit",
-      "clickSave", "attachmentDone", "attachmentStart", "handleTaskUpdate",
-      "handleTaskSaveSuccess", "handleTaskDelete","attachmentFail",
+      "clickSave", "handleTaskUpdate",
+      "handleTaskSaveSuccess", "handleTaskDelete",
       "toggleControlButtons");
 
     // Rerender on any relevant change to the views story
@@ -75,23 +72,6 @@ const StoryView = FormView.extend({
 
     // Set up CSS classes for the view
     this.setClassName();
-
-    this.on('attachmentOptions', (options) => {
-      this.attachmentOptions = options;
-      if(this.canEdit()) {
-        // attachinary won't re-create the instance with the new
-        // signature if the instance for the element is already created
-        if(this.$('.attachinary-input').data('attachinary-bond')) {
-          this.$('.attachinary-input')
-            .fileupload('destroy')
-            .data('attachinary-bond').initFileUpload();
-        }
-
-        this.renderAttachments();
-      }
-    });
-
-    this.attachmentOptions = options.attachmentOptions;
   },
 
   isReadonly: function() {
@@ -110,9 +90,6 @@ const StoryView = FormView.extend({
     "click .edit-description": "editDescription",
     "click .toggle-history": "showHistory",
     "sortupdate": "sortUpdate",
-    "fileuploaddone": "attachmentDone",
-    "fileuploadstart": "attachmentStart",
-    "fileuploadfail": "attachmentFail",
     "click #locate": "highlightSearchedStory"
   },
 
@@ -312,10 +289,8 @@ const StoryView = FormView.extend({
     this.model.setAcceptedAt();
 
     var that = this;
-    var documents = $(event.currentTarget).closest('.story')
-      .find("[type='hidden'][name='attachments']");
 
-    this.model.save(null, { documents: documents,
+    this.model.save(null, {
       success: function(model, response) {
         that.enableForm();
         that.model.set({ editing: editMode });
@@ -451,7 +426,6 @@ const StoryView = FormView.extend({
     this.appendDescription();
     this.$el.append($('<div data-story-tasks></div>'));
     this.$el.append($('<div data-story-task-form></div>'));
-    this.appendAttachments();
     this.$el.append($('<div data-story-notes></div>'));
     this.$el.append($('<div data-story-note-form></div>'));
     if(this.model.get('story_type') === 'release') {
@@ -526,20 +500,6 @@ const StoryView = FormView.extend({
     );
   },
 
-  appendAttachments: function() {
-    this.$el.append(
-      this.makeFormControl(function(div) {
-        const $storyAttachments = $('<div class="story-attachments"></div>');
-        $(div).append($storyAttachments);
-
-        if(process.env.NODE_ENV !== 'test') {
-          clearTimeout(window.executeAttachinaryTimeout);
-          window.executeAttachinaryTimeout = setTimeout(ExecuteAttachinary, 1000);
-        }
-      })
-    );
-  },
-
   renderCollapsed: function(isGuest) {
 
     this.$el.removeClass('editing');
@@ -577,7 +537,6 @@ const StoryView = FormView.extend({
     this.renderHistoryLocationContainer();
     this.renderDescription();
     this.renderTagsInput();
-    this.renderAttachments();
     this.renderSelects();
     this.renderTasks();
     this.renderNotes();
@@ -643,21 +602,6 @@ const StoryView = FormView.extend({
           disabled={this.isReadonly()}
         />,
         tagsInput
-      );
-    }
-  },
-
-  renderAttachments: function() {
-    const attachments = this.$('.story-attachments')[0];
-    if(attachments) {
-      ReactDOM.render(
-        <StoryAttachment
-          name='attachments'
-          isReadonly={this.isReadonly()}
-          filesModel={this.model.get('documents')}
-          options={this.attachmentOptions}
-        />,
-        attachments
       );
     }
   },
@@ -1106,29 +1050,8 @@ const StoryView = FormView.extend({
     return div;
   },
 
-  attachmentDone: function(event) {
-    if (this.model.isNew()) {
-      this.toggleControlButtons(false);
-    } else {
-      this.saveEdit(event, true);
-    }
-  },
-
   clickSave: function(event) {
     this.saveEdit(event, false);
-  },
-
-  attachmentStart: function() {
-    this.toggleControlButtons(true);
-  },
-
-  attachmentFail: function() {
-    this.toggleControlButtons(false);
-
-    this.$('.uploads').prepend(this.alert({
-      className: 'story-alert alert-danger',
-      message: I18n.t('story.errors.failed_upload')
-    }));
   },
 
   toggleControlButtons: function(isDisabled, changeCancel) {

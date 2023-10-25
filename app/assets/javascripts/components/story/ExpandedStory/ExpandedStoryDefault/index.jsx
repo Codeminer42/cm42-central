@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addLabel, removeLabel } from '../../../../actions/labels';
 import { deleteNote, createNote } from '../../../../actions/note';
-import { addAttachment, removeAttachment } from '../../../../actions/attachment';
 import { setLoadingStory, storyFailure } from '../../../../actions/story';
 import { editingStoryPropTypesShape, isNew } from '../../../../models/beta/story';
 import ProjectPropTypes from '../../../shapes/project';
@@ -16,7 +15,6 @@ import ExpandedStoryNotes from '../ExpandedStoryNotes';
 import ExpandedStoryState from '../ExpandedStoryState';
 import ExpandedStoryTitle from '../ExpandedStoryTitle';
 import ExpandedStoryLabels from '../ExpandedStoryLabels';
-import ExpandedStoryAttachments from '../ExpandedStoryAttachments';
 import ExpandedStoryTask from '../ExpandedStoryTask';
 import ExpandedStoryRequestedBy from '../ExpandedStoryRequestedBy';
 import ExpandedStoryOwnedBy from '../ExpandedStoryOwnedBy';
@@ -29,7 +27,6 @@ export const ExpandedStoryDefault = ({
   createNote, deleteNote,
   createTask, deleteTask, toggleTask,
   setLoadingStory, storyFailure,
-  addAttachment, removeAttachment
 }) =>
   <Fragment>
     {
@@ -111,16 +108,6 @@ export const ExpandedStoryDefault = ({
             disabled={disabled}
           />
 
-          <ExpandedStoryAttachments
-            story={story}
-            onFailure={(error) => storyFailure(story.id, error)}
-            startLoading={() => setLoadingStory(story.id)}
-            onAdd={(attachment) => addAttachment(story.id, project.id, attachment)}
-            onDelete={(documentId) => removeAttachment(story.id, documentId)}
-            disabled={disabled}
-            needsToSave={story.needsToSave}
-          />
-
           <ExpandedStoryNotes
             story={story}
             projectId={project.id}
@@ -145,8 +132,6 @@ ExpandedStoryDefault.propTypes = {
   createTask: PropTypes.func.isRequired,
   toggleTask: PropTypes.func.isRequired,
   deleteTask: PropTypes.func.isRequired,
-  addAttachment: PropTypes.func.isRequired,
-  removeAttachment: PropTypes.func.isRequired,
   setLoadingStory: PropTypes.func.isRequired,
   storyFailure: PropTypes.func.isRequired,
   onClone: PropTypes.func.isRequired,
@@ -160,7 +145,6 @@ const mapDispatchToProps = {
   addLabel, removeLabel,
   createNote, deleteNote,
   createTask, toggleTask, deleteTask,
-  addAttachment, removeAttachment,
   setLoadingStory, storyFailure,
 };
 

@@ -8,6 +8,7 @@ describe('<ProjectBoard />', () => {
     const defaultProps = {
       projectBoard: {
         isFetched: false,
+        isInitialLoading: true,
         search: {
           loading: false
         },
@@ -39,7 +40,7 @@ describe('<ProjectBoard />', () => {
     return shallow(<ProjectBoard {...defaultProps} {...props } />);
   };
 
-  describe('when projectBoard.isFetched is false',  () => {
+  describe('when projectBoard.isFetched is false and projectBoard.isInitialLoading is true',  () => {
     it('renders <ProjectLoading />', () => {
       const wrapper = render();
       const spinnerLoading = wrapper.find('[data-id="project-loading"]');
@@ -48,11 +49,12 @@ describe('<ProjectBoard />', () => {
     });
   });
 
-  describe('when projectBoard.isFetched is true', () => {
+  describe('when projectBoard.isFetched is true and projectBoard.isInitialLoading is false', () => {
     it('does not renders <ProjectLoading />', () => {
       const wrapper = render({
-        projectBoard: { 
+        projectBoard: {
           isFetched: true,
+          isInitialLoading: false,
           search: {
             loading: false
           },
@@ -71,7 +73,7 @@ describe('<ProjectBoard />', () => {
 
     it('renders <SideBar />', () => {
       const wrapper = render({
-        projectBoard: { 
+        projectBoard: {
           isFetched: true,
           search: {
             loading: false
@@ -84,13 +86,13 @@ describe('<ProjectBoard />', () => {
           reverse: true
         }
       });
-  
+
       expect(wrapper.find('[data-id="side-bar"]')).toExist();
     });
-  
+
     it('render <Notifications />', () => {
       const wrapper = render({
-        projectBoard: { 
+        projectBoard: {
           isFetched: true,
           search: {
             loading: false
@@ -103,13 +105,13 @@ describe('<ProjectBoard />', () => {
           reverse: true
         },
       });
-  
+
       expect(wrapper.find('[data-id="notifications"]')).toExist();
     });
 
     it('render <Columns />', () => {
       const wrapper = render({
-        projectBoard: { 
+        projectBoard: {
           isFetched: true,
           search: {
             loading: false
@@ -122,7 +124,7 @@ describe('<ProjectBoard />', () => {
           reverse: true
         },
       });
-  
+
       expect(wrapper.find('[data-id="columns"]')).toExist();
     });
   });
@@ -134,7 +136,7 @@ describe('<ProjectBoard />', () => {
         storyTitle: 'I am title!',
         activities: []
       },
-      projectBoard: { 
+      projectBoard: {
         isFetched: true,
         search: {
           loading: false
@@ -174,7 +176,7 @@ describe('<ProjectBoard />', () => {
         storyTitle: 'I am title!',
         activities: []
       },
-      projectBoard: { 
+      projectBoard: {
         isFetched: true,
         search: {
           loading: false
@@ -214,7 +216,7 @@ describe('<ProjectBoard />', () => {
         storyTitle: 'I am title!',
         activities: []
       },
-      projectBoard: { 
+      projectBoard: {
         isFetched: true,
         search: {
           loading: false
@@ -254,7 +256,7 @@ describe('<ProjectBoard />', () => {
         storyTitle: 'I am title!',
         activities: []
       },
-      projectBoard: { 
+      projectBoard: {
         isFetched: true,
         search: {
           loading: false
@@ -291,7 +293,7 @@ describe('<ProjectBoard />', () => {
     it('renders epic column', () => {
       const props = {
         epicStories: [storyFactory()],
-        projectBoard: { 
+        projectBoard: {
           isFetched: true,
           search: {
             loading: false
@@ -314,7 +316,7 @@ describe('<ProjectBoard />', () => {
     it('does not render epic column', () => {
       const props = {
         epicStories: [ ],
-        projectBoard: { 
+        projectBoard: {
           isFetched: true,
           search: {
             loading: false

@@ -3,120 +3,137 @@ import { receiveUsers } from "./user";
 import { receiveStories, toggleStory } from "./story";
 import { receivePastIterations } from "./pastIterations";
 import { storyScopes } from "../libs/beta/constants";
-import { sendErrorNotification } from './notifications';
+import { sendErrorNotification } from "./notifications";
 
 const requestProjectBoard = () => ({
-  type: actionTypes.REQUEST_PROJECT_BOARD
+  type: actionTypes.REQUEST_PROJECT_BOARD,
 });
 
-const receiveProjectBoard = projectId => ({
+const receiveProjectBoard = (projectId) => ({
   type: actionTypes.RECEIVE_PROJECT_BOARD,
-  data: projectId
+  data: projectId,
 });
 
 export const closeSearchSuccess = () => ({
-  type: actionTypes.CLOSE_SEARCH
+  type: actionTypes.CLOSE_SEARCH,
 });
 
-const errorRequestProjectBoard = error => ({
+const errorRequestProjectBoard = (error) => ({
   type: actionTypes.ERROR_REQUEST_PROJECT_BOARD,
-  error: error
+  error: error,
 });
 
-const receiveProject = data => ({
+const receiveProject = (data) => ({
   type: actionTypes.RECEIVE_PROJECT,
-  data
+  data,
 });
 
 export const reverseColumns = () => ({
-  type: actionTypes.REVERSE_COLUMNS
+  type: actionTypes.REVERSE_COLUMNS,
 });
 
 export const updateStorySuccess = (story, from) => ({
   type: actionTypes.UPDATE_STORY_SUCCESS,
   story,
-  from
+  from,
 });
 
-export const searchStoriesSuccess = keyWord => ({
+export const searchStoriesSuccess = (keyWord) => ({
   type: actionTypes.SEARCH_STORIES_SUCCESS,
-  keyWord
+  keyWord,
 });
 
-export const updateLoadingSearch = loading => ({
+export const updateLoadingSearch = (loading) => ({
   type: actionTypes.LOADING_SEARCH,
-  loading
+  loading,
 });
 
-export const toggleColumnVisibility = column => ({
+export const toggleColumnVisibility = (column) => ({
   type: actionTypes.TOGGLE_COLUMN_VISIBILITY,
-  column
+  column,
 });
 
 export const expandStoryIfNeeded = (dispatch, getHash) => {
-  const storyId = getHash('#story-');
+  const storyId = getHash("#story-");
 
   if (storyId) {
     dispatch(toggleStory(parseInt(storyId)));
-    window.history.pushState('', '/', window.location.pathname);
+    window.history.pushState("", "/", window.location.pathname);
   }
-}
+};
 
 export const sendErrorNotificationIfNeeded = (dispatch, code, condition) => {
   if (condition) dispatch(sendErrorNotification(code, { custom: true }));
-}
+};
 
-export const toggleColumn = column =>
+export const toggleColumn =
+  (column) =>
   (dispatch, getState, { ProjectBoard }) => {
     const { projectBoard } = getState();
 
     ProjectBoard.toggleColumn(projectBoard, column, {
-      onToggle: () => dispatch(toggleColumnVisibility(column))
+      onToggle: () => dispatch(toggleColumnVisibility(column)),
     });
-  }
+  };
 
-export const fetchProjectBoard = projectId =>
+export const fetchProjectBoard =
+  (projectId) =>
   async (dispatch, getState, { ProjectBoard, UrlService }) => {
     dispatch(requestProjectBoard());
+    const currentState = getState();
+
+    const fetchedIterations = currentState.pastIterations.filter(
+      (iteration) => iteration.fetched === true
+    );
+
+    const storyIds = fetchedIterations.flatMap(
+      (iterations) => iterations.storyIds
+    );
 
     try {
-      const {
-        project, users,
-        stories, pastIterations
-      } = await ProjectBoard.get(projectId);
+      const { project, users, stories, pastIterations } =
+        await ProjectBoard.get(projectId);
+
       dispatch(receiveProject(project));
       dispatch(receivePastIterations(pastIterations));
       dispatch(receiveUsers(users));
-      dispatch(receiveStories(stories));
+      dispatch(receiveStories({ stories, storyIds }));
       dispatch(receiveProjectBoard(projectId));
       expandStoryIfNeeded(dispatch, UrlService.getHash);
-    }
-    catch (error) {
+    } catch (error) {
       console.error(error);
       return dispatch(errorRequestProjectBoard(error));
     }
   };
 
-export const closeSearch = () =>
-  dispatch => {
-    dispatch(closeSearchSuccess());
-    dispatch(receiveStories([], storyScopes.SEARCH));
-  }
+export const closeSearch = () => (dispatch) => {
+  dispatch(closeSearchSuccess());
+  dispatch(receiveStories([], storyScopes.SEARCH));
+};
 
-export const search = (keyWord, projectId) =>
+export const search =
+  (keyWord, projectId) =>
   (dispatch, _, { Search }) => {
     Search.searchStories(keyWord, projectId, {
       onStart: () => dispatch(updateLoadingSearch(true)),
-      onSuccess: result => {
+      onSuccess: (result) => {
         dispatch(updateLoadingSearch(false));
         dispatch(searchStoriesSuccess(keyWord));
-        dispatch(receiveStories(result, 'search'));
-        sendErrorNotificationIfNeeded(dispatch, 'projects.stories_not_found', !result.length);
+        dispatch(receiveStories(result, "search"));
+        sendErrorNotificationIfNeeded(
+          dispatch,
+          "projects.stories_not_found",
+          !result.length
+        );
       },
-      onError: error => {
-        dispatch(sendErrorNotification('messages.operations.error.default_error', { custom: true }));
+      onError: (error) => {
+        dispatch(
+          sendErrorNotification("messages.operations.error.default_error", {
+            custom: true,
+          })
+        );
         dispatch(updateLoadingSearch(false));
-        console.error(error)
-      }
+        console.error(error);
+      },
     });
   };

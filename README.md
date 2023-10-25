@@ -87,6 +87,8 @@ The principles that we believe in are:
 Installation
 ------------
 
+**WARNING**: It is **NOT** recommended to create the database using the db:migrate command during the installation process. Some migrations in the project have become outdated due to Rails updates during the application's development. Therefore, if you create the database from scratch using these outdated migrations instead of loading the current schema, the application will not function as intended, and some tests will fail. Be aware!
+
 First up, your system will need the
 [prerequisites for running Ruby on Rails installed](https://guides.rubyonrails.org/getting_started.html)
 Once you have these:
@@ -135,9 +137,7 @@ Or using docker:
     # Prepare container
     $ docker compose build
     $ docker compose run --rm web yarn install
-    $ docker compose run --rm web bundle exec rake db:create
-    $ docker compose run --rm web bundle exec rake db:migrate
-    $ docker compose run --rm web bundle exec rake db:seed
+    $ docker compose run --rm web bundle exec rake db:setup
 
     # Up container
     $ docker compose up

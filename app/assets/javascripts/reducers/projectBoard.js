@@ -2,6 +2,7 @@ import actionTypes from 'actions/actionTypes';
 
 const initialState = {
   isFetched: false,
+  isInitialLoading: true,
   error: null,
   search: {
     loading: false
@@ -20,13 +21,15 @@ const projectBoardReducer = (state = initialState, action) => {
     return {
       ...state,
       isFetched: false,
+      isInitialLoading: state.isInitialLoading,
       error: null
     };
   case actionTypes.RECEIVE_PROJECT_BOARD:
     return {
       ...state,
       projectId: action.data,
-      isFetched: true
+      isFetched: true,
+      isInitialLoading: false
     };
   case actionTypes.ERROR_REQUEST_PROJECT_BOARD:
     return {
@@ -68,7 +71,7 @@ const projectBoardReducer = (state = initialState, action) => {
       visibleColumns: {
         ...state.visibleColumns,
         [action.column]: !state.visibleColumns[action.column]
-      }      
+      }
     }
   default:
     return state;
