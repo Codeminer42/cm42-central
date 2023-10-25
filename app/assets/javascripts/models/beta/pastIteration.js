@@ -22,12 +22,16 @@ export const normalizePastIterations = (pastIterations) => {
     (acc, pastIteration) => {
       const pastIterationId = pastIteration.iterationNumber;
 
-      acc.pastIterations[pastIterationId] = { ...pastIteration };
+      acc.pastIterations.byId[pastIterationId] = { ...pastIteration };
+      acc.pastIterations.allIds.push(pastIterationId);
 
       return acc;
     },
     {
-      pastIterations: {},
+      pastIterations: {
+        byId: {},
+        allIds: [],
+      },
     }
   );
 };
@@ -37,12 +41,16 @@ export const denormalizePastIterations = (pastIterations) => {
 
   if (
     !normalizedPastIterations ||
-    Object.keys(normalizedPastIterations).length === 0
+    normalizedPastIterations.allIds.length === 0
   ) {
     return [];
   }
 
-  const denormalizedPastIterations = Object.values(normalizedPastIterations);
+  const denormalizedPastIterations = normalizedPastIterations.allIds.map(
+    (iterationId) => {
+      return normalizedPastIterations.byId[iterationId];
+    }
+  );
 
   return denormalizedPastIterations;
 };
