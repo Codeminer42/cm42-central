@@ -1554,6 +1554,37 @@ describe("Story model", function () {
         expect.arrayContaining([1, newId])
       );
     });
+
+    it("delete a serverBased if not fetched", () => {
+      const fetchedStories = {
+        stories: {
+          byId: {
+            1: { id: 1, title: "Story 1", collapsed: true },
+          },
+          allIds: [1],
+        },
+      };
+
+      const mergedStories = mergeWithFetchedStories(
+        currentStories,
+        fetchedStories
+      );
+
+      expect(mergedStories.stories.byId).toEqual(
+        expect.objectContaining({
+          1: expect.objectContaining({
+            id: 1,
+            title: "Story 1",
+            serverBased: true,
+          }),
+          [newId]: expect.objectContaining({ id: newId, title: "New Story" }),
+        })
+      );
+
+      expect(mergedStories.stories.allIds).toEqual(
+        expect.arrayContaining([1, newId])
+      );
+    });
   });
   describe("normalizeStories", () => {
     it("normalize an array of stories by their IDs", () => {
