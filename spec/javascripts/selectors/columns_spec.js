@@ -28,12 +28,15 @@ describe("Columns Selector", () => {
     stories = {
       all: {
         stories: {
-          1: unscheduledStory,
-          2: unscheduledStory2,
-          3: unstartedStory,
-          4: startedStory,
-          5: deliveredStory,
-          42: acceptedStory,
+          byId: {
+            1: unscheduledStory,
+            2: unscheduledStory2,
+            3: unstartedStory,
+            4: startedStory,
+            5: deliveredStory,
+            42: acceptedStory,
+          },
+          allIds: [1, 2, 3, 4, 5, 42],
         },
       },
       epic: {},
@@ -79,7 +82,7 @@ describe("Columns Selector", () => {
 
     it("return story accepted in current sprint", () => {
       const newStoryId = storyAcceptedCurrentSprint.id;
-      stories.all.stories[newStoryId] = storyAcceptedCurrentSprint;
+      stories.all.stories.byId[newStoryId] = storyAcceptedCurrentSprint;
 
       const backlogSprints = getColumns({
         column: Column.BACKLOG,

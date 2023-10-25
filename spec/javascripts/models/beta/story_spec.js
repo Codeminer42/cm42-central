@@ -1479,93 +1479,111 @@ describe("Story model", function () {
   });
 
   describe("mergeWithFetchedStories", () => {
+    const newId = createTemporaryId();
     const currentStories = {
       stories: {
-        1: { id: 1, title: "Story 1", collapsed: false, _editing: { id: 1 } },
-        2: { id: 2, title: "Story 2", collapsed: true },
-        null: {
-          id: null,
-          title: "New Story",
-          collapsed: false,
-          _editing: { id: null },
+        byId: {
+          1: { id: 1, title: "Story 1", collapsed: false, _editing: { id: 1 } },
+          2: { id: 2, title: "Story 2", collapsed: true },
+          [newId]: {
+            id: newId,
+            title: "New Story",
+            collapsed: false,
+            _editing: { id: newId },
+          },
         },
+        allIds: [1, 2, newId],
       },
     };
 
     const fetchedStories = {
       stories: {
-        1: { id: 1, title: "Story 1", collapsed: true },
-        2: { id: 2, title: "Story 2", collapsed: true },
-        3: { id: 3, title: "Story 3", collapsed: true },
-        4: { id: 4, title: "Story 4", collapsed: true },
+        byId: {
+          1: { id: 1, title: "Story 1", collapsed: true },
+          2: { id: 2, title: "Story 2", collapsed: true },
+          3: { id: 3, title: "Story 3", collapsed: true },
+          4: { id: 4, title: "Story 4", collapsed: true },
+        },
+        allIds: [1, 2, 3, 4],
       },
     };
-    const PastStoryIds = [3, 4];
 
     it("merge fetched stories with current stories", () => {
       const mergedStories = mergeWithFetchedStories(
         currentStories,
-        fetchedStories,
-        PastStoryIds
+        fetchedStories
       );
 
-      expect(mergedStories.stories).toEqual(
+      expect(mergedStories.stories.byId).toEqual(
         expect.objectContaining({
           1: expect.objectContaining({ id: 1, title: "Story 1" }),
           2: expect.objectContaining({ id: 2, title: "Story 2" }),
           3: expect.objectContaining({ id: 3, title: "Story 3" }),
           4: expect.objectContaining({ id: 4, title: "Story 4" }),
-          null: expect.objectContaining({ id: null, title: "New Story" }),
+          [newId]: expect.objectContaining({ id: newId, title: "New Story" }),
         })
+      );
+
+      expect(mergedStories.stories.allIds).toEqual(
+        expect.arrayContaining([1, 2, 3, 4, newId])
       );
     });
 
     it("handle stories with collapsed property equal false based on the current state", () => {
       const mergedStories = mergeWithFetchedStories(
         currentStories,
-        fetchedStories,
-        PastStoryIds
+        fetchedStories
       );
 
-      expect(mergedStories.stories).toEqual(
+      expect(mergedStories.stories.byId).toEqual(
         expect.objectContaining({
           1: expect.objectContaining({
             id: 1,
             collapsed: false,
-            _editing: { id: 1 },
+            _editing: expect.objectContaining({ id: 1 }),
           }),
-          null: expect.objectContaining({
-            id: null,
+          [newId]: expect.objectContaining({
+            id: newId,
             collapsed: false,
-            _editing: { id: null },
+            _editing: expect.objectContaining({ id: newId }),
           }),
         })
+      );
+
+      expect(mergedStories.stories.allIds).toEqual(
+        expect.arrayContaining([1, newId])
       );
     });
   });
   describe("normalizeStories", () => {
     it("normalize an array of stories by their IDs", () => {
-      const symbolKey = Symbol("new");
+      const symbolKey = createTemporaryId();
       const stories = [{ id: 1 }, { id: 2 }, { id: symbolKey }];
       const normalizedStories = normalizeStories(stories);
 
       expect(normalizedStories).toEqual({
         stories: {
-          1: { id: 1 },
-          2: { id: 2 },
-          [symbolKey]: { id: symbolKey },
+          byId: {
+            1: { id: 1 },
+            2: { id: 2 },
+            [symbolKey]: { id: symbolKey },
+          },
+          allIds: [1, 2, symbolKey],
         },
       });
     });
   });
   describe("denormalizeStories", () => {
     it("denormalize a set of stories, including a Symbol as a key", () => {
-      const symbolKey = Symbol("new");
+      const symbolKey = createTemporaryId();
       const normalizedStories = {
         stories: {
-          1: { id: 1 },
-          2: { id: 2 },
-          [symbolKey]: { id: symbolKey },
+          byId: {
+            1: { id: 1 },
+            2: { id: 2 },
+            [symbolKey]: { id: symbolKey },
+          },
+          allIds: [1, 2, symbolKey],
         },
       };
       const denormalizedStories = denormalizeStories(normalizedStories);
@@ -1578,7 +1596,10 @@ describe("Story model", function () {
     });
     it("handle an empty object", () => {
       const normalizedStories = {
-        stories: {},
+        stories: {
+          byId: {},
+          allIds: [],
+        },
       };
       const denormalizedStories = denormalizeStories(normalizedStories);
 
@@ -1597,17 +1618,26 @@ describe("Story model", function () {
       const expectedNormalizedState = {
         epic: {
           stories: {
-            2: { id: 2 },
+            byId: {
+              2: { id: 2 },
+            },
+            allIds: [2],
           },
         },
         all: {
           stories: {
-            1: { id: 1 },
+            byId: {
+              1: { id: 1 },
+            },
+            allIds: [1],
           },
         },
         search: {
           stories: {
-            [symbolKey]: { id: symbolKey },
+            byId: {
+              [symbolKey]: { id: symbolKey },
+            },
+            allIds: [symbolKey],
           },
         },
       };
@@ -1621,17 +1651,26 @@ describe("Story model", function () {
       const normalizedState = {
         epic: {
           stories: {
-            2: { id: 2 },
+            byId: {
+              2: { id: 2 },
+            },
+            allIds: [2],
           },
         },
         all: {
           stories: {
-            1: { id: 1 },
+            byId: {
+              1: { id: 1 },
+            },
+            allIds: [1],
           },
         },
         search: {
           stories: {
-            [symbolKey]: { id: symbolKey },
+            byId: {
+              [symbolKey]: { id: symbolKey },
+            },
+            allIds: [symbolKey],
           },
         },
       };
