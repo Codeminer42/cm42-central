@@ -109,17 +109,20 @@ describe("Columns Selector", () => {
   describe("DONE", () => {
     const pastIterations = {
       pastIterations: {
-        420: {
-          iterationNumber: 420,
-          startDate: previousSprintDate.format("YYYY/MM/DD"),
-          endDate: currentSprintDate.format("YYYY/MM/DD"),
-          storyIds: [42],
+        byId: {
+          420: {
+            iterationNumber: 420,
+            startDate: previousSprintDate.format("YYYY/MM/DD"),
+            endDate: currentSprintDate.format("YYYY/MM/DD"),
+            storyIds: [42],
+          },
         },
+        allIds: [420],
       },
     };
     it("return pastIterations with start and end date", () => {
-      const startDate = pastIterations.pastIterations[420].startDate;
-      const endDate = pastIterations.pastIterations[420].endDate;
+      const startDate = pastIterations.pastIterations.byId[420].startDate;
+      const endDate = pastIterations.pastIterations.byId[420].endDate;
       const doneSprints = getColumns({
         column: Column.DONE,
         pastIterations,

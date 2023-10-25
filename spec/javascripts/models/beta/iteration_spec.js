@@ -1325,8 +1325,11 @@ describe("iteration", function () {
 
       expect(normalizedPastIterations).toEqual({
         pastIterations: {
-          1: { iterationNumber: 1, data: "Iteration 1" },
-          2: { iterationNumber: 2, data: "Iteration 2" },
+          byId: {
+            1: { iterationNumber: 1, data: "Iteration 1" },
+            2: { iterationNumber: 2, data: "Iteration 2" },
+          },
+          allIds: [1, 2],
         },
       });
     });
@@ -1335,8 +1338,11 @@ describe("iteration", function () {
     it("denormalize an object of pastIterations into an array", () => {
       const normalizedPastIterations = {
         pastIterations: {
-          1: { iterationNumber: 1, data: "Iteration 1 data" },
-          2: { iterationNumber: 2, data: "Iteration 2 data" },
+          byId: {
+            1: { iterationNumber: 1, data: "Iteration 1" },
+            2: { iterationNumber: 2, data: "Iteration 2" },
+          },
+          allIds: [1, 2],
         },
       };
       const denormalizedPastIterations = denormalizePastIterations(
@@ -1344,14 +1350,14 @@ describe("iteration", function () {
       );
 
       expect(denormalizedPastIterations).toEqual([
-        { iterationNumber: 1, data: "Iteration 1 data" },
-        { iterationNumber: 2, data: "Iteration 2 data" },
+        { iterationNumber: 1, data: "Iteration 1" },
+        { iterationNumber: 2, data: "Iteration 2" },
       ]);
     });
 
     it("handle an empty object", () => {
       const normalizedPastIterations = {
-        pastIterations: {},
+        pastIterations: { byId: {}, allIds: [] },
       };
       const denormalizedPastIterations = denormalizePastIterations(
         normalizedPastIterations
