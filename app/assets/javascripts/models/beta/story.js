@@ -327,45 +327,57 @@ export const cloneStory = (story) => {
 
 export const mergeWithFetchedStories = (currentStories, fetchedStories) => {
   if (Object.values(currentStories).length === 0) {
-    return fetchedStories;
+    const firstStories = { ...fetchedStories };
+    fetchedStories.stories.allIds.forEach((storyId) => {
+      const fetchedStory = fetchedStories.stories.byId[storyId];
+
+      firstStories.stories.byId[storyId] = {
+        ...fetchedStory,
+        serverBased: true,
+      };
+    });
+    return firstStories;
   }
 
   const mergedStories = { ...currentStories };
 
-  Object.values(fetchedStories.stories).map((fetchedStory) => {
-    const storyId = fetchedStory.id;
+  fetchedStories.stories.allIds.forEach((storyId) => {
+    const currentStory = currentStories.stories.byId[storyId];
+    const fetchedStory = fetchedStories.stories.byId[storyId];
 
-    if (
-      currentStories.stories[storyId] &&
-      !currentStories.stories[storyId].collapsed
-    ) {
-      mergedStories.stories[storyId] = {
-        ...fetchedStories.stories[storyId],
+    if (currentStory && !currentStory.collapsed) {
+      mergedStories.stories.byId[storyId] = {
+        ...fetchedStory,
         collapsed: false,
         serverBased: true,
-        _editing: { ...currentStories.stories[storyId]._editing },
+        _editing: { ...currentStory._editing },
       };
     } else {
-      mergedStories.stories[storyId] = {
-        ...fetchedStories.stories[storyId],
+      mergedStories.stories.byId[storyId] = {
+        ...fetchedStory,
         serverBased: true,
       };
+      if (!mergedStories.stories.allIds.includes(storyId)) {
+        mergedStories.stories.allIds.unshift(storyId);
+      }
     }
   });
 
-  const serverBasedIds = Object.values(mergedStories.stories)
+  const serverBasedIds = Object.values(mergedStories.stories.byId)
     .filter((story) => story.serverBased)
-    .map((story) => String(story.id));
-
-  const allFetchedStoryIds = Object.keys(fetchedStories.stories);
+    .map((story) => story.id);
 
   const storiesToRemove = serverBasedIds.filter(
-    (id) => !allFetchedStoryIds.includes(id)
+    (id) => !fetchedStories.stories.allIds.includes(id)
   );
 
   storiesToRemove.forEach((storyId) => {
-    delete mergedStories.stories[storyId];
+    delete mergedStories.stories.byId[storyId];
   });
+
+  mergedStories.stories.allIds = mergedStories.stories.allIds.filter(
+    (storyId) => !storiesToRemove.includes(storyId)
+  );
 
   return mergedStories;
 };
@@ -520,12 +532,16 @@ export const normalizeStories = (stories) => {
     (acc, story) => {
       const storyId = story.id;
 
-      acc.stories[storyId] = { ...story };
+      acc.stories.byId[storyId] = { ...story };
+      acc.stories.allIds.push(storyId);
 
       return acc;
     },
     {
-      stories: {},
+      stories: {
+        byId: {},
+        allIds: [],
+      },
     }
   );
 };
@@ -533,20 +549,13 @@ export const normalizeStories = (stories) => {
 export const denormalizeStories = (stories) => {
   const normalizedStories = stories.stories;
 
-  if (
-    !normalizedStories ||
-    (Object.keys(normalizedStories).length === 0 &&
-      Object.getOwnPropertySymbols(normalizedStories) === 0)
-  ) {
+  if (!normalizedStories || normalizedStories.allIds.length === 0) {
     return [];
   }
 
-  const denormalizedStories = Object.values(normalizedStories);
-
-  const symbolicProperties = Object.getOwnPropertySymbols(normalizedStories);
-  for (const symbol of symbolicProperties) {
-    denormalizedStories.push(normalizedStories[symbol]);
-  }
+  const denormalizedStories = normalizedStories.allIds.map((storyId) => {
+    return normalizedStories.byId[storyId];
+  });
 
   return denormalizedStories;
 };
