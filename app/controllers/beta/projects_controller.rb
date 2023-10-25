@@ -4,7 +4,7 @@ class Beta::ProjectsController < ApplicationController
   def show
     project_slug = params[:id]
     @project = current_user.projects.friendly.find project_slug
-    @project_id  = @project.id
+    @project_id = @project.id
 
     authorize @project, policy_class: Beta::ProjectPolicy
     update_current_team
