@@ -62,8 +62,14 @@ const storiesReducer = (state = initialState, action) => {
         ...state,
         [action.from]: {
           stories: {
-            ...state[action.from].stories,
-            ...normalizedPastStories.stories,
+            byId: {
+              ...state[action.from].stories.byId,
+              ...normalizedPastStories.stories.byId,
+            },
+            allIds: [
+              ...state[action.from].stories.allIds,
+              ...normalizedPastStories.stories.allIds,
+            ],
           },
         },
       };
