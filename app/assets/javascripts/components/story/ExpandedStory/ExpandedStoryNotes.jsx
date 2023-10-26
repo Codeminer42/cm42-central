@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import NotesList from '../note/NotesList';
 import { editingStoryPropTypesShape } from '../../../models/beta/story';
@@ -21,7 +21,7 @@ const ExpandedStoryNotes = ({ story, onCreate, onDelete, disabled }) => {
   };
 
   const notesForm = () => (
-    <Fragment>
+    <>
       <textarea
         className="form-control input-sm create-note-text"
         value={value}
@@ -36,7 +36,7 @@ const ExpandedStoryNotes = ({ story, onCreate, onDelete, disabled }) => {
           disabled={hasAnEmptyValue()}
         />
       </div>
-    </Fragment>
+    </>
   );
 
   if(disabled && !story.notes.length) return null;
