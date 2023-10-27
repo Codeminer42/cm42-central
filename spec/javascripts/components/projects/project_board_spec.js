@@ -3,6 +3,10 @@ import { shallow } from 'enzyme';
 import { ProjectBoard } from 'components/projects/ProjectBoard';
 import storyFactory from '../../support/factories/storyFactory';
 
+jest.mock('../../../../app/assets/javascripts/pusherSockets', () => ({
+  subscribeToProjectChanges: jest.fn(),
+}));
+
 describe('<ProjectBoard />', () => {
   const render = props => {
     const defaultProps = {
