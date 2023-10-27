@@ -55,7 +55,7 @@ module Beta
         @project ||= current_user
                      .projects
                      .friendly
-                     .preload(:users, stories: %i[notes tasks])
+                     .preload(:users)
                      .find(project_id)
       end
 
