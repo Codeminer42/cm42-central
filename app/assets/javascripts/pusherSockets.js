@@ -6,7 +6,7 @@ const matchPusherUrl = url => {
 };
 
 export const subscribeToProjectChanges = (project, callback) => {
-  const pusherUrl = process.env.PUSHER_SOCKET_URL || '';
+  const pusherUrl = import.meta.env.VITE_PUSHER_SOCKET_URL || '';
   const [
     _,
     pusherCluster,
@@ -38,8 +38,8 @@ const getProjectSocket = (apiKey, apiCluster) => {
       })
       : new Pusher(apiKey,{
         cluster: apiCluster,
-        wsHost: process.env.PUSHER_WS_HOST,
-        wsPort: process.env.PUSHER_WS_PORT,
+        wsHost: import.meta.env.VITE_PUSHER_WS_HOST,
+        wsPort: import.meta.env.VITE_PUSHER_WS_PORT,
         encrypted: false,
         disableStats: true
       })
