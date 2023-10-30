@@ -1,3 +1,3 @@
 import { denormalizePastIterations } from "../models/beta/pastIteration";
 
-export const getPastIterations = (state) => denormalizePastIterations(state);
+export const getIterations = (state) => denormalizePastIterations(state);
