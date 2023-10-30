@@ -18,14 +18,14 @@ import { updateIfSameId } from "../services/updateIfSameId";
 import { storyScopes } from "./../libs/beta/constants";
 import {
   denormalizeStories,
-  denormalizeState,
   isEpic,
   isSearch,
   mergeWithFetchedStories,
-  normalizeState,
   normalizeStories,
   isNew,
+  normalizeState,
 } from "../models/beta/story";
+import { getStoriesByScope } from "../selectors/stories";
 
 const initialState = {
   [storyScopes.ALL]: {},
@@ -129,13 +129,9 @@ const storiesReducer = (state = initialState, action) => {
           )
         ),
       };
-    case actionTypes.UPDATE_STORY_SUCCESS: {
-      const denormalizedState = denormalizeState(state);
-
-      const updatedStories = allScopes(
-        denormalizedState,
-        action.story.id,
-        (stories) => {
+    case actionTypes.UPDATE_STORY_SUCCESS:
+      return normalizeState(
+        allScopes(state, action.story.id, (stories) => {
           return stories.map(
             updateIfSameId(action.story.id, (story) =>
               addNewAttributes(story, {
@@ -145,43 +141,29 @@ const storiesReducer = (state = initialState, action) => {
               })
             )
           );
-        }
+        })
       );
+    case actionTypes.SORT_STORIES_SUCCESS:
+      return normalizeState(
+        allScopes(state, null, (stories) => {
+          return stories.map((story) => {
+            const editingStory = action.stories.find(
+              (incomingStory) => story.id === incomingStory.id
+            );
 
-      const normalizedState = normalizeState(updatedStories);
-
-      return normalizedState;
-    }
-    case actionTypes.SORT_STORIES_SUCCESS: {
-      const denormalizedState = denormalizeState(state);
-
-      const updatedStories = allScopes(denormalizedState, null, (stories) => {
-        return stories.map((story) => {
-          const editingStory = action.stories.find(
-            (incomingStory) => story.id === incomingStory.id
-          );
-
-          return editingStory
-            ? addNewAttributes(story, {
-                ...editingStory,
-                needsToSave: false,
-                loading: false,
-              })
-            : story;
-        });
-      });
-
-      const normalizedState = normalizeState(updatedStories);
-
-      return normalizedState;
-    }
-    case actionTypes.OPTIMISTICALLY_UPDATE: {
-      const denormalizedState = denormalizeState(state);
-
-      const updatedStories = allScopes(
-        denormalizedState,
-        action.story.id,
-        (stories) => {
+            return editingStory
+              ? addNewAttributes(story, {
+                  ...editingStory,
+                  needsToSave: false,
+                  loading: false,
+                })
+              : story;
+          });
+        })
+      );
+    case actionTypes.OPTIMISTICALLY_UPDATE:
+      return normalizeState(
+        allScopes(state, action.story.id, (stories) => {
           return stories.map(
             updateIfSameId(action.story.id, (story) => {
               const newStory = setLoadingValue(action.story, true);
@@ -191,13 +173,8 @@ const storiesReducer = (state = initialState, action) => {
               });
             })
           );
-        }
+        })
       );
-
-      const normalizedState = normalizeState(updatedStories);
-
-      return normalizedState;
-    }
     case actionTypes.STORY_FAILURE:
       return {
         ...state,
@@ -249,17 +226,12 @@ const storiesReducer = (state = initialState, action) => {
           )
         ),
       };
-    case actionTypes.DELETE_STORY_SUCCESS: {
-      const denormalizedState = denormalizeState(state);
-
-      const deleteStory = allScopes(denormalizedState, action.id, (stories) => {
-        return stories.filter((story) => story.id !== action.id);
-      });
-
-      const normalizedState = normalizeState(deleteStory);
-
-      return normalizedState;
-    }
+    case actionTypes.DELETE_STORY_SUCCESS:
+      return normalizeState(
+        allScopes(state, action.id, (stories) => {
+          return stories.filter((story) => story.id !== action.id);
+        })
+      );
     case actionTypes.ADD_NOTE:
       return {
         ...state,
@@ -346,9 +318,11 @@ const withScope = (reducer) => (state, action) => {
 };
 
 const allScopes = (stories, storyId, mutation) => ({
-  [storyScopes.ALL]: mutation(stories[storyScopes.ALL]),
-  [storyScopes.SEARCH]: mutation(stories[storyScopes.SEARCH]),
-  [storyScopes.EPIC]: mutation(stories[storyScopes.EPIC]),
+  [storyScopes.ALL]: mutation(getStoriesByScope(stories, storyScopes.ALL)),
+  [storyScopes.SEARCH]: mutation(
+    getStoriesByScope(stories, storyScopes.SEARCH)
+  ),
+  [storyScopes.EPIC]: mutation(getStoriesByScope(stories, storyScopes.EPIC)),
 });
 
 export default withScope(storiesReducer);

@@ -16,6 +16,7 @@ import { status, columns } from "../../../libs/beta/constants";
 
 import CollapsedStoryFocusButon from "./CollapsedStoryFocusButton";
 import StoryPropTypes from "../../shapes/story";
+import { getStoriesByScope } from "../../../selectors/stories";
 
 const storyClassName = (
   story,
@@ -136,7 +137,7 @@ const mapStateToProps = ({ project, stories }, props) => ({
   project,
   stories,
   isHighlightable: Story.haveHighlightButton(
-    Story.denormalizeStories(Story.withScope(stories)),
+    getStoriesByScope(stories),
     props.story,
     props.from
   ),

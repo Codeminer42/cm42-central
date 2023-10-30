@@ -2,15 +2,12 @@ import React from "react";
 import { connect } from "react-redux";
 import { closeSearch } from "actions/projectBoard";
 import Search from "./Search";
-import {
-  denormalizeState,
-  haveSearch,
-  withScope,
-} from "./../../models/beta/story";
+import { haveSearch } from "./../../models/beta/story";
 import { storyScopes } from "./../../libs/beta/constants";
 import Column from "./../Columns/ColumnItem";
 import PropTypes from "prop-types";
 import StoryPropTypes from "../shapes/story";
+import { getStories, getStoriesByScope } from "../../selectors/stories";
 
 export const SearchResults = ({
   isEnabled,
@@ -38,14 +35,11 @@ SearchResults.propTypes = {
   closeSearch: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ stories, projectBoard }) => {
-  const denormalizedState = denormalizeState(stories);
-  return {
-    isEnabled: haveSearch(denormalizedState),
-    searchResults: withScope(denormalizedState, storyScopes.SEARCH),
-    projectBoard: projectBoard,
-  };
-};
+const mapStateToProps = ({ stories, projectBoard }) => ({
+  isEnabled: haveSearch(getStories(stories)),
+  searchResults: getStoriesByScope(stories, storyScopes.SEARCH),
+  projectBoard: projectBoard,
+});
 
 const mapDispatchToProps = {
   closeSearch,

@@ -6,6 +6,7 @@ import {
 } from "./notifications";
 import { wait } from "../services/promises";
 import { storyScopes } from "../libs/beta/constants";
+import { getStoriesByScope } from "../selectors/stories";
 
 export const createStory = (attributes, from) => ({
   type: actionTypes.CREATE_STORY,
@@ -153,12 +154,8 @@ export const showHistory =
   (storyId, from) =>
   async (dispatch, getState, { Story }) => {
     const { stories, users } = getState();
-    const denormalizedStories = Story.denormalizeState(stories);
 
-    const story = Story.findById(
-      Story.withScope(denormalizedStories, from),
-      storyId
-    );
+    const story = Story.findById(getStoriesByScope(stories, from), storyId);
     dispatch(loadHistory(story.title));
     try {
       const activities = await Story.getHistory(
@@ -177,12 +174,8 @@ export const updateCollapsedStory =
   (storyId, projectId, newAttributes, from) =>
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
-    const denormalizedStories = Story.denormalizeState(stories);
 
-    const story = Story.findById(
-      Story.withScope(denormalizedStories, from),
-      storyId
-    );
+    const story = Story.findById(getStoriesByScope(stories, from), storyId);
     const newStory = { ...story, ...newAttributes };
 
     return await confirmBeforeSaveIfNeeded(
@@ -229,12 +222,8 @@ export const dragDropStory =
   (storyId, projectId, newAttributes, from) =>
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
-    const denormalizedStories = Story.denormalizeState(stories);
 
-    const story = Story.findById(
-      Story.withScope(denormalizedStories, from),
-      storyId
-    );
+    const story = Story.findById(getStoriesByScope(stories, from), storyId);
 
     const newStory = Story.addNewAttributes(story, newAttributes);
 
@@ -255,12 +244,8 @@ export const saveStory =
   (storyId, projectId, from, options) =>
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
-    const denormalizedStories = Story.denormalizeState(stories);
 
-    const story = Story.findById(
-      Story.withScope(denormalizedStories, from),
-      storyId
-    );
+    const story = Story.findById(getStoriesByScope(stories, from), storyId);
 
     dispatch(setLoadingStory(story.id, from));
 
@@ -360,10 +345,9 @@ export const deleteStory =
     dispatch(setLoadingStory(storyId, from));
     try {
       const { stories } = getState();
-      const denormalizedStories = Story.denormalizeState(stories);
 
       const storyTitle = Story.findById(
-        Story.withScope(denormalizedStories, from),
+        getStoriesByScope(stories, from),
         storyId
       ).title;
 
