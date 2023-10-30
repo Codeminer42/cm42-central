@@ -2,6 +2,10 @@ import { sendDefaultErrorNotification } from "actions/notifications";
 import * as Story from "actions/story";
 import storyFactory from "../support/factories/storyFactory";
 
+jest.mock("../../../app/assets/javascripts/selectors/stories", () => ({
+  getStoriesByScope: jest.fn(),
+}));
+
 describe("Story Actions", () => {
   describe("saveStory", () => {
     const story = storyFactory();
@@ -20,9 +24,7 @@ describe("Story Actions", () => {
         findById: sinon.stub().returns(editedStory),
         update: sinon.stub().resolves(story),
         isNew: sinon.stub().returns(false),
-        withScope: sinon.stub().returns([story]),
         needConfirmation: sinon.stub().returns(false),
-        denormalizeState: sinon.stub().returns({ all: [editedStory] }),
       };
 
       const fakeDispatch = sinon.stub().resolves({});
@@ -55,8 +57,6 @@ describe("Story Actions", () => {
         findById: sinon.stub().returns(editedStory),
         update: sinon.stub().resolves(story),
         isNew: sinon.stub().returns(false),
-        withScope: sinon.stub().returns([story]),
-        denormalizeState: sinon.stub().returns({ all: [editedStory] }),
       };
 
       const fakeDispatch = sinon.stub().resolves({});
@@ -91,9 +91,7 @@ describe("Story Actions", () => {
         findById: sinon.stub().returns(editedStory),
         update: sinon.stub().resolves(story),
         isNew: sinon.stub().returns(false),
-        withScope: sinon.stub().returns([story]),
         needConfirmation: sinon.stub().returns(false),
-        denormalizeState: sinon.stub().returns({ all: [editedStory] }),
       };
 
       const fakeDispatch = sinon.stub().resolves({});
@@ -124,9 +122,7 @@ describe("Story Actions", () => {
         findById: sinon.stub().returns(editedStory),
         post: sinon.stub().resolves(story),
         isNew: sinon.stub().returns(true),
-        withScope: sinon.stub().returns([story]),
         needConfirmation: sinon.stub().returns(false),
-        denormalizeState: sinon.stub().returns({ all: [editedStory] }),
       };
 
       const fakeDispatch = sinon.stub().resolves({});
@@ -167,9 +163,7 @@ describe("Story Actions", () => {
         findById: sinon.stub().returns(editedStory),
         update: sinon.stub().rejects(error),
         isNew: sinon.stub().returns(false),
-        withScope: sinon.stub().returns([story]),
         needConfirmation: sinon.stub().returns(false),
-        denormalizeState: sinon.stub().returns({ all: [editedStory] }),
       };
 
       const fakeDispatch = sinon.stub().resolves({});
@@ -197,8 +191,6 @@ describe("Story Actions", () => {
       const FakeStory = {
         findById: sinon.stub().returns(story),
         deleteStory: sinon.stub().resolves({}),
-        withScope: sinon.stub().returns([story]),
-        denormalizeState: sinon.stub().returns({ all: [story] }),
       };
       const fakeGetState = sinon.stub().returns({
         stories: {
@@ -218,8 +210,6 @@ describe("Story Actions", () => {
       const FakeStory = {
         findById: sinon.stub().returns(story),
         deleteStory: sinon.stub().resolves({}),
-        withScope: sinon.stub().returns([story]),
-        denormalizeState: sinon.stub().returns({ all: [story] }),
       };
       const fakeGetState = sinon.stub().returns({
         stories: { all: [story] },
@@ -241,8 +231,6 @@ describe("Story Actions", () => {
       const FakeStory = {
         findById: sinon.stub().returns(story),
         deleteStory: sinon.stub().rejects(error),
-        withScope: sinon.stub().returns([story]),
-        denormalizeState: sinon.stub().returns({ all: [story] }),
       };
       const fakeGetState = sinon.stub().returns({
         stories: { all: [story] },
@@ -287,9 +275,7 @@ describe("Story Actions", () => {
         findById: sinon.stub().returns(updatedStory),
         updatePosition: sinon.stub().resolves(updatedStories),
         isNew: sinon.stub().returns(false),
-        withScope: sinon.stub().returns([story]),
         addNewAttributes: sinon.stub().returns(story),
-        denormalizeState: sinon.stub().returns({ all: updatedStories }),
       };
       const fakeGetState = sinon.stub().returns({
         stories: { all: updatedStories },
@@ -319,9 +305,7 @@ describe("Story Actions", () => {
         findById: sinon.stub().returns(updatedStory),
         updatePosition: sinon.stub().rejects(error),
         isNew: sinon.stub().returns(false),
-        withScope: sinon.stub().returns([story]),
         addNewAttributes: sinon.stub().returns(story),
-        denormalizeState: sinon.stub().returns({ all: updatedStories }),
       };
 
       const fakeGetState = sinon.stub().returns({
