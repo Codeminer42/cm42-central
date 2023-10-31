@@ -1,22 +1,16 @@
 import actionTypes from "actions/actionTypes";
-import {
-  denormalizePastIterations,
-  normalizePastIterations,
-} from "../models/beta/pastIteration";
+import { normalizePastIterations } from "../models/beta/pastIteration";
 
 const initialState = {};
 
 const pastIterationsReducer = (state = initialState, action) => {
-  const denormalizedPastIterations = denormalizePastIterations(state);
-
   switch (action.type) {
     case actionTypes.RECEIVE_PAST_ITERATIONS:
       return normalizePastIterations(
         action.data.map((iteration) => {
-          const currentState = denormalizedPastIterations.find(
-            (currentIteration) =>
-              currentIteration.iterationNumber === iteration.iterationNumber
-          );
+          const currentState =
+            state.pastIterations?.byId[iteration.iterationNumber];
+
           if (currentState?.fetched) {
             return {
               ...iteration,
@@ -38,42 +32,51 @@ const pastIterationsReducer = (state = initialState, action) => {
         })
       );
     case actionTypes.REQUEST_PAST_STORIES:
-      return normalizePastIterations(
-        denormalizedPastIterations.map((iteration) => {
-          if (iteration.iterationNumber === action.iterationNumber) {
-            return { ...iteration, isFetching: true };
-          }
-          return iteration;
-        })
-      );
+      return {
+        ...state,
+        pastIterations: {
+          ...state.pastIterations,
+          byId: {
+            ...state.pastIterations.byId,
+            [action.iterationNumber]: {
+              ...state.pastIterations.byId[action.iterationNumber],
+              isFetching: true,
+            },
+          },
+        },
+      };
     case actionTypes.RECEIVE_PAST_STORIES:
-      return normalizePastIterations(
-        denormalizedPastIterations.map((iteration) => {
-          if (iteration.iterationNumber === action.iterationNumber) {
-            return {
-              ...iteration,
+      return {
+        ...state,
+        pastIterations: {
+          ...state.pastIterations,
+          byId: {
+            ...state.pastIterations.byId,
+            [action.iterationNumber]: {
+              ...state.pastIterations.byId[action.iterationNumber],
               fetched: true,
               isFetching: false,
               storyIds: action.stories.map((story) => story.id),
-            };
-          }
-          return iteration;
-        })
-      );
+            },
+          },
+        },
+      };
     case actionTypes.ERROR_REQUEST_PAST_STORIES:
-      return normalizePastIterations(
-        denormalizedPastIterations.map((iteration) => {
-          if (iteration.iterationNumber === action.iterationNumber) {
-            return {
-              ...iteration,
+      return {
+        ...state,
+        pastIterations: {
+          ...state.pastIterations,
+          byId: {
+            ...state.pastIterations.byId,
+            [action.iterationNumber]: {
+              ...state.pastIterations.byId[action.iterationNumber],
               fetched: false,
               isFetching: false,
               error: action.error,
-            };
-          }
-          return iteration;
-        })
-      );
+            },
+          },
+        },
+      };
     default:
       return state;
   }
