@@ -1,6 +1,9 @@
 import { sendDefaultErrorNotification } from "actions/notifications";
 import * as Story from "actions/story";
 import storyFactory from "../support/factories/storyFactory";
+import { createTemporaryId } from "../../../app/assets/javascripts/models/beta/story";
+import { receiveStories } from "../../../app/assets/javascripts/actions/story";
+import storiesReducer from "../../../app/assets/javascripts/reducers/stories";
 
 jest.mock("../../../app/assets/javascripts/selectors/stories", () => ({
   getStoriesByScope: jest.fn(),
@@ -562,6 +565,106 @@ describe("Story Actions", () => {
           sendDefaultErrorNotification()
         );
       });
+    });
+  });
+  describe("receiveStories", () => {
+    const newId = createTemporaryId();
+    const currentStories = {
+      all: {
+        stories: {
+          byId: {
+            1: {
+              id: 1,
+              title: "Story 1",
+              collapsed: false,
+              _editing: { id: 1 },
+            },
+            2: { id: 2, title: "Story 2", collapsed: true },
+            [newId]: {
+              id: newId,
+              title: "New Story",
+              collapsed: false,
+              _editing: { id: newId },
+            },
+          },
+          allIds: [1, 2, newId],
+        },
+      },
+    };
+
+    const fetchedStories = [
+      { id: 1, title: "Story 1", collapsed: true },
+      { id: 2, title: "Story 2", collapsed: true },
+      { id: 3, title: "Story 3", collapsed: true },
+      { id: 4, title: "Story 4", collapsed: true },
+    ];
+
+    it("merge fetched stories with current stories", () => {
+      const state = currentStories;
+      const action = receiveStories(fetchedStories);
+      const newState = storiesReducer(state, action);
+
+      expect(newState.all.stories.byId).toEqual(
+        expect.objectContaining({
+          1: expect.objectContaining({ id: 1, title: "Story 1" }),
+          2: expect.objectContaining({ id: 2, title: "Story 2" }),
+          3: expect.objectContaining({ id: 3, title: "Story 3" }),
+          4: expect.objectContaining({ id: 4, title: "Story 4" }),
+          [newId]: expect.objectContaining({ id: newId, title: "New Story" }),
+        })
+      );
+
+      expect(newState.all.stories.allIds).toEqual(
+        expect.arrayContaining([1, 2, 3, 4, newId])
+      );
+    });
+
+    it("handle stories with collapsed property equal false based on the current state", () => {
+      const state = currentStories;
+      const action = receiveStories(fetchedStories);
+      const newState = storiesReducer(state, action);
+
+      expect(newState.all.stories.byId).toEqual(
+        expect.objectContaining({
+          1: expect.objectContaining({
+            id: 1,
+            collapsed: false,
+            _editing: expect.objectContaining({ id: 1 }),
+          }),
+          [newId]: expect.objectContaining({
+            id: newId,
+            collapsed: false,
+            _editing: expect.objectContaining({ id: newId }),
+          }),
+        })
+      );
+
+      expect(newState.all.stories.allIds).toEqual(
+        expect.arrayContaining([1, newId])
+      );
+    });
+
+    it("delete a serverBased if not fetched", () => {
+      const fetchedStories = [{ id: 1, title: "Story 1", collapsed: true }];
+
+      const state = currentStories;
+      const action = receiveStories(fetchedStories);
+      const newState = storiesReducer(state, action);
+
+      expect(newState.all.stories.byId).toEqual(
+        expect.objectContaining({
+          1: expect.objectContaining({
+            id: 1,
+            title: "Story 1",
+            serverBased: true,
+          }),
+          [newId]: expect.objectContaining({ id: newId, title: "New Story" }),
+        })
+      );
+
+      expect(newState.all.stories.allIds).toEqual(
+        expect.arrayContaining([1, newId])
+      );
     });
   });
 });

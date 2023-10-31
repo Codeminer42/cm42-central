@@ -5,7 +5,6 @@ import {
   createTemporaryId,
   denormalizeState,
   denormalizeStories,
-  mergeWithFetchedStories,
   normalizeState,
   normalizeStories,
 } from "../../../../app/assets/javascripts/models/beta/story";
@@ -1475,115 +1474,6 @@ describe("Story model", function () {
           expect(Story.needConfirmation(story)).toBeFalsy();
         });
       });
-    });
-  });
-
-  describe("mergeWithFetchedStories", () => {
-    const newId = createTemporaryId();
-    const currentStories = {
-      stories: {
-        byId: {
-          1: { id: 1, title: "Story 1", collapsed: false, _editing: { id: 1 } },
-          2: { id: 2, title: "Story 2", collapsed: true },
-          [newId]: {
-            id: newId,
-            title: "New Story",
-            collapsed: false,
-            _editing: { id: newId },
-          },
-        },
-        allIds: [1, 2, newId],
-      },
-    };
-
-    const fetchedStories = {
-      stories: {
-        byId: {
-          1: { id: 1, title: "Story 1", collapsed: true },
-          2: { id: 2, title: "Story 2", collapsed: true },
-          3: { id: 3, title: "Story 3", collapsed: true },
-          4: { id: 4, title: "Story 4", collapsed: true },
-        },
-        allIds: [1, 2, 3, 4],
-      },
-    };
-
-    it("merge fetched stories with current stories", () => {
-      const mergedStories = mergeWithFetchedStories(
-        currentStories,
-        fetchedStories
-      );
-
-      expect(mergedStories.stories.byId).toEqual(
-        expect.objectContaining({
-          1: expect.objectContaining({ id: 1, title: "Story 1" }),
-          2: expect.objectContaining({ id: 2, title: "Story 2" }),
-          3: expect.objectContaining({ id: 3, title: "Story 3" }),
-          4: expect.objectContaining({ id: 4, title: "Story 4" }),
-          [newId]: expect.objectContaining({ id: newId, title: "New Story" }),
-        })
-      );
-
-      expect(mergedStories.stories.allIds).toEqual(
-        expect.arrayContaining([1, 2, 3, 4, newId])
-      );
-    });
-
-    it("handle stories with collapsed property equal false based on the current state", () => {
-      const mergedStories = mergeWithFetchedStories(
-        currentStories,
-        fetchedStories
-      );
-
-      expect(mergedStories.stories.byId).toEqual(
-        expect.objectContaining({
-          1: expect.objectContaining({
-            id: 1,
-            collapsed: false,
-            _editing: expect.objectContaining({ id: 1 }),
-          }),
-          [newId]: expect.objectContaining({
-            id: newId,
-            collapsed: false,
-            _editing: expect.objectContaining({ id: newId }),
-          }),
-        })
-      );
-
-      expect(mergedStories.stories.allIds).toEqual(
-        expect.arrayContaining([1, newId])
-      );
-    });
-
-    it("delete a serverBased if not fetched", () => {
-      const fetchedStories = {
-        stories: {
-          byId: {
-            1: { id: 1, title: "Story 1", collapsed: true },
-          },
-          allIds: [1],
-        },
-      };
-
-      const mergedStories = mergeWithFetchedStories(
-        currentStories,
-        fetchedStories
-      );
-
-      expect(mergedStories.stories.byId).toEqual(
-        expect.objectContaining({
-          1: expect.objectContaining({
-            id: 1,
-            title: "Story 1",
-            serverBased: true,
-          }),
-          [newId]: expect.objectContaining({ id: newId, title: "New Story" }),
-        })
-      );
-
-      expect(mergedStories.stories.allIds).toEqual(
-        expect.arrayContaining([1, newId])
-      );
     });
   });
   describe("normalizeStories", () => {
