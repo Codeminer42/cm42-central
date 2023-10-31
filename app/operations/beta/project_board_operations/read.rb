@@ -3,6 +3,8 @@ module Beta
     class Read
       include Operation
 
+      delegate :past_iterations, :current_iteration_start, to: :iterations
+
       def initialize(project_id:, current_user:, current_flow: nil, projects_scope: Project)
         @project_id = project_id
         @current_user = current_user
@@ -22,6 +24,14 @@ module Beta
 
       attr_reader :project_id, :current_user, :current_flow, :projects_scope
 
+      def iterations
+        @project_iterations ||= Iterations::ProjectIterations.new(project: project)
+      end
+
+      def project_iterations
+        Success(iterations)
+      end
+
       def create_project_board
         project_users = project.users
 
@@ -31,7 +41,7 @@ module Beta
           current_user: current_user,
           current_flow: current_flow,
           default_flow: default_flow,
-          labels: project_labels
+          labels: project_labels,
         )
 
         project_board = ::ProjectBoard.new(project_board_params)
@@ -40,23 +50,39 @@ module Beta
       end
 
       def stories_and_past_iterations
-        read_all_result = yield ::StoryOperations::ReadAll.call(project: project)
-        read_all_result[:stories] = read_all_result.delete(:active_stories)
-        read_all_result
+        yield active_stories
+        yield project_iterations
+
+        yield Success(
+                stories: @active_stories,
+                past_iterations: past_iterations,
+              )
+      end
+
+      def active_stories
+        @active_stories ||= begin
+            project
+              .stories
+              .where("state != 'accepted' OR accepted_at >= ?", current_iteration_start)
+              .select(:id, :title, :description, :estimate, :story_type, :state, :requested_by_name, :owned_by_initials, :project_id)
+              .order("updated_at DESC")
+          end
+
+        Success(@active_stories)
       end
 
       def project_labels
         possibly_duplicated_labels = project.stories.map(&:labels).reject(&:blank?)
-        uniq_labels = possibly_duplicated_labels.join(',').split(',').uniq.join(',')
+        uniq_labels = possibly_duplicated_labels.join(",").split(",").uniq.join(",")
         uniq_labels
       end
 
       def project
         @project ||= current_user
-                     .projects
-                     .friendly
-                     .preload(:users)
-                     .find(project_id)
+          .projects
+          .friendly
+          .preload(:users)
+          .find(project_id)
       end
 
       def default_flow
