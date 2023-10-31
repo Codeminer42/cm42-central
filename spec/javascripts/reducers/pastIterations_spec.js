@@ -39,17 +39,22 @@ describe("Past Iterations Reducer", () => {
 
     describe("when past interactions is fetched", () => {
       it("returns the fetched state", () => {
-        const state = [
-          {
-            hasStories: true,
-            iterationNumber: 1,
-            error: null,
-            storyIds: [1, 2, 3],
-            fetched: true,
-            isFetching: false,
-            stories: undefined,
+        const state = {
+          pastIterations: {
+            byId: {
+              1: {
+                hasStories: true,
+                iterationNumber: 1,
+                error: null,
+                storyIds: [1, 2, 3],
+                fetched: true,
+                isFetching: false,
+                stories: undefined,
+              },
+            },
+            allIds: [1],
           },
-        ];
+        };
 
         const action = {
           type: actionTypes.RECEIVE_PAST_ITERATIONS,
@@ -79,42 +84,57 @@ describe("Past Iterations Reducer", () => {
 
   describe("REQUEST_PAST_STORIES", () => {
     it("adds isFetching: true, to the selected iteration ", () => {
-      const state = [
-        {
-          iterationNumber: 1,
+      const state = {
+        pastIterations: {
+          byId: {
+            1: {
+              iterationNumber: 1,
+            },
+            2: {
+              iterationNumber: 2,
+            },
+          },
+          allIds: [1, 2],
         },
-        {
-          iterationNumber: 2,
-        },
-      ];
+      };
 
       const action = {
         type: actionTypes.REQUEST_PAST_STORIES,
         iterationNumber: 1,
       };
 
-      expect(reducer(state, action)).toEqual([
-        {
-          iterationNumber: 1,
-          isFetching: true,
+      expect(reducer(state, action)).toEqual({
+        pastIterations: {
+          byId: {
+            1: {
+              iterationNumber: 1,
+              isFetching: true,
+            },
+            2: {
+              iterationNumber: 2,
+            },
+          },
+          allIds: [1, 2],
         },
-        {
-          iterationNumber: 2,
-        },
-      ]);
+      });
     });
   });
 
   describe("RECEIVE_PAST_STORIES", () => {
     it("returns formatted past stories", () => {
-      const state = [
-        {
-          iterationNumber: 1,
+      const state = {
+        pastIterations: {
+          byId: {
+            1: {
+              iterationNumber: 1,
+            },
+            2: {
+              iterationNumber: 2,
+            },
+          },
+          allIds: [1, 2],
         },
-        {
-          iterationNumber: 2,
-        },
-      ];
+      };
 
       const action = {
         type: actionTypes.RECEIVE_PAST_STORIES,
@@ -123,28 +143,40 @@ describe("Past Iterations Reducer", () => {
         from: undefined,
       };
 
-      expect(reducer(state, action)).toEqual([
-        {
-          iterationNumber: 1,
-          fetched: true,
-          isFetching: false,
-          storyIds: [1, 2],
+      expect(reducer(state, action)).toEqual({
+        pastIterations: {
+          byId: {
+            1: {
+              iterationNumber: 1,
+              fetched: true,
+              isFetching: false,
+              storyIds: [1, 2],
+            },
+            2: {
+              iterationNumber: 2,
+            },
+          },
+          allIds: [1, 2],
         },
-        { iterationNumber: 2 },
-      ]);
+      });
     });
   });
 
   describe("ERROR_REQUEST_PAST_STORIES", () => {
     it("returns state with error", () => {
-      const state = [
-        {
-          iterationNumber: 1,
+      const state = {
+        pastIterations: {
+          byId: {
+            1: {
+              iterationNumber: 1,
+            },
+            2: {
+              iterationNumber: 2,
+            },
+          },
+          allIds: [1, 2],
         },
-        {
-          iterationNumber: 2,
-        },
-      ];
+      };
 
       const action = {
         type: actionTypes.ERROR_REQUEST_PAST_STORIES,
@@ -152,17 +184,22 @@ describe("Past Iterations Reducer", () => {
         error: new Error("whoopsie"),
       };
 
-      expect(reducer(state, action)).toEqual([
-        {
-          iterationNumber: 1,
-          fetched: false,
-          isFetching: false,
-          error: new Error("whoopsie"),
+      expect(reducer(state, action)).toEqual({
+        pastIterations: {
+          byId: {
+            1: {
+              iterationNumber: 1,
+              fetched: false,
+              isFetching: false,
+              error: new Error("whoopsie"),
+            },
+            2: {
+              iterationNumber: 2,
+            },
+          },
+          allIds: [1, 2],
         },
-        {
-          iterationNumber: 2,
-        },
-      ]);
+      });
     });
   });
 
