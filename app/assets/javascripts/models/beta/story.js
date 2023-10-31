@@ -328,7 +328,7 @@ export const cloneStory = (story) => {
 export const mergeWithFetchedStories = (currentStories, fetchedStories) => {
   if (Object.values(currentStories).length === 0) {
     const firstStories = { ...fetchedStories };
-    fetchedStories.stories.allIds.forEach((storyId) => {
+    fetchedStories.stories.allIds.map((storyId) => {
       const fetchedStory = fetchedStories.stories.byId[storyId];
 
       firstStories.stories.byId[storyId] = {
@@ -341,7 +341,7 @@ export const mergeWithFetchedStories = (currentStories, fetchedStories) => {
 
   const mergedStories = { ...currentStories };
 
-  fetchedStories.stories.allIds.forEach((storyId) => {
+  fetchedStories.stories.allIds.map((storyId) => {
     const currentStory = currentStories.stories.byId[storyId];
     const fetchedStory = fetchedStories.stories.byId[storyId];
 
@@ -363,6 +363,15 @@ export const mergeWithFetchedStories = (currentStories, fetchedStories) => {
     }
   });
 
+  const updatedMergedStories = filterAndRemoveStories(
+    mergedStories,
+    fetchedStories
+  );
+
+  return updatedMergedStories;
+};
+
+export const filterAndRemoveStories = (mergedStories, fetchedStories) => {
   const serverBasedIds = Object.values(mergedStories.stories.byId)
     .filter((story) => story.serverBased)
     .map((story) => story.id);
@@ -371,15 +380,25 @@ export const mergeWithFetchedStories = (currentStories, fetchedStories) => {
     (id) => !fetchedStories.stories.allIds.includes(id)
   );
 
-  storiesToRemove.forEach((storyId) => {
-    delete mergedStories.stories.byId[storyId];
-  });
+  const updatedStoriesById = { ...mergedStories.stories.byId };
 
-  mergedStories.stories.allIds = mergedStories.stories.allIds.filter(
+  const updatedStoriesAllIds = mergedStories.stories.allIds.filter(
     (storyId) => !storiesToRemove.includes(storyId)
   );
 
-  return mergedStories;
+  storiesToRemove.forEach((storyId) => {
+    delete updatedStoriesById[storyId];
+  });
+
+  const updatedMergedStories = {
+    ...mergedStories,
+    stories: {
+      byId: updatedStoriesById,
+      allIds: updatedStoriesAllIds,
+    },
+  };
+
+  return updatedMergedStories;
 };
 
 export const createNewStory = (stories, storyAttributes) => {
