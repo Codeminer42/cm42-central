@@ -20,7 +20,6 @@ import {
   denormalizeStories,
   isEpic,
   isSearch,
-  mergeWithFetchedStories,
   normalizeStories,
   isNew,
   normalizeState,
@@ -324,5 +323,81 @@ const allScopes = (stories, storyId, mutation) => ({
   ),
   [storyScopes.EPIC]: mutation(getStoriesByScope(stories, storyScopes.EPIC)),
 });
+
+const mergeWithFetchedStories = (currentStories, fetchedStories) => {
+  if (Object.values(currentStories).length === 0) {
+    const firstStories = { ...fetchedStories };
+    fetchedStories.stories.allIds.map((storyId) => {
+      const fetchedStory = fetchedStories.stories.byId[storyId];
+
+      firstStories.stories.byId[storyId] = {
+        ...fetchedStory,
+        serverBased: true,
+      };
+    });
+    return firstStories;
+  }
+
+  const mergedStories = { ...currentStories };
+
+  fetchedStories.stories.allIds.map((storyId) => {
+    const currentStory = currentStories.stories.byId[storyId];
+    const fetchedStory = fetchedStories.stories.byId[storyId];
+
+    if (currentStory && !currentStory.collapsed) {
+      mergedStories.stories.byId[storyId] = {
+        ...fetchedStory,
+        collapsed: false,
+        serverBased: true,
+        _editing: { ...currentStory._editing },
+      };
+    } else {
+      mergedStories.stories.byId[storyId] = {
+        ...fetchedStory,
+        serverBased: true,
+      };
+      if (!mergedStories.stories.allIds.includes(storyId)) {
+        mergedStories.stories.allIds.unshift(storyId);
+      }
+    }
+  });
+
+  const updatedMergedStories = filterAndRemoveStories(
+    mergedStories,
+    fetchedStories
+  );
+
+  return updatedMergedStories;
+};
+
+const filterAndRemoveStories = (mergedStories, fetchedStories) => {
+  const serverBasedIds = Object.values(mergedStories.stories.byId)
+    .filter((story) => story.serverBased)
+    .map((story) => story.id);
+
+  const storiesToRemove = serverBasedIds.filter(
+    (id) => !fetchedStories.stories.allIds.includes(id)
+  );
+
+  const updatedStoriesById = { ...mergedStories.stories.byId };
+
+  const updatedStoriesAllIds = mergedStories.stories.allIds.filter(
+    (storyId) => !storiesToRemove.includes(storyId)
+  );
+
+  storiesToRemove.forEach((storyId) => {
+    delete updatedStoriesById[storyId];
+  });
+
+  const updatedMergedStories = {
+    ...mergedStories,
+    stories: {
+      byId: updatedStoriesById,
+      allIds: updatedStoriesAllIds,
+    },
+  };
+
+  return updatedMergedStories;
+};
 
 export default withScope(storiesReducer);
