@@ -3,7 +3,7 @@ import reducer from "../../../app/assets/javascripts/reducers/pastIterations";
 
 jest.mock("../../../app/assets/javascripts/models/beta/pastIteration", () => ({
   normalizePastIterations: jest.fn((data) => data),
-  denormalizePastIterations: jest.fn((data) => data), // Mock simples que retorna os dados sem modificação
+  denormalizePastIterations: jest.fn((data) => data),
 }));
 
 describe("Past Iterations Reducer", () => {
