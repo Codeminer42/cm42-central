@@ -15,10 +15,11 @@ describe Beta::ProjectBoardOperations::Read do
     let(:user) { create(:user, :with_team) }
 
     context 'when the project exists' do
-      let(:story_operations_read_all_instance) { instance_double(StoryOperations::ReadAll, call: Dry::Monads::Success({ active_stories: stories, past_iterations: 'Past Iterations' })) }
+      let(:story_operations_read_all_instance) { instance_double(StoryOperations::ReadAll, call: Dry::Monads::Success({ active_stories: stories })) }
 
       before do
         allow(StoryOperations::ReadAll).to receive(:new).and_return(story_operations_read_all_instance)
+        allow_any_instance_of(Iterations::ProjectIterations).to receive(:past_iterations).and_return("Past Iterations")
       end
 
       it 'returns success' do
@@ -46,7 +47,7 @@ describe Beta::ProjectBoardOperations::Read do
       end
 
       it 'returns with stories' do
-        expect(subject.call.success.stories).to eq(stories)
+        expect(subject.call.success.stories).to match_array(stories)
       end
 
       it 'returns with past_iterations' do
