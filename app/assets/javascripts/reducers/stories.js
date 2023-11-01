@@ -25,7 +25,6 @@ import {
   normalizeState,
 } from "../models/beta/story";
 import { getStoriesByScope } from "../selectors/stories";
-import { omit } from "underscore";
 
 const initialState = {
   [storyScopes.ALL]: {},
@@ -350,36 +349,35 @@ const mergeWithFetchedStories = (currentStories, fetchedStories) => {
     };
   }
 
-  const mergedStories = {
-    ...currentStories,
-    stories: {
-      ...currentStories.stories,
-      byId: { ...currentStories.stories.byId },
-      allIds: [...currentStories.stories.allIds],
-    },
-  };
+  const mergedStories = fetchedStories.stories.allIds.reduce(
+    (acc, storyId) => {
+      const currentStory = currentStories.stories.byId[storyId];
+      const fetchedStory = fetchedStories.stories.byId[storyId];
+      const isCollapsed = currentStory && !currentStory.collapsed;
 
-  fetchedStories.stories.allIds.map((storyId) => {
-    const currentStory = currentStories.stories.byId[storyId];
-    const fetchedStory = fetchedStories.stories.byId[storyId];
+      const updatedStory = { ...fetchedStory, serverBased: true };
 
-    if (currentStory && !currentStory.collapsed) {
-      mergedStories.stories.byId[storyId] = {
-        ...fetchedStory,
-        collapsed: false,
-        serverBased: true,
-        _editing: { ...currentStory._editing },
-      };
-    } else {
-      mergedStories.stories.byId[storyId] = {
-        ...fetchedStory,
-        serverBased: true,
-      };
-      if (!mergedStories.stories.allIds.includes(storyId)) {
-        mergedStories.stories.allIds.unshift(storyId);
+      if (isCollapsed) {
+        updatedStory.collapsed = false;
+        updatedStory._editing = { ...currentStory._editing };
       }
-    }
-  });
+
+      return {
+        ...acc,
+        stories: {
+          ...acc.stories,
+          byId: {
+            ...acc.stories.byId,
+            [storyId]: updatedStory,
+          },
+          allIds: currentStories.stories.allIds.includes(storyId)
+            ? [...acc.stories.allIds]
+            : [storyId, ...acc.stories.allIds],
+        },
+      };
+    },
+    { ...currentStories }
+  );
 
   const updatedMergedStories = filterAndRemoveStories(
     mergedStories,
@@ -402,7 +400,15 @@ const filterAndRemoveStories = (mergedStories, fetchedStories) => {
     (storyId) => !storiesToRemove.includes(storyId)
   );
 
-  const updatedStoriesById = omit(mergedStories.stories.byId, storiesToRemove);
+  const updatedStoriesById = storiesToRemove.reduce(
+    (acc, storyId) => {
+      const { [storyId]: _, ...rest } = acc;
+      return rest;
+    },
+    {
+      ...mergedStories.stories.byId,
+    }
+  );
 
   const updatedMergedStories = {
     ...mergedStories,

@@ -646,21 +646,52 @@ describe("Story Actions", () => {
 
     it("delete a serverBased if not fetched", () => {
       const fetchedStories = [{ id: 1, title: "Story 1", collapsed: true }];
+      const currentStories = {
+        all: {
+          stories: {
+            byId: {
+              1: {
+                id: 1,
+                title: "Story 1",
+                collapsed: false,
+                serverBased: true,
+              },
+              2: {
+                id: 2,
+                title: "Story 2",
+                collapsed: true,
+                serverBased: true,
+              },
+              3: {
+                id: 3,
+                title: "Story 3",
+                collapsed: true,
+                serverBased: true,
+              },
+              [newId]: {
+                id: newId,
+                title: "New Story",
+                collapsed: false,
+                _editing: { id: newId },
+              },
+            },
+            allIds: [1, 2, newId],
+          },
+        },
+      };
 
       const state = currentStories;
       const action = receiveStories(fetchedStories);
       const newState = storiesReducer(state, action);
 
-      expect(newState.all.stories.byId).toEqual(
-        expect.objectContaining({
-          1: expect.objectContaining({
-            id: 1,
-            title: "Story 1",
-            serverBased: true,
-          }),
-          [newId]: expect.objectContaining({ id: newId, title: "New Story" }),
-        })
-      );
+      expect(newState.all.stories.byId).toEqual({
+        1: expect.objectContaining({
+          id: 1,
+          title: "Story 1",
+          serverBased: true,
+        }),
+        [newId]: expect.objectContaining({ id: newId, title: "New Story" }),
+      });
 
       expect(newState.all.stories.allIds).toEqual(
         expect.arrayContaining([1, newId])
