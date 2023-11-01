@@ -25,6 +25,7 @@ import {
   normalizeState,
 } from "../models/beta/story";
 import { getStoriesByScope } from "../selectors/stories";
+import { omit } from "underscore";
 
 const initialState = {
   [storyScopes.ALL]: {},
@@ -326,19 +327,37 @@ const allScopes = (stories, storyId, mutation) => ({
 
 const mergeWithFetchedStories = (currentStories, fetchedStories) => {
   if (Object.values(currentStories).length === 0) {
-    const firstStories = { ...fetchedStories };
-    fetchedStories.stories.allIds.map((storyId) => {
-      const fetchedStory = fetchedStories.stories.byId[storyId];
+    const firstStoriesById = fetchedStories.stories.allIds.reduce(
+      (acc, storyId) => {
+        return {
+          ...acc,
+          [storyId]: {
+            ...fetchedStories.stories.byId[storyId],
+            serverBased: true,
+          },
+        };
+      },
+      {}
+    );
 
-      firstStories.stories.byId[storyId] = {
-        ...fetchedStory,
-        serverBased: true,
-      };
-    });
-    return firstStories;
+    return {
+      ...fetchedStories,
+      stories: {
+        ...fetchedStories.stories,
+        byId: firstStoriesById,
+        allIds: fetchedStories.stories.allIds,
+      },
+    };
   }
 
-  const mergedStories = { ...currentStories };
+  const mergedStories = {
+    ...currentStories,
+    stories: {
+      ...currentStories.stories,
+      byId: { ...currentStories.stories.byId },
+      allIds: [...currentStories.stories.allIds],
+    },
+  };
 
   fetchedStories.stories.allIds.map((storyId) => {
     const currentStory = currentStories.stories.byId[storyId];
@@ -379,15 +398,11 @@ const filterAndRemoveStories = (mergedStories, fetchedStories) => {
     (id) => !fetchedStories.stories.allIds.includes(id)
   );
 
-  const updatedStoriesById = { ...mergedStories.stories.byId };
-
   const updatedStoriesAllIds = mergedStories.stories.allIds.filter(
     (storyId) => !storiesToRemove.includes(storyId)
   );
 
-  storiesToRemove.forEach((storyId) => {
-    delete updatedStoriesById[storyId];
-  });
+  const updatedStoriesById = omit(mergedStories.stories.byId, storiesToRemove);
 
   const updatedMergedStories = {
     ...mergedStories,
