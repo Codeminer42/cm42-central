@@ -19,6 +19,7 @@ import storyTemplate from 'templates/story.ejs';
 import alertTemplate from 'templates/alert.ejs';
 import storyHoverTemplate from 'templates/story_hover.ejs';
 import noteTemplate from 'templates/note.ejs';
+import StoryCopyIdClipboard from '../components/story/StoryCopyIdClipboard';
 
 const LOCAL_STORY_REGEXP = /(?!\s|\b)(#\d+)(?!\w)/g;
 
@@ -501,32 +502,26 @@ const StoryView = FormView.extend({
   },
 
   renderCollapsed: function(isGuest) {
-
     this.$el.removeClass('editing');
     this.$el.html(this.template({story: this.model, view: this}));
-    this.$el.toggleClass('collapsed-iteration',
-                         !this.model.get('isVisible') &&
-                         !this.isSearchResult);
+    this.$el.toggleClass('collapsed-iteration', !this.model.get('isVisible') && !this.isSearchResult);
 
     const stateButtons = this.$('[data-story-state-buttons]').get(0)
     if(stateButtons) {
-      ReactDOM.render(
-        <StoryStateButtons
-          events={this.model.events()}
-        />,
-        stateButtons
-      );
+      ReactDOM.render(<StoryStateButtons events={this.model.events()} />, stateButtons);
     }
 
     const estimateButtons = this.$('[data-story-estimate-buttons]').get(0)
     if(estimateButtons) {
       ReactDOM.render(
-        <StoryEstimateButtons
-          points={this.model.point_values()}
-          onClick={this.estimate}
-        />,
+        <StoryEstimateButtons points={this.model.point_values()} onClick={this.estimate} />,
         estimateButtons
       );
+    }
+
+    const copyStoryIdClipboardLink = this.$('[data-story-id-copy-clipboard]').get(0)
+    if(copyStoryIdClipboardLink) {
+      ReactDOM.render(<StoryCopyIdClipboard id={this.id} />, copyStoryIdClipboardLink)
     }
 
     if (isGuest) { this.$el.find('.state-actions').find('.transition').prop('disabled', true) }
