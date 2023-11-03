@@ -1,9 +1,5 @@
 import * as Iteration from "models/beta/iteration";
 import moment from "moment";
-import {
-  denormalizePastIterations,
-  normalizePastIterations,
-} from "../../../../app/assets/javascripts/models/beta/pastIteration";
 
 describe("iteration", function () {
   describe("calculateRemainingPoints", () => {
@@ -1313,63 +1309,6 @@ describe("iteration", function () {
       it("returns falsy", () => {
         expect(Iteration.causesOverflow(story, 1)).toBeFalsy();
       });
-    });
-  });
-  describe("normalizePastIterations", () => {
-    it("normalize an array of pastIterations by their iterationNumber", () => {
-      const pastIterations = [
-        { iterationNumber: 1, data: "Iteration 1" },
-        { iterationNumber: 2, data: "Iteration 2" },
-      ];
-      const normalizedPastIterations = normalizePastIterations(pastIterations);
-
-      expect(normalizedPastIterations).toEqual({
-        pastIterations: {
-          byId: {
-            1: { iterationNumber: 1, data: "Iteration 1" },
-            2: { iterationNumber: 2, data: "Iteration 2" },
-          },
-          allIds: [1, 2],
-        },
-      });
-    });
-  });
-  describe("denormalizePastIterations", () => {
-    it("denormalize an object of pastIterations into an array", () => {
-      const normalizedPastIterations = {
-        pastIterations: {
-          byId: {
-            1: { iterationNumber: 1, data: "Iteration 1" },
-            2: { iterationNumber: 2, data: "Iteration 2" },
-          },
-          allIds: [1, 2],
-        },
-      };
-      const denormalizedPastIterations = denormalizePastIterations(
-        normalizedPastIterations
-      );
-
-      expect(denormalizedPastIterations).toEqual([
-        { iterationNumber: 1, data: "Iteration 1" },
-        { iterationNumber: 2, data: "Iteration 2" },
-      ]);
-    });
-
-    it("handle an empty object", () => {
-      const normalizedPastIterations = {
-        pastIterations: { byId: {}, allIds: [] },
-      };
-      const denormalizedPastIterations = denormalizePastIterations(
-        normalizedPastIterations
-      );
-
-      expect(denormalizedPastIterations).toEqual([]);
-    });
-
-    it("handle undefined input", () => {
-      const denormalizedPastIterations = denormalizePastIterations(undefined);
-
-      expect(denormalizedPastIterations).toEqual([]);
     });
   });
 });

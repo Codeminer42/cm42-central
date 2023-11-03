@@ -5,7 +5,7 @@ import * as Column from "../models/beta/column";
 import { comparePosition } from "../models/beta/story";
 import { property, last } from "underscore";
 import { getStoriesByScope } from "./stories";
-import { getIterations } from "./pastIterations";
+import { getDenormalizedIterations } from "../reducers/pastIterations";
 
 const getStories = property("stories");
 const getColumn = property("column");
@@ -27,7 +27,9 @@ export const getColumns = createSelector(
           )
         );
 
-        const lastPastIteration = last(getIterations(pastIterations));
+        const lastPastIteration = last(
+          getDenormalizedIterations(pastIterations)
+        );
         const firstSprintNumber = lastPastIteration
           ? lastPastIteration.iterationNumber + 1
           : 1;
@@ -38,7 +40,7 @@ export const getColumns = createSelector(
         );
       case Column.DONE:
         return mountPastIterations(
-          getIterations(pastIterations),
+          getDenormalizedIterations(pastIterations),
           getStoriesByScope(stories)
         );
       case Column.EPIC:

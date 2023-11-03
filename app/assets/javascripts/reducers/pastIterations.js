@@ -1,5 +1,4 @@
 import actionTypes from "actions/actionTypes";
-import { normalizePastIterations } from "../models/beta/pastIteration";
 
 const initialState = {};
 
@@ -81,5 +80,46 @@ const pastIterationsReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+const normalizePastIterations = (pastIterations) => {
+  return pastIterations.reduce(
+    (acc, pastIteration) => {
+      const pastIterationId = pastIteration.iterationNumber;
+
+      acc.pastIterations.byId[pastIterationId] = { ...pastIteration };
+      acc.pastIterations.allIds.push(pastIterationId);
+
+      return acc;
+    },
+    {
+      pastIterations: {
+        byId: {},
+        allIds: [],
+      },
+    }
+  );
+};
+
+const denormalizePastIterations = (pastIterations) => {
+  const normalizedPastIterations = pastIterations?.pastIterations;
+
+  if (
+    !normalizedPastIterations ||
+    normalizedPastIterations.allIds.length === 0
+  ) {
+    return [];
+  }
+
+  const denormalizedPastIterations = normalizedPastIterations.allIds.map(
+    (iterationId) => {
+      return normalizedPastIterations.byId[iterationId];
+    }
+  );
+
+  return denormalizedPastIterations;
+};
+
+export const getDenormalizedIterations = (pastIterations) =>
+  denormalizePastIterations(pastIterations);
 
 export default pastIterationsReducer;

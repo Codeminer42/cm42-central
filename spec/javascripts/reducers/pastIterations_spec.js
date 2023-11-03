@@ -1,16 +1,13 @@
 import actionTypes from "actions/actionTypes";
-import reducer from "../../../app/assets/javascripts/reducers/pastIterations";
-
-jest.mock("../../../app/assets/javascripts/models/beta/pastIteration", () => ({
-  normalizePastIterations: jest.fn((data) => data),
-  denormalizePastIterations: jest.fn((data) => data),
-}));
+import reducer, {
+  getDenormalizedIterations,
+} from "../../../app/assets/javascripts/reducers/pastIterations";
 
 describe("Past Iterations Reducer", () => {
   describe("RECEIVE_PAST_ITERATIONS", () => {
     describe("when past interactions is not fetched", () => {
-      it("returns formatted past iterations", () => {
-        const state = [];
+      it("returns a normalized and formatted past iterations", () => {
+        const state = {};
 
         const action = {
           type: actionTypes.RECEIVE_PAST_ITERATIONS,
@@ -23,22 +20,27 @@ describe("Past Iterations Reducer", () => {
           ],
         };
 
-        expect(reducer(state, action)).toEqual([
-          {
-            hasStories: true,
-            iterationNumber: 1,
-            error: null,
-            storyIds: [],
-            fetched: false,
-            isFetching: false,
-            stories: undefined,
+        expect(reducer(state, action)).toEqual({
+          pastIterations: {
+            byId: {
+              1: {
+                hasStories: true,
+                iterationNumber: 1,
+                error: null,
+                storyIds: [],
+                fetched: false,
+                isFetching: false,
+                stories: undefined,
+              },
+            },
+            allIds: [1],
           },
-        ]);
+        });
       });
     });
 
     describe("when past interactions is fetched", () => {
-      it("returns the fetched state", () => {
+      it("returns the normalized fetched state", () => {
         const state = {
           pastIterations: {
             byId: {
@@ -67,17 +69,22 @@ describe("Past Iterations Reducer", () => {
           ],
         };
 
-        expect(reducer(state, action)).toEqual([
-          {
-            hasStories: true,
-            iterationNumber: 1,
-            error: null,
-            storyIds: [1, 2, 3],
-            fetched: true,
-            isFetching: false,
-            stories: undefined,
+        expect(reducer(state, action)).toEqual({
+          pastIterations: {
+            byId: {
+              1: {
+                hasStories: true,
+                iterationNumber: 1,
+                error: null,
+                storyIds: [1, 2, 3],
+                fetched: true,
+                isFetching: false,
+                stories: undefined,
+              },
+            },
+            allIds: [1],
           },
-        ]);
+        });
       });
     });
   });
@@ -206,6 +213,45 @@ describe("Past Iterations Reducer", () => {
   describe("DEFAULT", () => {
     it("returns initialState", () => {
       expect(reducer(undefined, {})).toEqual({});
+    });
+  });
+
+  describe("denormalizePastIterations", () => {
+    it("denormalize an object of pastIterations into an array", () => {
+      const normalizedPastIterations = {
+        pastIterations: {
+          byId: {
+            1: { iterationNumber: 1, data: "Iteration 1" },
+            2: { iterationNumber: 2, data: "Iteration 2" },
+          },
+          allIds: [1, 2],
+        },
+      };
+      const denormalizedPastIterations = getDenormalizedIterations(
+        normalizedPastIterations
+      );
+
+      expect(denormalizedPastIterations).toEqual([
+        { iterationNumber: 1, data: "Iteration 1" },
+        { iterationNumber: 2, data: "Iteration 2" },
+      ]);
+    });
+
+    it("handle an empty object", () => {
+      const normalizedPastIterations = {
+        pastIterations: { byId: {}, allIds: [] },
+      };
+      const denormalizedPastIterations = getDenormalizedIterations(
+        normalizedPastIterations
+      );
+
+      expect(denormalizedPastIterations).toEqual([]);
+    });
+
+    it("handle undefined input", () => {
+      const denormalizedPastIterations = getDenormalizedIterations(undefined);
+
+      expect(denormalizedPastIterations).toEqual([]);
     });
   });
 });
