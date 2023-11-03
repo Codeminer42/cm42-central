@@ -6,7 +6,7 @@ import {
 } from "./notifications";
 import { wait } from "../services/promises";
 import { storyScopes } from "../libs/beta/constants";
-import { getStoriesByScope } from "../selectors/stories";
+import { storiesWithScope } from "../reducers/stories";
 
 export const createStory = (attributes, from) => ({
   type: actionTypes.CREATE_STORY,
@@ -155,7 +155,7 @@ export const showHistory =
   async (dispatch, getState, { Story }) => {
     const { stories, users } = getState();
 
-    const story = Story.findById(getStoriesByScope(stories, from), storyId);
+    const story = Story.findById(storiesWithScope(stories, from), storyId);
     dispatch(loadHistory(story.title));
     try {
       const activities = await Story.getHistory(
@@ -175,7 +175,7 @@ export const updateCollapsedStory =
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
 
-    const story = Story.findById(getStoriesByScope(stories, from), storyId);
+    const story = Story.findById(storiesWithScope(stories, from), storyId);
     const newStory = { ...story, ...newAttributes };
 
     return await confirmBeforeSaveIfNeeded(
@@ -223,7 +223,7 @@ export const dragDropStory =
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
 
-    const story = Story.findById(getStoriesByScope(stories, from), storyId);
+    const story = Story.findById(storiesWithScope(stories, from), storyId);
 
     const newStory = Story.addNewAttributes(story, newAttributes);
 
@@ -245,7 +245,7 @@ export const saveStory =
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
 
-    const story = Story.findById(getStoriesByScope(stories, from), storyId);
+    const story = Story.findById(storiesWithScope(stories, from), storyId);
 
     dispatch(setLoadingStory(story.id, from));
 
@@ -347,7 +347,7 @@ export const deleteStory =
       const { stories } = getState();
 
       const storyTitle = Story.findById(
-        getStoriesByScope(stories, from),
+        storiesWithScope(stories, from),
         storyId
       ).title;
 

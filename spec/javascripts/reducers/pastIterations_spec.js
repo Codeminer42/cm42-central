@@ -1,6 +1,6 @@
 import actionTypes from "actions/actionTypes";
 import reducer, {
-  getDenormalizedIterations,
+  denormalizedIterations,
 } from "../../../app/assets/javascripts/reducers/pastIterations";
 
 describe("Past Iterations Reducer", () => {
@@ -227,7 +227,7 @@ describe("Past Iterations Reducer", () => {
           allIds: [1, 2],
         },
       };
-      const denormalizedPastIterations = getDenormalizedIterations(
+      const denormalizedPastIterations = denormalizedIterations(
         normalizedPastIterations
       );
 
@@ -241,7 +241,7 @@ describe("Past Iterations Reducer", () => {
       const normalizedPastIterations = {
         pastIterations: { byId: {}, allIds: [] },
       };
-      const denormalizedPastIterations = getDenormalizedIterations(
+      const denormalizedPastIterations = denormalizedIterations(
         normalizedPastIterations
       );
 
@@ -249,7 +249,7 @@ describe("Past Iterations Reducer", () => {
     });
 
     it("handle undefined input", () => {
-      const denormalizedPastIterations = getDenormalizedIterations(undefined);
+      const denormalizedPastIterations = denormalizedIterations(undefined);
 
       expect(denormalizedPastIterations).toEqual([]);
     });

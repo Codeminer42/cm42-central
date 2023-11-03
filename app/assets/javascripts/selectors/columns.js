@@ -4,8 +4,8 @@ import { mountPastIterations } from "./done";
 import * as Column from "../models/beta/column";
 import { comparePosition } from "../models/beta/story";
 import { property, last } from "underscore";
-import { getStoriesByScope } from "./stories";
-import { getDenormalizedIterations } from "../reducers/pastIterations";
+import { denormalizedIterations } from "../reducers/pastIterations";
+import { storiesWithScope } from "../reducers/stories";
 
 const getStories = property("stories");
 const getColumn = property("column");
@@ -17,19 +17,17 @@ export const getColumns = createSelector(
   (column, stories, project, pastIterations) => {
     switch (column) {
       case Column.CHILLY_BIN:
-        return getStoriesByScope(stories)
+        return storiesWithScope(stories)
           .filter(Column.isChillyBin)
           .sort(comparePosition);
       case Column.BACKLOG:
         const orderedStories = orderByState(
-          getStoriesByScope(stories).filter((story) =>
+          storiesWithScope(stories).filter((story) =>
             Column.isBacklog(story, project)
           )
         );
 
-        const lastPastIteration = last(
-          getDenormalizedIterations(pastIterations)
-        );
+        const lastPastIteration = last(denormalizedIterations(pastIterations));
         const firstSprintNumber = lastPastIteration
           ? lastPastIteration.iterationNumber + 1
           : 1;
@@ -40,11 +38,11 @@ export const getColumns = createSelector(
         );
       case Column.DONE:
         return mountPastIterations(
-          getDenormalizedIterations(pastIterations),
-          getStoriesByScope(stories)
+          denormalizedIterations(pastIterations),
+          storiesWithScope(stories)
         );
       case Column.EPIC:
-        return getStoriesByScope(stories, Column.EPIC);
+        return storiesWithScope(stories, Column.EPIC);
     }
   }
 );

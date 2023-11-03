@@ -16,15 +16,7 @@ import * as Task from "models/beta/task";
 import * as Label from "models/beta/label";
 import { updateIfSameId } from "../services/updateIfSameId";
 import { storyScopes } from "./../libs/beta/constants";
-import {
-  denormalizeStories,
-  isEpic,
-  isSearch,
-  normalizeStories,
-  isNew,
-  normalizeState,
-} from "../models/beta/story";
-import { getStoriesByScope } from "../selectors/stories";
+import { isEpic, isSearch, isNew } from "../models/beta/story";
 
 const initialState = {
   [storyScopes.ALL]: {},
@@ -129,7 +121,7 @@ const storiesReducer = (state = initialState, action) => {
         ),
       };
     case actionTypes.UPDATE_STORY_SUCCESS:
-      return normalizeState(
+      return normalizeAllScopes(
         allScopes(state, action.story.id, (stories) => {
           return stories.map(
             updateIfSameId(action.story.id, (story) =>
@@ -143,7 +135,7 @@ const storiesReducer = (state = initialState, action) => {
         })
       );
     case actionTypes.SORT_STORIES_SUCCESS:
-      return normalizeState(
+      return normalizeAllScopes(
         allScopes(state, null, (stories) => {
           return stories.map((story) => {
             const editingStory = action.stories.find(
@@ -161,7 +153,7 @@ const storiesReducer = (state = initialState, action) => {
         })
       );
     case actionTypes.OPTIMISTICALLY_UPDATE:
-      return normalizeState(
+      return normalizeAllScopes(
         allScopes(state, action.story.id, (stories) => {
           return stories.map(
             updateIfSameId(action.story.id, (story) => {
@@ -226,7 +218,7 @@ const storiesReducer = (state = initialState, action) => {
         ),
       };
     case actionTypes.DELETE_STORY_SUCCESS:
-      return normalizeState(
+      return normalizeAllScopes(
         allScopes(state, action.id, (stories) => {
           return stories.filter((story) => story.id !== action.id);
         })
@@ -317,11 +309,9 @@ const withScope = (reducer) => (state, action) => {
 };
 
 const allScopes = (stories, storyId, mutation) => ({
-  [storyScopes.ALL]: mutation(getStoriesByScope(stories, storyScopes.ALL)),
-  [storyScopes.SEARCH]: mutation(
-    getStoriesByScope(stories, storyScopes.SEARCH)
-  ),
-  [storyScopes.EPIC]: mutation(getStoriesByScope(stories, storyScopes.EPIC)),
+  [storyScopes.ALL]: mutation(storiesWithScope(stories, storyScopes.ALL)),
+  [storyScopes.SEARCH]: mutation(storiesWithScope(stories, storyScopes.SEARCH)),
+  [storyScopes.EPIC]: mutation(storiesWithScope(stories, storyScopes.EPIC)),
 });
 
 const mergeWithFetchedStories = (currentStories, fetchedStories) => {
@@ -420,5 +410,55 @@ const filterAndRemoveStories = (mergedStories, fetchedStories) => {
 
   return updatedMergedStories;
 };
+
+const normalizeStories = (stories) => {
+  return stories.reduce(
+    (acc, story) => {
+      const storyId = story.id;
+
+      acc.stories.byId[storyId] = { ...story };
+      acc.stories.allIds.push(storyId);
+
+      return acc;
+    },
+    {
+      stories: {
+        byId: {},
+        allIds: [],
+      },
+    }
+  );
+};
+
+const denormalizeStories = (stories) => {
+  const normalizedStories = stories.stories;
+
+  if (!normalizedStories || normalizedStories.allIds.length === 0) {
+    return [];
+  }
+
+  const denormalizedStories = normalizedStories.allIds.map((storyId) => {
+    return normalizedStories.byId[storyId];
+  });
+
+  return denormalizedStories;
+};
+
+export const storiesWithScope = (state, scope) => {
+  const stories = state[scope || storyScopes.ALL];
+  return denormalizeStories(stories);
+};
+
+export const denormalizeAllScopes = (state) => ({
+  epic: storiesWithScope(state, storyScopes.EPIC),
+  all: storiesWithScope(state, storyScopes.ALL),
+  search: storiesWithScope(state, storyScopes.SEARCH),
+});
+
+const normalizeAllScopes = (state) => ({
+  epic: normalizeStories(state[storyScopes.EPIC]),
+  all: normalizeStories(state[storyScopes.ALL]),
+  search: normalizeStories(state[storyScopes.SEARCH]),
+});
 
 export default withScope(storiesReducer);

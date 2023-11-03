@@ -119,7 +119,7 @@ const denormalizePastIterations = (pastIterations) => {
   return denormalizedPastIterations;
 };
 
-export const getDenormalizedIterations = (pastIterations) =>
+export const denormalizedIterations = (pastIterations) =>
   denormalizePastIterations(pastIterations);
 
 export default pastIterationsReducer;
