@@ -7,7 +7,8 @@ import { storyScopes } from "./../../libs/beta/constants";
 import Column from "./../Columns/ColumnItem";
 import PropTypes from "prop-types";
 import StoryPropTypes from "../shapes/story";
-import { getStories, getStoriesByScope } from "../../selectors/stories";
+import { getStories, getStoriesWithScope } from "../../selectors/stories";
+import { getProjectBoard } from "../../selectors/projectBoard";
 
 export const SearchResults = ({
   isEnabled,
@@ -35,10 +36,10 @@ SearchResults.propTypes = {
   closeSearch: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ stories, projectBoard }) => ({
-  isEnabled: haveSearch(getStories(stories)),
-  searchResults: getStoriesByScope(stories, storyScopes.SEARCH),
-  projectBoard: projectBoard,
+const mapStateToProps = (state) => ({
+  isEnabled: haveSearch(getStories(state)),
+  searchResults: getStoriesWithScope(state, storyScopes.SEARCH),
+  projectBoard: getProjectBoard(state),
 });
 
 const mapDispatchToProps = {

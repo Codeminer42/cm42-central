@@ -1,10 +1,8 @@
-import {
-  denormalizeState,
-  denormalizeStories,
-  withScope,
-} from "../models/beta/story";
+import { denormalizeAllScopes, storiesWithScope } from "../reducers/stories";
 
-export const getStories = (state) => denormalizeState(state);
+export const getStories = (state) => denormalizeAllScopes(state.stories);
 
-export const getStoriesByScope = (state, scope) =>
-  denormalizeStories(withScope(state, scope || undefined));
+export const getStoriesWithScope = (state, scope) => {
+  const stories = getStories(state);
+  return storiesWithScope(stories, scope);
+};

@@ -16,7 +16,8 @@ import { status, columns } from "../../../libs/beta/constants";
 
 import CollapsedStoryFocusButon from "./CollapsedStoryFocusButton";
 import StoryPropTypes from "../../shapes/story";
-import { getStoriesByScope } from "../../../selectors/stories";
+import { getStories, getStoriesWithScope } from "../../../selectors/stories";
+import { getProject } from "../../../selectors/project";
 
 const storyClassName = (
   story,
@@ -133,11 +134,11 @@ CollapsedStory.propTypes = {
   onLabelClick: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ project, stories }, props) => ({
-  project,
-  stories,
+const mapStateToProps = (state, props) => ({
+  project: getProject(state),
+  stories: getStories(state),
   isHighlightable: Story.haveHighlightButton(
-    getStoriesByScope(stories),
+    getStoriesWithScope(state),
     props.story,
     props.from
   ),
