@@ -66,13 +66,13 @@ export const ProjectBoard = ({
   }, [setNewChillyBinStories, chillyBinStories]);
 
   useEffect(() => {
-    fetchProjectBoard(projectId)
-  }, [projectId, fetchProjectBoard])
+    fetchProjectBoard(projectId);
+  }, [projectId, fetchProjectBoard]);
 
   useEffect(() => {
     const project = { id: projectId };
     const unsubscribe = subscribeToProjectChanges(project, () => {
-      fetchProjectBoard(projectId)
+      fetchProjectBoard(projectId);
     });
 
     return () => {

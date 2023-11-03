@@ -1,7 +1,13 @@
-import * as Story from 'models/beta/story';
-import moment from 'moment';
-import { status, storyTypes, storyScopes } from 'libs/beta/constants';
-import { mergeWithFetchedStories } from '../../../../app/assets/javascripts/models/beta/story';
+import * as Story from "models/beta/story";
+import moment from "moment";
+import { status, storyTypes, storyScopes } from "libs/beta/constants";
+import {
+  createTemporaryId,
+  denormalizeState,
+  denormalizeStories,
+  normalizeState,
+  normalizeStories,
+} from "../../../../app/assets/javascripts/models/beta/story";
 
 describe("Story model", function () {
   describe("comparePosition", () => {
@@ -582,13 +588,13 @@ describe("Story model", function () {
   });
 
   describe("isNew", () => {
-    it("returns true when story id is null", () => {
-      const story = { id: null };
+    it("returns true when story id is new", () => {
+      const story = { id: createTemporaryId() };
 
       expect(Story.isNew(story)).toBe(true);
     });
 
-    it("returns false when story id isn't null", () => {
+    it("returns false when story id isn't new", () => {
       const story = { id: 42 };
 
       expect(Story.isNew(story)).toBe(false);
@@ -609,7 +615,7 @@ describe("Story model", function () {
     });
 
     it("returns false when story is new", () => {
-      const story = { id: null, state: "started" };
+      const story = { id: createTemporaryId(), state: "started" };
 
       expect(Story.canDelete(story)).toBe(false);
     });
@@ -700,15 +706,22 @@ describe("Story model", function () {
   });
 
   describe("withoutNewStory", () => {
-    it("remove a story with null id from a stories array", () => {
+    it("remove a story with a new id (symbol) from a stories array", () => {
+      const newStoryId = createTemporaryId();
       const stories = [{ id: 1 }, { id: 2 }];
-      const newStory = { id: null };
+      const newStory = { id: newStoryId };
 
       const storiesWithEmptyStories = [stories[0], newStory, stories[1]];
 
-      expect(Story.withoutNewStory([...stories, newStory])).toEqual(stories);
-      expect(Story.withoutNewStory([newStory, ...stories])).toEqual(stories);
-      expect(Story.withoutNewStory(storiesWithEmptyStories)).toEqual(stories);
+      expect(Story.withoutNewStory([...stories, newStory], newStoryId)).toEqual(
+        stories
+      );
+      expect(Story.withoutNewStory([newStory, ...stories], newStoryId)).toEqual(
+        stories
+      );
+      expect(
+        Story.withoutNewStory(storiesWithEmptyStories, newStoryId)
+      ).toEqual(stories);
     });
   });
 
@@ -718,7 +731,7 @@ describe("Story model", function () {
     it("returns an empty story", () => {
       const story = Story.createNewStory(stories, {});
 
-      expect(story.id).toBe(null);
+      expect(typeof story.id).toBe("symbol");
     });
 
     it("returns an expanded story", () => {
@@ -741,11 +754,16 @@ describe("Story model", function () {
 
   describe("replaceOrAddNewStory", () => {
     it("replace an empty for a new story", () => {
-      const stories = [{ id: 1 }, { id: null }, { id: 3 }];
+      const newStoryId = createTemporaryId();
+      const stories = [{ id: 1 }, { id: newStoryId }, { id: 3 }];
       const newStory = { id: 2 };
       const expectedArray = [stories[0], newStory, stories[2]];
 
-      const newStoryArray = Story.replaceOrAddNewStory(stories, newStory);
+      const newStoryArray = Story.replaceOrAddNewStory(
+        stories,
+        newStory,
+        newStoryId
+      );
 
       expect(newStoryArray).toEqual(expectedArray);
     });
@@ -1458,55 +1476,4 @@ describe("Story model", function () {
       });
     });
   });
-
-  describe("mergeWithFetchedStories", () => {
-    const currentStories = [
-      { id: 1, title: 'Story 1', collapsed: false, _editing: { id: 1 } },
-      { id: 2, title: 'Story 2', collapsed: true },
-      { id: null, title: 'New Story', collapsed: false, _editing: { id: null } },
-    ]
-
-    const fetchedStories = [
-      { id: 1, title: 'Story 1', collapsed: true },
-      { id: 2, title: 'Story 2', collapsed: true },
-      { id: 3, title: 'Story 3', collapsed: true },
-      { id: 4, title: 'Story 4', collapsed: true },
-    ]
-
-    const PastStoryIds = [3, 4]
-
-    it("merge fetched stories with current stories", () => {
-      const mergedStories = mergeWithFetchedStories(
-        currentStories,
-        fetchedStories,
-        PastStoryIds
-      );
-
-      expect(mergedStories).toHaveLength(5);
-      expect(mergedStories).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ id: 1, title: 'Story 1' }),
-          expect.objectContaining({ id: 2, title: 'Story 2' }),
-          expect.objectContaining({ id: 3, title: 'Story 3' }),
-          expect.objectContaining({ id: 4, title: 'Story 4' }),
-          expect.objectContaining({ id: null, title: 'New Story' }),
-        ])
-      );
-    });
-
-    it('handle stories with collapsed property equal false based on the current state', () => {
-      const mergedStories = mergeWithFetchedStories(
-        currentStories,
-        fetchedStories,
-        PastStoryIds
-      );
-
-      expect(mergedStories).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ id: 1, collapsed: false, _editing: { id: 1 } }),
-          expect.objectContaining({ id: null, collapsed: false, _editing: { id: null } }),
-        ])
-      );
-    });
-  })
 });
