@@ -100,7 +100,7 @@ const normalizePastIterations = (pastIterations) => {
   );
 };
 
-const denormalizePastIterations = (pastIterations) => {
+export const denormalizePastIterations = (pastIterations) => {
   const normalizedPastIterations = pastIterations?.pastIterations;
 
   if (
@@ -118,8 +118,5 @@ const denormalizePastIterations = (pastIterations) => {
 
   return denormalizedPastIterations;
 };
-
-export const denormalizedIterations = (pastIterations) =>
-  denormalizePastIterations(pastIterations);
 
 export default pastIterationsReducer;
