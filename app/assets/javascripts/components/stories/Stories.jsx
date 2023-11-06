@@ -1,8 +1,8 @@
-import React from "react";
-import StoryItem from "../story/StoryItem";
-import PropTypes from "prop-types";
-import StoryPropTypes from "../shapes/story";
-import { Droppable } from "react-beautiful-dnd";
+import React from 'react';
+import StoryItem from '../story/StoryItem';
+import PropTypes from 'prop-types';
+import StoryPropTypes from '../shapes/story';
+import { Droppable } from 'react-beautiful-dnd';
 
 const Stories = ({ stories, from, sprintIndex, columnId, isDropDisabled }) => (
   <Droppable
@@ -10,7 +10,7 @@ const Stories = ({ stories, from, sprintIndex, columnId, isDropDisabled }) => (
     isDropDisabled={isDropDisabled}
     type="stories"
   >
-    {(provided) => (
+    {provided => (
       <div
         className="Column__body"
         ref={provided.innerRef}

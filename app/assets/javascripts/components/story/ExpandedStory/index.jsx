@@ -1,19 +1,19 @@
-import React, { useEffect, useRef } from "react";
-import classNames from "classnames";
-import PropTypes from "prop-types";
-import ExpandedStoryControls from "./ExpandedStoryControls";
-import ExpandedStoryDefault from "./ExpandedStoryDefault";
-import ExpandedStoryRelease from "./ExpandedStoryRelease";
+import React, { useEffect, useRef } from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import ExpandedStoryControls from './ExpandedStoryControls';
+import ExpandedStoryDefault from './ExpandedStoryDefault';
+import ExpandedStoryRelease from './ExpandedStoryRelease';
 import {
   editStory,
   saveStory,
   deleteStory,
   cloneStory,
   showHistory,
-} from "../../../actions/story";
-import { connect } from "react-redux";
-import * as Story from "../../../models/beta/story";
-import ProjectPropTypes from "../../shapes/project";
+} from '../../../actions/story';
+import { connect } from 'react-redux';
+import * as Story from '../../../models/beta/story';
+import ProjectPropTypes from '../../shapes/project';
 
 export function ExpandedStory({
   story,
@@ -33,7 +33,7 @@ export function ExpandedStory({
   const loading = story._editing.loading;
   const disabled = !Story.canEdit(story);
 
-  const handleEditStory = (newAttributes) => {
+  const handleEditStory = newAttributes => {
     editStory(story.id, newAttributes, from);
   };
 
@@ -52,8 +52,8 @@ export function ExpandedStory({
   return (
     <div
       className={classNames(
-        "Story Story--expanded",
-        { "Story__enable-loading": loading },
+        'Story Story--expanded',
+        { 'Story__enable-loading': loading },
         className
       )}
       title={title}

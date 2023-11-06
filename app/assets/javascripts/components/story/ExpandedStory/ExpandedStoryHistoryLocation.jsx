@@ -1,11 +1,11 @@
-import React from "react";
-import Clipboard from "react-clipboard.js";
-import { storyUrl } from "../StoryUrl";
+import React from 'react';
+import Clipboard from 'react-clipboard.js';
+import { storyUrl } from '../StoryUrl';
 import {
   editingStoryPropTypesShape,
   hasHistory,
-} from "../../../models/beta/story";
-import PropTypes from "prop-types";
+} from '../../../models/beta/story';
+import PropTypes from 'prop-types';
 
 const ExpandedStoryHistoryLocation = ({ story, onClone, showHistory }) => (
   <div className="col-xs-12 form-group input-group input-group-sm">
@@ -21,11 +21,11 @@ const ExpandedStoryHistoryLocation = ({ story, onClone, showHistory }) => (
         data-clipboard-text={storyUrl(story)}
         component="button"
         className="btn btn-default btn-clipboard"
-        button-title={I18n.t("story.events.copy_url")}
+        button-title={I18n.t('story.events.copy_url')}
       >
         <img
           src="/clippy.svg"
-          alt={I18n.t("story.events.copy_url")}
+          alt={I18n.t('story.events.copy_url')}
           className="clipboard-icon"
         />
       </Clipboard>
@@ -34,7 +34,7 @@ const ExpandedStoryHistoryLocation = ({ story, onClone, showHistory }) => (
         data-clipboard-text={`#${story.id.toString()}`}
         component="button"
         className="btn btn-default btn-clipboard-id btn-clipboard"
-        button-title={I18n.t("story.events.copy_id")}
+        button-title={I18n.t('story.events.copy_id')}
       >
         ID
       </Clipboard>
@@ -42,7 +42,7 @@ const ExpandedStoryHistoryLocation = ({ story, onClone, showHistory }) => (
       {hasHistory(story) && (
         <button
           className="btn btn-default"
-          title={I18n.t("story.events.view_history")}
+          title={I18n.t('story.events.view_history')}
           onClick={showHistory}
           data-id="history-button"
         >
@@ -52,7 +52,7 @@ const ExpandedStoryHistoryLocation = ({ story, onClone, showHistory }) => (
 
       <button
         className="btn btn-default clone-story"
-        title={I18n.t("story.events.clone")}
+        title={I18n.t('story.events.clone')}
         onClick={onClone}
       >
         <i className="mi md-18">content_copy</i>

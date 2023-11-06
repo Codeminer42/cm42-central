@@ -4,24 +4,32 @@ import PropTypes from 'prop-types';
 import { editingStoryPropTypesShape } from '../../../models/beta/story';
 import ExpandedStorySection from './ExpandedStorySection';
 
-function ExpandedStoryLabels({ story, projectLabels, disabled, onRemoveLabel, onAddLabel }) {
+function ExpandedStoryLabels({
+  story,
+  projectLabels,
+  disabled,
+  onRemoveLabel,
+  onAddLabel,
+}) {
   const { labels } = story._editing;
 
-  if (disabled && !story.labels.length) return null
+  if (disabled && !story.labels.length) return null;
 
-  const onDelete = (index) => {
+  const onDelete = index => {
     if (disabled) return;
 
     const label = labels.find((_, labelIndex) => labelIndex === index);
 
     onRemoveLabel(label.name);
-  }
+  };
 
   return (
-    <ExpandedStorySection title={I18n.t('activerecord.attributes.story.labels')}>
+    <ExpandedStorySection
+      title={I18n.t('activerecord.attributes.story.labels')}
+    >
       <ReactTags
         tags={labels}
-        placeholder={disabled ? "" : I18n.t('add new label')}
+        placeholder={disabled ? '' : I18n.t('add new label')}
         suggestions={projectLabels}
         inputAttributes={{ readOnly: disabled }}
         delimiterChars={[',', ' ']}
@@ -34,7 +42,7 @@ function ExpandedStoryLabels({ story, projectLabels, disabled, onRemoveLabel, on
         handleDelete={onDelete}
       />
     </ExpandedStorySection>
-  )
+  );
 }
 
 ExpandedStoryLabels.propTypes = {
@@ -42,7 +50,7 @@ ExpandedStoryLabels.propTypes = {
   onAddLabel: PropTypes.func.isRequired,
   onRemoveLabel: PropTypes.func.isRequired,
   projectLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
-  disabled: PropTypes.bool.isRequired
+  disabled: PropTypes.bool.isRequired,
 };
 
 export default ExpandedStoryLabels;

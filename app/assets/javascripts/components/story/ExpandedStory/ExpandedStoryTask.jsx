@@ -7,7 +7,7 @@ import ExpandedStorySection from './ExpandedStorySection';
 const ExpandedStoryTask = ({ story, onToggle, onDelete, onSave, disabled }) => {
   const [task, setTask] = useState('');
 
-  const onInputChange = (e) => {
+  const onInputChange = e => {
     setTask(e.target.value);
   };
 
@@ -25,12 +25,21 @@ const ExpandedStoryTask = ({ story, onToggle, onDelete, onSave, disabled }) => {
   return (
     <ExpandedStorySection title={I18n.t('story.tasks')} identifier="tasks">
       <div className="list-task">
-        <TasksList tasks={story.tasks} onDelete={onDelete} onToggle={onToggle} disabled={disabled} />
+        <TasksList
+          tasks={story.tasks}
+          onDelete={onDelete}
+          onToggle={onToggle}
+          disabled={disabled}
+        />
       </div>
 
       {!disabled && (
         <div className="task-form">
-          <input value={task} className="form-control input-sm" onChange={onInputChange} />
+          <input
+            value={task}
+            className="form-control input-sm"
+            onChange={onInputChange}
+          />
           <button
             type="submit"
             className="add-task-button"

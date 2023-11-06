@@ -1,5 +1,5 @@
-import * as iteration from "./iteration";
-import * as Story from "./story";
+import * as iteration from './iteration';
+import * as Story from './story';
 
 export const isChillyBin = Story.isUnscheduled;
 
@@ -12,18 +12,18 @@ export const isBacklog = (story, project) => {
   );
 };
 
-export const isDone = (column) => column === DONE;
+export const isDone = column => column === DONE;
 
-export const isSearch = (column) => column === SEARCH;
+export const isSearch = column => column === SEARCH;
 
 export const order = (columns, reverse) =>
   reverse ? columns.reverse() : columns;
 
-export const DONE = "done";
-export const BACKLOG = "backlog";
-export const CHILLY_BIN = "chilly_bin";
-export const SEARCH = "search";
-export const EPIC = "epic";
-export const ALL = "all";
+export const DONE = 'done';
+export const BACKLOG = 'backlog';
+export const CHILLY_BIN = 'chilly_bin';
+export const SEARCH = 'search';
+export const EPIC = 'epic';
+export const ALL = 'all';
 
-export const isDropDisabled = (column) => isDone(column) || isSearch(column);
+export const isDropDisabled = column => isDone(column) || isSearch(column);

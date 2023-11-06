@@ -1,33 +1,39 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import Stories from '../stories/Stories';
 import * as Story from '../../models/beta/story';
 
-export const SearchHeader = ({ stories }) =>
+export const SearchHeader = ({ stories }) => (
   <div className="Sprint__header" data-id="search-header">
     {I18n.t('stories_found')}: {stories.length}
-
     <div>
-      <span className="done-points">{I18n.t('projects.reports.points')}: {Story.totalPoints(stories)}</span>
+      <span className="done-points">
+        {I18n.t('projects.reports.points')}: {Story.totalPoints(stories)}
+      </span>
     </div>
   </div>
+);
 
-const Search = ({ stories }) =>
+const Search = ({ stories }) => (
   <div className="Sprint">
-    <SearchHeader
-      stories={stories}
-    />
+    <SearchHeader stories={stories} />
     <div className="Sprint__body" data-id="stories-search">
-      <Stories columnId='search' stories={stories} from="search" isDropDisabled />
+      <Stories
+        columnId="search"
+        stories={stories}
+        from="search"
+        isDropDisabled
+      />
     </div>
   </div>
+);
 
 const propTypes = {
-  stories: PropTypes.array.isRequired
+  stories: PropTypes.array.isRequired,
 };
 
 const defaultProps = {
-  stories: []
+  stories: [],
 };
 
 Search.propTypes = propTypes;

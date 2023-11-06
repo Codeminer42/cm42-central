@@ -3,7 +3,9 @@ import React from 'react';
 class TaggedInput extends React.Component {
   constructor(props) {
     super(props);
-    this.saveInputRef = (input) => { this.input = input };
+    this.saveInputRef = input => {
+      this.input = input;
+    };
   }
 
   componentDidMount() {
@@ -11,9 +13,9 @@ class TaggedInput extends React.Component {
   }
 
   loadTagit() {
-    $(this.input).tagit(
-      this.tagitProperties()
-    ).on('change', this.props.onChange);
+    $(this.input)
+      .tagit(this.tagitProperties())
+      .on('change', this.props.onChange);
   }
 
   tagitProperties() {
@@ -24,12 +26,7 @@ class TaggedInput extends React.Component {
   }
 
   render() {
-    return (
-      <input
-        ref={ this.saveInputRef }
-        { ...this.props.input }
-      />
-    );
+    return <input ref={this.saveInputRef} {...this.props.input} />;
   }
 }
 

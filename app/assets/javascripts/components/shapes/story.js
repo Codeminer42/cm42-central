@@ -1,6 +1,6 @@
-import PropTypes from "prop-types";
-import NotePropTypes from "./note";
-import TaskPropType from "./task";
+import PropTypes from 'prop-types';
+import NotePropTypes from './note';
+import TaskPropType from './task';
 
 export const storyPropTypes = {
   id: PropTypes.oneOfType([PropTypes.number, PropTypes.symbol]),

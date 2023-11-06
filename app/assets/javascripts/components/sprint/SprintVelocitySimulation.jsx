@@ -1,53 +1,61 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import {SprintVelocitySimulationForm} from './SprintVelocitySimulationForm'
-import {connect} from 'react-redux'
-import { simulateSprintVelocity, revertSprintVelocity } from '../../actions/sprint';
+import { SprintVelocitySimulationForm } from './SprintVelocitySimulationForm';
+import { connect } from 'react-redux';
+import {
+  simulateSprintVelocity,
+  revertSprintVelocity,
+} from '../../actions/sprint';
 
 export const SprintVelocitySimulation = ({
   currentSprintVelocity,
   calculatedSprintVelocity,
   simulateSprintVelocity,
-  revertSprintVelocity
+  revertSprintVelocity,
 }) => {
-
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
 
   return ReactDOM.createPortal(
     <>
-    <span id="velocity_value">
-      <i className="mi md-18" onClick={() => setVisible(!visible)}>trending_up</i>
-      {currentSprintVelocity}
-    </span>
-    { visible &&
-      <SprintVelocitySimulationForm
-        currentSprintVelocity={currentSprintVelocity}
-        simulateSprintVelocity={simulateSprintVelocity}
-        revertSprintVelocity={revertSprintVelocity}
-        setVisible={setVisible}
-        calculatedSprintVelocity={calculatedSprintVelocity}
-      />
-    }
+      <span id="velocity_value">
+        <i className="mi md-18" onClick={() => setVisible(!visible)}>
+          trending_up
+        </i>
+        {currentSprintVelocity}
+      </span>
+      {visible && (
+        <SprintVelocitySimulationForm
+          currentSprintVelocity={currentSprintVelocity}
+          simulateSprintVelocity={simulateSprintVelocity}
+          revertSprintVelocity={revertSprintVelocity}
+          setVisible={setVisible}
+          calculatedSprintVelocity={calculatedSprintVelocity}
+        />
+      )}
     </>,
-    document.querySelector('[data-portal="velocity"]'));
-}
+    document.querySelector('[data-portal="velocity"]')
+  );
+};
 
 SprintVelocitySimulation.propTypes = {
   calculatedSprintVelocity: PropTypes.number,
   sprintVelocity: PropTypes.number,
   simulateSprintVelocity: PropTypes.func,
-  revertSprintVelocity: PropTypes.func
-}
+  revertSprintVelocity: PropTypes.func,
+};
 
-const mapStateToProps = ({project}) => ({
+const mapStateToProps = ({ project }) => ({
   calculatedSprintVelocity: project.calculatedSprintVelocity,
-  currentSprintVelocity: project.currentSprintVelocity
+  currentSprintVelocity: project.currentSprintVelocity,
 });
 
 const mapDispatchToProps = {
   simulateSprintVelocity,
-  revertSprintVelocity
+  revertSprintVelocity,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SprintVelocitySimulation)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SprintVelocitySimulation);
