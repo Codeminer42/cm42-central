@@ -325,34 +325,6 @@ export const cloneStory = (story) => {
   };
 };
 
-export const mergeWithFetchedStories = (
-  currentStories,
-  fetchedStories,
-  pastStoryIds
-) => {
-  const storyNotSaved = currentStories.filter(isNew);
-
-  const editedStories = fetchedStories.map((fetchedStory) => {
-    const existingStory = currentStories.find(
-      (story) => story.id === fetchedStory.id
-    );
-    if (existingStory && !existingStory.collapsed) {
-      return {
-        ...fetchedStory,
-        collapsed: false,
-        _editing: existingStory._editing,
-      };
-    }
-    return fetchedStory;
-  });
-
-  const pastStories = pastStoryIds.map((id) =>
-    currentStories.find((story) => story.id === id)
-  ).filter((story) => story !== undefined);
-
-  return [...storyNotSaved, ...editedStories, ...pastStories];
-};
-
 export const createNewStory = (stories, storyAttributes) => {
   const story = stories.find(isNew);
 
@@ -360,10 +332,13 @@ export const createNewStory = (stories, storyAttributes) => {
     editStory(story, storyAttributes);
   }
 
+  const newId = createTemporaryId();
+
   const newStory = {
     ...emptyStory,
     ...storyAttributes,
     collapsed: false,
+    id: newId,
   };
 
   return {
@@ -371,6 +346,8 @@ export const createNewStory = (stories, storyAttributes) => {
     _editing: newStory,
   };
 };
+
+export const createTemporaryId = () => Symbol(`new-${Date.now()}`);
 
 export const withScope = (stories, from) =>
   Boolean(from) ? stories[from] : stories[storyScopes.ALL];
@@ -388,7 +365,9 @@ export const haveSearch = (stories) =>
 export const haveStory = (story, stories) =>
   stories.some((item) => item.id === story.id);
 
-export const isNew = (story) => story.id === null;
+export const isNew = (story) => {
+  return typeof story.id === "symbol";
+};
 
 export const canSave = (story) =>
   !isAccepted(story) && story._editing.title !== "";
@@ -397,21 +376,18 @@ export const canDelete = (story) => !isAccepted(story) && !isNew(story);
 
 export const canEdit = (story) => !isAccepted(story);
 
-export const withoutNewStory = (stories) =>
-  stories.filter((story) => !isNew(story));
+export const withoutNewStory = (stories, id) =>
+  stories.filter((story) => story.id !== id);
 
-export const replaceOrAddNewStory = (stories, newStory) => {
-  if (shouldReplace(stories)) {
-    return stories.map((story) => (isNew(story) ? newStory : story));
+export const replaceOrAddNewStory = (stories, newStory, id) => {
+  if (id) {
+    return stories.map((story) => (story.id === id ? newStory : story));
   }
 
   return [newStory, ...stories];
 };
 
-const shouldReplace = (stories) => stories.some(isNew);
-
 const emptyStory = {
-  id: null,
   title: "",
   description: null,
   estimate: "",
