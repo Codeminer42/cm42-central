@@ -1,10 +1,10 @@
 import actionTypes from './actionTypes';
 
-export const simulateSprintVelocity = (simulatedSprintVelocity) => ({
+export const simulateSprintVelocity = simulatedSprintVelocity => ({
   type: actionTypes.SIMULATE_SPRINT_VELOCITY,
-  simulatedSprintVelocity
-})
+  simulatedSprintVelocity,
+});
 
 export const revertSprintVelocity = () => ({
-  type: actionTypes.REVERT_TO_CALCULATED_VELOCITY
-})
+  type: actionTypes.REVERT_TO_CALCULATED_VELOCITY,
+});

@@ -1,11 +1,11 @@
-import React from "react";
-import Column from "./ColumnItem";
-import PropTypes from "prop-types";
-import Stories from "../stories/Stories";
-import Sprints from "../stories/Sprints";
-import AddStoryButton from "../story/AddStoryButton";
+import React from 'react';
+import Column from './ColumnItem';
+import PropTypes from 'prop-types';
+import Stories from '../stories/Stories';
+import Sprints from '../stories/Sprints';
+import AddStoryButton from '../story/AddStoryButton';
 import { order } from '../../models/beta/column';
-import { status } from "../../libs/beta/constants";
+import { status } from '../../libs/beta/constants';
 
 const Columns = ({
   canClose,
@@ -16,16 +16,16 @@ const Columns = ({
   toggleColumn,
   createStory,
   visibleColumns,
-  reverse
+  reverse,
 }) => {
   const columns = [
     {
-      title: I18n.t("projects.show.chilly_bin"),
+      title: I18n.t('projects.show.chilly_bin'),
       renderAction: () => (
         <AddStoryButton
           onAdd={() =>
             createStory({
-              state: status.UNSCHEDULED
+              state: status.UNSCHEDULED,
             })
           }
         />
@@ -38,32 +38,27 @@ const Columns = ({
         />
       ),
       visible: visibleColumns.chillyBin,
-      onClose: () => toggleColumn("chillyBin")
+      onClose: () => toggleColumn('chillyBin'),
     },
     {
-      title: `${I18n.t("projects.show.backlog")} / ${I18n.t(
-        "projects.show.in_progress"
+      title: `${I18n.t('projects.show.backlog')} / ${I18n.t(
+        'projects.show.in_progress'
       )}`,
       renderAction: () => (
         <AddStoryButton
           onAdd={() =>
             createStory({
-              state: status.UNSTARTED
+              state: status.UNSTARTED,
             })
           }
         />
       ),
-      children: (
-        <Sprints
-          sprints={backlogSprints}
-          columnId="backlog"
-        />
-      ),
+      children: <Sprints sprints={backlogSprints} columnId="backlog" />,
       visible: visibleColumns.backlog,
-      onClose: () => toggleColumn("backlog")
+      onClose: () => toggleColumn('backlog'),
     },
     {
-      title: I18n.t("projects.show.done"),
+      title: I18n.t('projects.show.done'),
       children: (
         <Sprints
           sprints={doneSprints}
@@ -72,8 +67,8 @@ const Columns = ({
         />
       ),
       visible: visibleColumns.done,
-      onClose: () => toggleColumn("done")
-    }
+      onClose: () => toggleColumn('done'),
+    },
   ];
 
   return order(columns, reverse).map(column => (
@@ -99,7 +94,7 @@ Columns.propTypes = {
   toggleColumn: PropTypes.func.isRequired,
   createStory: PropTypes.func.isRequired,
   visibleColumns: PropTypes.object.isRequired,
-  reverse: PropTypes.bool.isRequired
+  reverse: PropTypes.bool.isRequired,
 };
 
 export default Columns;

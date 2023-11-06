@@ -8,10 +8,7 @@ const notePropTypesShape = PropTypes.shape({
   createdAt: PropTypes.string,
   updatedAt: PropTypes.string,
   userName: PropTypes.string,
-  errors: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.array
-  ])
+  errors: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 });
 
 export default notePropTypesShape;

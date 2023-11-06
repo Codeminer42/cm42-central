@@ -7,7 +7,7 @@ import ExpandedStorySection from './ExpandedStorySection';
 const ExpandedStoryNotes = ({ story, onCreate, onDelete, disabled }) => {
   const [value, setValue] = useState('');
 
-  const handleChange = (event) => {
+  const handleChange = event => {
     setValue(event.target.value);
   };
 
@@ -28,9 +28,9 @@ const ExpandedStoryNotes = ({ story, onCreate, onDelete, disabled }) => {
         onChange={handleChange}
       />
 
-      <div className='create-note-button'>
+      <div className="create-note-button">
         <input
-          type='button'
+          type="button"
           value={I18n.t('add note')}
           onClick={handleSave}
           disabled={hasAnEmptyValue()}
@@ -39,18 +39,11 @@ const ExpandedStoryNotes = ({ story, onCreate, onDelete, disabled }) => {
     </>
   );
 
-  if(disabled && !story.notes.length) return null;
+  if (disabled && !story.notes.length) return null;
 
   return (
-    <ExpandedStorySection
-      title={I18n.t('story.notes')}
-      identifier="notes"
-    >
-      <NotesList
-        notes={story.notes}
-        onDelete={onDelete}
-        disabled={disabled}
-      />
+    <ExpandedStorySection title={I18n.t('story.notes')} identifier="notes">
+      <NotesList notes={story.notes} onDelete={onDelete} disabled={disabled} />
 
       {!disabled && notesForm()}
     </ExpandedStorySection>
@@ -61,7 +54,7 @@ ExpandedStoryNotes.propTypes = {
   story: editingStoryPropTypesShape.isRequired,
   onCreate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired
+  disabled: PropTypes.bool.isRequired,
 };
 
 export default ExpandedStoryNotes;

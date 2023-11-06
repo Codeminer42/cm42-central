@@ -1,17 +1,14 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo } from 'react';
 import classname from 'classnames';
-import PropTypes from "prop-types";
-import Stories from "./Stories";
-import SprintHeader from './SprintHeader'
+import PropTypes from 'prop-types';
+import Stories from './Stories';
+import SprintHeader from './SprintHeader';
 import SprintPropTypes from '../shapes/iteration';
 import PastIterationPropTypes from '../shapes/pastIteration';
 
 const propTypes = {
   fetchStories: PropTypes.func,
-  sprint: PropTypes.oneOfType([
-    SprintPropTypes,
-    PastIterationPropTypes
-  ])
+  sprint: PropTypes.oneOfType([SprintPropTypes, PastIterationPropTypes]),
 };
 
 const defaultProps = {
@@ -20,9 +17,9 @@ const defaultProps = {
     number: 0,
     startDate: 0,
     points: 0,
-    stories: []
+    stories: [],
   },
-  isDropDisabled: false
+  isDropDisabled: false,
 };
 
 const Sprint = ({
@@ -30,7 +27,7 @@ const Sprint = ({
   sprint,
   sprintIndex,
   columnId,
-  isDropDisabled
+  isDropDisabled,
 }) => {
   const isDone = useMemo(() => sprint.hasOwnProperty('hasStories'), [sprint]);
 
@@ -40,7 +37,7 @@ const Sprint = ({
     const { hasStories, fetched, isFetching } = sprint;
 
     return hasStories && !(fetched || isFetching);
-  }
+  };
 
   const onHeaderClick = () => {
     const { number, startDate, endDate } = sprint;
@@ -48,25 +45,16 @@ const Sprint = ({
     if (needsFetch()) fetchStories(number, startDate, endDate);
 
     toggleSprint();
-  }
+  };
 
   const toggleSprint = () => setIsClosed(!isClosed);
 
-  const {
-    number,
-    points,
-    stories,
-    startDate,
-    hasStories,
-    completedPoints
-  } = sprint;
+  const { number, points, stories, startDate, hasStories, completedPoints } =
+    sprint;
 
-  const classes = classname(
-    'Sprint__body',
-    {
-      'Sprint__body--is-collapsed': isClosed
-    }
-  );
+  const classes = classname('Sprint__body', {
+    'Sprint__body--is-collapsed': isClosed,
+  });
 
   return (
     <div className="Sprint">
@@ -81,20 +69,18 @@ const Sprint = ({
         isClosed={isClosed}
       />
       <div className={classes}>
-        {
-          stories && (
-            <Stories
-              stories={stories}
-              columnId={columnId}
-              sprintIndex={sprintIndex}
-              isDropDisabled={isDropDisabled}
-            />
-          )
-        }
+        {stories && (
+          <Stories
+            stories={stories}
+            columnId={columnId}
+            sprintIndex={sprintIndex}
+            isDropDisabled={isDropDisabled}
+          />
+        )}
       </div>
     </div>
   );
-}
+};
 
 Sprint.propTypes = propTypes;
 Sprint.defaultProps = defaultProps;

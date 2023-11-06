@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import {
   fetchProjectBoard,
   toggleColumn,
   reverseColumns,
-} from "actions/projectBoard";
-import { fetchPastStories } from "actions/pastIterations";
-import { Column } from "../Columns/ColumnItem";
-import History from "../stories/History";
-import { getColumns } from "../../selectors/columns";
-import { closeHistory, createStory, dragDropStory } from "../../actions/story";
-import { CHILLY_BIN, DONE, BACKLOG, EPIC } from "../../models/beta/column";
-import PropTypes from "prop-types";
+} from 'actions/projectBoard';
+import { fetchPastStories } from 'actions/pastIterations';
+import { Column } from '../Columns/ColumnItem';
+import History from '../stories/History';
+import { getColumns } from '../../selectors/columns';
+import { closeHistory, createStory, dragDropStory } from '../../actions/story';
+import { CHILLY_BIN, DONE, BACKLOG, EPIC } from '../../models/beta/column';
+import PropTypes from 'prop-types';
 import {
   canCloseColumn,
   getPositions,
@@ -20,21 +20,21 @@ import {
   moveStory,
   getSprintColumn,
   dragStory,
-} from "../../models/beta/projectBoard";
-import { historyStatus, columns, storyTypes } from "libs/beta/constants";
-import StoryPropTypes from "../shapes/story";
-import ProjectBoardPropTypes from "../shapes/projectBoard";
-import Notifications from "../Notifications";
-import { removeNotification } from "../../actions/notifications";
-import StorySearch from "../search/StorySearch";
-import SprintVelocitySimulation from "../sprint/SprintVelocitySimulation";
-import SearchResults from "./../search/SearchResults";
-import ProjectLoading from "./ProjectLoading";
-import SideBar from "./SideBar";
-import Columns from "../Columns";
-import EpicColumn from "../Columns/EpicColumn";
-import { DragDropContext } from "react-beautiful-dnd";
-import { subscribeToProjectChanges } from "../../pusherSockets";
+} from '../../models/beta/projectBoard';
+import { historyStatus, columns, storyTypes } from 'libs/beta/constants';
+import StoryPropTypes from '../shapes/story';
+import ProjectBoardPropTypes from '../shapes/projectBoard';
+import Notifications from '../Notifications';
+import { removeNotification } from '../../actions/notifications';
+import StorySearch from '../search/StorySearch';
+import SprintVelocitySimulation from '../sprint/SprintVelocitySimulation';
+import SearchResults from './../search/SearchResults';
+import ProjectLoading from './ProjectLoading';
+import SideBar from './SideBar';
+import Columns from '../Columns';
+import EpicColumn from '../Columns/EpicColumn';
+import { DragDropContext } from 'react-beautiful-dnd';
+import { subscribeToProjectChanges } from '../../pusherSockets';
 
 export const ProjectBoard = ({
   fetchProjectBoard,
@@ -206,7 +206,7 @@ export const ProjectBoard = ({
         {history.status !== historyStatus.DISABLED && (
           <Column
             onClose={closeHistory}
-            title={`${I18n.t("projects.show.history")} '${history.storyTitle}'`}
+            title={`${I18n.t('projects.show.history')} '${history.storyTitle}'`}
             data-id="history-column"
             canClose
           >

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import ExpandedStoryToolTip from "./ExpandedStoryToolTip";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import ExpandedStoryToolTip from './ExpandedStoryToolTip';
 
 const ExpandedStoryControls = ({
   onSave,
@@ -12,7 +12,7 @@ const ExpandedStoryControls = ({
   disabled,
 }) => {
   const handleDelete = () => {
-    if (window.confirm(I18n.t("story destroy confirm"))) {
+    if (window.confirm(I18n.t('story destroy confirm'))) {
       onDelete();
     }
   };
@@ -25,7 +25,7 @@ const ExpandedStoryControls = ({
   };
 
   const hasUnsavedChanges = () => {
-    return window.confirm(I18n.t("story unsaved changes"));
+    return window.confirm(I18n.t('story unsaved changes'));
   };
 
   return (
@@ -34,7 +34,7 @@ const ExpandedStoryControls = ({
         className="save"
         onClick={onSave}
         type="button"
-        value={I18n.t("save")}
+        value={I18n.t('save')}
         disabled={!canSave}
       />
 
@@ -42,17 +42,17 @@ const ExpandedStoryControls = ({
         className="delete"
         onClick={handleDelete}
         type="button"
-        value={I18n.t("delete")}
+        value={I18n.t('delete')}
         disabled={!canDelete}
       />
       <input
         className="cancel"
         onClick={handleCancel}
         type="button"
-        value={I18n.t("cancel")}
+        value={I18n.t('cancel')}
       />
 
-      {disabled && <ExpandedStoryToolTip text={I18n.t("accepted_tooltip")} />}
+      {disabled && <ExpandedStoryToolTip text={I18n.t('accepted_tooltip')} />}
     </div>
   );
 };

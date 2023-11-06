@@ -1,8 +1,9 @@
-import React from 'react'
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const CollapsedStoryStateButton = ({ action, onUpdate }) => (
-  <button type="button"
+  <button
+    type="button"
     className={`Story__btn Story__btn--${action}`}
     onClick={onUpdate}
   >
@@ -12,7 +13,7 @@ const CollapsedStoryStateButton = ({ action, onUpdate }) => (
 
 CollapsedStoryStateButton.propTypes = {
   action: PropTypes.string.isRequired,
-  onUpdate: PropTypes.func.isRequired
+  onUpdate: PropTypes.func.isRequired,
 };
 
 export default CollapsedStoryStateButton;

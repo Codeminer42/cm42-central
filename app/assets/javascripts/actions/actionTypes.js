@@ -1,4 +1,4 @@
-import keyMirror from "keymirror";
+import keyMirror from 'keymirror';
 
 export default keyMirror({
   REQUEST_PROJECT_BOARD: null,

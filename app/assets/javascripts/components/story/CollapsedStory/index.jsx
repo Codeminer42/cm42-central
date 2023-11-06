@@ -1,27 +1,27 @@
-import React, { useMemo } from "react";
-import { connect } from "react-redux";
-import { Draggable } from "react-beautiful-dnd";
-import classname from "classnames";
-import PropTypes from "prop-types";
-import { updateCollapsedStory, highlight } from "../../../actions/story";
-import StoryPopover from "../StoryPopover";
-import StoryDescriptionIcon from "../StoryDescriptionIcon";
-import CollapsedStoryEstimate from "./CollapsedStoryEstimate";
-import CollapsedStoryStateActions from "./CollapsedStoryStateActions";
-import CollapsedStoryInfo from "./CollapsedStoryInfo";
-import StoryIcon from "../StoryIcon";
-import MDSpinner from "react-md-spinner";
-import * as Story from "../../../models/beta/story";
-import { status, columns } from "../../../libs/beta/constants";
+import React, { useMemo } from 'react';
+import { connect } from 'react-redux';
+import { Draggable } from 'react-beautiful-dnd';
+import classname from 'classnames';
+import PropTypes from 'prop-types';
+import { updateCollapsedStory, highlight } from '../../../actions/story';
+import StoryPopover from '../StoryPopover';
+import StoryDescriptionIcon from '../StoryDescriptionIcon';
+import CollapsedStoryEstimate from './CollapsedStoryEstimate';
+import CollapsedStoryStateActions from './CollapsedStoryStateActions';
+import CollapsedStoryInfo from './CollapsedStoryInfo';
+import StoryIcon from '../StoryIcon';
+import MDSpinner from 'react-md-spinner';
+import * as Story from '../../../models/beta/story';
+import { status, columns } from '../../../libs/beta/constants';
 
-import CollapsedStoryFocusButon from "./CollapsedStoryFocusButton";
-import StoryPropTypes from "../../shapes/story";
-import { getStories, getStoriesWithScope } from "../../../selectors/stories";
-import { getProject } from "../../../selectors/project";
+import CollapsedStoryFocusButon from './CollapsedStoryFocusButton';
+import StoryPropTypes from '../../shapes/story';
+import { getStories, getStoriesWithScope } from '../../../selectors/stories';
+import { getProject } from '../../../selectors/project';
 
 const storyClassName = (
   story,
-  additionalClassname = "",
+  additionalClassname = '',
   isDragging,
   isDragDisabled
 ) => {
@@ -31,13 +31,13 @@ const storyClassName = (
   );
   const isRelease = Story.isRelease(story);
   return classname(
-    "Story Story--collapsed",
+    'Story Story--collapsed',
     {
-      "Story--release": isRelease,
-      "Story--unestimated": isStoryNotEstimated,
-      "Story--estimated": !isStoryNotEstimated,
-      "Story--isDragging": isDragging,
-      "Story--cantBeMoved": story.loading || isDragDisabled,
+      'Story--release': isRelease,
+      'Story--unestimated': isStoryNotEstimated,
+      'Story--estimated': !isStoryNotEstimated,
+      'Story--isDragging': isDragging,
+      'Story--cantBeMoved': story.loading || isDragDisabled,
     },
     additionalClassname
   );
@@ -76,11 +76,11 @@ export const Container = ({
     <CollapsedStoryInfo story={story} onLabelClick={onLabelClick} />
 
     {story.loading ? (
-      <MDSpinner size={20} singleColor={"#333"} />
+      <MDSpinner size={20} singleColor={'#333'} />
     ) : (
       <CollapsedStoryStateActions
         story={story}
-        onUpdate={(newAttributes) =>
+        onUpdate={newAttributes =>
           updateCollapsedStory(story.id, project.id, newAttributes)
         }
       />

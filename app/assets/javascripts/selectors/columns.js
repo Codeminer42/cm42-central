@@ -1,16 +1,16 @@
-import { createSelector } from "reselect";
-import { orderByState, groupStoriesInSprints } from "./backlog";
-import { mountPastIterations } from "./done";
-import * as Column from "../models/beta/column";
-import { comparePosition } from "../models/beta/story";
-import { property, last } from "underscore";
-import { denormalizePastIterations } from "../reducers/pastIterations";
-import { storiesWithScope } from "../reducers/stories";
+import { createSelector } from 'reselect';
+import { orderByState, groupStoriesInSprints } from './backlog';
+import { mountPastIterations } from './done';
+import * as Column from '../models/beta/column';
+import { comparePosition } from '../models/beta/story';
+import { property, last } from 'underscore';
+import { denormalizePastIterations } from '../reducers/pastIterations';
+import { storiesWithScope } from '../reducers/stories';
 
-const getStories = property("stories");
-const getColumn = property("column");
-const getProject = property("project");
-const getPastIterations = property("pastIterations");
+const getStories = property('stories');
+const getColumn = property('column');
+const getProject = property('project');
+const getPastIterations = property('pastIterations');
 
 export const getColumns = createSelector(
   [getColumn, getStories, getProject, getPastIterations],
@@ -22,7 +22,7 @@ export const getColumns = createSelector(
           .sort(comparePosition);
       case Column.BACKLOG:
         const orderedStories = orderByState(
-          storiesWithScope(stories).filter((story) =>
+          storiesWithScope(stories).filter(story =>
             Column.isBacklog(story, project)
           )
         );

@@ -1,12 +1,12 @@
-import actionTypes from "./actionTypes";
+import actionTypes from './actionTypes';
 import {
   sendSuccessNotification,
   sendErrorNotification,
   sendDefaultErrorNotification,
-} from "./notifications";
-import { wait } from "../services/promises";
-import { storyScopes } from "../libs/beta/constants";
-import { storiesWithScope } from "../reducers/stories";
+} from './notifications';
+import { wait } from '../services/promises';
+import { storyScopes } from '../libs/beta/constants';
+import { storiesWithScope } from '../reducers/stories';
 
 export const createStory = (attributes, from) => ({
   type: actionTypes.CREATE_STORY,
@@ -20,12 +20,12 @@ export const addStory = (story, from) => ({
   from,
 });
 
-export const loadHistory = (title) => ({
+export const loadHistory = title => ({
   type: actionTypes.LOAD_HISTORY,
   title,
 });
 
-export const receiveHistory = (activities) => ({
+export const receiveHistory = activities => ({
   type: actionTypes.RECEIVE_HISTORY,
   activities,
 });
@@ -112,7 +112,7 @@ export const closeEpicColumn = () => ({
 });
 
 export const fetchEpic =
-  (label) =>
+  label =>
   async (dispatch, getState, { Story }) => {
     try {
       const { projectId } = getState().projectBoard;
@@ -130,10 +130,10 @@ export const confirmBeforeSaveIfNeeded = async (
   needConfirmation,
   callback
 ) => {
-  const confirmStoryChange = (story) =>
+  const confirmStoryChange = story =>
     confirm(
-      I18n.t("story.definitive_sure", {
-        action: I18n.t("story.change_to", {
+      I18n.t('story.definitive_sure', {
+        action: I18n.t('story.change_to', {
           state: I18n.t(`story.state.${story.state}`),
         }),
       })
@@ -190,26 +190,26 @@ export const updateCollapsedStory =
 
           dispatch(
             sendSuccessNotification(
-              I18n.t("messages.operations.success.story.save", {
+              I18n.t('messages.operations.success.story.save', {
                 story: updatedStory.title,
               })
             )
           );
         },
-        onError: (error) => {
+        onError: error => {
           dispatch(sendErrorNotification(error));
           dispatch(storyFailure(story.id, error, from));
         },
         onCanceled: () => {
           dispatch(
-            sendErrorNotification("messages.operations.cancel.default_cancel", {
+            sendErrorNotification('messages.operations.cancel.default_cancel', {
               custom: true,
             })
           );
           dispatch(
             storyFailure(
               story.id,
-              I18n.t("messages.operations.cancel.default_cancel"),
+              I18n.t('messages.operations.cancel.default_cancel'),
               from
             )
           );
@@ -262,27 +262,27 @@ export const saveStory =
             );
             dispatch(
               sendSuccessNotification(
-                I18n.t("messages.operations.success.story.create", {
+                I18n.t('messages.operations.success.story.create', {
                   story: story._editing.title,
                 })
               )
             );
           },
-          onError: (error) => {
+          onError: error => {
             dispatch(sendErrorNotification(error));
             dispatch(storyFailure(story.id, error, from));
           },
           onCanceled: () => {
             dispatch(
               sendErrorNotification(
-                "messages.operations.cancel.default_cancel",
+                'messages.operations.cancel.default_cancel',
                 { custom: true }
               )
             );
             dispatch(
               storyFailure(
                 story.id,
-                I18n.t("messages.operations.cancel.default_cancel"),
+                I18n.t('messages.operations.cancel.default_cancel'),
                 from
               )
             );
@@ -307,27 +307,27 @@ export const saveStory =
             dispatch(updateStorySuccess(updatedStory, from));
             dispatch(
               sendSuccessNotification(
-                I18n.t("messages.operations.success.story.save", {
+                I18n.t('messages.operations.success.story.save', {
                   story: updatedStory.title,
                 })
               )
             );
           },
-          onError: (error) => {
+          onError: error => {
             dispatch(sendErrorNotification(error));
             dispatch(storyFailure(story.id, error, from));
           },
           onCanceled: () => {
             dispatch(
               sendErrorNotification(
-                "messages.operations.cancel.default_cancel",
+                'messages.operations.cancel.default_cancel',
                 { custom: true }
               )
             );
             dispatch(
               storyFailure(
                 story.id,
-                I18n.t("messages.operations.cancel.default_cancel"),
+                I18n.t('messages.operations.cancel.default_cancel'),
                 from
               )
             );
@@ -357,7 +357,7 @@ export const deleteStory =
 
       return dispatch(
         sendSuccessNotification(
-          I18n.t("messages.operations.success.story.delete", {
+          I18n.t('messages.operations.success.story.delete', {
             story: storyTitle,
           })
         )
@@ -368,7 +368,7 @@ export const deleteStory =
     }
   };
 
-export const highlight = (storyId) => (dispatch) => {
+export const highlight = storyId => dispatch => {
   dispatch(updateHighlight(storyId, true));
   setTimeout(() => dispatch(updateHighlight(storyId, false)), 400);
 };

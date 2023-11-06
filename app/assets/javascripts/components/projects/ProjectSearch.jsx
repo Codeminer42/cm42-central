@@ -11,14 +11,14 @@ export default class ProjectSearch extends React.Component {
         joined: {
           title: I18n.t('projects.mine'),
           projects: this.props.projects.joined.notArchived(),
-          joined: true
+          joined: true,
         },
         unjoined: {
           title: I18n.t('projects.not_member_of'),
           projects: this.props.projects.unjoined.notArchived(),
-          joined: false
-        }
-      }
+          joined: false,
+        },
+      },
     };
     this.handleSearch = this.handleSearch.bind(this);
   }
@@ -42,44 +42,58 @@ export default class ProjectSearch extends React.Component {
       visibleProjects: {
         joined: {
           title: I18n.t('projects.mine'),
-          projects: this.filterProjects(this.props.projects.joined, projectsSearch, projectsFilter),
-          joined: true
+          projects: this.filterProjects(
+            this.props.projects.joined,
+            projectsSearch,
+            projectsFilter
+          ),
+          joined: true,
         },
         unjoined: {
           title: I18n.t('projects.not_member_of'),
-          projects: this.filterProjects(this.props.projects.unjoined, projectsSearch, projectsFilter),
-          joined: false
-        }
-      }
+          projects: this.filterProjects(
+            this.props.projects.unjoined,
+            projectsSearch,
+            projectsFilter
+          ),
+          joined: false,
+        },
+      },
     });
   }
 
   filterOptions() {
-    return Project.filters.map((filter) => {
-      return(<option key={ filter } value={ filter }>{ I18n.t(filter) }</option>);
+    return Project.filters.map(filter => {
+      return (
+        <option key={filter} value={filter}>
+          {I18n.t(filter)}
+        </option>
+      );
     });
   }
 
   renderProjectList(list) {
     if (list.projects.length > 0) {
-      return(
+      return (
         <ProjectList
-          title={ list.title }
-          projects={ list.projects }
-          user={ this.state.user }
-          joined={ list.joined }
+          title={list.title}
+          projects={list.projects}
+          user={this.state.user}
+          joined={list.joined}
         />
       );
     }
   }
 
   render() {
-    return(
+    return (
       <Fragment>
         <div className="search-projects">
           <div className="form-group col-md-12">
             <div className="input-group">
-              <div className="input-group-addon"><i className="mi md-20 heading-icon">search</i></div>
+              <div className="input-group-addon">
+                <i className="mi md-20 heading-icon">search</i>
+              </div>
               <input
                 id="projects_search"
                 className="form-control"
@@ -95,15 +109,15 @@ export default class ProjectSearch extends React.Component {
                   onChange={this.handleSearch}
                   ref="projectsFilter"
                 >
-                  { this.filterOptions() }
+                  {this.filterOptions()}
                 </select>
               </div>
             </div>
           </div>
         </div>
-        { this.renderProjectList(this.state.visibleProjects.joined) }
-        { this.renderProjectList(this.state.visibleProjects.unjoined) }
+        {this.renderProjectList(this.state.visibleProjects.joined)}
+        {this.renderProjectList(this.state.visibleProjects.unjoined)}
       </Fragment>
     );
   }
-};
+}

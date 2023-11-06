@@ -1,14 +1,14 @@
-import React from "react";
-import { connect } from "react-redux";
-import { closeSearch } from "actions/projectBoard";
-import Search from "./Search";
-import { haveSearch } from "./../../models/beta/story";
-import { storyScopes } from "./../../libs/beta/constants";
-import Column from "./../Columns/ColumnItem";
-import PropTypes from "prop-types";
-import StoryPropTypes from "../shapes/story";
-import { getStories, getStoriesWithScope } from "../../selectors/stories";
-import { getProjectBoard } from "../../selectors/projectBoard";
+import React from 'react';
+import { connect } from 'react-redux';
+import { closeSearch } from 'actions/projectBoard';
+import Search from './Search';
+import { haveSearch } from './../../models/beta/story';
+import { storyScopes } from './../../libs/beta/constants';
+import Column from './../Columns/ColumnItem';
+import PropTypes from 'prop-types';
+import StoryPropTypes from '../shapes/story';
+import { getStories, getStoriesWithScope } from '../../selectors/stories';
+import { getProjectBoard } from '../../selectors/projectBoard';
 
 export const SearchResults = ({
   isEnabled,
@@ -36,7 +36,7 @@ SearchResults.propTypes = {
   closeSearch: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   isEnabled: haveSearch(getStories(state)),
   searchResults: getStoriesWithScope(state, storyScopes.SEARCH),
   projectBoard: getProjectBoard(state),

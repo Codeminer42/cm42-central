@@ -3,37 +3,54 @@ import PropTypes from 'prop-types';
 import { Droppable } from 'react-beautiful-dnd';
 import { isDone } from '../../models/beta/column';
 
-export const Column = ({ title, children, renderAction, onClose, canClose, providedProps }) => (
+export const Column = ({
+  title,
+  children,
+  renderAction,
+  onClose,
+  canClose,
+  providedProps,
+}) => (
   <div className="Column" data-cy="column" data-id="column" {...providedProps}>
     <div className="Column__header">
       <h3 className="Column__name" data-id="column-title">
         {title}
       </h3>
       <div className="Column__actions">
-        { renderAction() }
-        {
-          canClose && (
-            <button
-              type="button"
-              data-id="column-button"
-              className="Column__btn-close"
-              onClick={onClose}
-            >
-              <i className="mi md-light md-16">close</i>
-            </button>
-          )
-        }
+        {renderAction()}
+        {canClose && (
+          <button
+            type="button"
+            data-id="column-button"
+            className="Column__btn-close"
+            onClick={onClose}
+          >
+            <i className="mi md-light md-16">close</i>
+          </button>
+        )}
       </div>
     </div>
     <div data-id="column-children" className="Column__body">
-      { children }
+      {children}
     </div>
   </div>
 );
 
-const DroppableColumn = ({ title, children, renderAction, onClose, visible, canClose, columnId }) => (
+const DroppableColumn = ({
+  title,
+  children,
+  renderAction,
+  onClose,
+  visible,
+  canClose,
+  columnId,
+}) =>
   visible && (
-    <Droppable droppableId={JSON.stringify({ columnId })} isDropDisabled={isDone(columnId)} type='column'>
+    <Droppable
+      droppableId={JSON.stringify({ columnId })}
+      isDropDisabled={isDone(columnId)}
+      type="column"
+    >
       {provided => (
         <Column
           canClose={canClose}
@@ -43,13 +60,12 @@ const DroppableColumn = ({ title, children, renderAction, onClose, visible, canC
           renderAction={renderAction}
           providedProps={{
             ref: provided.innerRef,
-            ...provided.droppableProps
+            ...provided.droppableProps,
           }}
         />
       )}
     </Droppable>
-  )
-)
+  );
 
 Column.propTypes = {
   title: PropTypes.string.isRequired,
@@ -64,7 +80,7 @@ Column.defaultProps = {
   renderAction: () => null,
   visible: true,
   children: '',
-  providedProps: {}
-}
+  providedProps: {},
+};
 
 export default DroppableColumn;

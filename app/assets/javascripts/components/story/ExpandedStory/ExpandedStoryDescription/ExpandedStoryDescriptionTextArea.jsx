@@ -6,9 +6,9 @@ const ExpandedStoryDescriptionTextArea = ({
   onEdit,
   disabled,
   description,
-  users
+  users,
 }) => {
-  const extractMentionData = (({ id, username }) => ({ id, display: username }));
+  const extractMentionData = ({ id, username }) => ({ id, display: username });
   const formatMention = (_, display) => `@${display} `;
   const mentionableUsers = users.map(extractMentionData);
   const inputEl = useRef(null);
@@ -24,7 +24,7 @@ const ExpandedStoryDescriptionTextArea = ({
   return (
     <MentionsInput
       className="edit-description-text"
-      onChange={(event) => onEdit(event.target.value)}
+      onChange={event => onEdit(event.target.value)}
       readOnly={disabled}
       value={description}
       data-id="text-area"
@@ -38,14 +38,14 @@ const ExpandedStoryDescriptionTextArea = ({
         trigger="@"
       />
     </MentionsInput>
-  )
+  );
 };
 
 ExpandedStoryDescriptionTextArea.propTypes = {
   onEdit: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
   users: PropTypes.array.isRequired,
-  description: PropTypes.string.isRequired
+  description: PropTypes.string.isRequired,
 };
 
 export default ExpandedStoryDescriptionTextArea;

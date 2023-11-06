@@ -14,9 +14,7 @@ const renderButton = (point, onClick) => (
 
 const EstimateButtons = ({ points, onClick }) => (
   <div className="estimates">
-    {
-      points.map((point) => renderButton(point, onClick))
-    }
+    {points.map(point => renderButton(point, onClick))}
   </div>
 );
 

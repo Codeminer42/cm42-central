@@ -3,7 +3,9 @@ import React from 'react';
 class AtWhoInput extends React.Component {
   constructor(props) {
     super(props);
-    this.saveTextareaRef = (textarea) => { this.textarea = textarea };
+    this.saveTextareaRef = textarea => {
+      this.textarea = textarea;
+    };
   }
 
   componentDidMount() {
@@ -11,16 +13,18 @@ class AtWhoInput extends React.Component {
   }
 
   loadAtWho() {
-    $(this.textarea).atwho({
-      at: "@",
-      data: this.props.usernames
-    }).on('inserted.atwho', this.props.onChange);
+    $(this.textarea)
+      .atwho({
+        at: '@',
+        data: this.props.usernames,
+      })
+      .on('inserted.atwho', this.props.onChange);
   }
 
   render() {
     return (
       <textarea
-        ref={ this.saveTextareaRef }
+        ref={this.saveTextareaRef}
         name={this.props.name}
         className={`form-control ${this.props.name}-textarea`}
         defaultValue={this.props.value}

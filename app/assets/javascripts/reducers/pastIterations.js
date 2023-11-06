@@ -1,4 +1,4 @@
-import actionTypes from "actions/actionTypes";
+import actionTypes from 'actions/actionTypes';
 
 const initialState = {};
 
@@ -6,7 +6,7 @@ const pastIterationsReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.RECEIVE_PAST_ITERATIONS:
       return normalizePastIterations(
-        action.data.map((iteration) => {
+        action.data.map(iteration => {
           const currentState =
             state.pastIterations?.byId[iteration.iterationNumber];
 
@@ -55,7 +55,7 @@ const pastIterationsReducer = (state = initialState, action) => {
               ...state.pastIterations.byId[action.iterationNumber],
               fetched: true,
               isFetching: false,
-              storyIds: action.stories.map((story) => story.id),
+              storyIds: action.stories.map(story => story.id),
             },
           },
         },
@@ -81,7 +81,7 @@ const pastIterationsReducer = (state = initialState, action) => {
   }
 };
 
-const normalizePastIterations = (pastIterations) => {
+const normalizePastIterations = pastIterations => {
   return pastIterations.reduce(
     (acc, pastIteration) => {
       const pastIterationId = pastIteration.iterationNumber;
@@ -100,7 +100,7 @@ const normalizePastIterations = (pastIterations) => {
   );
 };
 
-export const denormalizePastIterations = (pastIterations) => {
+export const denormalizePastIterations = pastIterations => {
   const normalizedPastIterations = pastIterations?.pastIterations;
 
   if (
@@ -111,7 +111,7 @@ export const denormalizePastIterations = (pastIterations) => {
   }
 
   const denormalizedPastIterations = normalizedPastIterations.allIds.map(
-    (iterationId) => {
+    iterationId => {
       return normalizedPastIterations.byId[iterationId];
     }
   );

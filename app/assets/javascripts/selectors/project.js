@@ -1,1 +1,1 @@
-export const getProject = (state) => state.project;
+export const getProject = state => state.project;

@@ -1,18 +1,18 @@
-import SharedModelMethods from "../mixins/shared_model_methods";
+import SharedModelMethods from '../mixins/shared_model_methods';
 
 const Activity = Backbone.Model.extend({
   defaults: {
-    name: "activity",
-    date: "",
-    action: "",
-    subject_changes: "",
+    name: 'activity',
+    date: '',
+    action: '',
+    subject_changes: '',
   },
 
-  name: "activity",
+  name: 'activity',
 
-  i18nScope: "activerecord.attributes.",
+  i18nScope: 'activerecord.attributes.',
 
-  timestampFormat: "d mmm yyyy",
+  timestampFormat: 'd mmm yyyy',
 
   initialize: function (args) {
     var data = args.activity;
@@ -26,7 +26,7 @@ const Activity = Backbone.Model.extend({
   },
 
   humanActionName: function (action) {
-    return I18n.t(action, { scope: "activity.actions" });
+    return I18n.t(action, { scope: 'activity.actions' });
   },
 
   parseChanges: function (changes) {
