@@ -24,8 +24,8 @@ export const needConfirmation = story =>
   story.state === status.RELEASE;
 
 export const comparePosition = (a, b) => {
-  const positionA = a.newPosition;
-  const positionB = b.newPosition;
+  const positionA = Number(a.position);
+  const positionB = Number(b.position);
 
   return compareValues(positionA, positionB);
 };
