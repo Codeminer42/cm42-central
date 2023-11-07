@@ -38,7 +38,7 @@ export const StoryItem = ({
   const childProps = {
     story,
     onToggle: () => {
-        expandOrCollapseStory(story, from);
+      expandOrCollapseStory(story, from);
     },
     className,
     title,
@@ -62,10 +62,7 @@ export const StoryItem = ({
 
 StoryItem.propTypes = {
   story: PropTypes.object.isRequired,
-  expandOrCollapseStory: PropTypes.func.isRequired
+  expandOrCollapseStory: PropTypes.func.isRequired,
 };
 
-export default connect(
-  null,
-  { fetchEpic, expandOrCollapseStory }
-)(StoryItem);
+export default connect(null, { fetchEpic, expandOrCollapseStory })(StoryItem);
