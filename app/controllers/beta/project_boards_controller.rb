@@ -6,7 +6,7 @@ class Beta::ProjectBoardsController < ApplicationController
       project_id: params[:id],
       current_user: current_user,
       current_flow: cookies[:current_flow],
-      projects_scope: policy_scope(Project),
+      projects_scope: policy_scope(Project)
     )
 
     @project = result.success.project

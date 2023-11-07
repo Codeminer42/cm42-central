@@ -1,4 +1,4 @@
-import httpService from "./httpService";
+import httpService from './httpService';
 
 class ProjectStoriesService {
   async fetchStory(story) {

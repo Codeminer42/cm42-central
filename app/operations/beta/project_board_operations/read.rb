@@ -41,7 +41,7 @@ module Beta
           current_user: current_user,
           current_flow: current_flow,
           default_flow: default_flow,
-          labels: project_labels,
+          labels: project_labels
         )
 
         project_board = ::ProjectBoard.new(project_board_params)
@@ -54,8 +54,8 @@ module Beta
         yield project_iterations
 
         yield Success(
-                stories: @active_stories,
-                past_iterations: past_iterations,
+          stories: @active_stories,
+          past_iterations: past_iterations
               )
       end
 
@@ -64,8 +64,18 @@ module Beta
             project
               .stories
               .where("state != 'accepted' OR accepted_at >= ?", current_iteration_start)
-              .select(:id, :title, :description, :estimate, :story_type, :state, :requested_by_name, :owned_by_initials, :project_id)
-              .order("updated_at DESC")
+              .select(
+                :id,
+                :title,
+                :description,
+                :estimate,
+                :story_type,
+                :state,
+                :requested_by_name,
+                :owned_by_initials,
+                :project_id
+              )
+              .order('updated_at DESC')
           end
 
         Success(@active_stories)
@@ -73,16 +83,16 @@ module Beta
 
       def project_labels
         possibly_duplicated_labels = project.stories.map(&:labels).reject(&:blank?)
-        uniq_labels = possibly_duplicated_labels.join(",").split(",").uniq.join(",")
+        uniq_labels = possibly_duplicated_labels.join(',').split(',').uniq.join(',')
         uniq_labels
       end
 
       def project
         @project ||= current_user
-          .projects
-          .friendly
-          .preload(:users)
-          .find(project_id)
+                     .projects
+                     .friendly
+                     .preload(:users)
+                     .find(project_id)
       end
 
       def default_flow

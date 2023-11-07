@@ -14,7 +14,7 @@ module StoryOperations
 
       Success(
         active_stories: @active_stories,
-        past_iterations: past_iterations,
+        past_iterations: past_iterations
       )
     end
 
@@ -36,7 +36,7 @@ module StoryOperations
             .stories
             .with_dependencies
             .where("state != 'accepted' OR accepted_at >= ?", current_iteration_start)
-            .order("updated_at DESC")
+            .order('updated_at DESC')
         end
 
       Success(@active_stories)

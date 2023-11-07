@@ -212,18 +212,26 @@ export const updateCollapsedStory =
     );
   };
 
-export const expandOrCollapseStory = (currentStory, from) => async (dispatch, _, { Story }) => {
-  if (!currentStory.collapsed) return dispatch(toggleStory(currentStory.id, from));
+export const expandOrCollapseStory =
+  (currentStory, from) =>
+  async (dispatch, _, { Story }) => {
+    if (!currentStory.collapsed)
+      return dispatch(toggleStory(currentStory.id, from));
 
-  dispatch(setLoadingStory(currentStory.id, from));
-  try {
-    const { data } = await projectStoriesService.fetchStory(currentStory);
-    dispatch(updateStorySuccess({ ...Story.deserialize(data.story), ...currentStory }, from));
-    dispatch(toggleStory(currentStory.id, from));
-  } catch (error) {
-    dispatch(sendErrorNotification(error));
-  }
-};
+    dispatch(setLoadingStory(currentStory.id, from));
+    try {
+      const { data } = await projectStoriesService.fetchStory(currentStory);
+      dispatch(
+        updateStorySuccess(
+          { ...Story.deserialize(data.story), ...currentStory },
+          from
+        )
+      );
+      dispatch(toggleStory(currentStory.id, from));
+    } catch (error) {
+      dispatch(sendErrorNotification(error));
+    }
+  };
 
 export const dragDropStory = (storyId, projectId, newAttributes, from) =>
   async (dispatch, getState, { Story }) => {
