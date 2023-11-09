@@ -1,13 +1,11 @@
 import actionTypes from 'actions/actionTypes';
 import {
-  toggleStory,
   editStory,
   addNewAttributes,
   setLoadingStory,
   setLoadingValue,
   cloneStory,
   storyFailure,
-  withoutNewStory,
   createNewStory,
   replaceOrAddNewStory,
 } from 'models/beta/story';
@@ -16,7 +14,7 @@ import * as Task from 'models/beta/task';
 import * as Label from 'models/beta/label';
 import { updateIfSameId } from '../services/updateIfSameId';
 import { storyScopes } from './../libs/beta/constants';
-import { isEpic, isSearch, isNew } from '../models/beta/story';
+import { isEpic, isSearch } from '../models/beta/story';
 
 const initialState = {
   [storyScopes.ALL]: {},
@@ -84,6 +82,43 @@ const storiesReducer = (state = initialState, action) => {
           )
         ),
       };
+    case actionTypes.EXPAND_STORY:
+      return {
+        ...state,
+        [action.from]: {
+          stories: {
+            ...state[action.from].stories,
+            byId: {
+              ...state[action.from].stories.byId,
+              [action.storyId]: {
+                ...state[action.from].stories.byId[action.storyId],
+                collapsed: false,
+                _editing: {
+                  ...state[action.from].stories.byId[action.storyId],
+                  _isDirty: false,
+                  loading: false,
+                },
+              },
+            },
+          },
+        },
+      };
+    case actionTypes.COLLAPSE_STORY:
+      return {
+        ...state,
+        [action.from]: {
+          stories: {
+            ...state[action.from].stories,
+            byId: {
+              ...state[action.from].stories.byId,
+              [action.storyId]: {
+                ...state[action.from].stories.byId[action.storyId],
+                collapsed: true,
+              },
+            },
+          },
+        },
+      };
     case actionTypes.CLONE_STORY:
       const clonedStory = cloneStory(action.story);
 
@@ -91,22 +126,6 @@ const storiesReducer = (state = initialState, action) => {
         ...state,
         [action.from]: normalizeStories(
           replaceOrAddNewStory(denormalizedStories, clonedStory)
-        ),
-      };
-    case actionTypes.TOGGLE_STORY:
-      if (isNew(action)) {
-        return {
-          ...state,
-          [action.from]: normalizeStories(
-            withoutNewStory(denormalizedStories, action.id)
-          ),
-        };
-      }
-
-      return {
-        ...state,
-        [action.from]: normalizeStories(
-          denormalizedStories.map(updateIfSameId(action.id, toggleStory))
         ),
       };
     case actionTypes.EDIT_STORY:

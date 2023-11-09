@@ -1,6 +1,6 @@
 import actionTypes from './actionTypes';
 import { receiveUsers } from './user';
-import { receiveStories, toggleStory } from './story';
+import { receiveStories, expandStory } from './story';
 import { receivePastIterations } from './pastIterations';
 import { storyScopes } from '../libs/beta/constants';
 import { sendErrorNotification } from './notifications';
@@ -57,7 +57,7 @@ export const expandStoryIfNeeded = (dispatch, getHash) => {
   const storyId = getHash('#story-');
 
   if (storyId) {
-    dispatch(toggleStory(parseInt(storyId)));
+    dispatch(expandStory(parseInt(storyId)));
     window.history.pushState('', '/', window.location.pathname);
   }
 };

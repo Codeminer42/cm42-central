@@ -207,38 +207,6 @@ describe('Story model', function () {
     });
   });
 
-  describe('toggleStory', () => {
-    describe('When story is collapsed', () => {
-      it('sets collapsed to false and copies the previous state to a _editing field', () => {
-        const story = { collapsed: true };
-
-        const expandedStory = Story.toggleStory(story);
-
-        expect(expandedStory).toEqual({
-          collapsed: false,
-          _editing: {
-            collapsed: true,
-            loading: false,
-            _isDirty: false,
-          },
-        });
-      });
-    });
-
-    describe('When story is expanded', () => {
-      it('sets collapsed to true and sets _editing field to null', () => {
-        const story = { collapsed: false };
-
-        const collapsedStory = Story.toggleStory(story);
-
-        expect(collapsedStory).toEqual({
-          collapsed: true,
-          _editing: null,
-        });
-      });
-    });
-  });
-
   describe('editStory', () => {
     const { FEATURE, BUG, CHORE, RELEASE } = storyTypes;
     const { UNSTARTED, UNSCHEDULED, STARTED } = status;
