@@ -63,15 +63,9 @@ export const updateStorySuccess = (story, from) => ({
   from,
 });
 
-export const sortStoriesSuccess = (stories, from) => ({
-  type: actionTypes.SORT_STORIES_SUCCESS,
+export const sortStories = (stories, from) => ({
+  type: actionTypes.SORT_STORIES,
   stories,
-  from,
-});
-
-export const optimisticallyUpdate = (story, from) => ({
-  type: actionTypes.OPTIMISTICALLY_UPDATE,
-  story,
   from,
 });
 
@@ -227,13 +221,20 @@ export const dragDropStory =
 
     const newStory = Story.addNewAttributes(story, newAttributes);
 
+    const storiesWithUpdatedPositions = Story.sortOptimistically(
+      stories,
+      newStory,
+      from
+    );
+
     try {
-      dispatch(optimisticallyUpdate(newStory, from));
+      // Optimistic Update:
+      dispatch(sortStories(storiesWithUpdatedPositions, from));
 
       const updatedStories = await Story.updatePosition(newStory);
 
       await wait(300);
-      return dispatch(sortStoriesSuccess(updatedStories, from));
+      return dispatch(sortStories(updatedStories, from));
     } catch (error) {
       dispatch(sendErrorNotification(error));
       return dispatch(storyFailure(story.id, error, from));
@@ -256,7 +257,11 @@ export const saveStory =
         Story.needConfirmation,
         {
           onConfirmed: async () => {
-            const newStory = await Story.post(story._editing, projectId);
+            const newPosition = Story.getHighestNewPosition(
+              storiesWithScope(stories, from)
+            );
+            const storyWithNewPosition = { ...story._editing, newPosition };
+            const newStory = await Story.post(storyWithNewPosition, projectId);
             dispatch(
               addStory({ story: newStory, id: story._editing.id }, from)
             );
