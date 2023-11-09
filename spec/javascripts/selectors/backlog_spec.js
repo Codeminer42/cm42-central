@@ -132,13 +132,13 @@ describe('Backlog selector functions', () => {
         storyStates.forEach(state => {
           const firstPosition = storyFactory({
             id: 1,
-            position: 1,
+            newPosition: 1,
             state,
           });
 
           const secondPosition = storyFactory({
             id: 0,
-            position: 2,
+            newPosition: 2,
             state,
           });
 

@@ -9,7 +9,6 @@ import StoryPropTypesShape, {
 import moment from 'moment';
 import { has } from 'underscore';
 import * as History from './history';
-import { storiesWithScope } from '../../reducers/stories';
 
 const compareValues = (a, b) => {
   if (a > b) return 1;
@@ -140,6 +139,9 @@ export const update = async (story, projectId, options) => {
 };
 
 export const getHighestNewPosition = stories => {
+  if (stories.length === 1) {
+    return 1;
+  }
   const highestPositionValue = stories
     .filter(story => story.newPosition !== null)
     .reduce((acc, story) => {
@@ -481,10 +483,9 @@ export const donePoints = stories =>
 export const remainingPoints = stories =>
   totalPoints(stories) - donePoints(stories);
 
-export const sortOptimistically = (stories, newStory, from) => {
-  const scopeStories = storiesWithScope(stories, from);
+export const sortOptimistically = (stories, newStory) => {
   const isChillyBinStory = isUnscheduled(newStory);
-  const targetStories = scopeStories.filter(
+  const targetStories = stories.filter(
     story => isUnscheduled(story) === isChillyBinStory
   );
 

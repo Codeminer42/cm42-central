@@ -1,24 +1,18 @@
 import * as Story from 'models/beta/story';
 import moment from 'moment';
 import { status, storyTypes, storyScopes } from 'libs/beta/constants';
-import {
-  createTemporaryId,
-  denormalizeState,
-  denormalizeStories,
-  normalizeState,
-  normalizeStories,
-} from '../../../../app/assets/javascripts/models/beta/story';
+import { createTemporaryId } from '../../../../app/assets/javascripts/models/beta/story';
 
 describe('Story model', function () {
   describe('comparePosition', () => {
     describe('when position A is bigger then B', () => {
       it('return 1', () => {
         const storyA = {
-          position: 10,
+          newPosition: 10,
         };
 
         const storyB = {
-          position: 4,
+          newPosition: 4,
         };
 
         expect(Story.comparePosition(storyA, storyB)).toEqual(1);
@@ -28,11 +22,11 @@ describe('Story model', function () {
     describe('when position A is lower then B', () => {
       it('return -1', () => {
         const storyA = {
-          position: 3,
+          newPosition: 3,
         };
 
         const storyB = {
-          position: 5,
+          newPosition: 5,
         };
 
         expect(Story.comparePosition(storyA, storyB)).toEqual(-1);
@@ -1474,6 +1468,62 @@ describe('Story model', function () {
           expect(Story.needConfirmation(story)).toBeFalsy();
         });
       });
+    });
+  });
+  describe('sortOptimistically', () => {
+    const stories = [
+      { id: 1, newPosition: 3, state: 'unscheduled' },
+      { id: 2, newPosition: 2, state: 'unscheduled' },
+      { id: 3, newPosition: 1, state: 'unscheduled' },
+      { id: 4, newPosition: 1, state: 'started' },
+      { id: 5, newPosition: 2, state: 'started' },
+    ];
+
+    it('sorts stories optimistically when status is unscheduled', () => {
+      const newStory = { id: 100, newPosition: 1, state: 'unscheduled' };
+
+      const expectedResponse = [
+        { id: 1, newPosition: 4, state: 'unscheduled' },
+        { id: 2, newPosition: 3, state: 'unscheduled' },
+        { id: 3, newPosition: 2, state: 'unscheduled' },
+        { id: 100, newPosition: 1, state: 'unscheduled' },
+      ];
+
+      expect(Story.sortOptimistically(stories, newStory)).toEqual(
+        expectedResponse
+      );
+    });
+    it('sorts stories optimistically when status is not unscheduled', () => {
+      const newStory = { id: 100, newPosition: 1, state: 'unstarted' };
+
+      const expectedResponse = [
+        { id: 4, newPosition: 2, state: 'started' },
+        { id: 5, newPosition: 3, state: 'started' },
+        { id: 100, newPosition: 1, state: 'unstarted' },
+      ];
+
+      expect(Story.sortOptimistically(stories, newStory)).toEqual(
+        expectedResponse
+      );
+    });
+  });
+  describe('getHighestNewPosition', () => {
+    it('returns 1 when there is only the new story', () => {
+      const stories = [{ id: 1, newPosition: null }];
+
+      expect(Story.getHighestNewPosition(stories)).toBe(1);
+    });
+
+    it('returns the highest new position value + 1', () => {
+      const stories = [
+        { id: 1, newPosition: 2 },
+        { id: 2, newPosition: 5 },
+        { id: 3, newPosition: 3 },
+        { id: 4, newPosition: null },
+        { id: 5, newPosition: 1 },
+      ];
+
+      expect(Story.getHighestNewPosition(stories)).toBe(6);
     });
   });
 });

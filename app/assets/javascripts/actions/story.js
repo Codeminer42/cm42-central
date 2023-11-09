@@ -222,9 +222,8 @@ export const dragDropStory =
     const newStory = Story.addNewAttributes(story, newAttributes);
 
     const storiesWithUpdatedPositions = Story.sortOptimistically(
-      stories,
-      newStory,
-      from
+      storiesWithScope(stories, from),
+      newStory
     );
 
     try {
