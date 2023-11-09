@@ -9,6 +9,7 @@ import StoryPropTypesShape, {
 import moment from 'moment';
 import { has } from 'underscore';
 import * as History from './history';
+import { storiesWithScope } from '../../reducers/stories';
 
 const compareValues = (a, b) => {
   if (a > b) return 1;
@@ -24,8 +25,8 @@ export const needConfirmation = story =>
   story.state === status.RELEASE;
 
 export const comparePosition = (a, b) => {
-  const positionA = Number(a.position);
-  const positionB = Number(b.position);
+  const positionA = Number(a.newPosition);
+  const positionB = Number(b.newPosition);
 
   return compareValues(positionA, positionB);
 };
@@ -136,6 +137,16 @@ export const update = async (story, projectId, options) => {
   );
 
   return deserialize(data.story, options);
+};
+
+export const getHighestNewPosition = stories => {
+  const highestPositionValue = stories
+    .filter(story => story.newPosition !== null)
+    .reduce((acc, story) => {
+      return story.newPosition > acc ? story.newPosition : acc;
+    }, stories[0].newPosition);
+
+  return highestPositionValue + 1;
 };
 
 export const post = async (story, projectId) => {
@@ -469,3 +480,22 @@ export const donePoints = stories =>
 
 export const remainingPoints = stories =>
   totalPoints(stories) - donePoints(stories);
+
+export const sortOptimistically = (stories, newStory, from) => {
+  const scopeStories = storiesWithScope(stories, from);
+  const isChillyBinStory = isUnscheduled(newStory);
+  const targetStories = scopeStories.filter(
+    story => isUnscheduled(story) === isChillyBinStory
+  );
+
+  const storiesToUpdate = targetStories.filter(
+    story =>
+      story.newPosition >= newStory.newPosition && story.id !== newStory.id
+  );
+  const updatedPositions = storiesToUpdate.map(story => ({
+    ...story,
+    newPosition: story.newPosition + 1,
+  }));
+
+  return [...updatedPositions, newStory];
+};
