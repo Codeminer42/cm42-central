@@ -10,7 +10,7 @@ engines:
     enabled: true
   eslint:
     enabled: true
-    channel: "eslint-6"
+    channel: 'eslint-8'
     config:
       config: .eslintrc
   duplication:
@@ -30,11 +30,11 @@ engines:
       - 'app/operations/story_operations/state_change_notification.rb'
       - 'app/admin/*.rb'
 exclude_paths:
-  - "Gemfile.lock"
-  - "db/schema.rb"
-  - "db/migrate/*.rb"
-  - "spec/"
-  - "fixtures/"
-  - "doc/"
-  - "vendor/"
-  - "public/javascripts"
+  - 'Gemfile.lock'
+  - 'db/schema.rb'
+  - 'db/migrate/*.rb'
+  - 'spec/'
+  - 'fixtures/'
+  - 'doc/'
+  - 'vendor/'
+  - 'public/javascripts'

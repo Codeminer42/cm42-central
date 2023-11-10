@@ -2,7 +2,7 @@
   "env": { "jquery": true },
   "extends": ["plugin:backbone/recommended", "prettier"],
   "plugins": ["react", "backbone", "prettier"],
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "rules": {
     "eqeqeq": 1,
     "backbone/initialize-on-top": 0,
