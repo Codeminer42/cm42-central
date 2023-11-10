@@ -328,19 +328,6 @@ describe('Story Actions', () => {
           Story.storyFailure(updatedStory.id, error)
         );
       });
-
-      // it('do not dispatch sortStories', () => {
-      //   // expect(fakeDispatch).not.toHaveBeenCalledWith(
-      //   //   Story.sortStories(updatedStory)
-      //   // );
-      //   expect(fakeDispatch).toHaveBeenCalledWith(
-      //     Story.sortStories(storiesWithUpdatedPositions, from)
-      //   );
-
-      //   expect(fakeDispatch).not.toHaveBeenCalledWith(
-      //     Story.sortStories(updatedStory, from)
-      //   );
-      // });
     });
   });
 
