@@ -56,25 +56,15 @@ module Beta
         yield Success(
           stories: @active_stories,
           past_iterations: past_iterations
-              )
+        )
       end
 
       def active_stories
         @active_stories ||= begin
             project
               .stories
-              .where("state != 'accepted' OR accepted_at >= ?", current_iteration_start)
-              .select(
-                :id,
-                :title,
-                :description,
-                :estimate,
-                :story_type,
-                :state,
-                :requested_by_name,
-                :owned_by_initials,
-                :project_id
-              )
+              .not_accepted_or_recently_accepted(current_iteration_start)
+              .collapsed_story
               .order('updated_at DESC')
           end
 

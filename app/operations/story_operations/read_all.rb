@@ -35,7 +35,7 @@ module StoryOperations
           project
             .stories
             .with_dependencies
-            .where("state != 'accepted' OR accepted_at >= ?", current_iteration_start)
+            .not_accepted_or_recently_accepted(current_iteration_start)
             .order('updated_at DESC')
         end
 

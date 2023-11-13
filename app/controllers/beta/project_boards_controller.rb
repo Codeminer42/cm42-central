@@ -12,8 +12,7 @@ class Beta::ProjectBoardsController < ApplicationController
     @project = result.success.project
     authorize @project, policy_class: Beta::ProjectPolicy
 
-    response = result.success.as_json(root: false)
-    render json: response
+    render json: result.success.as_json(root: false)
   end
 
   private
