@@ -6,7 +6,9 @@ import {
 } from './notifications';
 import { wait } from '../services/promises';
 import { storyScopes } from '../libs/beta/constants';
+import projectStoriesService from '../services/stories';
 import { storiesWithScope } from '../reducers/stories';
+import { isStoryLoading } from '../models/beta/story';
 
 export const createStory = (attributes, from) => ({
   type: actionTypes.CREATE_STORY,
@@ -19,6 +21,22 @@ export const addStory = (story, from) => ({
   story,
   from,
 });
+
+export const expandStory = (storyId, from) => {
+  return {
+    type: actionTypes.EXPAND_STORY,
+    storyId,
+    from,
+  };
+};
+
+export const collapseStory = (storyId, from) => {
+  return {
+    type: actionTypes.COLLAPSE_STORY,
+    storyId,
+    from,
+  };
+};
 
 export const loadHistory = title => ({
   type: actionTypes.LOAD_HISTORY,
@@ -88,12 +106,6 @@ export const deleteStorySuccess = (id, from) => ({
   from,
 });
 
-export const toggleStory = (id, from) => ({
-  type: actionTypes.TOGGLE_STORY,
-  id,
-  from,
-});
-
 export const editStory = (id, newAttributes, from) => ({
   type: actionTypes.EDIT_STORY,
   id,
@@ -117,7 +129,6 @@ export const fetchEpic =
     try {
       const { projectId } = getState().projectBoard;
       const storiesByLabel = await Story.getByLabel(label, projectId);
-
       dispatch(receiveStories(storiesByLabel, storyScopes.EPIC));
     } catch {
       dispatch(sendDefaultErrorNotification());
@@ -218,6 +229,32 @@ export const updateCollapsedStory =
     );
   };
 
+export const toggleStory =
+  (currentStory, from) =>
+  async (dispatch, _, { Story }) => {
+    if (!currentStory.collapsed) {
+      return dispatch(collapseStory(currentStory.id, from));
+    }
+
+    if (isStoryLoading(currentStory)) {
+      return;
+    }
+
+    dispatch(setLoadingStory(currentStory.id, from));
+    try {
+      const { data } = await projectStoriesService.fetchStory(currentStory);
+      dispatch(
+        updateStorySuccess(
+          { ...Story.deserialize(data.story), ...currentStory },
+          from
+        )
+      );
+      dispatch(expandStory(currentStory.id, from));
+    } catch (error) {
+      dispatch(sendErrorNotification(error));
+    }
+  };
+
 export const dragDropStory =
   (storyId, projectId, newAttributes, from) =>
   async (dispatch, getState, { Story }) => {
@@ -229,9 +266,7 @@ export const dragDropStory =
 
     try {
       dispatch(optimisticallyUpdate(newStory, from));
-
       const updatedStories = await Story.updatePosition(newStory);
-
       await wait(300);
       return dispatch(sortStoriesSuccess(updatedStories, from));
     } catch (error) {
@@ -352,7 +387,6 @@ export const deleteStory =
       ).title;
 
       await Story.deleteStory(storyId, projectId);
-
       dispatch(deleteStorySuccess(storyId, from));
 
       return dispatch(

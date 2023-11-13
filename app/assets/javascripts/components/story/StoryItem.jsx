@@ -36,7 +36,9 @@ export const StoryItem = ({
 
   const childProps = {
     story,
-    onToggle: () => toggleStory(story.id, from),
+    onToggle: () => {
+      toggleStory(story, from);
+    },
     className,
     title,
     from,
@@ -62,4 +64,4 @@ StoryItem.propTypes = {
   toggleStory: PropTypes.func.isRequired,
 };
 
-export default connect(null, { toggleStory, fetchEpic })(StoryItem);
+export default connect(null, { fetchEpic, toggleStory })(StoryItem);

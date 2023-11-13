@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Markdown from '../Markdown';
@@ -20,18 +20,21 @@ export const StoryPopoverContent = ({ story }) => (
     </div>
 
     {Boolean(story.description) && (
-      <Fragment>
+      <>
         <h1 className="popover__content__title">{I18n.t('description')}</h1>
 
         <div className="markdown-wrapper">
           <Markdown source={story.description} />
         </div>
-      </Fragment>
+      </>
     )}
 
-    {Boolean(story.notes.length) && (
-      <Fragment>
-        <h1 className="popover__content__title">{I18n.t('notes')}</h1>
+    {
+      Boolean(story.notes?.length) && (
+        <>
+          <h1 className='popover__content__title'>
+            {I18n.t('notes')}
+          </h1>
 
         {story.notes.map(({ note, id, userName, createdAt }) => (
           <div className="markdown-wrapper" key={id}>
@@ -41,7 +44,7 @@ export const StoryPopoverContent = ({ story }) => (
             </div>
           </div>
         ))}
-      </Fragment>
+      </>
     )}
   </div>
 );
