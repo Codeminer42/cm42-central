@@ -24,8 +24,8 @@ export const needConfirmation = story =>
   story.state === status.RELEASE;
 
 export const comparePosition = (a, b) => {
-  const positionA = a.newPosition;
-  const positionB = b.newPosition;
+  const positionA = Number(a.newPosition);
+  const positionB = Number(b.newPosition);
 
   return compareValues(positionA, positionB);
 };
@@ -136,6 +136,16 @@ export const update = async (story, projectId, options) => {
   );
 
   return deserialize(data.story, options);
+};
+
+export const getHighestNewPosition = stories => {
+  if (stories.length === 1) {
+    return 1;
+  }
+  const storiesNewPosition = stories.map(story => story.newPosition);
+  const highestPositionValue = Math.max(...storiesNewPosition);
+
+  return highestPositionValue + 1;
 };
 
 export const post = async (story, projectId) => {
@@ -469,3 +479,21 @@ export const donePoints = stories =>
 
 export const remainingPoints = stories =>
   totalPoints(stories) - donePoints(stories);
+
+export const sortOptimistically = (stories, newStory) => {
+  const isChillyBinStory = isUnscheduled(newStory);
+  const targetStories = stories.filter(
+    story => isUnscheduled(story) === isChillyBinStory
+  );
+
+  const storiesToUpdate = targetStories.filter(
+    story =>
+      story.newPosition >= newStory.newPosition && story.id !== newStory.id
+  );
+  const updatedPositions = storiesToUpdate.map(story => ({
+    ...story,
+    newPosition: story.newPosition + 1,
+  }));
+
+  return [...updatedPositions, newStory];
+};
