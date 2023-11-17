@@ -142,11 +142,8 @@ export const getHighestNewPosition = stories => {
   if (stories.length === 1) {
     return 1;
   }
-  const highestPositionValue = stories
-    .filter(story => story.newPosition !== null)
-    .reduce((acc, story) => {
-      return story.newPosition > acc ? story.newPosition : acc;
-    }, stories[0].newPosition);
+  const storiesNewPosition = stories.map(story => story.newPosition);
+  const highestPositionValue = Math.max(...storiesNewPosition);
 
   return highestPositionValue + 1;
 };
