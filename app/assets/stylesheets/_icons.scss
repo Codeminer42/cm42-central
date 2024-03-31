@@ -1,12 +1,3 @@
-@import "compass/utilities/sprites";
-@import "icons/*.png";
-@include all-icons-sprites;
-
-$icons-spacing: 2px;
-$icons-collapse-spacing: 6px;
-$icon-layout: smart;
-$icon-sprite-dimensions: true;
-
 i {
   display: inline-flex;
   vertical-align: middle;
