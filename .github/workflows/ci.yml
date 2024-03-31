@@ -1,0 +1,33 @@
+name: ci
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      git-ref:
+        description: Git Ref
+        default: master
+        required: true
+jobs:
+  test:
+    runs-on: ubuntu-20.04-16core
+    env:
+      RAILS_ENV: test
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+    steps:
+      - name: Set up MySQL
+        run: |
+          sudo /etc/init.d/mysql start
+          sudo mysql -uroot -proot -e"ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY '';"
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.git-ref }}
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Setup
+        run: bin/setup
+      - name: Run tests
+        run: bin/ci
+

@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+ENV["RAILS_ENV"] = "test"
+load "Rakefile"
+Rake::Task["ci"].invoke
+
