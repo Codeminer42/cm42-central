@@ -66,11 +66,8 @@ gem 'vite_rails'
 
 group :production do
   gem 'kgio'
-  gem 'letsencrypt-rails-heroku'
-  gem 'newrelic_rpm'
   gem 'rack-cache'
   gem 'rack-timeout'
-  gem 'rails_12factor'
 end
 
 group :test do

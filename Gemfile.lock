@@ -7,9 +7,6 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    acme-client (2.0.11)
-      faraday (>= 1.0, < 3.0.0)
-      faraday-retry (~> 1.0)
     actioncable (6.1.7.2)
       actionpack (= 6.1.7.2)
       activesupport (= 6.1.7.2)
@@ -225,7 +222,6 @@ GEM
       faraday-net_http (~> 2.0)
       ruby2_keywords (>= 0.0.4)
     faraday-net_http (2.0.3)
-    faraday-retry (1.0.3)
     ffi (1.15.5)
     foreman (0.87.2)
     formtastic (4.0.0)
@@ -285,9 +281,6 @@ GEM
     kgio (2.11.4)
     launchy (2.5.0)
       addressable (~> 2.7)
-    letsencrypt-rails-heroku (2.0.3)
-      acme-client (~> 2.0)
-      platform-api (>= 2.2, < 4)
     letter_opener (1.8.1)
       launchy (>= 2.2, < 3)
     letter_opener_web (1.4.1)
@@ -330,7 +323,6 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     netrc (0.11.0)
-    newrelic_rpm (8.9.0)
     nio4r (2.5.8)
     nokogiri (1.13.10)
       mini_portile2 (~> 2.8.0)
@@ -412,11 +404,6 @@ GEM
     rails-i18n (7.0.5)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
-    rails_12factor (0.0.3)
-      rails_serve_static_assets
-      rails_stdout_logging
-    rails_serve_static_assets (0.0.5)
-    rails_stdout_logging (0.0.5)
     railties (6.1.7.2)
       actionpack (= 6.1.7.2)
       activesupport (= 6.1.7.2)
@@ -626,12 +613,10 @@ DEPENDENCIES
   jquery-ui-rails
   kaminari
   kgio
-  letsencrypt-rails-heroku
   letter_opener
   letter_opener_web
   material_icons
   mini_racer
-  newrelic_rpm
   pg
   pg_search
   platform-api
@@ -648,7 +633,6 @@ DEPENDENCIES
   rails-assets-jquery.gritter!
   rails-controller-testing
   rails-i18n
-  rails_12factor
   recaptcha
   rgb_utils
   rollbar (~> 3.3)
