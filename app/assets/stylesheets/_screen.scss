@@ -2,56 +2,6 @@ a img {
   border: 0;
 }
 
-ul#primary-nav {
-  text-align: right;
-  background-image: image-url('logo.png');
-  background-repeat: no-repeat;
-  background-position: 13px 6px;
-  margin: 0;
-  padding: 1em 1em 1em 40px;
-  color: $white;
-}
-
-ul#primary-nav li {
-  padding: 0 0.5em;
-  display: inline;
-  a {
-    color: $white;
-    text-decoration: none;
-  }
-  &.root {
-    float: left;
-    font-size: large;
-  }
-  &.secondary {
-    position: relative;
-    @include icons-sprite(collapse, false, 0px, 6px);
-    background-color: #333;
-    background-position-x:right;
-    padding: 0.4em 18px 0.4em 0.4em;
-    @include border-radius(5px);
-    text-shadow: black 0 1px 0;
-    ul {
-      visibility: hidden;
-    }
-  }
-  .secondary:hover ul {
-    visibility: visible;
-  }
-  &.secondary ul {
-    padding: 0.3em;
-    position: absolute;
-    left: 0; top: 1.7em;
-    background-color: #333;
-    @include border-radius(0 5px 5px 5px);
-    li {
-      white-space: nowrap;
-      text-align: left;
-      display: block;
-    }
-  }
-}
-
 .toggle-navbar {
   color: $darkgrey-2;
   transition: 0.3s ease color;
