@@ -2,10 +2,13 @@
 # run tests and linters.
 name: "CM42 Central CI"
 on:
-  push:
-    branches: [master]
   pull_request:
-    branches: [master]
+  workflow_dispatch:
+    inputs:
+      git-ref:
+        description: Git Ref
+        default: master
+        required: true
 jobs:
   unit-tests:
     runs-on: ubuntu-latest
