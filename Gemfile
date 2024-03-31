@@ -45,6 +45,7 @@ gem 'platform-api'
 gem 'puma', '~> 5.6.4'
 gem 'pundit'
 gem 'rack-cors', require: 'rack/cors'
+gem 'rails-assets-jquery.gritter', path: 'vendor/gems/rails-assets-jquery.gritter'
 gem 'rails-i18n'
 gem 'recaptcha', require: 'recaptcha/rails'
 gem 'rgb_utils'
@@ -62,9 +63,6 @@ gem 'dry-monads'
 gem 'dry-matcher'
 gem 'vite_rails'
 
-source 'http://insecure.rails-assets.org/' do
-  gem 'rails-assets-jquery.gritter'
-end
 
 group :production do
   gem 'kgio'
