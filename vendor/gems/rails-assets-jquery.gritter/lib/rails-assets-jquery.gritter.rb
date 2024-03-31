@@ -1,7 +1,5 @@
 require "rails-assets-jquery.gritter/version"
 
-require "rails-assets-jquery"
-
 module RailsAssetsJqueryGritter
 
   def self.gem_path
