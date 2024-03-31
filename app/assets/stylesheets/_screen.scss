@@ -2,56 +2,6 @@ a img {
   border: 0;
 }
 
-ul#primary-nav {
-  text-align: right;
-  background-image: image-url('logo.png');
-  background-repeat: no-repeat;
-  background-position: 13px 6px;
-  margin: 0;
-  padding: 1em 1em 1em 40px;
-  color: $white;
-}
-
-ul#primary-nav li {
-  padding: 0 0.5em;
-  display: inline;
-  a {
-    color: $white;
-    text-decoration: none;
-  }
-  &.root {
-    float: left;
-    font-size: large;
-  }
-  &.secondary {
-    position: relative;
-    @include icons-sprite(collapse, false, 0px, 6px);
-    background-color: #333;
-    background-position-x:right;
-    padding: 0.4em 18px 0.4em 0.4em;
-    @include border-radius(5px);
-    text-shadow: black 0 1px 0;
-    ul {
-      visibility: hidden;
-    }
-  }
-  .secondary:hover ul {
-    visibility: visible;
-  }
-  &.secondary ul {
-    padding: 0.3em;
-    position: absolute;
-    left: 0; top: 1.7em;
-    background-color: #333;
-    @include border-radius(0 5px 5px 5px);
-    li {
-      white-space: nowrap;
-      text-align: left;
-      display: block;
-    }
-  }
-}
-
 .toggle-navbar {
   color: $darkgrey-2;
   transition: 0.3s ease color;
@@ -93,7 +43,7 @@ table.stories td {
   vertical-align: top;
   background-color: $darkgrey-11;
   height: 100%;
-  @include border-radius(5px 5px 0 0);
+  border-radius: 5px 5px 0 0;
 }
 
 div.column_content {
@@ -105,7 +55,7 @@ div.column_content {
 
 /* Story columns headers */
 .column_header {
-  @include border-radius(2px 2px 0 0);
+  border-radius: 2px 2px 0 0;
   padding: 8px 10px;
   font-size: 12px;
   color: $white;
@@ -337,11 +287,11 @@ div.story-title abbr.initials {
 }
 
 .story.release .state-actions input {
-  @include box-shadow(0 1px 2px #000);
+  box-shadow: 0 1px 2px #000;
 }
 
 .state-actions input:active {
-  @include box-shadow(none);
+  box-shadow: none;
 }
 
 .state-actions input.start {
@@ -366,24 +316,22 @@ div.story-title abbr.initials {
 
 .state-actions input.restart {
   @extend .btn-danger;
-  background-image: sprite-url($icons-sprites);
-  background-position: sprite-position($icons-sprites, redo, 0, 2px);
-  background-repeat: no-repeat;
+  background-image: image-url("icons/redo.png") no-repeat;
   padding-left: 20px;
 }
 
 a.button {
-  background: $lightgrey-8;
-  @include background(linear-gradient(top, $lightgrey-8, $lightgrey-15));
-  @include box-shadow(0 1px 2px $lightgrey-16);
+  background-color: $lightgrey-8;
+  background: linear-gradient(to top, $lightgrey-8, $lightgrey-15);
+  box-shadow: 0 1px 2px $lightgrey-16;
   text-shadow: $white 0 1px 0;
   padding: 5px;
-  @include border-radius(5px);
+  border-radius: 5px;
   border: 1px solid $darkgrey*1.5;
   text-decoration: none;
 
   &:hover {
-    @include background(linear-gradient(top, $chameleon-2, $chameleon-3));
+    background: linear-gradient(to top, $chameleon-2, $chameleon-3);
     color: $white;
     text-shadow: $darkgrey 0 1px 0;
   }
@@ -615,7 +563,7 @@ div#keycut-help {
   top: 1em; left: 1em;
   position: absolute; opacity:0.8;
   background:black; color:yellow;
-  @include border-radius(5px);
+  border-radius: 5px;
 
   a.close {
     color:yellow; text-align:right; display:block; margin:1em;

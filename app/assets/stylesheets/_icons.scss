@@ -1,12 +1,3 @@
-@import "compass/utilities/sprites";
-@import "icons/*.png";
-@include all-icons-sprites;
-
-$icons-spacing: 2px;
-$icons-collapse-spacing: 6px;
-$icon-layout: smart;
-$icon-sprite-dimensions: true;
-
 i {
   display: inline-flex;
   vertical-align: middle;
@@ -22,6 +13,7 @@ i {
 
 .icons-throbber { background: image-url('throbber.gif') no-repeat; }
 .icons-spinner  { background: image-url('spinner.gif') no-repeat; }
+.icons-collapse { background: image-url('icons/collapse.png') no-repeat; }
 
 a.expand, a.collapse { cursor: pointer; }
 
