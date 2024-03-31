@@ -2,7 +2,7 @@ PATH
   remote: vendor/gems/rails-assets-jquery.gritter
   specs:
     rails-assets-jquery.gritter (1.7.4)
-      rails-assets-jquery (>= 1.8.2)
+      jquery-rails
 
 GEM
   remote: https://rubygems.org/
@@ -391,7 +391,6 @@ GEM
       bundler (>= 1.15.0)
       railties (= 6.1.7.2)
       sprockets-rails (>= 2.0.0)
-    rails-assets-jquery (3.6.4)
     rails-controller-testing (1.0.5)
       actionpack (>= 5.0.1.rc1)
       actionview (>= 5.0.1.rc1)

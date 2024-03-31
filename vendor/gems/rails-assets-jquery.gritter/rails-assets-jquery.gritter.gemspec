@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.files         = `find ./* -type f | cut -b 3-`.split($/)
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "rails-assets-jquery", ">= 1.8.2"
+  spec.add_dependency "jquery-rails"
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
 end
