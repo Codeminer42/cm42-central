@@ -204,9 +204,7 @@
           }
           &--restart{
             @extend .btn-danger;
-            background-image: sprite-url($icons-sprites);
-            background-position: sprite-position($icons-sprites, redo, 0, 2px);
-            background-repeat: no-repeat;
+            background-image: image-url("icons/redo.png") no-repeat;
             padding-left: 20px;
           }
 
