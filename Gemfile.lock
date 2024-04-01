@@ -101,7 +101,7 @@ GEM
       rvm
       term-ansicolor (>= 1.0.3)
       thor (>= 0.19.0)
-    bard-rake (0.21.0)
+    bard-rake (0.22.0)
       backhoe (>= 0.6.0)
       railties
       rake
