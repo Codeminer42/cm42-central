@@ -13,7 +13,7 @@ module SpecifiedNode
   private
 
   def install_node
-    system("wget -cO- https://nodejs.org/dist/#{NODE_VERSION}/node-#{NODE_VERSION}-linux-x64.tar.xz | tar xJ -C tmp/")
+    system("mkdir tmp && wget -cO- https://nodejs.org/dist/#{NODE_VERSION}/node-#{NODE_VERSION}-linux-x64.tar.xz | tar xJ -C tmp/")
   end
 
   def install_binstub
