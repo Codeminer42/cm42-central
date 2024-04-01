@@ -654,7 +654,7 @@ div#keycut-help {
     border-radius: 0;
     border-width: 1px 0 0 0;
 
-    > &:first-child {
+    > :first-child {
       border-top-width: 0;
     }
   }
