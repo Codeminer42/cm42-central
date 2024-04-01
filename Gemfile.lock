@@ -96,7 +96,7 @@ GEM
       thread_safe (~> 0.3, >= 0.3.1)
     backhoe (0.8.0)
       activerecord
-    bard (0.59.2)
+    bard (0.59.3)
       bard-rake (>= 0.19.0)
       rvm
       term-ansicolor (>= 1.0.3)
