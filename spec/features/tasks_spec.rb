@@ -9,7 +9,7 @@ describe 'Tasks' do
   end
 
   let(:user)      { create(:user, :with_team) }
-  let(:project)   { create(:project, users: [user], teams: [user.teams.first]) }
+  let(:project)   { create(:project, enable_tasks: true, users: [user], teams: [user.teams.first]) }
   let!(:story)    { create(:story, project: project, requested_by: user) }
 
   describe 'full story life cycle' do

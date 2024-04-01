@@ -457,8 +457,10 @@ const StoryView = FormView.extend({
     this.appendRequestedAndOwnedBy();
     this.appendTags();
     this.appendDescription();
-    this.$el.append($('<div data-story-tasks></div>'));
-    this.$el.append($('<div data-story-task-form></div>'));
+    if(this.model.collection.project.enable_tasks) {
+      this.$el.append($('<div data-story-tasks></div>'));
+      this.$el.append($('<div data-story-task-form></div>'));
+    }
     this.$el.append($('<div data-story-notes></div>'));
     this.$el.append($('<div data-story-note-form></div>'));
     if (this.model.get('story_type') === 'release') {

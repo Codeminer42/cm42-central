@@ -502,6 +502,16 @@ describe("StoryView", function () {
   });
 
   describe("tasks", function () {
+    beforeEach(function () {
+      view.model.collection.project.enable_tasks = sinon.stub().returns(true)
+    });
+
+    it("hides the tasks list and form unless the project has enabled tasks", function () {
+      view.model.collection.project.enable_tasks = sinon.stub().returns(false)
+      view.render();
+      expect(view.$("[data-story-tasks], [data-story-task-form]").length).toEqual(0);
+    });
+
     it("adds a blank task to the end of the tasks collection", function () {
       view.model.tasks.reset();
       expect(view.model.tasks.length).toEqual(0);

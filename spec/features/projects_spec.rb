@@ -152,6 +152,22 @@ describe 'Projects' do
           expect(current_path).to eq(project_path(project))
         end
 
+        it 'disables tasks' do
+          visit projects_path
+
+          within('.project-item') do
+            find('a[data-toggle="dropdown"]').click
+            find('.dropdown.open .dropdown-menu')
+
+            click_on 'Settings'
+          end
+
+          uncheck 'Enable tasks'
+          click_on 'Update Project'
+
+          expect(current_path).to eq(project_path(project))
+        end
+
         describe 'trying to add a existing user that is not in the current project' do
           let!(:user_to_be_added) { create :user, email: 'x@example.com' }
 

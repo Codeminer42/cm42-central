@@ -13,7 +13,7 @@ class Project < ApplicationRecord
 
   JSON_ATTRIBUTES = %w[
     id name iteration_length iteration_start_day start_date
-    default_velocity
+    default_velocity enable_tasks
   ].freeze
 
   JSON_METHODS = %w[last_changeset_id point_values].freeze

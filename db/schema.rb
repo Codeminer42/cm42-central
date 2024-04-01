@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_01_140311) do
+ActiveRecord::Schema.define(version: 2024_04_01_214422) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -161,6 +161,7 @@ ActiveRecord::Schema.define(version: 2021_02_01_140311) do
     t.integer "tag_group_id"
     t.boolean "mail_reports", default: true
     t.integer "velocity_strategy", default: 3
+    t.boolean "enable_tasks", default: false, null: false
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 

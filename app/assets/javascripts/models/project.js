@@ -31,6 +31,8 @@ const Project = Backbone.Model.extend(
       this.search.project = this;
 
       this.iterations = [];
+
+      this.enable_tasks = this.get('enable_tasks')
     },
 
     url: function () {
