@@ -1,9 +1,9 @@
-GEM
-  remote: http://insecure.rails-assets.org/
+PATH
+  remote: vendor/gems/rails-assets-jquery.gritter
   specs:
     rails-assets-jquery (3.6.4)
     rails-assets-jquery.gritter (1.7.4)
-      rails-assets-jquery (>= 1.8.2)
+      jquery-rails
 
 GEM
   remote: https://rubygems.org/
