@@ -657,8 +657,5 @@ DEPENDENCIES
   vite_rails
   webmock
 
-RUBY VERSION
-   ruby 2.7.8
-
 BUNDLED WITH
    2.4.13

@@ -10,7 +10,6 @@ log/
 videos/
 screenshots/
 .rvmrc
-.ruby-version
 .sass-cache/
 *.DS_Store
 config/deploy.rb
