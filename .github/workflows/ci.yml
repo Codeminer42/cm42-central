@@ -14,10 +14,11 @@ jobs:
       RAILS_ENV: test
       RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
     steps:
-      - name: Set up MySQL
+      - name: Set up PostgreSQL
         run: |
-          sudo /etc/init.d/mysql start
-          sudo mysql -uroot -proot -e"ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY '';"
+          sudo service postgresql start
+          sudo -u postgres createuser --superuser runner
+          createdb runner
       - name: Checkout code
         uses: actions/checkout@v3
         with:
