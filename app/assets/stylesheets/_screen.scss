@@ -119,7 +119,7 @@ div.story.editing, div.story.editing:hover {
 div.story.feature.accepted,
 div.story.bug.accepted,
 div.story.chore.accepted{
-  background-color: adjust-lightness($chameleon-1, 40);
+  background-color: lighten($chameleon-1, 40%);
 }
 
 div.story textarea {
@@ -316,7 +316,7 @@ div.story-title abbr.initials {
 
 .state-actions input.restart {
   @extend .btn-danger;
-  background-image: image-url("icons/redo.png") no-repeat;
+  background: image-url("icons/redo.png") no-repeat;
   padding-left: 20px;
 }
 

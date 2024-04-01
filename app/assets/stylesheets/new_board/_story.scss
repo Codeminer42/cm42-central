@@ -204,7 +204,7 @@
           }
           &--restart{
             @extend .btn-danger;
-            background-image: image-url("icons/redo.png") no-repeat;
+            background: image-url("icons/redo.png") no-repeat;
             padding-left: 20px;
           }
 
