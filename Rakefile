@@ -16,3 +16,15 @@ file ".env" => ".env.sample" do
 end
 task :bootstrap => ".env"
 
+Rake.application["spec"].clear
+spec = RSpec::Core::RakeTask.new(:spec)
+spec.exclude_pattern = "spec/features/*"
+
+task "spec:javascripts" do
+  sh "bin/yarn run test"
+end
+
+features = RSpec::Core::RakeTask.new(:cucumber)
+features.pattern = "spec/features/*"
+features.rspec_opts = "--format documentation"
+
