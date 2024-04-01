@@ -1,0 +1,1 @@
+../tmp/yarn-v1.22.0/bin/yarn.js
