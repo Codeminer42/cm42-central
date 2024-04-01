@@ -76,6 +76,7 @@ group :test do
   gem 'database_cleaner'
   gem 'factory_bot_rails'
   gem 'selenium-webdriver'
+  gem 'webdrivers'
   gem 'rspec-retry'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-its'
