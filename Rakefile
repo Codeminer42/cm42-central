@@ -10,3 +10,9 @@ task :restart do
     sh "bundle exec foreman export systemd-user --app clients"
   end
 end
+
+file ".env" => ".env.sample" do
+  cp ".env.sample", ".env"
+end
+task :bootstrap => ".env"
+
