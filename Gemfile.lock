@@ -224,6 +224,8 @@ GEM
     faraday-net_http (2.0.3)
     ffi (1.15.5)
     foreman (0.87.2)
+    foreman-export-systemd_user (0.1.2)
+      foreman
     formtastic (4.0.0)
       actionpack (>= 5.2.0)
     formtastic_i18n (0.7.0)
@@ -605,6 +607,7 @@ DEPENDENCIES
   factory_bot_rails
   faraday
   foreman
+  foreman-export-systemd_user
   friendly_id (~> 5.2.5)
   gravtastic
   i18n-js (~> 3.9.0)

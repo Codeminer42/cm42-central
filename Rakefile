@@ -4,3 +4,9 @@
 require File.expand_path('../config/application', __FILE__)
 
 Fulcrum::Application.load_tasks
+
+task :restart do
+  if ENV["RAILS_ENV"] == "production"
+    sh "bundle exec foreman export systemd-user --app clients"
+  end
+end

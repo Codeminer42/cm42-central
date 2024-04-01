@@ -61,11 +61,11 @@ gem 'dry-monads'
 gem 'dry-matcher'
 gem 'vite_rails'
 
-
 group :production do
   gem 'kgio'
   gem 'rack-cache'
   gem 'rack-timeout'
+  gem 'foreman-export-systemd_user'
 end
 
 group :test do
