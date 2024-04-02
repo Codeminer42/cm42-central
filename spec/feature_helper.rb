@@ -6,7 +6,11 @@ RSpec.configure do |config|
   end
 
   config.around(:each) do |ex|
-    ex.run_with_retry retry: 3 if ENV["CI"]
+    if ENV["CI"]
+      ex.run_with_retry retry: 3
+    else
+      ex.run
+    end
   end
 
   config.retry_callback = proc do |ex|
