@@ -20,6 +20,7 @@ const ProjectView = Backbone.View.extend({
     this.model.projectBoard.stories.on('all', this.render, this);
     this.listenTo(this.model, 'change:userVelocity', this.addAll);
     this.listenTo(this.model, 'change:current_flow', this.prepareColumns);
+    this.listenTo(this.model, 'change:hidden_columns', this.prepareColumns);
 
     this.prepareColumns();
     this.$loadingSpin.show();
@@ -37,6 +38,10 @@ const ProjectView = Backbone.View.extend({
       })
     );
 
+    this.model.get('hidden_columns').forEach(id => {
+      this.$('[data-column-view="'+id+'"]').hide()
+    });
+
     this.historyView = new HistoryView({
       el: this.$('[data-history-view]'),
       users: this.model.users,
@@ -53,6 +58,7 @@ const ProjectView = Backbone.View.extend({
             $('<li class="sidebar-item"/>').append(
               new ColumnVisibilityButtonView({
                 columnView: columnView,
+                projectView: this,
               }).render().$el
             )
           );
@@ -73,6 +79,10 @@ const ProjectView = Backbone.View.extend({
     column.render();
 
     return column;
+  },
+
+  toggleColumn: function (columnId, hidden) {
+    this.model.toggleColumn(columnId, hidden);
   },
 
   // Triggered when the 'Add Story' button is clicked

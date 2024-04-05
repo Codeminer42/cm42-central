@@ -4,6 +4,7 @@ import TabNotification from './mixins/tab_notification';
 import ProjectView from './views/project_view';
 import ProjectSearchView from './views/project_search_view';
 import ProjectVelocityView from './views/project_velocity_view';
+import Cookies from 'js-cookie';
 
 import TourController from 'controllers/tour/TourController';
 import { subscribeToProjectChanges } from './pusherSockets';
@@ -15,6 +16,7 @@ const Central = () => {
     var data = $(this).data();
     data.project.current_flow = data.currentFlow;
     data.project.default_flow = data.defaultFlow;
+    data.project.hidden_columns = Set.from(JSON.parse(Cookies.get("hidden_columns") || "[]"))
 
     var project = new Project(data.project);
     var view = new ProjectView({ model: project, el: $('#project-stories') });
