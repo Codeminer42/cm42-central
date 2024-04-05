@@ -149,7 +149,7 @@ const Story = Backbone.Model.extend({
   },
 
   estimable: function () {
-    if (this.get('story_type') === 'feature') {
+    if (this.point_values().length > 0 && this.get('story_type') === 'feature') {
       return !this.estimated();
     } else {
       return false;
@@ -163,7 +163,7 @@ const Story = Backbone.Model.extend({
 
   notEstimable: function () {
     var storyType = this.get('story_type');
-    return storyType !== 'feature';
+    return this.point_values().length === 0 || storyType !== 'feature';
   },
 
   point_values: function () {

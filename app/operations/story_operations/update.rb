@@ -33,7 +33,8 @@ module StoryOperations
     attr_reader :story, :story_attrs, :current_user
 
     def should_be_unscheduled?(estimate:, type:)
-      Story.can_be_estimated?(type) && estimate.blank?
+      story.project.point_values.any? &&
+        Story.can_be_estimated?(type) && estimate.blank?
     end
 
     def ensure_valid_state

@@ -254,7 +254,7 @@ class Story < ApplicationRecord
   end
 
   def self.can_be_estimated?(story_type)
-    ESTIMABLE_TYPES.include? story_type.to_s
+    ESTIMABLE_TYPES.include?(story_type.to_s)
   end
 
   def to_csv(number_of_extra_columns)

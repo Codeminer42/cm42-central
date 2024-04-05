@@ -31,10 +31,12 @@
       <i class="mi md-release md-16">bookmark</i>
     <% } %>
 
-    <% if (story.estimated()) { %>
-      <span class="estimate" data-value="<%= story.get('estimate') %>"><%= story.get('estimate') %></span>
-    <% } else { %>
-      <span class="estimate" data-value="0">-</span>
+    <% if (story.estimable()) { %>
+      <% if (story.estimated()) { %>
+        <span class="estimate" data-value="<%= story.get('estimate') %>"><%= story.get('estimate') %></span>
+      <% } else { %>
+        <span class="estimate" data-value="0">-</span>
+      <% } %>
     <% } %>
 
     <% if (story.hasDetails()) { %>

@@ -17,6 +17,11 @@ describe ProjectOperations::Update do
         expect(subject.call.success.name).to eq(project_params[:name])
       end
 
+      it 'truncates story points' do
+        expect(StoryOperations::TruncatePoints).to receive(:call)
+        subject.call
+      end
+
       it 'creates activity recording' do
         expect { subject.call }.to change { Activity.count }.by(1)
       end

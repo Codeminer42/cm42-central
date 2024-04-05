@@ -11,6 +11,7 @@ module ProjectOperations
     def call
       ActiveRecord::Base.transaction do
         yield save_project
+        yield truncate_story_points
         yield create_activity
 
         Success(project)
@@ -30,6 +31,12 @@ module ProjectOperations
       else
         Failure(project)
       end
+    end
+
+    def truncate_story_points
+      Success StoryOperations::TruncatePoints.call(
+        project: project
+      )
     end
 
     def create_activity
