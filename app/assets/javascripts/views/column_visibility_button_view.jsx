@@ -41,9 +41,7 @@ const ColumnsVisibilityButtonView = Backbone.View.extend({
 
   // Delegates to toggle() on the associated ColumnView
   toggle: function () {
-    var columnView = this.options.columnView;
-    columnView.toggle();
-    this.options.projectView.toggleColumn(columnView.id, columnView.hidden());
+    this.options.columnView.toggle();
   },
 
   setClassName: function () {

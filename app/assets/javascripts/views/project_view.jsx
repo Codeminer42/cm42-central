@@ -58,7 +58,6 @@ const ProjectView = Backbone.View.extend({
             $('<li class="sidebar-item"/>').append(
               new ColumnVisibilityButtonView({
                 columnView: columnView,
-                projectView: this,
               }).render().$el
             )
           );
@@ -79,10 +78,6 @@ const ProjectView = Backbone.View.extend({
     column.render();
 
     return column;
-  },
-
-  toggleColumn: function (columnId, hidden) {
-    this.model.toggleColumn(columnId, hidden);
   },
 
   // Triggered when the 'Add Story' button is clicked
@@ -204,15 +199,12 @@ const ProjectView = Backbone.View.extend({
 
   // make sure there is at least one column opened
   checkColumnViewsVisibility: function () {
-    if (window.projectView === undefined) return;
-
-    var filtered = _.filter(window.projectView.columns, function (column) {
-      if (!column.hidden()) return true;
-    });
-
-    if (filtered.length === 0) {
-      window.projectView.columns['in_progress'].toggle();
+    var columns = Object.values(this.columns).slice(0,4);
+    var hidden = columns.filter(c => c.hidden());
+    if (hidden.length === columns.length) {
+      this.columns['in_progress'].toggle();
     }
+    this.model.setHiddenColumns(hidden);
   },
 
   usernames: function () {

@@ -370,13 +370,10 @@ const Project = Backbone.Model.extend(
       Cookies.set('current_flow', nextValue, { expires: 365 });
     },
 
-    toggleColumn: function (columnId, hidden) {
-      if (hidden) {
-        this.get("hidden_columns").add(columnId);
-      } else {
-        this.get("hidden_columns").delete(columnId);
-      }
-      Cookies.set('hidden_columns', this.get('hidden_columns').toJSON(), { expires: 365 });
+    setHiddenColumns: function (columns) {
+      var columnIds = columns.map(c => c.id);
+      this.set('hidden_columns', columnIds);
+      Cookies.set('hidden_columns', columnIds, { expires: 365 });
     },
   },
   {
