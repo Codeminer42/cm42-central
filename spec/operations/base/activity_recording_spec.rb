@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Base::ActivityRecording do
   def activities_story_ids
-    Activity.all.map { |activity| activity[:subject_changes]['id'] }
+    Activity.order(:id).map { |activity| activity[:subject_changes]['id'] }
   end
 
   let!(:user) { create(:user, :with_team) }
