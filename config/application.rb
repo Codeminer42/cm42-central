@@ -26,8 +26,8 @@ module Fulcrum
 
     config.time_zone = 'Brasilia' # default timezone
 
+    config.autoloader = :zeitwerk
     config.autoload_paths << Rails.root.join('lib')
-    config.autoload_paths << Rails.root.join('lib/integrations')
 
     load Rails.root.join('config','fulcrum_defaults.rb')
     if File.exist?(Rails.root.join('config', 'fulcrum.rb'))

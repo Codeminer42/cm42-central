@@ -37,8 +37,10 @@ module UserImpersonate
     # For Active Admin "AdminUser" model, use 'current_admin_user'
     config.current_staff = 'current_admin_user'
   end
+end
 
-  ImpersonateController.class_eval do
+Rails.application.reloader.to_prepare do
+  UserImpersonate::ImpersonateController.class_eval do
     # Ignore user authentication and Pundit authorization
     skip_before_action :authenticate_user!
     skip_after_action :verify_authorized
