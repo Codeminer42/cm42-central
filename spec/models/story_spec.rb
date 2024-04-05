@@ -86,8 +86,8 @@ describe Story do
       let!(:user) { create :user }
       let!(:project) { create :project, users: [user] }
       let!(:story) { create :story, project: project, requested_by: user }
-      let!(:note) { create(:note, created_at: Date.current + 2.days, user: user, story: story) }
-      let!(:note2) { create(:note, created_at: Date.current, user: user, story: story) }
+      let!(:note) { create(:note, created_at: 2.days.from_now, user: user, story: story) }
+      let!(:note2) { create(:note, created_at: Time.zone.today, user: user, story: story) }
 
       it 'order by created at' do
         story.reload
@@ -533,7 +533,7 @@ describe Story do
       expect { story.fix_project_start_date }
         .to change(story.project, :start_date)
         .from(nil)
-        .to(Date.current)
+        .to(Time.zone.today)
     end
 
     context 'when the state has not changed' do
@@ -554,7 +554,7 @@ describe Story do
     end
 
     context 'when a project has a start_date' do
-      let(:project) { create(:project, start_date: Date.today) }
+      let(:project) { create(:project, start_date: Time.zone.today) }
 
       it 'does not set the project start_date to current' do
         expect { story.fix_project_start_date }.not_to change(story.project, :start_date)
@@ -573,15 +573,15 @@ describe Story do
   end
 
   describe '#fix_story_accepted_at' do
-    let(:project)      { create(:project, start_date: Date.today) }
-    let(:story_params) { { title: 'Test Story', state: 'accepted', accepted_at: Date.yesterday } }
+    let(:project)      { create(:project, start_date: Time.zone.today) }
+    let(:story_params) { { title: 'Test Story', state: 'accepted', accepted_at: Time.zone.yesterday } }
     let(:story)        { project.stories.create(story_params) }
 
     it 'sets the project start_date to the same as story.accepted_at' do
       expect { story.fix_story_accepted_at }
         .to change(story.project, :start_date)
-        .from(Date.today)
-        .to(Date.yesterday)
+        .from(Time.zone.today)
+        .to(Time.zone.yesterday)
     end
 
     context 'when accepted_at is inexistent' do
@@ -593,7 +593,7 @@ describe Story do
     end
 
     context 'when accepted_at is later than project start_date' do
-      let(:story_params) { { title: 'Test Story', state: 'accepted', accepted_at: Date.tomorrow } }
+      let(:story_params) { { title: 'Test Story', state: 'accepted', accepted_at: Time.zone.tomorrow } }
 
       it 'does not set the project start_date to the same as story.accepted_at' do
         expect { story.fix_story_accepted_at }.not_to change(story.project, :start_date)
