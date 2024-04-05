@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
 
   include Pundit::Authorization
   include SidebarController
+
+  zeitwerk_original_require "renderers/csv"
   include Renderers::CSV
 
   before_action :authenticate_user!, unless: :devise_controller?
