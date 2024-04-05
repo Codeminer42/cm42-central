@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.configure do |config|
   config.before(:suite) do
-    `bundle exec rake assets:precompile`
+    ViteRuby.commands.build
   end
 
   config.around(:each) do |ex|
