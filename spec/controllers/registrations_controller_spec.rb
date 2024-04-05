@@ -34,12 +34,12 @@ describe RegistrationsController do
       end
     end
 
-    # FIXME this test breaks when DISABLE_REGISTRATION=true is in .env
-    xcontext 'team level allowed' do
+    context 'team level allowed' do
       let!(:team) { create :team, disable_registration: false }
 
       before do
         session[:team_slug] = team.slug
+        Configuration.for('fulcrum') { disable_registration false }
       end
 
       describe '#new' do

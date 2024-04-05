@@ -44,8 +44,8 @@ describe 'Teams', js: true do
     let!(:user) { create :user, :with_team_and_is_admin }
 
     describe 'update team' do
-      # FIXME breaks unless default .env setting for CLOUDINARY_URL
-      xit 'should update a team and set a team logo' do
+      it 'should update a team and set a team logo' do
+        ENV['CLOUDINARY_URL'] = 'cloudinary://username:password@localhost'
         VCR.use_cassette('cloudinary_upload_team_logo', match_requests_on: %i[uri method]) do
           visit edit_team_path(user.teams.last.slug)
 

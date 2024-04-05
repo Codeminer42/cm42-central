@@ -5,6 +5,7 @@ describe 'Confirmations' do
 
   before(:each) do
     ActionMailer::Base.deliveries = []
+    Configuration.for('fulcrum') { disable_registration false }
   end
 
   it 'sends a confirmation token' do
