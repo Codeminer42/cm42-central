@@ -1,4 +1,4 @@
-:verbose: false
-:queues:
+verbose: false
+queues:
   - default
-  - mailer
+  - mailers
