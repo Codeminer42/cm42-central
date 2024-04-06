@@ -18,6 +18,7 @@ config/deploy.rb
 .env.test
 *.dump
 dump.rdb
+.byebug_history
 public/test_assets/
 public/javascripts/*
 public/javascripts-test/*
