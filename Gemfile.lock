@@ -211,6 +211,9 @@ GEM
     erubi (1.12.0)
     erubis (2.7.0)
     eventmachine (1.2.7)
+    exception_notification (4.5.0)
+      actionmailer (>= 5.2, < 8)
+      activesupport (>= 5.2, < 8)
     excon (0.92.4)
     execjs (2.8.1)
     factory_bot (6.2.1)
@@ -608,6 +611,7 @@ DEPENDENCIES
   dry-matcher
   dry-monads
   enumerize (~> 2.5.0)
+  exception_notification
   factory_bot_rails
   faraday
   foreman

@@ -27,6 +27,7 @@ gem 'devise-i18n'
 gem 'differ'
 gem 'dotenv-rails'
 gem 'enumerize', '~> 2.5.0'
+gem "exception_notification"
 gem 'faraday'
 gem 'foreman'
 gem 'friendly_id', '~> 5.2.5'
