@@ -58,7 +58,7 @@ class StorySearch
   def add_conditions_to(search_method)
     new_relation = relation.with_dependencies.send(search_method, parsed_params.join(','))
     new_relation = parse_queries(relation) if conditions.present? && valid?(conditions)
-    new_relation.limit(SEARCH_RESULTS_LIMIT)
+    new_relation.order(:id).limit(SEARCH_RESULTS_LIMIT)
   end
 
   def parse_queries(table)
