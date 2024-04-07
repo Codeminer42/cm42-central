@@ -3,20 +3,14 @@ class SortStories
 
   def initialize(ordered_ids, scope:)
     @ordered_ids = ordered_ids
-    @stories = scope.find(@ordered_ids)
+    @scope = scope
   end
 
   def call
-    @stories.map { |story| update_position(story) }.sort_by(&:position)
-  end
-
-  private
-
-  def update_position(story)
-    story.tap { |s| s.update position: position_for(story) }
-  end
-
-  def position_for(story)
-    @ordered_ids.index(story.id.to_s) + POSITION_NORMALIZER
+    @scope.find(@ordered_ids).map.with_index do |story, index|
+      unless story.readonly?
+        story.update! position: index + POSITION_NORMALIZER
+      end
+    end
   end
 end
