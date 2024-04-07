@@ -7,9 +7,10 @@ class SortStories
   end
 
   def call
-    @scope.find(@ordered_ids) # just to trigger policy
-    @ordered_ids.map.with_index do |id, index|
-      @scope.update id, position: index + POSITION_NORMALIZER
+    @scope.find(@ordered_ids).map.with_index do |story, index|
+      unless story.readonly?
+        story.update! position: index + POSITION_NORMALIZER
+      end
     end
   end
 end
