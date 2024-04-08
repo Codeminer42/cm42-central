@@ -39,6 +39,10 @@
       <% } %>
     <% } %>
 
+    <% if (this.model.collection.project.current_user.get('id') === 2) { %>
+      <span class="estimate"><%= story.get('position') %></span>
+    <% } %>
+
     <% if (story.hasDetails()) { %>
       <i class="mi md-14 md-dark details">question_answer</i>
     <% } %>
