@@ -22,6 +22,11 @@ module IterationOperations
           .stories
           .with_dependencies
           .accepted_between(start_date, end_date)
+          .order(Arel.sql(<<~SQL))
+            accepted_at IS NOT NULL DESC,
+            accepted_at ASC,
+            position
+          SQL
       end
     end
   end
