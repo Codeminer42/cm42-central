@@ -39,7 +39,7 @@
       <% } %>
     <% } %>
 
-    <% if (this.model.collection.project.current_user.get('id') === 2) { %>
+    <% if (story.collection.project.current_user?.get('id') === 2) { %>
       <span class="estimate"><%= story.get('position') %></span>
     <% } %>
 
