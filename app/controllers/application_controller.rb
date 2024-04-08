@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   zeitwerk_original_require "renderers/csv"
   include Renderers::CSV
 
-  before_action :authenticate_user!, unless: :devise_controller?
+  before_action :authenticate_user!, unless: ->(c) { c.devise_controller? || c.try(:active_admin_root?) }
   before_action :check_team_presence, if: :need_check_team?
   before_action :set_locale
   before_action :set_layout_settings
