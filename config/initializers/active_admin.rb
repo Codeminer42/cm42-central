@@ -273,24 +273,11 @@ ActiveAdmin.setup do |config|
 end
 
 Rails.application.reloader.to_prepare do
-  require Rails.root.join('lib/friendly_id/disabler.rb')
-
-  module ActiveAdmin::FriendlyIdDisabler
-    extend ActiveSupport::Concern
-    included do
-      # Disable friendly id in all active admin controllers
-      prepend_around_action :disable_friendly_id
-    end
-
+  ActiveAdmin::BaseController.class_eval do
+    prepend_around_action :disable_friendly_id
     def disable_friendly_id(&action)
       FriendlyId::Disabler.disable_friendly_id(&action)
     end
-  end
-
-  ActiveAdmin::BaseController.class_eval do
-    skip_before_action :authenticate_user!
-
-    include ActiveAdmin::FriendlyIdDisabler
   end
 end
 
