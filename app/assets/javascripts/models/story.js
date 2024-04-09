@@ -44,9 +44,7 @@ const Story = Backbone.Model.extend({
     var accepted =
       this.get('state') === 'accepted' && this.get('accepted_at') !== undefined;
     var isGuest =
-      this.collection !== undefined &&
-      this.collection.project.current_user !== undefined &&
-      this.collection.project.current_user.get('guest?');
+      this.collection?.project?.current_user?.get('guest?');
 
     if (isGuest || accepted) {
       this.isReadonly = true;
@@ -63,6 +61,78 @@ const Story = Backbone.Model.extend({
 
     model.setAcceptedAt();
     model.setColumn();
+    model.setDefaultPositionForState(newValue);
+  },
+
+  setDefaultPositionForState: function (state) {
+    if (!this.collection?.where) return
+    switch (state) {
+
+    case 'unscheduled':
+      var chillyBin = this.collection.where({ state: "unscheduled" });
+      chillyBin = _.reject(chillyBin, s => s.id === this.id)
+      var lastChillyBin = _.max(chillyBin, s => s.get("position"));
+
+      if (_.any(chillyBin) && lastChillyBin) {
+        this.moveAfter(lastChillyBin.id);
+      } else {
+        this.set({ position: '1.0' });
+        this.saveSorting();
+      }
+      break;
+
+    case 'unstarted':
+      var current = this.collection.where({ state: "unstarted" });
+      current = _.reject(current, s => s.id === this.id)
+      var firstUnstarted = _.min(current, s => s.get("position"));
+      var lastCurrent = _.max(current, s => s.get("position"));
+      if (_.any(current) && firstUnstarted) {
+        console.log(`this.moveBefore(${firstUnstarted.id})`)
+        this.moveBefore(firstUnstarted.id);
+      } else if (_.any(current) && lastCurrent) {
+        this.moveAfter(lastCurrent.id);
+      } else {
+        this.set({ position: '1.0' });
+        this.saveSorting();
+      }
+      break;
+
+    case 'started':
+      // TODO
+      break;
+
+    case 'finished':
+      // TODO
+      break;
+
+    case 'delivered':
+      // TODO
+      // this.moveAfter(lastDeliveredId);
+      // this.moveAfter(lastAcceptedId);
+      // } else {
+      //   this.set({ position: '1.0' });
+      //   this.saveSorting();
+      // }
+      break;
+
+    case 'accepted':
+      // TODO
+      // Accepted stories remain in the in progress column if they were
+      // completed within the current iteration.
+      if (
+        this.collection.project.currentIterationNumber() ===
+        this.iterationNumber()
+      ) {
+        // this.moveAfter(lastAcceptedId);
+      } else {
+        // this.moveAfter(lastDoneId);
+      }
+      break;
+
+    case 'rejected':
+      // TODO
+      break;
+    }
   },
 
   moveBetween: function (before, after) {
@@ -116,14 +186,12 @@ const Story = Backbone.Model.extend({
   },
 
   setColumn: function () {
-    var column = '#in_progress';
-
     switch (this.get('state')) {
       case 'unscheduled':
-        column = '#chilly_bin';
+        this.column = '#chilly_bin';
         break;
       case 'unstarted':
-        column = '#backlog';
+        this.column = '#backlog';
         break;
       case 'accepted':
         // Accepted stories remain in the in progress column if they were
@@ -132,14 +200,15 @@ const Story = Backbone.Model.extend({
           this.collection.project.currentIterationNumber() ===
           this.iterationNumber()
         ) {
-          column = '#in_progress';
+          this.column = '#in_progress';
         } else {
-          column = '#done';
+          this.column = '#done';
         }
         break;
+      default:
+        this.column = '#in_progress';
+        break;
     }
-
-    this.column = column;
   },
 
   clear: function () {

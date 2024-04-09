@@ -320,8 +320,12 @@ const StoryView = FormView.extend({
 
     var that = this;
 
+    var changedAttributes = this.model.changedAttributes()
     this.model.save(null, {
       success: function (model, response) {
+        Object.entries(changedAttributes).forEach(([attr, value]) => {
+          model.trigger(`change:${attr}`, model, value)
+        })
         that.enableForm();
         that.model.set({ editing: editMode });
         that.toggleControlButtons(false);

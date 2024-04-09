@@ -1,3 +1,4 @@
+import StoryCollection from 'collections/story_collection';
 import Story from 'models/story';
 import User from 'models/user';
 
@@ -8,7 +9,7 @@ describe('Story', function() {
   let server;
 
   beforeEach(function() {
-    var Project = Backbone.Model.extend({
+    let Project = Backbone.Model.extend({
       name: 'project',
       defaults: {point_values: [0, 1, 2, 3]},
       users: { get: function() {} },
@@ -16,8 +17,11 @@ describe('Story', function() {
       currentIterationNumber: function() { return 1; },
       getIterationNumberForDate: function() { return 999; }
     });
+
     var collection = {
-      project: new Project({}), url: '/foo', remove: function() {},
+      project: new Project({}),
+      url: '/foo',
+      remove: function() {},
       get: function() {}
     };
     var view = new Backbone.View();
@@ -276,6 +280,42 @@ describe('Story', function() {
       story.setColumn();
       expect(story.column).toEqual('#in_progress');
     });
+  });
+
+  describe('changeState', () => {
+    it('should move to the top/end of the chilly bin', () => {
+      let collection = new StoryCollection([
+        { id: 1, title: 'Story 1', state: 'unscheduled', position: 1 },
+        { id: 2, title: 'Story 2', state: 'unscheduled', position: 2 },
+        { id: 3, title: 'Story 3', state: 'unscheduled', position: 3 },
+        { id: 4, title: 'Story 4', state: 'unstarted', position: 1 },
+      ])
+
+      let story4 = collection.findWhere({ id: 4 })
+      story4.sync = function() {}
+      story4.set({ state: 'unscheduled' })
+
+      expect(story4.get('position')).toEqual(4)
+    })
+
+    it('should move to the bottom of the current column, but after delivered stories', () => {
+      let collection = new StoryCollection()
+      collection.project = new Backbone.Model.extend({})
+      collection.project.currentIterationNumber = () => 1
+      collection.project.getIterationNumberForDate = () => 1
+      collection.add([
+        { id: 1, title: 'Story 1', state: 'accepted', position: 1 },
+        { id: 2, title: 'Story 2', state: 'delivered', position: 2 },
+        { id: 3, title: 'Story 3', state: 'unstarted', position: 3 },
+        { id: 4, title: 'Story 4', state: 'unscheduled', position: 1 },
+      ])
+
+      let story4 = collection.findWhere({ id: 4 })
+      story4.sync = function() {}
+      story4.set({ state: 'unstarted' });
+
+      expect(story4.get('position')).toEqual(2)
+    })
   });
 
   describe("clear", function() {
