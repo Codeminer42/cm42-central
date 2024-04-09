@@ -117,7 +117,7 @@ describe StoriesController do
           expect(response.body).to eq(
             [
               (Story.csv_headers << 'Note').to_csv,
-              project.stories.map { |story| story.to_csv({ notes: 1, tasks: 0 }) }
+              project.stories.order(:id).map { |story| story.to_csv({ notes: 1, tasks: 0 }) }
                              .map(&:to_csv)
             ].flatten.join
           )
