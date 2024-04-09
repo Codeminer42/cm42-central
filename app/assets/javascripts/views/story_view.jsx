@@ -174,7 +174,6 @@ const StoryView = FormView.extend({
         throw 'Unable to determine previous or next story id for dropped story';
       }
     }
-    this.model.save();
   },
 
   transition: function (ev) {

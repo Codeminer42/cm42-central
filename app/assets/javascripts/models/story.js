@@ -110,8 +110,9 @@ const Story = Backbone.Model.extend({
   },
 
   saveSorting: function () {
-    this.save();
-    this.collection.saveSorting(this.column);
+    this.save({}, { success: () => {
+      this.collection.saveSorting(this.column);
+    }})
   },
 
   setColumn: function () {
