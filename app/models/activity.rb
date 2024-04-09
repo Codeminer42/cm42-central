@@ -28,11 +28,13 @@ class Activity < ApplicationRecord
     stories = where("subject_type in ('Project', 'Story')")
       .includes(:user, :subject)
       .projects(ids)
-      .since(since).to_a
+      .since(since)
+      .order(:id).to_a
     stories += where("subject_type in ('Note', 'Task')")
       .includes(:user, subject: [:story])
       .projects(ids)
-      .since(since).to_a
+      .since(since)
+      .order(:id).to_a
     stories = stories.group_by(&:subject_id)
 
     [].tap do |new_activities|

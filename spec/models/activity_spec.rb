@@ -59,10 +59,10 @@ describe Activity, type: :model do
   context '#grouped_activities' do
     let(:user) { create :user }
     let(:project) { create :project, users: [user] }
-    let!(:story1) { create :story, project: project, requested_by: user }
-    let!(:story2) { create :story, project: project, requested_by: user }
-    let(:yesterday) { Time.current.yesterday }
-    let(:today) { Time.current }
+    let(:story1) { create :story, project: project, requested_by: user }
+    let(:story2) { create :story, project: project, requested_by: user }
+    let(:yesterday) { Time.zone.yesterday }
+    let(:today) { Time.zone.now }
 
     before do
       Timecop.freeze(Time.utc(2016, 10, 5, 12, 0, 0))
@@ -84,7 +84,7 @@ describe Activity, type: :model do
     end
 
     it 'should return a proper grouped list of merged activities' do
-      grouped = Activity.grouped_activities(Project.all, Time.current - 2.days)
+      grouped = Activity.grouped_activities(Project.all, 2.days.ago)
       expect(grouped.first.first).to eq(yesterday.beginning_of_day)
       expect(grouped.last.first).to eq(today.beginning_of_day)
 
