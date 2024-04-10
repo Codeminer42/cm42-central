@@ -31,7 +31,13 @@ class TeamsController < ApplicationController
     user = User.find_by(email: params[:user][:email])
     if user
       authorize user
-      add_team_for(user)
+      if user.teams.include?(current_team)
+        flash[:notice] = t('teams.user_is_already_in_this_team')
+      else
+        user.teams << current_team
+        user.save
+        flash[:notice] = t('teams.team_was_successfully_updated')
+      end
     else
       authorize current_team
       flash[:notice] = t('teams.user_not_found')
@@ -39,27 +45,17 @@ class TeamsController < ApplicationController
     redirect_to team_new_enrollment_path
   end
 
-  # GET /teams/new
-  # GET /teams/new.xml
   def new
     @team = Team.new
     authorize @team
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render xml: @team }
-    end
   end
 
-  # GET /teams/1/edit
   def edit
     @team = current_team
     @user_teams = current_user.teams.not_archived.ordered_by_name
-
     authorize @team
   end
 
-  # POST /teams
-  # POST /teams.xml
   def create
     @team = Team.new(allowed_params)
     authorize @team
@@ -68,27 +64,19 @@ class TeamsController < ApplicationController
 
     result = TeamOperations::Create.call(team: @team, current_user: current_user)
 
-    respond_to do |format|
-      match_result(result) do |on|
-        on.success do |team|
-          format.html do
-            session[:current_team_slug] = team.slug
-            flash[:notice] = t('teams.team was successfully created')
-            redirect_to(root_path)
-          end
-          format.xml  { render xml: team, status: :created, location: team }
-        end
+    match_result(result) do |on|
+      on.success do |team|
+        session[:current_team_slug] = team.slug
+        flash[:notice] = t('teams.team was successfully created')
+        redirect_to(root_path)
+      end
 
-        on.failure do
-          format.html { render action: 'new' }
-          format.xml  { render xml: @team.errors, status: :unprocessable_entity }
-        end
+      on.failure do
+        render action: 'new'
       end
     end
   end
 
-  # PUT /teams/1
-  # PUT /teams/1.xml
   def update
     @team = current_team
     authorize @team
@@ -99,57 +87,31 @@ class TeamsController < ApplicationController
       current_user: current_user
     )
 
-    respond_to do |format|
-      match_result(result) do |on|
-        on.success do |team|
-          team.reload
-
-          format.html do
-            flash[:notice] = t('teams.team_was_successfully_updated')
-            redirect_to edit_team_path(team)
-          end
-          format.xml  { head :ok }
-        end
-        on.failure do |team|
-          format.html { render action: 'edit' }
-          format.xml  { render xml: team.errors, status: :unprocessable_entity }
-        end
-      end
+    if result.success?
+      redirect_to [:edit, @team], notice: t('teams.team_was_successfully_updated')
+    else
+      render action: 'edit'
     end
   end
 
-  # DELETE /teams/1
-  # DELETE /teams/1.xml
   def destroy
     @team = current_team
     authorize @team
 
     TeamOperations::Destroy.call(team: @team, current_user: current_user)
-    unselect_slug
-    send_notification
+    session[:current_team_slug] = nil if @team.slug == session[:current_team_slug]
+    Notifications.archived_team(@team).deliver_later if params[:send_email]
 
-    respond_to do |format|
-      format.html do
-        flash[:notice] = t('teams.successfully_archived')
-        redirect_to teams_path
-      end
-    end
+    redirect_to :teams, notice: t('teams.successfully_archived')
   end
 
   def unarchive
     archived_team = Team.find_by(id: params[:id])
     authorize archived_team, :update?
 
-    result = TeamOperations::Unarchive.call(team: archived_team)
+    TeamOperations::Unarchive.call(team: archived_team)
 
-    respond_to do |format|
-      if result.success?
-        format.html do
-          flash[:notice] = t('teams.successfully_unarchived')
-          redirect_to teams_path
-        end
-      end
-    end
+    redirect_to :teams, notice: t('teams.successfully_unarchived')
   end
 
   protected
@@ -161,27 +123,8 @@ class TeamsController < ApplicationController
     )
   end
 
-  def add_team_for(user)
-    if user.teams.include?(current_team)
-      flash[:notice] = t('teams.user_is_already_in_this_team')
-    else
-      user.teams << current_team
-      user.save
-      flash[:notice] = t('teams.team_was_successfully_updated')
-    end
-  end
-
   def check_recaptcha
     return true unless show_recaptcha?
-
     verify_recaptcha
-  end
-
-  def unselect_slug
-    session[:current_team_slug] = nil if @team.slug == session[:current_team_slug]
-  end
-
-  def send_notification
-    Notifications.archived_team(@team).deliver_later if params[:send_email]
   end
 end

@@ -7,28 +7,9 @@ class StoriesController < ApplicationController
 
   def index
     @stories = select_stories_by_params
-
-    respond_to do |format|
-      format.json { render json: @stories }
-      format.csv do
-        render(csv: @stories.order(:position),
-               exporter: Exporters::Stories,
-               filename: @project.csv_filename)
-      end
-    end
-  end
-
-  def show
-    @story = policy_scope(Story).try(:with_dependencies).try(:find, params[:id])
-    authorize @story
-    render json: @story
-  end
-
-  def sort
-    authorize Story
-    scope = policy_scope(Story)
-    @stories = SortStories.new(params[:ordered_ids], scope: scope).call
-    render @stories, json: @stories
+    render(csv: @stories.order(:position),
+           exporter: Exporters::Stories,
+           filename: @project.csv_filename)
   end
 
   def update
@@ -44,17 +25,10 @@ class StoriesController < ApplicationController
       current_user: current_user
     )
 
-    respond_to do |format|
-      match_result(result) do |on|
-        on.success do |story|
-          format.html { redirect_to project_url(@project) }
-          format.js   { render json: story }
-        end
-        on.failure do |story|
-          format.html { render action: 'edit' }
-          format.js   { render json: story, status: :unprocessable_entity }
-        end
-      end
+    if result.success?
+      redirect_to project_url(@project)
+    else
+      render action: 'edit'
     end
   end
 
@@ -93,17 +67,10 @@ class StoriesController < ApplicationController
 
     result = StoryOperations::Create.call(story: @story, current_user: current_user)
 
-    respond_to do |format|
-      match_result(result) do |on|
-        on.success do |story|
-          format.html { redirect_to project_url(@project) }
-          format.js   { render json: story }
-        end
-        on.failure do |story|
-          format.html { render action: 'new' }
-          format.js   { render json: story, status: :unprocessable_entity }
-        end
-      end
+    if result.success?
+      redirect_to project_url(@project)
+    else
+      render action: 'new'
     end
   end
 

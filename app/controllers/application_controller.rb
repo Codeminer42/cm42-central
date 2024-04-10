@@ -25,15 +25,10 @@ class ApplicationController < ActionController::Base
   protected
 
   def render_404
-    respond_to do |format|
-      format.html do
-        if current_user
-          redirect_to(request.referer || root_path, alert: I18n.t('not_found'))
-        else
-          render 'errors/not_found', status: 404
-        end
-      end
-      format.xml { render nothing: true, status: '404' }
+    if current_user
+      redirect_to(request.referer || root_path, alert: I18n.t('not_found'))
+    else
+      render 'errors/not_found', status: 404
     end
   end
 
