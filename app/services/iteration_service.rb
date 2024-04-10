@@ -11,7 +11,7 @@ class IterationService
     :iteration_start_day, :iteration_start_day=,
     to: :project
 
-  def initialize(project, since: nil, current_time: Time.current)
+  def initialize(project, since: nil, current_time: Time.zone.now)
     @project = project
     @current_time = current_time
 
@@ -29,17 +29,16 @@ class IterationService
 
   def fetch_stories!(since = nil)
     relation = project.stories.includes(:owned_by)
-    relation = relation.where("accepted_at > ? or accepted_at is null", since) if since
+    relation = relation.where("accepted_at > ? or accepted_at is null", since).order(:position) if since
     relation.to_a.map { |story| story.iteration_service = self; story }
   end
 
   def iteration_start_date(date = nil)
     date = start_date if date.nil?
     iteration_start_date = date.beginning_of_day
-    if start_date.wday != iteration_start_day
-      day_difference = start_date.wday - iteration_start_day
+    day_difference = iteration_start_date.wday - iteration_start_day
+    if !day_difference.zero?
       day_difference += DAYS_IN_WEEK if day_difference < 0
-
       iteration_start_date -= day_difference.days
     end
     iteration_start_date
@@ -189,6 +188,16 @@ class IterationService
     end
   end
 
+  def completed_iterations
+    (1...current_iteration_number).map do |number|
+      iteration = Iteration.new(self, number)
+      stories = @accepted_stories.select do |story|
+        (iteration.starts_at..iteration.ends_at).cover?(story.accepted_at)
+      end.sort_by(&:position)
+      iteration.replace stories
+    end
+  end
+
   def backlog_iterations(velocity_value = velocity)
     velocity_value = 1 if velocity_value < 1
     @backlog_iterations ||= {}
@@ -213,6 +222,9 @@ class IterationService
           end
           backlog_iteration << story
         end
+      end
+      current_iteration.sort_by! do |s|
+        [s.accepted_at || Time.zone.now, s.position]
       end
       iterations
     end

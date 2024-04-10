@@ -146,6 +146,10 @@ class Story < ApplicationRecord
     end
   end
 
+  def states
+    self.class.state_machine.states.map(&:name)
+  end
+
   def events
     self.class.state_machine.events_for(current_state)
   end

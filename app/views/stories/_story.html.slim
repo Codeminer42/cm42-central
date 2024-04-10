@@ -1,0 +1,115 @@
+- search_result = defined?(search_result) ? search_result : false
+- if true # story.closed?
+  - story_dom_id = search_result ? "story-search-result-#{story.id}" : dom_id(story)
+
+  .story id=story_dom_id class="#{story.story_type} #{story.state}" class=("searchResult" if search_result)
+    .state-actions
+      form
+        - if search_result
+          button#locate.btn.btn-default.locate-btn type="button"
+            i.mi.md-gps-fixed.md-14
+              | gps_fixed
+
+        - if story.events.any?
+          div data-story-state-buttons=""
+            .state-actions
+              - story.events.each do |event|
+                = form_for [@project, story] do |form|
+                  = form.button event, class: "#{event} transition"
+
+    .story-icons
+      span.popover-activate data-original-title="" title=""
+        = icon_text(story)
+        span.estimate = story.estimate
+        - if current_user.email = "micah@botandrose.com"
+          span.estimate = story.position
+        - if story.notes.any? || story.description.present?
+          i.mi.md-14.md-dark.details question_answer
+
+    .story-title
+      = story.title
+      abbr.initials title=story.owned_by_name = story.owned_by_initials
+
+- else
+  .story id=dom_id(story) class="#{story.story_type} #{story.state} editing"
+    = form_for [@project, story] do |form|
+      div data-story-controls=""
+        .form-group.story-controls
+          input.submit type="button" name="story_action" value="Save"
+          input.destroy type="button" name="story_action" value="Delete"
+          input.cancel type="button" name="story_action" value="Cancel"
+
+      div data-story-history-location=""
+        .col-xs-12.form-group.input-group.input-group-sm
+          input#story-link-5433.form-control.input-sm readonly="" value=project_url(@project, anchor: dom_id(story))
+
+          span.input-group-btn
+            button.btn.btn-default.btn-clipboard data-clipboard-target="#story-link-#{story.id}" type="button" title="Copy URL"
+              img.clipboard-icon src="/clippy.svg" alt="Copy URL"
+            button.btn.btn-default.btn-clipboard-id.btn-clipboard data-clipboard-text="#5433" type="button" title="Copy ID"
+              | ID
+            button.btn.btn-default.toggle-history title="View history"
+              i.mi.md-18 history
+            button.btn.btn-default.clone-story title="Clone story"
+              i.mi.md-18 content_copy
+
+      .form-group
+        = form.label :title
+        = form.text_field :title, placeholder: "Story title", maxlength: "255", class: "title form-control input-sm"
+
+      .form-group.form-inline
+        .form-group data-story-estimate=""
+          = form.label :estimate
+          br
+          = form.select :estimate, [], { disabled: true, include_blank: "no estimate" }, { class: "form-control input-sm story_estimate" }
+
+        .form-group data-story-type=""
+          = form.label :story_type
+          br
+          = form.select :story_type, %w[feature chore bug release], {}, { class: "form-control input-sm story_type" }
+
+        .form-group data-story-state=""
+          = form.label :state
+          br
+          = form.select :state, form.object.states, {}, { class: "form-control input-sm story_state" }
+
+      .form-group.form-inline
+        .form-group data-requested-by=""
+          = form.label :requested_by
+          br
+          = form.collection_select :requested_by, @project.users, :id, :name, { include_blank: "---" }, { class: "form-control input-sm requested_by_id" }
+
+        .form-group data-owned-by=""
+          = form.label :owned_by
+          br
+          = form.collection_select :owned_by, @project.users, :id, :name, { include_blank: "---" }, { class: "form-control input-sm owned_by_id" }
+
+      .form-group
+        .form-group data-tags=""
+          = form.label :labels
+          br
+          = form.text_field :labels, class: "form-control input-sm labels tagit-hidden-field"
+          /
+            ul.tagit.ui-widget.ui-widget-content.ui-corner-all
+              li.tagit-new
+                input.ui-widget-content.ui-autocomplete-input type="text" autocomplete="off"
+
+      .form-group
+        .story-description
+          = form.label :description
+          br
+          = form.text_area :description , class: "form-control description-textarea"
+
+      div data-story-notes=""
+        .form-group
+          = form.label :notes
+          .notelist
+
+      div data-story-note-form=""
+        .note_form.clearfix
+          textarea.form-control.note-textarea
+          / = form.text_area :notes, class: "form-control note-textarea"
+
+          button.add-note.btn.btn-default.btn-xs type="submit" disabled="disabled"
+            | Add note
+

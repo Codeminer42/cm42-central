@@ -1,4 +1,8 @@
 class Iteration < Array
+  def to_partial_path
+    "stories/iteration"
+  end
+
   attr_reader :start_date, :number, :maximum_points
 
   def initialize(service, iteration_number, maximum_points = nil)
@@ -32,8 +36,24 @@ class Iteration < Array
     difference.negative? ? 0 : difference
   end
 
+  def stories
+    to_a
+  end
+
+  def stories= value
+    replace value
+  end
+
   def start_date
     @service.date_for_iteration_number(@number)
+  end
+
+  def starts_at
+    start_date.beginning_of_day
+  end
+
+  def ends_at
+    (start_date + 6.days).end_of_day
   end
 
   def details
