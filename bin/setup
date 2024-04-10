@@ -2,16 +2,12 @@
 require_relative './apt_dependencies'
 require_relative './specified_ruby'
 require_relative './specified_bundler'
-require_relative './specified_node'
-require_relative './specified_yarn'
 
 Dir.chdir File.expand_path("..", __dir__) do
   exec [
     AptDependencies.ensure!,
     SpecifiedRuby.ensure!,
     SpecifiedBundler.ensure!,
-    SpecifiedNode.ensure!,
-    SpecifiedYarn.ensure!,
     "bin/rake bootstrap",
   ].join(" && ")
 end

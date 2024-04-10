@@ -11,8 +11,6 @@
   <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Noto+Sans:400,700" %>
   <%= stylesheet_link_tag "https://use.fontawesome.com/releases/v5.5.0/css/all.css" %>
   <%= render 'shared/google_analytics'%>
-  <%= vite_client_tag %>
-  <%= vite_javascript_tag 'application' %>
 </head>
 <body class='<%= "board" if @layout_settings[:fluid] %>'
       data-page='<%= "#{params[:controller]}.#{params[:action]}" %>'
@@ -134,12 +132,7 @@
 <script>
   window._railsEnv = "<%= Rails.env %>";
 </script>
-<%= javascript_include_tag 'i18n/translations' %>
 <%= yield :charts_data %>
 <%= cloudinary_config %>
-<script type="text/javascript">
-  I18n.defaultLocale = "<%= I18n.default_locale %>";
-  I18n.locale = "<%= I18n.locale %>";
-</script>
 </body>
 </html>

@@ -1,5 +1,0 @@
-#!/bin/sh
-argv0=$(echo "$0" | sed -e 's,\\,/,g')
-basedir=$(dirname "$(readlink -f "$0" || echo "$argv0")")
-exec "$basedir/node" "$basedir/yarn.js" "$@"
-

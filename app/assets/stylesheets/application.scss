@@ -1,11 +1,6 @@
-@import "jquery-ui/theme";
-@import "jquery.gritter";
-@import "jquery_tagit";
-@import "jquery.atwho";
 @import "material_icons";
 @import "bootstrap-sprockets";
 @import "bootstrap";
-@import "tether-shepherd/dist/css/shepherd-theme-arrows";
 @import "variables";
 @import "layout";
 @import "overrides";
@@ -34,8 +29,6 @@
 @import "search-bar";
 @import "tag-group";
 @import "color-picker";
-@import "tagit";
-@import "react-datepicker/dist/react-datepicker";
 @import "date-picker";
 @import "search-tooltip";
 @import "new_board";

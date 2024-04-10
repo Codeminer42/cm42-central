@@ -1,5 +1,0 @@
-<% var task = locals.task %>
-<%- task.escape('name') %>
-<% if(!task.isReadonly) { %>
-  <a href="#" title="<%= I18n.t('delete') %>" class="delete-task"><%= I18n.t('delete') %></a>
-<% } %>

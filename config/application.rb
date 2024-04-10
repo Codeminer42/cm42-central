@@ -19,12 +19,7 @@ module Fulcrum
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
-    config.i18n.enforce_available_locales = true
-
-    config.i18n.available_locales = ['en', 'es', 'pt-BR']
-    config.middleware.use I18n::JS::Middleware
-
-    config.time_zone = 'Brasilia' # default timezone
+    config.time_zone = "Pacific Time (US & Canada)"
 
     config.autoloader = :zeitwerk
     config.autoload_paths << Rails.root.join('lib')
