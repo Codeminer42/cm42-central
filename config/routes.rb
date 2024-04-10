@@ -58,6 +58,9 @@ Rails.application.routes.draw do
       collection do
         get :done, :in_progress, :backlog
       end
+      member do
+        patch :transition
+      end
     end
     resources :stories_bulk_destroy, only: [:create]
     resources :stories_bulk_update, only: [:create]

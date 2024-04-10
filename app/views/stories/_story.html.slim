@@ -2,20 +2,19 @@
 - if true # story.closed?
   - story_dom_id = search_result ? "story-search-result-#{story.id}" : dom_id(story)
 
-  .story id=story_dom_id class="#{story.story_type} #{story.state}" class=("searchResult" if search_result)
+  .story id=story_dom_id class="#{story.story_type} #{story.state}" class=("searchResult" if search_result) data-story-type=story.story_type
     .state-actions
-      form
-        - if search_result
-          button#locate.btn.btn-default.locate-btn type="button"
-            i.mi.md-gps-fixed.md-14
-              | gps_fixed
+      - if search_result
+        button#locate.btn.btn-default.locate-btn type="button"
+          i.mi.md-gps-fixed.md-14
+            | gps_fixed
 
-        - if story.events.any?
-          div data-story-state-buttons=""
-            .state-actions
-              - story.events.each do |event|
-                = form_for [@project, story] do |form|
-                  = form.button event, class: "#{event} transition"
+      - if story.events.any?
+        div data-story-state-buttons=""
+          .state-actions
+            - story.events.each do |event|
+              = form_for [:transition, @project, story] do |form|
+                = form.button event, name: "event", value: event, class: "#{event} transition"
 
     .story-icons
       span.popover-activate data-original-title="" title=""

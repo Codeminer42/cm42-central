@@ -19,6 +19,10 @@ class StoryPolicy < ApplicationPolicy
     admin? || project_member?
   end
 
+  def transition?
+    update?
+  end
+
   def done?
     update?
   end

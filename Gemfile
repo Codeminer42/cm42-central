@@ -66,11 +66,16 @@ group :test do
   gem 'rails-controller-testing'
   gem 'capybara'
   gem 'capybara-screenshot'
+  gem 'chop'
   gem 'codeclimate-test-reporter', require: nil
+  gem 'cucumber-rails'
+  gem 'cucumber', require: false, github: 'botandrose/cucumber', branch: 'restore_looser_line_numbers'
+  gem 'cuprite-downloads'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
   gem 'selenium-webdriver'
   gem 'webdrivers'
+  gem "rack-disable_css_animations"
   gem 'rspec-retry'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-its'

@@ -32,6 +32,14 @@ class StoriesController < ApplicationController
     end
   end
 
+  def transition
+    @story = policy_scope(Story).find(params[:id])
+    authorize @story
+    @story.send(params[:event])
+    @story.save!
+    redirect_to project_url(@project)
+  end
+
   def destroy
     @story = policy_scope(Story).find(params[:id])
     authorize @story
