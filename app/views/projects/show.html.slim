@@ -1,0 +1,1005 @@
+= render partial: 'sidebar', layout: 'sidebar_wrapper', locals: { wrapper_class: 'collapsed' }
+
+- content_for :title_bar do
+  ul.nav.navbar-nav
+    li = link_to @project.name, @project
+
+  p#velocity.navbar-text.velocity data-step="velocity"
+
+  - unless current_user.guest?
+    button#add_story.btn.btn-primary.btn-sm.navbar-btn type="button" data-step="add-story"
+      i.mi.md-light.md-18.md-add add
+      = t('add story')
+
+- content_for :right_menu do
+  = form_tag '#', id: 'form_search', class: 'navbar-form navbar-left navbar-search', html: { role: 'search' } do
+    .form-group
+      input.form-control.input-sm type="text" name="q" placeholder="Search"
+      i.mi.md-20.drop-target help
+
+- content_for :navbar do
+  = render 'navbar', project: @project
+
+#project-stories.project-stories data-current-flow="progress_to_left" data-default-flow="progress_to_left"
+  table.stories width="100%"
+    tbody
+      tr
+        td.done_column data-column-view="done"
+          .column_header data-step="done"
+            a.toggle-title href="#" title="Done" Done
+            a.toggle-column.hide_done href="#" title="Close" ×
+
+          #done.column_content.story_column
+            .iteration
+              | 1 - Sat Mar 30 2024
+              span.points 0
+            .iteration
+              | 2 - Mon Apr 01 2024
+              span.points 0
+
+            #story-5423.story.chore.accepted
+              .state-actions
+                form
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-dark.md-16 settings
+                  span.estimate 1.0
+              .story-title Get CI running javascript tests 
+                abbr.initials title="Micah Geisel" MG 
+
+            #story-5419.story.chore.accepted
+              .state-actions
+                form
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-dark.md-16 settings
+                  span.estimate 2.0
+                  i.mi.md-14.md-dark.details question_answer
+              .story-title Remove compass 
+                abbr.initials title="Micah Geisel" MG 
+
+            #story-5429.story.chore.accepted
+              .state-actions
+                form
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-dark.md-16 settings
+                  span.estimate 3.0
+              .story-title Set up exception notification 
+                abbr.initials title="Micah Geisel" MG 
+
+        td.in_progress_column data-column-view="in_progress" data-connect="#backlog,#chilly_bin"
+          .column_header data-step="in-progress"
+            a.toggle-title href="#" title="Current Sprint"
+              | Current Sprint
+            a.toggle-column.hide_in_progress href="#" title="Close"
+              | ×
+          #in_progress.column_content.story_column.ui-sortable
+            .iteration
+              | 3 - Mon Apr 08 2024
+              span.points
+                | 0/0
+            #story-5415.story.feature.accepted
+              .state-actions
+                form
+
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 1.0
+              .story-title
+                |  Stories don't need to be estimated to be unstarted 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-5410.story.feature.accepted
+              .state-actions
+                form
+
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 2.0
+                  i.mi.md-14.md-dark.details
+                    | question_answer
+              .story-title
+                |  Remember layout status across pageload 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-5418.story.feature.accepted
+              .state-actions
+                form
+
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 3.0
+              .story-title
+                |  Add "None" point scale setting 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-5428.story.bug.accepted
+              .state-actions
+                form
+
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-bug.md-16
+                    | bug_report
+                  span.estimate
+                    | 4.0
+                  i.mi.md-14.md-dark.details
+                    | question_answer
+              .story-title
+                |  Emails not sending 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-5416.story.feature.accepted
+              .state-actions
+                form
+
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 5.0
+              .story-title
+                |  Add project setting to disable story tasks 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-5430.story.bug.accepted
+              .state-actions
+                form
+
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-bug.md-16
+                    | bug_report
+                  span.estimate
+                    | 6.0
+              .story-title
+                |  Can't drag story to just below last delivered story 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-5440.story.bug.started
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.finish type="button" value="finish"
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-bug.md-16
+                    | bug_report
+                  span.estimate
+                    | 9.5
+              .story-title
+                |  Starting a story doesn't recalculate its position 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-5433.story.bug.unstarted.editing
+              div data-story-controls=""
+                .form-group.story-controls
+                  input.submit type="button" value="Save"
+                  input.destroy type="button" value="Delete"
+                  input.cancel type="button" value="Cancel"
+              div data-story-history-location=""
+                .col-xs-12.form-group.input-group.input-group-sm
+                  input#story-link-5433.form-control.input-sm readonly="" value="https://clients.botandrose.com/projects/clients#story-5433"
+                  span.input-group-btn
+                    button.btn.btn-default.btn-clipboard data-clipboard-target="#story-link-5433" type="button" title="Copy URL"
+                      img.clipboard-icon src="/clippy.svg" alt="Copy URL"
+                    button.btn.btn-default.btn-clipboard-id.btn-clipboard data-clipboard-text="#5433" type="button" title="Copy ID"
+                      | ID
+                    button.btn.btn-default.toggle-history title="View history"
+                      i.mi.md-18
+                        | history
+                    button.btn.btn-default.clone-story title="Clone story"
+                      i.mi.md-18
+                        | content_copy
+              .form-group
+                label for="title"
+                  | Title
+                input.title.form-control.input-sm type="text" name="title" value="Acceptance emails not delivered?" placeholder="Story title" maxlength="255"
+              .form-group.form-inline
+                .form-group data-story-estimate=""
+                  label for="estimate"
+                    | Estimate
+                  br
+                  select.form-control.input-sm.story_estimate name="estimate" disabled=""
+                    option value=""
+                      |  no estimate 
+                .form-group data-story-type=""
+                  label for="story_type"
+                    | Story type
+                  br
+                  select.form-control.input-sm.story_type name="story_type"
+                    option value="feature"
+                      |  feature 
+                    option value="chore"
+                      |  chore 
+                    option value="bug" selected=""
+                      |  bug 
+                    option value="release"
+                      |  release 
+                .form-group data-story-state=""
+                  label for="state"
+                    | State
+                  br
+                  select.form-control.input-sm.story_state name="state"
+                    option value="unscheduled"
+                      |  unscheduled 
+                    option value="unstarted" selected=""
+                      |  unstarted 
+                    option value="started"
+                      |  started 
+                    option value="finished"
+                      |  finished 
+                    option value="delivered"
+                      |  delivered 
+                    option value="accepted"
+                      |  accepted 
+                    option value="rejected"
+                      |  rejected 
+              .form-group.form-inline
+                .form-group data-requested-by=""
+                  label for="requested_by"
+                    | Requested by
+                  br
+                  select.form-control.input-sm.requested_by_id name="requested_by"
+                    option value=""
+                      |  --- 
+                    option value="2" selected=""
+                      |  Micah Geisel 
+                    option value="3"
+                      |  Michael Gubitosa 
+                .form-group data-owned-by=""
+                  label for="owned_by"
+                    | Owned by
+                  br
+                  select.form-control.input-sm.owned_by_id name="owned_by"
+                    option value=""
+                      |  --- 
+                    option value="2"
+                      |  Micah Geisel 
+                    option value="3"
+                      |  Michael Gubitosa 
+              .form-group
+                .form-group data-tags=""
+                  label for="labels"
+                    | Labels
+                  br
+                  input.form-control.input-sm.labels.tagit-hidden-field name="labels" value=""
+                  ul.tagit.ui-widget.ui-widget-content.ui-corner-all
+                    li.tagit-new
+                      input.ui-widget-content.ui-autocomplete-input type="text" autocomplete="off"
+              .form-group
+                .story-description
+                  label for="description"
+                    | Description
+                  br
+                  input.edit-description name="edit-description" type="button" value="Edit"
+              div data-story-notes=""
+                .form-group
+                  label for="note"
+                    | Notes
+                  .notelist
+
+              div data-story-note-form=""
+                .note_form.clearfix
+                  textarea.form-control.note-textarea name="note"
+
+                  button.add-note.btn.btn-default.btn-xs type="submit" disabled="disabled"
+                    | Add note
+            #story-5431.story.bug.unstarted
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-bug.md-16
+                    | bug_report
+                  span.estimate
+                    | 8.0
+              .story-title
+                |  Starting a story moves it even if its already in Current 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-5442.story.bug.unstarted
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-bug.md-16
+                    | bug_report
+                  span.estimate
+                    | 10.0
+              .story-title
+                |  Delivering a story doesn't recalculate its position 
+            #story-5411.story.feature.unstarted
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 11.0
+              .story-title
+                |  Notes can have attachments 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-5424.story.release.unstarted
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-release.md-16
+                    | bookmark
+                  span.estimate
+                    | 12.0
+              .story-title
+                |  Bring Simon on board as beta tester 
+            #story-5432.story.feature.unstarted
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 13.0
+              .story-title
+                |  Replying to email should add note 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-5438.story.feature.unstarted
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 14.0
+              .story-title
+                |  Rebuild view with Turbo? 
+            #story-5417.story.feature.unstarted
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 15.0
+              .story-title
+                |  Move "Add story" button to each column heading 
+            #story-5426.story.feature.unstarted
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 16.0
+              .story-title
+                |  Remove "Estimate" dropdown from story form when point scale is set to "None" 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-5412.story.feature.unstarted
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 17.0
+              .story-title
+                |  Remove backlog column completely when point scale is set to "None" 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-5427.story.release.unstarted
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-release.md-16
+                    | bookmark
+                  span.estimate
+                    | 18.0
+              .story-title
+                |  Move all clients over 
+            #story-5425.story.feature.unstarted
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 19.0
+              .story-title
+                |  Remove Finished, Delivered, & Rejected states from Chores 
+            #story-5413.story.feature.unstarted
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 20.0
+              .story-title
+                |  Add "Project history" column 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-5437.story.bug.unstarted
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-bug.md-16
+                    | bug_report
+                  span.estimate
+                    | 21.0
+              .story-title
+                |  Tagging self doesn't send self email 
+            #story-5441.story.feature.unstarted
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 22.0
+              .story-title
+                |  Add "default requester" to project settings 
+            #story-5439.story.bug.unstarted
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-bug.md-16
+                    | bug_report
+                  span.estimate
+                    | 23.0
+              .story-title
+                |  bard data --from local --to production doesn't actually do the thing? 
+        td.backlog_column data-column-view="backlog" data-connect="#chilly_bin,#in_progress"
+          .column_header data-step="backlog"
+            a.toggle-title href="#" title="Backlog"
+              | Backlog
+            a.toggle-column.hide_backlog href="#" title="Close"
+              | ×
+          #backlog.column_content.story_column.ui-sortable
+            .iteration
+              | 4 - Mon Apr 15 2024
+              span.points
+                | 0
+        td.chilly_bin_column data-column-view="chilly_bin" data-connect="#backlog,#in_progress"
+          .column_header data-step="chilly-bin"
+            a.toggle-title href="#" title="Chilly Bin"
+              | Chilly Bin
+            a.toggle-column.hide_chilly_bin href="#" title="Close"
+              | ×
+          #chilly_bin.column_content.story_column.ui-sortable
+            .story.feature.unscheduled.editing
+              div data-story-controls=""
+                .form-group.story-controls
+                  input.submit type="button" value="Save"
+                  input.destroy type="button" value="Delete"
+                  input.cancel type="button" value="Cancel"
+              .form-group
+                label for="title"
+                  | Title
+                input.title.form-control.input-sm type="text" name="title" placeholder="Story title" maxlength="255"
+              .form-group.form-inline
+                .form-group data-story-estimate=""
+                  label for="estimate"
+                    | Estimate
+                  br
+                  select.form-control.input-sm.story_estimate name="estimate" disabled=""
+                    option value=""
+                      |  no estimate 
+                .form-group data-story-type=""
+                  label for="story_type"
+                    | Story type
+                  br
+                  select.form-control.input-sm.story_type name="story_type"
+                    option value="feature" selected=""
+                      |  feature 
+                    option value="chore"
+                      |  chore 
+                    option value="bug"
+                      |  bug 
+                    option value="release"
+                      |  release 
+                .form-group data-story-state=""
+                  label for="state"
+                    | State
+                  br
+                  select.form-control.input-sm.story_state name="state"
+                    option value="unscheduled" selected=""
+                      |  unscheduled 
+                    option value="unstarted"
+                      |  unstarted 
+                    option value="started"
+                      |  started 
+                    option value="finished"
+                      |  finished 
+                    option value="delivered"
+                      |  delivered 
+                    option value="accepted"
+                      |  accepted 
+                    option value="rejected"
+                      |  rejected 
+              .form-group.form-inline
+                .form-group data-requested-by=""
+                  label for="requested_by"
+                    | Requested by
+                  br
+                  select.form-control.input-sm.requested_by_id name="requested_by"
+                    option value=""
+                      |  --- 
+                    option value="2"
+                      |  Micah Geisel 
+                    option value="3"
+                      |  Michael Gubitosa 
+                .form-group data-owned-by=""
+                  label for="owned_by"
+                    | Owned by
+                  br
+                  select.form-control.input-sm.owned_by_id name="owned_by"
+                    option value=""
+                      |  --- 
+                    option value="2"
+                      |  Micah Geisel 
+                    option value="3"
+                      |  Michael Gubitosa 
+              .form-group
+                .form-group data-tags=""
+                  label for="labels"
+                    | Labels
+                  br
+                  input.form-control.input-sm.labels.tagit-hidden-field name="labels" value=""
+                  ul.tagit.ui-widget.ui-widget-content.ui-corner-all
+                    li.tagit-new
+                      input.ui-widget-content.ui-autocomplete-input type="text" autocomplete="off"
+              .form-group
+                .story-description
+                  label for="description"
+                    | Description
+                  br
+                  textarea.form-control.description-textarea name="description"
+
+              div data-story-notes=""
+
+              div data-story-note-form=""
+
+            #story-5436.story.chore.unscheduled
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-dark.md-16
+                    | settings
+                  span.estimate
+                    | 3.0
+              .story-title
+                |  test3 
+            #story-5435.story.chore.unscheduled
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-dark.md-16
+                    | settings
+                  span.estimate
+                    | 2.0
+              .story-title
+                |  test2 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-5434.story.chore.unscheduled
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-dark.md-16
+                    | settings
+                  span.estimate
+                    | 1.0
+              .story-title
+                |  test 
+        td.epic_column style="display: none;" data-column-view="epic" data-connect="#chilly_bin,#in_progress,#backlog" data-hideable="false"
+          .column_header data-step="epic"
+            a.toggle-title href="#" title="Epic"
+              | Epic
+            a.toggle-column.hide_epic href="#" title="Close"
+              | ×
+          #epic.column_content.story_column.ui-sortable
+
+        td.history_column style="display: none;" data-history-view=""
+          .column_header data-step="history"
+            a.toggle-title href="#" title="History Of"
+              | History Of
+            a.toggle-column.hide_history href="#" title="Close"
+              | ×
+          #history.column_content.activity_column
+
+        td.search_results_column style="" data-column-view="search_results" data-connect="#chilly_bin,#in_progress,#backlog"
+          .column_header data-step="search-results"
+            a.toggle-title href="#" title="Search Results"
+              | "owner: Micah Geisel"
+            a.toggle-column.hide_search_results href="#" title="Close"
+              | ×
+          #search_results.column_content.story_column.ui-sortable
+            .iteration
+              |  Stories found: 17
+              span.points
+                | Points: 0
+            #story-search-result-5415.story.feature.accepted.searchResult
+              .state-actions
+                form
+                  button#locate.btn.btn-default.locate-btn type="button"
+                    i.mi.md-gps-fixed.md-14
+                      | gps_fixed
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 1.0
+              .story-title
+                |  Stories don't need to be estimated to be unstarted 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-search-result-5423.story.chore.accepted.searchResult
+              .state-actions
+                form
+                  button#locate.btn.btn-default.locate-btn type="button"
+                    i.mi.md-gps-fixed.md-14
+                      | gps_fixed
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-dark.md-16
+                    | settings
+                  span.estimate
+                    | 1.0
+              .story-title
+                |  Get CI running javascript tests 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-search-result-5410.story.feature.accepted.searchResult
+              .state-actions
+                form
+                  button#locate.btn.btn-default.locate-btn type="button"
+                    i.mi.md-gps-fixed.md-14
+                      | gps_fixed
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 2.0
+                  i.mi.md-14.md-dark.details
+                    | question_answer
+              .story-title
+                |  Remember layout status across pageload 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-search-result-5419.story.chore.accepted.searchResult
+              .state-actions
+                form
+                  button#locate.btn.btn-default.locate-btn type="button"
+                    i.mi.md-gps-fixed.md-14
+                      | gps_fixed
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-dark.md-16
+                    | settings
+                  span.estimate
+                    | 2.0
+                  i.mi.md-14.md-dark.details
+                    | question_answer
+              .story-title
+                |  Remove compass 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-search-result-5435.story.chore.unscheduled.searchResult
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+                  button#locate.btn.btn-default.locate-btn type="button"
+                    i.mi.md-gps-fixed.md-14
+                      | gps_fixed
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-dark.md-16
+                    | settings
+                  span.estimate
+                    | 2.0
+              .story-title
+                |  test2 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-search-result-5418.story.feature.accepted.searchResult
+              .state-actions
+                form
+                  button#locate.btn.btn-default.locate-btn type="button"
+                    i.mi.md-gps-fixed.md-14
+                      | gps_fixed
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 3.0
+              .story-title
+                |  Add "None" point scale setting 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-search-result-5429.story.chore.accepted.searchResult
+              .state-actions
+                form
+                  button#locate.btn.btn-default.locate-btn type="button"
+                    i.mi.md-gps-fixed.md-14
+                      | gps_fixed
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-dark.md-16
+                    | settings
+                  span.estimate
+                    | 3.0
+              .story-title
+                |  Set up exception notification 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-search-result-5428.story.bug.accepted.searchResult
+              .state-actions
+                form
+                  button#locate.btn.btn-default.locate-btn type="button"
+                    i.mi.md-gps-fixed.md-14
+                      | gps_fixed
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-bug.md-16
+                    | bug_report
+                  span.estimate
+                    | 4.0
+                  i.mi.md-14.md-dark.details
+                    | question_answer
+              .story-title
+                |  Emails not sending 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-search-result-5416.story.feature.accepted.searchResult
+              .state-actions
+                form
+                  button#locate.btn.btn-default.locate-btn type="button"
+                    i.mi.md-gps-fixed.md-14
+                      | gps_fixed
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 5.0
+              .story-title
+                |  Add project setting to disable story tasks 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-search-result-5430.story.bug.accepted.searchResult
+              .state-actions
+                form
+                  button#locate.btn.btn-default.locate-btn type="button"
+                    i.mi.md-gps-fixed.md-14
+                      | gps_fixed
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-bug.md-16
+                    | bug_report
+                  span.estimate
+                    | 6.0
+              .story-title
+                |  Can't drag story to just below last delivered story 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-search-result-5431.story.bug.unstarted.searchResult
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+                  button#locate.btn.btn-default.locate-btn type="button"
+                    i.mi.md-gps-fixed.md-14
+                      | gps_fixed
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-bug.md-16
+                    | bug_report
+                  span.estimate
+                    | 8.0
+              .story-title
+                |  Starting a story moves it even if its already in Current 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-search-result-5440.story.bug.started.searchResult
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.finish type="button" value="finish"
+                  button#locate.btn.btn-default.locate-btn type="button"
+                    i.mi.md-gps-fixed.md-14
+                      | gps_fixed
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-bug.md-16
+                    | bug_report
+                  span.estimate
+                    | 9.5
+              .story-title
+                |  Starting a story doesn't recalculate its position 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-search-result-5411.story.feature.unstarted.searchResult
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+                  button#locate.btn.btn-default.locate-btn type="button"
+                    i.mi.md-gps-fixed.md-14
+                      | gps_fixed
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 11.0
+              .story-title
+                |  Notes can have attachments 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-search-result-5432.story.feature.unstarted.searchResult
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+                  button#locate.btn.btn-default.locate-btn type="button"
+                    i.mi.md-gps-fixed.md-14
+                      | gps_fixed
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 13.0
+              .story-title
+                |  Replying to email should add note 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-search-result-5426.story.feature.unstarted.searchResult
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+                  button#locate.btn.btn-default.locate-btn type="button"
+                    i.mi.md-gps-fixed.md-14
+                      | gps_fixed
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 16.0
+              .story-title
+                |  Remove "Estimate" dropdown from story form when point scale is set to "None" 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-search-result-5412.story.feature.unstarted.searchResult
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+                  button#locate.btn.btn-default.locate-btn type="button"
+                    i.mi.md-gps-fixed.md-14
+                      | gps_fixed
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 17.0
+              .story-title
+                |  Remove backlog column completely when point scale is set to "None" 
+                abbr.initials title="Micah Geisel"
+                  |  MG 
+            #story-search-result-5413.story.feature.unstarted.searchResult
+              .state-actions
+                form
+                  div data-story-state-buttons=""
+                    .state-actions
+                      input.transition.start type="button" value="start"
+                  button#locate.btn.btn-default.locate-btn type="button"
+                    i.mi.md-gps-fixed.md-14
+                      | gps_fixed
+              .story-icons
+                span.popover-activate data-original-title="" title=""
+                  i.mi.md-star.md-16
+                    | star
+                  span.estimate
+                    | 20.0
+              .story-title
+                |  Add "Project history" column 
+                abbr.initials title="Micah Geisel"
+                  |  MG 

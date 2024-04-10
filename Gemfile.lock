@@ -494,6 +494,13 @@ GEM
       rack (~> 2.2)
       rack-protection (= 2.2.3)
       tilt (~> 2.0)
+    slim (5.1.0)
+      temple (~> 0.10.0)
+      tilt (>= 2.0.6, < 2.2)
+    slim-rails (3.6.3)
+      actionpack (>= 3.1)
+      railties (>= 3.1)
+      slim (>= 3.0, < 6.0, != 5.0.0)
     slop (3.6.0)
     sprockets (3.7.2)
       concurrent-ruby (~> 1.0)
@@ -503,6 +510,7 @@ GEM
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
     sync (0.5.0)
+    temple (0.10.3)
     term-ansicolor (1.7.2)
       tins (~> 1.0)
     thin (1.8.1)
@@ -626,6 +634,7 @@ DEPENDENCIES
   sidekiq_mailer
   simplecov
   sinatra
+  slim-rails
   timecop
   transitions
   user_impersonate2
