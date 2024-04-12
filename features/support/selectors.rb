@@ -18,7 +18,7 @@ module WithinHelpers
       "aside"
 
     when /the "(.+)?" story/
-      find(".story", text: $1)
+      [".story", text: $1]
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

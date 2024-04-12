@@ -1,4 +1,16 @@
 module StoriesHelper
+  def story_anchor story
+    dom_id(story).sub("_","-")
+  end
+
+  def project_story_path project, story, anchor: false
+    if anchor
+      project_path(project, anchor: story_anchor(story))
+    else
+      super(project, story)
+    end
+  end
+
   def state_transition_button(story, state)
     path = send("#{state}_project_story_path", story.project, story)
     button_to(state, path, method: :put, class: state)

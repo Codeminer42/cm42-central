@@ -6,14 +6,6 @@ Given "the following projects exist:" do |table|
   end
 end
 
-Given "the {string} project has the following stories:" do |project_name, table|
-  project = Project.find_by_name!(project_name)
-  table.create! Story do
-    default(:project) { project }
-    rename :type => :story_type
-  end
-end
-
 Given "I am on the {string} project page" do |project_name|
   project = Project.find_by_name!(project_name)
   visit "/projects/#{project.to_param}"

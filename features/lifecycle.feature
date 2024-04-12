@@ -1,5 +1,5 @@
 Feature: Stories have a lifecycle
-  Scenario: Take a story through its entire lifecycle
+  Background:
     Given the following users exist:
       | email                | name         | initials |
       | micah@botandrose.com | Micah Geisel | MG       |
@@ -16,6 +16,7 @@ Feature: Stories have a lifecycle
       | type    | title | state       |
       | feature | WOW   | unscheduled |
 
+  Scenario: Take a story through its entire lifecycle
     Given I am logged in as "micah@botandrose.com"
     And I am on the "Example Project" project page
     Then I should see the following project board:

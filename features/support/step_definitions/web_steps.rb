@@ -76,6 +76,10 @@ Then "I should see {string} as unlinked text" do |text|
   expect(page).to_not have_css("a", text: text)
 end
 
+Then "I should see the following form:" do |table|
+  table.diff! "form"
+end
+
 Then "I should see {string} checked" do |field|
   expect(find_field(field)).to be_checked
 end

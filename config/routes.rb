@@ -51,7 +51,7 @@ Rails.application.routes.draw do
     resources :integrations, only: [:index, :create, :destroy]
     resources :changesets, only: [:index]
     put 'stories/sort', to: 'stories#sort'
-    resources :stories, only: [:index, :create, :update, :destroy, :show]  do
+    resources :stories, only: [:index, :create, :update, :destroy] do
       resources :activities, only: [:index], module: 'stories'
       resources :notes, only: [:index, :create, :show, :destroy]
       resources :tasks, only: [:create, :destroy, :update]

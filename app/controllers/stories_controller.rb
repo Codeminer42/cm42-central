@@ -26,9 +26,9 @@ class StoriesController < ApplicationController
     )
 
     if result.success?
-      redirect_to project_url(@project)
+      redirect_to @project
     else
-      render action: 'edit'
+      redirect_to project_path(@project, @story, anchor: true)
     end
   end
 
