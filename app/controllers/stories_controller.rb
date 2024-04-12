@@ -28,7 +28,7 @@ class StoriesController < ApplicationController
     if result.success?
       redirect_to @project
     else
-      redirect_to project_path(@project, @story, anchor: true)
+      redirect_to story_path(@story)
     end
   end
 
@@ -44,7 +44,7 @@ class StoriesController < ApplicationController
     @story = policy_scope(Story).find(params[:id])
     authorize @story
     StoryOperations::Destroy.call(story: @story, current_user: current_user)
-    head :ok
+    redirect_to project_url(@project)
   end
 
   def done

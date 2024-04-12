@@ -47,27 +47,30 @@ input.toggle-story id=story_dom_id type="checkbox"
     abbr.initials title=story.owned_by_name = story.owned_by_initials
 
 / OPEN
-.story class="#{story.story_type} #{story.state} editing"
+.story class="#{story.story_type} #{story.state} editing" data-story-type=story.story_type
+  = form_for([@project, story], method: "delete", html: { id: "delete_story_#{story.id}" }) {}
+
   = form_for [@project, story] do |form|
     div data-story-controls=""
       .form-group.story-controls
-        input.submit type="submit" value="Save"
-        input.destroy type="button" value="Delete"
+        = form.submit "Save"
+        = form.submit "Delete", class: "delete", form: "delete_story_#{story.id}"
         input.cancel type="button" value="Cancel" onclick="toggleStory('#{story_dom_id}'); return false"
 
     div data-story-history-location=""
       .col-xs-12.form-group.input-group.input-group-sm
         input#story-link-5433.form-control.input-sm readonly="" value=project_url(@project, anchor: dom_id(story))
 
-        span.input-group-btn
-          button.btn.btn-default.btn-clipboard data-clipboard-target="#story-link-#{story.id}" type="button" title="Copy URL"
-            img.clipboard-icon src="/clippy.svg" alt="Copy URL"
-          button.btn.btn-default.btn-clipboard-id.btn-clipboard data-clipboard-text="#5433" type="button" title="Copy ID"
-            | ID
-          button.btn.btn-default.toggle-history title="View history"
-            i.mi.md-18 history
-          button.btn.btn-default.clone-story title="Clone story"
-            i.mi.md-18 content_copy
+        /
+          span.input-group-btn
+            button.btn.btn-default.btn-clipboard data-clipboard-target="#story-link-#{story.id}" type="button" title="Copy URL"
+              img.clipboard-icon src="/clippy.svg" alt="Copy URL"
+            button.btn.btn-default.btn-clipboard-id.btn-clipboard data-clipboard-text="#5433" type="button" title="Copy ID"
+              | ID
+            button.btn.btn-default.toggle-history title="View history"
+              i.mi.md-18 history
+            button.btn.btn-default.clone-story title="Clone story"
+              i.mi.md-18 content_copy
 
     .form-group
       = form.label :title

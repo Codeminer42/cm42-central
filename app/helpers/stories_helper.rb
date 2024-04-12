@@ -3,12 +3,8 @@ module StoriesHelper
     dom_id(story).sub("_","-")
   end
 
-  def project_story_path project, story, anchor: false
-    if anchor
-      project_path(project, anchor: story_anchor(story))
-    else
-      super(project, story)
-    end
+  def story_path story
+    project_path(story.project, anchor: story_anchor(story))
   end
 
   def state_transition_button(story, state)
