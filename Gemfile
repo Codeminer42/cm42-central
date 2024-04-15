@@ -6,14 +6,14 @@ git_source(:github) do |repo_name|
 end
 
 gem 'rails', '~> 6.1.7'
-
+gem 'pg'
+gem 'pg_search'
+gem 'bard-rake'
+gem 'backhoe', '>= 0.8.0'
+gem 'dotenv-rails'
 gem 'activeadmin'
 gem 'api-pagination'
 gem 'attachinary'
-gem 'bard'
-gem 'bard-rake'
-gem 'backhoe', '>= 0.8.0'
-gem 'bootstrap-sass', '~> 3.4.0'
 gem 'chartkick'
 gem 'chronic'
 gem 'cloudinary'
@@ -24,29 +24,17 @@ gem 'devise-async'
 gem 'devise-authy', '~> 1.10.0'
 gem 'devise-i18n'
 gem 'differ'
-gem 'dotenv-rails'
 gem 'enumerize', '~> 2.5.0'
-gem "exception_notification"
 gem 'faraday'
-gem 'foreman'
 gem 'friendly_id', '~> 5.2.5'
 gem 'gravtastic'
 gem 'kaminari'
-gem 'material_icons'
-gem 'pg'
-gem 'pg_search'
 gem 'platform-api'
-gem 'puma', '~> 5.6.4'
 gem 'pundit'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rails-i18n'
 gem 'recaptcha', require: 'recaptcha/rails'
 gem 'rgb_utils'
-gem 'rollbar', '~> 3.3'
-gem 'sass-rails'
-gem 'sidekiq'
-gem 'sidekiq_mailer'
-gem 'sinatra', require: nil
 gem 'slim-rails'
 gem 'transitions', require: ["transitions", "active_model/transitions"]
 gem 'user_impersonate2', require: 'user_impersonate'
@@ -55,11 +43,22 @@ gem 'pusher'
 gem 'dry-monads'
 gem 'dry-matcher'
 
+gem 'sass-rails'
+gem 'material_icons'
+gem 'bootstrap-sass', '~> 3.4.0'
+
 gem 'sprockets', '~>4.0'
 gem 'importmap-rails', '~>1.0' # 2.0 vendors
 gem 'turbo-rails'
 gem 'stimulus-rails'
 gem 'redis'
+
+gem 'sidekiq'
+gem 'sidekiq_mailer'
+gem 'sinatra', require: nil
+gem 'rollbar', '~> 3.3'
+gem "exception_notification"
+gem 'foreman'
 
 group :production do
   gem 'kgio'
@@ -79,6 +78,7 @@ group :test do
   gem 'cuprite-downloads'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
+  gem 'puma', '~> 5.6.4'
   gem 'selenium-webdriver'
   gem 'webdrivers'
   gem "rack-disable_css_animations"
@@ -102,6 +102,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'bard'
   gem 'byebug'
   gem 'pry-rails'
   gem 'pry-remote'
