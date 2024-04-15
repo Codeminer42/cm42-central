@@ -55,8 +55,10 @@ gem 'pusher'
 gem 'dry-monads'
 gem 'dry-matcher'
 
-gem 'importmap-rails'
+gem 'sprockets', '~>4.0'
+gem 'importmap-rails', '~>1.0' # 2.0 vendors
 gem 'turbo-rails'
+gem 'stimulus-rails'
 gem 'redis'
 
 group :production do

@@ -306,7 +306,7 @@ GEM
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
-    importmap-rails (2.0.1)
+    importmap-rails (1.2.3)
       actionpack (>= 6.0.0)
       activesupport (>= 6.0.0)
       railties (>= 6.0.0)
@@ -532,15 +532,16 @@ GEM
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
     rvm (1.11.3.9)
-    sass (3.4.25)
-    sass-rails (5.0.8)
-      railties (>= 5.2.0)
-      sass (~> 3.1)
-      sprockets (>= 2.8, < 4.0)
-      sprockets-rails (>= 2.0, < 4.0)
-      tilt (>= 1.1, < 3)
+    sass-rails (6.0.0)
+      sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
       ffi (~> 1.9)
+    sassc-rails (2.1.2)
+      railties (>= 4.0.0)
+      sassc (>= 2.0)
+      sprockets (> 3.0)
+      sprockets-rails
+      tilt
     selenium-webdriver (4.1.0)
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
@@ -574,13 +575,15 @@ GEM
       railties (>= 3.1)
       slim (>= 3.0, < 6.0, != 5.0.0)
     slop (3.6.0)
-    sprockets (3.7.2)
+    sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
-      rack (> 1, < 3)
+      rack (>= 2.2.4, < 4)
     sprockets-rails (3.4.2)
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
+    stimulus-rails (1.3.3)
+      railties (>= 6.0.0)
     sync (0.5.0)
     sys-uname (1.2.3)
       ffi (~> 1.1)
@@ -680,7 +683,7 @@ DEPENDENCIES
   foreman-export-systemd_user
   friendly_id (~> 5.2.5)
   gravtastic
-  importmap-rails
+  importmap-rails (~> 1.0)
   kaminari
   kgio
   letter_opener
@@ -720,6 +723,8 @@ DEPENDENCIES
   simplecov
   sinatra
   slim-rails
+  sprockets (~> 4.0)
+  stimulus-rails
   timecop
   transitions
   turbo-rails
