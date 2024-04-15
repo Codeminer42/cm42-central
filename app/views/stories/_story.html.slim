@@ -77,15 +77,15 @@ input.toggle-story id=story_dom_id type="checkbox"
       = form.text_field :title, placeholder: "Story title", maxlength: "255", class: "title form-control input-sm"
 
     .form-group.form-inline
-      .form-group data-story-estimate=""
+      .form-group data-story-estimate=story.estimate
         = form.label :estimate
         br
-        = form.select :estimate, [], { disabled: true, include_blank: "no estimate" }, { class: "form-control input-sm story_estimate" }
+        = form.select :estimate, @project.point_values, { disabled: true, include_blank: "no estimate" }, { class: "form-control input-sm story_estimate" }
 
       .form-group data-story-type=""
         = form.label :story_type
         br
-        = form.select :story_type, %w[feature chore bug release], {}, { class: "form-control input-sm story_type" }
+        = form.select :story_type, Story::STORY_TYPES, {}, { class: "form-control input-sm story_type" }
 
       .form-group data-story-state=""
         = form.label :state
