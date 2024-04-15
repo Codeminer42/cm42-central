@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_01_214422) do
+ActiveRecord::Schema.define(version: 2024_04_15_221432) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -177,7 +177,7 @@ ActiveRecord::Schema.define(version: 2024_04_01_214422) do
     t.integer "project_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal "position", precision: 25, scale: 20
+    t.integer "position"
     t.string "labels", limit: 255
     t.string "requested_by_name", limit: 255
     t.string "owned_by_name", limit: 255
@@ -188,6 +188,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_214422) do
     t.datetime "delivered_at"
     t.string "branch"
     t.integer "new_position"
+    t.string "positioning_column"
+    t.index ["project_id", "positioning_column", "position"], name: "index_stories_on_project_id_and_positioning_column_and_position", unique: true
   end
 
   create_table "tag_groups", id: :serial, force: :cascade do |t|

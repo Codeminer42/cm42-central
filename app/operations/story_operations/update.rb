@@ -24,8 +24,6 @@ module StoryOperations
 
         Success(story)
       end
-    rescue
-      Failure(story)
     end
 
     private

@@ -2,6 +2,8 @@ require 'dry/matcher/result_matcher'
 
 class StoriesController < ApplicationController
   include ActionView::Helpers::TextHelper
+  include StoriesHelper
+  include ActionView::RecordIdentifier
 
   before_action :set_project
 
@@ -25,10 +27,22 @@ class StoriesController < ApplicationController
       current_user: current_user
     )
 
-    if result.success?
-      redirect_to @project
-    else
-      redirect_to story_path(@story)
+    respond_to do |wants|
+      wants.html do
+        if result.success?
+          redirect_to @project
+        else
+          redirect_to @story
+        end
+      end
+      wants.json do
+        match_result(result) do |on|
+          on.success { render json: true }
+          on.failure do |story|
+            render json: { error: story.errors.inspect }
+          end
+        end
+      end
     end
   end
 
@@ -97,7 +111,8 @@ class StoriesController < ApplicationController
   def allowed_params
     params.require(:story).permit(
       :title, :description, :estimate, :story_type, :release_date,
-      :state, :requested_by_id, :owned_by_id, :position, :labels,
+      :state, :requested_by_id, :owned_by_id, :labels, :positioning_column, :position,
+      position: %i[before after],
       tasks_attributes: %i[id name done],
       notes_attributes: %i[id note]
     )

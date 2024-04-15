@@ -2,11 +2,22 @@ class Story < ApplicationRecord
   include ActiveModel::Transitions
   extend Enumerize
 
-  before_validation :set_position_to_last
   before_save :set_started_at
   before_save :set_accepted_at
   before_save :set_delivered_at
   before_save :cache_user_names
+
+  positioned on: [:project, :positioning_column]
+  before_save :set_positioning_column
+  private def set_positioning_column
+    self.positioning_column ||= begin
+      if column == "#backlog"
+        "#in_progress"
+      else
+        column
+      end
+    end
+  end
 
   before_destroy { |record| raise ActiveRecord::ReadOnlyRecord if record.readonly? }
 
@@ -85,7 +96,7 @@ class Story < ApplicationRecord
     title release_date accepted_at created_at updated_at delivered_at description
     project_id story_type owned_by_id requested_by_id
     owned_by_name owned_by_initials requested_by_name estimate
-    state position id labels new_position
+    state position id labels
   ].freeze
 
   JSON_METHODS = %w[errors notes tasks].freeze
@@ -214,13 +225,6 @@ class Story < ApplicationRecord
 
     date = Chronic.parse(val)
     self[:release_date] = date
-  end
-
-  def set_position_to_last
-    return true if position
-    return true unless project
-    last = project.stories.order(position: :desc).first
-    self.position = last ? (last.position + 1) : 1
   end
 
   def set_started_at

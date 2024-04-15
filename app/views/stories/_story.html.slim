@@ -18,7 +18,7 @@ javascript:
 input.toggle-story id=story_dom_id type="checkbox"
 
 / CLOSED
-.story class="#{story.story_type} #{story.state} closed" class=("searchResult" if search_result) data-story-type=story.story_type onclick="toggleStory('#{story_dom_id}')"
+.story class="#{story.story_type} #{story.state} closed" class=("searchResult" if search_result) data-id=story.id data-state=story.state data-story-type=story.story_type onclick="toggleStory('#{story_dom_id}')"
   .state-actions
     - if search_result
       button#locate.btn.btn-default.locate-btn type="button"
@@ -47,7 +47,7 @@ input.toggle-story id=story_dom_id type="checkbox"
     abbr.initials title=story.owned_by_name = story.owned_by_initials
 
 / OPEN
-.story class="#{story.story_type} #{story.state} editing" data-story-type=story.story_type
+.story class="#{story.story_type} #{story.state} editing" data-id=story.id data-state=story.state data-story-type=story.story_type
   = form_for([@project, story], method: "delete", html: { id: "delete_story_#{story.id}" }) {}
 
   = form_for [@project, story] do |form|
