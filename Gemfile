@@ -55,6 +55,10 @@ gem 'pusher'
 gem 'dry-monads'
 gem 'dry-matcher'
 
+gem 'importmap-rails'
+gem 'turbo-rails'
+gem 'redis'
+
 group :production do
   gem 'kgio'
   gem 'rack-cache'

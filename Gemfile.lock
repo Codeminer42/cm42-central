@@ -306,6 +306,10 @@ GEM
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
+    importmap-rails (2.0.1)
+      actionpack (>= 6.0.0)
+      activesupport (>= 6.0.0)
+      railties (>= 6.0.0)
     inherited_resources (1.13.1)
       actionpack (>= 5.2, < 7.1)
       has_scope (~> 0.6)
@@ -595,6 +599,10 @@ GEM
     tins (1.32.1)
       sync
     transitions (1.3.0)
+    turbo-rails (2.0.5)
+      actionpack (>= 6.0.0)
+      activejob (>= 6.0.0)
+      railties (>= 6.0.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unf (0.1.4)
@@ -672,6 +680,7 @@ DEPENDENCIES
   foreman-export-systemd_user
   friendly_id (~> 5.2.5)
   gravtastic
+  importmap-rails
   kaminari
   kgio
   letter_opener
@@ -694,6 +703,7 @@ DEPENDENCIES
   rails-controller-testing
   rails-i18n
   recaptcha
+  redis
   rgb_utils
   rollbar (~> 3.3)
   rspec-activemodel-mocks
@@ -712,6 +722,7 @@ DEPENDENCIES
   slim-rails
   timecop
   transitions
+  turbo-rails
   user_impersonate2
   vcr
   virtus

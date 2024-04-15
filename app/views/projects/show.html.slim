@@ -1,3 +1,6 @@
+- content_for :head do
+  = javascript_importmap_tags
+
 = render partial: 'sidebar', layout: 'sidebar_wrapper', locals: { wrapper_class: 'collapsed' }
 
 - content_for :title_bar do
