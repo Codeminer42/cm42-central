@@ -2,7 +2,8 @@
 http_interactions:
 - request:
     method: post
-    uri: https://api.cloudinary.com/v1_1/dgjml2eyw/image/tags
+    # uri: https://api.cloudinary.com/v1_1/dgjml2eyw/image/tags
+    uri: https://api.cloudinary.com/v1_1/localhost/auto/upload
     body:
       encoding: UTF-8
       string: timestamp=1550869673&tag=attachinary_tmp&public_ids[]=jqhxlr93mvbcdwyl59ng&command=remove&signature=6296698a9b407ac782d8982c051db4db66305ea4&api_key=692495869557314

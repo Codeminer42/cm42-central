@@ -1,134 +1,118 @@
 - search_result = defined?(search_result) ? search_result : false
 - story_dom_id = search_result ? "story-search-result-#{story.id}" : story_anchor(story)
-css:
-  .story.editing { display: none }
-  .toggle-story:checked ~ .closed { display: none }
-  .toggle-story:checked ~ .editing { display: block }
-  .toggle-story {
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-    position: absolute;
-  }
-javascript:
-  function toggleStory(id) {
-    const el = document.getElementById(id)
-    el.checked = !el.checked
-  }
-input.toggle-story id=story_dom_id type="checkbox"
 
-/ CLOSED
-.story class="#{story.story_type} #{story.state} closed" class=("searchResult" if search_result) data-id=story.id data-state=story.state data-story-type=story.story_type onclick="toggleStory('#{story_dom_id}')"
-  .state-actions
-    - if search_result
-      button#locate.btn.btn-default.locate-btn type="button"
-        i.mi.md-gps-fixed.md-14
-          | gps_fixed
+.story.closed class=[story.story_type, story.state, ("searchResult" if search_result)] id=story_dom_id data-id=story.id data-state=story.state data-story-type=story.story_type data-controller="story" data-action="click->story#open"
+  input.toggle-story type="checkbox" data-story-target="checkbox"
+  .closed
+    .state-actions
+      - if search_result
+        button#locate.btn.btn-default.locate-btn type="button"
+          i.mi.md-gps-fixed.md-14
+            | gps_fixed
 
-    - if story.events.any?
-      div data-story-state-buttons=""
-        .state-actions
-          - story.events.each do |event|
-            = form_for [:transition, @project, story] do |form|
-              = form.button event, name: "event", value: event, class: "#{event} transition"
+      - if story.events.any?
+        div data-story-state-buttons=""
+          .state-actions
+            - story.events.each do |event|
+              = form_for [:transition, @project, story] do |form|
+                = form.submit event, name: "event", class: "#{event} transition"
 
-  .story-icons
-    span.popover-activate data-original-title="" title=""
-      = icon_text(story)
-      span.estimate = story.estimate
-      - if current_user.email = "micah@botandrose.com"
-        span.estimate = story.position
-      - if story.notes.any? || story.description.present?
-        i.mi.md-14.md-dark.details question_answer
+    .story-icons
+      span.popover-activate data-original-title="" title=""
+        = icon_text(story)
+        span.estimate = story.estimate
+        - if current_user.email = "micah@botandrose.com"
+          span.estimate = story.position
+        - if story.notes.any? || story.description.present?
+          i.mi.md-14.md-dark.details question_answer
 
-  .story-title
-    = story.title
-    '
-    abbr.initials title=story.owned_by_name = story.owned_by_initials
+    .story-title
+      = story.title
+      '
+      abbr.initials title=story.owned_by_name = story.owned_by_initials
 
-/ OPEN
-.story class="#{story.story_type} #{story.state} editing" data-id=story.id data-state=story.state data-story-type=story.story_type
-  = form_for([@project, story], method: "delete", html: { id: "delete_story_#{story.id}" }) {}
+  .editing
+    = form_for([@project, story], method: "delete", html: { id: "delete_story_#{story.id}" }) {}
 
-  = form_for [@project, story] do |form|
-    div data-story-controls=""
-      .form-group.story-controls
-        = form.submit "Save"
-        = form.submit "Delete", class: "delete", form: "delete_story_#{story.id}"
-        input.cancel type="button" value="Cancel" onclick="toggleStory('#{story_dom_id}'); return false"
+    = form_for [@project, story] do |form|
+      div data-story-controls=""
+        .form-group.story-controls
+          = form.submit "Save"
+          = form.submit "Delete", class: "delete", form: "delete_story_#{story.id}", data: { confirm: "Are you sure you want to delete this story?" }
+          input.cancel type="button" value="Cancel" data-action="click->story#close:prevent:stop"
 
-    div data-story-history-location=""
-      .col-xs-12.form-group.input-group.input-group-sm
-        input#story-link-5433.form-control.input-sm readonly="" value=project_url(@project, anchor: dom_id(story))
+      div data-story-history-location=""
+        .col-xs-12.form-group.input-group.input-group-sm
+          input#story-link-5433.form-control.input-sm readonly="" value=project_url(@project, anchor: dom_id(story))
 
-        /
-          span.input-group-btn
-            button.btn.btn-default.btn-clipboard data-clipboard-target="#story-link-#{story.id}" type="button" title="Copy URL"
-              img.clipboard-icon src="/clippy.svg" alt="Copy URL"
-            button.btn.btn-default.btn-clipboard-id.btn-clipboard data-clipboard-text="#5433" type="button" title="Copy ID"
-              | ID
-            button.btn.btn-default.toggle-history title="View history"
-              i.mi.md-18 history
-            button.btn.btn-default.clone-story title="Clone story"
-              i.mi.md-18 content_copy
+          /
+            span.input-group-btn
+              button.btn.btn-default.btn-clipboard data-clipboard-target="#story-link-#{story.id}" type="button" title="Copy URL"
+                img.clipboard-icon src="/clippy.svg" alt="Copy URL"
+              button.btn.btn-default.btn-clipboard-id.btn-clipboard data-clipboard-text="#5433" type="button" title="Copy ID"
+                | ID
+              button.btn.btn-default.toggle-history title="View history"
+                i.mi.md-18 history
+              button.btn.btn-default.clone-story title="Clone story"
+                i.mi.md-18 content_copy
 
-    .form-group
-      = form.label :title
-      = form.text_field :title, placeholder: "Story title", maxlength: "255", class: "title form-control input-sm"
-
-    .form-group.form-inline
-      .form-group data-story-estimate=story.estimate
-        = form.label :estimate
-        br
-        = form.select :estimate, @project.point_values, { disabled: true, include_blank: "no estimate" }, { class: "form-control input-sm story_estimate" }
-
-      .form-group data-story-type=""
-        = form.label :story_type
-        br
-        = form.select :story_type, Story::STORY_TYPES, {}, { class: "form-control input-sm story_type" }
-
-      .form-group data-story-state=""
-        = form.label :state
-        br
-        = form.select :state, form.object.states, {}, { class: "form-control input-sm story_state" }
-
-    .form-group.form-inline
-      .form-group data-requested-by=""
-        = form.label :requested_by
-        br
-        = form.collection_select :requested_by, @project.users, :id, :name, { include_blank: "---" }, { class: "form-control input-sm requested_by_id" }
-
-      .form-group data-owned-by=""
-        = form.label :owned_by
-        br
-        = form.collection_select :owned_by, @project.users, :id, :name, { include_blank: "---" }, { class: "form-control input-sm owned_by_id" }
-
-    .form-group
-      .form-group data-tags=""
-        = form.label :labels
-        br
-        = form.text_field :labels, class: "form-control input-sm labels tagit-hidden-field"
-        /
-          ul.tagit.ui-widget.ui-widget-content.ui-corner-all
-            li.tagit-new
-              input.ui-widget-content.ui-autocomplete-input type="text" autocomplete="off"
-
-    .form-group
-      .story-description
-        = form.label :description
-        br
-        = form.text_area :description , class: "form-control description-textarea"
-
-    div data-story-notes=""
       .form-group
-        = form.label :notes
-        .notelist
+        = form.label :title
+        = form.text_field :title, placeholder: "Story title", maxlength: "255", class: "title form-control input-sm"
 
-    div data-story-note-form=""
-      .note_form.clearfix
-        textarea.form-control.note-textarea
-        / = form.text_area :notes, class: "form-control note-textarea"
+      .form-group.form-inline
+        .form-group data-story-estimate=story.estimate
+          = form.label :estimate
+          br
+          = form.select :estimate, @project.point_values, { disabled: true, include_blank: "no estimate" }, { class: "form-control input-sm story_estimate" }
 
-        button.add-note.btn.btn-default.btn-xs type="submit" disabled="disabled"
-          | Add note
+        .form-group data-story-type=""
+          = form.label :story_type
+          br
+          = form.select :story_type, Story::STORY_TYPES, {}, { class: "form-control input-sm story_type" }
+
+        .form-group data-story-state=""
+          = form.label :state
+          br
+          = form.select :state, form.object.states, {}, { class: "form-control input-sm story_state" }
+
+      .form-group.form-inline
+        .form-group data-requested-by=""
+          = form.label :requested_by
+          br
+          = form.collection_select :requested_by, @project.users, :id, :name, { include_blank: "---" }, { class: "form-control input-sm requested_by_id" }
+
+        .form-group data-owned-by=""
+          = form.label :owned_by
+          br
+          = form.collection_select :owned_by, @project.users, :id, :name, { include_blank: "---" }, { class: "form-control input-sm owned_by_id" }
+
+      .form-group
+        .form-group data-tags=""
+          = form.label :labels
+          br
+          = form.text_field :labels, class: "form-control input-sm labels tagit-hidden-field"
+          /
+            ul.tagit.ui-widget.ui-widget-content.ui-corner-all
+              li.tagit-new
+                input.ui-widget-content.ui-autocomplete-input type="text" autocomplete="off"
+
+      .form-group
+        .story-description
+          = form.label :description
+          br
+          = form.text_area :description , class: "form-control description-textarea"
+
+      div data-story-notes=""
+        .form-group
+          = form.label :notes
+          .notelist
+
+      div data-story-note-form=""
+        .note_form.clearfix
+          textarea.form-control.note-textarea
+          / = form.text_area :notes, class: "form-control note-textarea"
+
+          button.add-note.btn.btn-default.btn-xs type="submit" disabled="disabled"
+            | Add note
 

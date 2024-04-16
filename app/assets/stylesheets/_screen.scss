@@ -88,6 +88,17 @@ div.column_content {
   }
 }
 
+/* Toggling */
+.toggle-story ~ .editing { display: none }
+.toggle-story:checked ~ .closed { display: none }
+.toggle-story:checked ~ .editing { display: block }
+.toggle-story {
+  width: 1px;
+  height: 1px;
+  opacity: 0.01;
+  position: absolute;
+}
+
 /* Story types */
 div.story {
   padding: 7px 8px;

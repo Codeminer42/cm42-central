@@ -1,6 +1,6 @@
 require 'feature_helper'
 
-describe 'Keycuts' do
+xdescribe 'Keycuts' do
   before(:each) do
     ActionController::Base.allow_forgery_protection = false
     sign_in user

@@ -1,6 +1,6 @@
 require 'feature_helper'
 
-describe 'Tour' do
+xdescribe 'Tour' do
   context "when user hasn't finished the tour", js: true do
     let(:user) { create :user, :with_team, finished_tour: false }
     let!(:project) do

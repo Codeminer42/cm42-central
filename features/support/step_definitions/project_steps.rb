@@ -31,7 +31,7 @@ def stories_for column_id
   all("#{column_id} .story").map do |story|
     initial = story["data-story-type"].capitalize[0]
     name_and_owner = story.find(".story-title").text
-    actions = story.all(".transition").map(&:text)
+    actions = story.all(".transition").map(&:value)
     [
       initial,
       name_and_owner,

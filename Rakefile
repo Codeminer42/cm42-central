@@ -24,3 +24,4 @@ features = RSpec::Core::RakeTask.new("spec:features")
 features.pattern = "spec/features/*"
 features.rspec_opts = "--format documentation"
 
+task :cucumber => "spec:features"
