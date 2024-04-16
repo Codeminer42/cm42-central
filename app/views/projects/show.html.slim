@@ -1,5 +1,7 @@
 - content_for :head do
   = javascript_importmap_tags
+  meta name="turbo-refresh-method" content="morph"
+  meta name="turbo-refresh-scroll" content="preserve"
 
 = render partial: 'sidebar', layout: 'sidebar_wrapper', locals: { wrapper_class: 'collapsed' }
 
