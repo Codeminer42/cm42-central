@@ -41,6 +41,28 @@
         data-projects_joined="<%= @projects[:joined].to_json %>"
         data-projects_unjoined="<%= @projects[:unjoined].to_json %>"
       >
+        <div class="search-projects" hidden=true>
+          <div class="form-group col-md-12">
+            <div class="input-group">
+              <div class="input-group-addon">
+                <i class="mi md-20 heading-icon">search</i>
+              </div>
+              <input id="projects_search" class="form-control" placeholder="Search projects">
+              <div class="input-group-addon">
+                <select id="project_type" class="unstyled-input">
+                  <option value="not_archived">Not Archived</option>
+                  <option value="archived">Archived</option>
+                  <option value="all_projects">All Projects</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 project-list-title">
+          <h4><i class="mi md-20 heading-icon">view_module</i> My projects | <%= @projects[:joined].length + @projects[:unjoined].length %></h4>
+        </div>
+        <%= render @projects[:joined] %>
+        <%= render @projects[:unjoined] %>
       </div>
     </div>
   </div>

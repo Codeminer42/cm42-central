@@ -1,4 +1,15 @@
+dialog {
+  border-style: none;
+  padding: 0;
+  display: none;
+  &[open] {
+    display: block;
+  }
+  ::backdrop {
+    background-color: rgba(0, 0, 0, 25%);
+    opacity: 0.25;
+  }
+}
 .modal {
   opacity: 1;
-  display: unset;
 }

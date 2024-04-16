@@ -2,6 +2,8 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="turbo-refresh-method" content="morph">
+  <meta name="turbo-refresh-scroll" content="preserve">
   <title><%= "#{@project.name} - " if @project %><%= t('cm-central') %></title>
   <%= csrf_meta_tag %>
   <%= favicon_link_tag "favicon.ico" %>
@@ -10,9 +12,8 @@
   <%= stylesheet_link_tag "https://www.authy.com/form.authy.min.css" %>
   <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Noto+Sans:400,700" %>
   <%= stylesheet_link_tag "https://use.fontawesome.com/releases/v5.5.0/css/all.css" %>
-  <%= javascript_include_tag "rails-ujs" %>
   <%= render 'shared/google_analytics'%>
-  <%= yield :head %>
+  <%= javascript_importmap_tags %>
 </head>
 <body class='<%= "board" if @layout_settings[:fluid] %>'
       data-page='<%= "#{params[:controller]}.#{params[:action]}" %>'

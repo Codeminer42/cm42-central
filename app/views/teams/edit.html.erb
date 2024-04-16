@@ -66,9 +66,9 @@
         <% end %>
 
         <%= link_to t('teams.members'), team_manage_users_path(current_team.slug), class: 'btn btn-default col-xs-12 btn-square' %>
-        <button class="btn btn-default col-xs-12 btn-square" type="button" onclick="document.getElementById('archive-team-modal').hidden = false">
+        <label for="archive-team-modal" class="btn btn-default col-xs-12 btn-square" type="button" data-controller="dialog-label">
           <%= t('teams.archive') %>
-        </button>
+        </label>
       </div>
     </div>
 
@@ -89,27 +89,27 @@
   </div>
 </div>
 
-<div class="modal fade" id="archive-team-modal" tabindex="-1" hidden="true">
+<dialog modal class="modal fade" id="archive-team-modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" onclick="this.closest('dialog').close()">
           <span aria-hidden="true">&times;</span>
         </button>
         <h5 class="modal-title" id="archive-team-modal-label">
           <%= t('teams.are_you_sure_to_archive_team')%>
         </h5>
       </div>
-      <div class="modal-body">
-        <%= form_tag(team_url, method: 'delete') do %>
+      <%= form_tag(team_url, method: 'delete') do %>
+        <div class="modal-body">
           <%= check_box_tag :send_email, '1', true %>
           <%= label_tag 'send_email', t('teams.send_email_about_archiving_team') %><br>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"><%= t('close') %></button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="this.closest('dialog').close()"><%= t('close') %></button>
           <%= submit_tag 'OK', class: 'btn btn-primary' %>
         <% end %>
       </div>
     </div>
   </div>
-</div>
+</dialog>

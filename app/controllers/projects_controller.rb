@@ -12,12 +12,10 @@ class ProjectsController < ApplicationController
 
     projects_joined = policy_scope(Project).preload(:tag_group)
 
-    @projects = {
-      joined: serialize_from_collection(projects_joined)
-    }
+    @projects = { joined: projects_joined } # map ProjectPresenter.from_collection(collection)
 
     unless current_user.guest?
-      @projects[:unjoined] = serialize_from_collection(projects_unjoined.order(:updated_at))
+      @projects[:unjoined] = projects_unjoined.order(:updated_at)
     end
 
     @activities_group = Activity.grouped_activities(projects_joined, 1.week.ago)
@@ -226,9 +224,5 @@ class ProjectsController < ApplicationController
 
   def projects_unjoined
     current_team.projects.not_archived.joinable_except(policy_scope(Project))
-  end
-
-  def serialize_from_collection(collection)
-    ProjectSerializer.from_collection(ProjectPresenter.from_collection(collection))
   end
 end

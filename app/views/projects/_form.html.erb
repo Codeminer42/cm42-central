@@ -44,11 +44,11 @@
     <%= f.label :tag_group, class: 'control-label' %>
     <div class="tag-group-select">
       <%= f.select :tag_group_id, tag_group_options, {include_blank: true}, { class: 'form-control auth-form-control' } %>
-      <span class="input-group-btn add_button">
-          <button id="submit_tag_group" type="button" class="btn btn-success btn-number" data-type="plus" data-toggle="modal" data-target="#tag-group-modal">
-            <span class="glyphicon glyphicon-plus"></span>
-          </button>
-      </span>
+      <label for="tag-group-modal" class="input-group-btn add_button" data-controller="dialog-label">
+        <button id="submit_tag_group" type="button" class="btn btn-success btn-number" data-type="plus" data-toggle="modal" data-target="#tag-group-modal">
+          <span class="glyphicon glyphicon-plus"></span>
+        </button>
+      </label>
     </div>
   </div>
 
@@ -91,19 +91,19 @@
     <% end %>
 
     <% if policy(project).destroy? %>
-      <span id="delete-project-confirm" type="button" class='btn btn-danger btn-form' data-toggle="modal" data-target="#delete-confirmation-modal">
+      <label for="delete-confirmation-modal" id="delete-project-confirm" type="button" class='btn btn-danger btn-form' data-controller="dialog-label">
         <%= t('delete') %>
-      </span>
+      </label>
     <% end %>
   </div>
 <% end %>
 
 <!-- Tag Group Modal -->
-<div class="modal fade" id="tag-group-modal" role="dialog">
+<dialog modal class="modal fade" id="tag-group-modal" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="close" onclick="this.closest('dialog').close()">&times;</button>
         <h4 class="modal-title"><%= t('tag_group.new tag_group') %></h4>
       </div>
       <div class="modal-body">
@@ -112,9 +112,9 @@
       </div>
     </div>
   </div>
-</div>
+</dialog>
 
 <!-- Project Delete Modal -->
-<div class="modal fade" id="delete-confirmation-modal" role="dialog">
+<dialog modal class="modal fade" id="delete-confirmation-modal" role="dialog">
   <%= render partial: 'delete_confirmation', locals: {project: project} %>
-</div>
+</dialog>

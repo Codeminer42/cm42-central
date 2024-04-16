@@ -1,0 +1,37 @@
+.col-md-6
+  .panel.panel-default.card.project-item.animated.scale-in
+    .panel-heading.card-heading
+      .project-card-header-container
+        a.card-title.project-title href=project_path(project)
+          = project.name
+      - if project.users.include?(current_user)
+        .icons.pull-right
+          a.unstyled-link href=reports_project_path(project)
+            i.mi.md-20.heading-icon insert_chart
+          a.unstyled-link href=project_users_path(project)
+            i.mi.md-20.heading-icon group
+          span.dropdown
+            label.unstyled-link for="settings-dialog" data-controller="dialog-label"
+              i.mi.md-20.heading-icon settings
+            dialog#settings-dialog
+              ul.dropdown-menu.dropdown-menu-right
+                li.dropdown-header Options
+                li = link_to "Settings", [:edit, project]
+                li.divider
+                li = link_to "Leave project", [project, current_user], method: "delete"
+
+    .panel-body
+      .col-md-12.members
+        ul.member-list
+          - project.users.limit(Project::MAX_MEMBERS_PER_CARD).each do |user|
+            - src = Rails.cache.fetch("user/#{user.email}/avatar", expires_in: 1.hour) { avatar_url(user) }
+            li.member
+              img.identicon src=src alt="User avatar"
+
+    - if project.users.include?(current_user)
+      a.card-footer.panel-footer href=project_path(project)
+        | Select project
+    - else
+      a.card-footer.panel-footer href=join_project_path(project)
+        = I18n.t('projects.join')
+
