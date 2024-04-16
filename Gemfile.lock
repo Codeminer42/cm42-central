@@ -431,8 +431,6 @@ GEM
       rack (>= 0.4)
     rack-cors (1.1.1)
       rack (>= 2.0.0)
-    rack-disable_css_animations (0.3.0)
-      rack
     rack-protection (2.2.3)
       rack
     rack-test (2.0.2)
@@ -704,7 +702,6 @@ DEPENDENCIES
   pusher-fake (~> 3.0.1)
   rack-cache
   rack-cors
-  rack-disable_css_animations
   rack-timeout
   rails (~> 6.1.7)
   rails-controller-testing

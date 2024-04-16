@@ -82,7 +82,6 @@ group :test do
   gem 'puma', '~> 5.6.4'
   gem 'selenium-webdriver'
   gem 'webdrivers'
-  gem "rack-disable_css_animations"
   gem 'rspec-retry'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-its'

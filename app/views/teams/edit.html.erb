@@ -66,7 +66,7 @@
         <% end %>
 
         <%= link_to t('teams.members'), team_manage_users_path(current_team.slug), class: 'btn btn-default col-xs-12 btn-square' %>
-        <button class="btn btn-default col-xs-12 btn-square" type="button" data-toggle="modal" data-target="#archive-team-modal">
+        <button class="btn btn-default col-xs-12 btn-square" type="button" onclick="document.getElementById('archive-team-modal').hidden = false">
           <%= t('teams.archive') %>
         </button>
       </div>
@@ -89,7 +89,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="archive-team-modal" tabindex="-1" role="dialog" aria-labelledby="archive-team-modal-label" aria-hidden="true">
+<div class="modal fade" id="archive-team-modal" tabindex="-1" hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">

@@ -109,7 +109,6 @@ describe 'Teams', js: true do
       let(:team_name) { user.teams.first.name }
 
       it 'successfully archive the team', js: true do
-
         click_button 'Teams'
         click_link   'Settings'
         click_button 'Archive Team'
