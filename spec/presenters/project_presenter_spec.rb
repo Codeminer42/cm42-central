@@ -35,7 +35,7 @@ describe ProjectPresenter do
 
   describe '#archived_at' do
     it 'should render a formated date' do
-      project.archived_at = '2000-01-01 00:00:00 -0300'
+      project.archived_at = '2000-01-01 00:00:00'
       expect(project.archived_date).to eq('Jan 01, 2000')
     end
   end

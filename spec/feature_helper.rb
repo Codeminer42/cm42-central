@@ -1,10 +1,6 @@
 require 'rails_helper'
 
 RSpec.configure do |config|
-  config.before(:suite) do
-    ViteRuby.commands.build
-  end
-
   config.around(:each) do |ex|
     if ENV["CI"]
       ex.run_with_retry retry: 3

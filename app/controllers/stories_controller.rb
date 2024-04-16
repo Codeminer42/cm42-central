@@ -14,6 +14,23 @@ class StoriesController < ApplicationController
            filename: @project.csv_filename)
   end
 
+  def create
+    update_current_team
+
+    @story = policy_scope(Story).build(allowed_params)
+    authorize @story
+
+    @story.requested_by_id = current_user.id unless @story.requested_by_id
+
+    result = StoryOperations::Create.call(story: @story, current_user: current_user)
+
+    if result.success?
+      redirect_to project_url(@project)
+    else
+      render action: 'new'
+    end
+  end
+
   def update
     @story = policy_scope(Story).find(params[:id])
     authorize @story
@@ -32,7 +49,7 @@ class StoriesController < ApplicationController
         if result.success?
           redirect_to @project
         else
-          redirect_to @story
+          redirect_to story_path(@story)
         end
       end
       wants.json do
@@ -59,41 +76,6 @@ class StoriesController < ApplicationController
     authorize @story
     StoryOperations::Destroy.call(story: @story, current_user: current_user)
     redirect_to project_url(@project)
-  end
-
-  def done
-    @stories = policy_scope(Story).done
-    authorize Story, :done?
-    render json: @stories
-  end
-
-  def backlog
-    @stories = policy_scope(Story).backlog
-    authorize Story, :backlog?
-    render json: @stories
-  end
-
-  def in_progress
-    @stories = policy_scope(Story).in_progress
-    authorize Story, :in_progress?
-    render json: @stories
-  end
-
-  def create
-    update_current_team
-
-    @story = policy_scope(Story).build(allowed_params)
-    authorize @story
-
-    @story.requested_by_id = current_user.id unless @story.requested_by_id
-
-    result = StoryOperations::Create.call(story: @story, current_user: current_user)
-
-    if result.success?
-      redirect_to project_url(@project)
-    else
-      render action: 'new'
-    end
   end
 
   private

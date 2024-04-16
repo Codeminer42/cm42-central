@@ -19,6 +19,12 @@ class Story < ApplicationRecord
     end
   end
 
+  def saved_changes
+    super.select do |key, value|
+      value.uniq.length > 1
+    end
+  end
+
   before_destroy { |record| raise ActiveRecord::ReadOnlyRecord if record.readonly? }
 
   scope :accepted, -> { where(state: 'accepted').where.not(accepted_at: nil) }
@@ -91,15 +97,6 @@ class Story < ApplicationRecord
   pg_search_scope :search_labels,
                   against: :labels,
                   ranked_by: ':trigram'
-
-  JSON_ATTRIBUTES = %w[
-    title release_date accepted_at created_at updated_at delivered_at description
-    project_id story_type owned_by_id requested_by_id
-    owned_by_name owned_by_initials requested_by_name estimate
-    state position id labels
-  ].freeze
-
-  JSON_METHODS = %w[errors notes tasks].freeze
 
   CSV_HEADERS = [
     "Id", "Story", "Labels", "Iteration", "Iteration Start", "Iteration End",
@@ -191,10 +188,6 @@ class Story < ApplicationRecord
     title
   end
 
-  def as_json(options = {})
-    super(**options, only: JSON_ATTRIBUTES, methods: JSON_METHODS)
-  end
-
   def readonly?
     return false if destroyed_by_association
     !accepted_at_changed? && accepted_at.present?
@@ -251,14 +244,6 @@ class Story < ApplicationRecord
     self.requested_by_name = requested_by&.name
     self.owned_by_name     = owned_by&.name
     self.owned_by_initials = owned_by&.initials
-  end
-
-  def saved_changes
-    super
-  end
-
-  def saved_changes?
-    super
   end
 
   def self.can_be_estimated?(story_type)

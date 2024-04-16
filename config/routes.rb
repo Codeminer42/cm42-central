@@ -55,9 +55,6 @@ Rails.application.routes.draw do
       resources :activities, only: [:index], module: 'stories'
       resources :notes, only: [:index, :create, :show, :destroy]
       resources :tasks, only: [:create, :destroy, :update]
-      collection do
-        get :done, :in_progress, :backlog
-      end
       member do
         patch :transition
       end

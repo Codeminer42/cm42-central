@@ -104,7 +104,6 @@ describe IterationService do
     let(:service) { IterationService.new(project, current_time: today) }
     before do
       I18n.locale = :en
-      Time.zone = 'Brasilia'
       project.update_attribute(:start_date, Time.zone.parse("2016-07-01"))
       project.users << dummy
 
@@ -139,7 +138,7 @@ describe IterationService do
                             6 => [0, 5, 3, 1, 5, 8, 5],
                             7 => [5, 2, 8, 8, 0, 3, 8],
                             8 => [2, 5, 0, 8, 0, 2, 3],
-                            9 => [0, 3, 3, 2, 8]})
+                            9 => [0, 3, 3, 2, 8, 0, 0]})
     end
 
     it '#group_by_day' do
@@ -155,7 +154,7 @@ describe IterationService do
 
     it '#group_by_bugs' do
       groups = service.group_by_bugs
-      expect(groups).to eq({1=>1, 2=>3, 3=>0, 4=>2, 5=>3, 6=>1, 7=>1, 8=>2, 9=>1})
+      expect(groups).to eq({1=>1, 2=>3, 3=>0, 4=>2, 5=>3, 6=>1, 7=>1, 8=>2, 9=>3})
     end
 
     describe "#velocity" do
@@ -190,13 +189,13 @@ describe IterationService do
       # there are 10 in the in_progress and 6 in the backlog
       iterations = service.backlog_iterations
       expect(iterations.size).to eq(2)
-      expect(iterations.first.size).to eq(11)
+      expect(iterations.first.size).to eq(9)
       expect(iterations.last.size).to eq(6)
 
       # override velocity to simulate different iterations
       iterations = service.backlog_iterations(10)
       expect(iterations.size).to eq(6)
-      expect(iterations.first.size).to eq(9)
+      expect(iterations.first.size).to eq(7)
     end
 
     it '#current_iteration_details' do

@@ -7,7 +7,7 @@ FactoryBot.define do
     u.password { 'password' }
     u.password_confirmation { 'password' }
     u.locale { 'en' }
-    u.time_zone { 'Brasilia' }
+    u.time_zone { Time.zone.name }
     u.finished_tour { true }
     u.after(:build, &:confirm)
 

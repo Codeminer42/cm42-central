@@ -23,22 +23,6 @@ class StoryPolicy < ApplicationPolicy
     update?
   end
 
-  def done?
-    update?
-  end
-
-  def sort?
-    update?
-  end
-
-  def backlog?
-    update?
-  end
-
-  def in_progress?
-    update?
-  end
-
   alias story? show?
 
   class Scope < Scope

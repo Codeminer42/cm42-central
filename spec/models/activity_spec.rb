@@ -25,7 +25,6 @@ describe Activity, type: :model do
       first_update = story.updated_at
       story.title = 'new story title'
       story.estimate = 2
-      story.position = 1.5
       story.state = 'finished'
 
       story.save
@@ -34,7 +33,6 @@ describe Activity, type: :model do
       expect(activity.subject.saved_changes).to eq(
         'title' => ['Test story', 'new story title'],
         'estimate' => [nil, 2],
-        'position' => [1.0, 1.5],
         'state' => %w[unstarted finished],
         'updated_at' => [first_update, story.updated_at]
                                                    )

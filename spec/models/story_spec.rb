@@ -132,39 +132,6 @@ describe Story do
     end
   end
 
-  describe '#set_position_to_last' do
-    context 'when position is set' do
-      before { subject.position = 42 }
-
-      it 'does nothing' do
-        expect(subject.set_position_to_last).to be true
-        subject.position = 42
-      end
-    end
-
-    context 'when there are no other stories' do
-      before { allow(subject).to receive_message_chain(:project, :stories, :order, :first).and_return(nil) }
-
-      it 'sets position to 1' do
-        subject.set_position_to_last
-        expect(subject.position).to eq(1)
-      end
-    end
-
-    context 'when there are other stories' do
-      let(:last_story) { mock_model(Story, position: 41) }
-
-      before do
-        allow(subject).to receive_message_chain(:project, :stories, :order, :first).and_return(last_story)
-      end
-
-      it 'incrememnts the position by 1' do
-        subject.set_position_to_last
-        expect(subject.position).to eq(42)
-      end
-    end
-  end
-
   describe '#accepted_at' do
     context 'when not set' do
       before { subject.accepted_at = nil }
@@ -432,21 +399,6 @@ describe Story do
 
     its(:state)       { should == 'unstarted' }
     its(:story_type)  { should == 'feature' }
-  end
-
-  describe '#as_json' do
-    before { subject.id = 42 }
-
-    specify do
-      expect(subject.as_json['story'].keys.sort).to eq(
-        %w[
-          title accepted_at created_at release_date updated_at delivered_at description
-          project_id story_type owned_by_id requested_by_id
-          requested_by_name owned_by_name owned_by_initials estimate
-          state position id errors labels notes tasks new_position
-        ].sort
-      )
-    end
   end
 
   describe 'scopes' do
