@@ -1,3 +1,11 @@
+[hidden] {
+  display: none !important;
+}
+
+.dropdown-menu {
+  display: unset
+}
+
 .navbar {
   padding: 0 10px;
   margin-bottom: 0;

@@ -53,12 +53,12 @@
           <% if current_user %>
             <% if current_team %>
               <div class="dropdown">
-                <button class="btn btn-link team-dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-link team-dropdown" type="button" onclick="var e = this.nextElementSibling; e.hidden = !e.hidden">
                   <%= Team.model_name.human(count: 2) %>
                   <span class="caret"></span>
                 </button>
 
-                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
+                <ul class="dropdown-menu dropdown-menu-right" hidden="true">
                   <li class="dropdown-header">
                     <%= session[:current_team_slug] && current_team.try(:name) || t('cm-central') %>
                   </li>
@@ -82,12 +82,12 @@
             <% end %>
 
             <div class="dropdown">
-              <button class="btn btn-link user-dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button class="btn btn-link user-dropdown" type="button" onclick="var e = this.nextElementSibling; e.hidden = !e.hidden">
                 <%= current_user.name %>
                 <span class="caret"></span>
               </button>
 
-              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
+              <ul class="dropdown-menu dropdown-menu-right" hidden="true">
                 <li>
                   <%= topbar_link t('edit'), edit_user_registration_path %>
                 </li>
