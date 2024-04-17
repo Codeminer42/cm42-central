@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_15_221432) do
+ActiveRecord::Schema.define(version: 2024_04_17_160711) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -170,7 +170,7 @@ ActiveRecord::Schema.define(version: 2024_04_15_221432) do
     t.text "description"
     t.integer "estimate"
     t.string "story_type", limit: 255, default: "feature"
-    t.string "state", limit: 255, default: "unstarted"
+    t.string "state", limit: 255, default: "unscheduled"
     t.datetime "accepted_at"
     t.integer "requested_by_id"
     t.integer "owned_by_id"

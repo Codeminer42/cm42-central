@@ -10,6 +10,10 @@ When /^I open (the ".+?" story)$/ do |locator|
   element_for(locator).click
 end
 
+Then "I should see the following new story form:" do |table|
+  table.diff! "#new_story"
+end
+
 Then "I should see the following {string} story form:" do |story_name, table|
   id = Story.find_by!(title: story_name).id
   table.diff! "#edit_story_#{id}"

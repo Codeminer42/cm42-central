@@ -7,7 +7,7 @@
   p#velocity.navbar-text.velocity data-step="velocity"
 
   - unless current_user.guest?
-    button#add_story.btn.btn-primary.btn-sm.navbar-btn type="button" data-step="add-story"
+    = link_to [@project, new_story: true], id: "add_story", class: "btn btn-primary btn-sm navbar-btn", data: { turbo: true } do
       i.mi.md-light.md-18.md-add add
       = t('add story')
 
@@ -58,6 +58,7 @@
             a.toggle-column.hide_chilly_bin href="#" title="Close" ×
 
           #chilly_bin.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#chilly_bin"
+            = render @story, new_story: true if params[:new_story]
             = render @project.stories.chilly_bin.order(:position)
 
         / td.epic_column style="display: none;" data-column-view="epic" data-connect="#chilly_bin,#in_progress,#backlog" data-hideable="false"

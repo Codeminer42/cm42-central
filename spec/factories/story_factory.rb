@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :story do |s|
     s.title { 'Test story' }
     s.association :requested_by, factory: :user
+    s.state { 'unstarted' }
 
     trait :with_project do
       after(:build) { |object| object.project = create(:project, users: [object.requested_by]) }

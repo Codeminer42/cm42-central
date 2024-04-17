@@ -41,8 +41,12 @@ class ProjectsController < ApplicationController
     authorize @project
     @project.users << current_user
 
-    result = ProjectOperations::Create.call(project: @project, current_user: current_user,
-                                            current_team: current_team)
+    result = ProjectOperations::Create.call(
+      project: @project,
+      current_user: current_user,
+      current_team: current_team,
+    )
+
     match_result(result) do |on|
       on.success do |project|
         redirect_to(project, notice: t('projects.project was successfully created'))

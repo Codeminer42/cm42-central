@@ -122,7 +122,7 @@ describe IterationService do
       10.times do |i|
         story_type = story_types[random_numbers_1.shift]
         estimate = story_type == 'bug' ? nil : random_numbers_2.shift
-        stories << build(:story, project: project, id: (65 + i), title: "Story #{65 + i}", story_type: story_type, estimate: estimate, requested_by: dummy)
+        stories << build(:story, project: project, id: (65 + i), title: "Story #{65 + i}", story_type: story_type, state: 'unstarted', estimate: estimate, requested_by: dummy)
       end
 
       allow_any_instance_of(IterationService).to receive(:fetch_stories!) { stories }

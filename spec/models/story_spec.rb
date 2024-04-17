@@ -397,7 +397,7 @@ describe Story do
   describe 'defaults' do
     subject { Story.new }
 
-    its(:state)       { should == 'unstarted' }
+    its(:state)       { should == 'unscheduled' }
     its(:story_type)  { should == 'feature' }
   end
 
