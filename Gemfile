@@ -42,7 +42,7 @@ gem 'dry-monads'
 gem 'dry-matcher'
 
 gem 'sass-rails'
-gem 'material_icons'
+gem 'material_icons', '~>2.0' # 3.0 breaks shit?
 gem 'bootstrap-sass', '~> 3.4.0'
 
 gem 'sprockets', '~>4.0'
@@ -51,7 +51,7 @@ gem 'turbo-rails'
 gem 'stimulus-rails'
 gem 'redis'
 
-gem 'sidekiq'
+gem 'sidekiq', '~>6.0' # 7.0 removes extensions
 gem 'sidekiq_mailer'
 gem 'sinatra', require: nil
 gem 'rollbar', '~> 3.3'
