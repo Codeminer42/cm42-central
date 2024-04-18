@@ -31,3 +31,17 @@ Feature: Stories can contain notes
       | this is a note       | Micah Geisel |
       | this is another note | Micah Geisel |
 
+  Scenario: User deletes note from a story
+    Given I am logged in as "micah@botandrose.com"
+    When I follow "Select project" within the "Example Project" project
+    Then I should see the following project board:
+      | Done | Current | Icebox      |
+      |      |         | F WOW start |
+
+    When I open the "WOW" story
+    Then I should see the following notes:
+      | this is a note | Micah Geisel |
+    When I follow "Delete" within the "this is a note" note
+    And I open the "WOW" story
+    Then I should see no notes
+

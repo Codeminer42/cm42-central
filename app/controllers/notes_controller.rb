@@ -16,7 +16,7 @@ class NotesController < ApplicationController
     @note = policy_scope(Note).find(params[:id])
     authorize @note
     @note.destroy
-    head :ok
+    redirect_to @project
   end
 
   def create

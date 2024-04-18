@@ -116,8 +116,7 @@
                   .note_meta
                     span.user => note.user_name
                     span.created_at => note.created_at
-                    span
-                      button.delete-btn.delete-note title="Delete" Delete
+                    span = link_to "Delete", [@project, form.object, note], method: :delete, class: "delete-btn delete-note", title: "Delete"
 
         div
           .note_form.clearfix

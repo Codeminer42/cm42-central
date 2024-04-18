@@ -32,3 +32,10 @@ Then "I should see the following notes:" do |table|
   end
   table.diff! actual
 end
+
+Then "I should see no notes" do
+  actual = all(".notelist .note").map do |note|
+    [note.find(".note_note"), *note.all("span")].map(&:text)
+  end
+  Chop.empty_table.diff! actual
+end

@@ -96,12 +96,8 @@ describe NotesController do
 
       describe '#destroy' do
         specify do
-          delete :destroy, xhr: true, params: request_params
-          expect(response).to be_successful
-          expect(assigns[:project]).to eq(project)
-          expect(assigns[:story]).to eq(story)
-          expect(assigns[:note]).to eq(note)
-          expect(response.body).to be_blank
+          delete :destroy, params: request_params
+          expect(response).to redirect_to(project_path(project))
         end
       end
     end

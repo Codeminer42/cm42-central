@@ -17,11 +17,14 @@ module WithinHelpers
     when /the sidebar/
       "aside"
 
+    when /the "(.+)?" project/
+      [".project-item", text: $1]
+
     when /the "(.+)?" story/
       [".story", text: $1]
 
-    when /the "(.+)?" project/
-      [".project-item", text: $1]
+    when /the "(.+)?" note/
+      [".notelist .note", text: $1]
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
