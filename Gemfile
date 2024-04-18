@@ -51,7 +51,7 @@ gem 'turbo-rails'
 gem 'stimulus-rails'
 gem 'redis'
 
-gem 'sidekiq', '~>6.0' # 7.0 removes extensions
+gem 'sidekiq'
 gem 'sidekiq_mailer'
 gem 'sinatra', require: nil
 gem 'rollbar', '~> 3.3'
@@ -71,12 +71,12 @@ group :test do
   gem 'capybara-screenshot'
   gem 'chop'
   gem 'codeclimate-test-reporter', require: nil
-  gem 'cucumber-rails'
+  gem 'cucumber-rails', require: false
   gem 'cucumber', require: false, github: 'botandrose/cucumber', branch: 'restore_looser_line_numbers'
   gem 'cuprite-downloads'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
-  gem 'puma', '~> 5.6.4'
+  gem 'puma'
   gem 'selenium-webdriver'
   gem 'webdrivers'
   gem 'rspec-retry'

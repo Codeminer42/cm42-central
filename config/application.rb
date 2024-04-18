@@ -40,6 +40,6 @@ module Fulcrum
     config.active_job.queue_adapter = :sidekiq
     config.exceptions_app = self.routes
 
-    config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time, BigDecimal]
+    config.active_record.use_yaml_unsafe_load = true
   end
 end
