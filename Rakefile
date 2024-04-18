@@ -11,11 +11,6 @@ task :restart do
   end
 end
 
-file ".env" => ".env.sample" do
-  cp ".env.sample", ".env"
-end
-task :bootstrap => ".env"
-
 Rake.application["spec"].clear
 spec = RSpec::Core::RakeTask.new(:spec)
 spec.exclude_pattern = "spec/features/*"
