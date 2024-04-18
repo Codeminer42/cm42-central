@@ -8,7 +8,7 @@ Feature: Stories have a lifecycle
       | type    | title | state       |
       | feature | WOW   | unscheduled |
 
-  Scenario: User adds note to a story
+  Scenario: User takes a story through its entire lifecycle
     Given I am logged in as "micah@botandrose.com"
     When I follow "Select project" within the "Example Project" project
     Then I should see the following project board:
