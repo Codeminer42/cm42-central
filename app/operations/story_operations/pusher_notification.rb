@@ -9,7 +9,8 @@ module StoryOperations
     end
 
     def notify_changes
-      ::PusherNotificationWorker.perform_async(channel_name)
+      # FIXME do something with turbo stream?
+      # ::PusherNotificationWorker.perform_async(channel_name)
     end
 
     private

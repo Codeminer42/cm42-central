@@ -39,7 +39,6 @@ gem 'slim-rails'
 gem 'transitions', require: ["transitions", "active_model/transitions"]
 gem 'user_impersonate2', require: 'user_impersonate'
 gem 'virtus'
-gem 'pusher'
 gem 'dry-monads'
 gem 'dry-matcher'
 
@@ -105,7 +104,6 @@ group :development, :test do
   gem 'byebug'
   gem 'pry-rails'
   gem 'pry-remote'
-  gem "pusher-fake", '~> 3.0.1'
   gem 'rubocop', '0.63.1'
   gem 'rubocop-rspec'
 end
