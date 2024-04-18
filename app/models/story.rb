@@ -74,7 +74,7 @@ class Story < ApplicationRecord
     end
   end
 
-  accepts_nested_attributes_for :tasks, :notes
+  accepts_nested_attributes_for :tasks, :notes, reject_if: proc { |attributes| attributes[:note].blank? }
 
   attr_accessor :acting_user, :base_uri
   attr_accessor :iteration_number, :iteration_start_date # helper fields for IterationService
