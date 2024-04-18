@@ -22,8 +22,6 @@
       span.popover-activate data-original-title="" title=""
         = icon_text(story)
         span.estimate = story.estimate
-        - if current_user.email = "micah@botandrose.com"
-          span.estimate = story.position
         - if story.notes.any? || story.description.present?
           i.mi.md-14.md-dark.details question_answer
 
