@@ -1,6 +1,6 @@
 ActiveAdmin.register User do
   permit_params :email, :name, :initials, :username, :locale,
-    :time_zone, :authy_enabled, :password, :password_confirmation,
+    :time_zone, :password, :password_confirmation,
     :role
 
   index do
@@ -11,7 +11,6 @@ ActiveAdmin.register User do
     column :initials
     column :username
     column :role
-    column :authy_enabled
     column do |user|
       link_to("Sign in as #{user.name}", impersonate_engine.impersonate_user_path(user))
     end
@@ -32,7 +31,6 @@ ActiveAdmin.register User do
       f.input :role, collection: User.role.options
       f.input :locale, collection: I18n.available_locales
       f.input :time_zone
-      f.input :authy_enabled
     end
     f.actions
   end

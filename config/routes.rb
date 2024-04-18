@@ -92,16 +92,9 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     confirmations: 'confirmations',
     registrations: 'registrations'
-  },
-  path_names: {
-    verify_authy: '/verify-token',
-    enable_authy: '/enable-two-factor',
-    verify_authy_installation: '/verify-installation'
   }
 
   devise_scope :user do
-    get 'users/verfiy_two_factor' => 'registrations#verify_two_factor', as: :user_verify_two_factor
-    post 'users/disable_two_factor' => 'registrations#disable_two_factor', as: :user_disable_two_factor
     get 'users/current' => 'sessions#current', as: :current_user
     put 'users/:id/tour' => 'registrations#tour', as: :users_tour
     put 'users/:id/reset_tour' => 'registrations#reset_tour', as: :user_reset_tour

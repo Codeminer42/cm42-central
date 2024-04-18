@@ -35,7 +35,7 @@ class User < ApplicationRecord
   # FIXME: - DRY up, repeated in Story model
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
-  devise :authy_authenticatable, :database_authenticatable, :registerable, :confirmable,
+  devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable,
          authentication_keys: AUTHENTICATION_KEYS,
          strip_whitespace_keys: AUTHENTICATION_KEYS,

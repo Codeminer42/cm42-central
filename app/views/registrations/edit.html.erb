@@ -36,11 +36,6 @@
           <% if @user.finished_tour? %>
             <%= link_to t('reset_tour'), user_reset_tour_path(@user), method: :put, class: 'btn btn-info btn-block' %>
           <% end %>
-          <% if resource.authy_enabled %>
-            <%= link_to t('disable_2fa'), user_verify_two_factor_path, class: 'btn btn-warning btn-block' %>
-          <% else %>
-            <%= link_to t('enable_2fa'), user_enable_authy_path, class: 'btn btn-success btn-block' %>
-          <% end %>
           <%= link_to t("cancel_account"), registration_path(resource_name), data: {confirm: t('cancel_account_confirmation_question')}, method: :delete, class: 'btn btn-danger btn-block' %>
         </div>
       </div>

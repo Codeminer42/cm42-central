@@ -1,4 +1,4 @@
-<% if ENV['GOOGLE_ANALYTICS_ID'] %>
+<% if ENV['GOOGLE_ANALYTICS_ID'].present? %>
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=<%= ENV['GOOGLE_ANALYTICS_ID'] %>"></script>
   <script>
