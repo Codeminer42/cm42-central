@@ -4,7 +4,7 @@ Configuration.for('fulcrum') do
 
   # The email address that notification emails will be sent from.  Env var
   # MAILER_SENDER
-  mailer_sender ENV['MAILER_SENDER']
+  mailer_sender ENV['MAILER_SENDER'] || "noreply@example.com"
 
   # Disable registration pages.  If set to true, users will need to be invited
   # to a project rather than being able to self sign-up.

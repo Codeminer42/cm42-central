@@ -30,7 +30,7 @@ class Notifications < ActionMailer::Base
     @team = team
 
     mail to: @team.users.pluck(:email),
-         from: ENV['MAILER_SENDER'],
+         from: Rails.application.config.fulcrum.mailer_sender,
          subject: "The team <#{@team.name}> was archived"
   end
 
