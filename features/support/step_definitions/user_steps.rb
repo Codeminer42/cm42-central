@@ -14,7 +14,23 @@ Given "the following users exist:" do |table|
       attributes.merge(username: attributes[:email].split("@").first)
     end
 
-    has_many :teams
+    field :teams do |names|
+      names.split(", ").map do |name|
+        Team.where(name: name).first_or_create!
+      end
+    end
+
+    after :projects do |user, attributes|
+      projects = attributes[:projects].split(", ").map do |name|
+        Project.where(name: name).first_or_create!({
+          start_date: Time.zone.now,
+        })
+      end
+      projects.each do |project|
+        project.users << user
+        project.teams += user.teams
+      end
+    end
   end
 end
 

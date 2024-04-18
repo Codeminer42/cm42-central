@@ -1,8 +1,13 @@
 Given "the following projects exist:" do |table|
   table.create! Project do
-    has_many :teams
     has_many :users, name_field: :email
     default(:start_date) { Time.zone.now }
+
+    field :teams do |names|
+      names.split(", ").map do |name|
+        Team.where(name: name).first_or_create!
+      end
+    end
   end
 end
 
