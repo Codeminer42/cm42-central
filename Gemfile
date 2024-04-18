@@ -5,11 +5,11 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 6.1.7'
+gem 'rails', '~>7.0.0'
 gem 'pg'
 gem 'pg_search'
 gem 'bard-rake'
-gem 'backhoe', '>= 0.8.0'
+gem 'backhoe'
 gem 'dotenv-rails'
 gem 'activeadmin'
 gem 'api-pagination'
@@ -72,7 +72,6 @@ group :test do
   gem 'chop'
   gem 'codeclimate-test-reporter', require: nil
   gem 'cucumber-rails', require: false
-  gem 'cucumber', require: false, github: 'botandrose/cucumber', branch: 'restore_looser_line_numbers'
   gem 'cuprite-downloads'
   gem 'database_cleaner'
   gem 'factory_bot_rails'

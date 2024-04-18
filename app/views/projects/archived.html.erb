@@ -8,7 +8,7 @@
       <% @projects.order(:name).each do |project| %>
       <li class="list-group-item clearfix">
         <div class="member-name">
-          <%= project.name %> (<%= project.archived_at.to_s(:short) %>)
+          <%= project.name %> (<%= project.archived_at.to_fs(:short) %>)
         </div>
         <%= form_for [:unarchive, project], method: :patch do |f| %>
           <%= f.submit t('projects.unarchive'), class: 'btn btn-danger btn-sm pull-right' %>

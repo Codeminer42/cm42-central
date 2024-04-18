@@ -45,12 +45,12 @@ module ProjectsHelper
   end
 
   def current_iteration_start_date
-    @service.date_for_iteration_number(@service.current_iteration_number).to_date.to_s(:short)
+    @service.date_for_iteration_number(@service.current_iteration_number).to_date.to_fs(:short)
   end
 
   def current_iteration_end_date
     date = @service.date_for_iteration_number(@service.current_iteration_number + 1)
-    (date - 1.day).to_date.to_s(:short)
+    (date - 1.day).to_date.to_fs(:short)
   end
 
   def current_iteration
@@ -89,7 +89,7 @@ module ProjectsHelper
 
   def last_iteration_start_date(worst = false)
     @backlog_date ||= @service.backlog_date(worst)
-    @backlog_date.last.to_date.to_s(:short)
+    @backlog_date.last.to_date.to_fs(:short)
   end
 
   def calculate_and_render_burn_up!
