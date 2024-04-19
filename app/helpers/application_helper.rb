@@ -1,7 +1,7 @@
 module ApplicationHelper
   def team_logo(team)
     if team.logo.attached?
-      image_tag(team.logo.variant(resize: "32x32"),
+      image_tag(team.logo.variant(:thumb),
         width: 32,
         height: 32,
         crop: :fill,

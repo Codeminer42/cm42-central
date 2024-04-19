@@ -21,7 +21,9 @@ class Team < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged, reserved_words: %w[new edit].freeze
 
-  has_one_attached :logo
+  has_one_attached :logo do |config|
+    config.variant :thumb, resize_to_fill: [32,32]
+  end
 
   def allowed_domain?(email)
     whitelist = (registration_domain_whitelist || '').split(DOMAIN_SEPARATORS_REGEX).map(&:strip)
