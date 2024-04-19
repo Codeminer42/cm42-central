@@ -26,9 +26,7 @@ class Project < ApplicationRecord
 
   has_one_attached :import
 
-  has_many :integrations, dependent: :destroy
   has_many :changesets, dependent: :destroy
-  has_many :integrations, dependent: :destroy
   has_many :ownerships, dependent: :destroy
   has_many :teams, through: :ownerships
   has_many :memberships, dependent: :destroy

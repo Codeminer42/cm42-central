@@ -46,7 +46,6 @@ Rails.application.routes.draw do
     end
     resources :users, only: [:index, :destroy]
     resources :memberships, only: [:create]
-    resources :integrations, only: [:index, :create, :destroy]
     resources :changesets, only: [:index]
     put 'stories/sort', to: 'stories#sort'
     resources :stories, only: [:index, :create, :update, :destroy] do
@@ -64,16 +63,6 @@ Rails.application.routes.draw do
   resources :project_boards, only: :show do
     member do
       get 'iterations' => 'iterations#show'
-    end
-  end
-
-  namespace :beta do
-    resources :projects, only: :show
-    resources :project_boards, only: :show
-    resources :stories, only: [] do
-      member do
-        post :position
-      end
     end
   end
 
@@ -108,12 +97,4 @@ Rails.application.routes.draw do
   end
 
   root 'projects#index'
-
-  mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
-
-  namespace :gitlab do
-    namespace :projects do
-      resources :events, only: :create
-    end
-  end
 end

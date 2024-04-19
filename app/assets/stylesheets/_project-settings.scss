@@ -30,29 +30,6 @@
   margin-bottom: 20px;
 }
 
-/* Integrations */
-.panel {
-  .panel-content {
-    padding: 15px;
-  }
-}
-
-.integration > .panel-heading {
-  padding: 10px 15px;
-  vertical-align: middle;
-
-  .btn-remove {
-    float: right;
-    padding: 2px 10px;
-    color: $darkred;
-    border-color: $darkred;
-    &:hover, &:focus {
-      background: $darkred;
-      color: $white;
-    }
-  }
-}
-
 /* Sidebar */
 .settings-sidebar-item {
   @extend .sidebar-item;
