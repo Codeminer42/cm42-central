@@ -89,7 +89,6 @@ group :test do
   gem 'rspec-retry'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-its'
-  gem 'rspec-rails'
   gem 'shoulda-matchers'
   gem 'simplecov'
   gem 'timecop'
@@ -112,4 +111,5 @@ group :development, :test do
   gem 'pry-remote'
   gem 'rubocop', '0.63.1'
   gem 'rubocop-rspec'
+  gem 'rspec-rails'
 end
