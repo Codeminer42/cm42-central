@@ -330,6 +330,7 @@ GEM
     multi_test (1.1.0)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
+    mysql2 (0.5.6)
     net-http (0.4.1)
       uri
     net-imap (0.4.10)
@@ -350,10 +351,6 @@ GEM
     parser (3.3.0.5)
       ast (~> 2.4.1)
       racc
-    pg (1.5.6)
-    pg_search (2.3.6)
-      activerecord (>= 5.2)
-      activesupport (>= 5.2)
     platform-api (3.6.0)
       heroics (~> 0.1.1)
       moneta (~> 1.0.0)
@@ -502,11 +499,10 @@ GEM
       websocket (~> 1.0)
     shoulda-matchers (5.3.0)
       activesupport (>= 5.2.0)
-    sidekiq (7.2.2)
-      concurrent-ruby (< 2)
-      connection_pool (>= 2.3.0)
-      rack (>= 2.2.4)
-      redis-client (>= 0.19.0)
+    sidekiq (6.5.5)
+      connection_pool (>= 2.2.2)
+      rack (~> 2.0)
+      redis (>= 4.5.0)
     sidekiq_mailer (0.0.8)
       actionmailer (>= 3.0)
       activesupport (>= 3.0)
@@ -637,8 +633,7 @@ DEPENDENCIES
   letter_opener
   letter_opener_web
   material_icons (~> 2.0)
-  pg
-  pg_search
+  mysql2
   platform-api
   positioning
   pry-rails
@@ -664,7 +659,7 @@ DEPENDENCIES
   sass-rails
   selenium-webdriver
   shoulda-matchers
-  sidekiq
+  sidekiq (~> 6.0)
   sidekiq_mailer
   simplecov
   sinatra

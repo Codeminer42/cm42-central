@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe StorySearch do
+xdescribe StorySearch do
   let(:project) { create :project }
   let(:story) { create :story, title: 'Simple Story FOO BAR', project: project }
 

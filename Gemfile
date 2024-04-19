@@ -7,8 +7,7 @@ end
 
 # model
 gem 'rails', '~>7.0.0'
-gem 'pg'
-gem 'pg_search'
+gem 'mysql2'
 gem 'bard-rake'
 gem 'backhoe'
 gem 'dotenv-rails'
@@ -59,7 +58,7 @@ gem 'stimulus-rails'
 gem 'redis'
 
 # production
-gem 'sidekiq'
+gem 'sidekiq', '~>6.0' # 7.0 requires redis 6.2+
 gem 'sidekiq_mailer'
 gem 'sinatra', require: nil
 gem 'rollbar', '~> 3.3'

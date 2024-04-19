@@ -24,13 +24,11 @@ module SpecifiedRuby
   end
 
   def version
-    File.read(".ruby-version").chomp.split("@").first
+    File.read(".ruby-version").chomp
   end
 
   def gemset
     File.read(".ruby-gemset").chomp
-  rescue Errno::ENOENT
-    File.read(".ruby-version").chomp[/@(.+)$/,1]
   end
 
   def installed?

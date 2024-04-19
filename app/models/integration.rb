@@ -4,5 +4,8 @@ class Integration < ApplicationRecord
   belongs_to :project
   validates :project, presence: true
   validates :kind, inclusion: { in: VALID_INTEGRATIONS }, presence: true
-  validates :data, presence: true
+  serialize :data, coder: JSON, type: Hash
+  def data
+    HashWithIndifferentAccess.new(super)
+  end
 end

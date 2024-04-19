@@ -1,10 +1,6 @@
-# PostgreSQL
 base: &base
-  host: <%= ENV['DB_HOST'] %>
-  adapter: postgresql
-  encoding: unicode
-  pool: 5
-  username: <%= ENV['DB_USERNAME'] %>
+  adapter: mysql2
+  username: root
   password: <%= ENV['DB_PASSWORD'] %>
 
 development:

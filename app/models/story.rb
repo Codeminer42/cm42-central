@@ -80,23 +80,23 @@ class Story < ApplicationRecord
   attr_accessor :iteration_number, :iteration_start_date # helper fields for IterationService
   attr_accessor :iteration_service
 
-  include PgSearch::Model
-  pg_search_scope :search,
-                  against: {
-                    title: 'A',
-                    description: 'B',
-                    labels: 'C'
-                  },
-                  using: {
-                    tsearch: {
-                      prefix: true,
-                      negation: true
-                    }
-                  }
+  # include PgSearch::Model
+  # pg_search_scope :search,
+  #                 against: {
+  #                   title: 'A',
+  #                   description: 'B',
+  #                   labels: 'C'
+  #                 },
+  #                 using: {
+  #                   tsearch: {
+  #                     prefix: true,
+  #                     negation: true
+  #                   }
+  #                 }
 
-  pg_search_scope :search_labels,
-                  against: :labels,
-                  ranked_by: ':trigram'
+  # pg_search_scope :search_labels,
+  #                 against: :labels,
+  #                 ranked_by: ':trigram'
 
   CSV_HEADERS = [
     "Id", "Story", "Labels", "Iteration", "Iteration Start", "Iteration End",

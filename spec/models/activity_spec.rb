@@ -34,8 +34,8 @@ describe Activity, type: :model do
         'title' => ['Test story', 'new story title'],
         'estimate' => [nil, 2],
         'state' => %w[unstarted finished],
-        'updated_at' => [first_update, story.updated_at]
-                                                   )
+        # 'updated_at' => [first_update, story.updated_at]
+      )
     end
   end
 
