@@ -5,52 +5,60 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+# model
 gem 'rails', '~>7.0.0'
 gem 'pg'
 gem 'pg_search'
 gem 'bard-rake'
 gem 'backhoe'
 gem 'dotenv-rails'
-gem 'activeadmin'
-gem 'api-pagination'
+gem 'transitions', require: ["transitions", "active_model/transitions"]
+gem 'virtus'
 gem 'positioning'
-gem 'chartkick'
 gem 'chronic'
 gem 'configuration'
 gem 'dalli', '~> 3.2.3'
-gem 'devise'
-gem 'devise-async'
-gem 'devise-i18n'
 gem 'differ'
 gem 'enumerize', '~> 2.5.0'
 gem 'faraday'
 gem 'friendly_id', '~> 5.2.5'
-gem 'gravtastic'
 gem 'image_processing'
-gem 'kaminari'
-gem 'platform-api'
-gem 'pundit'
-gem 'rack-cors', require: 'rack/cors'
-gem 'rails-i18n'
-gem 'recaptcha', require: 'recaptcha/rails'
-gem 'rgb_utils'
-gem 'slim-rails'
-gem 'transitions', require: ["transitions", "active_model/transitions"]
-gem 'user_impersonate2', require: 'user_impersonate'
-gem 'virtus'
-gem 'dry-monads'
-gem 'dry-matcher'
 
+# controller
+gem 'platform-api'
+gem 'api-pagination'
+gem 'pundit'
+gem 'dry-matcher'
+gem 'dry-monads'
+gem 'rack-cors', require: 'rack/cors'
+
+# view
+gem 'rails-i18n'
+gem 'rgb_utils'
+gem 'recaptcha', require: 'recaptcha/rails'
+gem 'slim-rails'
+gem 'kaminari'
+gem 'user_impersonate2', require: 'user_impersonate'
+gem 'activeadmin'
+gem 'gravtastic'
+gem 'devise'
+gem 'devise-async'
+gem 'devise-i18n'
+gem 'chartkick'
+
+# css
+gem 'sprockets', '~>4.0'
 gem 'sass-rails'
 gem 'material_icons', '~>2.0' # 3.0 breaks shit?
 gem 'bootstrap-sass', '~> 3.4.0'
 
-gem 'sprockets', '~>4.0'
+# js
 gem 'importmap-rails', '~>1.0' # 2.0 vendors
 gem 'turbo-rails'
 gem 'stimulus-rails'
 gem 'redis'
 
+# production
 gem 'sidekiq'
 gem 'sidekiq_mailer'
 gem 'sinatra', require: nil
