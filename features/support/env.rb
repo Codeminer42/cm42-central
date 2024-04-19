@@ -45,6 +45,7 @@ end
 
 Capybara.server = :puma, { Silent: true }
 Capybara.default_driver = :cuprite
+Capybara.default_max_wait_time = 5.seconds
 
 Capybara.default_normalize_ws = true
 # FIXME push upstream

@@ -17,12 +17,14 @@ Given "I am on the {string} project page" do |project_name|
 end
 
 Then "I should see the following project board:" do |table|
-  actual = normalize([
-    ["Done", *stories_for("#done")],
-    ["Current", *stories_for("#in_progress")],
-    ["Icebox", *stories_for("#chilly_bin")],
-  ])
-  table.diff! actual.transpose
+  page.document.synchronize errors: page.driver.invalid_element_errors + [Capybara::ElementNotFound, Cucumber::MultilineArgument::DataTable::Different] do
+    actual = normalize([
+      ["Done", *stories_for("#done")],
+      ["Current", *stories_for("#in_progress")],
+      ["Icebox", *stories_for("#chilly_bin")],
+    ])
+    table.diff! actual.transpose
+  end
 end
 
 def normalize rows
