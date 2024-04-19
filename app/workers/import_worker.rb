@@ -19,8 +19,7 @@ class ImportWorker
 
   def perform(job_id, project_id)
     project = setup_project(project_id)
-
-    csv_body = open(project.import.fullpath).read
+    csv_body = project.import.download
     csv_body.force_encoding('utf-8')
     process(job_id, project, csv_body)
   rescue => e

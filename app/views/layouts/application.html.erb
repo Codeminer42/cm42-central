@@ -24,7 +24,7 @@
       <div class="navbar-header">
         <% if session[:current_team_slug] && current_team.try(:logo) %>
           <a href="/" class="navbar-brand navbar-logo">
-            <%= team_logo(current_team.logo.path) %>
+            <%= team_logo(current_team) %>
           </a>
         <% else %>
           <a href="/" class="navbar-brand navbar-logo">
@@ -133,6 +133,5 @@
   window._railsEnv = "<%= Rails.env %>";
 </script>
 <%= yield :charts_data %>
-<%= cloudinary_config %>
 </body>
 </html>

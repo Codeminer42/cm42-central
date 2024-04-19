@@ -3,11 +3,11 @@ require 'rails_helper'
 describe ImportWorker do
   let(:project) { create :project }
   let(:importer) { ImportWorker.new }
-  let(:import) { mock_model(Attachinary::File, fullpath: Rack::Test::UploadedFile.new(csv)) }
+  let(:import) { Rack::Test::UploadedFile.new(csv) }
 
   before do
     allow(Project).to receive_message_chain(:friendly, :find).with(project.id).and_return(project)
-    allow(project).to receive(:import) { import }
+    project.update! import: import
     importer.instance_eval do
       def set_cache(key, value)
         @cache ||= {}

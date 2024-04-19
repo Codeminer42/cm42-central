@@ -8,6 +8,7 @@ log/
 tmp/
 log/
 videos/
+storage/
 screenshots/
 .rvmrc
 .sass-cache/

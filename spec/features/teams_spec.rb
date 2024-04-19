@@ -44,17 +44,14 @@ describe 'Teams', js: true do
     let!(:user) { create :user, :with_team_and_is_admin }
 
     describe 'update team' do
-      xit 'should update a team and set a team logo' do
-        Cloudinary.set_config Cloudinary.config_from_url('cloudinary://username:password@localhost')
-        VCR.use_cassette('cloudinary_upload_team_logo', match_requests_on: %i[uri method]) do
-          visit edit_team_path(user.teams.last.slug)
+      it 'should update a team and set a team logo' do
+        visit edit_team_path(user.teams.last.slug)
 
-          attach_file('Logo', Rails.root.join('spec', 'fixtures', 'blank.jpg'))
-          wait_spinner
-          click_button 'Update Team'
+        attach_file('Logo', Rails.root.join('spec', 'fixtures', 'blank.jpg'))
+        wait_spinner
+        click_button 'Update Team'
 
-          expect(page).to have_text(I18n.t('teams.team_was_successfully_updated'))
-        end
+        expect(page).to have_text(I18n.t('teams.team_was_successfully_updated'))
       end
     end
   end

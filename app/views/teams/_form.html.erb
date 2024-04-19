@@ -13,7 +13,7 @@
   <% else %>
     <div class="form-group">
       <%= f.label :logo %>
-      <%= f.attachinary_file_field :logo, class: 'form-control auth-form-control' %>
+      <%= f.file_field :logo, class: 'form-control auth-form-control' %>
     </div>
 
     <div class="form-group">
@@ -37,6 +37,3 @@
   </div>
 <% end %>
 
-<% unless @team.new_record? %>
-  <%= raw File.read Rails.root.join('app/views/projects/_attachinary_template.html') %>
-<% end %>

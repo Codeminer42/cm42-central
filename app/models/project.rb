@@ -24,7 +24,7 @@ class Project < ApplicationRecord
 
   belongs_to :tag_group
 
-  has_attachment :import, accept: [:raw]
+  has_one_attached :import
 
   has_many :integrations, dependent: :destroy
   has_many :changesets, dependent: :destroy

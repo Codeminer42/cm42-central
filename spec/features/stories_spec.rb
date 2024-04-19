@@ -175,7 +175,6 @@ describe 'Stories' do
           expect(page).not_to have_selector('requested_by_id')
           expect(page).not_to have_selector('owned_by_id')
           expect(page).not_to have_content('Labels')
-          expect(page).not_to have_css('.attachinary-input')
           expect(page).to have_css('.release_date')
           expect(page).to have_css('.story-description')
         end

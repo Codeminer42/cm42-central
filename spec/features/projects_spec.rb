@@ -239,7 +239,7 @@ describe 'Projects' do
         end
 
         describe 'modal' do
-          fit 'creates a new tag group' do
+          it 'creates a new tag group' do
             visit projects_path
 
             within('.project-item') do
