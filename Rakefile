@@ -15,8 +15,5 @@ Rake.application["spec"].clear
 spec = RSpec::Core::RakeTask.new(:spec)
 spec.exclude_pattern = "spec/features/*"
 
-features = RSpec::Core::RakeTask.new("spec:features")
-features.pattern = "spec/features/*"
-features.rspec_opts = "--format documentation"
-
 task :cucumber => "spec:features"
+
