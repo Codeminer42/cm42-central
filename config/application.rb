@@ -8,7 +8,7 @@ Bundler.require(*Rails.groups)
 
 module Fulcrum
   class Application < Rails::Application
-    config.load_defaults 5.2
+    config.load_defaults 6.0
 
     config.active_record.belongs_to_required_by_default = false
 
