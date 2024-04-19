@@ -37,5 +37,5 @@ Then "I should see no notes" do
   actual = all(".notelist .note").map do |note|
     [note.find(".note_note"), *note.all("span")].map(&:text)
   end
-  Chop.empty_table.diff! actual
+  expect(actual).to be_empty
 end

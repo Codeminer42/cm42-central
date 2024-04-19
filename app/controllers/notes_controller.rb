@@ -6,19 +6,6 @@ class NotesController < ApplicationController
     render json: @notes
   end
 
-  def show
-    @note = policy_scope(Note).find(params[:id])
-    authorize @note
-    render json: @note
-  end
-
-  def destroy
-    @note = policy_scope(Note).find(params[:id])
-    authorize @note
-    @note.destroy
-    redirect_to @project
-  end
-
   def create
     @note = policy_scope(Note).build(allowed_params)
     authorize @note
@@ -36,6 +23,19 @@ class NotesController < ApplicationController
     end
   end
 
+  def show
+    @note = policy_scope(Note).find(params[:id])
+    authorize @note
+    render json: @note
+  end
+
+  def destroy
+    @note = policy_scope(Note).find(params[:id])
+    authorize @note
+    @note.destroy
+    redirect_to @project
+  end
+
   protected
 
   def allowed_params
@@ -43,7 +43,7 @@ class NotesController < ApplicationController
   end
 
   def set_project_and_story
-    @project = policy_scope(Project).find(params[:project_id])
+    @project = policy_scope(Project).friendly.find(params[:project_id])
     @story   = policy_scope(Story).find(params[:story_id])
   end
 end
