@@ -84,7 +84,6 @@ group :test do
   gem 'factory_bot_rails'
   gem 'puma'
   gem 'selenium-webdriver'
-  gem 'webdrivers'
   gem 'rspec-retry'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-its'
