@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
 end
 
 # model
-gem 'rails', '~>7.0.0'
+gem 'rails', '~>7.1.0'
 gem 'mysql2'
 gem 'bard-rake'
 gem 'backhoe'
