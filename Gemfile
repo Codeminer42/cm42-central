@@ -83,7 +83,6 @@ group :test do
   gem 'database_cleaner'
   gem 'factory_bot_rails'
   gem 'puma'
-  gem 'selenium-webdriver'
   gem 'rspec-retry'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-its'
