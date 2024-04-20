@@ -80,6 +80,7 @@ group :test do
   gem 'codeclimate-test-reporter', require: nil
   gem 'cucumber-rails', require: false
   gem 'cuprite-downloads'
+  gem 'rack-disable_css_animations'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
   gem 'puma'

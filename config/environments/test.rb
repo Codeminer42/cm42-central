@@ -49,4 +49,6 @@ Rails.application.configure do
   config.active_support.test_order = :random
 
   config.active_job.queue_adapter = :inline
+
+  config.middleware.use Rack::DisableCSSAnimations
 end
