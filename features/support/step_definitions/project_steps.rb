@@ -18,6 +18,7 @@ end
 
 Then "I should see the following project board:" do |table|
   page.document.synchronize errors: page.driver.invalid_element_errors + [Capybara::ElementNotFound, Cucumber::MultilineArgument::DataTable::Different] do
+    puts "TRYING"
     actual = normalize([
       ["Done", *stories_for("#done")],
       ["Current", *stories_for("#in_progress")],
@@ -35,9 +36,9 @@ def normalize rows
 end
 
 def stories_for column_id
-  all("#{column_id} .story").map do |story|
+  find(column_id).all(".story").map do |story|
     initial = story["data-story-type"].capitalize[0]
-    name_and_owner = story.find(".story-title").text
+    name_and_owner = story.all(".story-title").map(&:text).join(" ")
     actions = story.all(".transition").map(&:value)
     [
       initial,
