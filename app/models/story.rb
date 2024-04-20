@@ -8,14 +8,12 @@ class Story < ApplicationRecord
   before_save :cache_user_names
 
   positioned on: [:project, :positioning_column]
-  before_save :set_positioning_column
-  private def set_positioning_column
-    self.positioning_column ||= begin
-      if column == "#backlog"
-        "#in_progress"
-      else
-        column
-      end
+  before_save { |record| record.positioning_column ||= record.calculate_positioning_column }
+  def calculate_positioning_column
+    if column == "#backlog"
+      "#in_progress"
+    else
+      column
     end
   end
 
