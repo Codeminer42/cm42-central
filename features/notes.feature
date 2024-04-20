@@ -14,7 +14,7 @@ Feature: Stories can contain notes
 
   Scenario: User adds note to a story
     Given I am logged in as "micah@botandrose.com"
-    When I follow "Select project" within the "Example Project" project
+    And I am on the "Example Project" project page
     Then I should see the following project board:
       | Done | Current | Icebox      |
       |      |         | F WOW start |
@@ -33,7 +33,7 @@ Feature: Stories can contain notes
 
   Scenario: User deletes note from a story
     Given I am logged in as "micah@botandrose.com"
-    When I follow "Select project" within the "Example Project" project
+    And I am on the "Example Project" project page
     Then I should see the following project board:
       | Done | Current | Icebox      |
       |      |         | F WOW start |

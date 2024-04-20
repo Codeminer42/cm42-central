@@ -10,7 +10,7 @@ Feature: Stories can be deleted
 
   Scenario: User deletes a story
     Given I am logged in as "micah@botandrose.com"
-    When I follow "Select project" within the "Example Project" project
+    And I am on the "Example Project" project page
     Then I should see the following project board:
       | Done | Current | Icebox      |
       |      |         | F WOW start |
