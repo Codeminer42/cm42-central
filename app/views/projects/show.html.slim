@@ -59,7 +59,7 @@
 
           #chilly_bin.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#chilly_bin"
             = render @story, new_story: true if params[:new_story]
-            = render @project.stories.chilly_bin.order(:position)
+            = render @project.stories.chilly_bin.includes(:owned_by, :notes).order(:position)
 
         / td.epic_column style="display: none;" data-column-view="epic" data-connect="#chilly_bin,#in_progress,#backlog" data-hideable="false"
           .column_header data-step="epic"
@@ -83,7 +83,7 @@
               | "owner: Micah Geisel"
             a.toggle-column.hide_search_results href="#" title="Close" ×
 
-          - search_results = @project.stories.where(owned_by: current_user)
+          - search_results = @project.stories.includes(:owned_by, :notes).where(owned_by: current_user)
           #search_results.column_content.story_column
             .iteration
               |  Stories found: #{search_results.count}

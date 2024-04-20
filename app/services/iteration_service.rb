@@ -28,7 +28,7 @@ class IterationService
   end
 
   def fetch_stories!(since = nil)
-    relation = project.stories.includes(:owned_by)
+    relation = project.stories.includes(:owned_by, :notes)
     relation = relation.where("accepted_at > ? or accepted_at is null", since).order(:position) if since
     relation.to_a.map { |story| story.iteration_service = self; story }
   end
