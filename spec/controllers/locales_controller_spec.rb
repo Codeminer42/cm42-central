@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe LocalesController, type: :controller do
   describe 'PUT #update' do
-    it 'sets the locale session if valdi' do
+    it 'sets the locale session if valid' do
       put :update, params: { locale: 'es' }
       expect(session[:locale]).to eq('es')
       expect(response).to redirect_to root_path

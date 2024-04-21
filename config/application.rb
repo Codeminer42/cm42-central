@@ -1,6 +1,6 @@
-require File.expand_path('../boot', __FILE__)
+require_relative "boot"
 
-require 'rails/all'
+require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -8,42 +8,35 @@ Bundler.require(*Rails.groups)
 
 module Fulcrum
   class Application < Rails::Application
-    config.load_defaults 7.0
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 7.1
+
+    # Please, add to the `ignore` list any other `lib` subdirectories that do
+    # not contain `.rb` files, or that should not be reloaded or eager loaded.
+    # Common ones are `templates`, `generators`, or `middleware`, for example.
+    config.autoload_lib(ignore: %w(assets tasks))
+
+    # Configuration for the application, engines, and railties goes here.
+    #
+    # These settings can be overridden in specific environments using the files
+    # in config/environments, which are processed later.
+    #
+    config.time_zone = "Pacific Time (US & Canada)"
+    config.eager_load_paths << Rails.root.join("lib")
+
+    config.active_job.queue_adapter = :sidekiq
+
+    config.exceptions_app = self.routes
 
     config.active_record.belongs_to_required_by_default = false
+    config.active_record.use_yaml_unsafe_load = true
 
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
-
-    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-    # config.time_zone = 'Central Time (US & Canada)'
-
-    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    # config.i18n.default_locale = :de
-    config.time_zone = "Pacific Time (US & Canada)"
-
-    config.autoloader = :zeitwerk
-    config.autoload_paths << Rails.root.join('lib')
+    config.action_controller.raise_on_missing_callback_actions = false
 
     load Rails.root.join('config','fulcrum_defaults.rb')
     if File.exist?(Rails.root.join('config', 'fulcrum.rb'))
-      load Rails.root.join('config','fulcrum.rb')
+      load Rails.root.join('config', 'fulcrum.rb')
     end
-    config.fulcrum = ::Configuration.for 'fulcrum'
-
-    #FIXME this shouldn't be necessary in Rails 4 but the generator was falling back to test_unit
-    config.generators do |g|
-      g.test_framework :rspec
-    end
-
-    config.assets.paths << Rails.root.join('node_modules')
-    config.paths.add Rails.root.join('lib').to_s, eager_load: true
-    config.active_job.queue_adapter = :sidekiq
-    config.exceptions_app = self.routes
-
-    config.active_record.use_yaml_unsafe_load = true
+    config.fulcrum = ::Configuration.for('fulcrum')
   end
 end

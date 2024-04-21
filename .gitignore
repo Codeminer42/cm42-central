@@ -1,5 +1,5 @@
+/config/master.key
 config/database.yml
-config/cloudinary.yml
 .bundle
 db/*.sqlite3
 db/data.*
@@ -7,34 +7,12 @@ db/data.*
 log/
 tmp/
 log/
-videos/
 storage/
-screenshots/
 .rvmrc
-.sass-cache/
 *.DS_Store
-config/deploy.rb
 *.swp
 .env
 .env.test
-*.dump
-dump.rdb
 .byebug_history
-public/test_assets/
-public/javascripts/*
-public/javascripts-test/*
-/node_modules
-js_coverage/
 coverage
-package-lock.json
-.nvmrc
-.rspec
-.tool-versions
-
-# Vite Ruby
-/public/vite*
-node_modules
-# Vite uses dotenv and suggests to ignore local-only env files. See
-# https://vitejs.dev/guide/env-and-mode.html#env-files
-*.local
 

@@ -29,7 +29,6 @@ gem 'api-pagination'
 gem 'pundit'
 gem 'dry-matcher'
 gem 'dry-monads'
-gem 'rack-cors', require: 'rack/cors'
 
 # view
 gem 'rails-i18n'

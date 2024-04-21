@@ -8,7 +8,7 @@ class Activity < ApplicationRecord
   validates :user, presence: true
   validates :subject, presence: true, subject_changed: true
 
-  serialize :subject_changes, type: Hash
+  serialize :subject_changes, type: Hash, coder: JSON
 
   before_save :parse_changes
 

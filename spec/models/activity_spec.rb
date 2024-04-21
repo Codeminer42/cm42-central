@@ -87,9 +87,9 @@ describe Activity, type: :model do
       expect(grouped.last.first).to eq(today.beginning_of_day)
 
       expect(grouped.first.last.last.last.last.last.first.subject_changes)
-        .to eq(estimate: [0, 2], description: %w[Foo Hello])
+        .to eq("estimate" => [0, 2], "description" => %w[Foo Hello])
       expect(grouped.last.last.last.last.last.last.first.subject_changes)
-        .to eq(description: ['Hello WORLD', 'Hello'])
+        .to eq("description" => ['Hello WORLD', 'Hello'])
     end
   end
 

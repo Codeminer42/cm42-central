@@ -393,8 +393,6 @@ GEM
     rack (2.2.9)
     rack-cache (1.17.0)
       rack (>= 0.4)
-    rack-cors (2.0.2)
-      rack (>= 2.0.0)
     rack-disable_css_animations (0.3.0)
       rack
     rack-protection (3.2.0)
@@ -661,7 +659,6 @@ DEPENDENCIES
   puma
   pundit
   rack-cache
-  rack-cors
   rack-disable_css_animations
   rack-timeout
   rails (~> 7.1.0)

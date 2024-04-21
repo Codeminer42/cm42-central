@@ -88,7 +88,7 @@ describe ActivityPresenter do
         activity.save
         expect(subject.description).to eq(
           "#{user_name} updated Project '<a href=\"/projects/test-project\">Test Project</a>' " \
-          "changing start_date to '2016-08-30'"
+          "changing start_date to '2016/08/30'"
         )
       end
 
@@ -110,25 +110,27 @@ describe ActivityPresenter do
 
     context 'changing values for new ones' do
       it 'describes changes in story' do
-        story.estimate = 2
-        story.description = 'old description'
-        story.state = 'unstarted'
-        story.save
+        Timecop.freeze Date.parse('2016-07-01').in_time_zone do
+          story.estimate = 2
+          story.description = 'old description'
+          story.state = 'unstarted'
+          story.save
 
-        story.estimate = 4
-        story.description = 'new description'
-        story.state = 'started'
-        story.project.point_scale = 'linear'
-        story.save
-        activity.subject = story
-        activity.save
-        expect(subject.description).to eq(
-          "#{user_name} updated Story ##{story.id} - " \
-          "'<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>' " \
-          "changing description to " \
-          "'<del class=\"differ\">old</del><ins class=\"differ\">new</ins> description', estimate from '2' to '4', " \
-          "state moved forward to started, started_at to '#{story.started_at}'"
-        )
+          story.estimate = 4
+          story.description = 'new description'
+          story.state = 'started'
+          story.project.point_scale = 'linear'
+          story.save
+          activity.subject = story
+          activity.save
+          expect(subject.description).to eq(
+            "#{user_name} updated Story ##{story.id} - " \
+            "'<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>' " \
+            "changing description to " \
+            "'<del class=\"differ\">old</del><ins class=\"differ\">new</ins> description', estimate from '2' to '4', " \
+            "state moved forward to started, started_at to '2016/07/01 00:00:00 -0700'"
+          )
+        end
       end
 
       it 'describes changes in project' do
@@ -142,8 +144,8 @@ describe ActivityPresenter do
         activity.save
         expect(subject.description).to eq(
           "#{user_name} updated Project '<a href=\"/projects/test-project\">New Project</a>' " \
-          "changing name from 'Test Project' to 'New Project', start_date from '2016-07-01' to " \
-          "'2016-08-30'"
+          "changing name from 'Test Project' to 'New Project', start_date from '2016/07/01' to " \
+          "'2016/08/30'"
         )
       end
 
