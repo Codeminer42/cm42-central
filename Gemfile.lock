@@ -104,7 +104,7 @@ GEM
       rvm
       term-ansicolor (>= 1.0.3)
       thor (>= 0.19.0)
-    bard-file_field (0.1.0)
+    bard-file_field (0.1.1)
       activestorage (~> 7.1.0)
     bard-rake (0.22.1)
       backhoe (>= 0.6.0)
