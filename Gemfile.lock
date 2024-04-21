@@ -217,10 +217,6 @@ GEM
     diff-lcs (1.5.1)
     differ (0.1.2)
     docile (1.4.0)
-    dotenv (3.1.0)
-    dotenv-rails (3.1.0)
-      dotenv (= 3.1.0)
-      railties (>= 6.1)
     drb (2.2.1)
     dry-core (1.0.1)
       concurrent-ruby (~> 1.0)
@@ -453,7 +449,6 @@ GEM
     rate_throttle_client (0.1.2)
     rdoc (6.6.3.1)
       psych (>= 4.0.0)
-    recaptcha (5.16.0)
     redis (5.2.0)
       redis-client (>= 0.22.0)
     redis-client (0.22.1)
@@ -636,7 +631,6 @@ DEPENDENCIES
   devise-async
   devise-i18n
   differ
-  dotenv-rails
   dry-matcher
   dry-monads
   enumerize (~> 2.5.0)
@@ -667,7 +661,6 @@ DEPENDENCIES
   rails (~> 7.1.0)
   rails-controller-testing
   rails-i18n
-  recaptcha
   redis
   rgb_utils
   rollbar (~> 3.3)

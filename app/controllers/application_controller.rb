@@ -94,11 +94,6 @@ class ApplicationController < ActionController::Base
     current_user.present? && !devise_controller?
   end
 
-  def show_recaptcha?
-    ENV.fetch('ENABLE_RECAPTCHA', false)
-  end
-  helper_method :show_recaptcha?
-
   def match_result(result)
     Dry::Matcher::ResultMatcher.call(result) { |on| yield on }
   end

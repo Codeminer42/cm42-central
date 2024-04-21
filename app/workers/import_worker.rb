@@ -1,20 +1,15 @@
 class ImportWorker
   include Sidekiq::Worker
 
-  # FIXME: Change this to use connection pool
-  # https://github.com/mperham/connection_pool/blob/master/README.md
   MEMCACHED_POOL = ConnectionPool.new(size: 10, timeout: 3) do
-    if ENV['MEMCACHIER_SERVERS'].present?
-      Dalli::Client.new(ENV['MEMCACHIER_SERVERS'].split(','),
-                        username: ENV['MEMCACHIER_USERNAME'],
-                        password: ENV['MEMCACHIER_PASSWORD'],
-                        failover: true,
-                        socket_timeout: 1.5,
-                        socket_failure_delay: 0.2,
-                        value_max_bytes: 10_485_760)
-    else
-      Dalli::Client.new
-    end
+    Dalli::Client.new(["localhost:11211"], {
+      username: nil,
+      password: nil,
+      failover: true,
+      socket_timeout: 1.5,
+      socket_failure_delay: 0.2,
+      value_max_bytes: 10_485_760,
+    })
   end
 
   def perform(job_id, project_id)

@@ -1,7 +1,7 @@
 base: &base
   adapter: mysql2
   username: root
-  password: <%= ENV['DB_PASSWORD'] %>
+  password:
 
 development:
   <<: *base

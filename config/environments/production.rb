@@ -16,10 +16,10 @@ Rails.application.configure do
   config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
 
-  memcachier_servers = (ENV["MEMCACHIER_SERVERS"] || "").split(",")
+  memcachier_servers = ["localhost:11211"]
   memcachier_options = {
-    username: ENV["MEMCACHIER_USERNAME"],
-    password: ENV["MEMCACHIER_PASSWORD"],
+    username: nil,
+    password: nil,
     failover: true,
     socket_timeout: 1.5,
     socket_failure_delay: 0.2,
@@ -91,16 +91,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: config.fulcrum.app_host }
 
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    address:              ENV["SMTP_HOST"],
-    port:                 ENV["SMTP_PORT"],
-    domain:               config.fulcrum.app_host,
-    user_name:            ENV["SMTP_USERNAME"],
-    password:             ENV["SMTP_PASSWORD"],
-    authentication:       'plain',
-    enable_starttls_auto: true,
-  }
-
+  config.action_mailer.smtp_settings = Rails.application.credentials.smtp_settings
   config.action_mailer.perform_caching = false
 
   # Ignore bad email addresses and do not raise email delivery errors.

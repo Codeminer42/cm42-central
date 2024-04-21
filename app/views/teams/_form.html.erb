@@ -6,11 +6,7 @@
     <%= f.text_field :name, class: 'form-control auth-form-control' %>
   </div>
 
-  <% if @team.new_record? %>
-    <div class="form-group">
-      <%= render 'captcha', show_captcha: false, f: f %>
-    </div>
-  <% else %>
+  <% if @team.persisted? %>
     <div class="form-group">
       <%= f.label :logo %>
       <%= f.file_field :logo, class: 'form-control auth-form-control' %>

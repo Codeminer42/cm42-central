@@ -60,8 +60,6 @@ class TeamsController < ApplicationController
     @team = Team.new(allowed_params)
     authorize @team
 
-    return unless check_recaptcha
-
     result = TeamOperations::Create.call(team: @team, current_user: current_user)
 
     match_result(result) do |on|
@@ -121,10 +119,5 @@ class TeamsController < ApplicationController
       :name, :disable_registration, :registration_domain_whitelist,
       :registration_domain_blacklist, :logo
     )
-  end
-
-  def check_recaptcha
-    return true unless show_recaptcha?
-    verify_recaptcha
   end
 end

@@ -33,10 +33,7 @@ module Fulcrum
 
     config.action_controller.raise_on_missing_callback_actions = false
 
-    load Rails.root.join('config','fulcrum_defaults.rb')
-    if File.exist?(Rails.root.join('config', 'fulcrum.rb'))
-      load Rails.root.join('config', 'fulcrum.rb')
-    end
+    load Rails.root.join('config', 'fulcrum.rb')
     config.fulcrum = ::Configuration.for('fulcrum')
   end
 end
