@@ -23,8 +23,6 @@ class Story < ApplicationRecord
     end
   end
 
-  before_destroy { |record| raise ActiveRecord::ReadOnlyRecord if record.readonly? }
-
   scope :accepted, -> { where(state: 'accepted').where.not(accepted_at: nil) }
   scope :done,        -> { where(state: :accepted) }
   scope :in_progress, -> { where(state: [:started, :finished, :delivered]) }
@@ -184,11 +182,6 @@ class Story < ApplicationRecord
 
   def to_s
     title
-  end
-
-  def readonly?
-    return false if destroyed_by_association
-    !accepted_at_changed? && accepted_at.present?
   end
 
   # Set the project start date to today if the project start date is nil

@@ -8,12 +8,6 @@ class Note < ApplicationRecord
   has_many_attached :attachments
 
   before_save :cache_user_name
-  before_destroy { |record| raise ActiveRecord::ReadOnlyRecord if record.readonly? }
-
-  def readonly?
-    return false if destroyed_by_association
-    story.readonly?
-  end
 
   validates :note, presence: true
 

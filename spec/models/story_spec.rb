@@ -452,30 +452,6 @@ describe Story do
     end
   end
 
-  describe '#readonly?' do
-    subject { create :story, :with_project }
-
-    before { subject.update_attribute(:state, 'accepted') }
-
-    it "can't save model if it is already accepted" do
-      subject.title = 'new title override'
-      expect { subject.save }.to raise_error(ActiveRecord::ReadOnlyRecord)
-    end
-
-    it "can't change state back from accepted to anything else" do
-      expect { subject.update_attribute(:state, 'unscheduled') }
-        .to raise_error(ActiveRecord::ReadOnlyRecord)
-    end
-
-    it "can't delete accepted story" do
-      expect { subject.destroy }.to raise_error(ActiveRecord::ReadOnlyRecord)
-    end
-
-    it 'can destroy accepted story when deleting the project' do
-      expect { subject.project.destroy }.not_to raise_error
-    end
-  end
-
   describe '#fix_project_start_date' do
     let(:project)         { create(:project, start_date: nil) }
     let(:story_params)    { { title: 'Test Story', state: 'started', accepted_at: nil } }
