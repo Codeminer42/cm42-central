@@ -27,15 +27,20 @@ Then "I should see the following {string} story form:" do |story_name, table|
 end
 
 Then "I should see the following notes:" do |table|
-  actual = all(".notelist .note").map do |note|
-    [note.find(".note_note"), *note.all("span")].map(&:text)
-  end
-  table.diff! actual
+  table.diff! actual_notes
 end
 
 Then "I should see no notes" do
-  actual = all(".notelist .note").map do |note|
-    [note.find(".note_note"), *note.all("span")].map(&:text)
+  expect(actual_notes).to be_empty
+end
+
+def actual_notes
+  table = all(".notelist .note").map do |note|
+    [
+      note.find(".note_note"),
+      *note.all("span"),
+      *note.all(".attachment"),
+    ].map(&:text)
   end
-  expect(actual).to be_empty
+  normalize_table(table)
 end

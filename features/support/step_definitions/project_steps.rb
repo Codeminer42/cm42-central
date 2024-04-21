@@ -18,19 +18,12 @@ end
 
 Then "I should see the following project board:" do |table|
   page.document.synchronize errors: page.driver.invalid_element_errors + [Capybara::ElementNotFound, Cucumber::MultilineArgument::DataTable::Different] do
-    actual = normalize([
+    actual = normalize_table([
       ["Done", *stories_for("#done")],
       ["Current", *stories_for("#in_progress")],
       ["Icebox", *stories_for("#chilly_bin")],
     ])
     table.diff! actual.transpose
-  end
-end
-
-def normalize rows
-  max = rows.map(&:length).max
-  rows.each do |row|
-    row.to_a << "" while row.length < max
   end
 end
 

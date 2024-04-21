@@ -23,7 +23,7 @@
         span.popover-activate
           = icon_text(story)
           span.estimate = story.estimate
-          - if story.notes.length || story.description.present?
+          - if story.notes.length > 0 || story.description.present?
             i.mi.md-14.md-dark.details question_answer
 
       .story-title
@@ -118,11 +118,16 @@
                       span.user => note.user_name
                       span.created_at => note.created_at
                       span = link_to "Delete", [@project, form.object, note], method: :delete, class: "delete-btn delete-note", title: "Delete"
+                    .attachments
+                      - note.attachments.each do |attachment|
+                        => link_to attachment.filename, attachment, class: "attachment", download: true
 
           div
             .note_form.clearfix
               = note_form.hidden_field :user_id, value: current_user.id
               = note_form.text_area :note, class: "form-control note-textarea"
+              = note_form.label :attachments, "Attachment(s)"
+              = note_form.bard_file_field :attachments, multiple: true
               button.add-note.btn.btn-default.btn-xs type="submit"
                 | Add note
 

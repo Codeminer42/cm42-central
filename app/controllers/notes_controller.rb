@@ -39,7 +39,7 @@ class NotesController < ApplicationController
   protected
 
   def allowed_params
-    params.fetch(:note).permit(:note, :documents)
+    params.fetch(:note).permit(:note, :attachments)
   end
 
   def set_project_and_story

@@ -5,6 +5,8 @@ class Note < ApplicationRecord
   belongs_to :user
   belongs_to :story
 
+  has_many_attached :attachments
+
   before_save :cache_user_name
   before_destroy { |record| raise ActiveRecord::ReadOnlyRecord if record.readonly? }
 

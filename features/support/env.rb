@@ -3,6 +3,13 @@ require "capybara/cuprite"
 require "cuprite/downloads/cucumber"
 require 'capybara-screenshot/cucumber' unless ENV["CI"]
 
+def normalize_table rows
+  max = rows.map(&:length).max
+  rows.each do |row|
+    row.to_a << "" while row.length < max
+  end
+end
+
 Capybara.register_driver(:cuprite) do |app|
   Capybara::Cuprite::Driver.new(app, {
     window_size: [1200, 2048],

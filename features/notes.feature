@@ -31,6 +31,26 @@ Feature: Stories can contain notes
       | this is a note       | Micah Geisel |
       | this is another note | Micah Geisel |
 
+  Scenario: User adds note to a story with attachment
+    Given I am logged in as "micah@botandrose.com"
+    And I am on the "Example Project" project page
+    Then I should see the following project board:
+      | Done | Current | Icebox      |
+      |      |         | F WOW start |
+
+    When I open the "WOW" story
+    Then I should see the following notes:
+      | this is a note | Micah Geisel |
+
+    When I fill in "Notes" with "this is another note"
+    And I attach "screenshot.png" to "Attachment(s)"
+    And I press "Add note"
+
+    When I open the "WOW" story
+    Then I should see the following notes:
+      | this is a note       | Micah Geisel |                |
+      | this is another note | Micah Geisel | screenshot.png |
+
   Scenario: User deletes note from a story
     Given I am logged in as "micah@botandrose.com"
     And I am on the "Example Project" project page
