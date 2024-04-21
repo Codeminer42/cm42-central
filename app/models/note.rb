@@ -3,7 +3,7 @@ class Note < ApplicationRecord
   self.include_root_in_json = false
 
   belongs_to :user
-  belongs_to :story
+  belongs_to :story, touch: true
 
   has_many_attached :attachments
 
