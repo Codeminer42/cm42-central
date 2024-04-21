@@ -20,6 +20,7 @@ gem 'differ'
 gem 'enumerize', '~> 2.5.0'
 gem 'faraday'
 gem 'friendly_id', '~> 5.2.5'
+gem 'aws-sdk-s3'
 gem 'image_processing'
 
 # controller
