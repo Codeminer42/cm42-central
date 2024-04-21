@@ -18,7 +18,6 @@ end
 
 Then "I should see the following project board:" do |table|
   page.document.synchronize errors: page.driver.invalid_element_errors + [Capybara::ElementNotFound, Cucumber::MultilineArgument::DataTable::Different] do
-    puts "TRYING"
     actual = normalize([
       ["Done", *stories_for("#done")],
       ["Current", *stories_for("#in_progress")],
