@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Renderers
-  class CSVOptions
+  class CsvOptions
     def initialize(options = {})
       @options = options
     end

@@ -6,9 +6,7 @@ class ApplicationController < ActionController::Base
 
   include Pundit::Authorization
   include SidebarController
-
-  zeitwerk_original_require "renderers/csv"
-  include Renderers::CSV
+  include Renderers::Csv
 
   before_action :authenticate_user!, unless: ->(c) { c.devise_controller? || c.try(:active_admin_root?) }
   before_action :check_team_presence, if: :need_check_team?

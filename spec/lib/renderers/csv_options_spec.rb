@@ -1,7 +1,6 @@
 require 'rails_helper'
 
-zeitwerk_original_require "renderers/csv_options"
-describe Renderers::CSVOptions do
+describe Renderers::CsvOptions do
   let(:exporter) do
     Class.new(Exporters::Default) do
       def self.filename
