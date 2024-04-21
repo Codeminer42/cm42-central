@@ -4,5 +4,5 @@ server :production do
 end
 
 server :staging do
-  ssh "www@clients.staging.botandrose.com:22022"
+  ssh "www@clients-staging.botandrose.com:22022"
 end
