@@ -2,7 +2,7 @@
 - search_result = defined?(search_result) ? search_result : false
 - story_dom_id = search_result ? "story-search-result-#{story.id}" : story_anchor(story)
 
-- cache story do
+- cache_if story.persisted?, story do
   .story.closed class=[story.story_type, story.state, ("searchResult" if search_result)] id=story_dom_id data-id=story.id data-position=story.position data-state=story.state data-story-type=story.story_type data-controller="story" data-action="click->story#open"
     input.toggle-story type="checkbox" data-story-target="checkbox" checked=(true if new_story)
     .closed
