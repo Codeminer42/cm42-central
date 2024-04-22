@@ -87,6 +87,7 @@ group :test do
   gem 'rspec-activemodel-mocks'
   gem 'rspec-its'
   gem 'shoulda-matchers'
+  gem 'email_spec', '~>2.0'
   gem 'simplecov'
   gem 'timecop'
   gem 'vcr'

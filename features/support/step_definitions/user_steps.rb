@@ -11,7 +11,8 @@ Given "the following users exist:" do |table|
     default(:confirmed_at) { 100.years.ago }
 
     transformation do |attributes|
-      attributes.merge(username: attributes[:email].split("@").first)
+      username = attributes[:username] || attributes[:email].split("@").first
+      attributes.merge(username: username)
     end
 
     field :teams do |names|
@@ -28,7 +29,9 @@ Given "the following users exist:" do |table|
       end
       projects.each do |project|
         project.users << user
-        project.teams += user.teams
+        user.teams.each do |team|
+          project.teams << team unless project.teams.include?(team)
+        end
       end
     end
   end

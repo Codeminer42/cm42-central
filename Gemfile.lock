@@ -156,7 +156,6 @@ GEM
       capybara (>= 1.0, < 4)
       launchy
     chartkick (5.0.6)
-    childprocess (5.0.0)
     chop (0.28.1)
       activerecord
       capybara
@@ -243,6 +242,10 @@ GEM
       concurrent-ruby (~> 1.0)
       dry-core (~> 1.0, < 2)
       zeitwerk (~> 2.6)
+    email_spec (2.2.2)
+      htmlentities (~> 4.3.3)
+      launchy (~> 2.1)
+      mail (~> 2.7)
     enumerize (2.5.0)
       activesupport (>= 3.2)
     equalizer (0.0.11)
@@ -289,6 +292,7 @@ GEM
       moneta
       multi_json (>= 1.9.2)
       webrick
+    htmlentities (4.3.4)
     i18n (1.14.4)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
@@ -327,9 +331,8 @@ GEM
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
     kgio (2.11.4)
-    launchy (3.0.0)
+    launchy (2.5.2)
       addressable (~> 2.8)
-      childprocess (~> 5.0)
     letter_opener (1.10.0)
       launchy (>= 2.2, < 4)
     letter_opener_web (2.0.0)
@@ -651,6 +654,7 @@ DEPENDENCIES
   differ
   dry-matcher
   dry-monads
+  email_spec (~> 2.0)
   enumerize (~> 2.5.0)
   exception_notification
   factory_bot_rails

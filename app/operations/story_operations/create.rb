@@ -18,8 +18,6 @@ module StoryOperations
 
         Success(story)
       end
-    rescue
-      Failure(story)
     end
 
     private
@@ -40,7 +38,7 @@ module StoryOperations
     end
 
     def notify_users
-      Success StoryOperations::UserNotification.notify_users(story)
+      Success Notifications.new_story(story, current_user)&.deliver_later
     end
 
     def notify_changes

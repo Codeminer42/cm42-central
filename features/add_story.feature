@@ -1,8 +1,9 @@
 Feature: Stories can be added
   Background:
     Given the following users exist:
-      | email                | name         | initials | teams | projects        |
-      | micah@botandrose.com | Micah Geisel | MG       | BARD  | Example Project |
+      | email                | name             | initials | username | teams | projects        |
+      | micah@botandrose.com | Micah Geisel     | MG       | micahg   | BARD  | Example Project |
+      | gubs@botandrose.com  | Michael Gubitosa | GUBS     | gubs     | BARD  | Example Project |
 
     And the "Example Project" project has the following stories:
       | type    | title | state       |
@@ -37,4 +38,15 @@ Feature: Stories can be added
     Then I should see the following project board:
       | Done | Current          | Icebox      |
       |      | B WOW! MG finish | F WOW start |
+
+    And "gubs@botandrose.com" should receive an email from "noreply@clients.botandrose.com" with the subject "[Example Project] WOW!" and the following body:
+      """
+      Bug WOW! was created by Micah Geisel (@micahg)
+
+      description
+
+      http://clients.botandrose.com/projects/example-project/stories/71
+      """
+
+    And "micah@botandrose.com" should receive no emails
 

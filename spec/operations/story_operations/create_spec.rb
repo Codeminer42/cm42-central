@@ -8,6 +8,9 @@ describe StoryOperations::Create do
     let(:user)        { membership.user }
     let(:project)     { membership.project }
     let(:story)       { project.stories.build(story_params) }
+    let(:mailer)      { double(deliver_later: true) }
+
+    before { allow(Notifications).to receive(:new_story).and_return(mailer) }
 
     context 'with valid story' do
       let(:story_params) do
@@ -27,7 +30,7 @@ describe StoryOperations::Create do
       end
 
       it 'sends user notification' do
-        expect(StoryOperations::UserNotification).to receive(:notify_users).with(story)
+        expect(Notifications).to receive(:new_story).with(story, user)
         subject.call
       end
 

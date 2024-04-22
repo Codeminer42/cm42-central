@@ -1,4 +1,17 @@
 class Notifications < ActionMailer::Base
+  def new_story(story, actor)
+    @story = story
+    @actor = actor
+
+    emails = story.project.users.where.not(id: actor.id).pluck(:email)
+
+    mail({
+      to: emails,
+      from: Rails.application.config.fulcrum.mailer_sender,
+      subject: "[#{@story.project.name}] #{@story.title}",
+    }) if emails.any?
+  end
+
   def story_changed(story, actor)
     @story = story
     @actor = actor
