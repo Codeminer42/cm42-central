@@ -1,4 +1,4 @@
-verbose: false
+verbose: true
 logfile: log/sidekiq.log
 queues:
   - default
