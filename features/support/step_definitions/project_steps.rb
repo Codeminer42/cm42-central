@@ -2,6 +2,7 @@ Given "the following projects exist:" do |table|
   table.create! Project do
     has_many :users, name_field: :email
     default(:start_date) { Time.zone.now }
+    default(:point_scale) { "none" }
 
     field :teams do |names|
       names.split(", ").map do |name|

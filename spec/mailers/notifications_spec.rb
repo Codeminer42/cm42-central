@@ -29,7 +29,7 @@ describe Notifications do
     before { allow(story).to receive_messages(state: :started) }
     subject { Notifications.story_changed(story, owned_by) }
 
-    its(:subject) { should match "[Test Project] Your story 'Test story' has been started." }
+    its(:subject) { should match "[Test Project] Test story" }
     its(:to)      { should match [requested_by.email] }
     its(:from)    { should match [noreply] }
     its(:body)    { should match project_url(project, host: "email.com") }
@@ -63,9 +63,7 @@ describe Notifications do
     before { allow(story).to receive_messages(state: :delivered) }
     subject  { Notifications.story_changed(story, delivered_by) }
 
-    its(:subject) do
-      should match "[Test Project] Your story 'Test story' has been delivered for acceptance."
-    end
+    its(:subject) { should match "[Test Project] Test story" }
     its(:to)      { should match [requested_by.email] }
     its(:from)    { should match [noreply] }
     its(:body)    { should match "Deliverer has delivered your story 'Test story'." }
@@ -79,7 +77,7 @@ describe Notifications do
     before { allow(story).to receive_messages(state: :accepted) }
     subject { Notifications.story_changed(story, accepted_by) }
 
-    its(:subject) { should match "[Test Project] Accepter ACCEPTED your story 'Test story'." }
+    its(:subject) { should match "[Test Project] Test story" }
     its(:to)      { should match [owned_by.email] }
     its(:from)    { should match [noreply] }
     its(:body)    { should match "Accepter has accepted the story 'Test story'." }
@@ -92,7 +90,7 @@ describe Notifications do
     before { allow(story).to receive_messages(state: :rejected) }
     subject { Notifications.story_changed(story, rejected_by) }
 
-    its(:subject) { should match "[Test Project] Rejecter REJECTED your story 'Test story'." }
+    its(:subject) { should match "[Test Project] Test story" }
     its(:to)      { should match [owned_by.email] }
     its(:from)    { should match [noreply] }
     its(:body)    { should match "Rejecter has rejected the story 'Test story'." }
@@ -107,7 +105,7 @@ describe Notifications do
     subject { Notifications.new_note(note, notify_users.map(&:email)) }
     before { allow(Note).to receive_message_chain(:includes, :find).and_return(note) }
 
-    its(:subject) { should == "[Test Project] New comment on 'Test story'" }
+    its(:subject) { should match "[Test Project] Test story" }
     its(:to)      { ['foo@example.com'] }
     its(:from)    { [noreply] }
 

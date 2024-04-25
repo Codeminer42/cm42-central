@@ -15,7 +15,11 @@ Given "the {string} story has the following notes:" do |story_name, table|
 end
 
 When "I open the {string} story" do |name|
-  find(".story:has(.toggle-story:not(:checked))", text: name).click
+  find(
+    "#in_progress .story:has(.toggle-story:not(:checked)),
+     #chilly_bin .story:has(.toggle-story:not(:checked))",
+    text: name,
+  ).click
 end
 
 Then "I should see the following new story form:" do |table|

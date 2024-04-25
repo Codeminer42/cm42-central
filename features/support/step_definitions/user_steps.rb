@@ -25,6 +25,7 @@ Given "the following users exist:" do |table|
       projects = attributes[:projects].split(", ").map do |name|
         Project.where(name: name).first_or_create!({
           start_date: Time.zone.now,
+          point_scale: "none",
         })
       end
       projects.each do |project|

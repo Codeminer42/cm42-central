@@ -7,19 +7,38 @@ class Notifications < ActionMailer::Base
 
     mail({
       to: emails,
-      subject: "[#{@story.project.name}] #{@story.title}",
+      subject: subject_for(story),
     }) if emails.any?
   end
 
   def story_changed(story, actor)
     @story = story
     @actor = actor
-    state = story.state.to_sym
 
-    mail_params = MailParams.new(story, actor)
-    return unless mail_params.methods.include?(state)
+    to_map = {
+      started: story.requested_by.email,
+      delivered: story.requested_by.email,
+      accepted: story.owned_by.email,
+      rejected: story.owned_by.email,
+    }
 
-    mail mail_params.send(state).merge(template_name: state)
+    if to = to_map[story.state.to_sym]
+      mail({
+        to: to,
+        template_name: story.state,
+        subject: subject_for(story),
+      })
+    end
+  end
+
+  def new_story_owner(story, actor)
+    @story = story
+    @actor = actor
+
+    mail({
+      to: story.owned_by.email,
+      subject: subject_for(story),
+    })
   end
 
   def new_note(note, notify_users)
@@ -28,7 +47,7 @@ class Notifications < ActionMailer::Base
 
     mail({
       to: notify_users,
-      subject: "[#{@story.project.name}] New comment on '#{@story.title}'",
+      subject: subject_for(@story),
     })
   end
 
@@ -37,7 +56,7 @@ class Notifications < ActionMailer::Base
 
     mail({
       to: users_to_notify,
-      subject: "[#{@story.project.name}] New mention on '#{@story.title}'",
+      subject: subject_for(story),
     })
   end
 
@@ -50,34 +69,9 @@ class Notifications < ActionMailer::Base
     })
   end
 
-  class MailParams < Struct.new(:story, :actor)
-    def started
-      {
-        to: story.requested_by.email,
-        subject: "[#{story.project.name}] Your story '#{story.title}' has been started."
-      }
-    end
+  private
 
-    def delivered
-      {
-        to: story.requested_by.email,
-        subject: "[#{story.project.name}] Your story '#{story.title}' " \
-          'has been delivered for acceptance.'
-      }
-    end
-
-    def accepted
-      {
-        to: story.owned_by.email,
-        subject: "[#{story.project.name}] #{actor.name} ACCEPTED your story '#{story.title}'."
-      }
-    end
-
-    def rejected
-      {
-        to: story.owned_by.email,
-        subject: "[#{story.project.name}] #{actor.name} REJECTED your story '#{story.title}'."
-      }
-    end
+  def subject_for story
+    "[#{story.project.name}] #{story.title}"
   end
 end

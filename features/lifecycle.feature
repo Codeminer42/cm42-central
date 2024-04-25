@@ -26,6 +26,30 @@ Feature: Stories have a lifecycle
     And no emails should have been sent
 
     Given a clear email queue
+    When I open the "WOW" story
+    And I select "Michael Gubitosa" from "Owned by"
+    And I press "Save"
+    Then I should see the following project board:
+      | Done | Current           | Icebox |
+      |      | F WOW GUBS finish |        |
+    And "gubs@botandrose.com" should receive an email
+    And "micah@botandrose.com" should receive no emails
+
+    Given I am logged in as "gubs@botandrose.com"
+    And I am on the "Example Project" project page
+    And a clear email queue
+    When I open the "WOW" story
+    And I select "Micah Geisel" from "Owned by"
+    And I press "Save"
+    Then I should see the following project board:
+      | Done | Current         | Icebox |
+      |      | F WOW MG finish |        |
+    And "micah@botandrose.com" should receive an email
+    And "gubs@botandrose.com" should receive no emails
+
+    Given I am logged in as "micah@botandrose.com"
+    And I am on the "Example Project" project page
+    And a clear email queue
     When I press "finish" within the "WOW" story
     Then I should see the following project board:
       | Done | Current          | Icebox |

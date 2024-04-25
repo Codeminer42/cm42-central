@@ -20,6 +20,7 @@ module StoryOperations
 
         yield notify_state_changed
         yield notify_users
+        yield notify_new_owner
         yield notify_changes
 
         yield create_activity
@@ -85,6 +86,15 @@ module StoryOperations
 
     def notify_users
       Success StoryOperations::UserNotification.notify_users(story)
+    end
+
+    def notify_new_owner
+      if new_owner_id = story.previous_changes["owned_by_id"]&.last
+        if current_user.id != new_owner_id
+          Notifications.new_story_owner(story, current_user).deliver_later
+        end
+      end
+      Success story
     end
 
     def notify_changes
