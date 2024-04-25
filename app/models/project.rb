@@ -3,6 +3,7 @@ class Project < ApplicationRecord
 
   POINT_SCALES = {
     'none' => [].freeze,
+    'pivotal' => [0, 1, 2, 3].freeze,
     'fibonacci' => [1, 2, 3, 5, 8].freeze,
     'powers_of_two' => [1, 2, 4, 8].freeze,
     'linear' => [1, 2, 3, 4, 5].freeze
