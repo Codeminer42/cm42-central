@@ -61,7 +61,7 @@ gem 'sidekiq', '~>6.0' # 7.0 requires redis 6.2+
 gem 'sidekiq_mailer'
 gem 'sinatra', require: nil
 gem 'rollbar', '~> 3.3'
-gem "exception_notification"
+gem 'exception_notification', github: 'smartinez87/exception_notification'
 gem 'foreman'
 
 group :production do

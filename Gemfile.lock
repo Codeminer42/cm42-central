@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/smartinez87/exception_notification.git
+  revision: 8f04a8b12c019cae03a43c92d27c67dcfda27e17
+  specs:
+    exception_notification (4.5.0)
+      actionmailer (>= 5.2, < 8)
+      activesupport (>= 5.2, < 8)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -251,9 +259,6 @@ GEM
     equalizer (0.0.11)
     erubi (1.12.0)
     erubis (2.7.0)
-    exception_notification (4.5.0)
-      actionmailer (>= 5.2, < 8)
-      activesupport (>= 5.2, < 8)
     excon (0.110.0)
     execjs (2.9.1)
     factory_bot (6.4.6)
@@ -656,7 +661,7 @@ DEPENDENCIES
   dry-monads
   email_spec (~> 2.0)
   enumerize (~> 2.5.0)
-  exception_notification
+  exception_notification!
   factory_bot_rails
   faraday
   foreman
