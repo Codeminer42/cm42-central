@@ -1,6 +1,12 @@
 require 'rails_helper'
 
 describe Notifications do
+  before do
+    described_class.default_url_options[:host] = "email.com"
+    described_class.default from: noreply
+  end
+
+  let(:noreply) { "noreply@email.com" }
   let(:requested_by) { mock_model(User, email: 'requested_by@email.com') }
   let(:owned_by) { mock_model(User, name: 'Developer', email: 'owned_by@email.com') }
   let(:project) { mock_model(Project, name: 'Test Project') }
@@ -25,8 +31,8 @@ describe Notifications do
 
     its(:subject) { should match "[Test Project] Your story 'Test story' has been started." }
     its(:to)      { should match [requested_by.email] }
-    its(:from)    { should match [owned_by.email] }
-    its(:body)    { should match project_url(project) }
+    its(:from)    { should match [noreply] }
+    its(:body)    { should match project_url(project, host: "email.com") }
     its(:body)    { should match "Developer has started your story 'Test story'." }
 
     context 'with story without estimation' do
@@ -61,10 +67,10 @@ describe Notifications do
       should match "[Test Project] Your story 'Test story' has been delivered for acceptance."
     end
     its(:to)      { should match [requested_by.email] }
-    its(:from)    { should match [delivered_by.email] }
+    its(:from)    { should match [noreply] }
     its(:body)    { should match "Deliverer has delivered your story 'Test story'." }
     its(:body)    { should match 'You can now review the story, and either accept or reject it.' }
-    its(:body)    { should match project_url(project) }
+    its(:body)    { should match project_url(project, host: "email.com") }
   end
 
   describe '#story_changed to accepted' do
@@ -75,9 +81,9 @@ describe Notifications do
 
     its(:subject) { should match "[Test Project] Accepter ACCEPTED your story 'Test story'." }
     its(:to)      { should match [owned_by.email] }
-    its(:from)    { should match [accepted_by.email] }
+    its(:from)    { should match [noreply] }
     its(:body)    { should match "Accepter has accepted the story 'Test story'." }
-    its(:body)    { should match project_url(project) }
+    its(:body)    { should match project_url(project, host: "email.com") }
   end
 
   describe '#story_changed to rejected' do
@@ -88,9 +94,9 @@ describe Notifications do
 
     its(:subject) { should match "[Test Project] Rejecter REJECTED your story 'Test story'." }
     its(:to)      { should match [owned_by.email] }
-    its(:from)    { should match [rejected_by.email] }
+    its(:from)    { should match [noreply] }
     its(:body)    { should match "Rejecter has rejected the story 'Test story'." }
-    its(:body)    { should match project_url(project) }
+    its(:body)    { should match project_url(project, host: "email.com") }
   end
 
   describe '#new_note' do
@@ -103,7 +109,7 @@ describe Notifications do
 
     its(:subject) { should == "[Test Project] New comment on 'Test story'" }
     its(:to)      { ['foo@example.com'] }
-    its(:from)    { [user.email] }
+    its(:from)    { [noreply] }
 
     specify do
       expect(subject.body.encoded).to match('Note User added the following comment to the story')

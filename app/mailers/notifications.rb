@@ -7,7 +7,6 @@ class Notifications < ActionMailer::Base
 
     mail({
       to: emails,
-      from: Rails.application.config.fulcrum.mailer_sender,
       subject: "[#{@story.project.name}] #{@story.title}",
     }) if emails.any?
   end
@@ -28,30 +27,34 @@ class Notifications < ActionMailer::Base
     @note = Note.includes(:story).find(note_id)
     @story = @note.story
 
-    mail to: notify_users, from: @note.user.email,
-         subject: "[#{@story.project.name}] New comment on '#{@story.title}'"
+    mail({
+      to: notify_users,
+      subject: "[#{@story.project.name}] New comment on '#{@story.title}'",
+    })
   end
 
   def story_mention(story, users_to_notify)
     @story = story
 
-    mail to: users_to_notify, from: @story.requested_by.email,
-         subject: "[#{@story.project.name}] New mention on '#{@story.title}'"
+    mail({
+      to: users_to_notify,
+      subject: "[#{@story.project.name}] New mention on '#{@story.title}'",
+    })
   end
 
   def archived_team(team)
     @team = team
 
-    mail to: @team.users.pluck(:email),
-         from: Rails.application.config.fulcrum.mailer_sender,
-         subject: "The team <#{@team.name}> was archived"
+    mail({
+      to: @team.users.pluck(:email),
+      subject: "The team <#{@team.name}> was archived",
+    })
   end
 
   class MailParams < Struct.new(:story, :actor)
     def started
       {
         to: story.requested_by.email,
-        from: actor.email,
         subject: "[#{story.project.name}] Your story '#{story.title}' has been started."
       }
     end
@@ -59,7 +62,6 @@ class Notifications < ActionMailer::Base
     def delivered
       {
         to: story.requested_by.email,
-        from: actor.email,
         subject: "[#{story.project.name}] Your story '#{story.title}' " \
           'has been delivered for acceptance.'
       }
@@ -68,7 +70,6 @@ class Notifications < ActionMailer::Base
     def accepted
       {
         to: story.owned_by.email,
-        from: actor.email,
         subject: "[#{story.project.name}] #{actor.name} ACCEPTED your story '#{story.title}'."
       }
     end
@@ -76,7 +77,6 @@ class Notifications < ActionMailer::Base
     def rejected
       {
         to: story.owned_by.email,
-        from: actor.email,
         subject: "[#{story.project.name}] #{actor.name} REJECTED your story '#{story.title}'."
       }
     end

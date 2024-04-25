@@ -88,8 +88,6 @@ Rails.application.configure do
   # config.active_job.queue_adapter = :resque
   # config.active_job.queue_name_prefix = "fulcrum_production"
 
-  config.action_mailer.default_url_options = { host: config.fulcrum.app_host }
-
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = Rails.application.credentials.smtp_settings
   config.action_mailer.perform_caching = false
