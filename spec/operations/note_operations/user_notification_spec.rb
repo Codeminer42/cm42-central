@@ -18,7 +18,7 @@ describe NoteOperations::UserNotification do
     let(:notifier) { double('notifier') }
 
     it 'sends notification', :aggregate_failures do
-      expect(Notifications).to receive(:new_note).with(note.id, users_to_notify).and_return(notifier)
+      expect(Notifications).to receive(:new_note).with(note, users_to_notify).and_return(notifier)
       expect(notifier).to receive(:deliver_later)
 
       subject.call
@@ -58,7 +58,7 @@ describe NoteOperations::UserNotification do
       let(:users_to_notify) { [note.user.email, mentioned_user.email] }
 
       it 'sends notitication to the mentioned user', :aggregate_failures do
-        expect(Notifications).to receive(:new_note).with(note.id, users_to_notify).and_return(notifier)
+        expect(Notifications).to receive(:new_note).with(note, users_to_notify).and_return(notifier)
         expect(notifier).to receive(:deliver_later)
 
         subject.call
