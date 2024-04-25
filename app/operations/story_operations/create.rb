@@ -4,6 +4,7 @@ module StoryOperations
 
     def initialize(story:, current_user:)
       @story = story
+      @story.notes.last&.user = current_user
       @current_user = current_user
     end
 

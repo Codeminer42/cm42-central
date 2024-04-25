@@ -5,6 +5,7 @@ module StoryOperations
     def initialize(story:, story_attrs:, current_user:)
       @story = story
       @story_attrs = story_attrs
+      @note_attrs = (story_attrs.delete(:notes_attributes) || {}).fetch("0", {})
       @current_user = current_user
     end
 
@@ -29,7 +30,7 @@ module StoryOperations
 
     private
 
-    attr_reader :story, :story_attrs, :current_user
+    attr_reader :story, :story_attrs, :note_attrs, :current_user
 
     def should_be_unscheduled?(estimate:, type:)
       story.project.point_values.any? &&
@@ -56,8 +57,12 @@ module StoryOperations
     end
 
     def save_note
-      if story_attrs.dig(:notes_attributes, "0", :note).present?
-        NoteOperations::Create.call(note: story.notes.last, current_user: current_user)
+      if note_attrs.present?
+        NoteOperations::Create.call(
+          story: story,
+          note_attrs: note_attrs,
+          current_user: current_user,
+        )
       end
       Success(story)
     end

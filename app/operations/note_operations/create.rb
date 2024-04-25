@@ -2,8 +2,10 @@ module NoteOperations
   class Create
     include Operation
 
-    def initialize(note:, current_user:)
-      @note = note
+    def initialize(story:, note_attrs:, current_user:)
+      @story = story
+      @note_attrs = note_attrs.merge(user: current_user)
+      @note = story.notes.build(@note_attrs)
       @current_user = current_user
     end
 
@@ -20,7 +22,7 @@ module NoteOperations
 
     private
 
-    attr_reader :note, :current_user
+    attr_reader :story, :note_attrs, :note, :current_user
 
     def save_note
       if note.save
@@ -31,12 +33,15 @@ module NoteOperations
     end
 
     def create_changesets
-      note.story.changesets.create
+      story.changesets.create
       Success(note)
     end
 
     def notify_users
-      Success UserNotification.notify_users(note: note, current_user: current_user)
+      Success UserNotification.notify_users(
+        note: note,
+        current_user: current_user,
+      )
     end
 
     def create_activity

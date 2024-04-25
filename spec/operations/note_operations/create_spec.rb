@@ -2,14 +2,12 @@ require 'rails_helper'
 
 describe NoteOperations::Create do
   describe '#call' do
-    subject { -> { NoteOperations::Create.call(note: note, current_user: user) } }
+    subject { -> { NoteOperations::Create.call(story: story, note_attrs: note_params, current_user: user) } }
 
     let(:membership) { create(:membership) }
     let(:user)       { membership.user }
     let(:project)    { membership.project }
     let(:story)      { create(:story, project: project, requested_by: user) }
-
-    let(:note) { story.notes.build(note_params) }
 
     context 'with valid note' do
       let(:note_params) do
@@ -25,7 +23,7 @@ describe NoteOperations::Create do
       end
 
       it 'sends user notification' do
-        expect(NoteOperations::UserNotification).to receive(:notify_users).with(note: note, current_user: user)
+        expect(NoteOperations::UserNotification).to receive(:notify_users).with(note: instance_of(Note), current_user: user)
         subject.call
       end
 
@@ -56,7 +54,7 @@ describe NoteOperations::Create do
       end
 
       it 'does not send user notification' do
-        expect(NoteOperations::UserNotification).to_not receive(:notify_users).with(note: note, current_user: user)
+        expect(NoteOperations::UserNotification).to_not receive(:notify_users).with(note: instance_of(Note), current_user: user)
         subject.call
       end
 

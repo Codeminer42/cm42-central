@@ -124,7 +124,6 @@
 
           div
             .note_form.clearfix
-              = note_form.hidden_field :user_id, value: current_user.id
               = note_form.text_area :note, class: "form-control note-textarea"
               = note_form.label :attachments, "Attachment(s)"
               = note_form.bard_file_field :attachments, multiple: true

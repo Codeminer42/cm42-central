@@ -9,9 +9,8 @@ class NotesController < ApplicationController
   def create
     @note = policy_scope(Note).build(allowed_params)
     authorize @note
-    @note.user = current_user
 
-    result = NoteOperations::Create.call(note: @note, current_user: current_user)
+    result = NoteOperations::Create.call(story: @story, note_attrs: allowed_params, current_user: current_user)
 
     match_result(result) do |on|
       on.success do |note|
