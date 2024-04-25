@@ -26,12 +26,12 @@ class StoryChangesNotificationsChecker
   end
 
   def responsible
-    @responsible ||= case story.state
-                     when 'started', 'delivered'
-                       story.requested_by
-                     when 'accepted', 'rejected'
-                       story.owned_by
-                     end
+    case story.state
+    when 'delivered'
+      story.requested_by
+    when 'accepted', 'rejected'
+      story.owned_by
+    end
   end
 
   def responsible_email_enabled?

@@ -67,7 +67,11 @@ class StoriesController < ApplicationController
     @story = policy_scope(Story).find(params[:id])
     authorize @story
     @story.send(params[:event])
-    @story.save!
+    StoryOperations::Update.call(
+      story: @story,
+      story_attrs: { state: @story.state },
+      current_user: current_user,
+    )
     redirect_to project_url(@project)
   end
 

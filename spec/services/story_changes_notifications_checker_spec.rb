@@ -19,8 +19,8 @@ describe StoryChangesNotificationsChecker do
 
   describe '#can_notify?' do
     context 'when state has changed' do
-      it 'should notify' do
-        expect(subject.can_notify?).to be true
+      it 'should not notify' do
+        expect(subject.can_notify?).to be false
       end
     end
 

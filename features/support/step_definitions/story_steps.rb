@@ -3,6 +3,7 @@ Given "the {string} project has the following stories:" do |project_name, table|
   table.create! Story do
     default(:project) { project }
     rename :type => :story_type
+    belongs_to :requested_by, User, name_field: :username
   end
 end
 

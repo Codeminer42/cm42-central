@@ -15,7 +15,7 @@ Given "I am logged in as {string}" do |email|
 end
 
 def login_user user
-  visit "/users/sign_in"
+  visit "/users/sign_out"
   fill_in "Email", with: user.email
   fill_in "Password", with: "secretsecret"
   click_button "Log in"

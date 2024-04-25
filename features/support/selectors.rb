@@ -21,7 +21,7 @@ module WithinHelpers
       [".project-item", text: $1]
 
     when /the "(.+)?" story/
-      [".story", text: $1]
+      ["#in_progress .story, #chilly_bin .story", text: $1]
 
     when /the "(.+)?" note/
       [".notelist .note", text: $1]

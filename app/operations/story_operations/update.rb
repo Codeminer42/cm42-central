@@ -46,6 +46,7 @@ module StoryOperations
 
     def update_story
       story.attributes = story_attrs
+      story.acting_user = current_user
       if story.save
         Success(story)
       else
