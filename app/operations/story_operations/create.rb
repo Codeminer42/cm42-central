@@ -10,6 +10,8 @@ module StoryOperations
     def call
       ActiveRecord::Base.transaction do
         yield save_story
+        yield save_note
+
         yield create_changesets
         yield create_activity
 
@@ -30,6 +32,13 @@ module StoryOperations
       else
         Failure(story)
       end
+    end
+
+    def save_note
+      if note = story.notes.last
+        NoteOperations::Create.call(note: story.notes.last, current_user: current_user)
+      end
+      Success(story)
     end
 
     def create_changesets

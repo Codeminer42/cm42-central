@@ -12,6 +12,7 @@ module StoryOperations
       ActiveRecord::Base.transaction do
         yield ensure_valid_state
         yield update_story
+        yield save_note
 
         yield create_changesets
         yield apply_fixes
@@ -52,6 +53,13 @@ module StoryOperations
       else
         Failure(story)
       end
+    end
+
+    def save_note
+      if story_attrs.dig(:notes_attributes, "0", :note).present?
+        NoteOperations::Create.call(note: story.notes.last, current_user: current_user)
+      end
+      Success(story)
     end
 
     def create_changesets

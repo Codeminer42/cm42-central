@@ -16,8 +16,6 @@ module NoteOperations
 
         Success(note)
       end
-    rescue
-      Failure(note)
     end
 
     private

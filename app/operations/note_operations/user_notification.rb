@@ -22,7 +22,7 @@ module NoteOperations
     attr_reader :note, :current_user
 
     def users_to_notify
-      (note.story.stakeholders_users + note_users).uniq.reject { |user| user == current_user }
+      (note.story.stakeholders_users - [current_user] + note_users).uniq
     end
 
     def note_users
