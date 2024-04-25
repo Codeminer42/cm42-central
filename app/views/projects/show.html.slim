@@ -1,4 +1,5 @@
-= render partial: 'sidebar', layout: 'sidebar_wrapper', locals: { wrapper_class: 'collapsed' }
+- if false
+  = render partial: 'sidebar', layout: 'sidebar_wrapper', locals: { wrapper_class: 'collapsed' }
 
 - content_for :title_bar do
   ul.nav.navbar-nav
@@ -11,7 +12,7 @@
       i.mi.md-light.md-18.md-add add
       = t('add story')
 
-- content_for :right_menu do
+/ - content_for :right_menu do
   = form_tag '#', id: 'form_search', class: 'navbar-form navbar-left navbar-search', html: { role: 'search' } do
     .form-group
       input.form-control.input-sm type="text" name="q" placeholder="Search"
@@ -27,7 +28,7 @@
         td.done_column data-column-view="done"
           .column_header data-step="done"
             a.toggle-title href="#" title="Done" Done
-            a.toggle-column.hide_done href="#" title="Close" ×
+            / a.toggle-column.hide_done href="#" title="Close" ×
 
           #done.column_content.story_column
             = render @project.completed_iterations
@@ -35,7 +36,7 @@
         td.in_progress_column data-column-view="in_progress" data-connect="#backlog,#chilly_bin"
           .column_header data-step="in-progress"
             a.toggle-title href="#" title="Current Sprint" Current Sprint
-            a.toggle-column.hide_in_progress href="#" title="Close" ×
+            / a.toggle-column.hide_in_progress href="#" title="Close" ×
 
           #in_progress.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#in_progress"
             = render @project.backlog_iterations, total: 0
@@ -55,7 +56,7 @@
         td.chilly_bin_column data-column-view="chilly_bin" data-connect="#backlog,#in_progress"
           .column_header data-step="chilly-bin"
             a.toggle-title href="#" title="Chilly Bin" Chilly Bin
-            a.toggle-column.hide_chilly_bin href="#" title="Close" ×
+            / a.toggle-column.hide_chilly_bin href="#" title="Close" ×
 
           #chilly_bin.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#chilly_bin"
             = render @story, new_story: true if params[:new_story]
@@ -65,7 +66,7 @@
           .column_header data-step="epic"
             a.toggle-title href="#" title="Epic"
               | Epic
-            a.toggle-column.hide_epic href="#" title="Close"
+            / a.toggle-column.hide_epic href="#" title="Close"
               | ×
           #epic.column_content.story_column
 
@@ -73,15 +74,15 @@
           .column_header data-step="history"
             a.toggle-title href="#" title="History Of"
               | History Of
-            a.toggle-column.hide_history href="#" title="Close"
+            / a.toggle-column.hide_history href="#" title="Close"
               | ×
           #history.column_content.activity_column
 
-        td.search_results_column style="" data-column-view="search_results" data-connect="#chilly_bin,#in_progress,#backlog"
+        / td.search_results_column style="" data-column-view="search_results" data-connect="#chilly_bin,#in_progress,#backlog"
           .column_header data-step="search-results"
             a.toggle-title href="#" title="Search Results"
               | "owner: Micah Geisel"
-            a.toggle-column.hide_search_results href="#" title="Close" ×
+            / a.toggle-column.hide_search_results href="#" title="Close" ×
 
           - search_results = @project.stories.includes(:owned_by, :notes).where(owned_by: current_user)
           #search_results.column_content.story_column

@@ -40,7 +40,7 @@
 
           <%= yield :right_menu %>
 
-          <%= form_tag locales_path, method: :put, class: "dropdown" do %>
+          <% if false # = form_tag locales_path, method: :put, class: "dropdown" do %>
             <div class="locale-change-wrapper">
               <%= select_tag 'locale',
                   options_for_select(LocalesController::LOCALES, I18n.locale),
