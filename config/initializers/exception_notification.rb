@@ -1,4 +1,6 @@
 require "exception_notification/rails"
+require "exception_notification/rake"
+require "exception_notification/sidekiq"
 
 ExceptionNotification.configure do |config|
   # Ignore additional exception types.
@@ -30,15 +32,6 @@ ExceptionNotification.configure do |config|
       tls: nil,
       enable_starttls_auto: true,
     }
-  }
-end
-
-if defined?(Rake::Application)
-  Rake::Application.prepend Module.new {
-    def display_error_message error
-      ExceptionNotifier.notify_exception(error)
-      super
-    end
   }
 end
 
