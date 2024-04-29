@@ -101,12 +101,11 @@ div.column_content {
 
 /* Story types */
 div.story {
-  padding: 7px 8px;
+  padding: 6px 8px;
   background-repeat: no-repeat;
   background-position: 4px 4px;
   background-color: $lightgrey-11;
   border-bottom: 1px solid $lightgrey-13;
-  border-top: 1px solid $white;
 
   &:not(.editing):not(.unestimated) {
     min-height: 37px;
@@ -130,7 +129,7 @@ div.story.editing, div.story.editing:hover {
 div.story.feature.accepted,
 div.story.bug.accepted,
 div.story.chore.accepted{
-  background-color: lighten($chameleon-1, 40%);
+  background-color: #daebcf;
 }
 
 div.story textarea {
@@ -171,7 +170,9 @@ div.story textarea {
     background: rgba($white, .4);
     border: 1px solid rgba($black, .15);
     border-radius: 3px;
+    &:empty{display: none;}
   }
+
 }
 
 div.story-controls {
@@ -230,7 +231,7 @@ div.story-title abbr.initials {
   }
 }
 
-.story.started:not(.release) {
+.story.started:not(.release), .story.delivered, .story.rejected {
   background-color: $lightyellow-1;
   border-bottom: 1px solid $lightyellow-2;
 }
@@ -295,10 +296,8 @@ div.story-title abbr.initials {
   @extend .btn;
   @extend .btn-xs;
   font-size: 11px;
-}
-
-.story.release .state-actions input {
-  box-shadow: 0 1px 2px #000;
+  text-transform: capitalize;
+  padding: 3px 5px;
 }
 
 .state-actions input:active {
@@ -307,28 +306,40 @@ div.story-title abbr.initials {
 
 .state-actions input.start {
   @extend .btn-default;
+  background: #e0e2e5;
+  border-color: #c8cbd0;
 }
 
 .state-actions input.finish {
   @extend .btn-primary;
+  background: #203e64;
+  border-color: #172c51;
 }
 
 .state-actions input.deliver {
   @extend .btn-warning;
+  background: #f39300;
+  border-color: #f08000;
 }
 
 .state-actions input.accept {
   @extend .btn-success;
+  background: #629200;
+  border-color: #4e8200;
+  margin-right: 5px;
 }
 
 .state-actions input.reject {
   @extend .btn-danger;
+  background: #A71f39;
+  border-color: #950828;
 }
 
 .state-actions input.restart {
   @extend .btn-danger;
-  background: image-url("icons/redo.png") no-repeat;
-  padding-left: 20px;
+  background: #e0e2e5;
+  border-color: #c8cbd0;
+  color: #333;
 }
 
 a.button {
@@ -415,7 +426,7 @@ a.button {
 // Custom Style Overrides
 .popover {
   width: 200px;
-  
+
   &-title {
     font-size: 13px;
     word-wrap: break-word;
@@ -774,3 +785,7 @@ div#keycut-help {
     white-space: nowrap;
   }
 }
+
+// MISSING?
+
+.story-icons .md-dark{color: #81837f;}
