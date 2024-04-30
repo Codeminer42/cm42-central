@@ -1,4 +1,6 @@
+html{height: 100%;}
 body {
+  min-height: 100%;
   font-family: 'Noto Sans', sans-serif;
   color: #000;
   background-color: $lightgrey-7;
@@ -22,15 +24,16 @@ body {
 .board {
   background-color: $darkgrey-10;
   height: auto;
+  overflow: hidden;
 }
 
 .content-wrapper {
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: 0;
-  position: absolute;
-  overflow-y: auto;
+  //bottom: 0;
+  //left: 0;
+  //right: 0;
+  //top: 0;
+  //position: absolute;
+  //overflow-y: auto;
 }
 
 [hidden] {
