@@ -232,7 +232,10 @@ div.story-title abbr.initials {
   }
 }
 
-.story.started:not(.release), .story.delivered, .story.rejected {
+.story.started:not(.release), .story.started:not(.release):hover,
+.story.delivered, .story.delivered:hover,
+.story.finished, .story.finished:hover,
+.story.rejected,  .story.rejected:hover{
   background-color: $lightyellow-1;
   border-bottom: 1px solid $lightyellow-2;
 }
