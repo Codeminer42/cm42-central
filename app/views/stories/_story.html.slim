@@ -61,40 +61,40 @@
 
         .form-group
           = form.label :title
-          = form.text_field :title, placeholder: "Story title", maxlength: "255", class: "title form-control input-sm"
+          = form.text_field :title, placeholder: "Story title", maxlength: "255", class: "title form-control input-sm", data: { story_target: "permanent" }
 
         .form-group.form-inline
           .form-group
             = form.label :estimate
             br
-            = form.select :estimate, @project.point_values, { disabled: true, include_blank: "no estimate" }, { class: "form-control input-sm story_estimate" }
+            = form.select :estimate, @project.point_values, { disabled: true, include_blank: "no estimate" }, { class: "form-control input-sm story_estimate", data: { story_target: "permanent" } }
 
           .form-group
             = form.label :story_type
             br
-            = form.select :story_type, Story::STORY_TYPES, {}, { class: "form-control input-sm story_type" }
+            = form.select :story_type, Story::STORY_TYPES, {}, { class: "form-control input-sm story_type", data: { story_target: "permanent" } }
 
           .form-group
             = form.label :state
             br
-            = form.select :state, form.object.states, {}, { class: "form-control input-sm story_state" }
+            = form.select :state, form.object.states, {}, { class: "form-control input-sm story_state", data: { story_target: "permanent" } }
 
         .form-group.form-inline
           .form-group
             = form.label :requested_by_id, "Requested by"
             br
-            = form.collection_select :requested_by_id, @project.users, :id, :name, { include_blank: "---" }, { class: "form-control input-sm requested_by_id" }
+            = form.collection_select :requested_by_id, @project.users, :id, :name, { include_blank: "---" }, { class: "form-control input-sm requested_by_id", data: { story_target: "permanent" } }
 
           .form-group data-owned-by=""
             = form.label :owned_by_id, "Owned by"
             br
-            = form.collection_select :owned_by_id, @project.users, :id, :name, { include_blank: "---" }, { class: "form-control input-sm owned_by_id" }
+            = form.collection_select :owned_by_id, @project.users, :id, :name, { include_blank: "---" }, { class: "form-control input-sm owned_by_id", data: { story_target: "permanent" } }
 
         .form-group
           .form-group data-tags=""
             = form.label :labels
             br
-            = form.text_field :labels, class: "form-control input-sm labels tagit-hidden-field"
+            = form.text_field :labels, class: "form-control input-sm labels tagit-hidden-field", data: { story_target: "permanent" }
             /
               ul.tagit.ui-widget.ui-widget-content.ui-corner-all
                 li.tagit-new
@@ -104,7 +104,7 @@
           .story-description
             = form.label :description
             br
-            = form.text_area :description , class: "form-control description-textarea"
+            = form.text_area :description , class: "form-control description-textarea", data: { story_target: "permanent" }
 
         = form.fields_for :notes, Note.new do |note_form|
           div
@@ -124,9 +124,9 @@
 
           div
             .note_form.clearfix
-              = note_form.text_area :note, class: "form-control note-textarea"
+              = note_form.text_area :note, class: "form-control note-textarea", data: { story_target: "permanent" }
               = note_form.label :attachments, "Attachment(s)"
-              = note_form.bard_file_field :attachments, multiple: true
+              = note_form.bard_file_field :attachments, multiple: true, data: { story_target: "permanent" }
               button.add-note.btn.btn-default.btn-xs type="submit"
                 | Add note
 
