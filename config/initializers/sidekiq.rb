@@ -21,6 +21,10 @@ Rails.application.config.after_initialize do
     # it will appear in the Sidekiq console with all of the job context.
     unless ::Rails.logger == config.logger || ::ActiveSupport::Logger.logger_outputs_to?(::Rails.logger, $stdout)
       ::Rails.logger = ::ActiveSupport::BroadcastLogger.new(::Rails.logger, config.logger)
+      formatter = ActiveSupport::Logger::SimpleFormatter.new
+      formatter.extend ActiveSupport::TaggedLogging::Formatter
+      ::Rails.logger.formatter = formatter
     end
   end
 end
+
