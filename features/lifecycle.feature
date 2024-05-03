@@ -5,20 +5,25 @@ Feature: Stories have a lifecycle
       | micah@botandrose.com | Micah Geisel     | MG       | micahg   | BARD  | Example Project |
       | gubs@botandrose.com  | Michael Gubitosa | GUBS     | gubs     | BARD  | Example Project |
 
-    And the "Example Project" project has the following stories:
-      | type    | title | state       | requested_by |
-      | feature | WOW   | unscheduled | gubs         |
-
   Scenario: Requester and owner take a story through its entire lifecycle
-    Given I am logged in as "micah@botandrose.com"
+    Given I am logged in as "gubs@botandrose.com"
     And I am on the "Example Project" project page
-    And a clear email queue
+    When I follow "Add story"
+    And I fill in the following form:
+      | Title        | WOW              |
+      | Story type   | feature          |
+      | State        | unscheduled      |
+      | Requested by | Michael Gubitosa |
+    And I press "Save"
     Then I should see the following project board:
       | Done | Current | Icebox      |
       |      |         | F WOW start |
-    And no emails should have been sent
+    And "micah@botandrose.com" should receive an email
+    And "gubs@botandrose.com" should receive no emails
 
-    Given a clear email queue
+    Given I am logged in as "micah@botandrose.com"
+    And I am on the "Example Project" project page
+    And a clear email queue
     When I press "start" within the "WOW" story
     Then I should see the following project board:
       | Done | Current         | Icebox |

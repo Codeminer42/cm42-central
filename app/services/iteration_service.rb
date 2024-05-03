@@ -201,7 +201,6 @@ class IterationService
   def backlog_iterations(velocity_value = velocity)
     velocity_value = 1 if velocity_value < 1
     @backlog_iterations ||= {}
-    # mimics the project.js rebuildIteration() function
     @backlog_iterations[velocity_value] ||= begin
       current_iteration = Iteration.new(self, current_iteration_number, velocity_value)
       backlog_iteration = Iteration.new(self, current_iteration_number + 1, velocity_value)

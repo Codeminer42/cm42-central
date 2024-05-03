@@ -26,13 +26,11 @@ Feature: Stories can contain notes
 
     When I fill in "Notes" with "this is another note"
     And I press "Add note"
-    Then "micah@botandrose.com" should receive no emails
-    And "gubs@botandrose.com" should receive no emails
-
-    When I open the "WOW" story
     Then I should see the following notes:
       | this is a note       | Micah Geisel |
       | this is another note | Micah Geisel |
+    And "micah@botandrose.com" should receive no emails
+    And "gubs@botandrose.com" should receive no emails
 
   Scenario: User tags another user in a note
     Given I am logged in as "micah@botandrose.com"
@@ -47,13 +45,11 @@ Feature: Stories can contain notes
 
     When I fill in "Notes" with "@gubs this is another note"
     And I press "Add note"
-    Then "gubs@botandrose.com" should receive an email
-    And "micah@botandrose.com" should receive no emails
-
-    When I open the "WOW" story
     Then I should see the following notes:
       | this is a note       | Micah Geisel |
       | @gubs this is another note | Micah Geisel |
+    And "gubs@botandrose.com" should receive an email
+    And "micah@botandrose.com" should receive no emails
 
   Scenario: User tags self in a note
     Given I am logged in as "micah@botandrose.com"
@@ -68,13 +64,11 @@ Feature: Stories can contain notes
 
     When I fill in "Notes" with "@micahg this is another note"
     And I press "Add note"
-    Then "micah@botandrose.com" should receive an email
-    And "gubs@botandrose.com" should receive no emails
-
-    When I open the "WOW" story
     Then I should see the following notes:
       | this is a note               | Micah Geisel |
       | @micahg this is another note | Micah Geisel |
+    And "micah@botandrose.com" should receive an email
+    And "gubs@botandrose.com" should receive no emails
 
   Scenario: User adds note to a story with attachment
     Given I am logged in as "micah@botandrose.com"
@@ -90,8 +84,6 @@ Feature: Stories can contain notes
     When I fill in "Notes" with "this is another note"
     And I attach "screenshot.png" to "Attachment(s)"
     And I press "Add note"
-
-    When I open the "WOW" story
     Then I should see the following notes:
       | this is a note       | Micah Geisel |                |
       | this is another note | Micah Geisel | screenshot.png |
@@ -107,6 +99,5 @@ Feature: Stories can contain notes
     Then I should see the following notes:
       | this is a note | Micah Geisel |
     When I follow "Delete" within the "this is a note" note
-    And I open the "WOW" story
     Then I should see no notes
 

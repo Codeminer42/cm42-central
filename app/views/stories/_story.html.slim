@@ -4,7 +4,7 @@
 
 - cache_if story.persisted?, story do
   .story.closed class=[story.story_type, story.state, ("searchResult" if search_result)] id=story_dom_id data-id=story.id data-position=story.position data-state=story.state data-story-type=story.story_type data-controller="story" data-action="click->story#open"
-    input.toggle-story type="checkbox" data-story-target="checkbox" checked=(true if new_story)
+    input.toggle-story type="checkbox" data-story-target="checkbox" checked=(true if new_story) data-turbo-permanent=true id="#{story_dom_id}-toggle"
     .closed
       .state-actions
         - if search_result
@@ -37,7 +37,7 @@
       = form_for [@project, story], namespace: dom_id(story) do |form|
         div
           .form-group.story-controls
-            = form.submit "Save"
+            = form.submit "Save", data: { action: "click->story#close:stop" }
             - if new_story
               input.cancel type="button" value="Cancel" onclick="this.closest('.story').remove()"
             - else

@@ -32,7 +32,9 @@ Then "I should see the following {string} story form:" do |story_name, table|
 end
 
 Then "I should see the following notes:" do |table|
-  table.diff! actual_notes
+  page.document.synchronize errors: page.driver.invalid_element_errors + [Capybara::ElementNotFound, Cucumber::MultilineArgument::DataTable::Different] do
+    table.diff! actual_notes
+  end
 end
 
 Then "I should see no notes" do

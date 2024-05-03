@@ -1,5 +1,5 @@
 - total = defined?(total) ? total : nil
-.iteration
+.iteration id="iteration-#{iteration.number}"
   | #{iteration.number} - #{iteration.start_date.to_date.to_fs(:rfc822_with_day)}
   span.points
     = [iteration.points, total].compact.join("/")
