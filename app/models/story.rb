@@ -36,7 +36,7 @@ class Story < ApplicationRecord
 
   delegate :suppress_notifications, to: :project
 
-  belongs_to :project, counter_cache: true
+  belongs_to :project, counter_cache: true, touch: true
   belongs_to :requested_by, class_name: 'User'
   belongs_to :owned_by, class_name: 'User'
 

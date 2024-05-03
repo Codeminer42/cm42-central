@@ -10,7 +10,6 @@ module StoryOperations
     def call
       ActiveRecord::Base.transaction do
         yield delete_story
-        yield notify_changes
         yield create_activity
 
         Success(story)
@@ -23,10 +22,6 @@ module StoryOperations
 
     def delete_story
       Success(story.destroy)
-    end
-
-    def notify_changes
-      Success ::StoryOperations::PusherNotification.notify_changes(story)
     end
 
     def create_activity

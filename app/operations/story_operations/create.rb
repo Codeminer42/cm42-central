@@ -17,7 +17,6 @@ module StoryOperations
         yield create_activity
 
         yield notify_users
-        yield notify_changes
 
         Success(story)
       end
@@ -49,10 +48,6 @@ module StoryOperations
 
     def notify_users
       Success Notifications.new_story(story, current_user)&.deliver_later
-    end
-
-    def notify_changes
-      Success StoryOperations::PusherNotification.notify_changes(story)
     end
 
     def create_activity

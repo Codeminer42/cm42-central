@@ -39,11 +39,6 @@ describe StoryOperations::Update do
         subject.call
       end
 
-      it 'sends pusher notification' do
-        expect(StoryOperations::PusherNotification).to receive(:notify_changes).with(story)
-        subject.call
-      end
-
       it 'returns success' do
         expect(subject.call.success?).to be(true)
       end
@@ -125,11 +120,6 @@ describe StoryOperations::Update do
 
       it 'does not send user notification' do
         expect(StoryOperations::UserNotification).to_not receive(:notify_users).with(story)
-        subject.call
-      end
-
-      it 'does not sends pusher notification' do
-        expect(StoryOperations::PusherNotification).to_not receive(:notify_changes).with(story)
         subject.call
       end
     end

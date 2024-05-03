@@ -1,4 +1,6 @@
 class Project < ApplicationRecord
+  broadcasts_refreshes
+
   attr_writer :suppress_notifications
 
   POINT_SCALES = {

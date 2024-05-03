@@ -21,11 +21,6 @@ describe StoryOperations::Destroy do
       expect { subject.call }.to change { Activity.count }.by(1)
     end
 
-    it 'sends pusher notification' do
-      expect(StoryOperations::PusherNotification).to receive(:notify_changes).with(story)
-      subject.call
-    end
-
     it 'returns success' do
       expect(subject.call.success?).to be(true)
     end

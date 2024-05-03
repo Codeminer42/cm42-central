@@ -21,7 +21,6 @@ module StoryOperations
         yield notify_state_changed
         yield notify_users
         yield notify_new_owner
-        yield notify_changes
 
         yield create_activity
 
@@ -95,10 +94,6 @@ module StoryOperations
         end
       end
       Success story
-    end
-
-    def notify_changes
-      Success StoryOperations::PusherNotification.notify_changes(story)
     end
 
     def create_activity

@@ -58,14 +58,6 @@ describe StoryOperations::UpdateAll do
         subject.call
       end
 
-      it 'sends pusher notification', :aggregate_failures do
-        expect(StoryOperations::PusherNotification).to receive(:notify_changes).with(story_1)
-        expect(StoryOperations::PusherNotification).to receive(:notify_changes).with(story_2)
-        expect(StoryOperations::PusherNotification).to receive(:notify_changes).with(story_3)
-
-        subject.call
-      end
-
       it 'returns success' do
         expect(subject.call.success?).to be(true)
       end
@@ -104,14 +96,6 @@ describe StoryOperations::UpdateAll do
         expect(StoryOperations::UserNotification).to_not receive(:notify_users).with(story_1)
         expect(StoryOperations::UserNotification).to_not receive(:notify_users).with(story_2)
         expect(StoryOperations::UserNotification).to_not receive(:notify_users).with(story_3)
-
-        subject.call
-      end
-
-      it 'does not send pusher notification', :aggregate_failures do
-        expect(StoryOperations::PusherNotification).to_not receive(:notify_changes).with(story_1)
-        expect(StoryOperations::PusherNotification).to_not receive(:notify_changes).with(story_2)
-        expect(StoryOperations::PusherNotification).to_not receive(:notify_changes).with(story_3)
 
         subject.call
       end
