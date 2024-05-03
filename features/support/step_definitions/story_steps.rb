@@ -40,12 +40,14 @@ Then "I should see no notes" do
 end
 
 def actual_notes
-  table = all(".notelist .note").map do |note|
-    [
-      note.find(".note_note"),
-      *note.all("span"),
-      *note.all(".attachment"),
-    ].map(&:text)
+  page.document.synchronize do
+    table = all(".notelist .note").map do |note|
+      [
+        note.find(".note_note"),
+        *note.all("span"),
+        *note.all(".attachment"),
+      ].map(&:text)
+    end
+    normalize_table(table)
   end
-  normalize_table(table)
 end
