@@ -39,7 +39,7 @@ Feature: Stories can be added
       | Done | Current          | Icebox      |
       |      | B WOW! MG finish | F WOW start |
 
-    And "gubs@botandrose.com" should receive an email from "noreply@clients.botandrose.com" with the subject "[Example Project] WOW!" and the following body:
+    And "gubs@botandrose.com" should receive an email from "notifications@clients.botandrose.com" with the subject "[Example Project] WOW!" and the following body:
       """
       Bug WOW! was created by Micah Geisel (@micahg)
 

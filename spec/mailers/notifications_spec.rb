@@ -3,10 +3,10 @@ require 'rails_helper'
 describe Notifications do
   before do
     described_class.default_url_options[:host] = "email.com"
-    described_class.default from: noreply
+    described_class.default from: sender
   end
 
-  let(:noreply) { "noreply@email.com" }
+  let(:sender) { "notifications@email.com" }
   let(:requested_by) { mock_model(User, email: 'requested_by@email.com') }
   let(:owned_by) { mock_model(User, name: 'Developer', email: 'owned_by@email.com') }
   let(:project) { mock_model(Project, name: 'Test Project') }
@@ -31,7 +31,7 @@ describe Notifications do
 
     its(:subject) { should match "[Test Project] Test story" }
     its(:to)      { should match [requested_by.email] }
-    its(:from)    { should match [noreply] }
+    its(:from)    { should match [sender] }
     its(:body)    { should match project_url(project, host: "email.com") }
     its(:body)    { should match "Developer has started your story 'Test story'." }
 
@@ -65,7 +65,7 @@ describe Notifications do
 
     its(:subject) { should match "[Test Project] Test story" }
     its(:to)      { should match [requested_by.email] }
-    its(:from)    { should match [noreply] }
+    its(:from)    { should match [sender] }
     its(:body)    { should match "Deliverer has delivered your story 'Test story'." }
     its(:body)    { should match 'You can now review the story, and either accept or reject it.' }
     its(:body)    { should match project_url(project, host: "email.com") }
@@ -79,7 +79,7 @@ describe Notifications do
 
     its(:subject) { should match "[Test Project] Test story" }
     its(:to)      { should match [owned_by.email] }
-    its(:from)    { should match [noreply] }
+    its(:from)    { should match [sender] }
     its(:body)    { should match "Accepter has accepted the story 'Test story'." }
     its(:body)    { should match project_url(project, host: "email.com") }
   end
@@ -92,7 +92,7 @@ describe Notifications do
 
     its(:subject) { should match "[Test Project] Test story" }
     its(:to)      { should match [owned_by.email] }
-    its(:from)    { should match [noreply] }
+    its(:from)    { should match [sender] }
     its(:body)    { should match "Rejecter has rejected the story 'Test story'." }
     its(:body)    { should match project_url(project, host: "email.com") }
   end
@@ -107,7 +107,7 @@ describe Notifications do
 
     its(:subject) { should match "[Test Project] Test story" }
     its(:to)      { ['foo@example.com'] }
-    its(:from)    { [noreply] }
+    its(:from)    { [sender] }
 
     specify do
       expect(subject.body.encoded).to match('Note User added the following comment to the story')
