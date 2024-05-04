@@ -11,7 +11,7 @@ module StoryOperations
       ActiveRecord::Base.transaction do
         yield delete_story
         yield create_activity
-
+        yield refresh_other_users
         Success(story)
       end
     end
@@ -30,6 +30,11 @@ module StoryOperations
         current_user: current_user,
         action: 'destroy'
       )
+    end
+
+    def refresh_other_users
+      story.project.broadcast_refresh_later
+      Success story
     end
   end
 end
