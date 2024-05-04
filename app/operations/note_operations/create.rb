@@ -35,10 +35,13 @@ module NoteOperations
     end
 
     def save_note
-      if note.save
-        Success(note)
-      else
-        Failure(note)
+      # wrap in transaction to ensure it actually exists in the db before shipping it off to sidekiq in #deliver_later
+      story.transaction do
+        if note.save
+          Success(note)
+        else
+          Failure(note)
+        end
       end
     end
 
