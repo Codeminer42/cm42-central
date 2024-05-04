@@ -259,6 +259,8 @@ GEM
     equalizer (0.0.11)
     erubi (1.12.0)
     erubis (2.7.0)
+    et-orbi (1.2.11)
+      tzinfo
     excon (0.110.0)
     execjs (2.9.1)
     factory_bot (6.4.6)
@@ -284,6 +286,9 @@ GEM
     formtastic_i18n (0.7.0)
     friendly_id (5.2.5)
       activerecord (>= 4.0.0)
+    fugit (1.11.0)
+      et-orbi (~> 1, >= 1.2.11)
+      raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
     gravtastic (3.2.6)
@@ -412,6 +417,7 @@ GEM
       nio4r (~> 2.0)
     pundit (2.3.1)
       activesupport (>= 3.0.0)
+    raabro (1.4.0)
     racc (1.7.3)
     rack (2.2.9)
     rack-cache (1.17.0)
@@ -530,6 +536,8 @@ GEM
     ruby-vips (2.2.1)
       ffi (~> 1.12)
     ruby2_keywords (0.0.5)
+    rufus-scheduler (3.9.1)
+      fugit (~> 1.1, >= 1.1.6)
     rvm (1.11.3.9)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
@@ -547,6 +555,10 @@ GEM
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.5.0)
+    sidekiq-scheduler (5.0.3)
+      rufus-scheduler (~> 3.2)
+      sidekiq (>= 6, < 8)
+      tilt (>= 1.4.0)
     sidekiq_mailer (0.0.8)
       actionmailer (>= 3.0)
       activesupport (>= 3.0)
@@ -700,6 +712,7 @@ DEPENDENCIES
   sass-rails
   shoulda-matchers
   sidekiq (~> 6.0)
+  sidekiq-scheduler
   sidekiq_mailer
   simplecov
   sinatra

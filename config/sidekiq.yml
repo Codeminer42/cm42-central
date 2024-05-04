@@ -3,3 +3,8 @@ logfile: log/sidekiq.log
 queues:
   - default
   - mailers
+scheduler:
+  schedule:
+    receive_email:
+      class: ReceiveEmailsWorker
+      every: 30 seconds

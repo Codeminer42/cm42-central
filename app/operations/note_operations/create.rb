@@ -2,20 +2,22 @@ module NoteOperations
   class Create
     include Operation
 
-    def initialize(story:, note_attrs:, current_user:)
+    def initialize(story:, note_attrs:, current_user:, note: nil)
       @story = story
-      @note_attrs = note_attrs.merge(user: current_user)
-      @note = story.notes.build(@note_attrs)
+      @note_attrs = note_attrs
+      @note = note || story.notes.build
       @current_user = current_user
     end
 
     def call
       ActiveRecord::Base.transaction do
+        yield set_attrs
         yield save_note
-        yield create_changesets
-        yield notify_users
-        yield create_activity
-
+        if note.saved_change_to_story_id? || note.smtp_id.blank?
+          yield create_changesets
+          yield notify_users
+          yield create_activity
+        end
         Success(note)
       end
     end
@@ -23,6 +25,14 @@ module NoteOperations
     private
 
     attr_reader :story, :note_attrs, :note, :current_user
+
+    def set_attrs
+      note.attributes = note_attrs.merge({
+        story: story,
+        user: current_user,
+      })
+      Success note
+    end
 
     def save_note
       if note.save

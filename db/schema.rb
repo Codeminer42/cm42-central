@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_25_182858) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_04_183754) do
   create_table "active_admin_comments", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -162,7 +162,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_25_182858) do
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
     t.string "user_name"
+    t.string "smtp_id"
     t.index ["id"], name: "id", unique: true
+    t.index ["smtp_id"], name: "index_notes_on_smtp_id", unique: true
   end
 
   create_table "ownerships", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

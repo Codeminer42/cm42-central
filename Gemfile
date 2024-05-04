@@ -58,6 +58,7 @@ gem 'redis'
 
 # production
 gem 'sidekiq', '~>6.0' # 7.0 requires redis 6.2+
+gem 'sidekiq-scheduler'
 gem 'sidekiq_mailer'
 gem 'sinatra', require: nil
 gem 'rollbar', '~> 3.3'

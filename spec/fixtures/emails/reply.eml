@@ -1,0 +1,105 @@
+Return-Path: <micah@botandrose.com>
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+ by inbound-smtp.us-west-2.amazonaws.com with SMTP id 7nn796oh7hg8njh01t9fpd1e86g17m630t8c7v81
+ for notifications@clients.botandrose.com;
+ Sat, 04 May 2024 18:14:47 +0000 (UTC)
+X-SES-Spam-Verdict: PASS
+X-SES-Virus-Verdict: PASS
+Received-SPF: none (spfCheck: 209.85.210.173 is neither permitted nor denied by domain of botandrose.com) client-ip=209.85.210.173; envelope-from=micah@botandrose.com; helo=mail-pf1-f173.google.com;
+Authentication-Results: amazonses.com;
+ spf=none (spfCheck: 209.85.210.173 is neither permitted nor denied by domain of botandrose.com) client-ip=209.85.210.173; envelope-from=micah@botandrose.com; helo=mail-pf1-f173.google.com;
+ dkim=pass header.i=@botandrose-com.20230601.gappssmtp.com;
+ dmarc=none header.from=botandrose.com;
+X-SES-RECEIPT: AEFBQUFBQUFBQUFHWFMrZEpPMHB3U3dvcFFXR1FUNm56cVZwQjNNR1AzZnhXYkVKRTJzR0xMSTExOEdZb2h5WCtneGpldm5KRHJOWG1IdWJZM05Ecm5uT3F0WWlpelhaMTRHdUxFaUFIUUZ0KzdLK0N5RXk5UUNPL082aTVLNmNFOWVJZDh3K0tPZkgrZ0Z4dXVwQ0dvdFNzVGlwOU5vcHZ5a2NUcmZDQTRFVW5LRjJMaUZvWFhCRldERVprU0FMaFVNeWkvWExTTWtZRHp5OWMrclNEZ0xrdXdwOFc0eWU5NytNTjRIcWIyREpoSkI2VkpsdDJXWFRlTlhxZUk4ZWJoaWIwcldqYXdUK3RUMlB5aC9yWmNwVksxZVpMTXhWVW1BMmpKcm9pYit5WEgzdnVXd0NNbHc9PQ==
+X-SES-DKIM-SIGNATURE: a=rsa-sha256; q=dns/txt; b=CeH/YoKa+RTjYtWffCe8hl0OLVHN2Fds36PMRRj7LzDiJmURG+yEkwLV1KlMuzWkgUmnIKE9dYiMh7UO8yckX1T1oXwoZTyWzk/OMgUgWqs/bMP42KHOn0P2rNkoqpF/8zBLF3gaQFzS+PFGdo4VHSmNi6zP7wrj2eOkb34GMHs=; c=relaxed/simple; s=7v7vs6w47njt4pimodk5mmttbegzsi6n; d=amazonses.com; t=1714846488; v=1; bh=KG1fNukIGctnSqwzyWv5d2lKX83LZEzbJSTRBlIpo4A=; h=From:To:Cc:Bcc:Subject:Date:Message-ID:MIME-Version:Content-Type:X-SES-RECEIPT;
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-6f45f1179c3so347096b3a.3
+        for <notifications@clients.botandrose.com>; Sat, 04 May 2024 11:14:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=botandrose-com.20230601.gappssmtp.com; s=20230601; t=1714846487; x=1715451287; darn=clients.botandrose.com;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KG1fNukIGctnSqwzyWv5d2lKX83LZEzbJSTRBlIpo4A=;
+        b=xv+X00cqHqrgdIAkiWCg5WzmXF9B0so2zR2MWRfoIVj8Rl7JjDi2xqbmg3oqc1zi22
+         sWI4bqaEljpSwwgJIulesQaQMQ/3L3Mail2cCXamtBfyojgw+3gZ+4yuK4RPhosmQHC4
+         UMVzjSi2BfOcODVi06AzRBFkLyJFCsGvFjYcRPI6UBWDAGYcFngPHAoI40aBMqxtR2ae
+         V4Bnv97N7keHmKVAm1+pS/jrfBFrAaSHME8HVr9M9QzbkRjnbaMGDSIkLZxN1T3pBc7c
+         FG164IgL2Dt6Q4Wu8OXchZAtsEXA/oK4VZ2BcJ9DpFOtp/r3eBzQczQRGsxhz9fk+adV
+         FU3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714846487; x=1715451287;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KG1fNukIGctnSqwzyWv5d2lKX83LZEzbJSTRBlIpo4A=;
+        b=EBE/9HNGmLEI529DgOVo9ihAVr8PtfN+K8CiKYWw6GZggxdngmrRvDvodbzOHXfTsN
+         khXl5beewbX0+ekrP2NkgF3hIkAHvam5D78deh70Y902YLD1DpXh6zXaKDMcsjLATpk9
+         NB2szmTDu4/fb2LKRkrr1A49K+S6XCdezlRnF36vthYtSctqY+ThQR4gJ1IzFOQnf3rt
+         cYRiFw8esN5D1X45Cv6g1lni8PHJ+77uAFkz6ZhMTHPYnYA0cJ+kQPM9gPvPtMWxAJW2
+         qVaz2s+WcaXA1BstR69i0KfTs+8hFuml79dRD1g8f1AjsTN8qLMh/JDi07+MNN8c4H9/
+         NyBQ==
+X-Gm-Message-State: AOJu0Ywmx+TW5lUgwINJ8uKCO+6vIafLW6tfJo9Ams+zh6k7mua0HQav
+	0dyWSBWTNwVcEZsPoyTYrtk6a4CbuOD0gApEpG3DQ4cX3v8SpFhQWkJG0uL18qNnD7lO5FhefBW
+	KUg==
+X-Google-Smtp-Source: AGHT+IGn4ED/lZ8mF0EwF9wgxphTtI8c21TCmUIL+EAfqumKBjHY94mFkC6qVQWlckkENkzjIbm53w==
+X-Received: by 2002:a05:6a00:a90:b0:6f3:ef58:2dd0 with SMTP id b16-20020a056a000a9000b006f3ef582dd0mr6252900pfl.8.1714846486537;
+        Sat, 04 May 2024 11:14:46 -0700 (PDT)
+Return-Path: <micah@botandrose.com>
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com. [209.85.215.176])
+        by smtp.gmail.com with ESMTPSA id fj36-20020a056a003a2400b006e72c8ece23sm5005296pfb.191.2024.05.04.11.14.46
+        for <notifications@clients.botandrose.com>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 04 May 2024 11:14:46 -0700 (PDT)
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-5dca1efad59so510327a12.2
+        for <notifications@clients.botandrose.com>; Sat, 04 May 2024 11:14:46 -0700 (PDT)
+X-Received: by 2002:a17:90b:374e:b0:2a8:1fdf:b1b0 with SMTP id
+ ne14-20020a17090b374e00b002a81fdfb1b0mr5839015pjb.29.1714846485373; Sat, 04
+ May 2024 11:14:45 -0700 (PDT)
+MIME-Version: 1.0
+References: <0101018f44bb8ef4-d9a05a59-f300-4f7b-8273-ad4a437369d8-000000@us-west-2.amazonses.com>
+In-Reply-To: <0101018f44bb8ef4-d9a05a59-f300-4f7b-8273-ad4a437369d8-000000@us-west-2.amazonses.com>
+From: Micah Geisel <micah@botandrose.com>
+Date: Sat, 4 May 2024 20:14:33 +0200
+X-Gmail-Original-Message-ID: <CACTxBsQqVg4aTXqT9jZdW4FyWaJ3AnDXj0K1NOZPnQZJHmFhFQ@mail.gmail.com>
+Message-ID: <CACTxBsQqVg4aTXqT9jZdW4FyWaJ3AnDXj0K1NOZPnQZJHmFhFQ@mail.gmail.com>
+Subject: Re: [Clients] Problem replying to emails?
+To: BARD <notifications@clients.botandrose.com>
+Content-Type: multipart/alternative; boundary="0000000000009af2e20617a4cfe4"
+
+--0000000000009af2e20617a4cfe4
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+testing reply 3
+
+On Sat, May 4, 2024 at 7:51=E2=80=AFPM BARD <notifications@clients.botandro=
+se.com>
+wrote:
+
+> Micah Geisel added the following comment to the story
+> "Problem replying to emails?":
+>
+> @micahg testing email
+>
+> https://clients.botandrose.com/projects/clients#story-72
+>
+
+--0000000000009af2e20617a4cfe4
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">testing reply 3</div><br><div class=3D"gmail_quote"><div d=
+ir=3D"ltr" class=3D"gmail_attr">On Sat, May 4, 2024 at 7:51=E2=80=AFPM BARD=
+ &lt;<a href=3D"mailto:notifications@clients.botandrose.com">notifications@=
+clients.botandrose.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_q=
+uote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,2=
+04);padding-left:1ex">Micah Geisel added the following comment to the story=
+<br>
+&quot;Problem replying to emails?&quot;:<br>
+<br>
+@micahg testing email<br>
+<br>
+<a href=3D"https://clients.botandrose.com/projects/clients#story-72" rel=3D=
+"noreferrer" target=3D"_blank">https://clients.botandrose.com/projects/clie=
+nts#story-72</a><br>
+</blockquote></div>
+
+--0000000000009af2e20617a4cfe4--
