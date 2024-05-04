@@ -69,18 +69,6 @@ describe User do
     its(:to_s) { should == 'Dummy User (DU) <dummy@example.com>' }
   end
 
-  describe '#as_json' do
-    before do
-      subject.id = 42
-    end
-
-    specify do
-      expect(subject.as_json['user'].keys.sort).to eq(
-        %w[email finished_tour guest? id initials name tour_steps username]
-      )
-    end
-  end
-
   describe '#remove_story_association' do
     let(:user) { create :user }
     let(:project) { build :project }

@@ -15,13 +15,6 @@ class Project < ApplicationRecord
 
   MAX_MEMBERS_PER_CARD = 4
 
-  JSON_ATTRIBUTES = %w[
-    id name iteration_length iteration_start_day start_date
-    default_velocity enable_tasks
-  ].freeze
-
-  JSON_METHODS = %w[last_changeset_id point_values].freeze
-
   extend FriendlyId
   friendly_id :name, use: :slugged, reserved_words: %w[new edit].freeze
 
@@ -124,10 +117,6 @@ class Project < ApplicationRecord
 
   def last_changeset_id
     changesets.last&.id
-  end
-
-  def as_json(options = {})
-    super(**options, only: JSON_ATTRIBUTES, methods: JSON_METHODS)
   end
 
   def to_param

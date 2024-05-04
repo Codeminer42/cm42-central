@@ -1,7 +1,4 @@
 class Note < ApplicationRecord
-  include ActiveModel::Serializers::JSON
-  self.include_root_in_json = false
-
   belongs_to :user
   belongs_to :story, touch: true
 
@@ -12,11 +9,6 @@ class Note < ApplicationRecord
   validates :note, presence: true
 
   delegate :project, to: :story
-
-  # Defines the attributes and methods that are included when calling to_json
-  def as_json(_options = {})
-    super(methods: ['errors'])
-  end
 
   def to_csv
     user_name = user ? user.name : I18n.t('author unknown')

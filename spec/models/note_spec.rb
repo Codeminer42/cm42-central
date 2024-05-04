@@ -17,13 +17,6 @@ describe Note do
     end
   end
 
-  describe '#as_json' do
-    it 'returns the right keys' do
-      expect(subject.as_json.keys.sort)
-        .to eq(%w[created_at errors id note story_id updated_at user_id user_name])
-    end
-  end
-
   describe '#to_csv' do
     context 'When Note has a user' do
       let(:note) do

@@ -3,7 +3,6 @@ class User < ApplicationRecord
   attr_accessor :was_created
   attr_accessor :team_slug
 
-  JSON_ATTRIBUTES = %w[id name initials username email finished_tour].freeze
   AUTHENTICATION_KEYS = %i[email].freeze
   ROLES = %w[manager developer guest].freeze
 
@@ -76,10 +75,6 @@ class User < ApplicationRecord
 
   def tour_steps
     WelcomeTour::STEPS.to_json
-  end
-
-  def as_json(options = {})
-    super(**options, only: JSON_ATTRIBUTES, methods: %i[tour_steps guest?])
   end
 
   def self.find_first_by_auth_conditions(warden_conditions)

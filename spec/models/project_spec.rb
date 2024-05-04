@@ -292,14 +292,6 @@ describe Project, type: :model do
     it { is_expected.to have_many(:ownerships).dependent(:destroy) }
   end
 
-  describe '#as_json' do
-    subject { create :project }
-
-    (Project::JSON_ATTRIBUTES + Project::JSON_METHODS).each do |key|
-      its(:as_json) { expect(subject.as_json['project']).to have_key(key) }
-    end
-  end
-
   describe '#joinable' do
     context 'when disallow_join is true' do
       let(:project) { create :project, disallow_join: true }
