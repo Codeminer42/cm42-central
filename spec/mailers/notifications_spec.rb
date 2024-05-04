@@ -125,7 +125,8 @@ describe Notifications do
     end
 
     it 'delivery to all team members' do
-      expect(mail.to).to eq(users_emails)
+      expect(mail.to).to eq([users_emails.first])
+      expect(mail.bcc).to eq([users_emails.second])
     end
 
     it 'have the right subject' do

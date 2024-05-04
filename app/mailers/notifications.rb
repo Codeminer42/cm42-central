@@ -6,7 +6,8 @@ class Notifications < ActionMailer::Base
     emails = story.project.users.where.not(id: actor.id).pluck(:email)
 
     mail({
-      to: emails,
+      to: emails.first,
+      bcc: emails[1..],
       subject: subject_for(story),
     }) if emails.any?
   end
@@ -41,30 +42,34 @@ class Notifications < ActionMailer::Base
     })
   end
 
-  def new_note(note, notify_users)
+  def new_note(note, emails)
     @note = note
     @story = note.story
 
     mail({
-      to: notify_users,
+      to: emails.first,
+      bcc: emails[1..],
       subject: subject_for(@story),
     })
   end
 
-  def story_mention(story, users_to_notify)
+  def story_mention(story, emails)
     @story = story
 
     mail({
-      to: users_to_notify,
+      to: emails.first,
+      bcc: emails[1..],
       subject: subject_for(story),
     })
   end
 
   def archived_team(team)
     @team = team
+    emails = @team.users.pluck(:email)
 
     mail({
-      to: @team.users.pluck(:email),
+      to: emails.first,
+      bcc: emails[1..],
       subject: "The team <#{@team.name}> was archived",
     })
   end
