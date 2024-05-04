@@ -1,22 +1,8 @@
 require 'sidekiq'
 
-module Sidekiq::Middleware::Server
-  class SetRetryCountMiddleware
-    def call(worker, job_params, _queue)
-      retry_count = job_params["retry_count"]
-      worker.instance_variable_set(:@retry_count, retry_count)
-      yield
-    end
-  end
-end
-
 Sidekiq.configure_server do |config|
   config.redis = { url: ENV["REDISCLOUD_URL"] }
-  config.server_middleware do |chain|
-    chain.add Sidekiq::Middleware::Server::SetRetryCountMiddleware
-  end
 end
-
 Rails.application.config.before_initialize do |app|
   initializer = app.initializers.find do |initializer|
     initializer.name == "sidekiq.rails_logger"
