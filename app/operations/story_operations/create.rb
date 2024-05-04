@@ -15,6 +15,7 @@ module StoryOperations
 
         yield create_changesets
         yield create_activity
+        yield refresh_other_users
 
         yield notify_users
 
@@ -59,6 +60,11 @@ module StoryOperations
         current_user: current_user,
         action: 'create'
       )
+    end
+
+    def refresh_other_users
+      story.project.broadcast_refresh_later
+      Success story
     end
   end
 end
