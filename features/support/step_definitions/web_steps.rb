@@ -22,6 +22,10 @@ When "I press {string}" do |button|
   click_button button
 end
 
+When "I press and confirm {string}" do |button|
+  accept_confirm { click_button button }
+end
+
 When "I fill in {string} with {string}" do |field, value|
   fill_in field, with: value
 end

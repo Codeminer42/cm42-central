@@ -16,7 +16,7 @@ Feature: Stories can be deleted
       |      |         | F WOW start |
 
     When I open the "WOW" story
-    And I press "Delete"
+    And I press and confirm "Delete"
     Then I should see the following project board:
       | Done | Current | Icebox |
 
