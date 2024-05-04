@@ -51,7 +51,11 @@ module StoryOperations
     end
 
     def notify_users
-      Success Notifications.new_story(story, current_user)&.deliver_later
+      emails = story.project.users.where.not(id: current_user.id).pluck(:email)
+      emails.each do |email|
+        Notifications.new_story(email, story, current_user).deliver_later
+      end
+      Success(story)
     end
 
     def create_activity

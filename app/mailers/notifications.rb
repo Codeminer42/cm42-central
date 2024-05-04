@@ -1,14 +1,12 @@
 class Notifications < ActionMailer::Base
-  def new_story(story, actor)
+  def new_story(email, story, actor)
     @story = story
     @actor = actor
 
-    emails = story.project.users.where.not(id: actor.id).pluck(:email)
-
     mail({
-      to: emails,
+      to: email,
       subject: subject_for(story),
-    }) if emails.any?
+    })
   end
 
   def story_changed(story, actor)
@@ -41,21 +39,21 @@ class Notifications < ActionMailer::Base
     })
   end
 
-  def new_note(note, notify_users)
+  def new_note(email, note)
     @note = note
     @story = note.story
 
     mail({
-      to: notify_users,
+      to: email,
       subject: subject_for(@story),
     })
   end
 
-  def story_mention(story, users_to_notify)
+  def story_mention(email, story)
     @story = story
 
     mail({
-      to: users_to_notify,
+      to: email,
       subject: subject_for(story),
     })
   end

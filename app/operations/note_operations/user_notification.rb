@@ -14,7 +14,9 @@ module NoteOperations
       return if note.story.suppress_notifications
       return if users_to_notify.none?
 
-      Notifications.new_note(note, users_to_notify.map(&:email)).deliver_later
+      users_to_notify.map(&:email).each do |email|
+        Notifications.new_note(email, note).deliver_later
+      end
     end
 
     private

@@ -98,11 +98,11 @@ describe Notifications do
   end
 
   describe '#new_note' do
-    let(:notify_users)  { [mock_model(User, email: 'foo@example.com')] }
+    let(:recipient)    { mock_model(User, email: 'foo@example.com') }
     let(:user)          { mock_model(User, name: 'Note User') }
     let(:note)          { mock_model(Note, story: story, user: user) }
 
-    subject { Notifications.new_note(note, notify_users.map(&:email)) }
+    subject { Notifications.new_note(recipient.email, note) }
     before { allow(Note).to receive_message_chain(:includes, :find).and_return(note) }
 
     its(:subject) { should match "[Test Project] Test story" }

@@ -6,6 +6,8 @@ describe StoryOperations::Create do
 
     let(:membership) { create(:membership) }
     let(:user)        { membership.user }
+    let(:other_membership) { create(:membership, project: project) }
+    let!(:other_user)  { other_membership.user }
     let(:project)     { membership.project }
     let(:story)       { project.stories.build(story_params) }
     let(:mailer)      { double(deliver_later: true) }
@@ -30,7 +32,8 @@ describe StoryOperations::Create do
       end
 
       it 'sends user notification' do
-        expect(Notifications).to receive(:new_story).with(story, user)
+        expect(Notifications).to receive(:new_story).with(other_user.email, story, user)
+        expect(Notifications).to_not receive(:new_story).with(user.email, story, user)
         subject.call
       end
 

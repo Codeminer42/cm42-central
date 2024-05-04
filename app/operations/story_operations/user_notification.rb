@@ -10,7 +10,9 @@ module StoryOperations
 
     def notify_users
       return unless notify_mentioned_users?
-      Notifications.story_mention(story, users_to_notify.pluck(:email)).deliver_later
+      users_to_notify.pluck(:email).each do |email|
+        Notifications.story_mention(email, story).deliver_later
+      end
     end
 
     private
