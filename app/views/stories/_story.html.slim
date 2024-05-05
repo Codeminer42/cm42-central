@@ -34,7 +34,7 @@
     .editing
       = form_for([@project, story], method: "delete", html: { id: "delete_story_#{story.id}" }) {}
 
-      = form_for [@project, story], namespace: dom_id(story) do |form|
+      = form_for [@project, story], namespace: dom_id(story), data: { story_target: "form" } do |form|
         div
           .form-group.story-controls
             = form.submit "Save", data: { action: "click->story#close:stop" }
@@ -124,9 +124,9 @@
 
           div
             .note_form.clearfix
-              = note_form.text_area :note, class: "form-control note-textarea", data: { story_target: "permanent" }
+              = note_form.text_area :note, class: "form-control note-textarea", data: { story_target: "permanent note" }
               = note_form.label :attachments, "Attachment(s)"
-              = note_form.bard_file_field :attachments, multiple: true, data: { story_target: "permanent" }
+              = note_form.bard_file_field :attachments, multiple: true, data: { story_target: "permanent attachment" }
               button.add-note.btn.btn-default.btn-xs type="submit"
                 | Add note
 

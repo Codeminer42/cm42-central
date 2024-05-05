@@ -1,10 +1,25 @@
 import { Controller } from "@hotwired/stimulus"
+import useActions from "stimulus-use-actions"
 
 export default class extends Controller {
   static targets = [
     "checkbox",
     "permanent",
+    "form",
+    "note",
+    "attachment",
   ]
+
+  connect() {
+    useActions(this, {
+      formTarget: "turbo:submit-end->clearNoteForm",
+    })
+  }
+
+  clearNoteForm() {
+    this.noteTarget.value = ''
+    this.attachmentTarget.value = []
+  }
 
   open(event) {
     if(event.target.closest(".state-actions")) return
