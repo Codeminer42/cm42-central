@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Stories::ActivitiesController do
-  let(:user)  { create(:user, :with_team) }
+  let(:user)  { create(:user) }
   let(:story) { create(:story, :with_project, :with_activity, requested_by: user) }
 
   context 'when logged out' do
@@ -13,11 +13,9 @@ describe Stories::ActivitiesController do
 
   context 'when logged in' do
     before do
-      user.teams.first.projects << story.project
-
       sign_in user
 
-      allow(subject).to receive_messages(current_user: user, current_team: user.teams.first)
+      allow(subject).to receive_messages(current_user: user, current_project: user.projects.first)
     end
 
     describe '#index' do

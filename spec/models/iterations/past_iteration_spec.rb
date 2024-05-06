@@ -2,10 +2,10 @@ require 'rails_helper'
 
 module Iterations
   describe PastIteration do
-    let(:user) { create(:user, :with_team) }
+    let(:user) { create(:user) }
 
     let(:project) do
-      create(:project, :with_past_iteration, users: [user], teams: [user.teams.first])
+      create(:project, :with_past_iteration, users: [user])
     end
 
     let(:stories) do
@@ -24,7 +24,7 @@ module Iterations
 
     describe '#points' do
       it 'sums the story estimates in this iteration' do
-        expect(subject.points).to eq(24)
+        expect(subject.points).to eq(9)
       end
     end
   end

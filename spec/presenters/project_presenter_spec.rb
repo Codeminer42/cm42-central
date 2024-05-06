@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe ProjectPresenter do
-  let(:user) { create :user, :with_team, email: 'foobar@example.com' }
+  let(:user) { create :user, email: 'foobar@example.com' }
   let(:tag_group) { create :tag_group }
 
   before { create :project, name: 'Test Project Foobar', users: [user], tag_group: tag_group }

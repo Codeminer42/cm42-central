@@ -16,16 +16,16 @@ describe StoriesBulkUpdateController do
       sign_in user_1
     end
 
-    let(:user_1)  { create(:user, :with_team) }
-    let(:user_2)  { create(:user, :with_team) }
-    let(:user_3)  { create(:user, :with_team) }
-    let(:user_4)  { create(:user, :with_team) }
-    let(:project) { create(:project, users: [user_1, user_2, user_3], teams: [user_1.teams.first]) }
+    let(:user_1)  { create(:user) }
+    let(:user_2)  { create(:user) }
+    let(:user_3)  { create(:user) }
+    let(:user_4)  { create(:user) }
+    let(:project) { create(:project, users: [user_1, user_2, user_3]) }
     let(:stories) { create_list(:story, 2, project: project, requested_by: user_1) }
 
     let(:params) do
       {
-        project_id: project.id, story_ids: stories.map(&:id), requested_by_id: user_2.id,
+        project_id: project.slug, story_ids: stories.map(&:id), requested_by_id: user_2.id,
         owned_by_id: user_3.id, labels: 'back, front'
       }
     end

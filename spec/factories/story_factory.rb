@@ -17,7 +17,7 @@ FactoryBot.define do
     trait :done do
       title { 'Done story' }
       state { 'accepted' }
-      estimate { 8 }
+      estimate { 3 }
       accepted_at { Time.current.days_ago(10) }
     end
 

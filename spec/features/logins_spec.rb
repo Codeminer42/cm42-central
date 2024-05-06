@@ -2,7 +2,7 @@ require 'feature_helper'
 
 describe 'Logins' do
   let!(:user) do
-    create :user, :with_team_and_is_admin,
+    create :user, :admin,
            email: 'user@example.com',
            password: 'password',
            name: 'Test User',
@@ -32,21 +32,25 @@ describe 'Logins' do
   end
 
   describe 'successful login', js: true do
-    context 'when user has one team' do
+    context 'when user has one project' do
+      before { user.projects << create(:project) }
+
       it 'logs in the user' do
         visit root_path
         fill_in 'Email',    with: 'user@example.com'
         fill_in 'Password', with: 'password'
         click_button 'Log in'
 
+        expect(page).to_not have_selector('.projects-dropdown', text: "Project")
         expect(page).to have_selector('.user-dropdown', text: 'Test User')
       end
     end
 
-    context 'when user has multiples teams' do
-      let(:another_team) { create :team }
-
-      before { user.teams << another_team }
+    context 'when user has multiples projects' do
+      before do
+        user.projects << create(:project)
+        user.projects << create(:project)
+      end
 
       it 'logs in the user' do
         visit root_path
@@ -54,14 +58,12 @@ describe 'Logins' do
         fill_in 'Password', with: 'password'
         click_button 'Log in'
 
-        expect(page).to have_selector('span', text: I18n.t('teams.switch')) &
+        expect(page).to have_selector('.projects-dropdown', text: "Project") &
                         have_selector('.user-dropdown', text: 'Test User')
       end
     end
 
-    context "when user hasn't any teams" do
-      before { user.teams.destroy(user.teams.first.id) }
-
+    context "when user hasn't any projects" do
       it 'logs in the user' do
         visit root_path
         fill_in 'Email', with: 'user@example.com'
@@ -69,10 +71,10 @@ describe 'Logins' do
 
         click_button 'Log in'
 
+        expect(page).to_not have_selector('.projects-dropdown', text: "Project")
         expect(page)
-          .to have_selector('span', text: I18n.t('teams.switch')) &
-              have_selector('.user-dropdown', text: 'Test User') &
-              have_selector('.simple-alert', text: "Oops! You're not enrolled to a team yet.")
+          .to have_selector('.user-dropdown', text: 'Test User') &
+              have_selector('.simple-alert', text: "You're not enrolled to a project yet.")
       end
     end
   end

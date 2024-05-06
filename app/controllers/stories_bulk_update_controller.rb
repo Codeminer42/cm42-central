@@ -22,12 +22,8 @@ class StoriesBulkUpdateController < ApplicationController
 
   private
 
-  def project
-    @project ||= Project.find(params[:project_id])
-  end
-
   def stories
-    @stories ||= project.stories.where(id: params[:story_ids])
+    @stories ||= current_project.stories.where(id: params[:story_ids])
   end
 
   def allowed_params

@@ -33,7 +33,6 @@ export default class extends Controller {
     let position = {}
     const previous = this.findPreviousStory(story)
     const next = this.findNextStory(story)
-    debugger
     if(previous) {
       position = { after: previous.dataset.id }
     } else if(next) {

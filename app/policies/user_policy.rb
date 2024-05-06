@@ -23,25 +23,14 @@ class UserPolicy < ApplicationPolicy
     record == current_user
   end
 
-  def enrollment?
-    create?
-  end
-
-  def create_enrollment?
+  def create_membership?
     admin?
   end
 
   class Scope < Scope
     def resolve
-      if root?
-        User
-      elsif admin?
-        if current_project
-          current_project.users
-        else
-          # Admin::UsersController
-          current_team.users.all
-        end
+      if admin?
+        User.all
       elsif project_member?
         current_project.users
       else

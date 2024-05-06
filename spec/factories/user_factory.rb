@@ -11,16 +11,8 @@ FactoryBot.define do
     u.finished_tour { true }
     u.after(:build, &:confirm)
 
-    trait :with_team do
-      after(:build) { |object| object.enrollments.create(team: create(:team), is_admin: false) }
-    end
-
-    trait :with_team_and_is_admin do
-      after(:build) { |object| object.enrollments.create(team: create(:team), is_admin: true) }
-    end
-
-    trait :with_archived_team_and_is_admin do
-      after(:build) { |object| object.enrollments.create(team: create(:team, archived_at: Time.current), is_admin: true) }
+    trait :admin do
+      after(:build) { |object| object.update!(admin: true) }
     end
   end
 

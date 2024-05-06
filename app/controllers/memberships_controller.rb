@@ -2,11 +2,11 @@ class MembershipsController < ApplicationController
   before_action :set_project
 
   def create
-    authorize current_team_users
+    authorize available_users
     if enroll
-      flash[:notice] = @project_enroller_service.message
+      flash.notice = @project_enroller_service.message
     else
-      flash[:alert] = @project_enroller_service.message
+      flash.alert = @project_enroller_service.message
     end
 
     respond_to do |format|
@@ -17,8 +17,8 @@ class MembershipsController < ApplicationController
 
   private
 
-  def current_team_users
-    current_team.users.where.not(id: @project.users).order(:name)
+  def available_users
+    User.where.not(id: @project.users).order(:name)
   end
 
   def allowed_params
@@ -31,10 +31,10 @@ class MembershipsController < ApplicationController
 
   def enroll
     @user = User.find_by(email: allowed_params[:email])
-    @project_enroller_service = ProjectMembershipEnrollerService.new(@user, current_team, @project)
+    @project_enroller_service = ProjectMembershipEnrollerService.new(@user, @project)
     if @project_enroller_service.enroll
       authorize @user
-      @current_team_users = current_team_users
+      @available_users = available_users
       true
     else
       false

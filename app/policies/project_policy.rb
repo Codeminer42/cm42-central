@@ -8,39 +8,21 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def import?
-    admin? && project_owner?
+    admin? && record.persisted?
   end
 
-  def join?
-    return false if project_member? || guest?
-    true
-  end
-
-  def archive?
-    !record.archived && import?
-  end
-
-  def unarchive?
-    record.archived && import?
-  end
-
+  alias archive? import?
+  alias unarchive? import?
   alias archived? update?
   alias import_upload? import?
   alias destroy? import?
-  alias share? import?
-  alias unshare? share?
-  alias transfer? share?
-  alias ownership? share?
 
   class Scope < Scope
     def resolve
-      if root?
+      if admin?
         Project.all
-      elsif admin?
-        current_team.projects
       else
-        return Project.none unless current_team
-        current_user.projects.not_archived.where(id: current_team.projects.pluck(:id))
+        current_user.projects.not_archived
       end
     end
   end

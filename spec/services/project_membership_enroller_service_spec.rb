@@ -2,15 +2,14 @@ require 'rails_helper'
 
 describe ProjectMembershipEnrollerService do
   let(:user) { create(:user, email: 'foo@bar.com') }
-  let(:current_team) { create(:team) }
   let(:project) { create(:project) }
-  let(:service) { described_class.new(user, current_team, project) }
+  let(:service) { described_class.new(user, project) }
 
   subject { service.enroll }
 
   describe '.call' do
     context 'when the user is found' do
-      context 'when the user is already member of the team' do
+      context 'when the user is already member of the project' do
         before do
           project.users << user
         end
@@ -26,9 +25,9 @@ describe ProjectMembershipEnrollerService do
         end
       end
 
-      context 'when the user is not member of the team' do
+      context 'when the user is not member of the project' do
         before do
-          allow(user).to receive(:teams).and_return([])
+          allow(user).to receive(:projects).and_return([])
         end
 
         it 'returns true' do

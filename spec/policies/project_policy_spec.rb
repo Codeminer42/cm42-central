@@ -2,23 +2,21 @@ require 'rails_helper'
 
 describe ProjectPolicy do
   let(:project) { create :project }
-  let(:pundit_context) { PunditContext.new(current_team, current_user, current_project: project) }
-  let(:current_team) { current_user.teams.first }
+  let(:pundit_context) { PunditContext.new(project, current_user) }
   let(:policy_scope) { ProjectPolicy::Scope.new(pundit_context, Project).resolve.all }
   subject { ProjectPolicy.new(pundit_context, project) }
 
   let!(:archived_project) do
-    create :project, teams: [current_team], users: [current_user], archived_at: Time.current
+    create :project, users: [current_user], archived_at: Time.current
   end
 
-  context 'proper user of project and the team owns this project' do
+  context 'admin user of project' do
     before do
       project.users << current_user
-      current_team.ownerships.create(project: project, is_owner: true)
     end
 
     context 'for an admin' do
-      let(:current_user) { create :user, :with_team_and_is_admin }
+      let(:current_user) { create :user, :admin }
 
       %i[index show create new update edit].each do |action|
         it { should permit(action) }
@@ -27,37 +25,22 @@ describe ProjectPolicy do
       %i[
         import
         import_upload
+        archive
+        unarchive
         destroy
-        share
-        unshare
-        transfer
-        ownership
       ].each do |action|
         it { should permit(action) }
-      end
-
-      context 'when project is not archived' do
-        it { is_expected.to permit(:archive) }
-        it { is_expected.not_to permit(:unarchive) }
-      end
-
-      context 'when project is archived' do
-        let(:project) { create :project, :archived }
-
-        it { is_expected.not_to permit(:archive) }
-        it { is_expected.to permit(:unarchive) }
       end
     end
   end
 
-  context 'proper user of a project' do
+  context 'member of a project' do
     before do
       project.users << current_user
-      current_team.projects << project
     end
 
     context 'for an admin' do
-      let(:current_user) { create :user, :with_team_and_is_admin }
+      let(:current_user) { create :user, :admin }
 
       %i[index show create new update edit reports archived].each do |action|
         it { should permit(action) }
@@ -69,13 +52,8 @@ describe ProjectPolicy do
         archive
         unarchive
         destroy
-        share
-        unshare
-        transfer
-        ownership
-        join
       ].each do |action|
-        it { should_not permit(action) }
+        it { should permit(action) }
       end
 
       it 'lists all projects' do
@@ -84,7 +62,7 @@ describe ProjectPolicy do
     end
 
     context 'for a user' do
-      let(:current_user) { create :user, :with_team }
+      let(:current_user) { create :user }
 
       %i[show reports].each do |action|
         it { should permit(action) }
@@ -100,11 +78,6 @@ describe ProjectPolicy do
         archive
         unarchive
         destroy
-        share
-        unshare
-        transfer
-        ownership
-        join
       ].each do |action|
         it { should_not permit(action) }
       end
@@ -116,12 +89,10 @@ describe ProjectPolicy do
   end
 
   context 'user not a member of project' do
-    before { current_team.projects << project }
-
     context 'for an admin' do
-      let(:current_user) { create :user, :with_team_and_is_admin }
+      let(:current_user) { create :user, :admin }
 
-      %i[index show create new update edit reports join].each do |action|
+      %i[index show create new update edit reports].each do |action|
         it { should permit(action) }
       end
 
@@ -131,12 +102,8 @@ describe ProjectPolicy do
         archive
         unarchive
         destroy
-        share
-        unshare
-        transfer
-        ownership
       ].each do |action|
-        it { should_not permit(action) }
+        it { should permit(action) }
       end
 
       it 'lists all projects' do
@@ -145,9 +112,7 @@ describe ProjectPolicy do
     end
 
     context 'for a user' do
-      let(:current_user) { create :user, :with_team }
-
-      it { should permit(:join) }
+      let(:current_user) { create :user }
 
       %i[index create new update edit reports].each do |action|
         it { should_not permit(action) }
@@ -159,10 +124,6 @@ describe ProjectPolicy do
         archive
         unarchive
         destroy
-        share
-        unshare
-        transfer
-        ownership
       ].each do |action|
         it { should_not permit(action) }
       end
@@ -173,7 +134,7 @@ describe ProjectPolicy do
     end
 
     context 'for a guest' do
-      let(:current_user) { create :user, :with_team, role: 'guest' }
+      let(:current_user) { create :user, role: 'guest' }
 
       %i[index create new update edit reports].each do |action|
         it { should_not permit(action) }
@@ -185,11 +146,6 @@ describe ProjectPolicy do
         archive
         unarchive
         destroy
-        share
-        unshare
-        transfer
-        ownership
-        join
       ].each do |action|
         it { should_not permit(action) }
       end

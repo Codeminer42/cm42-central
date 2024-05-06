@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 describe StoryOperations::ReadAll do
-  let(:user)         { create(:user, :with_team) }
-  let(:current_team) { user.teams.first }
+  let(:user)         { create(:user) }
   let(:done_story)   { create(:story, :done, project: project, requested_by: user) }
   let(:active_story) { create(:story, :active, project: project, requested_by: user) }
 
@@ -19,7 +18,7 @@ describe StoryOperations::ReadAll do
   let(:result) { subject.call.success }
 
   context 'when there are stories in the done column' do
-    let(:project) { create(:project, :with_past_iteration, users: [user], teams: [current_team]) }
+    let(:project) { create(:project, :with_past_iteration, users: [user]) }
     let(:subject_past_iteration) { result[:past_iterations].first }
 
     it 'does not return done stories as Story objects' do
@@ -40,7 +39,7 @@ describe StoryOperations::ReadAll do
   end
 
   context 'when there are no past iterations' do
-    let(:project) { create(:project, users: [user], teams: [current_team]) }
+    let(:project) { create(:project, users: [user]) }
 
     it 'does not return past iterations' do
       expect(result[:past_iterations]).to be_empty
@@ -52,7 +51,7 @@ describe StoryOperations::ReadAll do
   end
 
   context 'when there are no active stories' do
-    let(:project) { create(:project, :with_past_iteration, users: [user], teams: [current_team]) }
+    let(:project) { create(:project, :with_past_iteration, users: [user]) }
     let(:active_story) { done_story }
     let(:subject_past_iteration) { result[:past_iterations].first }
 
@@ -70,7 +69,7 @@ describe StoryOperations::ReadAll do
   end
 
   context 'when the project started a month ago' do
-    let(:project) { create(:project, :created_one_month_ago, users: [user], teams: [current_team]) }
+    let(:project) { create(:project, :created_one_month_ago, users: [user]) }
     let(:iteration_length)         { project.iteration_length * 7 }
     let(:days_since_project_start) { (Date.current - project.start_date).to_i }
     let(:number_of_iterations)     { days_since_project_start / iteration_length }

@@ -1,9 +1,9 @@
 Feature: Stories have a lifecycle
   Background:
     Given the following users exist:
-      | email                | name             | initials | username | teams | projects        |
-      | micah@botandrose.com | Micah Geisel     | MG       | micahg   | BARD  | Example Project |
-      | gubs@botandrose.com  | Michael Gubitosa | GUBS     | gubs     | BARD  | Example Project |
+      | email                | name             | initials | username | projects        |
+      | micah@botandrose.com | Micah Geisel     | MG       | micahg   | Example Project |
+      | gubs@botandrose.com  | Michael Gubitosa | GUBS     | gubs     | Example Project |
 
   Scenario: Requester and owner take a story through its entire lifecycle
     Given I am logged in as "gubs@botandrose.com"

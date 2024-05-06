@@ -58,15 +58,6 @@ class Notifications < ActionMailer::Base
     })
   end
 
-  def archived_team(team)
-    @team = team
-
-    mail({
-      to: @team.users.pluck(:email),
-      subject: "The team <#{@team.name}> was archived",
-    })
-  end
-
   private
 
   def subject_for story

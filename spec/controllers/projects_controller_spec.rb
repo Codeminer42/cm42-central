@@ -17,10 +17,6 @@ describe ProjectsController do
       reports
       import
       import_upload
-      archive
-      unarchive
-      ownership
-      join
     ].each do |action|
       specify do
         get action, params: { id: 42 }
@@ -31,85 +27,42 @@ describe ProjectsController do
 
   context 'when logged in' do
     context 'as non-admin' do
-      let(:user)            { create :user, :with_team, email: 'user@example.com' }
-      let(:team)            { user.teams.first }
+      let(:user)            { create :user, email: 'user@example.com' }
       let(:project)         { create(:project, users: [user]) }
       let(:another_project) { create(:project) }
       let!(:story)          { create(:story, project: project, requested_by: user) }
 
       before do
-        team.ownerships.create(project: project, is_owner: true)
-        team.ownerships.create(project: another_project, is_owner: true)
         sign_in user
-        allow(subject).to receive_messages(current_user: user, current_team: team)
+        allow(subject).to receive_messages(current_user: user, current_project: project)
       end
 
       describe 'collection actions' do
         describe '#index' do
-          specify do
+          it "redirects to project page when there's only one" do
             get :index
-            expect(response).to be_successful
-          end
-        end
-
-        describe '#join' do
-          context 'with public project' do
-            let(:public_project) { create(:project, disallow_join: false) }
-
-            before do
-              team.ownerships.create(project: public_project, is_owner: true)
-              get :join, params: { id: public_project.slug }
-            end
-
-            it 'should join to the project' do
-              expect(user.projects).to include(public_project)
-            end
-
-            it { expect(response).to redirect_to(public_project) }
-            it { expect(flash[:notice]).to eq('user@example.com was added to this project') }
-          end
-
-          context 'with private project' do
-            let(:private_project) { create(:project, disallow_join: true) }
-
-            before do
-              team.ownerships.create(project: private_project, is_owner: true)
-
-              get :join, params: { id: private_project.slug }
-            end
-
-            it 'should not join to the project' do
-              get :join, params: { id: private_project.slug }
-
-              expect(user.projects).not_to eq(private_project)
-            end
-
-            it { expect(response).not_to redirect_to(private_project) }
-            it { expect(response).to redirect_to(root_url) }
+            expect(response).to redirect_to(project_url(project))
           end
         end
       end
     end
 
     context 'as admin' do
-      let(:user)            { create :user, :with_team_and_is_admin }
-      let(:team)            { user.teams.first }
+      let(:user)            { create :user, :admin }
       let(:project)         { create(:project, users: [user]) }
       let(:another_project) { create(:project) }
       let!(:story)          { create(:story, project: project, requested_by: user) }
 
       before do
-        team.ownerships.create(project: project, is_owner: true)
-        team.ownerships.create(project: another_project, is_owner: true)
         sign_in user
-        allow(subject).to receive_messages(current_user: user, current_team: team)
+        allow(subject).to receive_messages(current_user: user, current_project: project)
       end
 
       describe 'collection actions' do
         describe '#index' do
-          specify do
+          it "redirects to project page when there's only one" do
             get :index
-            expect(response).to be_successful
+            expect(response).to redirect_to(project_url(project))
           end
         end
 
@@ -128,9 +81,7 @@ describe ProjectsController do
             post :create, params: { project: project_params }
             expect(assigns[:project].name).to eq(project_params['name'])
             expect(assigns[:project].users).to include(user)
-            expect(assigns[:project].teams).to include(user.teams.first)
             expect(assigns[:project].mail_reports).to be_falsey
-            expect(team.owns?(assigns[:project])).to be_truthy
           end
 
           context 'when save succeeds' do
@@ -154,7 +105,6 @@ describe ProjectsController do
           let(:archived_project) { create :project, archived_at: Time.current }
 
           before do
-            create :ownership, team: user.teams.first, project: archived_project
             get :archived
           end
 
@@ -193,35 +143,6 @@ describe ProjectsController do
               expect(assigns[:story].project).to eq(project)
             end
           end
-
-          describe 'when the user change to another project from another team' do
-            let(:new_team)              { create :team }
-            let(:new_project)           { create :project, users: [user] }
-            let!(:new_team_projects)    { new_team.projects << new_project }
-            let(:second_team)           { create :team }
-            let(:second_project)        { create :project, users: [user] }
-            let!(:second_team_projects) { second_team.projects << second_project }
-            let!(:user_add_teams)       { user.teams << [new_team, second_team] }
-
-            it 'should accept request when it is from registred team', :aggregate_failures do
-              get :show, params: { id: new_project }
-
-              expect(session[:current_team_slug]).to eq(new_team.slug)
-              expect(response).to have_http_status(:ok)
-            end
-
-            it 'should change session when change most oneteams', :aggregate_failures do
-              get :show, params: { id: new_project }
-
-              expect(session[:current_team_slug]).to eq(new_team.slug)
-              expect(response).to have_http_status(:ok)
-
-              get :show, params: { id: second_project }
-
-              expect(session[:current_team_slug]).to eq(second_team.slug)
-              expect(response).to have_http_status(:ok)
-            end
-          end
         end
 
         describe '#edit' do
@@ -253,13 +174,6 @@ describe ProjectsController do
               expect(response).to be_successful
               expect(response).to render_template('edit')
             end
-          end
-        end
-
-        describe '#join' do
-          specify do
-            get :join, params: { id: project.slug }
-            expect(response).to redirect_to(root_url)
           end
         end
 
@@ -406,59 +320,6 @@ describe ProjectsController do
               )
 
               expect(response).to redirect_to(import_project_path(project))
-            end
-          end
-        end
-
-        describe '#ownership' do
-          let!(:another_admin) { create :user, :with_team_and_is_admin }
-          let!(:another_team) { another_admin.teams.first }
-
-          context 'when sharing/unsharing' do
-            specify do
-              patch(
-                :ownership,
-                params: {
-                  id: project.id,
-                  project: { slug: another_team.slug },
-                  ownership_action: 'share'
-                }
-              )
-
-              expect(team.ownerships.where(project: project).count).to be(1)
-              expect(another_team.ownerships.where(project: project).count).to be(1)
-              expect(response).to redirect_to(edit_project_path(assigns[:project]))
-
-              patch(
-                :ownership,
-                params: {
-                  id: project.id,
-                  project: { slug: another_team.slug },
-                  ownership_action: 'unshare'
-                }
-              )
-
-              expect(team.ownerships.where(project: project).count).to be(1)
-              expect(another_team.ownerships.where(project: project).count).to be(0)
-              expect(response).to redirect_to(edit_project_path(assigns[:project]))
-            end
-          end
-
-          context 'when transfering' do
-            specify do
-              patch(
-                :ownership,
-                params: {
-                  id: project.id,
-                  project: { slug: another_team.slug },
-                  ownership_action: 'transfer'
-                }
-              )
-
-              expect(another_team.owns?(project)).to be_truthy
-              expect(team.owns?(project)).to be_falsey
-              expect(another_team.users).to eq([another_admin])
-              expect(response).to redirect_to(root_path)
             end
           end
         end

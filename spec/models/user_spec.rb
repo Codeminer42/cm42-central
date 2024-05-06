@@ -18,8 +18,6 @@ describe User do
   end
 
   describe 'associations' do
-    it { is_expected.to have_many(:enrollments) }
-    it { is_expected.to have_many(:teams) }
     it { is_expected.to have_many(:memberships) }
     it { is_expected.to have_many(:projects) }
 

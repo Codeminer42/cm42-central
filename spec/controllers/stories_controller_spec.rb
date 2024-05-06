@@ -4,23 +4,23 @@ describe StoriesController do
   describe 'when logged out' do
     %w[index create].each do |action|
       specify do
-        get action, params: { project_id: 99 }
+        get action, params: { project_id: "example-project" }
         expect(response).to redirect_to(new_user_session_url)
       end
     end
 
     %w[update destroy].each do |action|
       specify do
-        get action, params: { project_id: 99, id: 42 }
+        get action, params: { project_id: "example-project", id: 42 }
         expect(response).to redirect_to(new_user_session_url)
       end
     end
   end
 
   context 'when logged in' do
-    let(:user) { create :user, :with_team }
+    let(:user) { create :user }
     let!(:project) do
-      create(:project, name: 'Test Project', users: [user], teams: [user.teams.first])
+      create(:project, name: 'Test Project', users: [user])
     end
 
     before do
@@ -37,7 +37,7 @@ describe StoriesController do
           create(:note, story: active_story)
 
           Timecop.freeze(2019, 1, 1, 12, 0, 0, 0) do
-            get :index, format: :csv, params: { project_id: project.id }
+            get :index, format: :csv, params: { project_id: project.slug }
           end
         end
 
@@ -86,14 +86,14 @@ describe StoriesController do
       describe '#update' do
         context 'when update succeeds' do
           specify do
-            get :update, params: { project_id: project.id, id: story.id, story: story_params }
+            get :update, params: { project_id: project.slug, id: story.id, story: story_params }
             expect(response).to redirect_to(project_path(project))
           end
         end
 
         context 'when update fails' do
           specify do
-            get :update, params: { project_id: project.id, id: story.id, story: { title: '' } }
+            get :update, params: { project_id: project.slug, id: story.id, story: { title: '' } }
             expect(response).to redirect_to(project_path(project) + "#story-#{story.id}")
           end
         end
@@ -101,7 +101,7 @@ describe StoriesController do
 
       describe '#destroy' do
         specify do
-          delete :destroy, params: { project_id: project.id, id: story.id }
+          delete :destroy, params: { project_id: project.slug, id: story.id }
           expect(response).to redirect_to(project_path(project))
         end
       end
@@ -109,33 +109,16 @@ describe StoriesController do
       describe '#create' do
         context 'when save succeeds' do
           specify do
-            post :create, params: { project_id: project.id, story: story_params }
+            post :create, params: { project_id: project.slug, story: story_params }
             expect(response).to redirect_to(project_path(project))
           end
         end
 
         xcontext 'when save fails' do
           specify do
-            post :create, params: { project_id: project.id, story: { title: '' } }
+            post :create, params: { project_id: project.slug, story: { title: '' } }
             expect(response.status).to eq(422)
             expect(response.body).to eq(assigns[:story].to_json)
-          end
-        end
-
-        describe 'when the user create a story from the another team session', :aggregate_failures do
-          let(:user) { create :user, :with_team }
-          let(:team) { create :team }
-          let(:project) { create :project, users: [user], teams: [user.teams.first] }
-
-          before do
-            team.projects << project
-            user.teams << [team]
-            session[:current_team_slug] = team.slug
-          end
-
-          it 'create the story' do
-            post :create, params: { project_id: project.id, story: story_params }
-            expect(response).to redirect_to(project_path(project))
           end
         end
       end

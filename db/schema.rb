@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_04_183754) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_07_221533) do
   create_table "active_admin_comments", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -179,7 +179,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_04_183754) do
 
   create_table "projects", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
-    t.string "point_scale", default: "fibonacci"
+    t.string "point_scale", default: "pivotal"
     t.date "start_date"
     t.integer "iteration_start_day", default: 1
     t.integer "iteration_length", default: 1
@@ -192,7 +192,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_04_183754) do
     t.datetime "archived_at", precision: nil
     t.boolean "disallow_join", default: true, null: false
     t.integer "tag_group_id"
-    t.boolean "mail_reports", default: true
+    t.boolean "mail_reports", default: false
     t.integer "velocity_strategy", default: 3
     t.boolean "enable_tasks", default: false, null: false
     t.index ["id"], name: "id", unique: true
@@ -296,6 +296,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_04_183754) do
     t.datetime "last_sign_in_with_authy", precision: nil
     t.boolean "authy_enabled", default: false
     t.boolean "finished_tour", default: false
+    t.boolean "admin", default: false, null: false
     t.index ["authy_id"], name: "index_users_on_authy_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

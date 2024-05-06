@@ -27,27 +27,5 @@
         <%= render 'form', project: @project %>
       </div>
     </div>
-
-    <% if policy(@project).share? %>
-      <div class="card panel">
-        <div class="panel-heading">
-          <%= t('projects.share project') %>
-        </div>
-        <div class="panel-content share-project">
-          <%= render 'share_form' %>
-        </div>
-      </div>
-    <% end %>
-
-    <% if policy(@project).transfer? %>
-      <div class="card panel">
-        <div class="panel-heading">
-          <%= t('projects.transfer project') %>
-        </div>
-        <div class="panel-body transfer-project">
-          <%= render 'transfer_form' %>
-        </div>
-      </div>
-    <% end %>
   </div>
 </div>

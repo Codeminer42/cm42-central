@@ -5,8 +5,8 @@ describe Base::ActivityRecording do
     Activity.order(:id).map { |activity| activity[:subject_changes]['id'] }
   end
 
-  let!(:user) { create(:user, :with_team) }
-  let!(:project) { create(:project, users: [user], teams: [user.teams.first]) }
+  let!(:user) { create(:user) }
+  let!(:project) { create(:project, users: [user]) }
   let!(:story) { create(:story, project: project, requested_by: user) }
   let!(:many_stories) { create_list(:story, 3, project: project, requested_by: user) }
   let(:action) { 'destroy' }

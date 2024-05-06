@@ -5,17 +5,17 @@ class UsersController < ApplicationController
 
   def index
     @user = User.new
-    @current_team_users = current_team_users
+    @available_users = available_users
     respond_with(@project.users)
   end
 
   def create
     build_user
     if @user.save
-      @user.teams << current_team unless @user.teams.include?(current_team)
-      flash[:notice] = I18n.t('was added to the team', scope: 'users', email: @user.email)
+      @user.projects << current_project unless @user.projects.include?(current_project)
+      flash.notice = "#{@user.email} was added to the project"
     else
-      flash[:alert] = I18n.t('was not created', scope: 'users', email: @user.email)
+      flash.alert = "User was not created"
     end
 
     respond_to do |format|
@@ -27,7 +27,7 @@ class UsersController < ApplicationController
   def destroy
     @user = policy_scope(User).find(params[:id])
     authorize @user
-    @current_team_users = current_team_users
+    @available_users = available_users
 
     ActiveRecord::Base.transaction do
       RemoveStoriesFromUserService.call(@user, @project)
@@ -44,8 +44,8 @@ class UsersController < ApplicationController
 
   private
 
-  def current_team_users
-    current_team.users.where.not(id: @project.users).order(:name)
+  def available_users
+    User.where.not(id: @project.users).order(:name)
   end
 
   def allowed_params

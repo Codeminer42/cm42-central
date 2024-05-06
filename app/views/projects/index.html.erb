@@ -10,7 +10,7 @@
 <div id="projects" class="projects-list">
   <div class="row item">
     <div class="col-md-12">
-      <% if @projects[:joined].empty? %>
+      <% if @projects.empty? %>
         <div class="col-md-6">
           <div class="simple-alert">
             <i class="mi alert-icon">error_outline</i>
@@ -38,8 +38,7 @@
         class="col-md-6 projects"
         data-current_user="<%= current_user.to_json %>"
         data-admin="<%= policy(User).update? %>"
-        data-projects_joined="<%= @projects[:joined].to_json %>"
-        data-projects_unjoined="<%= @projects[:unjoined].to_json %>"
+        data-projects="<%= @projects.to_json %>"
       >
         <div class="search-projects" hidden=true>
           <div class="form-group col-md-12">
@@ -59,10 +58,9 @@
           </div>
         </div>
         <div class="col-md-12 project-list-title">
-          <h4><i class="mi md-20 heading-icon">view_module</i> My projects | <%= @projects[:joined].length + @projects[:unjoined].length %></h4>
+          <h4><i class="mi md-20 heading-icon">view_module</i> My projects | <%= @projects.length %></h4>
         </div>
-        <%= render @projects[:joined] %>
-        <%= render @projects[:unjoined] %>
+        <%= render @projects %>
       </div>
     </div>
   </div>

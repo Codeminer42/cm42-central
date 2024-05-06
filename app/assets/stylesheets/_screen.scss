@@ -720,7 +720,7 @@ div#keycut-help {
   border: none;
 }
 
-.teams, .projects {
+.projects {
   .card-link, .project-item {
     @for $i from 1 through 12 {
       &:nth-child(#{$i}) .card {

@@ -78,7 +78,7 @@ describe Project, type: :model do
   describe 'defaults' do
     subject { Project.new }
 
-    its(:point_scale)             { should == 'fibonacci' }
+    its(:point_scale)             { should == 'pivotal' }
     its(:default_velocity)        { should == 10 }
     its(:iteration_length)        { should == 1 }
     its(:iteration_start_day)     { should == 1 }
@@ -107,7 +107,7 @@ describe Project, type: :model do
   end
 
   describe '#point_values' do
-    its(:point_values) { should == Project::POINT_SCALES['fibonacci'] }
+    its(:point_values) { should == Project::POINT_SCALES['pivotal'] }
   end
 
   describe 'CSV import' do
@@ -146,7 +146,7 @@ describe Project, type: :model do
       let(:stories) { project.stories.first.notes }
 
       it 'imports notes' do
-        csv_string << '9,Story title,,,,,feature,5,started,2018-10-24 10:03:40 -0300,' \
+        csv_string << '9,Story title,,,,,feature,3,started,2018-10-24 10:03:40 -0300,' \
                       "2018-10-24 10:01:41 -0300,,,#{user.name},#{user.name},,,\"" \
                       "Something here (#{user.name} - Oct 24, 2018)\"," \
                       "\"task 2 (#{user.name} - Oct 24, 2018)\""
@@ -157,7 +157,7 @@ describe Project, type: :model do
 
       context 'when user not exist' do
         let(:note_csv) do
-          '9,Story title,,,,,feature,5,started,2018-10-24 10:03:40 -0300,' \
+          '9,Story title,,,,,feature,3,started,2018-10-24 10:03:40 -0300,' \
             "2018-10-24 10:01:41 -0300,,,#{user.name},#{user.name},,,\"" \
             'Something here (any_user - Oct 24, 2018)","task 2 (any_user - Oct 24, 2018)"'
         end
@@ -289,7 +289,6 @@ describe Project, type: :model do
     subject { build :project }
     it { is_expected.to belong_to(:tag_group) }
     it { is_expected.to have_many(:changesets) }
-    it { is_expected.to have_many(:ownerships).dependent(:destroy) }
   end
 
   describe '#joinable' do

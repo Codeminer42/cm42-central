@@ -1,19 +1,14 @@
 class User < ApplicationRecord
   # Flag used to identify if the user was found or created from find_or_create
   attr_accessor :was_created
-  attr_accessor :team_slug
 
   AUTHENTICATION_KEYS = %i[email].freeze
   ROLES = %w[manager developer guest].freeze
 
   before_validation :set_random_password_if_blank
 
-  after_save :set_team
-
   before_destroy :remove_story_association
 
-  has_many :enrollments
-  has_many :teams, through: :enrollments
   has_many :memberships, dependent: :destroy
   has_many :projects, -> { distinct }, through: :memberships do
     def not_archived
@@ -95,23 +90,11 @@ class User < ApplicationRecord
     story.owned_by_id == id
   end
 
-  def team_from_project(project)
-    user_team_ids = teams.pluck(:id)
-    project.teams.find_by(id: user_team_ids)
-  end
-
   def set_random_password_if_blank
     if new_record? && password.blank? && password_confirmation.blank?
       self.password = self.password_confirmation = Digest::SHA1.hexdigest(
         "--#{Time.current}--#{email}--"
       )[0, 8]
-    end
-  end
-
-  def set_team
-    if team_slug
-      team = Team.not_archived.find_by(slug: team_slug)
-      enrollments.create(team: team) if team
     end
   end
 

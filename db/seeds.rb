@@ -94,13 +94,6 @@ ActiveRecord::Base.transaction do
     )
   end
 
-  archived_team = Team.create! name: 'Archive Team', archived_at: Time.current
-  archived_team.enrollments.create! user: user, is_admin: true
-
-  team = Team.create! name: 'Default'
-  team.enrollments.create! user: user, is_admin: true
-  team.ownerships.create(project: project, is_owner: true)
-
   AdminUser.create!(
     email: 'admin@example.com',
     password: 'password',

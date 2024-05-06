@@ -9,7 +9,6 @@ class ApplicationController < ActionController::Base
   include Renderers::Csv
 
   before_action :authenticate_user!, unless: ->(c) { c.devise_controller? || c.try(:active_admin_root?) }
-  before_action :check_team_presence, if: :need_check_team?
   before_action :set_locale
   before_action :set_layout_settings
   around_action :user_time_zone, if: :current_user
@@ -45,40 +44,21 @@ class ApplicationController < ActionController::Base
   end
 
   def pundit_user
-    PunditContext.new(current_team, current_user, current_project: @project, current_story: @story)
+    PunditContext.new(current_project, current_user, current_story: @story)
   end
   helper_method :pundit_user
 
-  def current_team
-    @current_team ||= Team.not_archived.find_by(slug: session[:current_team_slug])
+  def current_project
+    slug = params[:project_id] || session[:current_project_slug]
+    @current_project ||= Project.not_archived.find_by(slug: slug)
   end
-  helper_method :current_team
-
-  def update_current_team
-    @current_team = current_user.team_from_project(@project)
-    session[:current_team_slug] = @current_team.slug
-  end
+  helper_method :current_project
 
   def after_sign_in_path_for(resource)
     return super if resource.is_a?(AdminUser)
 
-    set_current_team_if_single
-
-    return teams_url if session[:current_team_slug].blank?
+    return projects_url if session[:current_project_slug].blank?
     super
-  end
-
-  def check_team_presence
-    set_current_team_if_single
-
-    redirect_to teams_url if current_team.blank?
-  end
-
-  def set_current_team_if_single
-    user_teams = current_user.teams.not_archived
-    return if user_teams.size != 1
-
-    session[:current_team_slug] = user_teams.first.slug
   end
 
   def must_pundit?
@@ -88,10 +68,6 @@ class ApplicationController < ActionController::Base
   def set_layout_settings
     @layout_settings_default = { fluid: false }.freeze
     @layout_settings = @layout_settings_default.dup
-  end
-
-  def need_check_team?
-    current_user.present? && !devise_controller?
   end
 
   def match_result(result)

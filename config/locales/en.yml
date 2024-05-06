@@ -231,7 +231,7 @@ en:
         password:             'Password'
         password_confirmation: 'Password Confirmation'
         locale:               'Locale'
-        is_admin:             'Is Administrator?'
+        admin:                'Is Administrator?'
         role:                 'Role'
       team:
         name:                 'Team Name'
@@ -358,8 +358,8 @@ en:
         introduction: "You can import many stories at once from a comma separated variable (CSV) format. The first line of the CSV must contain the correct headers for the import to succeed.  You can download a <a href='/Fulcrum_Import_Template.csv'>CSV template</a> with the correct headers  to get you started."
         process_explanation: "The system will try and match any user names found in the CSV with members of your project. Make sure to register members with the correct names before importing if you want them to match."
         bottom_line: "Note: You can also use a file exported from Pivotal Tracker."
-    no_projects_found: "Oops! It seems like this team doesn't have any project."
-    no_recent_activity: "Oops! This team doesn't have recent activity."
+    no_projects_found: "You're not enrolled to a project yet."
+    no_recent_activity: "This team doesn't have recent activity."
     search_tooltip:
       title: 'Search operands'
       syntax: 'SYNTAX: Search terms must be followed by a colon'
@@ -386,27 +386,6 @@ en:
     admin_on: Make Administrator
     admin_off: Make just Member
 
-  teams:
-    create: 'Create new team'
-    update: 'Update Team'
-    switch: 'Change to another team'
-    select: "Select Team"
-    archived: 'Archived Teams'
-    archive: 'Archive Team'
-    unarchive: 'Unarchive'
-    team was successfully created: 'Team was successfully created'
-    team_was_successfully_updated: 'Team was successfully updated'
-    successfully_archived: 'Team was successfully archived'
-    successfully_unarchived: 'Team was successfully unarchived'
-    send_email_about_archiving_team: 'Send email about the team archiving'
-    are_you_sure_to_archive_team: 'Are you sure you want to archive this team?'
-    user_not_found: 'User not found'
-    user_is_already_in_this_team: 'The user is already in this team.'
-    new_instruction: |
-      <p>If you don't have a registered account, you can sign up first.</p>
-      <p>The first user to sign in to this new team will become the administrator.</p>
-    no_teams_found: "Oops! You're not enrolled to a team yet."
-    members: "Manage Team Members"
   admin:
     users:
       edit user: "Edit User"

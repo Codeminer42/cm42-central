@@ -2,9 +2,9 @@ require 'feature_helper'
 
 xdescribe 'Tour' do
   context "when user hasn't finished the tour", js: true do
-    let(:user) { create :user, :with_team, finished_tour: false }
+    let(:user) { create :user, finished_tour: false }
     let!(:project) do
-      create(:project, name: 'Test Project', users: [user], teams: [user.teams.first])
+      create(:project, name: 'Test Project', users: [user])
     end
 
     before do
@@ -50,9 +50,9 @@ xdescribe 'Tour' do
   end
 
   context 'when user has finished the tour', js: true do
-    let(:user) { create :user, :with_team, finished_tour: true }
+    let(:user) { create :user, finished_tour: true }
     let!(:project) do
-      create(:project, name: 'Test Project', users: [user], teams: [user.teams.first])
+      create(:project, name: 'Test Project', users: [user])
     end
 
     before do

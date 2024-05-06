@@ -3,12 +3,6 @@ Given "the following projects exist:" do |table|
     has_many :users, name_field: :email
     default(:start_date) { Time.zone.now }
     default(:point_scale) { "none" }
-
-    field :teams do |names|
-      names.split(", ").map do |name|
-        Team.where(name: name).first_or_create!
-      end
-    end
   end
 end
 

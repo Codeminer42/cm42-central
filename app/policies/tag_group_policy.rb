@@ -2,9 +2,9 @@ class TagGroupPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if admin?
-        current_team.tag_groups
+        TagGroup.all
       else
-        TagGroup.none
+        TagGroup.includes(:projects).where(projects: { id: current_project.id })
       end
     end
   end

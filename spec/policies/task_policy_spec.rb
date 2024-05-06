@@ -6,9 +6,8 @@ describe TaskPolicy do
   let(:story) { create :story, project: project, requested_by: other_member }
   let(:project) { create :project }
   let(:pundit_context) do
-    PunditContext.new(current_team, current_user, current_project: project, current_story: story)
+    PunditContext.new(project, current_user, current_story: story)
   end
-  let(:current_team) { current_user.teams.first }
   let(:policy_scope) { TaskPolicy::Scope.new(pundit_context, Task).resolve.all }
 
   subject { TaskPolicy.new(pundit_context, task) }
@@ -21,7 +20,7 @@ describe TaskPolicy do
     end
 
     context 'for an admin' do
-      let(:current_user) { create :user, :with_team_and_is_admin }
+      let(:current_user) { create :user, :admin }
 
       %i[index show create new update edit destroy].each do |action|
         it { should permit(action) }
@@ -33,7 +32,7 @@ describe TaskPolicy do
     end
 
     context 'for a user' do
-      let(:current_user) { create :user, :with_team }
+      let(:current_user) { create :user }
 
       it { should permit(:show) }
 
@@ -49,7 +48,7 @@ describe TaskPolicy do
 
   context 'user not a member of project' do
     context 'for an admin' do
-      let(:current_user) { create :user, :with_team_and_is_admin }
+      let(:current_user) { create :user, :admin }
 
       %i[index show create new update edit destroy].each do |action|
         it { should permit(action) }
@@ -61,7 +60,7 @@ describe TaskPolicy do
     end
 
     context 'for a user' do
-      let(:current_user) { create :user, :with_team }
+      let(:current_user) { create :user }
 
       %i[index create new update edit destroy].each do |action|
         it { should_not permit(action) }

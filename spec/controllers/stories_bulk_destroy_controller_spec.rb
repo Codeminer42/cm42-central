@@ -10,15 +10,15 @@ describe StoriesBulkDestroyController do
       JSON.parse(response.body)[status]
     end
 
-    let(:user) { create(:user, :with_team) }
-    let(:project) { create(:project, users: [user], teams: [user.teams.first]) }
+    let(:user) { create(:user) }
+    let(:project) { create(:project, users: [user]) }
     let(:story_1) { create(:story, project: project, requested_by: user) }
     let(:story_2) { create(:story, project: project, requested_by: user) }
     let(:story_3) { create(:story, project: project, requested_by: user) }
 
     context 'when receive an array of story ids' do
       before do
-        post :create, params: { project_id: project.id, story_ids: [story_1.id, story_2.id] }
+        post :create, params: { project_id: project.slug, story_ids: [story_1.id, story_2.id] }
       end
 
       it 'destroys stories' do
@@ -39,7 +39,7 @@ describe StoriesBulkDestroyController do
     context 'when bulk destroy fails' do
       before do
         allow(StoryOperations::DestroyAll).to receive(:call).and_return(Dry::Monads::Failure(false))
-        post :create, params: { project_id: project.id, story_ids: [story_1.id, story_2.id] }
+        post :create, params: { project_id: project.slug, story_ids: [story_1.id, story_2.id] }
       end
 
       it 'responds with 422' do

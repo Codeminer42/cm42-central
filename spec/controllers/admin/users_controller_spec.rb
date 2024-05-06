@@ -17,11 +17,13 @@ describe Admin::UsersController do
   end
 
   context 'when logged in as admin' do
-    let(:user) { create :user, :with_team_and_is_admin }
+    let(:user) { create :user, :admin }
+    let(:project) { create :project }
 
     before do
+      project.users << user
       sign_in user
-      allow(subject).to receive_messages(current_user: user, current_team: user.teams.first)
+      allow(subject).to receive_messages(current_user: user, current_project: user.projects.first)
     end
 
     describe 'collection actions' do
@@ -72,30 +74,9 @@ describe Admin::UsersController do
         end
       end
 
-      describe '#enrollment' do
-        specify do
-          patch :enrollment, params: { id: user.id, is_admin: true }
-          expect(assigns[:user]).to eq(user)
-        end
-
-        context 'when update succeeds' do
-          specify do
-            patch :enrollment, params: { id: user.id, is_admin: true }
-            expect(response).to redirect_to(admin_users_path)
-          end
-        end
-
-        context 'when update fails' do
-          specify do
-            patch :enrollment, params: { id: user.id, is_admin: true }
-            expect(response).to redirect_to(admin_users_path)
-          end
-        end
-      end
-
       describe '#destroy' do
         specify do
-          expect { delete :destroy, params: { id: user.id } }.to change { Enrollment.count }.by(-1)
+          expect { delete :destroy, params: { id: user.id } }.to change { Membership.count }.by(-1)
           expect(response).to redirect_to(admin_users_path)
         end
       end
@@ -103,11 +84,11 @@ describe Admin::UsersController do
   end
 
   context 'when logged in as non-admin user' do
-    let(:user)         { create :user, :with_team }
+    let(:user)         { create :user }
 
     before do
       sign_in user
-      allow(subject).to receive_messages(current_user: user, current_team: user.teams.first)
+      allow(subject).to receive_messages(current_user: user, current_project: user.projects.first)
     end
 
     describe 'collection actions' do
@@ -131,14 +112,6 @@ describe Admin::UsersController do
         describe '#update' do
           specify do
             put :update, params: { id: user.id, user: {} }
-            expect(response).to redirect_to(root_path)
-            expect(flash[:alert]).to eq(I18n.t('not_found'))
-          end
-        end
-
-        describe '#enrollment' do
-          specify do
-            patch :enrollment, params: { id: user.id, is_admin: true }
             expect(response).to redirect_to(root_path)
             expect(flash[:alert]).to eq(I18n.t('not_found'))
           end

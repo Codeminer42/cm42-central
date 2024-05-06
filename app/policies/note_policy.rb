@@ -1,12 +1,13 @@
 class NotePolicy < StoryPolicy
   def show?
-    current_story.notes.find_by(id: record.id)
+    return false if guest?
+    admin? || project_member?
   end
 
   class Scope < Scope
     def resolve
       if admin?
-        current_story.notes
+        Note.all
       elsif story_member?
         current_story.notes
       else

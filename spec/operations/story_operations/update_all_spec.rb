@@ -35,9 +35,9 @@ describe StoryOperations::UpdateAll do
       end
 
       it 'calls StoryOperations::Update', :aggregate_failures do
-        expect(StoryOperations::Update).to receive(:call).with(story: story_1, story_attrs: story_params, current_user: user)
-        expect(StoryOperations::Update).to receive(:call).with(story: story_2, story_attrs: story_params, current_user: user)
-        expect(StoryOperations::Update).to receive(:call).with(story: story_3, story_attrs: story_params, current_user: user)
+        expect(StoryOperations::Update).to receive(:call).with(story: story_1, story_attrs: story_params, current_user: user).and_return(double(success?: true))
+        expect(StoryOperations::Update).to receive(:call).with(story: story_2, story_attrs: story_params, current_user: user).and_return(double(success?: true))
+        expect(StoryOperations::Update).to receive(:call).with(story: story_3, story_attrs: story_params, current_user: user).and_return(double(success?: true))
 
         subject.call
       end
@@ -77,9 +77,9 @@ describe StoryOperations::UpdateAll do
       end
 
       it 'calls StoryOperations::Update', :aggregate_failures do
-        expect(StoryOperations::Update).to receive(:call).with(story: story_1, story_attrs: story_params, current_user: user)
-        expect(StoryOperations::Update).to receive(:call).with(story: story_2, story_attrs: story_params, current_user: user)
-        expect(StoryOperations::Update).to receive(:call).with(story: story_3, story_attrs: story_params, current_user: user)
+        expect(StoryOperations::Update).to receive(:call).with(story: story_1, story_attrs: story_params, current_user: user).and_return(double(success?: false))
+        expect(StoryOperations::Update).to receive(:call).with(story: story_2, story_attrs: story_params, current_user: user).and_return(double(success?: false))
+        expect(StoryOperations::Update).to receive(:call).with(story: story_3, story_attrs: story_params, current_user: user).and_return(double(success?: false))
 
         subject.call
       end

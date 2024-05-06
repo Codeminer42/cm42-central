@@ -1,8 +1,6 @@
 require 'feature_helper'
 
 describe 'Confirmations' do
-  let(:team) { create(:team) }
-
   before(:each) do
     ActionMailer::Base.deliveries = []
     Configuration.for('fulcrum') { disable_registration false }
@@ -35,7 +33,7 @@ describe 'Confirmations' do
     fill_in 'Confirm new password', with: 'password'
     click_on 'Confirm new password'
 
-    expect(current_path).to eq(teams_path)
+    expect(current_path).to eq(projects_path)
     expect(page).to have_content('Your password was changed successfully')
   end
 
@@ -45,7 +43,7 @@ describe 'Confirmations' do
   end
 
   it 'sends new confirmation token', js: true do
-    user = create(:unconfirmed_user, email: 'test2@example.com', teams: [team])
+    user = create(:unconfirmed_user, email: 'test2@example.com')
     visit '/'
     click_link "Didn't receive confirmation instructions?"
 

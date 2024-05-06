@@ -1,8 +1,8 @@
 Feature: Stories can be deleted
   Background:
     Given the following users exist:
-      | email                | name         | initials | teams | projects        |
-      | micah@botandrose.com | Micah Geisel | MG       | BARD  | Example Project |
+      | email                | name         | initials | projects        |
+      | micah@botandrose.com | Micah Geisel | MG       | Example Project |
 
     And the "Example Project" project has the following stories:
       | type    | title | state       |

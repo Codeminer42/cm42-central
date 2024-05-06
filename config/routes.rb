@@ -7,44 +7,25 @@ Rails.application.routes.draw do
 
   namespace :manage do
     resources :projects do
-      resources :ownerships
       resources :memberships
-    end
-    resources :teams do
-      resources :ownerships
-      resources :enrollments
     end
     resources :users do
       resources :memberships
-      resources :enrollments
     end
   end
 
   get 'story/new'
   get 'projects/archived' => 'projects#archived'
   put 'locales' => 'locales#update', as: :locales
-  get 't/:id' => 'teams#switch', as: :teams_switch
 
   get '/404', to: 'errors#not_found', :via => :all
-
-  resources :teams, except: :show do
-    get :switch, on: :collection
-    get 'manage_users' => 'teams#manage_users'
-    get 'new_enrollment' => 'teams#new_enrollment'
-    post 'create_enrollment' => 'teams#create_enrollment'
-    resources :users, only: [:create]
-    resources :api_tokens, only: [:create, :destroy]
-    member do
-      post :unarchiving, action: :unarchive, as: :unarchive
-    end
-  end
 
   resources :projects do
     member do
       get :join, :import, :search, :reports
-      patch :import_upload, :archive, :unarchive, :ownership
+      patch :import_upload, :archive, :unarchive
     end
-    resources :users, only: [:index, :destroy]
+    resources :users, only: [:index, :create, :destroy]
     resources :memberships, only: [:create]
     resources :changesets, only: [:index]
     put 'stories/sort', to: 'stories#sort'
@@ -69,11 +50,7 @@ Rails.application.routes.draw do
   resources :tag_groups
 
   namespace :admin do
-    resources :users do
-      member do
-        patch :enrollment
-      end
-    end
+    resources :users
   end
 
   devise_for :users, controllers: {

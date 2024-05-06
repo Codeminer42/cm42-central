@@ -1,9 +1,9 @@
 Feature: Stories can be added
   Background:
     Given the following users exist:
-      | email                | name             | initials | username | teams | projects        |
-      | micah@botandrose.com | Micah Geisel     | MG       | micahg   | BARD  | Example Project |
-      | gubs@botandrose.com  | Michael Gubitosa | GUBS     | gubs     | BARD  | Example Project |
+      | email                | name             | initials | username | projects        |
+      | micah@botandrose.com | Micah Geisel     | MG       | micahg   | Example Project |
+      | gubs@botandrose.com  | Michael Gubitosa | GUBS     | gubs     | Example Project |
 
     And the "Example Project" project has the following stories:
       | type    | title | state       |

@@ -6,25 +6,23 @@ describe NotePolicy do
   let(:story) { create :story, project: project, requested_by: other_member }
   let(:project) { create :project }
   let(:pundit_context) do
-    PunditContext.new(current_team, current_user, current_project: project, current_story: story)
+    PunditContext.new(project, current_user, current_story: story)
   end
-  let(:current_team) { current_user.teams.first }
   let(:policy_scope) { NotePolicy::Scope.new(pundit_context, Note).resolve.all }
 
   subject { NotePolicy.new(pundit_context, note) }
 
   before do
     project.users << other_member
-    current_team.projects << project
   end
 
-  context 'proper user of a project' do
+  context 'user is a member of a project' do
     before do
       project.users << current_user
     end
 
     context 'for an admin' do
-      let(:current_user) { create :user, :with_team_and_is_admin }
+      let(:current_user) { create :user, :admin }
 
       %i[index show create new update edit destroy].each do |action|
         it { should permit(action) }
@@ -36,7 +34,7 @@ describe NotePolicy do
     end
 
     context 'for a user' do
-      let(:current_user) { create :user, :with_team }
+      let(:current_user) { create :user }
 
       it { should permit(:show) }
 
@@ -52,7 +50,7 @@ describe NotePolicy do
 
   context 'user not a member of project' do
     context 'for an admin' do
-      let(:current_user) { create :user, :with_team_and_is_admin }
+      let(:current_user) { create :user, :admin }
 
       %i[index show create new update edit destroy].each do |action|
         it { should permit(action) }
@@ -64,7 +62,7 @@ describe NotePolicy do
     end
 
     context 'for a user' do
-      let(:current_user) { create :user, :with_team }
+      let(:current_user) { create :user }
 
       %i[index create new update edit destroy].each do |action|
         it { should_not permit(action) }

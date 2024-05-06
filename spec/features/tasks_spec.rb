@@ -5,8 +5,8 @@ xdescribe 'Tasks' do
     sign_in user
   end
 
-  let(:user)      { create(:user, :with_team) }
-  let(:project)   { create(:project, enable_tasks: true, users: [user], teams: [user.teams.first]) }
+  let(:user)      { create(:user) }
+  let(:project)   { create(:project, enable_tasks: true, users: [user]) }
   let!(:story)    { create(:story, project: project, requested_by: user) }
 
   describe 'full story life cycle' do

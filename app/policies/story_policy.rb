@@ -28,7 +28,7 @@ class StoryPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if admin?
-        current_project.stories
+        Story.all
       elsif project_member?
         current_project.stories
       else

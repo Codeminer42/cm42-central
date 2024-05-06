@@ -5,9 +5,9 @@ describe 'Stories' do
     sign_in user
   end
 
-  let(:user) { create :user, :with_team, email: 'user@example.com', password: 'password' }
+  let(:user) { create :user, email: 'user@example.com', password: 'password' }
   let!(:project) do
-    create(:project, name: 'Test Project', users: [user], teams: [user.teams.first])
+    create(:project, name: 'Test Project', users: [user])
   end
 
   describe 'full story life cycle' do
@@ -370,7 +370,7 @@ describe 'Stories' do
 
     context 'when search for past iteration story' do
       let(:project) do
-        create(:project, :with_past_iteration, users: [user], teams: [user.teams.first])
+        create(:project, :with_past_iteration, users: [user])
       end
       let(:done_story) do
         create(:story, :done, title: 'Past iteration', project: project, requested_by: user)

@@ -21,15 +21,9 @@
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
-        <% if session[:current_team_slug] && current_team.try(:logo) %>
-          <a href="/" class="navbar-brand navbar-logo">
-            <%= team_logo(current_team) %>
-          </a>
-        <% else %>
-          <a href="/" class="navbar-brand navbar-logo">
-            <%= image_tag 'logo.png', width: 32, height: 32 %>
-          </a>
-        <% end %>
+        <a href="/" class="navbar-brand navbar-logo">
+          <%= image_tag 'logo.png', width: 32, height: 32 %>
+        </a>
 
         <%= yield :title_bar %>
 
@@ -40,40 +34,17 @@
 
           <%= yield :right_menu %>
 
-          <% if false # = form_tag locales_path, method: :put, class: "dropdown" do %>
-            <div class="locale-change-wrapper">
-              <%= select_tag 'locale',
-                  options_for_select(LocalesController::LOCALES, I18n.locale),
-                  class: 'btn btn-link locale-change-select' %>
-            </div>
-          <% end %>
-
           <% if current_user %>
-            <% if current_team %>
+            <% if current_user.projects.count > 1 %>
               <div class="dropdown">
-                <button class="btn btn-link team-dropdown" type="button" onclick="var e = this.nextElementSibling; e.hidden = !e.hidden">
-                  <%= Team.model_name.human(count: 2) %>
+                <button class="btn btn-link projects-dropdown" type="button" onclick="var e = this.nextElementSibling; e.hidden = !e.hidden">
+                  Project
                   <span class="caret"></span>
                 </button>
 
                 <ul class="dropdown-menu dropdown-menu-right" hidden="true">
-                  <li class="dropdown-header">
-                    <%= session[:current_team_slug] && current_team.try(:name) || t('cm-central') %>
-                  </li>
-
                   <% topbar_projects do |project| %>
                     <li><%= link_to project.name, project %></li>
-                  <% end %>
-
-                  <li class="divider"></li>
-
-                  <% current_user.teams.not_archived.each do |team| %>
-                    <li><%= link_to team.name, switch_teams_path(team_slug: team.slug) %></li>
-                  <% end %>
-
-                  <% if current_team.is_admin?(current_user) %>
-                    <li class="divider"></li>
-                    <li><%= link_to t('settings'), edit_team_path(current_team) %></li>
                   <% end %>
                 </ul>
               </div>
@@ -88,10 +59,6 @@
               <ul class="dropdown-menu dropdown-menu-right" hidden="true">
                 <li>
                   <%= topbar_link t('edit'), edit_user_registration_path %>
-                </li>
-
-                <li>
-                  <%= topbar_link t('my teams'), teams_path %>
                 </li>
 
                 <% if current_user %>

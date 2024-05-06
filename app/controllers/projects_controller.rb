@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: %i[show edit update destroy import import_upload
-                                       reports ownership archive unarchive]
+                                       reports archive unarchive]
   before_action :prepare_session, only: %i[import import_upload]
   before_action -> { define_sidebar :project_settings }, only: %i[import edit]
   before_action :set_story_flow, only: %i[show]
@@ -9,20 +9,16 @@ class ProjectsController < ApplicationController
   def index
     @projects = {}
 
-    projects_joined = policy_scope(Project).preload(:tag_group)
+    @projects = policy_scope(Project).preload(:tag_group) # map ProjectPresenter.from_collection(collection)
 
-    @projects = { joined: projects_joined } # map ProjectPresenter.from_collection(collection)
+    @activities_group = Activity.grouped_activities(@projects, 1.week.ago)
 
-    unless current_user.guest?
-      @projects[:unjoined] = projects_unjoined.order(:updated_at)
-    end
-
-    @activities_group = Activity.grouped_activities(projects_joined, 1.week.ago)
+    redirect_to @projects.first if @projects.size == 1
   end
 
   def show
     @story = @project.stories.build
-    update_current_team
+    session[:current_project_slug] = @project.slug
   end
 
   def new
@@ -43,7 +39,6 @@ class ProjectsController < ApplicationController
     result = ProjectOperations::Create.call(
       project: @project,
       current_user: current_user,
-      current_team: current_team,
     )
 
     match_result(result) do |on|
@@ -78,18 +73,6 @@ class ProjectsController < ApplicationController
     else
       redirect_to(edit_project_path, alert: t('projects.confirmation_invalid'))
     end
-  end
-
-  def join
-    project = projects_unjoined.find_by!(slug: params[:id])
-    authorize project
-
-    project.users << current_user
-
-    redirect_to(
-      project,
-      notice: I18n.t('was added to this project', scope: 'users', email: current_user.email)
-    )
   end
 
   # CSV import form
@@ -143,19 +126,6 @@ class ProjectsController < ApplicationController
     @service = IterationService.new(@project, since: since)
   end
 
-  def ownership
-    team = Team.not_archived.friendly.find(params.dig(:project, :slug))
-    manager = ProjectOwnership.new(@project, team, current_team, params.dig(:ownership_action))
-
-    if manager.perform
-      flash[:notice] = manager.performed_action_message
-      redirect_to(manager.transfer? ? root_path : edit_project_path(@project))
-    else
-      flash[:alert] = I18n.t('projects.invalid_action')
-      render 'edit'
-    end
-  end
-
   def archived
     @projects = policy_scope(Project).archived
     authorize @projects
@@ -203,7 +173,7 @@ class ProjectsController < ApplicationController
       .fetch(:project)
       .permit(:name, :point_scale, :default_velocity, :tag_group_id, :start_date,
               :iteration_start_day, :iteration_length, :import, :archived,
-              :enable_tasks, :disallow_join, :mail_reports, :velocity_strategy)
+              :enable_tasks, :mail_reports, :velocity_strategy)
   end
 
   def fluid_layout
@@ -223,9 +193,5 @@ class ProjectsController < ApplicationController
 
   def valid_name_confirmation?
     params[:name_confirmation] == @project.name
-  end
-
-  def projects_unjoined
-    current_team.projects.not_archived.joinable_except(policy_scope(Project))
   end
 end

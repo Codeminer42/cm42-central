@@ -1,5 +1,5 @@
 class Admin::UsersController < ApplicationController
-  before_action :set_user, only: %i[edit update destroy enrollment]
+  before_action :set_user, only: %i[edit update destroy membership]
 
   # GET /admin/users
   def index
@@ -22,18 +22,8 @@ class Admin::UsersController < ApplicationController
 
   # DELETE /admin/users/1
   def destroy
-    @user.enrollments.where(team: current_team).destroy_all
+    @user.memberships.where(project: current_project).destroy_all
     redirect_to admin_users_path, notice: 'User was successfully destroyed.'
-  end
-
-  # PATCH /admin/users/1/enrollment
-  def enrollment
-    @enrollment = @user.enrollments.where(team: current_team).first
-    if @enrollment.update(is_admin: params[:is_admin])
-      redirect_to admin_users_path, notice: 'User was successfully updated.'
-    else
-      render :edit
-    end
   end
 
   private

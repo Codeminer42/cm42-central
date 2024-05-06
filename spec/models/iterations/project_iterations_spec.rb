@@ -198,7 +198,7 @@ module Iterations
       end
 
       context 'Iteration points' do
-        let!(:user) { create(:user, :with_team) }
+        let!(:user) { create(:user) }
 
         # Uses nearest monday as base date. This is necessary to avoid false
         # negatives when running the suite on Sundays.
@@ -207,8 +207,7 @@ module Iterations
         let!(:project) do
           create(:project,
                  start_date: date.days_ago(21),
-                 users: [user],
-                 teams: [user.teams.first])
+                 users: [user])
         end
 
         let!(:stories) do
@@ -216,7 +215,7 @@ module Iterations
                       accepted_at: date.days_ago(21),
                       state: 'accepted',
                       project: project,
-                      estimate: 8,
+                      estimate: 3,
                       requested_by: user)
         end
 
@@ -226,7 +225,7 @@ module Iterations
 
         context 'when four stories are in the first iteration' do
           it 'first iteration should sum 32 points' do
-            expect(first_iteration.points).to eq(32)
+            expect(first_iteration.points).to eq(12)
           end
 
           it 'second iteration should sum 0 points' do
@@ -241,11 +240,11 @@ module Iterations
           end
 
           it 'first iteration should sum 24 points' do
-            expect(first_iteration.points).to eq(24)
+            expect(first_iteration.points).to eq(9)
           end
 
           it 'second iteration should sum 8 points' do
-            expect(second_iteration.points).to eq(8)
+            expect(second_iteration.points).to eq(3)
           end
         end
       end

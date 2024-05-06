@@ -2,7 +2,7 @@ class TagGroupsController < ApplicationController
   skip_after_action :verify_policy_scoped, only: :index
 
   def index
-    @tag_groups = current_team.tag_groups
+    @tag_groups = current_project.tag_groups
     authorize @tag_groups
   end
 
@@ -12,12 +12,12 @@ class TagGroupsController < ApplicationController
   end
 
   def edit
-    @tag_group = current_team.tag_groups.find(params[:id])
+    @tag_group = current_project.tag_groups.find(params[:id])
     authorize @tag_group
   end
 
   def update
-    @tag_group = current_team.tag_groups.find(params[:id])
+    @tag_group = current_project.tag_groups.find(params[:id])
     authorize @tag_group
 
     @tag_group.update(allowed_params)
@@ -26,7 +26,7 @@ class TagGroupsController < ApplicationController
   end
 
   def create
-    @tag_group = current_team.tag_groups.new(allowed_params)
+    @tag_group = current_project.tag_groups.new(allowed_params)
     authorize @tag_group
 
     respond_to do |format|
@@ -55,7 +55,7 @@ class TagGroupsController < ApplicationController
   end
 
   def destroy
-    @tag_group = current_team.tag_groups.find(params[:id])
+    @tag_group = current_project.tag_groups.find(params[:id])
     authorize @tag_group
     @tag_group.destroy
     redirect_to tag_groups_path

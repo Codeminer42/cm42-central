@@ -402,12 +402,10 @@ describe Story do
   end
 
   describe 'scopes' do
-    let!(:user) { create(:user, :with_team) }
+    let!(:user) { create(:user) }
 
     let!(:project) do
-      create(:project,
-              users: [user],
-              teams: [user.teams.first])
+      create(:project, users: [user])
     end
 
     let!(:story) { create(:story, :done, project: project, requested_by: user) }

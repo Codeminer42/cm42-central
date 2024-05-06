@@ -11,9 +11,9 @@ describe StoryOperations::TruncatePoints do
     let!(:story_2)    { create(:story, estimate: 2, project: project, requested_by: user) }
     let!(:story_3)    { create(:story, estimate: 3, project: project, requested_by: user) }
 
-    context 'with all stories within project point scale' do
-      before { project.update!(point_scale: 'fibonacci') }
+    before { project.update!(point_scale: 'fibonacci') }
 
+    context 'with all stories within project point scale' do
       it 'makes no changes' do
         expect { subject.call }.to_not change { Story.order(:id).pluck(:estimate) }
       end

@@ -4,7 +4,7 @@ class ApplicationPolicy
   module CheckRoles
     def self.included(base)
       base.class_eval do
-        delegate :current_user, :current_team, :current_project, :current_story,
+        delegate :current_user, :current_project, :current_story,
                  to: :context
       end
     end
@@ -13,29 +13,16 @@ class ApplicationPolicy
 
     delegate :guest?, to: :current_user
 
-    def root?
-      # this user can do anothing, it goes in AdminUser instead of User and bypasses everything
-      context.active_admin
-    end
-
     def admin?
-      root? || (current_team && current_team.is_admin?(current_user))
-    end
-
-    def project_owner?
-      root? || (current_project && current_team.owns?(current_project))
+      current_user.admin?
     end
 
     def project_member?
-      root? || (current_project && current_project.users.find_by(id: current_user.id))
+      current_project && current_project.users.find_by(id: current_user.id)
     end
 
     def story_member?
-      root? || (current_story && current_story.project.users.find_by(id: current_user.id))
-    end
-
-    def team_member?
-      root? || (current_team && current_team.users.find_by(id: current_user.id))
+      current_story && current_story.project.users.find_by(id: current_user.id)
     end
   end
   include CheckRoles

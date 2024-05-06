@@ -16,16 +16,6 @@ ActiveAdmin.register_page 'Dashboard' do
       end
 
       column do
-        panel 'Recent Teams' do
-          ul do
-            Team.order(id: :desc).limit(LIMIT).map do |team|
-              li link_to(team.name, manage_team_path(team))
-            end
-          end
-        end
-      end
-
-      column do
         panel 'Recent Projects' do
           ul do
             Project.order(id: :desc).limit(LIMIT).map do |project|
@@ -37,8 +27,6 @@ ActiveAdmin.register_page 'Dashboard' do
 
       column do
         panel 'Info' do
-          para "Total Teams: #{Team.count}"
-          para "Total Active Teams: #{Team.not_archived.count}"
           para "Total Projects: #{Project.count}"
           para "Total Active Projects: #{Project.not_archived.count}"
           para "Total Users: #{User.count}"

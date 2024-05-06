@@ -23,9 +23,11 @@ class Project < ApplicationRecord
   has_one_attached :import
 
   has_many :changesets, dependent: :destroy
-  has_many :ownerships, dependent: :destroy
-  has_many :teams, through: :ownerships
   has_many :memberships, dependent: :destroy
+  def admin? user
+    memberships.where(user: user).first&.admin?
+  end
+
   has_many :users, -> { distinct }, through: :memberships
   has_many :stories, dependent: :destroy do
     def with_dependencies

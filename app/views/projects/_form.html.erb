@@ -41,18 +41,6 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :tag_group, class: 'control-label' %>
-    <div class="tag-group-select">
-      <%= f.select :tag_group_id, tag_group_options, {include_blank: true}, { class: 'form-control auth-form-control' } %>
-      <label for="tag-group-modal" class="input-group-btn add_button" data-controller="dialog-label">
-        <button id="submit_tag_group" type="button" class="btn btn-success btn-number" data-type="plus" data-toggle="modal" data-target="#tag-group-modal">
-          <span class="glyphicon glyphicon-plus"></span>
-        </button>
-      </label>
-    </div>
-  </div>
-
-  <div class="form-group">
     <%= f.label :enable_tasks, class: 'control-label' %>
     <%= f.check_box :enable_tasks %>
   </div>
@@ -97,22 +85,6 @@
     <% end %>
   </div>
 <% end %>
-
-<!-- Tag Group Modal -->
-<dialog modal class="modal fade" id="tag-group-modal" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" onclick="this.closest('dialog').close()">&times;</button>
-        <h4 class="modal-title"><%= t('tag_group.new tag_group') %></h4>
-      </div>
-      <div class="modal-body">
-        <%= render 'tag_groups/form', remote: true, tag_group: current_team.tag_groups.new %>
-        <div class="clearfix">&nbsp;</div>
-      </div>
-    </div>
-  </div>
-</dialog>
 
 <!-- Project Delete Modal -->
 <dialog modal class="modal fade" id="delete-confirmation-modal" role="dialog">

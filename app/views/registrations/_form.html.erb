@@ -22,11 +22,6 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :locale %>
-    <%= f.select :locale, I18n.available_locales, {}, include_blank: true, class:'form-control auth-form-control' %>
-  </div>
-
-  <div class="form-group">
     <%= f.label :time_zone %>
     <%= f.time_zone_select :time_zone, nil, {default: Time.zone}, class:'form-control auth-form-control' %>
   </div>

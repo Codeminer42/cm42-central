@@ -15,8 +15,6 @@ class StoriesController < ApplicationController
   end
 
   def create
-    update_current_team
-
     @story = policy_scope(Story).build(allowed_params)
     authorize @story
 

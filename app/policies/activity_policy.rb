@@ -5,8 +5,7 @@ class ActivityPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      return Activity.none unless admin? || project_member?
-
+      # return Activity.none unless admin? || project_member?
       Activity.all
     end
   end

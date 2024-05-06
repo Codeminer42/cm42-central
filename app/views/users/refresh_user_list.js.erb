@@ -1,4 +1,4 @@
-document.getElementById('user_list').innerHTML = "<%= escape_javascript(render('users/user_list', project: @project, current_team_users: @current_team_users)) %>"
+document.getElementById('user_list').innerHTML = "<%= escape_javascript(render('users/user_list', project: @project, available_users: @available_users)) %>"
 
 document.querySelector('.flash-message').outerHTML = "<%= escape_javascript(render 'flash') %>"
 <% flash.clear %>

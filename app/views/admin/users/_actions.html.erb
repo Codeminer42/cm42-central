@@ -3,7 +3,7 @@
     <%= link_to t('edit'), edit_admin_user_path(user),
           class: 'btn btn-default btn-sm btn-square' %>
 
-    <%= user.toggle_admin_button(current_team.is_admin?(user)) %>
+    <%= user.toggle_admin_button(current_project.admin?(user)) %>
 
     <%= link_to t('delete'), admin_user_path(user),
           data: {confirm: t('are you sure you want to delete this user', scope: 'admin.users.index')},

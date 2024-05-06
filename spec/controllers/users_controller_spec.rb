@@ -22,39 +22,32 @@ describe UsersController do
   let(:project) { create(:project) }
 
   context 'when logged out' do
-    let(:team) { create(:team) }
-
     specify do
       get :index, params: { project_id: project.id }
       expect(response).to redirect_to(new_user_session_url)
     end
 
     specify do
-      get :create, params: {  team_id: team.id }
+      post :create, params: { project_id: project.id }
       expect(response).to redirect_to(new_user_session_url)
     end
 
-    %w[destroy].each do |action|
-      specify do
-        get action, params: {  id: 42, project_id: project.id }
-        expect(response).to redirect_to(new_user_session_url)
-      end
+    specify do
+      delete :destroy, params: { id: 42, project_id: project.id }
+      expect(response).to redirect_to(new_user_session_url)
     end
   end
 
   let(:another_user) { create :user }
 
   context 'when logged in as admin' do
-    let(:user)         { create(:user, :with_team_and_is_admin) }
-    let!(:ownership)   { create(:ownership, team: user.teams.first, project: project) }
-    let(:current_team) { user.teams.first }
+    let(:user) { create(:user, :admin) }
 
     before do
-      create(:enrollment, team: user.teams.first, user: another_user)
       create(:membership, user: user, project: project)
       create(:membership, user: another_user, project: project)
       sign_in user
-      allow(subject).to receive_messages(current_user: user, current_team: current_team)
+      allow(subject).to receive_messages(current_user: user, current_project: project)
     end
 
     describe 'collection actions' do
@@ -83,21 +76,21 @@ describe UsersController do
           let(:created_user) { User.find_by(email: 'foo@bar.com') }
 
           before do
-            post :create, params: { team_id: current_team.id, user: valid_params }
+            post :create, params: { project_id: project.id, user: valid_params }
           end
 
           it 'displays a successful message' do
-            expect(flash[:notice]).to eq 'foo@bar.com was added to the team'
+            expect(flash.notice).to eq 'foo@bar.com was added to the project'
           end
 
-          it 'enrolls the created user to the current team' do
-            expect(created_user.teams).to include current_team
+          it 'enrolls the created user to the current project' do
+            expect(created_user.projects).to include project
           end
         end
 
         context 'when there are invalid params' do
           it 'displays a message that the user was not created' do
-            post :create, params: {  team_id: current_team.id, user: invalid_params }
+            post :create, params: {  project_id: project.id, user: invalid_params }
 
             expect(flash[:alert]).to eq 'User was not created'
           end
@@ -137,16 +130,13 @@ describe UsersController do
   end
 
   context 'when logged in as non-admin user' do
-    let(:user)  { create(:user, :with_team, email: 'foobar@example.com') }
-    let!(:ownership) { create(:ownership, team: user.teams.first, project: project) }
-    let(:current_team) { user.teams.first }
+    let(:user)  { create(:user, email: 'foobar@example.com') }
 
     before do
-      create(:enrollment, team: user.teams.first, user: another_user)
       create(:membership, user: user, project: project)
       create(:membership, user: another_user, project: project)
       sign_in user
-      allow(subject).to receive_messages(current_user: user, current_team: current_team)
+      allow(subject).to receive_messages(current_user: user, current_project: project)
     end
 
     describe 'collection actions' do
@@ -163,7 +153,7 @@ describe UsersController do
         end
 
         specify do
-          post :create, params: { team_id: current_team.id, user: user_params }
+          post :create, params: { project_id: project.id, user: user_params }
           expect(flash[:error]).to eq(I18n.t('users.You are not authorized to perform this action'))
           expect(response).to redirect_to(root_path)
         end
@@ -174,7 +164,7 @@ describe UsersController do
           end
 
           specify do
-            post :create, params: { team_id: current_team.id, user: user_params }
+            post :create, params: { project_id: project.id, user: user_params }
             expect(flash[:error])
               .to eq(I18n.t('users.You are not authorized to perform this action'))
             expect(response).to redirect_to(root_path)
