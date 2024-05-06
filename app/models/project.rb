@@ -20,6 +20,8 @@ class Project < ApplicationRecord
 
   belongs_to :tag_group
 
+  belongs_to :pivotal_project, foreign_key: :pivotal_id, touch: true, required: false
+
   has_one_attached :import
 
   has_many :changesets, dependent: :destroy
@@ -85,6 +87,11 @@ class Project < ApplicationRecord
       end
     end
   end
+
+  has_many :notes, through: :stories
+  has_many :attachments_attachments, through: :notes
+
+  has_many :activities, dependent: :destroy
 
   scope :joinable, -> { where(disallow_join: false) }
   scope :joinable_except, ->(project_ids) { joinable.where.not(id: project_ids) }

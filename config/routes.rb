@@ -42,6 +42,11 @@ Rails.application.routes.draw do
     resources :stories_bulk_update, only: [:create]
   end
 
+  resources :pivotal_projects do
+    post :refresh, on: :collection
+    post :import, on: :member
+  end
+
   resources :tag_groups
 
   namespace :admin do

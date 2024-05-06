@@ -61,6 +61,13 @@
           <h4><i class="mi md-20 heading-icon">view_module</i> My projects | <%= @projects.length %></h4>
         </div>
         <%= render @projects %>
+
+        <div class="pivotal-projects">
+          <div class="col-md-12 project-list-title">
+            <h4><i class="mi md-20 heading-icon">view_module</i> Projects to import from Pivotal Tracker | <%= @pivotal_projects.length %> | <%= link_to "Refresh", refresh_pivotal_projects_path, method: "post" %></h4>
+          </div>
+          <%= render @pivotal_projects %>
+        </div>
       </div>
     </div>
   </div>

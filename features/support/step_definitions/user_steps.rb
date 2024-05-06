@@ -9,13 +9,10 @@ Given "the following users exist:" do |table|
     end
 
     after :projects do |user, attributes|
-      projects = attributes[:projects].split(", ").map do |name|
-        Project.where(name: name).first_or_create!({
+      (attributes[:projects] || "").split(", ").map do |name|
+        project = Project.where(name: name).first_or_create!({
           start_date: Time.zone.now,
-          point_scale: "none",
         })
-      end
-      projects.each do |project|
         project.users << user
       end
     end

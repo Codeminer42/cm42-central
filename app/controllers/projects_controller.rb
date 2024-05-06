@@ -1,19 +1,15 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show edit update destroy import import_upload
+  before_action :set_project, only: %i[show edit update destroy
                                        reports archive unarchive]
-  before_action :prepare_session, only: %i[import import_upload]
-  before_action -> { define_sidebar :project_settings }, only: %i[import edit]
+  before_action -> { define_sidebar :project_settings }, only: :edit
   before_action :set_story_flow, only: %i[show]
-  before_action :fluid_layout, only: %i[show edit import]
+  before_action :fluid_layout, only: %i[show edit]
 
   def index
-    @projects = {}
-
     @projects = policy_scope(Project).preload(:tag_group) # map ProjectPresenter.from_collection(collection)
-
     @activities_group = Activity.grouped_activities(@projects, 1.week.ago)
-
-    redirect_to @projects.first if @projects.size == 1
+    @pivotal_projects = policy_scope(PivotalProject).where.not(id: @projects.pluck(:pivotal_id)).order(:name)
+    redirect_to @projects.first if !current_user.admin? && @projects.size == 1
   end
 
   def show
@@ -76,52 +72,6 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # CSV import form
-  def import
-    @import_job = session[:import_job]
-    return if @import_job.blank?
-
-    job_result = Rails.cache.read(@import_job[:id])
-
-    if job_result
-      session[:import_job] = nil
-      if job_result[:errors]
-        flash[:alert] = "Unable to import CSV: #{job_result[:errors]}"
-      else
-        @valid_stories    = @project.stories
-        @invalid_stories  = job_result[:invalid_stories]
-        flash[:notice] = I18n.t(
-          'imported n stories', count: @valid_stories.count
-        )
-
-        unless @invalid_stories.empty?
-          flash[:alert] = I18n.t(
-            'n stories failed to import', count: @invalid_stories.count
-          )
-        end
-      end
-    else
-      minutes_ago = (Time.current - @import_job[:created_at].to_datetime) / 1.minute
-      session[:import_job] = nil if minutes_ago > 60
-    end
-  end
-
-  # CSV import
-  def import_upload
-    if params[:project].blank?
-      flash[:alert] = I18n.t('projects.uploads.select_file')
-    else
-      session[:import_job] = { id: ImportWorker.new_job_id, created_at: Time.current }
-
-      @project.update(allowed_params)
-      ImportWorker.perform_async(session[:import_job][:id], params[:id])
-
-      flash[:notice] = I18n.t('projects.uploads.being_processed')
-    end
-
-    redirect_to [:import, @project]
-  end
-
   def reports
     since = params[:since].nil? ? nil : params[:since].to_i.months.ago
     @service = IterationService.new(@project, since: since)
@@ -173,7 +123,7 @@ class ProjectsController < ApplicationController
     params
       .fetch(:project)
       .permit(:name, :point_scale, :default_velocity, :tag_group_id, :start_date,
-              :iteration_start_day, :iteration_length, :import, :archived,
+              :iteration_start_day, :iteration_length, :archived,
               :enable_tasks, :mail_reports, :velocity_strategy)
   end
 
@@ -184,10 +134,6 @@ class ProjectsController < ApplicationController
   def set_project
     @project = current_user.projects.friendly.find(params[:id])
     authorize @project
-  end
-
-  def prepare_session
-    session[:import_job] = (session[:import_job] || {}).with_indifferent_access
   end
 
   private

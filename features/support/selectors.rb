@@ -20,6 +20,9 @@ module WithinHelpers
     when /the "(.+)?" project/
       [".project-item", text: $1]
 
+    when /the "(.+)?" pivotal project/
+      [".pivotal-projects .project-item", text: $1]
+
     when /the "(.+)?" column/
       [".stories td", text: $1]
 
@@ -32,9 +35,6 @@ module WithinHelpers
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
-    #  when /^the (notice|error|info) flash$/
-    #    ".flash.#{$1}"
-
     # You can also return an array to use a different selector
     # type, like:
     #

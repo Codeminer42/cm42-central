@@ -41,7 +41,6 @@ class Story < ApplicationRecord
   belongs_to :owned_by, class_name: 'User'
 
   has_many :users, through: :project
-  has_many :tasks
   has_many :changesets, dependent: :destroy
   has_many :tasks, dependent: :destroy
   has_many :notes, -> { order(:created_at) }, dependent: :destroy do
@@ -69,6 +68,8 @@ class Story < ApplicationRecord
       notes
     end
   end
+
+  serialize :blockers, type: Array, coder: JSON
 
   accepts_nested_attributes_for :tasks, :notes, reject_if: proc { |attributes| attributes[:note].blank? }
 

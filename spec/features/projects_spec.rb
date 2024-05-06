@@ -106,7 +106,7 @@ describe 'Projects' do
         end
 
         it 'edits a project' do
-          visit projects_path
+          visit project_path(project.slug)
           click_on 'Settings'
           fill_in 'Name', with: 'New Project Name'
           expect(page).to have_unchecked_field 'Send reports via mail'
@@ -116,8 +116,7 @@ describe 'Projects' do
         end
 
         it 'disables tasks' do
-          visit projects_path
-
+          visit project_path(project.slug)
           click_on 'Settings'
           uncheck 'Enable tasks'
           click_on 'Update Project'
@@ -182,8 +181,7 @@ describe 'Projects' do
         end
 
         it 'shows form errors' do
-          visit projects_path
-
+          visit project_path(project.slug)
           click_on 'Settings'
           fill_in 'Name', with: ''
           click_on 'Update Project'

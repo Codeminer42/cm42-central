@@ -1,0 +1,1 @@
+PivotalAPI::Service.set_token Rails.application.credentials.pivotal_tracker_api_token

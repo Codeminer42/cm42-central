@@ -11,12 +11,14 @@
           a.unstyled-link href=project_users_path(project)
             i.mi.md-20.heading-icon group
           span.dropdown
-            label.unstyled-link for="settings-dialog" data-controller="dialog-label"
+            label.unstyled-link for="settings-dialog-#{project.id}" data-controller="dialog-label"
               i.mi.md-20.heading-icon settings
-            dialog#settings-dialog
+            dialog id="settings-dialog-#{project.id}"
               ul.dropdown-menu.dropdown-menu-right
                 li.dropdown-header Options
                 li = link_to "Settings", [:edit, project]
+                - if project.pivotal_project.present?
+                  li = link_to "Reimport", import_pivotal_project_path(project.pivotal_project), method: "post"
                 li.divider
                 li = link_to "Leave project", [project, current_user], method: "delete"
 

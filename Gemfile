@@ -7,7 +7,7 @@ end
 
 # model
 gem 'rails', '~>7.1.0'
-gem 'mysql2'
+gem 'trilogy'
 gem 'bard-rake'
 gem 'backhoe'
 gem 'transitions', require: ["transitions", "active_model/transitions"]
@@ -22,6 +22,8 @@ gem 'faraday'
 gem 'friendly_id', '~> 5.2.5'
 gem 'aws-sdk-s3'
 gem 'image_processing'
+gem 'pivotal-tracker-api', github: 'AgileVentures/pivotal-tracker-api'
+gem 'sorted_set'
 
 # controller
 gem 'platform-api'

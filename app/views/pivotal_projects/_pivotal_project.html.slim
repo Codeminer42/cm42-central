@@ -1,0 +1,33 @@
+.col-md-6
+  .panel.panel-default.card.project-item.animated.scale-in
+    .panel-heading.card-heading
+      .project-card-header-container
+        span.card-title.project-title
+          = pivotal_project.name
+      - if false #
+        .icons.pull-right
+          a.unstyled-link href=reports_project_path(project)
+            i.mi.md-20.heading-icon insert_chart
+          a.unstyled-link href=project_users_path(project)
+            i.mi.md-20.heading-icon group
+          span.dropdown
+            label.unstyled-link for="settings-dialog" data-controller="dialog-label"
+              i.mi.md-20.heading-icon settings
+            dialog#settings-dialog
+              ul.dropdown-menu.dropdown-menu-right
+                li.dropdown-header Options
+                li = link_to "Settings", [:edit, pivotal_project]
+                li.divider
+                li = link_to "Leave project", [pivotal_project, current_user], method: "delete"
+
+    .panel-body
+      .col-md-12.members
+        ul.member-list
+          - pivotal_project.users.each do |user|
+            - src = Rails.cache.fetch("user/#{user.email}/avatar", expires_in: 1.hour) { avatar_url(user) }
+            li.member
+              img.identicon src=src alt="User avatar"
+
+    = link_to import_pivotal_project_path(pivotal_project), method: :post, class: "card-footer panel-footer" do
+      | Import project
+

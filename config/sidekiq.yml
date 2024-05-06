@@ -3,6 +3,7 @@ logfile: log/sidekiq.log
 queues:
   - default
   - mailers
+concurrency: 5
 scheduler:
   schedule:
     receive_email:

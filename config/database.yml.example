@@ -1,7 +1,9 @@
 base: &base
-  adapter: mysql2
+  adapter: trilogy
   username: root
-  password:
+  socket: /var/run/mysqld/mysqld.sock
+  charset: utf8mb4
+  collation: utf8mb4_unicode_ci
 
 development:
   <<: *base

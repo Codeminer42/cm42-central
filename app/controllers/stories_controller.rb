@@ -35,7 +35,6 @@ class StoriesController < ApplicationController
     @story = policy_scope(Story).find(params[:id])
     authorize @story
 
-    @story.acting_user = current_user
     @story.base_uri = project_url(@story.project)
 
     result = StoryOperations::Update.call(

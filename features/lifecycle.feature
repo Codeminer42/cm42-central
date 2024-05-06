@@ -11,6 +11,7 @@ Feature: Stories have a lifecycle
     When I click the "Add Story" label within the "Icebox" column
     And I fill in the following form:
       | Title        | WOW              |
+      | Estimate     | 0                |
       | Story type   | feature          |
       | Requested by | Michael Gubitosa |
     And I press "Save"

@@ -1,0 +1,82 @@
+- content_for :title_bar do
+  ul.nav.navbar-nav
+    li
+      a = @pivotal_project.name
+
+= turbo_stream_from @pivotal_project.project
+
+.settings-page data-turbo="true"
+  .col-xs-12.col-sm-9
+    .page-header
+      h4.page-header-title
+        i.mi.md-20 file_download
+        | Import from Pivotal Tracker
+
+    .card.panel
+      .panel-content
+
+    .card.panel
+      .panel-heading
+        = t('projects.uploads.results')
+
+      .panel-content.table-responsive
+        table.table.table-condensed.table-striped.table-hover.import-results
+          thead
+            tr
+              th Resource
+              th Count
+
+          tbody
+
+            tr class=("success" if @pivotal_project.project)
+              td Project
+              td = "✓" if @pivotal_project.project
+
+            - count = @pivotal_project.imported_members.count
+            - total = @pivotal_project.memberships_attributes.length
+            tr class=("success" if count == total)
+              td Users
+              td = "#{count} / #{total}"
+
+            /
+              - count = @pivotal_project.imported_labels.count
+              - total = @pivotal_project.labels_attributes.length
+              tr class=("success" if count == total)
+                td Labels
+                td = "#{count} / #{total}"
+
+            - count = @pivotal_project.imported_stories.count
+            - total = @pivotal_project.stories_attributes.length
+            tr class=("success" if count == total)
+              td Stories
+              td = "#{count} / #{total}"
+
+            - count = @pivotal_project.imported_tasks.count
+            - total = @pivotal_project.tasks_attributes.length
+            tr class=("success" if count == total)
+              td Tasks
+              td = "#{count} / #{total}"
+
+            - count = @pivotal_project.imported_comments.count
+            - total = @pivotal_project.comments_attributes.length
+            tr class=("success" if count == total)
+              td Comments
+              td = "#{count} / #{total}"
+
+            - count = @pivotal_project.imported_attachments.count
+            - total = @pivotal_project.attachments_attributes.length
+            tr class=("success" if count == total)
+              td Attachments
+              td = "#{count} / #{total}"
+
+            - count = @pivotal_project.imported_activities.count
+            - total = @pivotal_project.activities_attributes.length
+            tr class=("success" if count == total)
+              td Activities
+              td = "#{count} / #{total}"
+
+            / @pivotal_project.errors.each.with_index(1) do |error, index|
+              tr.danger
+                td = index
+                td colspan="2" = error
+

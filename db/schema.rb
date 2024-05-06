@@ -10,8 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_07_221533) do
-  create_table "active_admin_comments", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+ActiveRecord::Schema[7.1].define(version: 2024_05_09_205148) do
+  create_table "active_admin_comments", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
     t.string "resource_id", null: false
@@ -26,17 +26,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_221533) do
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
   end
 
-  create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
     t.datetime "created_at", precision: nil, null: false
+    t.bigint "pivotal_id"
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["pivotal_id"], name: "index_active_storage_attachments_on_pivotal_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "active_storage_blobs", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
@@ -48,13 +50,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_221533) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "activities", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "activities", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.integer "project_id", null: false
     t.integer "user_id", null: false
     t.integer "subject_id"
@@ -64,15 +66,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_221533) do
     t.string "subject_destroyed_type"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
+    t.string "pivotal_id"
     t.index ["id"], name: "id", unique: true
+    t.index ["pivotal_id"], name: "index_activities_on_pivotal_id"
     t.index ["project_id", "user_id"], name: "index_activities_on_project_id_and_user_id"
     t.index ["project_id"], name: "index_activities_on_project_id"
     t.index ["user_id"], name: "index_activities_on_user_id"
   end
 
-  create_table "admin_users", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
+  create_table "admin_users", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
+    t.string "email", null: false
+    t.string "encrypted_password", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at", precision: nil
     t.datetime "remember_created_at", precision: nil
@@ -92,7 +96,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_221533) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
-  create_table "api_tokens", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "api_tokens", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.integer "team_id"
     t.string "token"
     t.datetime "created_at", precision: nil, null: false
@@ -101,7 +105,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_221533) do
     t.index ["team_id"], name: "index_api_tokens_on_team_id"
   end
 
-  create_table "attachinary_files", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "attachinary_files", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.integer "attachinariable_id"
     t.string "attachinariable_type"
     t.string "scope"
@@ -117,7 +121,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_221533) do
     t.index ["id"], name: "id", unique: true
   end
 
-  create_table "changesets", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "changesets", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.integer "story_id"
     t.integer "project_id"
     t.datetime "created_at", precision: nil
@@ -125,7 +129,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_221533) do
     t.index ["id"], name: "id", unique: true
   end
 
-  create_table "enrollments", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "enrollments", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.integer "team_id", null: false
     t.integer "user_id", null: false
     t.boolean "is_admin", default: false, null: false
@@ -135,7 +139,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_221533) do
     t.index ["team_id", "user_id"], name: "index_enrollments_on_team_id_and_user_id", unique: true
   end
 
-  create_table "integrations", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "integrations", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.integer "project_id"
     t.string "kind", null: false
     t.text "data", null: false
@@ -144,7 +148,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_221533) do
     t.index ["id"], name: "id", unique: true
   end
 
-  create_table "memberships", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "memberships", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.integer "project_id"
     t.integer "user_id"
     t.datetime "created_at", precision: nil
@@ -155,7 +159,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_221533) do
     t.index ["user_id"], name: "index_memberships_on_user_id"
   end
 
-  create_table "notes", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "notes", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.text "note"
     t.integer "user_id"
     t.integer "story_id"
@@ -163,11 +167,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_221533) do
     t.datetime "updated_at", precision: nil
     t.string "user_name"
     t.string "smtp_id"
+    t.bigint "pivotal_id"
+    t.text "reactions", size: :medium
     t.index ["id"], name: "id", unique: true
+    t.index ["pivotal_id"], name: "index_notes_on_pivotal_id"
     t.index ["smtp_id"], name: "index_notes_on_smtp_id", unique: true
   end
 
-  create_table "ownerships", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "ownerships", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.integer "team_id", null: false
     t.integer "project_id", null: false
     t.boolean "is_owner", default: false, null: false
@@ -177,7 +184,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_221533) do
     t.index ["team_id", "project_id"], name: "index_ownerships_on_team_id_and_project_id", unique: true
   end
 
-  create_table "projects", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "pivotal_projects", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
+    t.string "name"
+    t.text "users_attributes"
+    t.datetime "started_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "project_attributes", size: :medium
+    t.text "memberships_attributes", size: :medium
+    t.text "labels_attributes", size: :medium
+    t.text "stories_attributes", size: :long
+    t.text "activities_attributes", size: :medium
+  end
+
+  create_table "projects", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.string "name"
     t.string "point_scale", default: "pivotal"
     t.date "start_date"
@@ -195,11 +215,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_221533) do
     t.boolean "mail_reports", default: false
     t.integer "velocity_strategy", default: 3
     t.boolean "enable_tasks", default: false, null: false
+    t.bigint "pivotal_id"
     t.index ["id"], name: "id", unique: true
+    t.index ["pivotal_id"], name: "index_projects_on_pivotal_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
-  create_table "stories", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "stories", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.integer "estimate"
@@ -223,11 +245,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_221533) do
     t.string "branch"
     t.integer "new_position"
     t.string "positioning_column"
+    t.bigint "pivotal_id"
+    t.text "blockers", size: :medium
     t.index ["id"], name: "id", unique: true
+    t.index ["pivotal_id"], name: "index_stories_on_pivotal_id"
     t.index ["project_id", "positioning_column", "position"], name: "index_stories_on_project_id_and_positioning_column_and_position", unique: true
   end
 
-  create_table "tag_groups", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "tag_groups", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.integer "team_id"
     t.string "name", limit: 15
     t.text "description"
@@ -239,17 +264,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_221533) do
     t.index ["team_id"], name: "index_tag_groups_on_team_id"
   end
 
-  create_table "tasks", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "tasks", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.integer "story_id"
     t.string "name"
     t.boolean "done", default: false
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
+    t.bigint "pivotal_id"
+    t.integer "position"
     t.index ["id"], name: "id", unique: true
+    t.index ["pivotal_id"], name: "index_tasks_on_pivotal_id"
     t.index ["story_id"], name: "index_tasks_on_story_id"
   end
 
-  create_table "teams", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "teams", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.string "name", null: false
     t.string "slug"
     t.string "logo"
@@ -264,9 +292,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_221533) do
     t.index ["slug"], name: "index_teams_on_slug", unique: true
   end
 
-  create_table "users", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", limit: 128, default: "", null: false
+  create_table "users", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
+    t.string "email", null: false
+    t.string "encrypted_password", limit: 128, null: false
     t.string "reset_password_token"
     t.string "remember_token"
     t.datetime "remember_created_at", precision: nil
@@ -297,10 +325,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_221533) do
     t.boolean "authy_enabled", default: false
     t.boolean "finished_tour", default: false
     t.boolean "admin", default: false, null: false
+    t.bigint "pivotal_id"
     t.index ["authy_id"], name: "index_users_on_authy_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["id"], name: "id", unique: true
+    t.index ["pivotal_id"], name: "index_users_on_pivotal_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 

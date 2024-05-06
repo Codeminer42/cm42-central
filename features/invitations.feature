@@ -64,7 +64,8 @@ Feature: Admins can add users to projects
       | Done | Current | Icebox |
 
     Given I am logged in as "micah@botandrose.com"
-    And I follow "Members"
+    And I am on the "Example Project" project page
+    When I follow "Members"
     Then I should see the following project members:
       | Lindsay Caron | lindsay@gmail.com    |
       | Micah Geisel  | micah@botandrose.com |
