@@ -34,6 +34,10 @@ When "I fill in the following form:" do |table|
   table.fill_in!
 end
 
+When "I click the {string} label" do |label|
+  find("label", text: label).click
+end
+
 When "I choose {string}" do |field|
   choose field
 end

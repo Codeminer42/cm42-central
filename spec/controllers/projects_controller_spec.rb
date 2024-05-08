@@ -129,8 +129,12 @@ describe ProjectsController do
               get :show, params: {id: project.id }
               expect(response).to be_successful
               expect(assigns[:project]).to eq(project)
-              expect(assigns[:story].new_record?).to be_truthy
-              expect(assigns[:story].project).to eq(project)
+              expect(assigns[:new_todo_story]).to be_new_record
+              expect(assigns[:new_todo_story].project).to eq(project)
+              expect(assigns[:new_todo_story]).to be_unstarted
+              expect(assigns[:new_icebox_story]).to be_new_record
+              expect(assigns[:new_icebox_story].project).to eq(project)
+              expect(assigns[:new_icebox_story]).to be_unscheduled
             end
           end
 
@@ -139,8 +143,12 @@ describe ProjectsController do
               get :show, xhr: true, params: { id: project.id }
               expect(response).to be_successful
               expect(assigns[:project]).to eq(project)
-              expect(assigns[:story].new_record?).to be_truthy
-              expect(assigns[:story].project).to eq(project)
+              expect(assigns[:new_todo_story]).to be_new_record
+              expect(assigns[:new_todo_story].project).to eq(project)
+              expect(assigns[:new_todo_story]).to be_unstarted
+              expect(assigns[:new_icebox_story]).to be_new_record
+              expect(assigns[:new_icebox_story].project).to eq(project)
+              expect(assigns[:new_icebox_story]).to be_unscheduled
             end
           end
         end

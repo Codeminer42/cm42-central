@@ -20,6 +20,9 @@ module WithinHelpers
     when /the "(.+)?" project/
       [".project-item", text: $1]
 
+    when /the "(.+)?" column/
+      [".stories td", text: $1]
+
     when /the "(.+)?" story/
       ["#in_progress .story, #chilly_bin .story", text: $1]
 

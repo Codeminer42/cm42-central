@@ -1,10 +1,10 @@
-- new_story = defined?(new_story) ? new_story : false
 - search_result = defined?(search_result) ? search_result : false
 - story_dom_id = search_result ? "story-search-result-#{story.id}" : story_anchor(story)
+- story_dom_id += "-#{story.calculate_positioning_column.sub("#","")}" if story.new_record?
 
 - cache_if story.persisted?, story do
-  .story.closed class=[story.story_type, story.state, ("searchResult" if search_result)] id=story_dom_id data-id=story.id data-position=story.position data-state=story.state data-story-type=story.story_type data-controller="story" data-action="click->story#open"
-    input.toggle-story type="checkbox" data-story-target="checkbox" checked=(true if new_story) data-turbo-permanent=true id="#{story_dom_id}-toggle"
+  .story.closed class=[story.story_type, story.state, ("new-story" if story.new_record?), ("searchResult" if search_result)] id=story_dom_id data-id=story.id data-position=story.position data-state=story.state data-story-type=story.story_type data-controller="story" data-action="click->story#open"
+    input.toggle-story type="checkbox" data-story-target="checkbox" data-turbo-permanent=true id="#{story_dom_id}-toggle"
     .closed
       .state-actions
         - if search_result
@@ -12,7 +12,7 @@
             i.mi.md-gps-fixed.md-14
               | gps_fixed
 
-        - if !new_story && story.events.any?
+        - if story.persisted? && story.events.any?
           div
             .state-actions
               - story.events.each do |event|
@@ -38,11 +38,9 @@
         div
           .form-group.story-controls
             = form.submit "Save", data: { action: "click->story#close:stop" }
-            - if new_story
-              input.cancel type="button" value="Cancel" onclick="this.closest('.story').remove()"
-            - else
+            - if story.persisted?
               = form.submit "Delete", class: "delete", form: "delete_story_#{story.id}", data: { confirm: "Are you sure you want to delete this story?" }
-              input.cancel type="button" value="Cancel" data-action="click->story#close:prevent:stop"
+            input.cancel type="button" value="Cancel" data-action="click->story#close:prevent:stop"
 
         div
           .col-xs-12.form-group.input-group.input-group-sm

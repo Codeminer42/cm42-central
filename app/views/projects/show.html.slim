@@ -7,11 +7,6 @@
 
   p#velocity.navbar-text.velocity data-step="velocity"
 
-  - unless current_user.guest?
-    = link_to [@project, new_story: true], id: "add_story", class: "btn btn-primary btn-sm navbar-btn", data: { turbo: true } do
-      i.mi.md-light.md-18.md-add add
-      = t('add story')
-
 / - content_for :right_menu do
   = form_tag '#', id: 'form_search', class: 'navbar-form navbar-left navbar-search', html: { role: 'search' } do
     .form-group
@@ -35,12 +30,14 @@
           #done.column_content.story_column
             = render @project.completed_iterations
 
-        td.in_progress_column data-column-view="in_progress" data-connect="#backlog,#chilly_bin"
+        td.in_progress_column data-column-view="in_progress"
           .column_header data-step="in-progress"
             a.toggle-title href="#" title="Todo" Todo
             / a.toggle-column.hide_in_progress href="#" title="Close" ×
+            label.add-story-button for="new-story-in_progress-toggle" + Add Story
 
           #in_progress.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#in_progress"
+            = render @new_todo_story
             = render @project.backlog_iterations, total: 0
 
         / td.backlog_column data-column-view="backlog" data-connect="#chilly_bin,#in_progress"
@@ -55,13 +52,14 @@
               span.points
                 | 0
 
-        td.chilly_bin_column data-column-view="chilly_bin" data-connect="#backlog,#in_progress"
+        td.chilly_bin_column data-column-view="chilly_bin"
           .column_header data-step="chilly-bin"
             a.toggle-title href="#" title="Icebox" Icebox
             / a.toggle-column.hide_chilly_bin href="#" title="Close" ×
+            label.add-story-button for="new-story-chilly_bin-toggle" + Add Story
 
           #chilly_bin.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#chilly_bin"
-            = render @story, new_story: true if params[:new_story]
+            = render @new_icebox_story
             = render @project.stories.chilly_bin.includes(:owned_by, :notes).order(:position)
 
         / td.epic_column style="display: none;" data-column-view="epic" data-connect="#chilly_bin,#in_progress,#backlog" data-hideable="false"
@@ -94,4 +92,3 @@
                 | Points: #{search_results.sum(:estimate)}
 
             = render search_results, search_result: true
-

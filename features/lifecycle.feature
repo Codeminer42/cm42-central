@@ -8,11 +8,10 @@ Feature: Stories have a lifecycle
   Scenario: Requester and owner take a story through its entire lifecycle
     Given I am logged in as "gubs@botandrose.com"
     And I am on the "Example Project" project page
-    When I follow "Add story"
+    When I click the "Add Story" label within the "Icebox" column
     And I fill in the following form:
       | Title        | WOW              |
       | Story type   | feature          |
-      | State        | unscheduled      |
       | Requested by | Michael Gubitosa |
     And I press "Save"
     Then I should see the following project board:

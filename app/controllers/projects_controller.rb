@@ -17,7 +17,8 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    @story = @project.stories.build
+    @new_todo_story = @project.stories.build(state: "unstarted")
+    @new_icebox_story = @project.stories.build(state: "unscheduled")
     session[:current_project_slug] = @project.slug
   end
 

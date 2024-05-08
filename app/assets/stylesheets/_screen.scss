@@ -41,7 +41,7 @@ table.stories {
 
 table.stories td {
   vertical-align: top;
-  background-color: $darkgrey-11;
+  background-color: #191919;
   height: 100%;
   border-radius: 5px 5px 0 0;
 }
@@ -62,6 +62,10 @@ div.column_content {
   color: $white;
   background: $darkgrey-12;
   border: 1px solid $black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 46px;
 
   a.toggle-title {
     color: $white;
@@ -86,6 +90,18 @@ div.column_content {
     &:hover {
       color:$aluminium-3;
     }
+  }
+}
+
+.add-story-button{
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 3px;
+  font-size: 1.1em;
+  &:hover{
+    background: #DC7536;
+    text-decoration: none;
+    color: #fff;
   }
 }
 
@@ -119,6 +135,13 @@ div.story {
 
 div.story:hover {
   background-color: $lightgrey-14;
+}
+
+div.story.new-story {
+  display: none;
+  &:has(.toggle-story:checked) {
+    display: block;
+  }
 }
 
 div.story.editing, div.story.editing:hover {
