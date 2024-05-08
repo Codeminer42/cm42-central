@@ -22,7 +22,6 @@ class IterationService
       select { |story| story.accepted_at < iteration_start_date(@current_time) }
 
     calculate_iterations!
-    fix_owner!
 
     @backlog = ( @stories - @accepted_stories ).guaranteed_sort_by(&:position)
   end
@@ -65,14 +64,6 @@ class IterationService
       record.iteration_number     = iteration_number_for_date(record.accepted_at)
       record.iteration_start_date = date_for_iteration_number(record.iteration_number)
     end
-  end
-
-  # FIXME must figure out why the Story allows a nil owner in delivered states
-  def fix_owner!
-    @dummy_user ||= User.find_or_create_by!(username: "dummy", email: "dummy@foo.com", name: "Dummy", initials: "XX")
-    @accepted_stories.
-      select { |record| record.owned_by.nil? }.
-      each   { |record| record.owned_by = @dummy_user }
   end
 
   def group_by_day(range = nil)

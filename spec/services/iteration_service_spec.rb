@@ -178,11 +178,6 @@ describe IterationService do
       end
     end
 
-    it '#group_by_developer' do
-      groups = service.group_by_developer
-      expect(groups).to eq([{:name=>"Dummy", :data=>{1=>10, 2=>20, 3=>30, 4=>12, 5=>12, 6=>27, 7=>34, 8=>20, 9=>16}}])
-    end
-
     it '#backlog_iterations' do
       # there were 75 stories total
       # 59 stories in the done column
