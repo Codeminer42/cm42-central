@@ -41,12 +41,6 @@ Rails.application.routes.draw do
     resources :stories_bulk_update, only: [:create]
   end
 
-  resources :project_boards, only: :show do
-    member do
-      get 'iterations' => 'iterations#show'
-    end
-  end
-
   resources :tag_groups
 
   namespace :admin do
