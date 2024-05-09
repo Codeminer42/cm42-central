@@ -15,18 +15,20 @@ class StoriesController < ApplicationController
   end
 
   def create
-    @story = policy_scope(Story).build(allowed_params)
+    @story = policy_scope(Story).build
     authorize @story
 
-    @story.requested_by_id = current_user.id unless @story.requested_by_id
+    result = StoryOperations::Create.call(
+      project: @project,
+      story: @story,
+      story_attrs: allowed_params,
+      current_user: current_user
+    )
 
-    result = StoryOperations::Create.call(story: @story, current_user: current_user)
-
-    if result.success?
-      redirect_to project_url(@project)
-    else
-      render action: 'new'
+    if result.failure?
+      flash.alert = @story.errors.full_messages.join(" ")
     end
+    redirect_to project_url(@project)
   end
 
   def update
@@ -42,23 +44,10 @@ class StoriesController < ApplicationController
       current_user: current_user
     )
 
-    respond_to do |wants|
-      wants.html do
-        if result.success?
-          redirect_to @project
-        else
-          redirect_to story_path(@story)
-        end
-      end
-      wants.json do
-        match_result(result) do |on|
-          on.success { render json: true }
-          on.failure do |story|
-            render json: { error: story.errors.inspect }
-          end
-        end
-      end
+    if result.failure?
+      flash.alert = @story.errors.full_messages.join(" ")
     end
+    redirect_to project_url(@project)
   end
 
   def transition

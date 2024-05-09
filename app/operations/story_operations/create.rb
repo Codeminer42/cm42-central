@@ -2,14 +2,17 @@ module StoryOperations
   class Create
     include Operation
 
-    def initialize(story:, current_user:)
+    def initialize(project:, story:, story_attrs:, current_user:)
+      @project = project
       @story = story
-      @story.notes.last&.user = current_user
+      @story_attrs = story_attrs
+      @note_attrs = (story_attrs.delete(:notes_attributes) || {}).fetch("0", {})
       @current_user = current_user
     end
 
     def call
       ActiveRecord::Base.transaction do
+        yield set_attrs
         yield save_story
         yield save_note
 
@@ -25,7 +28,14 @@ module StoryOperations
 
     private
 
-    attr_reader :story, :current_user
+    attr_reader :project, :story, :story_attrs, :note_attrs, :current_user
+
+    def set_attrs
+      story.attributes = story_attrs
+      story.project = project
+      story.requested_by ||= current_user
+      Success(story)
+    end
 
     def save_story
       # wrap in transaction to ensure it actually exists in the db before shipping it off to sidekiq in #deliver_later
@@ -39,8 +49,12 @@ module StoryOperations
     end
 
     def save_note
-      if note = story.notes.last
-        NoteOperations::Create.call(note: story.notes.last, current_user: current_user)
+      if note_attrs.present?
+        NoteOperations::Create.call(
+          story: story,
+          note_attrs: note_attrs,
+          current_user: current_user
+        )
       end
       Success(story)
     end

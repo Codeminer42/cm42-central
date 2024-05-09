@@ -101,3 +101,23 @@ Feature: Stories can contain notes
     When I follow "Delete" within the "this is a note" note
     Then I should see no notes
 
+  Scenario: User creates story with note
+    Given I am logged in as "micah@botandrose.com"
+    And I am on the "Example Project" project page
+
+    Then I should see the following project board:
+      | Done | Current | Icebox      |
+      |      |         | F WOW start |
+    When I click the "Add Story" label within the "Icebox" column
+    And I fill in the following form within the "Icebox" column:
+      | Title      | With note                  |
+      | Notes      | this is a note on creation |
+    And I press "Save"
+    Then I should see the following project board:
+      | Done | Current | Icebox            |
+      |      |         | F WOW start       |
+      |      |         | F With note start |
+
+    When I open the "With note" story
+    Then I should see the following notes:
+      | this is a note on creation | Micah Geisel |
