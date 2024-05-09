@@ -497,10 +497,12 @@ a.button {
 
 // Notes
 div.note {
-  background-color: $white;
+  padding: 0.3em;
   margin: 0.3em 0.3em 0.6em;
-  border-left: 4px solid $aluminium-3;
-
+  border-bottom: 1px dotted #ccc;
+  bard-file{
+    padding: 0 !important;
+  }
   p {
     padding: 0.3em;
   }
@@ -520,6 +522,12 @@ div.note {
 }
 
 .note_form, .task_form {
+  padding: 5px;
+  background: #fcfcfc;
+  border-radius: 2px;
+  bard-file{
+    padding: 0;
+  }
   // The submit button while the server is saving the note.
   input.saving {
     padding-left: 16px;
@@ -642,6 +650,12 @@ div#keycut-help {
   @extend .btn-sm;
   @extend .pull-right;
   margin-top: 10px;
+  background: #3676c0;
+  color: #fff;
+  &:hover{
+    background: #305D93;
+    color: #fff;
+  }
 }
 
 .edit-project,
