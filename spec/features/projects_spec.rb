@@ -177,8 +177,7 @@ describe 'Projects' do
             fill_in 'Email', with: 'x@example.com'
             click_button 'Add user'
 
-            expect(current_path).to eq(project_users_path(project_to_be_associate.slug))
-            expect(page).to have_text("User not found")
+            expect(page).to have_text("x@example.com was not found")
           end
         end
 

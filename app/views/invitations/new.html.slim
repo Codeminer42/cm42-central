@@ -1,0 +1,28 @@
+p = "#{@invitation.email} was not found."
+
+= form_for [@project, @invitation] do |form|
+  = render "form_errors", object: form.object if form.object.errors.any?
+
+  .form-group
+    = form.label :email, class: 'control-label'
+    = form.text_field :email, class: 'form-control auth-form-control'
+
+  .form-group
+    = form.label :name, class: 'control-label'
+    = form.text_field :name, class: 'form-control auth-form-control'
+
+  .form-group
+    = form.label :initials, class: 'control-label'
+    = form.text_field :initials, class: 'form-control auth-form-control'
+
+  .form-group
+    = form.label :username, class: 'control-label'
+    = form.text_field :username, class: 'form-control auth-form-control'
+
+  .form-group
+    = form.label :role, class: 'control-label'
+    = form.select :role, User.role.options, {}, { class: 'form-control auth-form-control' }
+
+  .actions.pull-right
+    = form.submit "Create and invite user", class: 'btn btn-primary btn-form'
+

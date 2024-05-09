@@ -17,7 +17,7 @@
                   <% end %>
                 </div>
                 <div class="col-xs-9 user-description">
-                  <span><%= user.name %><br></span>
+                  <span><%= user.name %> <%= "(pending)" if !user.confirmed? %><br></span>
                   <span class="user-email"><%= user.email %></span>
                 </div>
               </div>
@@ -55,14 +55,14 @@
                     <% end %>
                   </div>
                   <div class="col-xs-9 user-description">
-                    <span><%= user.name %><br></span>
+                    <span><%= user.name %> <%= "(pending)" if !user.confirmed? %><br></span>
                     <span class="user-email"><%= user.email %></span>
                   </div>
                 </div>
               </div>
 
               <%= form_tag project_memberships_path(project.id), method: :post, remote: true do %>
-                <%= hidden_field_tag 'user[email]', user.email %>
+                <%= hidden_field_tag 'email', user.email %>
                 <%= button_tag t('add'), class: 'btn btn-link unstyled-link card-footer' %>
               <% end %>
             </div>

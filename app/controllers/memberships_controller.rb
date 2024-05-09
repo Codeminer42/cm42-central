@@ -3,15 +3,15 @@ class MembershipsController < ApplicationController
 
   def create
     authorize available_users
-    if enroll
-      flash.notice = @project_enroller_service.message
+    if @user = User.find_by(email: params[:email])
+      if enroll
+        flash.notice = @project_enroller_service.message
+      else
+        flash.alert = @project_enroller_service.message
+      end
+      redirect_to project_users_url(@project)
     else
-      flash.alert = @project_enroller_service.message
-    end
-
-    respond_to do |format|
-      format.js { render 'users/refresh_user_list' }
-      format.html { redirect_to project_users_url(@project) }
+      redirect_to [:new, @project, :invitation, email: params[:email]]
     end
   end
 
@@ -21,16 +21,11 @@ class MembershipsController < ApplicationController
     User.where.not(id: @project.users).order(:name)
   end
 
-  def allowed_params
-    params.require(:user).permit(:email)
-  end
-
   def set_project
     @project = policy_scope(Project).friendly.find(params[:project_id])
   end
 
   def enroll
-    @user = User.find_by(email: allowed_params[:email])
     @project_enroller_service = ProjectMembershipEnrollerService.new(@user, @project)
     if @project_enroller_service.enroll
       authorize @user

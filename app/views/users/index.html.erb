@@ -24,26 +24,14 @@
 
       <div class="add-member panel panel-default card">
         <div class="panel-body">
-          <%= form_for @user,
-            url: project_memberships_path(@project.id, @user) do |f| %>
-
-            <%= content_tag :div, class: 'alert alert-danger' do %>
-              <%= t('errors.template.header', count: @user.errors.count, model: @user.class.name.humanize) %>
-
-              <ul>
-                <% @user.errors.full_messages.each do |msg| %>
-                  <li><%= msg %></li>
-                <% end %>
-              </ul>
-            <% end if @user.errors.any? %>
-
+          <%= form_tag [@project, :memberships] do %>
             <div class="form-group">
-              <%= f.label :email, class: 'control-label' %>
-              <%= f.email_field :email, class: 'form-control auth-form-control', required: true %>
+              <%= label_tag :email, "Email", class: 'control-label' %>
+              <%= email_field_tag :email, "", class: 'form-control auth-form-control', required: true %>
             </div>
 
             <div class="actions">
-              <%= f.submit 'Add user', class: 'btn btn-primary pull-right' %>
+              <%= submit_tag 'Add user', class: 'btn btn-primary pull-right' %>
             </div>
           <% end %>
         </div>

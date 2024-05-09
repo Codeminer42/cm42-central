@@ -4,7 +4,6 @@ class UsersController < ApplicationController
   respond_to :html, :json
 
   def index
-    @user = User.new
     @available_users = available_users
     respond_with(@project.users)
   end

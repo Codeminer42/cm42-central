@@ -16,8 +16,8 @@ class ApplicationController < ActionController::Base
   after_action :verify_authorized, except: [:index], if: :must_pundit?
   after_action :verify_policy_scoped, only: [:index], if: :must_pundit?
 
-  rescue_from ActiveRecord::RecordNotFound, with: :render_404
-  rescue_from Pundit::NotAuthorizedError,   with: :user_not_authorized
+  # rescue_from ActiveRecord::RecordNotFound, with: :render_404
+  # rescue_from Pundit::NotAuthorizedError,   with: :user_not_authorized
 
   protected
 

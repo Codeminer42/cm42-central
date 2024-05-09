@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     end
     resources :users, only: [:index, :create, :destroy]
     resources :memberships, only: [:create]
+    resources :invitations, only: [:new, :create, :show]
     resources :changesets, only: [:index]
     put 'stories/sort', to: 'stories#sort'
     resources :stories, only: [:index, :create, :update, :destroy] do
@@ -47,11 +48,8 @@ Rails.application.routes.draw do
     resources :users
   end
 
-  devise_for :users, controllers: {
-    confirmations: 'confirmations',
-    registrations: 'registrations'
-  }
-
+  devise_for :users
+  resources :invitations
   devise_scope :user do
     get 'users/current' => 'sessions#current', as: :current_user
     put 'users/:id/tour' => 'registrations#tour', as: :users_tour
