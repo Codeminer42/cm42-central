@@ -61,7 +61,6 @@ gem 'exception_notification', github: 'smartinez87/exception_notification'
 gem 'foreman'
 
 group :production do
-  gem 'kgio'
   gem 'rack-cache'
   gem 'rack-timeout'
   gem 'foreman-export-systemd_user'
@@ -72,7 +71,6 @@ group :test do
   gem 'capybara'
   gem 'capybara-screenshot'
   gem 'chop'
-  gem 'codeclimate-test-reporter', require: nil
   gem 'cucumber-rails', require: false
   gem 'cuprite-downloads'
   gem 'rack-disable_css_animations'
@@ -93,17 +91,14 @@ end
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'bullet'
   gem 'letter_opener'
   gem 'letter_opener_web'
 end
 
 group :development, :test do
+  gem 'bullet'
   gem 'bard'
   gem 'byebug'
   gem 'pry-rails'
-  gem 'pry-remote'
-  gem 'rubocop', '0.63.1'
-  gem 'rubocop-rspec'
   gem 'rspec-rails'
 end
