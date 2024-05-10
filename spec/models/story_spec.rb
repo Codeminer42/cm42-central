@@ -526,35 +526,6 @@ describe Story do
       end
     end
   end
-  describe '#release_date' do
-    context 'Date in the format MM-DD-YYYY' do
-      let(:story_params) { { title: 'Test Story', release_date: '12/22/2017' } }
-      let(:story) { build(:story, story_params) }
-
-      it 'parses date to correct format' do
-        correct_date = Date.parse('22/12/2017')
-        expect(story.release_date).to eq(correct_date)
-      end
-    end
-    context 'Date in the format DD-MM-YYYY' do
-      let(:story_params) { { title: 'Test Story', release_date: '22/12/2017' } }
-      let(:story) { build(:story, story_params) }
-
-      it 'parses date to correct format' do
-        correct_date = Date.parse('22/12/2017')
-        expect(story.release_date).to eq(correct_date)
-      end
-    end
-    context 'Date in invalid format' do
-      let(:story_params) { { title: 'Test Story', release_date: 'bad_string' } }
-      let(:story) { build(:story, story_params) }
-
-      it 'return nill' do
-        expect(story.release_date).to eq(nil)
-      end
-    end
-  end
-
 
   describe '.can_be_estimated?' do
     STORY_TYPES = { feature: true, chore: false, bug: false, release: false }.freeze

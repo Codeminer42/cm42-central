@@ -181,7 +181,6 @@ GEM
       activerecord
       capybara
       cucumber
-    chronic (0.10.2)
     codeclimate-test-reporter (1.0.7)
       simplecov
     coderay (1.1.3)
@@ -688,7 +687,6 @@ DEPENDENCIES
   capybara-screenshot
   chartkick
   chop
-  chronic
   codeclimate-test-reporter
   configuration
   cucumber-rails

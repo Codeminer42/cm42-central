@@ -205,13 +205,6 @@ class Story < ApplicationRecord
     (cycle_time / 1.send(unit)).round
   end
 
-  def release_date=(val)
-    return if val.blank?
-
-    date = Chronic.parse(val)
-    self[:release_date] = date
-  end
-
   def set_started_at
     return unless state_changed?
     return unless state == 'started'

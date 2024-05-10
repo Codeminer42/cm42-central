@@ -14,7 +14,6 @@ gem 'backhoe'
 gem 'transitions', require: ["transitions", "active_model/transitions"]
 gem 'virtus'
 gem 'positioning'
-gem 'chronic'
 gem 'configuration'
 gem 'dalli', '~> 3.2.3'
 gem 'differ'
