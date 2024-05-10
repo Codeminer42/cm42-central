@@ -108,7 +108,7 @@ class ImportProjectJob < ActiveJob::Base
       story = project.stories.find_by!(pivotal_id: attrs.fetch("story_id"))
       task.update!({
         story:,
-        name: attrs["name"],
+        name: attrs.fetch("description"),
         done: attrs.fetch("complete"),
         position: attrs.fetch("position"),
         created_at: attrs.fetch("created_at"),
