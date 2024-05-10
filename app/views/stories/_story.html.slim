@@ -111,7 +111,7 @@
               .notelist
                 - form.object.notes.each do |note|
                   .note
-                    .note_note => simple_format note.note
+                    .note_note => simple_format auto_link note.note
                     .note_meta
                       span.user => note.user_name
                       span.created_at => note.created_at
