@@ -39,7 +39,11 @@ class StoriesController < ApplicationController
     if result.failure?
       flash.alert = @story.errors.full_messages.join(" ")
     end
-    redirect_to project_url(@project)
+
+    respond_to do |wants|
+      wants.json { render json: true }
+      wants.html { redirect_to project_url(@project) }
+    end
   end
 
   def transition
