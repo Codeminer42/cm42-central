@@ -17,6 +17,8 @@ class ImportProjectJob < ActiveJob::Base
     import_comments
     import_attachments
     import_activities
+
+    @project.touch
   end
 
   private
