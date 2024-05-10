@@ -2,9 +2,6 @@
   <% if policy(Project).new? %>
     <%= link_to t('projects.new project'), new_project_path, class: 'btn btn-primary btn-sm navbar-btn', data: {step: "create-project"} %>
   <% end %>
-  <% if policy(TagGroup).new? %>
-    <%= link_to t('tag_group.tag_groups'), tag_groups_path, class: 'btn btn-success btn-sm navbar-btn' %>
-  <% end %>
 <% end %>
 
 <div id="projects" class="projects-list">

@@ -18,8 +18,6 @@ class Project < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged, reserved_words: %w[new edit].freeze
 
-  belongs_to :tag_group
-
   belongs_to :pivotal_project, foreign_key: :pivotal_id, touch: true, required: false
 
   has_one_attached :import

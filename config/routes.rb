@@ -47,8 +47,6 @@ Rails.application.routes.draw do
     post :import, on: :member
   end
 
-  resources :tag_groups
-
   namespace :admin do
     resources :users
   end

@@ -56,33 +56,23 @@ describe 'Projects' do
       let(:user) do
         create :user, :admin, email: 'user@example.com', password: 'password'
       end
-      let(:tag_group) { create :tag_group }
 
       describe 'list projects' do
         before do
-          p1 = create :project, name: 'Test Project',
-                                users: [user],
-                                tag_group: tag_group
-          p2 = create :project, name: 'Archived Project',
-                                users: [user],
-                                archived_at: Time.current
+          p1 = create :project, name: 'Test Project', users: [user]
+          p2 = create :project, name: 'Archived Project', users: [user], archived_at: Time.current
 
           visit projects_path
         end
 
         it 'shows the project list' do
           expect(page).to have_selector('.navbar', text: 'New Project')
-          expect(page).to have_selector('.navbar', text: 'Tag Groups')
 
           within('#projects') do
             click_on 'Test Project'
           end
 
           expect(page).not_to have_selector('h1', text: 'Archived Project')
-        end
-
-        xit 'shows the tag name of each project if it has' do
-          expect(page).to have_selector('small', text: 'MY-TAG')
         end
       end
 
@@ -100,9 +90,7 @@ describe 'Projects' do
 
       describe 'edit project' do
         let!(:project) do
-          create :project, name: 'Test Project',
-                           users: [user],
-                           tag_group: tag_group
+          create :project, name: 'Test Project', users: [user]
         end
 
         it 'edits a project' do

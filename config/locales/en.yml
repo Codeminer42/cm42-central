@@ -367,14 +367,6 @@ en:
       properties: 'Properties'
       people: 'People'
 
-  tag_group:
-    color: "Color"
-    name: "Name"
-    description: "Description"
-    actions: "Actions"
-    bg_color: "Background Color"
-    tag_groups: "Tag Groups"
-
   users:
     You are not authorized to perform this action: "You are not authorized to perform this action."
     is already a member of this project: "%{email} is already a member of this project"

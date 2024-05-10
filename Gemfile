@@ -35,7 +35,6 @@ gem 'dry-monads'
 
 # view
 gem 'rails-i18n'
-gem 'rgb_utils'
 gem 'slim-rails'
 gem 'kaminari'
 gem 'gravtastic'

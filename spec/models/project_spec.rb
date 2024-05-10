@@ -287,7 +287,6 @@ describe Project, type: :model do
 
   describe 'associations' do
     subject { build :project }
-    it { is_expected.to belong_to(:tag_group) }
     it { is_expected.to have_many(:changesets) }
   end
 

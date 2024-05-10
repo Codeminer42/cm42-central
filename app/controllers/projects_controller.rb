@@ -6,7 +6,7 @@ class ProjectsController < ApplicationController
   before_action :fluid_layout, only: %i[show edit]
 
   def index
-    @projects = policy_scope(Project).preload(:tag_group) # map ProjectPresenter.from_collection(collection)
+    @projects = policy_scope(Project) # map ProjectPresenter.from_collection(collection)
     @activities_group = Activity.grouped_activities(@projects, 1.week.ago)
     @pivotal_projects = policy_scope(PivotalProject).where.not(id: @projects.pluck(:pivotal_id)).order(:name)
     redirect_to @projects.first if !current_user.admin? && @projects.size == 1
@@ -122,7 +122,7 @@ class ProjectsController < ApplicationController
   def allowed_params
     params
       .fetch(:project)
-      .permit(:name, :point_scale, :default_velocity, :tag_group_id, :start_date,
+      .permit(:name, :point_scale, :default_velocity, :start_date,
               :iteration_start_day, :iteration_length, :archived,
               :enable_tasks, :mail_reports, :velocity_strategy)
   end
