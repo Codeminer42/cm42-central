@@ -8,8 +8,8 @@ class NotePolicy < StoryPolicy
     def resolve
       if admin?
         Note.all
-      elsif story_member?
-        current_story.notes
+      elsif project_member?
+        current_project.notes
       else
         Note.none
       end
