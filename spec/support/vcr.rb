@@ -2,7 +2,7 @@ require 'vcr'
 require 'webmock'
 
 VCR.configure do |config|
-  config.hook_into :faraday, :webmock
+  config.hook_into :webmock
   config.cassette_library_dir = 'fixtures/vcr_cassettes'
   config.ignore_localhost = true
   config.ignore_request do |request|

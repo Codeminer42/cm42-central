@@ -281,10 +281,6 @@ GEM
     factory_bot_rails (6.4.3)
       factory_bot (~> 6.4)
       railties (>= 5.0.0)
-    faraday (2.9.0)
-      faraday-net_http (>= 2.0, < 3.2)
-    faraday-net_http (3.1.0)
-      net-http
     ferrum (0.14)
       addressable (~> 2.5)
       concurrent-ruby (~> 1.1)
@@ -393,8 +389,6 @@ GEM
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
     mutex_m (0.2.0)
-    net-http (0.4.1)
-      uri
     net-imap (0.4.10)
       date
       net-protocol
@@ -643,7 +637,6 @@ GEM
       concurrent-ruby (~> 1.0)
     unicode-display_width (1.4.1)
     uniform_notifier (1.16.0)
-    uri (0.13.0)
     user_impersonate2 (0.12.0)
       rails (>= 5.1.0)
     vcr (6.2.0)
@@ -703,7 +696,6 @@ DEPENDENCIES
   enumerize (~> 2.5.0)
   exception_notification!
   factory_bot_rails
-  faraday
   foreman
   foreman-export-systemd_user
   friendly_id (~> 5.2.5)
