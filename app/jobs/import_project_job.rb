@@ -75,7 +75,7 @@ class ImportProjectJob < ActiveJob::Base
       story = Story.where(pivotal_id: attrs.fetch("id")).first_or_initialize
 
       owners = attrs.fetch("owner_ids").map do |pivotal_id|
-        project.users.find_by!(pivotal_id: pivotal_id)
+        project.users.find_by(pivotal_id: pivotal_id)
       end
 
       labels = attrs.fetch("labels").map do |label|
@@ -89,7 +89,7 @@ class ImportProjectJob < ActiveJob::Base
         estimate: attrs["estimate"],
         state: attrs.fetch("current_state"),
         story_type: attrs.fetch("story_type"),
-        requested_by: project.users.find_by!(pivotal_id: attrs.fetch("requested_by_id")),
+        requested_by: project.users.find_by(pivotal_id: attrs.fetch("requested_by_id")),
         owned_by: owners[0],
         labels: labels.join(", "),
         blockers: attrs.fetch("blockers"),
@@ -119,7 +119,7 @@ class ImportProjectJob < ActiveJob::Base
   def import_comments
     pivotal_project.comments_attributes.each do |attrs|
       note = Note.where(pivotal_id: attrs.fetch("id")).first_or_initialize
-      user = project.users.find_by!(pivotal_id: attrs.fetch("person_id"))
+      user = project.users.find_by(pivotal_id: attrs.fetch("person_id"))
       story = project.stories.find_by!(pivotal_id: attrs.fetch("story_id"))
       note.attributes = {
         note: attrs["text"],
@@ -160,7 +160,7 @@ class ImportProjectJob < ActiveJob::Base
   def import_activities
     pivotal_project.activities_attributes.each do |attrs|
       activity = Activity.where(pivotal_id: attrs.fetch("guid")).first_or_initialize
-      user = User.find_by!(pivotal_id: attrs.fetch("performed_by").fetch("id"))
+      user = User.find_by(pivotal_id: attrs.fetch("performed_by").fetch("id"))
 
       primary_resource = attrs.fetch("primary_resources")[0]
       subject_class_name = primary_resource.fetch("kind").classify
