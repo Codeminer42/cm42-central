@@ -12,6 +12,7 @@ export default class extends Controller {
       group: "name",
       draggable: ".story",
       filter: ".accepted, :has(.toggle-story:checked)",
+      preventOnFilter: false,
       dataIdAttr: "data-id",
       onSort: e => this.onSort(e),
       onMove: e => this.onMove(e),
