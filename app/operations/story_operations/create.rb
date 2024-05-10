@@ -14,6 +14,7 @@ module StoryOperations
       ActiveRecord::Base.transaction do
         yield set_attrs
         yield save_story
+        yield position_story
         yield save_note
 
         yield create_changesets
@@ -46,6 +47,24 @@ module StoryOperations
           Failure(story)
         end
       end
+    end
+
+    def position_story
+      position = :first
+      if story.positioning_column == "#in_progress"
+        next_story = Story.where({
+          positioning_column: story.positioning_column,
+          state: "unstarted",
+        }).order(:position).first
+        if next_story
+          position = next_story.position
+        else
+          position = :last
+        end
+      end
+
+      story.update! position: position
+      Success(story)
     end
 
     def save_note

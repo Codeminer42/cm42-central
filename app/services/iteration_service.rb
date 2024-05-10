@@ -191,7 +191,7 @@ class IterationService
     end
   end
 
-  def backlog_iterations(velocity_value = velocity)
+  def backlog_iterations(velocity_value = velocity, new_todo_story: nil)
     velocity_value = 1 if velocity_value < 1
     @backlog_iterations ||= {}
     @backlog_iterations[velocity_value] ||= begin
@@ -215,10 +215,32 @@ class IterationService
           backlog_iteration << story
         end
       end
-      current_iteration.sort_by! do |s|
-        [s.accepted_at || Time.zone.now, s.position]
+
+      if new_todo_story.present?
+        new_todo_story.position = 0
+        current_iteration << new_todo_story
       end
+
+      now = Time.zone.now
+      current_iteration.sort_by! do |s|
+        [
+          s.accepted_at || now,
+          new_record_position(s),
+          s.position,
+        ]
+      end
+
       iterations
+    end
+  end
+
+  def new_record_position story
+    if %w[accepted rejected delivered finished started].include?(story.state)
+      1
+    elsif story.new_record?
+      2
+    else
+      3
     end
   end
 

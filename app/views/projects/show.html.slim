@@ -37,8 +37,7 @@
             label.add-story-button for="new-story-in_progress-toggle" + Add Story
 
           #in_progress.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#in_progress"
-            = render @new_todo_story
-            = render @project.backlog_iterations, total: 0
+            = render @project.backlog_iterations(new_todo_story: @new_todo_story), total: 0
 
         / td.backlog_column data-column-view="backlog" data-connect="#chilly_bin,#in_progress"
           .column_header data-step="backlog"

@@ -72,8 +72,8 @@ Feature: Stories can be added
     And I press "Save"
     Then I should see the following project board:
       | Done | Current | Icebox           |
-      |      |         | F WOW start      |
       |      |         | B WOW! MG start  |
+      |      |         | F WOW start      |
 
     And "gubs@botandrose.com" should receive an email from "notifications@clients.botandrose.com" with the subject "[Example Project] WOW!" and the following body:
       """

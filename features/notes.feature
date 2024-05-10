@@ -115,8 +115,8 @@ Feature: Stories can contain notes
     And I press "Save"
     Then I should see the following project board:
       | Done | Current | Icebox            |
-      |      |         | F WOW start       |
       |      |         | F With note start |
+      |      |         | F WOW start       |
 
     When I open the "With note" story
     Then I should see the following notes:
