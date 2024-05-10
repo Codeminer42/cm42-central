@@ -30,7 +30,7 @@ class ApplicationPolicy
   attr_reader :context, :record
 
   def initialize(context, record)
-    if context.is_a?(AdminUser)
+    if context.is_a?(User) && context.admin?
       context = PunditContext.new(nil, context, active_admin: true)
     end
     raise Pundit::NotAuthorizedError, 'Must be signed in.' unless context.current_user

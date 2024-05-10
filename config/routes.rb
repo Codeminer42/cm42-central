@@ -1,6 +1,5 @@
 require 'sidekiq/web'
 Rails.application.routes.draw do
-  devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
   mount UserImpersonate::Engine => "/impersonate", as: "impersonate_engine"
@@ -14,7 +13,6 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'story/new'
   get 'projects/archived' => 'projects#archived'
   put 'locales' => 'locales#update', as: :locales
 
@@ -64,7 +62,7 @@ Rails.application.routes.draw do
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
 
-  authenticate :admin_user do
+  authenticate :user, ->(u) { u.admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end
 
