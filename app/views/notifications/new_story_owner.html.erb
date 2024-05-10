@@ -1,6 +1,8 @@
 You were added as a story owner to
-<%= link_to @story.title, project_story_url(@story.project, @story) %>
+<%= link_to @story.title, @url %><br>
 by
 <%= @actor.name %>
-(@<%= @actor.username %>)
+(@<%= @actor.username %>)<br>
+<br>
+<%= link_to @url, @url %>
 

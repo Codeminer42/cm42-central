@@ -18,7 +18,12 @@ Feature: Stories have a lifecycle
     Then I should see the following project board:
       | Done | Current | Icebox      |
       |      |         | F WOW start |
-    And "micah@botandrose.com" should receive an email
+    And "micah@botandrose.com" should receive an email from "notifications@clients.botandrose.com" with the subject "[Example Project] WOW" and the following body:
+      """
+      Feature WOW was created by Michael Gubitosa (@gubs)
+
+      http://clients.botandrose.com/projects/example-project#story-1
+      """
     And "gubs@botandrose.com" should receive no emails
 
     Given I am logged in as "micah@botandrose.com"
@@ -37,7 +42,16 @@ Feature: Stories have a lifecycle
     Then I should see the following project board:
       | Done | Current           | Icebox |
       |      | F WOW GUBS finish |        |
-    And "gubs@botandrose.com" should receive an email
+    And "gubs@botandrose.com" should receive an email from "notifications@clients.botandrose.com" with the subject "[Example Project] WOW" and the following body:
+      """
+      You were added as a story owner to
+      <a href="http://clients.botandrose.com/projects/example-project#story-1">WOW</a><br>
+      by
+      Micah Geisel
+      (@micahg)<br>
+      <br>
+      <a href="http://clients.botandrose.com/projects/example-project#story-1">http://clients.botandrose.com/projects/example-project#story-1</a>
+      """
     And "micah@botandrose.com" should receive no emails
 
     Given I am logged in as "gubs@botandrose.com"
@@ -49,7 +63,16 @@ Feature: Stories have a lifecycle
     Then I should see the following project board:
       | Done | Current         | Icebox |
       |      | F WOW MG finish |        |
-    And "micah@botandrose.com" should receive an email
+    And "micah@botandrose.com" should receive an email from "notifications@clients.botandrose.com" with the subject "[Example Project] WOW" and the following body:
+      """
+      You were added as a story owner to
+      <a href="http://clients.botandrose.com/projects/example-project#story-1">WOW</a><br>
+      by
+      Michael Gubitosa
+      (@gubs)<br>
+      <br>
+      <a href="http://clients.botandrose.com/projects/example-project#story-1">http://clients.botandrose.com/projects/example-project#story-1</a>
+      """
     And "gubs@botandrose.com" should receive no emails
 
     Given I am logged in as "micah@botandrose.com"
@@ -66,7 +89,14 @@ Feature: Stories have a lifecycle
     Then I should see the following project board:
       | Done | Current                | Icebox |
       |      | F WOW MG accept reject |        |
-    And "gubs@botandrose.com" should receive an email
+    And "gubs@botandrose.com" should receive an email from "notifications@clients.botandrose.com" with the subject "[Example Project] WOW" and the following body:
+      """
+      Micah Geisel has delivered your story 'WOW'.
+
+      You can now review the story, and either accept or reject it.
+
+      http://clients.botandrose.com/projects/example-project#story-1
+      """
     And "micah@botandrose.com" should receive no emails
 
     Given I am logged in as "gubs@botandrose.com"
@@ -76,7 +106,12 @@ Feature: Stories have a lifecycle
     Then I should see the following project board:
       | Done | Current          | Icebox |
       |      | F WOW MG restart |        |
-    And "micah@botandrose.com" should receive an email
+    And "micah@botandrose.com" should receive an email from "notifications@clients.botandrose.com" with the subject "[Example Project] WOW" and the following body:
+      """
+      Michael Gubitosa has rejected the story 'WOW'.
+
+      http://clients.botandrose.com/projects/example-project#story-1
+      """
     And "gubs@botandrose.com" should receive no emails
 
     Given I am logged in as "micah@botandrose.com"
@@ -100,7 +135,14 @@ Feature: Stories have a lifecycle
     Then I should see the following project board:
       | Done | Current                | Icebox |
       |      | F WOW MG accept reject |        |
-    And "gubs@botandrose.com" should receive an email
+    And "gubs@botandrose.com" should receive an email from "notifications@clients.botandrose.com" with the subject "[Example Project] WOW" and the following body:
+      """
+      Micah Geisel has delivered your story 'WOW'.
+
+      You can now review the story, and either accept or reject it.
+
+      http://clients.botandrose.com/projects/example-project#story-1
+      """
     And "micah@botandrose.com" should receive no emails
 
     Given I am logged in as "gubs@botandrose.com"
@@ -110,6 +152,11 @@ Feature: Stories have a lifecycle
     Then I should see the following project board:
       | Done | Current  | Icebox |
       |      | F WOW MG |        |
-    And "micah@botandrose.com" should receive an email
+    And "micah@botandrose.com" should receive an email from "notifications@clients.botandrose.com" with the subject "[Example Project] WOW" and the following body:
+      """
+      Michael Gubitosa has accepted the story 'WOW'.
+
+      http://clients.botandrose.com/projects/example-project#story-1
+      """
     And "gubs@botandrose.com" should receive no emails
 

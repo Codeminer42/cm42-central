@@ -1,5 +1,7 @@
 <%= @story.story_type.capitalize %> <%= @story.title %> was created by <%= @actor.name %> (@<%= @actor.username %>)
 
+<%- if @story.description.present? -%>
 <%= @story.description %>
 
-<%= project_story_url @story.project, @story %>
+<%- end -%>
+<%= project_url @story.project %>#story-<%= @story.id %>

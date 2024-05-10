@@ -42,7 +42,7 @@ Feature: Stories can be added
 
       description
 
-      http://clients.botandrose.com/projects/example-project/stories/2
+      http://clients.botandrose.com/projects/example-project#story-2
       """
 
     And "micah@botandrose.com" should receive no emails
@@ -81,7 +81,7 @@ Feature: Stories can be added
 
       description
 
-      http://clients.botandrose.com/projects/example-project/stories/2
+      http://clients.botandrose.com/projects/example-project#story-2
       """
 
     And "micah@botandrose.com" should receive no emails
