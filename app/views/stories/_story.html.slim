@@ -37,10 +37,10 @@
       = form_for [@project, story], namespace: dom_id(story), data: { story_target: "form" } do |form|
         div
           .form-group.story-controls
-            = form.submit "Save", data: { action: "click->story#close:stop" }
+            = form.submit "Save", data: { action: "click->story#close:stop", story_target: "submitButton" }
             - if story.persisted?
-              = form.submit "Delete", class: "delete", form: "delete_story_#{story.id}", data: { confirm: "Are you sure you want to delete this story?" }
-            input.cancel type="button" value="Cancel" data-action="click->story#close:prevent:stop"
+              = form.submit "Delete", class: "delete", form: "delete_story_#{story.id}", data: { story_target: "submitButton", confirm: "Are you sure you want to delete this story?" }
+            input.cancel type="button" value="Cancel" data-action="click->story#close:prevent:stop" data-story-target="submitButton"
 
         div
           .col-xs-12.form-group.input-group.input-group-sm
@@ -125,6 +125,6 @@
               = note_form.text_area :note, class: "form-control note-textarea", data: { story_target: "permanent note" }
               = note_form.label :attachments, "Attachment(s)"
               = note_form.bard_file_field :attachments, multiple: true, data: { story_target: "permanent attachment" }
-              button.add-note.btn.btn-default.btn-xs type="submit"
+              button.add-note.btn.btn-default.btn-xs type="submit" data-story-target="submitButton"
                 | Add note
 
