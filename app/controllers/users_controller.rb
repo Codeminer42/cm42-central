@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   def create
     build_user
     if @user.save
-      @user.projects << current_project unless @user.projects.include?(current_project)
+      MembershipOperations::Create.call(project: @project, user: @user)
       flash.notice = "#{@user.email} was added to the project"
     else
       flash.alert = "User was not created"

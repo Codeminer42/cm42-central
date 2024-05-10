@@ -4,10 +4,14 @@ class MembershipsController < ApplicationController
   def create
     authorize available_users
     if @user = User.find_by(email: params[:email])
-      if enroll
-        flash.notice = @project_enroller_service.message
+      result = MembershipOperations::Create.call(
+        project: @project,
+        user: @user,
+      )
+      if result.success?
+        flash.notice = I18n.t('was added to this project', scope: 'users', email: @user.email)
       else
-        flash.alert = @project_enroller_service.message
+        flash.alert = I18n.t('is already a member of this project', scope: 'users', email: @user.email)
       end
       redirect_to project_users_url(@project)
     else
@@ -23,16 +27,5 @@ class MembershipsController < ApplicationController
 
   def set_project
     @project = policy_scope(Project).friendly.find(params[:project_id])
-  end
-
-  def enroll
-    @project_enroller_service = ProjectMembershipEnrollerService.new(@user, @project)
-    if @project_enroller_service.enroll
-      authorize @user
-      @available_users = available_users
-      true
-    else
-      false
-    end
   end
 end

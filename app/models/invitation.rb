@@ -4,12 +4,16 @@ class Invitation
   attr_accessor :project, :email, :name, :initials, :username, :role
 
   def save
-    project.users.create({
+    user = User.create({
       email:,
       name:,
       initials:,
       username:,
       role:,
     })
+    MembershipOperations::Create.call(
+      project:,
+      user:,
+    )
   end
 end

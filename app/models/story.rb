@@ -23,7 +23,8 @@ class Story < ApplicationRecord
     end
   end
 
-  scope :accepted, -> { where(state: 'accepted').where.not(accepted_at: nil) }
+  scope :not_accepted, -> { where(accepted_at: nil) }
+  scope :accepted,    -> { where(state: 'accepted').where.not(accepted_at: nil) }
   scope :done,        -> { where(state: :accepted) }
   scope :in_progress, -> { where(state: [:started, :finished, :delivered]) }
   scope :backlog,     -> { where(state: :unstarted) }
