@@ -27,7 +27,7 @@ Rails.application.routes.draw do
     end
     resources :users, only: [:index, :create, :destroy]
     resources :memberships, only: [:create]
-    resources :invitations, only: [:new, :create, :show]
+    resources :invitations, only: [:new, :create, :show, :update]
     resources :changesets, only: [:index]
     put 'stories/sort', to: 'stories#sort'
     resources :stories, only: [:index, :create, :update, :destroy] do

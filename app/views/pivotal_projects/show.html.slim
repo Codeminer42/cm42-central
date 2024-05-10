@@ -80,3 +80,6 @@
                 td = index
                 td colspan="2" = error
 
+      .panel-footer
+        - if @pivotal_project.project.present?
+          = link_to "Visit imported project", @pivotal_project.project

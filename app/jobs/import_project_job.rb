@@ -55,6 +55,11 @@ class ImportProjectJob < ActiveJob::Base
     pivotal_project.memberships_attributes.each do |attrs|
       person = attrs.fetch("person")
       user = User.where(email: person.fetch("email")).first_or_initialize
+
+      # handle confirmation manually later
+      def user.confirmation_required? = false
+      def user.send_confirmation_notification? = false
+
       user.update!({
         pivotal_id: person.fetch("id"),
         name: person.fetch("name"),

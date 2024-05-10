@@ -1,13 +1,13 @@
 <div class="col-xs-12">
   <div class="row">
     <div class="col-xs-12 col-sm-6">
-      <div class="row">
+      <div class="row" id="project-members">
         <div class="col-md-12">
           <h4><i class="mi md-20">group</i> <%= t('projects.project_members') %></h4>
         </div>
 
       <% project.users.order('name').each do |user| %>
-        <div class="col-md-12" id="project-members">
+        <div class="col-md-12">
           <div class="panel panel-default card user-card">
             <div class="panel-body">
               <div class="row">
@@ -24,12 +24,24 @@
             </div>
 
             <% if policy(User).destroy? %>
-              <%= link_to t('remove'),
-                project_user_path(project, user),
-                data: { confirm: t('remove user confirm', email: user.email) },
-                method: :delete,
-                remote: true,
-                class: 'card-footer' %>
+              <span>
+                <%= link_to t('remove'),
+                  project_user_path(project, user),
+                  data: { confirm: t('remove user confirm', email: user.email) },
+                  method: :delete,
+                  remote: true,
+                  class: 'card-footer' %>
+              </span>
+
+              <% if !user.confirmed? %>
+                <span>
+                  <% verb = user.confirmation_sent_at ? "Resend" : "Send" %>
+                  <%= link_to "#{verb} invitation email",
+                    invitation_path(id: user.id),
+                    method: :put,
+                    class: 'card-footer' %>
+                </span>
+              <% end %>
             <% end %>
           </div>
         </div>
@@ -39,13 +51,13 @@
 
     <div class="col-xs-12 col-sm-6">
       <% if policy(User).create? %>
-        <div class="row">
+        <div class="row" id="available-users">
           <div class="col-md-12">
             <h4><i class="mi md-20">group</i> <%= t('projects.available_users') %></h4>
           </div>
 
           <% available_users.each do |user| %>
-          <div class="col-md-12" id="available-users">
+          <div class="col-md-12">
             <div class="panel panel-default card user-card">
               <div class="panel-body">
                 <div class="row">

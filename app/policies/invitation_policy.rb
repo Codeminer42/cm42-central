@@ -7,6 +7,10 @@ class InvitationPolicy < ApplicationPolicy
     admin?
   end
 
+  def update?
+    admin?
+  end
+
   def show
     true
   end

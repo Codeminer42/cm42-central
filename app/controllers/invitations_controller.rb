@@ -1,5 +1,5 @@
 class InvitationsController < ApplicationController
-  before_action :set_project, except: :show
+  before_action :set_project, except: [:show, :update]
   skip_before_action :authenticate_user!, only: :show
 
   def new
@@ -29,6 +29,14 @@ class InvitationsController < ApplicationController
     else
       redirect_to "/", alert: "Invalid invitation link. Please contact Michael or Micah for support."
     end
+  end
+
+  def update
+    user = User.find(params[:id])
+    authorize user
+    user.send_confirmation_instructions
+    flash.notice = "Invitation email sent to #{user.email}"
+    redirect_back_or_to "/projects"
   end
 
   private
