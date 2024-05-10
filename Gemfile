@@ -25,8 +25,6 @@ gem 'pivotal-tracker-api', github: 'AgileVentures/pivotal-tracker-api'
 gem 'sorted_set'
 
 # controller
-gem 'platform-api'
-gem 'api-pagination'
 gem 'pundit'
 gem 'dry-matcher'
 gem 'dry-monads'
@@ -34,7 +32,6 @@ gem 'dry-monads'
 # view
 gem 'rails-i18n'
 gem 'slim-rails'
-gem 'kaminari'
 gem 'gravtastic'
 gem 'bard-file_field'
 gem 'user_impersonate2', require: 'user_impersonate'
@@ -60,8 +57,6 @@ gem 'redis'
 gem 'sidekiq', '~>6.0' # 7.0 requires redis 6.2+
 gem 'sidekiq-scheduler'
 gem 'sidekiq_mailer'
-gem 'sinatra', require: nil
-gem 'rollbar', '~> 3.3'
 gem 'exception_notification', github: 'smartinez87/exception_notification'
 gem 'foreman'
 
