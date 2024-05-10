@@ -82,4 +82,4 @@
 
       .panel-footer
         - if @pivotal_project.project.present?
-          = link_to "Visit imported project", @pivotal_project.project
+          = link_to "Visit imported project", @pivotal_project.project, data: { turbo: false }

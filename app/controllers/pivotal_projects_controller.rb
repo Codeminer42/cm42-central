@@ -11,6 +11,8 @@ class PivotalProjectsController < ApplicationController
   def import
     @pivotal_project = PivotalProject.find(params[:id])
     @pivotal_project.import!
+    project = @pivotal_project.project || @pivotal_project.build_project
+    project.update!(name: @pivotal_project.name)
     redirect_to @pivotal_project
   end
 

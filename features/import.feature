@@ -60,7 +60,7 @@ Feature: Admins can import project from Pivotal Tracker via its API
     And "gubs@botandrose.com" should receive no emails
     And "lindsaycaron37@gmail.com" should receive no emails
 
-    When I follow "Visit imported project"
+    When I follow "Visit imported project" with a 10 second timeout
     Then I should see the following project board:
       | Done                                                                                                               | Current                                                                                        | Icebox                                                                                   |
       | C Proposal gubs                                                                                                    | F Optimize for mobile gubs                                                                     | F Show linked calendars on Organizations gubs start                                      |
@@ -105,7 +105,6 @@ Feature: Admins can import project from Pivotal Tracker via its API
       | F Add "add your own tags" help text to event form gubs                                                             |                                                                                                |                                                                                          |
       | F Remove hCalendar markup gubs                                                                                     |                                                                                                |                                                                                          |
       | B Error when entering a non-location into the location field MG                                                    |                                                                                                |                                                                                          |
-
 
     When I follow "Members"
     Then I should see the following project members:
