@@ -84,7 +84,6 @@ class Project < ApplicationRecord
   def iteration_service(since: nil, current_time: Time.zone.now)
     @iteration_service ||= IterationService.new(self, since: since, current_time: current_time)
   end
-
   delegate :completed_iterations, :backlog_iterations, to: :iteration_service
 
   def point_values

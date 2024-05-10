@@ -28,7 +28,7 @@
             / a.toggle-column.hide_done href="#" title="Close" ×
 
           #done.column_content.story_column
-            = render @project.completed_iterations
+            = render @project.completed_iterations(limit: 4)
 
         td.in_progress_column data-column-view="in_progress"
           .column_header data-step="in-progress"

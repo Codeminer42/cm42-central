@@ -179,8 +179,10 @@ class IterationService
     end
   end
 
-  def completed_iterations
-    (1...current_iteration_number).map do |number|
+  def completed_iterations limit: nil
+    start_iteration = limit ? current_iteration_number - limit : 1
+    start_iteration = 1 if start_iteration < 1
+    (start_iteration...current_iteration_number).map do |number|
       iteration = Iteration.new(self, number)
       stories = @accepted_stories.select do |story|
         (iteration.starts_at..iteration.ends_at).cover?(story.accepted_at)
