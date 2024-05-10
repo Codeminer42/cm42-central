@@ -29,38 +29,6 @@ describe StoriesController do
       sign_in user
     end
 
-    describe '#index' do
-      context 'when responding to csv' do
-        let(:active_story) { create(:story, :active, project: project, requested_by: user) }
-
-        before do
-          create(:note, story: active_story)
-
-          Timecop.freeze(2019, 1, 1, 12, 0, 0, 0) do
-            get :index, format: :csv, params: { project_id: project.slug }
-          end
-        end
-
-        it 'responds correct Content-Type' do
-          expect(response.headers['Content-Type']).to eq 'text/csv'
-        end
-
-        it 'responds correct filename' do
-          expect(response.headers['Content-Disposition']).to include("attachment; filename=\"Test Project-20190101_1200.csv\"")
-        end
-
-        it 'responds correct content' do
-          expect(response.body).to eq(
-            [
-              (Story.csv_headers << 'Note').to_csv,
-              project.stories.order(:position).map { |story| story.to_csv({ notes: 1, tasks: 0 }) }
-                             .map(&:to_csv)
-            ].flatten.join
-          )
-        end
-      end
-    end
-
     context 'member actions' do
       let(:story) { create(:story, project: project, requested_by: user) }
       let(:story_params) { { title: 'Foo', foo: 'Bar' } }

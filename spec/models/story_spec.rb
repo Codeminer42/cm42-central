@@ -217,57 +217,6 @@ describe Story do
     end
   end
 
-  describe '#to_csv' do
-    let(:story) { create(:story, :with_project) }
-
-    let(:number_of_extra_columns) { { tasks: 0, notes: 0 } }
-    let(:task) { double('task') }
-    let(:tasks) { [task] }
-
-    let(:note) { double('note') }
-    let(:notes) { [note] }
-
-    before do
-      allow(story).to receive(:tasks).and_return(tasks)
-      allow(story).to receive(:notes).and_return(notes)
-    end
-
-    it 'returns an array' do
-      expect(story.to_csv(number_of_extra_columns)).to be_kind_of(Array)
-    end
-
-    context 'when story have tasks' do
-      let(:task_name) { 'task_name' }
-      let(:task_status) { 'completed' }
-
-      before do
-        allow(task).to receive(:to_csv).and_return([task_name, task_status])
-        number_of_extra_columns[:tasks] = 1
-      end
-
-      it 'return task name' do
-        expect(story.to_csv(number_of_extra_columns)).to include(task_name)
-      end
-
-      it 'return task status' do
-        expect(story.to_csv(number_of_extra_columns)).to include(task_status)
-      end
-    end
-
-    context 'when story have notes' do
-      let(:note_body) { 'This is the note body text (Note Author - Dec 25, 2011)' }
-
-      before do
-        allow(note).to receive(:to_csv).and_return(note_body)
-        number_of_extra_columns[:notes] = 1
-      end
-
-      it 'return note body' do
-        expect(story.to_csv(number_of_extra_columns)).to include(note_body)
-      end
-    end
-  end
-
   describe '#stakeholders_users' do
     let(:requested_by)  { mock_model(User) }
     let(:owned_by)      { mock_model(User) }
@@ -339,10 +288,6 @@ describe Story do
     before { subject.state = 'accepted' }
     its(:events)  { should == [] }
     its(:column)  { should == '#done' }
-  end
-
-  describe '.csv_headers' do
-    specify { expect(Story.csv_headers).to be_kind_of(Array) }
   end
 
   describe '#cache_user_names' do

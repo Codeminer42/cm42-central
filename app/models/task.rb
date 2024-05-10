@@ -3,10 +3,6 @@ class Task < ApplicationRecord
 
   validates :name, presence: true
 
-  def to_csv
-    [name, status]
-  end
-
   private
 
   def status

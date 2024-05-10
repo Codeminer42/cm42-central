@@ -15,8 +15,6 @@ describe ProjectsController do
       update
       destroy
       reports
-      import
-      import_upload
     ].each do |action|
       specify do
         get action, params: { id: 42 }
@@ -119,10 +117,6 @@ describe ProjectsController do
       end
 
       describe 'member actions' do
-        before do
-          allow(project).to receive(:"import=").and_return(nil)
-        end
-
         describe '#show' do
           context 'as html' do
             specify do
@@ -215,119 +209,6 @@ describe ProjectsController do
             specify do
               delete :destroy, params: { id: project.id, name_confirmation: project.name }
               expect(response).to redirect_to(projects_url)
-            end
-          end
-        end
-
-        describe '#import' do
-          context 'when no job is running' do
-            specify do
-              get :import, params: { id: project.id }
-              expect(response).to be_successful
-              expect(assigns[:project]).to eq(project)
-              expect(response).to render_template('import')
-            end
-          end
-
-          context 'when there is a job registered' do
-            context 'still unprocessed' do
-              before do
-                session[:import_job] = { id: 'foo', created_at: 10.minutes.ago }
-              end
-
-              specify do
-                get :import, params: { id: project.id }
-                expect(assigns[:valid_stories]).to be_nil
-                expect(session[:import_job]).not_to be_nil
-                expect(response).to render_template('import')
-              end
-            end
-
-            context 'unprocessed for more than 60 minutes' do
-              before do
-                session[:import_job] = { id: 'foo', created_at: 2.hours.ago }
-              end
-
-              specify do
-                get :import, params: { id: project.id }
-                expect(assigns[:valid_stories]).to be_nil
-                expect(session[:import_job]).to be_nil
-                expect(response).to render_template('import')
-              end
-            end
-
-            context 'finished with errors' do
-              let(:error) { 'Bad CSV!' }
-              before do
-                session[:import_job] = { id: 'foo', created_at: 5.minutes.ago }
-                expect(Rails.cache)
-                  .to receive(:read)
-                  .with('foo')
-                  .and_return(invalid_stories: [], errors: error)
-              end
-              specify do
-                get :import, params: { id: project.id }
-                expect(assigns[:valid_stories]).to be_nil
-                expect(flash[:alert]).to eq('Unable to import CSV: Bad CSV!')
-                expect(session[:import_job]).to be_nil
-                expect(response).to render_template('import')
-              end
-            end
-
-            context 'finished with success' do
-              let(:invalid_story) { { title: 'hello', errors: 'bad cookie' } }
-              before do
-                session[:import_job] = { id: 'foo', created_at: 5.minutes.ago }
-                expect(Rails.cache)
-                  .to receive(:read)
-                  .with('foo')
-                  .and_return(invalid_stories: [invalid_story], errors: nil)
-              end
-
-              specify do
-                get :import, params: { id: project.id }
-                expect(assigns[:valid_stories]).to eq([story])
-                expect(assigns[:invalid_stories]).to eq([invalid_story])
-                expect(flash[:notice]).to eq('Imported 1 story')
-                expect(session[:import_job]).to be_nil
-                expect(response).to render_template('import')
-              end
-            end
-          end
-        end
-
-        describe '#import_upload' do
-          context 'when csv file is missing' do
-            specify do
-              put :import_upload, params: { id: project.id }
-              expect(response).to redirect_to(import_project_path(project))
-              expect(flash[:alert])
-                .to eq('You must select a CSV file to import its stories to the project.')
-            end
-          end
-
-          context 'when csv file is present' do
-            let(:csv) { fixture_file_upload('csv/stories.csv') }
-
-            before do
-              expect(project).to receive(:update).and_return(true)
-            end
-
-            specify do
-              expect(Project)
-                .to receive_message_chain(:friendly, :find)
-                .with(project.id.to_s)
-                .and_return(project)
-
-              expect(ImportWorker).to receive(:perform_async)
-              put :import_upload, params: { id: project.id, project: { import: csv } }
-
-              expect(flash[:notice]).to eq(
-                'Your uploaded CSV file is being processed. You can come back here ' \
-                'later when the process is finished.'
-              )
-
-              expect(response).to redirect_to(import_project_path(project))
             end
           end
         end

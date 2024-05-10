@@ -11,9 +11,6 @@
       <%= link_to t('reports'), reports_project_path(project, since: 3), class: 'nav-link' %>
     </li>
     -->
-    <li role="presentation" class="nav-item">
-      <%= link_to t('export'), project_stories_path(project, format: :csv), class: 'nav-link' %>
-    </li>
     <% if policy(project).manage? %>
       <li role="presentation" class="nav-item <%= settings_active_class %>">
         <%= link_to t('settings'), edit_project_path(project), class: 'nav-link' %>

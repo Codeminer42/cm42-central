@@ -43,31 +43,7 @@ class Story < ApplicationRecord
   has_many :users, through: :project
   has_many :changesets, dependent: :destroy
   has_many :tasks, dependent: :destroy
-  has_many :notes, -> { order(:created_at) }, dependent: :destroy do
-    def from_csv_row(row)
-      # Ensure no email notifications get sent during CSV import
-      project = proxy_association.owner.project
-      project.suppress_notifications
-
-      # Each row can have muliple Note headers.  Extract any of them from
-      # this row.
-      notes = []
-      row.each do |header, value|
-        if %w[Note Comment].include?(header) && value
-          next if value.blank? || value =~ /^Commit by/
-          value.delete!("\n", '')
-          next unless matches = /(.*)\((.*) - (.*)\)$/.match(value)
-          next if matches[1].strip.blank?
-          note = build(note: matches[1].strip,
-            user: project.users.find_by_username(matches[2]),
-            user_name: matches[2],
-            created_at: matches[3])
-          notes << note
-        end
-      end
-      notes
-    end
-  end
+  has_many :notes, -> { order(:created_at) }, dependent: :destroy
 
   serialize :blockers, type: Array, coder: JSON
 
@@ -95,12 +71,6 @@ class Story < ApplicationRecord
   #                 against: :labels,
   #                 ranked_by: ':trigram'
 
-  CSV_HEADERS = [
-    "Id", "Story", "Labels", "Iteration", "Iteration Start", "Iteration End",
-    "Story Type", "Estimate", "Current State", "Started At", "Created at", "Accepted at",
-    "Deadline", "Requested By", "Owned By", "Description", "URL"
-    ]
-
   ESTIMABLE_TYPES = %w[feature].freeze
   STORY_TYPES     = %i[feature chore bug release].freeze
 
@@ -112,10 +82,6 @@ class Story < ApplicationRecord
   validates :story_type, presence: true
   validates :estimate, central_estimate: true, allow_nil: true
   validate :validate_non_estimable_story
-
-  def self.csv_headers
-    CSV_HEADERS
-  end
 
   state_machine do
     state :unscheduled
@@ -235,28 +201,6 @@ class Story < ApplicationRecord
     ESTIMABLE_TYPES.include?(story_type.to_s)
   end
 
-  def to_csv(number_of_extra_columns)
-    [
-      id,                       # Id
-      title,                    # Story
-      labels,                   # Labels
-      nil,                      # Iteration
-      nil,                      # Iteration Start
-      nil,                      # Iteration End
-      story_type,               # Story Type
-      estimate,                 # Estimate
-      state,                    # Current State
-      started_at,               # Started at
-      created_at,               # Created at
-      accepted_at,              # Accepted at
-      nil,                      # Deadline
-      requested_by_name,        # Requested By
-      owned_by_name,            # Owned By
-      description,              # Description
-      nil                       # URL
-    ].concat(extra_columns(number_of_extra_columns))
-  end
-
   def estimated?
     estimate.present?
   end
@@ -270,18 +214,5 @@ class Story < ApplicationRecord
 
   def validate_non_estimable_story
     errors.add(:estimate, :cant_estimate) if !estimable_type? && estimated?
-  end
-
-  def extra_columns(number_of_extra_columns)
-    [
-      fill_columns_with(notes, number_of_extra_columns[:notes]),
-      fill_columns_with(tasks, number_of_extra_columns[:tasks]).flatten
-    ].flatten
-  end
-
-  def fill_columns_with(values, number_of_extra_columns)
-    (0...number_of_extra_columns).map do |column_number|
-      values[column_number].try(:to_csv)
-    end
   end
 end

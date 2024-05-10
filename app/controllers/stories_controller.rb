@@ -7,13 +7,6 @@ class StoriesController < ApplicationController
 
   before_action :set_project
 
-  def index
-    @stories = select_stories_by_params
-    render(csv: @stories.order(:position),
-           exporter: Exporters::Stories,
-           filename: @project.csv_filename)
-  end
-
   def create
     @story = policy_scope(Story).build
     authorize @story

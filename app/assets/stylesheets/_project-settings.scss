@@ -6,30 +6,6 @@
   overflow-y: auto;
 }
 
-/* Import */
-.import-stories-form {
-  margin: 15px auto;
-  width: 70%;
-
-  .field {
-    &.select {
-      padding: 5px;
-      background: $lightgrey;
-      border-radius: 5px;
-      padding: 10px;
-      margin-bottom: 10px;
-    }
-    &.submit {
-      text-align: right;
-    }
-  }
-}
-
-.instructions {
-  font-size: 1em;
-  margin-bottom: 20px;
-}
-
 /* Sidebar */
 .settings-sidebar-item {
   @extend .sidebar-item;

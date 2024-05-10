@@ -22,8 +22,8 @@ Rails.application.routes.draw do
 
   resources :projects do
     member do
-      get :join, :import, :search, :reports
-      patch :import_upload, :archive, :unarchive
+      get :join, :search, :reports
+      patch :archive, :unarchive
     end
     resources :users, only: [:index, :create, :destroy]
     resources :memberships, only: [:create]

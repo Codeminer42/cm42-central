@@ -6,7 +6,6 @@ class ApplicationController < ActionController::Base
 
   include Pundit::Authorization
   include SidebarController
-  include Renderers::Csv
 
   before_action :authenticate_user!, unless: ->(c) { c.devise_controller? || c.try(:active_admin_root?) }
   before_action :set_locale

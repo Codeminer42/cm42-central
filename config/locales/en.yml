@@ -21,8 +21,6 @@ en:
   reports:  "Reports"
   delete:   "Delete"
   back:     "Back"
-  import:   "Import"
-  export:   "Export"
   revert:   "Revert"
   apply:    "Apply"
   velocity: "Velocity"
@@ -145,14 +143,6 @@ en:
 
   requested on date:          'Requested on {{date}}'
   requested by user on date:  'Requested by {{user}} on {{date}}'
-
-  imported n stories:
-    one: 'Imported 1 story'
-    other: 'Imported %{count} stories'
-
-  n stories failed to import:
-    one: '1 story failed to import'
-    other: '%{count} stories failed to import'
 
   n weeks:
     one: '1 week'
@@ -343,21 +333,6 @@ en:
       history: 'History Of'
       search: 'Search'
 
-    uploads:
-      title: Import Stories
-      results: Import Results
-      row: Row
-      story: Story
-      type: Type
-      select_file: "You must select a CSV file to import its stories to the project."
-      being_processed: "Your uploaded CSV file is being processed. You can come back here later when the process is finished."
-      already_uploaded:
-        being_processed: "There is already an uploaded file being processed %{time_ago} ago."
-        come_back_later: "Wait a few minutes and come back to see the results or upload a new file in case of errors."
-      instructions:
-        introduction: "You can import many stories at once from a comma separated variable (CSV) format. The first line of the CSV must contain the correct headers for the import to succeed.  You can download a <a href='/Fulcrum_Import_Template.csv'>CSV template</a> with the correct headers  to get you started."
-        process_explanation: "The system will try and match any user names found in the CSV with members of your project. Make sure to register members with the correct names before importing if you want them to match."
-        bottom_line: "Note: You can also use a file exported from Pivotal Tracker."
     no_projects_found: "You're not enrolled to a project yet."
     no_recent_activity: "This team doesn't have recent activity."
     search_tooltip:

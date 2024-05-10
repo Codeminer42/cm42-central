@@ -7,15 +7,13 @@ class ProjectPolicy < ApplicationPolicy
     admin? || project_member?
   end
 
-  def import?
+  def archive?
     admin? && record.persisted?
   end
 
-  alias archive? import?
-  alias unarchive? import?
-  alias archived? update?
-  alias import_upload? import?
-  alias destroy? import?
+  alias unarchive? archive?
+  alias archived? archive?
+  alias destroy? archive?
 
   class Scope < Scope
     def resolve

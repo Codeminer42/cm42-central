@@ -23,8 +23,6 @@ describe ProjectPolicy do
       end
 
       %i[
-        import
-        import_upload
         archive
         unarchive
         destroy
@@ -47,8 +45,6 @@ describe ProjectPolicy do
       end
 
       %i[
-        import
-        import_upload
         archive
         unarchive
         destroy
@@ -73,8 +69,6 @@ describe ProjectPolicy do
       end
 
       %i[
-        import
-        import_upload
         archive
         unarchive
         destroy
@@ -97,8 +91,6 @@ describe ProjectPolicy do
       end
 
       %i[
-        import
-        import_upload
         archive
         unarchive
         destroy
@@ -119,8 +111,6 @@ describe ProjectPolicy do
       end
 
       %i[
-        import
-        import_upload
         archive
         unarchive
         destroy
@@ -141,8 +131,6 @@ describe ProjectPolicy do
       end
 
       %i[
-        import
-        import_upload
         archive
         unarchive
         destroy
