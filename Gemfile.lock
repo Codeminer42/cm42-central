@@ -151,6 +151,8 @@ GEM
     bigdecimal (3.1.7)
     binding_of_caller (1.0.1)
       debug_inspector (>= 1.2.0)
+    bootsnap (1.18.3)
+      msgpack (~> 1.2)
     bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
       sassc (>= 2.0.0)
@@ -386,6 +388,7 @@ GEM
     mini_portile2 (2.8.6)
     minitest (5.22.3)
     moneta (1.0.0)
+    msgpack (1.7.2)
     multi_json (1.15.0)
     multi_test (1.1.0)
     mustermann (3.0.0)
@@ -680,6 +683,7 @@ DEPENDENCIES
   bard-rake
   better_errors
   binding_of_caller
+  bootsnap
   bootstrap-sass (~> 3.4.0)
   bullet
   byebug

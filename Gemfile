@@ -6,6 +6,7 @@ git_source(:github) do |repo_name|
 end
 
 # model
+gem "bootsnap", require: false
 gem 'rails', '~>7.1.0'
 gem 'trilogy'
 gem 'bard-rake'
