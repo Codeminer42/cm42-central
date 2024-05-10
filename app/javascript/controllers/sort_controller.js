@@ -11,7 +11,7 @@ export default class extends Controller {
     this.sortable = Sortable.create(this.element, {
       group: "name",
       draggable: ".story",
-      filter: ".accepted",
+      filter: ".accepted, :has(.toggle-story:checked)",
       dataIdAttr: "data-id",
       onSort: e => this.onSort(e),
       onMove: e => this.onMove(e),
