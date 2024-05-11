@@ -31,15 +31,13 @@ export default class extends Controller {
 
     const url = `${window.location.pathname}/stories/${story.dataset.id}`
 
-    let position = {}
+    let position = "last"
     const previous = this.findPreviousStory(story)
     const next = this.findNextStory(story)
     if(previous) {
       position = { after: previous.dataset.id }
     } else if(next) {
       position = { before: next.dataset.id }
-    } else {
-      position = ""
     }
 
     let state = story.dataset.state
@@ -49,9 +47,9 @@ export default class extends Controller {
     }
 
     put(url, { story: {
-      state: state,
+      state,
       positioning_column: this.positioningColumnValue,
-      position: position,
+      position,
     } })
   }
 
