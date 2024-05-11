@@ -1,6 +1,4 @@
 class Notifications < ActionMailer::Base
-  self.deliver_later_wait = 5.seconds if Rails.env.production?
-
   def new_story(email, story, actor)
     @story = story
     @actor = actor
