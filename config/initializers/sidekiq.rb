@@ -26,5 +26,13 @@ Rails.application.config.after_initialize do
       ::Rails.logger.formatter = formatter
     end
   end
+
+
+  ActionMailer::MessageDelivery.prepend Module.new {
+    def deliver_later(options = {})
+      options[:wait] = 5.seconds if Rails.env.production?
+      super(options)
+    end
+  }
 end
 
