@@ -1,6 +1,10 @@
 class PivotalProject < ActiveRecord::Base
   has_one :project, foreign_key: :pivotal_id
 
+  def self.importable
+    includes(:project).where(hidden: false, project: { id: nil }).order(:name)
+  end
+
   def self.refresh
     PivotalAPI::Projects.retrieve.map do |api_project|
       response = PivotalAPI::Client.get("/projects/#{api_project.id}/memberships")

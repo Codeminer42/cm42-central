@@ -8,7 +8,7 @@ class ProjectsController < ApplicationController
   def index
     @projects = policy_scope(Project) # map ProjectPresenter.from_collection(collection)
     @activities_group = Activity.grouped_activities(@projects, 1.week.ago)
-    @pivotal_projects = policy_scope(PivotalProject).where.not(id: @projects.pluck(:pivotal_id)).order(:name)
+    @pivotal_projects = policy_scope(PivotalProject).importable
     redirect_to @projects.first if !current_user.admin? && @projects.size == 1
   end
 

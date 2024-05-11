@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_09_205148) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_11_081518) do
   create_table "active_admin_comments", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -195,6 +195,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_09_205148) do
     t.text "labels_attributes", size: :medium
     t.text "stories_attributes", size: :long
     t.text "activities_attributes", size: :medium
+    t.boolean "hidden", default: false, null: false
   end
 
   create_table "projects", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|

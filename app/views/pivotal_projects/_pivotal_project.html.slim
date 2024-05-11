@@ -28,6 +28,9 @@
             li.member
               img.identicon src=src alt="User avatar"
 
-    = link_to import_pivotal_project_path(pivotal_project), method: :post, class: "card-footer panel-footer" do
+    = link_to [:import, pivotal_project], method: :post, class: "card-footer panel-footer" do
       | Import project
+
+    = link_to [:hide, pivotal_project], method: :put, class: "card-footer panel-footer" do
+      | Hide project
 

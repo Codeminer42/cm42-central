@@ -43,6 +43,7 @@ Rails.application.routes.draw do
   resources :pivotal_projects do
     post :refresh, on: :collection
     post :import, on: :member
+    put :hide, on: :member
   end
 
   namespace :admin do
