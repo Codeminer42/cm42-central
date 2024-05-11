@@ -26,13 +26,17 @@ class Story < ApplicationRecord
   scope :not_accepted, -> { where(accepted_at: nil) }
   scope :accepted,    -> { where(state: 'accepted').where.not(accepted_at: nil) }
   scope :done,        -> { where(state: :accepted) }
-  scope :in_progress, -> { where(state: [:started, :finished, :delivered]) }
+  scope :in_progress, -> { where(state: [:started, :finished, :delivered, :rejected]) }
   scope :backlog,     -> { where(state: :unstarted) }
   scope :chilly_bin,  -> { where(state: :unscheduled) }
   scope :accepted_between, lambda { |start_date, end_date|
                              where('accepted_at >= ? AND accepted_at <= ?',
                                start_date.beginning_of_day,
                                end_date.end_of_day)
+                           }
+  scope :accepted_after, lambda { |start_date|
+                             where('accepted_at >= ?',
+                               start_date.beginning_of_day)
                            }
 
   delegate :suppress_notifications, to: :project

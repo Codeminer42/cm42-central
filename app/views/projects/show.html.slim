@@ -1,4 +1,4 @@
-- if false
+/
   = render partial: 'sidebar', layout: 'sidebar_wrapper', locals: { wrapper_class: 'collapsed' }
 
 - content_for :title_bar do
@@ -28,7 +28,7 @@
             / a.toggle-column.hide_done href="#" title="Close" ×
 
           #done.column_content.story_column
-            = render @project.completed_iterations(limit: 4)
+            = render @project.past_iterations(limit: 4)
 
         td.in_progress_column data-column-view="in_progress"
           .column_header data-step="in-progress"
@@ -37,7 +37,10 @@
             label.add-story-button for="new-story-in_progress-toggle" + Add Story
 
           #in_progress.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#in_progress"
-            = render @project.backlog_iterations(new_todo_story: @new_todo_story), total: 0
+            = render @project.current_accepted
+            = render @project.current_in_progress
+            = render @new_todo_story
+            = render @project.current_unstarted
 
         / td.backlog_column data-column-view="backlog" data-connect="#chilly_bin,#in_progress"
           .column_header data-step="backlog"
@@ -59,7 +62,7 @@
 
           #chilly_bin.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#chilly_bin"
             = render @new_icebox_story
-            = render @project.stories.chilly_bin.includes(:owned_by, :notes).order(:position)
+            = render @project.stories.with_dependencies.chilly_bin.order(:position)
 
         / td.epic_column style="display: none;" data-column-view="epic" data-connect="#chilly_bin,#in_progress,#backlog" data-hideable="false"
           .column_header data-step="epic"

@@ -29,7 +29,7 @@ class Project < ApplicationRecord
   has_many :users, -> { distinct }, through: :memberships
   has_many :stories, dependent: :destroy do
     def with_dependencies
-      includes(:notes, :tasks)
+      includes(:tasks, :notes => { :attachments_attachments => :blob })
     end
   end
 
@@ -79,6 +79,27 @@ class Project < ApplicationRecord
 
   def to_s
     name
+  end
+
+  def past_iterations(limit: nil)
+    iterations = NewIteration.compute(self)
+    if limit
+      iterations.last(limit)
+    else
+      iterations
+    end
+  end
+
+  def current_accepted
+    NewIteration.current_accepted(self)
+  end
+
+  def current_in_progress
+    NewIteration.current_in_progress(self)
+  end
+
+  def current_unstarted
+    NewIteration.current_unstarted(self)
   end
 
   def iteration_service(since: nil, current_time: Time.zone.now)
