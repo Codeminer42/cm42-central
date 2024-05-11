@@ -1,59 +1,59 @@
-module NoteOperations
+module CommentOperations
   class Create
     include Operation
 
-    def initialize(story:, note_attrs:, current_user:, note: nil)
+    def initialize(story:, comment_attrs:, current_user:, comment: nil)
       @story = story
-      @note_attrs = note_attrs
-      @note = note || story.notes.build
+      @comment_attrs = comment_attrs
+      @comment = comment || story.comments.build
       @current_user = current_user
     end
 
     def call
       ActiveRecord::Base.transaction do
         yield set_attrs
-        yield save_note
-        if note.saved_change_to_story_id? || note.smtp_id.blank?
+        yield save_comment
+        if comment.saved_change_to_story_id? || comment.smtp_id.blank?
           yield notify_users
           yield create_activity
         end
-        Success(note)
+        Success(comment)
       end
     end
 
     private
 
-    attr_reader :story, :note_attrs, :note, :current_user
+    attr_reader :story, :comment_attrs, :comment, :current_user
 
     def set_attrs
-      note.attributes = note_attrs.merge({
+      comment.attributes = comment_attrs.merge({
         story: story,
         user: current_user,
       })
-      Success note
+      Success comment
     end
 
-    def save_note
+    def save_comment
       # wrap in transaction to ensure it actually exists in the db before shipping it off to sidekiq in #deliver_later
       story.transaction do
-        if note.save
-          Success(note)
+        if comment.save
+          Success(comment)
         else
-          Failure(note)
+          Failure(comment)
         end
       end
     end
 
     def notify_users
       Success UserNotification.notify_users(
-        note: note,
+        comment: comment,
         current_user: current_user,
       )
     end
 
     def create_activity
       Success ::Base::ActivityRecording.create_activity(
-        note,
+        comment,
         current_user: current_user,
         action: 'create'
       )

@@ -1,0 +1,6 @@
+<%= @comment.user.name %> added the following comment to the story
+"<%= @story.title %>":
+
+<%= @comment.body %>
+
+<%= project_url @story.project %>#story-<%= @story.id %>

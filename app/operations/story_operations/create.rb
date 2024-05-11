@@ -6,7 +6,7 @@ module StoryOperations
       @project = project
       @story = story
       @story_attrs = story_attrs
-      @note_attrs = (story_attrs.delete(:notes_attributes) || {}).fetch("0", {})
+      @comment_attrs = (story_attrs.delete(:comments_attributes) || {}).fetch("0", {})
       @current_user = current_user
     end
 
@@ -15,7 +15,7 @@ module StoryOperations
         yield set_attrs
         yield save_story
         yield position_story
-        yield save_note
+        yield save_comment
 
         yield create_activity
         yield refresh_other_users
@@ -28,7 +28,7 @@ module StoryOperations
 
     private
 
-    attr_reader :project, :story, :story_attrs, :note_attrs, :current_user
+    attr_reader :project, :story, :story_attrs, :comment_attrs, :current_user
 
     def set_attrs
       story.attributes = story_attrs
@@ -66,11 +66,11 @@ module StoryOperations
       Success(story)
     end
 
-    def save_note
-      if note_attrs.present?
-        NoteOperations::Create.call(
+    def save_comment
+      if comment_attrs.present?
+        CommentOperations::Create.call(
           story: story,
-          note_attrs: note_attrs,
+          comment_attrs: comment_attrs,
           current_user: current_user
         )
       end

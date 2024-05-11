@@ -40,9 +40,9 @@ class Notifications < ActionMailer::Base
     })
   end
 
-  def new_note(email, note)
-    @note = note
-    @story = note.story
+  def new_comment(email, comment)
+    @comment = comment
+    @story = comment.story
 
     mail({
       to: email,

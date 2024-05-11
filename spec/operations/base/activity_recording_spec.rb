@@ -30,7 +30,7 @@ describe Base::ActivityRecording do
   end
 
   describe '#fetch_project' do
-    let(:note) { create(:note, story: story) }
+    let(:comment) { create(:comment, story: story) }
     let(:task) { create(:task, story: story) }
 
     context 'when receive a project' do
@@ -53,13 +53,13 @@ describe Base::ActivityRecording do
       end
     end
 
-    context 'when receive a note' do
+    context 'when receive a comment' do
       before do
-        expect(subject).to receive(:fetch_project).with(note).and_return(project)
+        expect(subject).to receive(:fetch_project).with(comment).and_return(project)
       end
 
       it 'returns the project' do
-        subject.create_activity(note, current_user: user, action: action)
+        subject.create_activity(comment, current_user: user, action: action)
       end
     end
 

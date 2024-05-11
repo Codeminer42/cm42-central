@@ -78,21 +78,21 @@ describe Story do
     end
 
     it { is_expected.to accept_nested_attributes_for(:tasks) }
-    it { is_expected.to accept_nested_attributes_for(:notes) }
+    it { is_expected.to accept_nested_attributes_for(:comments) }
   end
 
   describe 'associations' do
-    describe 'notes' do
+    describe 'comments' do
       let!(:user) { create :user }
       let!(:project) { create :project, users: [user] }
       let!(:story) { create :story, project: project, requested_by: user }
-      let!(:note) { create(:note, created_at: 2.days.from_now, user: user, story: story) }
-      let!(:note2) { create(:note, created_at: Time.zone.today, user: user, story: story) }
+      let!(:comment) { create(:comment, created_at: 2.days.from_now, user: user, story: story) }
+      let!(:comment2) { create(:comment, created_at: Time.zone.today, user: user, story: story) }
 
       it 'order by created at' do
         story.reload
 
-        expect(story.notes).to eq [note2, note]
+        expect(story.comments).to eq [comment2, comment]
       end
     end
   end
@@ -220,13 +220,13 @@ describe Story do
   describe '#stakeholders_users' do
     let(:requested_by)  { mock_model(User) }
     let(:owned_by)      { mock_model(User) }
-    let(:note_user)     { mock_model(User) }
-    let(:notes)         { [build_stubbed(:note, user: note_user)] }
+    let(:comment_user)  { mock_model(User) }
+    let(:comments)      { [build_stubbed(:comment, user: comment_user)] }
 
     before do
       subject.requested_by  = requested_by
       subject.owned_by      = owned_by
-      subject.notes         = notes
+      subject.comments      = comments
     end
 
     specify do
@@ -238,7 +238,7 @@ describe Story do
     end
 
     specify do
-      expect(subject.stakeholders_users).to include(note_user)
+      expect(subject.stakeholders_users).to include(comment_user)
     end
 
     it 'strips out nil values' do

@@ -1,4 +1,4 @@
-class NotePolicy < StoryPolicy
+class CommentPolicy < StoryPolicy
   def show?
     return false if guest?
     admin? || project_member?
@@ -7,11 +7,11 @@ class NotePolicy < StoryPolicy
   class Scope < Scope
     def resolve
       if admin?
-        Note.all
+        Comment.all
       elsif project_member?
-        current_project.notes
+        current_project.comments
       else
-        Note.none
+        Comment.none
       end
     end
   end

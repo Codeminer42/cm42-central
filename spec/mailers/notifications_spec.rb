@@ -97,20 +97,20 @@ describe Notifications do
     its(:body)    { should match project_url(project, host: "email.com") }
   end
 
-  describe '#new_note' do
-    let(:recipient)    { mock_model(User, email: 'foo@example.com') }
-    let(:user)          { mock_model(User, name: 'Note User') }
-    let(:note)          { mock_model(Note, story: story, user: user) }
+  describe '#new_comment' do
+    let(:recipient) { mock_model(User, email: 'foo@example.com') }
+    let(:user)      { mock_model(User, name: 'Comment User') }
+    let(:comment)   { mock_model(Comment, story: story, user: user) }
 
-    subject { Notifications.new_note(recipient.email, note) }
-    before { allow(Note).to receive_message_chain(:includes, :find).and_return(note) }
+    subject { Notifications.new_comment(recipient.email, comment) }
+    before { allow(Comment).to receive_message_chain(:includes, :find).and_return(comment) }
 
     its(:subject) { should match "[Test Project] Test story" }
     its(:to)      { ['foo@example.com'] }
     its(:from)    { [sender] }
 
     specify do
-      expect(subject.body.encoded).to match('Note User added the following comment to the story')
+      expect(subject.body.encoded).to match('Comment User added the following comment to the story')
     end
   end
 end

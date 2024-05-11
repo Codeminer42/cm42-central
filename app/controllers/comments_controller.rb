@@ -1,17 +1,17 @@
-class NotesController < ApplicationController
+class CommentsController < ApplicationController
   before_action :set_project_and_story
 
   def destroy
-    @note = policy_scope(Note).find(params[:id])
-    authorize @note
-    @note.destroy
+    @comment = policy_scope(Comment).find(params[:id])
+    authorize @comment
+    @comment.destroy
     redirect_to @project
   end
 
   protected
 
   def allowed_params
-    params.fetch(:note).permit(:note, :attachments)
+    params.fetch(:comment).permit(:body, :attachments)
   end
 
   def set_project_and_story

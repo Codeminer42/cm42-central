@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe NotesController do
+describe CommentsController do
   let!(:project) { create(:project, name: 'Test Project', users: [user]) }
   let(:user)    { create :user, email: 'user@example.com', password: 'password' }
   let(:story)   { create(:story, project: project, requested_by: user) }
@@ -9,8 +9,8 @@ describe NotesController do
   context 'when not logged in' do
     describe 'member actions' do
       before do
-        note = create(:note, story: story)
-        request_params[:id] = note.id
+        comment = create(:comment, story: story)
+        request_params[:id] = comment.id
       end
 
       specify '#destroy' do
@@ -27,9 +27,9 @@ describe NotesController do
     end
 
     describe 'member actions' do
-      let(:note) { create(:note, story: story) }
+      let(:comment) { create(:comment, story: story) }
       let(:request_params) do
-        { id: note.id, project_id: project.id, story_id: story.id }
+        { id: comment.id, project_id: project.id, story_id: story.id }
       end
 
       describe '#destroy' do

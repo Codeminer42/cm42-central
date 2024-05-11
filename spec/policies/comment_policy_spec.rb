@@ -1,16 +1,16 @@
 require 'rails_helper'
 
-describe NotePolicy do
+describe CommentPolicy do
   let(:other_member) { create :user, name: 'Anyone' }
-  let(:note) { create :note, story: story }
+  let(:comment) { create :comment, story: story }
   let(:story) { create :story, project: project, requested_by: other_member }
   let(:project) { create :project }
   let(:pundit_context) do
     PunditContext.new(project, current_user, current_story: story)
   end
-  let(:policy_scope) { NotePolicy::Scope.new(pundit_context, Note).resolve.all }
+  let(:policy_scope) { CommentPolicy::Scope.new(pundit_context, Comment).resolve.all }
 
-  subject { NotePolicy.new(pundit_context, note) }
+  subject { CommentPolicy.new(pundit_context, comment) }
 
   before do
     project.users << other_member
@@ -28,8 +28,8 @@ describe NotePolicy do
         it { should permit(action) }
       end
 
-      it 'lists all notes' do
-        expect(policy_scope).to eq([note])
+      it 'lists all comments' do
+        expect(policy_scope).to eq([comment])
       end
     end
 
@@ -42,8 +42,8 @@ describe NotePolicy do
         it { should permit(action) }
       end
 
-      it 'lists all notes' do
-        expect(policy_scope).to eq([note])
+      it 'lists all comments' do
+        expect(policy_scope).to eq([comment])
       end
     end
   end
@@ -56,8 +56,8 @@ describe NotePolicy do
         it { should permit(action) }
       end
 
-      it 'lists all notes' do
-        expect(policy_scope).to eq([note])
+      it 'lists all comments' do
+        expect(policy_scope).to eq([comment])
       end
     end
 
@@ -68,7 +68,7 @@ describe NotePolicy do
         it { should_not permit(action) }
       end
 
-      it 'lists no notes' do
+      it 'lists no comments' do
         expect(policy_scope).to eq([])
       end
     end

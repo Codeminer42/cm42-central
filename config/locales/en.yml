@@ -27,7 +27,6 @@ en:
   volatility: "Volatility"
   standard_deviation: "Standard Deviation"
   description: "Description"
-  notes:    "Notes"
   tasks:    "Tasks"
   close:    "Close"
   points:   "Points"
@@ -117,7 +116,6 @@ en:
       release: "release"
     no_estimate: "no estimate"
     tasks: "Tasks"
-    notes: "Notes"
     warnings:
       backlogged_release: "This release is in danger of being completed after the set release date."
     errors:
@@ -132,7 +130,6 @@ en:
 
   author unknown: "Author Unknown"
   add story: "Add story"
-  add note: "Add note"
   add task: 'Add task'
   save error: "Save error"
   override:
@@ -182,8 +179,6 @@ en:
         other: 'Teams'
 
     attributes:
-      note:
-        note:                 'Note'
       project:
         name:                 'Name'
         point_scale:          'Point scale'
@@ -371,7 +366,7 @@ en:
 
   time:
     formats:
-      note_date: "%b %d, %Y"
+      comment_date: "%b %d, %Y"
 
   enumerize:
     defaults:

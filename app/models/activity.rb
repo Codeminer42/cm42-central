@@ -30,7 +30,7 @@ class Activity < ActiveRecord::Base
       .projects(ids)
       .since(since)
       .order(:id).to_a
-    stories += where("subject_type in ('Note', 'Task')")
+    stories += where("subject_type in ('Comment', 'Task')")
       .includes(:user, subject: [:story])
       .projects(ids)
       .since(since)

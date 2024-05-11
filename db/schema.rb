@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_11_081518) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_11_131536) do
   create_table "active_admin_comments", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -129,6 +129,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_11_081518) do
     t.index ["id"], name: "id", unique: true
   end
 
+  create_table "comments", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
+    t.text "body"
+    t.integer "user_id"
+    t.integer "story_id"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.string "user_name"
+    t.string "smtp_id"
+    t.bigint "pivotal_id"
+    t.text "reactions", size: :medium
+    t.index ["id"], name: "id", unique: true
+    t.index ["pivotal_id"], name: "index_comments_on_pivotal_id"
+    t.index ["smtp_id"], name: "index_comments_on_smtp_id", unique: true
+  end
+
   create_table "enrollments", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.integer "team_id", null: false
     t.integer "user_id", null: false
@@ -157,21 +172,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_11_081518) do
     t.index ["project_id", "user_id"], name: "index_memberships_on_project_id_and_user_id", unique: true
     t.index ["project_id"], name: "index_memberships_on_project_id"
     t.index ["user_id"], name: "index_memberships_on_user_id"
-  end
-
-  create_table "notes", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|
-    t.text "note"
-    t.integer "user_id"
-    t.integer "story_id"
-    t.datetime "created_at", precision: nil
-    t.datetime "updated_at", precision: nil
-    t.string "user_name"
-    t.string "smtp_id"
-    t.bigint "pivotal_id"
-    t.text "reactions", size: :medium
-    t.index ["id"], name: "id", unique: true
-    t.index ["pivotal_id"], name: "index_notes_on_pivotal_id"
-    t.index ["smtp_id"], name: "index_notes_on_smtp_id", unique: true
   end
 
   create_table "ownerships", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", options: "ENGINE=InnoDB ROW_FORMAT=DYNAMIC", force: :cascade do |t|

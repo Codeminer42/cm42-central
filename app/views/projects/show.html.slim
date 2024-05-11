@@ -66,7 +66,7 @@
               | "owner: Micah Geisel"
             / a.toggle-column.hide_search_results href="#" title="Close" ×
 
-        / - search_results = @project.stories.includes(:owned_by, :notes).where(owned_by: current_user)
+        / - search_results = @project.stories.includes(:owned_by, :comments).where(owned_by: current_user)
           #search_results.column_content.story_column
             .iteration
               |  Stories found: #{search_results.count}

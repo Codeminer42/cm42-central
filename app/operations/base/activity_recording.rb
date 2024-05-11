@@ -17,7 +17,7 @@ module Base
         model
       when Story
         model.project
-      when Note, Task
+      when Comment, Task
         model.story.project
       end
     end

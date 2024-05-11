@@ -15,29 +15,27 @@ xdescribe 'Notes' do
                     requested_by: user
   end
 
-  it 'adds a note to a story', js: true do
+  it 'adds a comment to a story', js: true do
     visit project_path(project)
 
     within('#in_progress .story') do
       find('.story-title').click
-      fill_in 'note', with: 'Adding a new note'
-      click_on 'Add note'
+      fill_in 'comment', with: 'Adding a new comment'
+      click_on 'Add comment'
     end
 
     wait_spinner
-    expect(find('#in_progress .story .notelist .note')).to have_content('Adding a new note')
+    expect(find('#in_progress .story .commentlist .comment')).to have_content('Adding a new comment')
   end
 
-  it 'deletes a note from a story', js: true do
-    create :note, user: user,
-                  story: story,
-                  note: 'Delete me please'
+  it 'deletes a comment from a story', js: true do
+    create :comment, user: user, story: story, body: 'Delete me please'
 
     visit project_path(project)
 
     within('#in_progress .story') do
       find('.story-title').click
-      within('.notelist') do
+      within('.commentlist') do
         find('.delete-btn').click
       end
     end

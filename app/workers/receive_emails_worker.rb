@@ -3,9 +3,9 @@ class ReceiveEmailsWorker
 
   def perform
     IncomingEmail.all.each do |incoming_email|
-      note = Note.where(smtp_id: incoming_email.id).first_or_initialize
-      note.save(validate: false) if note.new_record?
-      ImportNoteWorker.perform_async(note.id)
+      comment = Comment.where(smtp_id: incoming_email.id).first_or_initialize
+      comment.save(validate: false) if comment.new_record?
+      ImportCommentWorker.perform_async(comment.id)
     end
   end
 end

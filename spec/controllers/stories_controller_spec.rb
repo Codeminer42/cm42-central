@@ -40,11 +40,11 @@ describe StoriesController do
         }
       end
 
-      let(:notes_attributes) do
+      let(:comments_attributes) do
         {
-          notes_attributes: [
-            { note: 'A little note hihi' },
-            { note: 'Another note' }
+          comments_attributes: [
+            { body: 'A little comment hihi' },
+            { body: 'Another comment' }
           ]
         }
       end

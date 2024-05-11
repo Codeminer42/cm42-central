@@ -120,39 +120,39 @@ class ImportProjectJob < ActiveJob::Base
 
   def import_comments
     pivotal_project.comments_attributes.each do |attrs|
-      note = Note.where(pivotal_id: attrs.fetch("id")).first_or_initialize
+      comment = Comment.where(pivotal_id: attrs.fetch("id")).first_or_initialize
       user = project.users.find_by(pivotal_id: attrs.fetch("person_id"))
       story = project.stories.find_by!(pivotal_id: attrs.fetch("story_id"))
-      note.attributes = {
-        note: attrs["text"],
+      comment.attributes = {
+        body: attrs["text"],
         user:,
         story:,
         reactions: attrs.fetch("reactions"),
         created_at: attrs.fetch("created_at"),
       }
-      note.save(validate: false) # allow note to be blank in case of attachments
+      comment.save(validate: false) # allow comment to be blank in case of attachments
     end
   end
 
   def import_attachments
     pivotal_project.attachments_attributes.each do |attrs|
-      note = Note.find_by!(pivotal_id: attrs.fetch("comment_id"))
+      comment = Comment.find_by!(pivotal_id: attrs.fetch("comment_id"))
       attachment = ActiveStorage::Attachment.find_by({
         name: "attachments",
-        record: note,
+        record: comment,
         pivotal_id: attrs.fetch("id"),
       })
       next if attachment
 
       response = attachments[attrs["download_url"]].get
 
-      attachment = note.attachments.attach(
+      attachment = comment.attachments.attach(
         io: StringIO.new(response.body),
         filename: attrs.fetch("filename"),
         content_type: attrs.fetch("content_type"),
       )
-      note.save(validate: false)
-      note.attachments_attachments.last.update!({
+      comment.save(validate: false)
+      comment.attachments_attachments.last.update!({
         created_at: attrs.fetch("created_at"),
         pivotal_id: attrs.fetch("id"),
       })

@@ -83,9 +83,9 @@ class StoriesController < ApplicationController
       :state, :requested_by_id, :owned_by_id, :labels, :positioning_column, :position,
       position: %i[before after],
       tasks_attributes: %i[id name done],
-      notes_attributes: [
+      comments_attributes: [
         :id,
-        :note,
+        :body,
         :user_id,
         attachments: []
       ],

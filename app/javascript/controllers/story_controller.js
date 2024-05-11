@@ -6,7 +6,7 @@ export default class extends Controller {
     "checkbox",
     "permanent",
     "form",
-    "note",
+    "comment",
     "attachment",
     "submitButton",
   ]
@@ -14,15 +14,15 @@ export default class extends Controller {
   connect() {
     useActions(this, {
       formTarget: [
-        "turbo:submit-end->clearNoteForm",
+        "turbo:submit-end->clearCommentForm",
         "direct-upload:start->disableSubmitButtons",
         "direct-upload:end->enableSubmitButtons",
       ],
     })
   }
 
-  clearNoteForm() {
-    this.noteTarget.value = ''
+  clearCommentForm() {
+    this.commentTarget.value = ''
     this.attachmentTarget.value = []
   }
 

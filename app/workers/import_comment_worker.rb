@@ -1,21 +1,21 @@
-class ImportNoteWorker
+class ImportCommentWorker
   include Sidekiq::Worker
 
-  def perform note_id
-    note = Note.find(note_id)
-    incoming_email = IncomingEmail.find(note.smtp_id)
+  def perform comment_id
+    comment = Comment.find(comment_id)
+    incoming_email = IncomingEmail.find(comment.smtp_id)
     @mail = Mail.read_from_string(incoming_email.read)
-    result = NoteOperations::Create.call(
+    result = CommentOperations::Create.call(
       story:,
-      note_attrs:,
+      comment_attrs:,
       current_user: user,
-      note:,
+      comment:,
     )
     match_result(result) do |on|
-      on.success do |note|
+      on.success do |comment|
         incoming_email.destroy
       end
-      on.failure do |note|
+      on.failure do |comment|
         # noop
       end
     end
@@ -49,10 +49,10 @@ class ImportNoteWorker
     @user ||= project.users.find_by!(email: @mail.from.first)
   end
 
-  def note_attrs
+  def comment_attrs
     email_text = extract_text(@mail)
-    note = email_text.split(/\r\n\r\n.+BARD <notifications@clients\.botandrose\.com>/)[0]
-    { note:, user: }
+    body = email_text.split(/\r\n\r\n.+BARD <notifications@clients\.botandrose\.com>/)[0]
+    { body:, user: }
   end
 
   def extract_text(part)

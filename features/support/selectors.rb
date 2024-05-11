@@ -29,8 +29,8 @@ module WithinHelpers
     when /the "(.+)?" story/
       ["#in_progress .story, #chilly_bin .story", text: $1]
 
-    when /the "(.+)?" note/
-      [".notelist .note", text: $1]
+    when /the "(.+)?" comment/
+      [".commentlist .comment", text: $1]
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

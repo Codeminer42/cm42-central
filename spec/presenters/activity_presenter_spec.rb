@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe ActivityPresenter do
   let(:story) { create(:story, :with_project) }
-  let(:note) { create(:note, story: story) }
+  let(:comment) { create(:comment, story: story) }
   let(:activity) { build(:activity, project: story.project, user: story.requested_by) }
   let(:user_name) { story.requested_by.name }
   let(:project) { story.project }
@@ -24,10 +24,10 @@ describe ActivityPresenter do
       expect(subject.description).to eq("#{user_name} destroyed Project ##{project.id}")
     end
 
-    it 'describes note destroyed' do
-      activity.subject = note
+    it 'describes comment destroyed' do
+      activity.subject = comment
       activity.save
-      expect(subject.description).to eq("#{user_name} destroyed Note ##{note.id}")
+      expect(subject.description).to eq("#{user_name} destroyed Comment ##{comment.id}")
     end
   end
 
@@ -51,11 +51,11 @@ describe ActivityPresenter do
       )
     end
 
-    it 'describes note created' do
-      activity.subject = note
+    it 'describes comment created' do
+      activity.subject = comment
       activity.save
       expect(subject.description).to eq(
-        "#{user_name} created Note 'Test note' for Story " \
+        "#{user_name} created Comment 'Test comment' for Story " \
         "'<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>'"
       )
     end
@@ -92,18 +92,18 @@ describe ActivityPresenter do
         )
       end
 
-      it 'describes new values in note' do
-        note.note = nil
-        note.save
+      it 'describes new values in comment' do
+        comment.body = nil
+        comment.save
 
-        note.note = 'new note'
-        note.save
-        activity.subject = note
+        comment.body = 'new comment'
+        comment.save
+        activity.subject = comment
         activity.save
         expect(subject.description).to eq(
-          "#{user_name} updated Note 'new note' for Story " \
+          "#{user_name} updated Comment 'new comment' for Story " \
           "'<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>' " \
-          "changing note from 'Test note' to 'new note'"
+          "changing body from 'Test comment' to 'new comment'"
         )
       end
     end
@@ -149,15 +149,15 @@ describe ActivityPresenter do
         )
       end
 
-      it 'describes changes in note' do
-        note.note = 'new note'
-        note.save
-        activity.subject = note
+      it 'describes changes in comment' do
+        comment.body = 'new comment'
+        comment.save
+        activity.subject = comment
         activity.save
         expect(subject.description).to eq(
-          "#{user_name} updated Note 'new note' for Story " \
+          "#{user_name} updated Comment 'new comment' for Story " \
           "'<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>' " \
-          "changing note from 'Test note' to 'new note'"
+          "changing body from 'Test comment' to 'new comment'"
         )
       end
     end

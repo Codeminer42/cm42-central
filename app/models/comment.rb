@@ -1,4 +1,4 @@
-class Note < ActiveRecord::Base
+class Comment < ActiveRecord::Base
   belongs_to :user
   belongs_to :story, touch: true
 
@@ -6,7 +6,7 @@ class Note < ActiveRecord::Base
 
   before_save :cache_user_name
 
-  validates :note, presence: true
+  validates :body, presence: true
 
   delegate :project, to: :story
 

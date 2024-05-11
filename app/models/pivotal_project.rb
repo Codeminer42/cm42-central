@@ -80,7 +80,7 @@ class PivotalProject < ActiveRecord::Base
   end
 
   def imported_comments
-    project&.notes || []
+    project&.comments || []
   end
 
   def attachments_attributes

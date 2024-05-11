@@ -174,7 +174,7 @@ div.story textarea {
   resize: vertical;
 }
 
-.note-textarea {
+.comment-textarea {
   min-height: 100px;
   overflow-y: auto;
 }
@@ -518,8 +518,8 @@ a.button {
   margin-bottom: 3px;
 }
 
-// Notes
-div.note {
+// Comments
+div.comment {
   padding: 0.3em;
   margin: 0.3em 0.3em 0.6em;
   border-bottom: 1px dotted #ccc;
@@ -530,7 +530,7 @@ div.note {
     padding: 0.3em;
   }
 
-  div.note_meta {
+  div.comment_meta {
     color: $aluminium-4;
     font-style: italic;
     font-size: x-small;
@@ -538,20 +538,20 @@ div.note {
     margin-right: 5px;
   }
 }
-.popover div.note {
- a.delete-note {
+.popover div.comment {
+ a.delete-comment {
     display: none;
   }
 }
 
-.note_form, .task_form {
+.comment_form, .task_form {
   padding: 5px;
   background: #fcfcfc;
   border-radius: 2px;
   bard-file{
     padding: 0;
   }
-  // The submit button while the server is saving the note.
+  // The submit button while the server is saving the comment.
   input.saving {
     padding-left: 16px;
     background-image: image-url('throbber.gif');
@@ -667,7 +667,7 @@ div#keycut-help {
   @extend .btn-sm;
 }
 
-.add-note, .add-task {
+.add-comment, .add-task {
   @extend .btn;
   @extend .btn-default;
   @extend .btn-sm;

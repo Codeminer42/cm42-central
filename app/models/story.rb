@@ -47,11 +47,12 @@ class Story < ActiveRecord::Base
 
   has_many :users, through: :project
   has_many :tasks, dependent: :destroy
-  has_many :notes, -> { order(:created_at) }, dependent: :destroy
+  has_many :comments, -> { order(:created_at) }, dependent: :destroy
 
   serialize :blockers, type: Array, coder: JSON
 
-  accepts_nested_attributes_for :tasks, :notes, reject_if: proc { |attributes| attributes[:note].blank? }
+  accepts_nested_attributes_for :tasks, reject_if: proc { |attributes| attributes[:name].blank? }
+  accepts_nested_attributes_for :comments, reject_if: proc { |attributes| attributes[:body].blank? }
 
   attr_accessor :acting_user, :base_uri
   attr_accessor :iteration_number, :iteration_start_date # helper fields for IterationService
@@ -146,7 +147,7 @@ class Story < ActiveRecord::Base
   end
 
   def stakeholders_users
-    ([requested_by, owned_by] + notes.map(&:user)).compact.uniq
+    ([requested_by, owned_by] + comments.map(&:user)).compact.uniq
   end
 
   def to_s

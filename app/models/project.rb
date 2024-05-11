@@ -38,12 +38,12 @@ class Project < ActiveRecord::Base
   has_many :users, -> { distinct }, through: :memberships
   has_many :stories, dependent: :destroy do
     def with_dependencies
-      includes(:tasks, :notes => { :attachments_attachments => :blob })
+      includes(:tasks, :comments => { :attachments_attachments => :blob })
     end
   end
 
-  has_many :notes, through: :stories
-  has_many :attachments_attachments, through: :notes
+  has_many :comments, through: :stories
+  has_many :attachments_attachments, through: :comments
 
   has_many :activities, dependent: :destroy
 

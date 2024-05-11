@@ -18,7 +18,7 @@ class ProjectPresenter < SimpleDelegator
   end
 
   def archived_date
-    I18n.l(archived_at, format: :note_date) if archived_at
+    I18n.l(archived_at, format: :comment_date) if archived_at
   end
 
   def path_to

@@ -44,8 +44,8 @@ class ActivityPresenter < SimpleDelegator
     when 'Story'
       path = project_path(subject.try(:project_id)) + '#story-' + subject_id.to_s
       "#{subject_type} ##{subject_id} - '#{helpers.link_to subject.title, path}'"
-    when 'Note', 'Task'
-      name = (subject.try(:note) || subject.try(:name)).truncate(40)
+    when 'Comment', 'Task'
+      name = (subject.try(:body) || subject.try(:name)).truncate(40)
       path = project_path(subject.story.project_id) + '#story-' + subject.story_id.to_s
       "#{subject_type} '#{name}' for Story '#{helpers.link_to subject.story.title, path}'"
     end
