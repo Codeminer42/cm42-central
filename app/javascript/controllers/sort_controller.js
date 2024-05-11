@@ -67,6 +67,7 @@ export default class extends Controller {
       cl = el.classList
       if(cl.contains("story")
         && cl.contains("closed")
+        && !cl.contains("new-story")
         && !cl.contains("accepted")
       ) {
         return el
