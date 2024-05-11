@@ -38,13 +38,10 @@ module StoryOperations
     end
 
     def save_story
-      # wrap in transaction to ensure it actually exists in the db before shipping it off to sidekiq in #deliver_later
-      story.transaction do
-        if story.save
-          Success(story)
-        else
-          Failure(story)
-        end
+      if story.save
+        Success(story)
+      else
+        Failure(story)
       end
     end
 

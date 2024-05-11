@@ -34,13 +34,10 @@ module CommentOperations
     end
 
     def save_comment
-      # wrap in transaction to ensure it actually exists in the db before shipping it off to sidekiq in #deliver_later
-      story.transaction do
-        if comment.save
-          Success(comment)
-        else
-          Failure(comment)
-        end
+      if comment.save
+        Success(comment)
+      else
+        Failure(comment)
       end
     end
 
