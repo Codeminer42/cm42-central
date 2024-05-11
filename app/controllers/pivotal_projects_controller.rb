@@ -26,6 +26,12 @@ class PivotalProjectsController < ApplicationController
     redirect_to :projects, notice: "Pivotal Project '#{@pivotal_project.name}' has been hidden"
   end
 
+  def unhide
+    @pivotal_project = PivotalProject.find(params[:id])
+    @pivotal_project.update! hidden: false
+    redirect_to :projects, notice: "Pivotal Project '#{@pivotal_project.name}' has been unhidden"
+  end
+
   private
 
   def must_pundit?

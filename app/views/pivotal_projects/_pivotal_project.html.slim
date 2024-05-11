@@ -31,6 +31,10 @@
     = link_to [:import, pivotal_project], method: :post, class: "card-footer panel-footer" do
       | Import project
 
-    = link_to [:hide, pivotal_project], method: :put, class: "card-footer panel-footer" do
-      | Hide project
+    - if pivotal_project.hidden?
+      = link_to [:unhide, pivotal_project], method: :put, class: "card-footer panel-footer" do
+        | Unhide project
+    - else
+      = link_to [:hide, pivotal_project], method: :put, class: "card-footer panel-footer" do
+        | Hide project
 

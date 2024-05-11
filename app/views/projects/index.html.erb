@@ -61,7 +61,13 @@
 
         <div class="pivotal-projects">
           <div class="col-md-12 project-list-title">
-            <h4><i class="mi md-20 heading-icon">view_module</i> Projects to import from Pivotal Tracker | <%= @pivotal_projects.length %> | <%= link_to "Refresh", refresh_pivotal_projects_path, method: "post" %></h4>
+            <h4><i class="mi md-20 heading-icon">view_module</i> Projects to import from Pivotal Tracker | <%= @pivotal_projects.length %></h4>
+            <% if params[:show_hidden] %>
+              <%= link_to "Hide #{PivotalProject.hidden.count} hidden", :projects, class: "btn btn-primary btn-form" %>
+            <% else %>
+              <%= link_to "Show #{PivotalProject.hidden.count} hidden", [:projects, show_hidden: true], class: "btn btn-primary" %>
+            <% end %>
+            <%= link_to "Refresh", refresh_pivotal_projects_path, method: "post", class: "btn btn-warning" %>
           </div>
           <%= render @pivotal_projects %>
         </div>

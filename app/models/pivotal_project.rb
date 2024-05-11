@@ -2,7 +2,19 @@ class PivotalProject < ActiveRecord::Base
   has_one :project, foreign_key: :pivotal_id
 
   def self.importable
-    includes(:project).where(hidden: false, project: { id: nil }).order(:name)
+    includes(:project).where(project: { id: nil }).order(:name)
+  end
+
+  def self.show_hidden bool
+    if !!bool
+      all
+    else
+      where(hidden: false)
+    end
+  end
+
+  def self.hidden
+    where(hidden: true)
   end
 
   def self.refresh
