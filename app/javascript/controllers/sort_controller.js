@@ -52,8 +52,6 @@ export default class extends Controller {
       state: state,
       positioning_column: this.positioningColumnValue,
       position: position,
-    } }).then(() => {
-      Turbo.session.refresh(window.location.href)
     })
   }
 
