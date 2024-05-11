@@ -1,9 +1,9 @@
 class Iteration < Struct.new(:project, :stories, :start_date, :number, :key)
-  def self.compute project
+  def self.past project
     project_start_date = project.start_date.beginning_of_week
     end_time = Time.zone.now.last_week
     (project_start_date..end_time).step(7).map.with_index(1) do |start_date, index|
-      stories = project.stories.accepted_between(start_date, start_date.end_of_week)
+      stories = project.stories.accepted_between(start_date, start_date.end_of_week).order(:accepted_at)
       new(
         project,
         stories,
@@ -16,7 +16,7 @@ class Iteration < Struct.new(:project, :stories, :start_date, :number, :key)
 
   def self.current_accepted project
     start_date = Time.zone.now.beginning_of_week
-    stories = project.stories.accepted_after(start_date)
+    stories = project.stories.accepted_after(start_date).order(:position)
     number = ((Date.today.beginning_of_week - project.start_date.beginning_of_week) / 7 + 1).to_i
     new(
       project,
@@ -28,9 +28,10 @@ class Iteration < Struct.new(:project, :stories, :start_date, :number, :key)
   end
 
   def self.current_in_progress project
+    stories = project.stories.in_progress.order(:position)
     new(
       project,
-      project.stories.in_progress,
+      stories,
       nil,
       nil,
       "in_progress"
@@ -38,9 +39,10 @@ class Iteration < Struct.new(:project, :stories, :start_date, :number, :key)
   end 
 
   def self.current_unstarted project
+    stories = project.stories.backlog.order(:position)
     new(
       project,
-      project.stories.backlog,
+      stories,
       nil,
       nil,
       "unstarted"
@@ -48,9 +50,10 @@ class Iteration < Struct.new(:project, :stories, :start_date, :number, :key)
   end
 
   def self.current_icebox project
+    stories = project.stories.chilly_bin.order(:position)
     new(
       project,
-      project.stories.chilly_bin,
+      stories,
       nil,
       nil,
       "icebox"

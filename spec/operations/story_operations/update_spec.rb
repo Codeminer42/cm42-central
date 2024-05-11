@@ -39,17 +39,34 @@ describe StoryOperations::Update do
         expect(subject.call.success?).to be(true)
       end
 
-      context 'when story_type is feature' do
-        context 'and estimate is nil' do
-          let(:story_params) do
-            { story_type: 'feature', state: 'started', estimate: nil }
-          end
-
-          it 'changes state to unscheduled' do
-            expect(subject.call.success.state).to eq('unscheduled')
-          end
+      context 'when transitioning' do
+        before do
+          project.stories.create(title: "Accepted", accepted_at: Time.zone.now, state: "accepted", estimate: 1, position: 1, positioning_column: "#in_progress")
+          project.stories.create(title: "Delivered", state: "delivered", estimate: 1, position: 2, positioning_column: "#in_progress")
+          project.stories.create(title: "Started", state: "started", estimate: 1, position: 3, positioning_column: "#in_progress")
+          project.stories.create(title: "Unstarted", state: "unstarted", estimate: 1, position: 4, positioning_column: "#in_progress")
         end
 
+        context 'from unscheduled to started' do
+          let(:create_story_params) { { title: 'Story', requested_by: user, accepted_at: nil, story_type: 'feature', state: 'unscheduled', estimate: 1 } }
+          let(:story_params) { {} }
+
+          it 'moves it to the bottom of the started list'  do
+            story.start
+            subject.call
+            expect(project.stories.order(:position).pluck(:title)).to eq([
+              "Accepted",
+              "Delivered",
+              "Started",
+              "Story",
+              "Unstarted",
+            ])
+          end
+        end
+      end
+
+
+      context 'when story_type is feature' do
         context 'and estimate is not nil' do
           let(:story_params) do
             { story_type: 'feature', state: 'started', estimate: 1 }

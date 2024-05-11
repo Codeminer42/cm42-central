@@ -24,7 +24,7 @@ end
 
 def stories_for column_id
   find(column_id).all(".story").map do |story|
-    initial = story["data-story-type"].capitalize[0]
+    initial = (story["data-story-type"] || "").capitalize[0]
     name_and_owner = story.all(".story-title").map(&:text).join(" ")
     actions = story.all(".transition").map(&:value)
     [

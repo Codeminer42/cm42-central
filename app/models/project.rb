@@ -87,7 +87,7 @@ class Project < ActiveRecord::Base
   end
 
   def past_iterations(limit: nil)
-    iterations = Iteration.compute(self)
+    iterations = Iteration.past(self)
     if limit
       iterations.last(limit)
     else

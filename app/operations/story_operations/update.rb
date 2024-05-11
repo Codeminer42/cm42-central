@@ -11,8 +11,9 @@ module StoryOperations
 
     def call
       ActiveRecord::Base.transaction do
-        yield ensure_valid_state
-        yield update_story
+        yield assign_attrs
+        yield reposition
+        yield save_story
         yield save_comment
 
         yield apply_fixes
@@ -31,23 +32,29 @@ module StoryOperations
 
     attr_reader :story, :story_attrs, :comment_attrs, :current_user
 
-    def ensure_valid_state
-      story_attrs[:state] = 'unscheduled' if should_be_unscheduled?(
-        estimate: story_attrs[:estimate],
-        type: story_attrs[:story_type]
-      )
-
-      Success(story_attrs)
-    end
-
-    def should_be_unscheduled?(estimate:, type:)
-      story.project.point_values.any? &&
-        Story.can_be_estimated?(type) && estimate.blank?
-    end
-
-    def update_story
+    def assign_attrs
       story.attributes = story_attrs
       story.acting_user = current_user
+      Success(story)
+    end
+
+    def reposition
+      state_changes = story.changes["state"]
+      return Success(story) unless state_changes
+
+      if %w[unscheduled unstarted].include?(state_changes[0]) && state_changes[1] == "started"
+        position = :first
+        if last_started_story = story.project.current_in_progress.stories.last
+          position = { after: last_started_story }
+        elsif first_unstarted_story = story.project.current_unstarted.stories.first
+          position = { before: first_unstarted_story }
+        end
+        story.position = position
+      end
+      Success(story)
+    end
+
+    def save_story
       if story.save
         Success(story)
       else
