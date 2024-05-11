@@ -1,0 +1,14 @@
+- content_for :title_bar do
+  = link_to "Back", @project, class: "btn btn-primary btn-sm navbar-btn"
+
+.row
+  .col-xs-12.col-sm-5.col-sm-offset-2
+    .page-header
+      h4.page-header-title.darkgrey-2
+        | New Project
+
+  .col-xs-12.col-sm-5.col-sm-offset-2
+    .panel.card
+      .panel-body
+        = render "form", project: @project
+

@@ -1,0 +1,52 @@
+= form_for project do |form|
+  - if project.errors.any?
+    = render "form_errors", object: project
+
+  .form-group
+    = form.label :name, class: "control-label"
+    = form.text_field :name, class: "form-control auth-form-control"
+
+  .form-group
+    = form.label :point_scale
+    = form.select :point_scale, form.object.point_scale_options, {}, { class: "form-control auth-form-control" }
+
+  .form-group
+    = form.label :default_velocity, class: "control-label"
+    = form.text_field :default_velocity, length: 2, size: 3, class: "form-control auth-form-control"
+
+  .form-group.date-form-group
+    = form.label :start_date, class: "control-label"
+    br
+    = form.date_select :start_date, {}, { class: "form-control auth-form-control" }
+
+  .form-group 
+    = form.label :iteration_start_day, class: "control-label"
+    = form.select :iteration_start_day, form.object.day_name_options, {}, { class: "form-control auth-form-control" }
+
+  .form-group
+    = form.check_box :enable_tasks
+    | &nbsp;
+    = form.label :enable_tasks, class: "control-label"
+
+  .btn-group.actions.pull-right.clearfix
+    = form.submit nil, class: "btn btn-primary btn-form"
+
+    - if form.object.persisted?
+      - if policy(project).archive? && project.pivotal_project.present?
+        = link_to "Reimport", [:import, project.pivotal_project], method: :post, class: "btn btn-warning btn-form"
+
+      - if policy(project).archive?
+        = link_to "Archive", [:archive, project], method: :patch, class: "btn btn-warning btn-form",
+          data: { confirm: t("projects.index.are you sure you want to archive this project") }
+
+      - if policy(project).unarchive?
+        = link_to "Unarchive", [:unarchive, project], method: :patch, class: "btn btn-warning btn-form",
+          data: { confirm: t("projects.index.are you sure you want to unarchive this project") }
+
+      - if policy(project).destroy?
+        label.btn.btn-danger.btn-form for="delete-confirmation-modal" type="button" data-controller="dialog-label"
+          | Delete
+
+dialog.modal.fade#delete-confirmation-modal modal=true role="dialog"
+  = render "delete_confirmation", project: project
+

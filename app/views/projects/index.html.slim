@@ -1,0 +1,62 @@
+- content_for :title_bar do
+  - if policy(Project).new?
+    = link_to "New Project", [:new, :project], class: "btn btn-primary btn-sm navbar-btn"
+
+#projects.projects-list
+  .row.item
+    .col-md-12
+      - if @projects.empty?
+        .col-md-6
+          .simple-alert
+            i.mi.alert-icon error_outline
+            h4.text-center
+              = t('projects.no_projects_found')
+
+      - else
+        .col-md-6.activity
+          - if @activities_group.empty?
+            .simple-alert
+              i.mi.alert-icon error_outline
+              h4.text-center = t('projects.no_recent_activity')
+
+          - else
+            ul.timeline
+              = render "activities_group", activities_group: @activities_group
+
+      #projects-search.col-md-6.projects
+        /
+          .search-projects
+            .form-group.col-md-12
+              .input-group
+                .input-group-addon
+                  i.mi.md-20.heading-icon search
+
+                input#projects_search.form-control placeholder="Search projects"
+                .input-group-addon
+                  select#project_type.unstyled-input
+                    option value="not_archived" Not Archived
+                    option value="archived" Archived
+                    option value="all_projects" All Projects
+
+        .col-md-12.project-list-title
+          h4
+            i.mi.md-20.heading-icon view_module
+            |  My projects | #{@projects.length}
+
+        = render @projects
+
+        .pivotal-projects
+          .col-md-12.project-list-title
+            h4
+              i.mi.md-20.heading-icon view_module
+              |  Projects to import from Pivotal Tracker | #{@pivotal_projects.length}
+
+            - if params[:show_hidden]
+              = link_to "Hide #{PivotalProject.hidden.count} hidden", :projects, class: "btn btn-primary btn-form"
+            - else
+              = link_to "Show #{PivotalProject.hidden.count} hidden", [:projects, show_hidden: true], class: "btn btn-primary"
+
+            = link_to "Refresh", refresh_pivotal_projects_path, method: "post", class: "btn btn-warning"
+
+          = render @pivotal_projects
+

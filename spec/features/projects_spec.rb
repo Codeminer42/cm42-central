@@ -185,7 +185,7 @@ describe 'Projects' do
 
         before(:each) do
           visit edit_project_path(project)
-          find('#delete-project-confirm').click
+          find("label", text: "Delete").click
         end
 
         it 'shows delete confirmation modal' do
