@@ -107,6 +107,10 @@ class Project < ActiveRecord::Base
     Iteration.current_unstarted(self)
   end
 
+  def current_icebox
+    Iteration.current_icebox(self)
+  end
+
   def point_values
     POINT_SCALES[point_scale]
   end

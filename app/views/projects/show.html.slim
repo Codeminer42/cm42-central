@@ -5,7 +5,7 @@
   ul.nav.navbar-nav
     li = link_to @project.name, @project
 
-  p#velocity.navbar-text.velocity data-step="velocity"
+  p#velocity.navbar-text.velocity
 
 / - content_for :right_menu do
   = form_tag '#', id: 'form_search', class: 'navbar-form navbar-left navbar-search', html: { role: 'search' } do
@@ -18,20 +18,20 @@
 
 = turbo_stream_from @project
 
-#project-stories.project-stories data-current-flow="progress_to_left" data-default-flow="progress_to_left" data-turbo="true"
+#project-stories.project-stories data-turbo="true"
   table.stories width="100%"
     tbody
       tr
-        td.done_column data-column-view="done"
-          .column_header data-step="done"
+        td.done_column
+          .column_header
             a.toggle-title href="#" title="Done" Done
             / a.toggle-column.hide_done href="#" title="Close" ×
 
           #done.column_content.story_column
             = render @project.past_iterations(limit: 4)
 
-        td.in_progress_column data-column-view="in_progress"
-          .column_header data-step="in-progress"
+        td.in_progress_column
+          .column_header
             a.toggle-title href="#" title="Todo" Todo
             / a.toggle-column.hide_in_progress href="#" title="Close" ×
             label.add-story-button for="new-story-in_progress-toggle" + Add Story
@@ -42,55 +42,36 @@
             = render @new_todo_story
             = render @project.current_unstarted
 
-        / td.backlog_column data-column-view="backlog" data-connect="#chilly_bin,#in_progress"
-          .column_header data-step="backlog"
-            a.toggle-title href="#" title="Backlog"
-              | Backlog
-            a.toggle-column.hide_backlog href="#" title="Close"
-              | ×
-          #backlog.column_content.story_column
-            .iteration
-              | 4 - Mon Apr 15 2024
-              span.points
-                | 0
-
-        td.chilly_bin_column data-column-view="chilly_bin"
-          .column_header data-step="chilly-bin"
+        td.chilly_bin_column
+          .column_header
             a.toggle-title href="#" title="Icebox" Icebox
             / a.toggle-column.hide_chilly_bin href="#" title="Close" ×
             label.add-story-button for="new-story-chilly_bin-toggle" + Add Story
 
           #chilly_bin.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#chilly_bin"
             = render @new_icebox_story
-            = render @project.stories.with_dependencies.chilly_bin.order(:position)
+            = render @project.current_icebox
 
-        / td.epic_column style="display: none;" data-column-view="epic" data-connect="#chilly_bin,#in_progress,#backlog" data-hideable="false"
-          .column_header data-step="epic"
-            a.toggle-title href="#" title="Epic"
-              | Epic
-            / a.toggle-column.hide_epic href="#" title="Close"
-              | ×
-          #epic.column_content.story_column
-
-        / td.history_column style="display: none;" data-history-view=""
-          .column_header data-step="history"
+        / td.history_column style="display: none;"
+          .column_header
             a.toggle-title href="#" title="History Of"
               | History Of
             / a.toggle-column.hide_history href="#" title="Close"
               | ×
           #history.column_content.activity_column
 
-        / td.search_results_column style="" data-column-view="search_results" data-connect="#chilly_bin,#in_progress,#backlog"
-          .column_header data-step="search-results"
+        / td.search_results_column style=""
+          .column_header
             a.toggle-title href="#" title="Search Results"
               | "owner: Micah Geisel"
             / a.toggle-column.hide_search_results href="#" title="Close" ×
 
-          - search_results = @project.stories.includes(:owned_by, :notes).where(owned_by: current_user)
+        / - search_results = @project.stories.includes(:owned_by, :notes).where(owned_by: current_user)
           #search_results.column_content.story_column
             .iteration
               |  Stories found: #{search_results.count}
               span.points
                 | Points: #{search_results.sum(:estimate)}
 
-            = render search_results, search_result: true
+        /   = render search_results, search_result: true
+

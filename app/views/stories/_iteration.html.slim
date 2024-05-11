@@ -1,9 +1,10 @@
-- if iteration.number
-  - total = defined?(total) ? total : nil
-  .iteration id="iteration-#{iteration.number}"
-    | #{iteration.number} - #{iteration.start_date.to_date.to_fs(:rfc822_with_day)}
-    span.points
-      = [iteration.points, total].compact.join("/")
+- cache iteration do
+  - if iteration.number
+    - total = defined?(total) ? total : nil
+    .iteration id="iteration-#{iteration.number}"
+      | #{iteration.number} - #{iteration.start_date.to_date.to_fs(:rfc822_with_day)}
+      span.points
+        = [iteration.points, total].compact.join("/")
 
-= render iteration.stories
+  = render iteration.stories.with_dependencies
 
