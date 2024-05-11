@@ -58,6 +58,15 @@
   <div class="btn-group actions pull-right clearfix">
     <%= f.submit nil, class: 'btn btn-primary btn-form' %>
 
+    <% if policy(project).archive? && project.pivotal_project.present? %>
+      <%= link_to(
+        "Reimport",
+        [:import, project.pivotal_project],
+        method: :post,
+        class: 'btn btn-warning btn-form'
+      ) %>
+    <% end %>
+
     <% if policy(project).archive? %>
       <%= link_to(
         t('projects.archive'),
