@@ -128,7 +128,7 @@ class ProjectsController < ApplicationController
   end
 
   def fluid_layout
-    @layout_settings[:fluid] = true
+    @fluid_layout = true
   end
 
   def set_project

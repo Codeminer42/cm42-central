@@ -1,0 +1,77 @@
+doctype html
+html
+  head
+    meta name="viewport" content="width=device-width, initial-scale=1.0"
+    meta name="turbo-refresh-method" content="morph"
+    meta name="turbo-refresh-scroll" content="preserve"
+
+    title
+      - if @project&.name.present?
+        = @project.name
+        '  - 
+      | BARD Clients
+
+    = csrf_meta_tag
+    = favicon_link_tag "favicon.ico"
+    = stylesheet_link_tag :application
+    = javascript_importmap_tags
+
+  body class=("board" if @fluid_layout) data-turbo="false"
+    .content-wrapper
+      = global_alert
+      nav.navbar.navbar-default
+        .container-fluid
+          .navbar-header
+            a.navbar-brand.navbar-logo href="/" 
+              = image_tag "logo.png", width: 32, height: 32
+
+            = yield :title_bar
+
+            .navbar-form.navbar-left.navbar-search
+
+            .navbar-right
+              .navbar-form.navbar-left.navbar-search
+
+              = yield :right_menu
+
+              - if current_user
+                - if current_user.projects.count > 1
+                  .dropdown
+                    button.btn.btn-link.projects-dropdown type="button" onclick="var e = this.nextElementSibling; e.hidden = !e.hidden"
+                      | Project
+                      span.caret
+
+                    ul.dropdown-menu.dropdown-menu-right hidden="true"
+                      - topbar_projects do |project|
+                        li = link_to project.name, project
+
+                .dropdown
+                  button.btn.btn-link.user-dropdown type="button" onclick="var e = this.nextElementSibling; e.hidden = !e.hidden"
+                    = current_user.name
+                    span.caret
+
+                  ul.dropdown-menu.dropdown-menu-right hidden="true"
+                    li = link_to "Edit", edit_user_registration_path
+
+                    - if current_user
+                      li.divider
+                      li = link_to "Log out", destroy_user_session_path, method: :delete
+
+      = yield :navbar
+
+      .main#main
+        div class=("container" if !@fluid_layout) class=("container-fluid board" if @fluid_layout)
+          = render "flash"
+          - if current_staff_user
+            = render "user_impersonate/header"
+
+          = yield
+
+    .loading-spin
+      .spinner
+      span.icons-spinner
+
+    = render "shared/cookies_banner"
+
+    = yield :charts_data
+

@@ -8,7 +8,6 @@ class ApplicationController < ActionController::Base
 
   before_action :authenticate_user!, unless: ->(c) { c.devise_controller? || c.try(:active_admin_root?) }
   before_action :set_locale
-  before_action :set_layout_settings
   around_action :user_time_zone, if: :current_user
 
   after_action :verify_authorized, except: [:index], if: :must_pundit?
@@ -69,11 +68,6 @@ class ApplicationController < ActionController::Base
 
   def must_pundit?
     !devise_controller? && self.class.module_parent != Manage
-  end
-
-  def set_layout_settings
-    @layout_settings_default = { fluid: false }.freeze
-    @layout_settings = @layout_settings_default.dup
   end
 
   def match_result(result)
