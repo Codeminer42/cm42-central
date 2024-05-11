@@ -1,4 +1,10 @@
 namespace :data do
+  task :fix_positioning => :environment do
+    project = Project.first
+    stories = project.current_in_progress.stories.to_a + project.current_unstarted.stories.to_a
+    stories.each.with_index(1) { |s,i| s.update position: i }
+  end
+
   task :rename_notes_to_comments => :environment do
     [ 
       %w[active_storage_attachments record_type],
