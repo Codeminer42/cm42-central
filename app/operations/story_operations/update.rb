@@ -15,7 +15,6 @@ module StoryOperations
         yield update_story
         yield save_note
 
-        yield create_changesets
         yield apply_fixes
 
         yield notify_state_changed
@@ -64,11 +63,6 @@ module StoryOperations
           current_user: current_user,
         )
       end
-      Success(story)
-    end
-
-    def create_changesets
-      story.changesets.create
       Success(story)
     end
 

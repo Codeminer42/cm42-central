@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_project, except: :create
+  before_action :set_project
 
   respond_to :html, :json
 
@@ -9,7 +9,8 @@ class UsersController < ApplicationController
   end
 
   def create
-    build_user
+    @user = User.new(allowed_params)
+    authorize @user
     if @user.save
       MembershipOperations::Create.call(project: @project, user: @user)
       flash.notice = "#{@user.email} was added to the project"
@@ -53,15 +54,5 @@ class UsersController < ApplicationController
 
   def set_project
     @project = policy_scope(Project).friendly.find(params[:project_id])
-  end
-
-  def build_user
-    @user = User.new(
-      email: allowed_params[:email],
-      name: allowed_params[:name],
-      initials: allowed_params[:initials],
-      username: allowed_params[:username]
-    )
-    authorize @user
   end
 end

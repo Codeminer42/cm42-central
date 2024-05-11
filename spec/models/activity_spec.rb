@@ -21,7 +21,7 @@ describe Activity, type: :model do
       expect(activity.save).to be_truthy
     end
 
-    fit 'should fetch the changes from the model' do
+    it 'should fetch the changes from the model' do
       first_update = story.updated_at
       story.title = 'new story title'
       story.estimate = 2

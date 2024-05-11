@@ -1,24 +1,9 @@
 require 'sidekiq/web'
+
 Rails.application.routes.draw do
-  ActiveAdmin.routes(self)
-
-  mount UserImpersonate::Engine => "/impersonate", as: "impersonate_engine"
-
-  namespace :manage do
-    resources :projects do
-      resources :memberships
-    end
-    resources :users do
-      resources :memberships
-    end
-  end
-
-  get 'projects/archived' => 'projects#archived'
-  put 'locales' => 'locales#update', as: :locales
-
-  get '/404', to: 'errors#not_found', :via => :all
-
+  root 'projects#index'
   resources :projects do
+    get :archived, on: :collection
     member do
       get :join, :search, :reports
       patch :archive, :unarchive
@@ -26,15 +11,10 @@ Rails.application.routes.draw do
     resources :users, only: [:index, :create, :destroy]
     resources :memberships, only: [:create]
     resources :invitations, only: [:new, :create, :show, :update]
-    resources :changesets, only: [:index]
-    put 'stories/sort', to: 'stories#sort'
-    resources :stories, only: [:index, :create, :update, :destroy] do
-      resources :activities, only: [:index], module: 'stories'
+    resources :stories, only: [:create, :update, :destroy] do
       resources :notes, only: [:index, :create, :show, :destroy]
       resources :tasks, only: [:create, :destroy, :update]
-      member do
-        patch :transition
-      end
+      patch :transition, on: :member
     end
     resources :stories_bulk_destroy, only: [:create]
     resources :stories_bulk_update, only: [:create]
@@ -44,13 +24,8 @@ Rails.application.routes.draw do
     post :refresh, on: :collection
     member do
       post :import
-      put :hide
-      put :unhide
+      put :hide, :unhide
     end
-  end
-
-  namespace :admin do
-    resources :users
   end
 
   devise_for :users
@@ -61,14 +36,21 @@ Rails.application.routes.draw do
     put 'users/:id/reset_tour' => 'registrations#reset_tour', as: :user_reset_tour
   end
 
-  if Rails.env.development?
-    get 'testcard' => 'static#testcard'
-    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  mount UserImpersonate::Engine => "/impersonate", as: "impersonate_engine"
+  ActiveAdmin.routes(self)
+  namespace :manage do
+    resources :projects do
+      resources :memberships
+    end
+    resources :users do
+      resources :memberships
+    end
   end
+
+  mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 
   authenticate :user, ->(u) { u.admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end
-
-  root 'projects#index'
+  get '/404', to: 'errors#not_found', :via => :all
 end

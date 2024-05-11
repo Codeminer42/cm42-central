@@ -8,21 +8,12 @@
 
   <div class="form-group">
     <%= f.label :point_scale %>
-    <%= f.select :point_scale, point_scale_options, {}, { class: 'form-control auth-form-control' } %>
+    <%= f.select :point_scale, f.object.point_scale_options, {}, { class: 'form-control auth-form-control' } %>
   </div>
 
   <div class="form-group">
     <%= f.label :default_velocity, class: 'control-label' %>
     <%= f.text_field :default_velocity, length: 2, size: 3, class: 'form-control auth-form-control' %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :velocity_strategy %>
-    <%= f.select :velocity_strategy,
-                 velocity_strategy_options,
-                 {},
-                 { class:'form-control auth-form-control' }
-    %>
   </div>
 
   <div class="form-group date-form-group">
@@ -32,12 +23,7 @@
 
   <div class="form-group ">
     <%= f.label :iteration_start_day, class: 'control-label' %>
-    <%= f.select :iteration_start_day, day_name_options, {}, { class: 'form-control auth-form-control' } %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :iteration_length, class: 'control-label' %>
-    <%= f.select :iteration_length, iteration_length_options, {}, { class: 'form-control auth-form-control' } %>
+    <%= f.select :iteration_start_day, f.object.day_name_options, {}, { class: 'form-control auth-form-control' } %>
   </div>
 
   <div class="form-group">
@@ -45,52 +31,44 @@
     <%= f.check_box :enable_tasks %>
   </div>
 
-  <div class="form-group">
-    <%= f.label t('private'), class: 'control-label' %>
-    <%= f.check_box :disallow_join %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :mail_reports, class: 'control-label' %>
-    <%= f.check_box :mail_reports %>
-  </div>
-
   <div class="btn-group actions pull-right clearfix">
     <%= f.submit nil, class: 'btn btn-primary btn-form' %>
 
-    <% if policy(project).archive? && project.pivotal_project.present? %>
-      <%= link_to(
-        "Reimport",
-        [:import, project.pivotal_project],
-        method: :post,
-        class: 'btn btn-warning btn-form'
-      ) %>
-    <% end %>
+    <% if f.object.persisted? %>
+      <% if policy(project).archive? && project.pivotal_project.present? %>
+        <%= link_to(
+          "Reimport",
+          [:import, project.pivotal_project],
+          method: :post,
+          class: 'btn btn-warning btn-form'
+        ) %>
+      <% end %>
 
-    <% if policy(project).archive? %>
-      <%= link_to(
-        t('projects.archive'),
-        [:archive, project],
-        data: { confirm: t('projects.index.are you sure you want to archive this project') },
-        method: :patch,
-        class: 'btn btn-warning btn-form'
-      ) %>
-    <% end %>
+      <% if policy(project).archive? %>
+        <%= link_to(
+          t('projects.archive'),
+          [:archive, project],
+          data: { confirm: t('projects.index.are you sure you want to archive this project') },
+          method: :patch,
+          class: 'btn btn-warning btn-form'
+        ) %>
+      <% end %>
 
-    <% if policy(project).unarchive? %>
-      <%= link_to(
-        t('projects.unarchive'),
-        [:unarchive, project],
-        data: { confirm: t('projects.index.are you sure you want to unarchive this project') },
-        method: :patch,
-        class: 'btn btn-warning btn-form'
-      ) %>
-    <% end %>
+      <% if policy(project).unarchive? %>
+        <%= link_to(
+          t('projects.unarchive'),
+          [:unarchive, project],
+          data: { confirm: t('projects.index.are you sure you want to unarchive this project') },
+          method: :patch,
+          class: 'btn btn-warning btn-form'
+        ) %>
+      <% end %>
 
-    <% if policy(project).destroy? %>
-      <label for="delete-confirmation-modal" id="delete-project-confirm" type="button" class='btn btn-danger btn-form' data-controller="dialog-label">
-        <%= t('delete') %>
-      </label>
+      <% if policy(project).destroy? %>
+        <label for="delete-confirmation-modal" id="delete-project-confirm" type="button" class='btn btn-danger btn-form' data-controller="dialog-label">
+          <%= t('delete') %>
+        </label>
+      <% end %>
     <% end %>
   </div>
 <% end %>

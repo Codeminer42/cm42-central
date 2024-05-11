@@ -129,7 +129,7 @@ describe UsersController do
     end
   end
 
-  context 'when logged in as non-admin user' do
+  context 'when logged in as project member' do
     let(:user)  { create(:user, email: 'foobar@example.com') }
 
     before do

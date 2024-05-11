@@ -2,29 +2,30 @@ require 'rails_helper'
 
 describe StoryOperations::Create do
   describe '#call' do
-    subject { -> { StoryOperations::Create.call(story: story, current_user: user) } }
+    subject { -> { StoryOperations::Create.call(
+      project:,
+      story:,
+      story_attrs:,
+      current_user: user
+    ) } }
 
     let(:membership) { create(:membership) }
     let(:user)        { membership.user }
     let(:other_membership) { create(:membership, project: project) }
     let!(:other_user)  { other_membership.user }
     let(:project)     { membership.project }
-    let(:story)       { project.stories.build(story_params) }
+    let(:story)       { project.stories.build }
     let(:mailer)      { double(deliver_later: true) }
 
     before { allow(Notifications).to receive(:new_story).and_return(mailer) }
 
     context 'with valid story' do
-      let(:story_params) do
+      let(:story_attrs) do
         { title: 'Story', requested_by: user, state: 'unstarted', accepted_at: nil }
       end
 
       it 'saves story' do
         expect { subject.call }.to change { Story.count }.by(1)
-      end
-
-      it 'creates changesets' do
-        expect { subject.call }.to change { Changeset.count }.by(1)
       end
 
       it 'creates activity recording' do
@@ -47,7 +48,7 @@ describe StoryOperations::Create do
 
       context 'when estimable_type is feature' do
         context 'and state is started' do
-          let(:story_params) do
+          let(:story_attrs) do
             { title: 'Story', requested_by: user, accepted_at: nil, story_type: 'feature', state: 'started', estimate: 1 }
           end
 
@@ -58,7 +59,7 @@ describe StoryOperations::Create do
         end
 
         context 'and state is unscheduled' do
-          let(:story_params) do
+          let(:story_attrs) do
             { title: 'Story', requested_by: user, accepted_at: nil, story_type: 'feature', state: 'unscheduled', estimate: 1 }
           end
 
@@ -70,7 +71,7 @@ describe StoryOperations::Create do
       end
 
       context 'when story is not estimable' do
-        let(:story_params) do
+        let(:story_attrs) do
           { title: 'Story', requested_by: user, accepted_at: nil, story_type: 'release', state: 'unscheduled', estimate: 1 }
         end
 
@@ -82,16 +83,12 @@ describe StoryOperations::Create do
     end
 
     context 'with invalid story' do
-      let(:story_params) do
+      let(:story_attrs) do
         { title: '', requested_by: user, state: 'unstarted', accepted_at: nil }
       end
 
       it 'does not save story' do
         expect { subject.call }.to_not change { Story.count }
-      end
-
-      it 'does not create changesets' do
-        expect { subject.call }.to_not change { Changeset.count }
       end
 
       it 'does not create activity recording' do

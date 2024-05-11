@@ -1,4 +1,4 @@
-class Project < ApplicationRecord
+class Project < ActiveRecord::Base
   broadcasts_refreshes
 
   attr_writer :suppress_notifications
@@ -11,6 +11,16 @@ class Project < ApplicationRecord
     'linear' => [1, 2, 3, 4, 5].freeze
   }.freeze
 
+  def point_scale_options
+    POINT_SCALES.map do |name, values|
+      ["#{name.humanize} (#{values.join(',')})", name]
+    end
+  end
+
+  def day_name_options
+    I18n.t('date.day_names').map.with_index.to_a
+  end
+
   ITERATION_LENGTH_RANGE = (1..4).freeze
 
   MAX_MEMBERS_PER_CARD = 4
@@ -20,7 +30,6 @@ class Project < ApplicationRecord
 
   belongs_to :pivotal_project, foreign_key: :pivotal_id, touch: true, required: false
 
-  has_many :changesets, dependent: :destroy
   has_many :memberships, dependent: :destroy
   def admin? user
     memberships.where(user: user).first&.admin?
@@ -65,10 +74,6 @@ class Project < ApplicationRecord
   scope :not_archived, -> { where(archived_at: nil) }
   scope :archived, -> { where.not(archived_at: nil) }
 
-  def last_changeset_id
-    changesets.last&.id
-  end
-
   def to_param
     ::FriendlyId::Disabler.disabled? ? (id&.to_s) : super
   end
@@ -82,7 +87,7 @@ class Project < ApplicationRecord
   end
 
   def past_iterations(limit: nil)
-    iterations = NewIteration.compute(self)
+    iterations = Iteration.compute(self)
     if limit
       iterations.last(limit)
     else
@@ -91,21 +96,16 @@ class Project < ApplicationRecord
   end
 
   def current_accepted
-    NewIteration.current_accepted(self)
+    Iteration.current_accepted(self)
   end
 
   def current_in_progress
-    NewIteration.current_in_progress(self)
+    Iteration.current_in_progress(self)
   end
 
   def current_unstarted
-    NewIteration.current_unstarted(self)
+    Iteration.current_unstarted(self)
   end
-
-  def iteration_service(since: nil, current_time: Time.zone.now)
-    @iteration_service ||= IterationService.new(self, since: since, current_time: current_time)
-  end
-  delegate :completed_iterations, :backlog_iterations, to: :iteration_service
 
   def point_values
     POINT_SCALES[point_scale]

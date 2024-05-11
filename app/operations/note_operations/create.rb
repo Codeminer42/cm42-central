@@ -14,7 +14,6 @@ module NoteOperations
         yield set_attrs
         yield save_note
         if note.saved_change_to_story_id? || note.smtp_id.blank?
-          yield create_changesets
           yield notify_users
           yield create_activity
         end
@@ -43,11 +42,6 @@ module NoteOperations
           Failure(note)
         end
       end
-    end
-
-    def create_changesets
-      story.changesets.create
-      Success(note)
     end
 
     def notify_users

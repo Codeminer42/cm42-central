@@ -5,14 +5,8 @@ class ProjectPresenter < SimpleDelegator
   include ActionView::Helpers::TextHelper
   include UsersHelper
 
-  delegate :velocity, to: :iteration_service
-
   def truncate_name
     truncate(name, length: 18)
-  end
-
-  def volatility
-    number_to_percentage(iteration_service(since: 1.month.ago).volatility * 100.0, precision: 0)
   end
 
   def users_avatar(amount)

@@ -284,8 +284,20 @@ describe Story do
     its(:column)  { should == '#in_progress' }
   end
 
-  context 'when accepted' do
-    before { subject.state = 'accepted' }
+  context 'when accepted today' do
+    before do
+      subject.state = 'accepted'
+      subject.accepted_at = Time.zone.now
+    end
+    its(:events)  { should == [] }
+    its(:column)  { should == '#in_progress' }
+  end
+
+  context 'when accepted last week' do
+    before do
+      subject.state = 'accepted'
+      subject.accepted_at = 1.week.ago
+    end
     its(:events)  { should == [] }
     its(:column)  { should == '#done' }
   end

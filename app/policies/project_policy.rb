@@ -8,7 +8,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def archive?
-    admin? && record.persisted?
+    admin?
   end
 
   alias unarchive? archive?

@@ -28,14 +28,13 @@ module UserImpersonate
     # Devise method used to sign user in
     config.sign_in_user_method = 'sign_in'
 
-    # For Active Admin "AdminUser" model, use 'AdminUser'
-    config.staff_class = 'AdminUser'
+    config.staff_class = 'User'
 
     # For Active Admin "AdminUser" model, use 'authenticate_admin_user!'
-    config.authenticate_user_method = 'authenticate_admin_user!'
+    config.authenticate_user_method = 'authenticate_user!'
 
     # For Active Admin "AdminUser" model, use 'current_admin_user'
-    config.current_staff = 'current_admin_user'
+    config.current_staff = 'current_user'
   end
 end
 

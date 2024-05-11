@@ -1,4 +1,4 @@
-class Story < ApplicationRecord
+class Story < ActiveRecord::Base
   include ActiveModel::Transitions
   extend Enumerize
 
@@ -46,7 +46,6 @@ class Story < ApplicationRecord
   belongs_to :owned_by, class_name: 'User'
 
   has_many :users, through: :project
-  has_many :changesets, dependent: :destroy
   has_many :tasks, dependent: :destroy
   has_many :notes, -> { order(:created_at) }, dependent: :destroy
 
@@ -56,7 +55,6 @@ class Story < ApplicationRecord
 
   attr_accessor :acting_user, :base_uri
   attr_accessor :iteration_number, :iteration_start_date # helper fields for IterationService
-  attr_accessor :iteration_service
 
   # include PgSearch::Model
   # pg_search_scope :search,
@@ -137,12 +135,11 @@ class Story < ApplicationRecord
     when 'unstarted'
       '#backlog'
     when 'accepted'
-      if iteration_service
-        if iteration_service.current_iteration_number == iteration_service.iteration_number_for_date(accepted_at)
-          return '#in_progress'
-        end
+      if !accepted_at || (accepted_at > Time.zone.now.beginning_of_week)
+        '#in_progress'
+      else
+        '#done'
       end
-      '#done'
     else
       '#in_progress'
     end

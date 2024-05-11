@@ -1,66 +1,42 @@
-class Iteration < Array
+class Iteration < Data.define(:stories, :start_date, :number)
   def to_partial_path
     "stories/iteration"
   end
 
-  attr_reader :start_date, :number, :maximum_points
+  def self.compute project
+    project_start_date = project.start_date.beginning_of_week
+    end_time = Time.zone.now.last_week
+    (project_start_date..end_time).step(7).map.with_index(1) do |start_date, index|
+      stories = project.stories.accepted_between(start_date, start_date.end_of_week).with_dependencies
+      new(stories:, start_date:, number: index)
+    end
+  end
 
-  def initialize(service, iteration_number, maximum_points = nil)
-    @service        = service
-    @number         = iteration_number
-    @maximum_points = maximum_points
-    @is_full        = false
-    super([])
+  def self.current_accepted project
+    start_date = Time.zone.now.beginning_of_week
+    stories = project.stories.accepted_after(start_date).with_dependencies
+    number = ((Date.today.beginning_of_week - project.start_date.beginning_of_week) / 7 + 1).to_i
+    new(stories:, start_date:, number:)
+  end
+
+  def self.current_in_progress project
+    new(
+      stories: project.stories.in_progress.with_dependencies,
+      start_date: nil,
+      number: nil,
+    )
+  end 
+
+  def self.current_unstarted project
+    new(
+      stories: project.stories.backlog.with_dependencies,
+      start_date: nil,
+      number: nil,
+    )
   end
 
   def points
-    reduce(0) { |total, story| total + (story.estimate || 0) }
-  end
-
-  def available_points
-    maximum_points - points
-  end
-
-  def can_take_story?(story)
-    return true if %w[started finished delivered accepted rejected].include? story.state
-    return false if @is_full
-    return true if points.zero?
-    return true if story.story_type != 'feature'
-
-    @is_full = (story.estimate || 0) > available_points
-    !@is_full
-  end
-
-  def overflows_by
-    difference = points - maximum_points
-    difference.negative? ? 0 : difference
-  end
-
-  def stories
-    to_a
-  end
-
-  def stories= value
-    replace value
-  end
-
-  def start_date
-    @service.date_for_iteration_number(@number)
-  end
-
-  def starts_at
-    start_date.beginning_of_day
-  end
-
-  def ends_at
-    (start_date + 6.days).end_of_day
-  end
-
-  def details
-    {
-      points: reduce(0) { |total, story| total + (story.estimate || 0) },
-      count: size,
-      non_estimable: select { |story| !Story::ESTIMABLE_TYPES.include?(story.story_type) }.size
-    }
+    0
   end
 end
+

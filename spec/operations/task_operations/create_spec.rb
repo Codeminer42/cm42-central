@@ -17,10 +17,6 @@ describe TaskOperations::Create do
         expect { subject.call }.to change { Task.count }.by(1)
       end
 
-      it 'creates changesets' do
-        expect { subject.call }.to change { Changeset.count }.by(1)
-      end
-
       it 'creates activity recording' do
         expect { subject.call }.to change { Activity.count }.by(1)
       end
@@ -39,10 +35,6 @@ describe TaskOperations::Create do
 
       it 'does not save task' do
         expect { subject.call }.to_not change { Task.count }
-      end
-
-      it 'does not create changesets' do
-        expect { subject.call }.to_not change { Changeset.count }
       end
 
       it 'does not create activity recording' do

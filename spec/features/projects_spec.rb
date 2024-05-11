@@ -97,7 +97,6 @@ describe 'Projects' do
           visit project_path(project.slug)
           click_on 'Settings'
           fill_in 'Name', with: 'New Project Name'
-          expect(page).to have_unchecked_field 'Send reports via mail'
           click_on 'Update Project'
 
           expect(current_path).to eq(project_path(project))

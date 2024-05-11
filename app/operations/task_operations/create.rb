@@ -10,7 +10,6 @@ module TaskOperations
     def call
       ActiveRecord::Base.transaction do
         yield save_task
-        yield create_changeset
         yield create_activity
 
         Success(task)
@@ -29,10 +28,6 @@ module TaskOperations
       else
         Failure(task)
       end
-    end
-
-    def create_changeset
-      Success(task.story.changesets.create)
     end
 
     def create_activity

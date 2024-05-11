@@ -5,7 +5,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery prepend: true
 
   include Pundit::Authorization
-  include SidebarController
 
   before_action :authenticate_user!, unless: ->(c) { c.devise_controller? || c.try(:active_admin_root?) }
   before_action :set_locale
@@ -15,8 +14,16 @@ class ApplicationController < ActionController::Base
   after_action :verify_authorized, except: [:index], if: :must_pundit?
   after_action :verify_policy_scoped, only: [:index], if: :must_pundit?
 
-  # rescue_from ActiveRecord::RecordNotFound, with: :render_404
-  # rescue_from Pundit::NotAuthorizedError,   with: :user_not_authorized
+  rescue_from ActiveRecord::RecordNotFound, with: :render_404
+  rescue_from Pundit::NotAuthorizedError,   with: :user_not_authorized
+
+  def define_sidebar(sidebar)
+    @sidebar = sidebar
+  end
+
+  def sidebar
+    @sidebar
+  end
 
   protected
 
@@ -54,7 +61,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_project
 
   def after_sign_in_path_for(resource)
-    return super if resource.is_a?(AdminUser)
+    return super if resource.is_a?(User) && resource.admin?
 
     return projects_url if session[:current_project_slug].blank?
     super

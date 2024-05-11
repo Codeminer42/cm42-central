@@ -2,11 +2,9 @@ require 'rails_helper'
 
 describe StoriesController do
   describe 'when logged out' do
-    %w[index create].each do |action|
-      specify do
-        get action, params: { project_id: "example-project" }
-        expect(response).to redirect_to(new_user_session_url)
-      end
+    specify do
+      get :create, params: { project_id: "example-project" }
+      expect(response).to redirect_to(new_user_session_url)
     end
 
     %w[update destroy].each do |action|
@@ -62,7 +60,7 @@ describe StoriesController do
         context 'when update fails' do
           specify do
             get :update, params: { project_id: project.slug, id: story.id, story: { title: '' } }
-            expect(response).to redirect_to(project_path(project) + "#story-#{story.id}")
+            expect(response).to redirect_to(project_path(project))
           end
         end
       end

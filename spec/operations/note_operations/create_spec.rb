@@ -18,10 +18,6 @@ describe NoteOperations::Create do
         expect { subject.call }.to change { Note.count }.by(1)
       end
 
-      it 'creates changesets' do
-        expect { subject.call }.to change { Changeset.count }.by(1)
-      end
-
       it 'sends user notification' do
         expect(NoteOperations::UserNotification).to receive(:notify_users).with(note: instance_of(Note), current_user: user)
         subject.call
@@ -47,10 +43,6 @@ describe NoteOperations::Create do
 
       it 'does not save note' do
         expect { subject.call }.to_not change { Note.count }
-      end
-
-      it 'does not creates changesets' do
-        expect { subject.call }.to_not change { Changeset.count }
       end
 
       it 'does not send user notification' do

@@ -21,10 +21,6 @@ describe StoryOperations::Update do
         expect(subject.call.success.title).to eq(story_params[:title])
       end
 
-      it 'creates changesets' do
-        expect { subject.call }.to change { Changeset.count }.by(1)
-      end
-
       it 'creates activity recording' do
         expect { subject.call }.to change { Activity.count }.by(1)
       end
@@ -103,10 +99,6 @@ describe StoryOperations::Update do
 
       it 'returns story with errors' do
         expect(subject.call.failure.errors.full_messages).to eq(['Title can\'t be blank'])
-      end
-
-      it 'does not create changesets' do
-        expect { subject.call }.to_not change { Changeset.count }
       end
 
       it 'does not create activity recording' do

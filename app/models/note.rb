@@ -1,4 +1,4 @@
-class Note < ApplicationRecord
+class Note < ActiveRecord::Base
   belongs_to :user
   belongs_to :story, touch: true
 

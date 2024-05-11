@@ -79,7 +79,7 @@ class ApplicationPolicy
     attr_reader :context, :scope
 
     def initialize(context, scope)
-      if context.is_a?(AdminUser)
+      if context.is_a?(User) && context.admin?
         context = PunditContext.new(nil, context, active_admin: true)
       end
       @context = context

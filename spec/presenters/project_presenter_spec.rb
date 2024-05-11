@@ -12,14 +12,6 @@ describe ProjectPresenter do
     it { expect(project.truncate_name.length).to eq(18) }
   end
 
-  describe '#velocity' do
-    it { expect(project.velocity).to eq(10) }
-  end
-
-  describe '#volatility' do
-    it { expect(project.volatility).to eq('0%') }
-  end
-
   describe '#users_avatar' do
     it 'should return the right users avatar' do
       expect(project.users_avatar(4)).to eq(

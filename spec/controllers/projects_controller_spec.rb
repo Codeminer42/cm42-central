@@ -58,9 +58,9 @@ describe ProjectsController do
 
       describe 'collection actions' do
         describe '#index' do
-          it "redirects to project page when there's only one" do
+          it "shows index page when there's only one" do
             get :index
-            expect(response).to redirect_to(project_url(project))
+            expect(response).to be_successful
           end
         end
 

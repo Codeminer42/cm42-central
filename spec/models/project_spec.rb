@@ -127,50 +127,8 @@ describe Project, type: :model do
     end
   end
 
-  describe '#iteration_service' do
-    let(:iteration_service_stub) { instance_double('IterationService') }
-
-    context 'when since and current_time are defined' do
-      let(:since) { Time.current - 1.day }
-      let(:current_time) { Time.current }
-
-      before do
-        allow(IterationService)
-          .to receive(:new)
-          .with(subject, since: since, current_time: current_time)
-          .and_return(iteration_service_stub)
-      end
-
-      it 'uses them to initialize IterationService' do
-        expect(subject.iteration_service(since: since, current_time: current_time))
-          .to eq iteration_service_stub
-      end
-    end
-
-    context 'when since and current_time are not defined' do
-      let(:current_time) { Time.current }
-
-      before do
-        Timecop.freeze(current_time) do
-          allow(IterationService)
-            .to receive(:new)
-            .with(subject, since: nil, current_time: current_time)
-            .and_return(iteration_service_stub)
-        end
-      end
-
-      it 'defaults nil to since and the current time to current_time' do
-        Timecop.freeze(current_time) do
-          expect(subject.iteration_service).to eq iteration_service_stub
-        end
-      end
-    end
-  end
-
-
   describe 'associations' do
     subject { build :project }
-    it { is_expected.to have_many(:changesets) }
   end
 
   describe '#joinable' do
@@ -202,26 +160,6 @@ describe Project, type: :model do
 
       it { expect(Project.joinable_except(project.id)).not_to include(project) }
       it { expect(Project.joinable_except(project.id)).to include(another_project) }
-    end
-  end
-
-  describe '#last_changeset_id' do
-    context 'when there are no changesets' do
-      before do
-        allow(subject).to receive_message_chain(:changesets).and_return([])
-      end
-
-      its(:last_changeset_id) { should be_nil }
-    end
-
-    context 'when there are changesets' do
-      let(:changeset) { double('changeset', id: 42) }
-
-      before do
-        allow(subject).to receive(:changesets).and_return([nil, nil, changeset])
-      end
-
-      its(:last_changeset_id) { should == changeset.id }
     end
   end
 

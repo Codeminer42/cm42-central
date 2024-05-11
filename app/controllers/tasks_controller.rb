@@ -40,6 +40,8 @@ class TasksController < ApplicationController
   end
 
   def set_project_and_story
+    @story   = Story.find(params[:story_id])
+    # set story before pundit enters the picture so its available, and then authorize
     @project = policy_scope(Project).find(params[:project_id])
     @story   = policy_scope(Story).find(params[:story_id])
   end

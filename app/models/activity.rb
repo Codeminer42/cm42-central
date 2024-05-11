@@ -1,4 +1,4 @@
-class Activity < ApplicationRecord
+class Activity < ActiveRecord::Base
   belongs_to :project
   belongs_to :user
   belongs_to :subject, polymorphic: true

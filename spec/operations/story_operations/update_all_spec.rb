@@ -26,10 +26,6 @@ describe StoryOperations::UpdateAll do
         expect(updated_story_3.title).to eq(story_params[:title])
       end
 
-      it 'creates changesets' do
-        expect { subject.call }.to change { Changeset.count }.by(3)
-      end
-
       it 'creates activity recording' do
         expect { subject.call }.to change { Activity.count }.by(3)
       end
@@ -66,10 +62,6 @@ describe StoryOperations::UpdateAll do
     context 'with invalid story title' do
       let(:story_params) do
         { title: '', story_type: 'feature', state: 'started', estimate: 1 }
-      end
-
-      it 'does not create changesets' do
-        expect { subject.call }.to_not change { Changeset.count }
       end
 
       it 'does not create activity recordings' do
