@@ -39,7 +39,7 @@ describe StoryOperations::Update do
         expect(subject.call.success?).to be(true)
       end
 
-      context 'when transitioning' do
+      fcontext 'when transitioning' do
         before do
           project.stories.create(title: "Accepted", accepted_at: Time.zone.now, state: "accepted", estimate: 1, position: 1, positioning_column: "#in_progress")
           project.stories.create(title: "Delivered", state: "delivered", estimate: 1, position: 2, positioning_column: "#in_progress")
@@ -59,6 +59,40 @@ describe StoryOperations::Update do
               "Delivered",
               "Started",
               "Story",
+              "Unstarted",
+            ])
+          end
+        end
+
+        context 'from rejected to started' do
+          let(:create_story_params) { { title: 'Story', requested_by: user, accepted_at: nil, story_type: 'feature', state: 'rejected', estimate: 1 } }
+          let(:story_params) { {} }
+
+          it 'moves it to the bottom of the started list'  do
+            story.restart
+            subject.call
+            expect(project.stories.order(:position).pluck(:title)).to eq([
+              "Accepted",
+              "Delivered",
+              "Started",
+              "Story",
+              "Unstarted",
+            ])
+          end
+        end
+
+        context 'from finished to delivered' do
+          let(:create_story_params) { { title: 'Story', requested_by: user, accepted_at: nil, story_type: 'feature', state: 'finished', estimate: 1 } }
+          let(:story_params) { {} }
+
+          it 'moves it to the bottom of the delivered list'  do
+            story.deliver
+            subject.call
+            expect(project.stories.order(:position).pluck(:title)).to eq([
+              "Accepted",
+              "Delivered",
+              "Story",
+              "Started",
               "Unstarted",
             ])
           end

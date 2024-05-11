@@ -26,6 +26,7 @@ class Story < ActiveRecord::Base
   scope :not_accepted, -> { where(accepted_at: nil) }
   scope :accepted,    -> { where(state: 'accepted').where.not(accepted_at: nil) }
   scope :done,        -> { where(state: :accepted) }
+  scope :delivered,   -> { where(state: [:delivered, :rejected]) }
   scope :in_progress, -> { where(state: [:started, :finished, :delivered, :rejected]) }
   scope :backlog,     -> { where(state: :unstarted) }
   scope :chilly_bin,  -> { where(state: :unscheduled) }

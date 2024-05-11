@@ -99,6 +99,10 @@ class Project < ActiveRecord::Base
     Iteration.current_accepted(self)
   end
 
+  def current_delivered
+    Iteration.current_delivered(self)
+  end
+
   def current_in_progress
     Iteration.current_in_progress(self)
   end

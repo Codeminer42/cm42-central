@@ -27,6 +27,17 @@ class Iteration < Struct.new(:project, :stories, :start_date, :number, :key)
     )
   end
 
+  def self.current_delivered project
+    stories = project.stories.delivered.order(:position)
+    new(
+      project,
+      stories,
+      nil,
+      nil,
+      "in_progress"
+    )
+  end 
+
   def self.current_in_progress project
     stories = project.stories.in_progress.order(:position)
     new(
