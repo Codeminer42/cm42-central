@@ -679,6 +679,10 @@ div#keycut-help {
     background: #305D93;
     color: #fff;
   }
+  &[disabled], &[disabled]:hover{
+    background: #e0e0e0;
+    color: #cfcfcf;
+  }
 }
 
 .edit-project,
