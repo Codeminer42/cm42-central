@@ -118,7 +118,7 @@
                       span = link_to "Delete", [@project, form.object, comment], method: :delete, class: "delete-btn delete-comment", title: "Delete"
                     .attachments
                       - comment.attachments.each do |attachment|
-                        => link_to attachment.filename, attachment, class: "attachment", download: true
+                        => link_to attachment.filename, attachment, class: "attachment", target: "_blank", download: true
 
           div
             .comment_form.clearfix
@@ -127,4 +127,3 @@
               = comment_form.bard_file_field :attachments, multiple: true, data: { turbo_permanent: true, story_target: "attachment" }
               button.add-comment.btn.btn-default.btn-xs type="submit" data-story-target="submitButton"
                 | Add comment
-
