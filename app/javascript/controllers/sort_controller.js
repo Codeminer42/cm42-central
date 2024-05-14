@@ -14,9 +14,21 @@ export default class extends Controller {
       filter: ".accepted, .story:has(.toggle-story:checked)",
       preventOnFilter: false,
       dataIdAttr: "data-id",
+      onStart: e => this.onStart(e),
       onSort: e => this.onSort(e),
       onMove: e => this.onMove(e),
+      onEnd: e => this.onEnd(e),
     })
+  }
+
+  onStart(event) {
+    event.item.setAttribute("data-turbo-permanent", "true")
+    event.clone.setAttribute("data-turbo-permanent", "true")
+  }
+
+  onEnd(event) {
+    event.item.removeAttribute("data-turbo-permanent")
+    event.clone.removeAttribute("data-turbo-permanent")
   }
 
   onMove(event) {
@@ -119,24 +131,6 @@ export default class extends Controller {
       // // Element is unchosen
       // onUnchoose: function(/**Event*/evt) {
       //   // same properties as onEnd
-      // },
-
-      // // Element dragging started
-      // onStart: function (/**Event*/evt) {
-      //   evt.oldIndex;  // element index within parent
-      // },
-
-      // // Element dragging ended
-      // onEnd: function (/**Event*/evt) {
-      //   var itemEl = evt.item;  // dragged HTMLElement
-      //   evt.to;    // target list
-      //   evt.from;  // previous list
-      //   evt.oldIndex;  // element's old index within old parent
-      //   evt.newIndex;  // element's new index within new parent
-      //   evt.oldDraggableIndex; // element's old index within old parent, only counting draggable elements
-      //   evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
-      //   evt.clone // the clone element
-      //   evt.pullMode;  // when item is in another sortable: `"clone"` if cloning, `true` if moving
       // },
 
       // // Element is dropped into the list from another list
