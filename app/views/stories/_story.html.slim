@@ -124,7 +124,7 @@
             .comment_form.clearfix
               = comment_form.text_area :body, class: "form-control comment-textarea", data: { story_target: "permanent comment" }
               = comment_form.label :attachments, "Attachment(s)"
-              = comment_form.bard_file_field :attachments, multiple: true, data: { story_target: "permanent attachment" }
+              = comment_form.bard_file_field :attachments, multiple: true, data: { turbo_permanent: true, story_target: "attachment" }
               button.add-comment.btn.btn-default.btn-xs type="submit" data-story-target="submitButton"
                 | Add comment
 
