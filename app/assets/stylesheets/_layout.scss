@@ -1,4 +1,6 @@
-html{height: 100%;}
+html{
+  height: 100%;
+}
 body {
   min-height: 100%;
   font-family: 'Noto Sans', sans-serif;
@@ -24,7 +26,6 @@ body {
 .board {
   background-color: $darkgrey-10;
   height: auto;
-  overflow: hidden;
 }
 
 .content-wrapper {

@@ -24,6 +24,7 @@ a img {
   height: 100%;
   margin: 0;
   position: relative;
+  overflow: hidden;
 }
 
 html.stories, html.stories body, html.stories .main {
@@ -37,6 +38,10 @@ table.stories {
   border-spacing: 2px 0;
   border-collapse: separate;
   table-layout: fixed;
+  &:has(.story:target) .column_content{
+    top: 104px;
+    position: relative;
+  }
 }
 
 table.stories td {
@@ -44,6 +49,7 @@ table.stories td {
   background-color: #191919;
   height: 100%;
   border-radius: 5px 5px 0 0;
+  //padding-top: 52px;
 }
 
 div.column_content {
@@ -66,6 +72,9 @@ div.column_content {
   justify-content: space-between;
   align-items: center;
   min-height: 46px;
+  position: sticky;
+  z-index: 1;
+  top: 0;
 
   a.toggle-title {
     color: $white;
@@ -98,6 +107,7 @@ div.column_content {
   padding: 4px 10px;
   border-radius: 3px;
   font-size: 1.1em;
+  margin: 0;
   &:hover{
     background: #DC7536;
     text-decoration: none;
