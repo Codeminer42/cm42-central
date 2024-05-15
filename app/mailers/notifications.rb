@@ -1,4 +1,6 @@
 class Notifications < ActionMailer::Base
+  helper StoriesHelper
+
   def new_story(email, story, actor)
     @story = story
     @actor = actor
@@ -32,7 +34,6 @@ class Notifications < ActionMailer::Base
   def new_story_owner(story, actor)
     @story = story
     @actor = actor
-    @url = "#{project_url(@story.project)}#story-#{@story.id}"
 
     mail({
       to: story.owned_by.email,

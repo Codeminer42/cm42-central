@@ -6,19 +6,20 @@ div
     input.cancel type="button" value="Cancel" data-action="click->story#close:prevent:stop" data-story-target="submitButton"
 
 div
-  .col-xs-12.form-group.input-group.input-group-sm
-    input#story-link-5433.form-control.input-sm readonly="" value=project_url(form.object.project, anchor: dom_id(form.object))
+  - if form.object.persisted?
+    .col-xs-12.form-group.input-group.input-group-sm
+      input#story-link-5433.form-control.input-sm readonly="" value=story_url(form.object)
 
-    /
-      span.input-group-btn
-        button.btn.btn-default.btn-clipboard data-clipboard-target="#story-link-#{story.id}" type="button" title="Copy URL"
-          img.clipboard-icon src="/clippy.svg" alt="Copy URL"
-        button.btn.btn-default.btn-clipboard-id.btn-clipboard data-clipboard-text="#5433" type="button" title="Copy ID"
-          | ID
-        button.btn.btn-default.toggle-history title="View history"
-          i.mi.md-18 history
-        button.btn.btn-default.clone-story title="Clone story"
-          i.mi.md-18 content_copy
+      /
+        span.input-group-btn
+          button.btn.btn-default.btn-clipboard data-clipboard-target="#story-link-#{story.id}" type="button" title="Copy URL"
+            img.clipboard-icon src="/clippy.svg" alt="Copy URL"
+          button.btn.btn-default.btn-clipboard-id.btn-clipboard data-clipboard-text="#5433" type="button" title="Copy ID"
+            | ID
+          button.btn.btn-default.toggle-history title="View history"
+            i.mi.md-18 history
+          button.btn.btn-default.clone-story title="Clone story"
+            i.mi.md-18 content_copy
 
 .form-group
   = form.label :title

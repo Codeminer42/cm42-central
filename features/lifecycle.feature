@@ -44,13 +44,9 @@ Feature: Stories have a lifecycle
       |      | F WOW GUBS finish |        |
     And "gubs@botandrose.com" should receive an email from "notifications@clients.botandrose.com" with the subject "[Example Project] WOW" and the following body:
       """
-      You were added as a story owner to
-      <a href="http://clients.botandrose.com/projects/example-project#story-1">WOW</a><br>
-      by
-      Micah Geisel
-      (@micahg)<br>
-      <br>
-      <a href="http://clients.botandrose.com/projects/example-project#story-1">http://clients.botandrose.com/projects/example-project#story-1</a>
+      You were added as a story owner to 'WOW' by Micah Geisel.
+      
+      http://clients.botandrose.com/projects/example-project#story-1
       """
     And "micah@botandrose.com" should receive no emails
 
@@ -65,13 +61,9 @@ Feature: Stories have a lifecycle
       |      | F WOW MG finish |        |
     And "micah@botandrose.com" should receive an email from "notifications@clients.botandrose.com" with the subject "[Example Project] WOW" and the following body:
       """
-      You were added as a story owner to
-      <a href="http://clients.botandrose.com/projects/example-project#story-1">WOW</a><br>
-      by
-      Michael Gubitosa
-      (@gubs)<br>
-      <br>
-      <a href="http://clients.botandrose.com/projects/example-project#story-1">http://clients.botandrose.com/projects/example-project#story-1</a>
+      You were added as a story owner to 'WOW' by Michael Gubitosa.
+      
+      http://clients.botandrose.com/projects/example-project#story-1
       """
     And "gubs@botandrose.com" should receive no emails
 

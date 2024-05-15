@@ -1,10 +1,10 @@
 module StoriesHelper
-  def story_anchor story
-    dom_id(story).sub("_","-")
+  def story_url story
+    project_url(story.project, anchor: story_anchor(story))
   end
 
-  def story_path story
-    project_path(story.project, anchor: story_anchor(story))
+  def story_anchor story
+    dom_id(story).sub("_","-")
   end
 
   def state_transition_button(story, state)
