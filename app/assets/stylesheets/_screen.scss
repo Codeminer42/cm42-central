@@ -152,9 +152,6 @@ div.story.new-story {
   &:has(.toggle-story:checked) {
     display: block;
   }
-  input[id^="story-link"]{
-    display: none;
-  }
 }
 
 div.story.editing, div.story.editing:hover {
