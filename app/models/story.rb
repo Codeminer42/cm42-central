@@ -126,6 +126,10 @@ class Story < ActiveRecord::Base
     self.class.state_machine.states.map(&:name)
   end
 
+  def story_types
+    STORY_TYPES
+  end
+
   def events
     self.class.state_machine.events_for(current_state)
   end
