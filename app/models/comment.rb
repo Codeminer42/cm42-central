@@ -1,12 +1,11 @@
 class Comment < ActiveRecord::Base
   belongs_to :user
   belongs_to :story, touch: true
+  has_one :project, through: :story
 
   has_many_attached :attachments
 
   before_save :cache_user_name
-
-  delegate :project, to: :story
 
   validate :body_or_attachment_present
 

@@ -1,0 +1,11 @@
+.comment
+  .comment_body => simple_format auto_link(comment.body)
+  .comment_meta
+    span.user => comment.user_name
+    span.created_at => comment.created_at
+    span = link_to "Delete", [comment.project, comment.story, comment], method: :delete, class: "delete-btn delete-comment", title: "Delete"
+  .attachments
+    - comment.attachments.each do |attachment|
+      => link_to rails_blob_url(attachment, disposition: "attachment"), class: "attachment" do
+        = attachment.filename
+
