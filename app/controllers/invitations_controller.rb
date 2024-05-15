@@ -1,6 +1,7 @@
 class InvitationsController < ApplicationController
   before_action :set_project, except: [:show, :update]
   skip_before_action :authenticate_user!, only: :show
+  skip_after_action :verify_authorized, only: :show
 
   def new
     @invitation = Invitation.new(project: @project, email: params[:email])
@@ -19,7 +20,6 @@ class InvitationsController < ApplicationController
   end
 
   def show
-    authorize Invitation.new
     @user = User.confirm_by_token(params[:id])
     if @user.valid? && @user.errors.empty?
       sign_out

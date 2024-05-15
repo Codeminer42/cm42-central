@@ -52,6 +52,7 @@ Feature: Admins can add users to projects
       https://clients.botandrose.com/invitations/
       """
 
+    Given I am logged out
     When I follow the first link in the email
     Then I should see "Welcome, Lindsay Caron!"
 

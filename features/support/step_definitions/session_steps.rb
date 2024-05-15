@@ -21,3 +21,7 @@ def login_user user
   click_button "Log in"
   expect(page).to have_text("Signed in successfully")
 end
+
+Given "I am logged out" do
+  visit "/users/sign_out"
+end
