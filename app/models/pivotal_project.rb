@@ -84,15 +84,13 @@ class PivotalProject < ActiveRecord::Base
   end
 
   def attachments_attributes
-    stories_attributes.flat_map do |attrs|
-      attrs["comments"].flat_map do |comment_attrs|
-        comment_attrs["attachments"].select do |attachment_attrs|
-          attachment_attrs.fetch("kind") == "file_attachment"
-        end.map do |attachment_attrs|
-          attachment_attrs.merge({
-            "comment_id" => comment_attrs["id"],
-          })
-        end
+    comments_attributes.flat_map do |comment_attrs|
+      comment_attrs["attachments"].select do |attachment_attrs|
+        attachment_attrs.fetch("kind") == "file_attachment"
+      end.map do |attachment_attrs|
+        attachment_attrs.merge({
+          "comment_id" => comment_attrs["id"],
+        })
       end
     end
   end

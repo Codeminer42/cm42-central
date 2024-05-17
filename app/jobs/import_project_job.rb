@@ -131,6 +131,7 @@ class ImportProjectJob < ActiveJob::Base
         created_at: attrs.fetch("created_at"),
       }
       comment.save(validate: false) # allow comment to be blank in case of attachments
+      ConvertsCommentInlineImagesToAttachments.call(comment)
     end
   end
 
