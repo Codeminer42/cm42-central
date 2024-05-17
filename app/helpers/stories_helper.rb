@@ -23,7 +23,10 @@ module StoriesHelper
 
   def comment_format text
     if text
-      auto_link Kramdown::Document.new(text).to_html.html_safe
+      Commonmarker.to_html(text, options: {
+        extensions: { autolink: true },
+        parse: { smart: true }
+      }).html_safe
     end
   end
 end

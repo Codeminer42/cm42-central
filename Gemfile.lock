@@ -183,6 +183,8 @@ GEM
     coderay (1.1.3)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
+    commonmarker (1.1.3)
+      rb_sys (~> 0.9)
     concurrent-ruby (1.2.3)
     configuration (1.3.4)
     connection_pool (2.4.1)
@@ -340,8 +342,6 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
-    kramdown (2.4.0)
-      rexml
     launchy (2.5.2)
       addressable (~> 2.8)
     letter_opener (1.10.0)
@@ -467,6 +467,7 @@ GEM
       activerecord (>= 6.1.5)
       activesupport (>= 6.1.5)
       i18n
+    rb_sys (0.9.97)
     rbtree (0.4.6)
     rdoc (6.6.3.1)
       psych (>= 4.0.0)
@@ -635,6 +636,7 @@ DEPENDENCIES
   capybara-screenshot
   chartkick
   chop
+  commonmarker
   configuration
   cucumber-rails
   cuprite-downloads
@@ -656,7 +658,6 @@ DEPENDENCIES
   gravtastic
   image_processing
   importmap-rails (~> 1.0)
-  kramdown
   letter_opener
   letter_opener_web
   material_icons (~> 2.0)

@@ -40,7 +40,7 @@ gem 'activeadmin'
 gem 'devise'
 gem 'devise-async'
 gem 'devise-i18n'
-gem 'kramdown'
+gem 'commonmarker'
 gem 'chartkick'
 
 # css
