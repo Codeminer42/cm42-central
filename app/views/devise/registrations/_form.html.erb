@@ -56,7 +56,7 @@
 
   <div class="form-group current-password">
     <%= f.label :current_password %>
-    <%= f.password_field :current_password, autocomplete: "off", class: 'form-control' %>
+    <%= f.password_field :current_password, autocomplete: "off", class: 'form-control', required: true %>
     <div class="help-block">
       <%= t('.we_need_your_current_password_to_confirm_your_changes') %>
     </div>

@@ -28,13 +28,13 @@ Rails.application.routes.draw do
     end
   end
 
-  devise_for :users
-  resources :invitations
+  devise_for :users, controllers: { registrations: "registrations" }
   devise_scope :user do
     get 'users/current' => 'sessions#current', as: :current_user
     put 'users/:id/tour' => 'registrations#tour', as: :users_tour
     put 'users/:id/reset_tour' => 'registrations#reset_tour', as: :user_reset_tour
   end
+  resources :invitations
 
   mount UserImpersonate::Engine => "/impersonate", as: "impersonate_engine"
   ActiveAdmin.routes(self)
