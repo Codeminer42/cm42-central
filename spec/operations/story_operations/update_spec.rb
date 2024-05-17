@@ -39,7 +39,7 @@ describe StoryOperations::Update do
         expect(subject.call.success?).to be(true)
       end
 
-      fcontext 'when transitioning' do
+      context 'when transitioning' do
         before do
           project.stories.create(title: "Accepted", accepted_at: Time.zone.now, state: "accepted", estimate: 1, position: 1, positioning_column: "#in_progress")
           project.stories.create(title: "Delivered", state: "delivered", estimate: 1, position: 2, positioning_column: "#in_progress")
