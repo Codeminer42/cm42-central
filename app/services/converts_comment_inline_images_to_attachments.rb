@@ -8,7 +8,7 @@ class ConvertsCommentInlineImagesToAttachments < Struct.new(:comment)
 
   def call
     return if comment.body.blank?
-    comment.body.gsub!(REGEX) do
+    comment.body = comment.body.gsub(REGEX) do
       response = attachments[$2].get
       hacky_pivotal_id = response.headers[:content_length]
       if comment.attachments.where(pivotal_id: hacky_pivotal_id).none?
@@ -17,7 +17,6 @@ class ConvertsCommentInlineImagesToAttachments < Struct.new(:comment)
           filename: $1,
           content_type: response.headers[:content_type],
         )
-        comment.save(validate: false)
         comment.attachments_attachments.last.update!({
           created_at: comment.created_at,
           pivotal_id: hacky_pivotal_id,
@@ -25,7 +24,7 @@ class ConvertsCommentInlineImagesToAttachments < Struct.new(:comment)
       end
       ""
     end
-    comment.save(validate: false) if comment.body_changed?
+    comment.save(validate: false)
   end
 
 
