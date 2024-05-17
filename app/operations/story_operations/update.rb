@@ -90,10 +90,32 @@ module StoryOperations
     end
 
     def apply_fixes
-      story.fix_project_start_date
-      story.fix_story_accepted_at
-      story.project.save if story.project.start_date_previously_changed?
+      fix_project_start_date
+      fix_project_accepted_at
       Success(story)
+    end
+
+    # Set the project start date to today if the project start date is nil
+    # and the state is changing to any state other than 'unstarted' or 'unscheduled'
+    def fix_project_start_date
+      if [
+        story.state_previously_changed?,
+        story.project && !story.project.start_date,
+        !%w[unstarted unscheduled].include?(story.state),
+      ].all?
+        story.project.update! start_date: Date.current
+      end
+    end
+
+    # If a story's 'accepted at' date is prior to the project start date,
+    # the project start date should be moved back accordingly
+    def fix_project_accepted_at
+      if [
+        story.accepted_at_previously_changed?,
+        story.accepted_at && story.accepted_at < story.project.start_date,
+      ].all?
+        story.project.update! start_date: story.accepted_at
+      end
     end
 
     def notify_state_changed
