@@ -1,5 +1,5 @@
 .comment
-  .comment_body => simple_format auto_link(comment.body)
+  .comment_body => comment_format comment.body
   .comment_meta
     span.user => comment.user_name
     span.created_at => comment.created_at

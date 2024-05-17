@@ -20,4 +20,10 @@ module StoriesHelper
       "release" => %(<i class="mi md-release md-16">bookmark</i>),
     }.fetch(story.story_type).html_safe
   end
+
+  def comment_format text
+    if text
+      auto_link Kramdown::Document.new(text).to_html.html_safe
+    end
+  end
 end

@@ -340,6 +340,8 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
+    kramdown (2.4.0)
+      rexml
     launchy (2.5.2)
       addressable (~> 2.8)
     letter_opener (1.10.0)
@@ -654,6 +656,7 @@ DEPENDENCIES
   gravtastic
   image_processing
   importmap-rails (~> 1.0)
+  kramdown
   letter_opener
   letter_opener_web
   material_icons (~> 2.0)
