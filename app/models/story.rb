@@ -173,9 +173,13 @@ class Story < ActiveRecord::Base
 
   def set_accepted_at
     return unless state_changed?
-    return unless state == 'accepted'
-    self.accepted_at = Time.current if accepted_at.nil?
-    self.cycle_time = accepted_at - started_at if started_at
+    if state == 'accepted'
+      self.accepted_at ||= Time.current
+      self.cycle_time = accepted_at - started_at if started_at
+    elsif accepted_at.present?
+      self.accepted_at = nil
+      self.cycle_time = nil
+    end
   end
 
   def set_delivered_at
