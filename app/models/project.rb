@@ -86,33 +86,8 @@ class Project < ActiveRecord::Base
     name
   end
 
-  def past_iterations(limit: nil)
-    iterations = Iteration.past(self)
-    if limit
-      iterations.last(limit)
-    else
-      iterations
-    end
-  end
-
-  def current_accepted
-    Iteration.current_accepted(self)
-  end
-
-  def current_delivered
-    Iteration.current_delivered(self)
-  end
-
-  def current_in_progress
-    Iteration.current_in_progress(self)
-  end
-
-  def current_unstarted
-    Iteration.current_unstarted(self)
-  end
-
-  def current_icebox
-    Iteration.current_icebox(self)
+  def board
+    @board ||= Board.new(self)
   end
 
   def point_values
