@@ -168,7 +168,7 @@ div.story.chore.accepted{
 
 div.story textarea {
   height: 50px;
-  resize: none;
+  resize: vertical;
 }
 
 .description {
@@ -181,7 +181,6 @@ div.story textarea {
 .form-control.description-textarea {
   min-height: 100px;
   max-height: 250px;
-  resize: vertical;
 }
 
 .comment-textarea {
