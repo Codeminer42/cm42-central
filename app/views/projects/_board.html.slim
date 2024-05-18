@@ -10,11 +10,11 @@
           #done.column_content.story_column
             = render board.past_iterations.last(4)
 
-        td.in_progress_column
+        td.in_progress_column data-controller="column"
           .column_header
             a.toggle-title href="#" title="Todo" Todo
             / a.toggle-column.hide_in_progress href="#" title="Close" ×
-            label.add-story-button for="new-story-in_progress-toggle" + Add Story
+            label.add-story-button for="new-story-in_progress-toggle" data-action="click->column#focusNewStoryTitleField" + Add Story
 
           #in_progress.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#in_progress"
             = render board.current_accepted
@@ -22,11 +22,11 @@
             = render @new_todo_story
             = render board.current_unstarted
 
-        td.chilly_bin_column
+        td.chilly_bin_column data-controller="column"
           .column_header
             a.toggle-title href="#" title="Icebox" Icebox
             / a.toggle-column.hide_chilly_bin href="#" title="Close" ×
-            label.add-story-button for="new-story-chilly_bin-toggle" + Add Story
+            label.add-story-button for="new-story-chilly_bin-toggle" data-action="click->column#focusNewStoryTitleField" + Add Story
 
           #chilly_bin.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#chilly_bin"
             = render @new_icebox_story
