@@ -16,7 +16,13 @@
 - content_for :navbar do
   = render 'navbar', project: @project
 
-= turbo_stream_from @project
+div data-controller="stream"
+  = turbo_stream_from @project, data: { stream_target: "stream" }
+  dialog.offline data-stream-target="dialog"
+    .flex
+      p <b>You are currently offline</b>
+      a.reconnect-button disabled=true Reconnecting...
+      / = link_to "Reconnect now", "#", class: "reconnect-button", onclick: "window.location.reload(); return false"
 
 = render @project.board
 
