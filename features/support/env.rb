@@ -14,6 +14,7 @@ Capybara.register_driver(:cuprite) do |app|
   Capybara::Cuprite::Driver.new(app, {
     window_size: [1200, 2048],
     timeout: 30,
+    process_timeout: 20,
     js_errors: true, 
     inspector: !ENV["CI"],
     logger: FerrumLogger.new,
@@ -52,8 +53,8 @@ end
 
 Capybara.server = :puma, { Silent: true }
 Capybara.default_driver = :cuprite
-
 Capybara.default_normalize_ws = true
+
 # FIXME push upstream
 Capybara::Node::Element.prepend Module.new {
   def text type = nil, normalize_ws: nil
