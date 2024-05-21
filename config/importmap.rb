@@ -10,3 +10,5 @@ pin "bard-file", to: "bard-file.js", preload: true
 pin "sortablejs", to: "https://ga.jspm.io/npm:sortablejs@1.15.2/modular/sortable.esm.js", preload: true
 pin "rails-request-json", to: "https://ga.jspm.io/npm:rails-request-json@0.1.3/index.js", preload: true
 pin "@rails/request.js", to: "https://ga.jspm.io/npm:@rails/request.js@0.0.6/src/index.js", preload: true
+
+pin "tributejs", to: "https://ga.jspm.io/npm:tributejs@5.1.3/dist/tribute.min.js"

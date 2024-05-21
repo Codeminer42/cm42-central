@@ -36,6 +36,10 @@ class Project < ActiveRecord::Base
   end
 
   has_many :users, -> { distinct }, through: :memberships
+  def users_for_autocomplete
+    users.pluck(:name, :username)
+  end
+
   has_many :stories, dependent: :destroy do
     def with_dependencies
       includes(:tasks, :comments => { :attachments_attachments => :blob })
