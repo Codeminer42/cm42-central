@@ -21,12 +21,16 @@ module StoriesHelper
     }.fetch(story.story_type).html_safe
   end
 
-  def comment_format text
-    if text
-      Commonmarker.to_html(text, options: {
+  def comment_format comment, usernames
+    if comment.body.present?
+      rendered = Commonmarker.to_html(comment.body, options: {
         extensions: { autolink: true },
         parse: { smart: true }
-      }).html_safe
+      })
+      rendered.gsub!(/@(#{usernames.join("|")})/) do |match|
+        %(<b class="red">#{match}</b>)
+      end
+      rendered.html_safe
     end
   end
 end

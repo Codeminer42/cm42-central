@@ -39,6 +39,9 @@ class Project < ActiveRecord::Base
   def users_for_autocomplete
     users.pluck(:name, :username)
   end
+  def usernames
+    users_for_autocomplete.map(&:last)
+  end
 
   has_many :stories, dependent: :destroy do
     def with_dependencies
