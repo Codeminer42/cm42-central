@@ -5,7 +5,7 @@ require_relative "config/application"
 
 Rails.application.load_tasks
 
-task :restart => :clear_cache
+task :restart => :clear_cache do
   if ENV["RAILS_ENV"] == "production"
     sh "bundle exec foreman export systemd-user --app tracker"
   end
