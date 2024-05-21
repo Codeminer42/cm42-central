@@ -8,11 +8,11 @@ html
     title
       - if @project&.name.present?
         = @project.name
-        '  - 
+        '  -
       | BARD Tracker
 
     = csrf_meta_tag
-    = favicon_link_tag "favicon.ico"
+    = favicon_link_tag "favicon.png"
     = preload_link_tag "MaterialIcons-Regular.woff2"
 
     = stylesheet_link_tag :application
@@ -24,8 +24,8 @@ html
       nav.navbar.navbar-default
         .container-fluid
           .navbar-header
-            a.navbar-brand.navbar-logo href="/" 
-              = image_tag "logo.png", width: 32, height: 32
+            a.navbar-brand.navbar-logo href="/"
+              = image_tag "logo.svg", width: 32, height: 32
 
             = yield :title_bar
 
@@ -76,4 +76,3 @@ html
     = render "shared/cookies_banner"
 
     = yield :charts_data
-
