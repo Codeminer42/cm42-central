@@ -13,6 +13,7 @@ end
 
 task :clear_cache => :environment do
   Story.touch_all
+  Project.touch_all
 end
 
 Rake.application["spec"].clear
