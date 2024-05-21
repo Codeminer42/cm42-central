@@ -1,7 +1,7 @@
 Return-Path: <micah@botandrose.com>
 Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
  by inbound-smtp.us-west-2.amazonaws.com with SMTP id j88sko6h1jsmr7hcs8tkrafhuobq8rrnodqudm01
- for notifications@clients.botandrose.com;
+ for notifications@tracker.botandrose.com;
  Sat, 04 May 2024 18:17:52 +0000 (UTC)
 X-SES-Spam-Verdict: PASS
 X-SES-Virus-Verdict: PASS
@@ -13,9 +13,9 @@ Authentication-Results: amazonses.com;
 X-SES-RECEIPT: AEFBQUFBQUFBQUFFZjlVUUxQdEkxWkNSZ2hDRzB6cGNyVVJMNzlTWnQvdjZlMEpoMXI4RzNwdlFaZ3RNVlVrcEpIMUxlVHVlRFdTSkpJMFRwUi80bHFHM3JVTVQraUhaR2NZTTRuQk0xdEJldFVFV24zM2NmZjRyd0gxbTVaOGp1ZmxUMnJ1Ui9WdDZLQkRweG5ZWEc4QUxGd3BlMlZjS0ZoK1pxR3hWUWVHMnBzY3RXdHNXU01pSUZkWDh0YjQ5Uy9UbSt4QnFFNFhHaWNPRmhnbFpTeXNwbC9LTzZ1aWdIdzQ5VXl2ckdseWJaeGRKWXNUTE1OOU1FcGoyVlhsVjZNN1BnR3N3Z3Q3NmttcjVXeS84MGVVUkQwUmNOZFBIY3plaitFdHJwdmtiRDdBOVpVOVNPRkE9PQ==
 X-SES-DKIM-SIGNATURE: a=rsa-sha256; q=dns/txt; b=SrQBpWmgUK0Y+ns0JByt1v0xZR7M4B3uzVWtmaFb+SGOk2l36ZW1KTY8I4V6kcNPKlB73y8NlhQFEDfS9Mz3BW2BrJT0ZsMXdk2+/8OJnSmChjWLq4qNOCKAKFUpvhsmoD7viN6mQJeMenMayUkxjLxK1UEbEQRrJkBv9wPSwq4=; c=relaxed/simple; s=7v7vs6w47njt4pimodk5mmttbegzsi6n; d=amazonses.com; t=1714846673; v=1; bh=3gwz8WjIMUVO7CFm385DUgztMsI2s1nX+EgVB5c3vL0=; h=From:To:Cc:Bcc:Subject:Date:Message-ID:MIME-Version:Content-Type:X-SES-RECEIPT;
 Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1e9ffd3f96eso5513455ad.3
-        for <notifications@clients.botandrose.com>; Sat, 04 May 2024 11:17:52 -0700 (PDT)
+        for <notifications@tracker.botandrose.com>; Sat, 04 May 2024 11:17:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=botandrose-com.20230601.gappssmtp.com; s=20230601; t=1714846671; x=1715451471; darn=clients.botandrose.com;
+        d=botandrose-com.20230601.gappssmtp.com; s=20230601; t=1714846671; x=1715451471; darn=tracker.botandrose.com;
         h=to:subject:message-id:date:from:in-reply-to:references:mime-version
          :from:to:cc:subject:date:message-id:reply-to;
         bh=82+bY06dSLReXAl/oaI2IZnCMEKVAEJ6TzLoyGZQpGg=;
@@ -45,11 +45,11 @@ X-Received: by 2002:a17:903:48f:b0:1e4:4a3f:9a88 with SMTP id jj15-20020a1709030
 Return-Path: <micah@botandrose.com>
 Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com. [209.85.214.174])
         by smtp.gmail.com with ESMTPSA id z14-20020a170903018e00b001ec5cbd4af5sm5325329plg.305.2024.05.04.11.17.50
-        for <notifications@clients.botandrose.com>
+        for <notifications@tracker.botandrose.com>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
         Sat, 04 May 2024 11:17:50 -0700 (PDT)
 Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1ecc23e6c9dso4133375ad.2
-        for <notifications@clients.botandrose.com>; Sat, 04 May 2024 11:17:50 -0700 (PDT)
+        for <notifications@tracker.botandrose.com>; Sat, 04 May 2024 11:17:50 -0700 (PDT)
 X-Received: by 2002:a17:903:264f:b0:1eb:bc78:1ef5 with SMTP id
  je15-20020a170903264f00b001ebbc781ef5mr5031129plb.17.1714846668965; Sat, 04
  May 2024 11:17:48 -0700 (PDT)
@@ -60,8 +60,8 @@ From: Micah Geisel <micah@botandrose.com>
 Date: Sat, 4 May 2024 20:17:37 +0200
 X-Gmail-Original-Message-ID: <CACTxBsQbXZvn11mXqheJA1JXCJzaZGc=itwL-HP_7SQt9VhhfA@mail.gmail.com>
 Message-ID: <CACTxBsQbXZvn11mXqheJA1JXCJzaZGc=itwL-HP_7SQt9VhhfA@mail.gmail.com>
-Subject: Re: [Clients] Problem replying to emails?
-To: BARD <notifications@clients.botandrose.com>
+Subject: Re: [Tracker] Problem replying to emails?
+To: BARD Tracker <notifications@tracker.botandrose.com>
 Content-Type: multipart/mixed; boundary="0000000000008c8b650617a4da08"
 
 --0000000000008c8b650617a4da08
@@ -73,7 +73,7 @@ Content-Transfer-Encoding: quoted-printable
 
 testing reply with attachment
 
-On Sat, May 4, 2024 at 7:51=E2=80=AFPM BARD <notifications@clients.botandro=
+On Sat, May 4, 2024 at 7:51=E2=80=AFPM BARD Tracker <notifications@tracker.botandro=
 se.com>
 wrote:
 
@@ -82,7 +82,7 @@ wrote:
 >
 > @micahg testing email
 >
-> https://clients.botandrose.com/projects/clients#story-72
+> https://tracker.botandrose.com/projects/clients#story-72
 >
 
 --0000000000008c8b640617a4da06
@@ -91,8 +91,8 @@ Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"ltr">testing reply with attachment</div><br><div class=3D"gmail=
 _quote"><div dir=3D"ltr" class=3D"gmail_attr">On Sat, May 4, 2024 at 7:51=
-=E2=80=AFPM BARD &lt;<a href=3D"mailto:notifications@clients.botandrose.com=
-">notifications@clients.botandrose.com</a>&gt; wrote:<br></div><blockquote =
+=E2=80=AFPM BARD Tracker &lt;<a href=3D"mailto:notifications@tracker.botandrose.com=
+">notifications@tracker.botandrose.com</a>&gt; wrote:<br></div><blockquote =
 class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px sol=
 id rgb(204,204,204);padding-left:1ex">Micah Geisel added the following comm=
 ent to the story<br>
@@ -100,8 +100,8 @@ ent to the story<br>
 <br>
 @micahg testing email<br>
 <br>
-<a href=3D"https://clients.botandrose.com/projects/clients#story-72" rel=3D=
-"noreferrer" target=3D"_blank">https://clients.botandrose.com/projects/clie=
+<a href=3D"https://tracker.botandrose.com/projects/clients#story-72" rel=3D=
+"noreferrer" target=3D"_blank">https://tracker.botandrose.com/projects/clie=
 nts#story-72</a><br>
 </blockquote></div>
 

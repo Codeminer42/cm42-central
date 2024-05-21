@@ -7,7 +7,7 @@ Fulcrum::Application.load_tasks
 
 task :restart do
   if ENV["RAILS_ENV"] == "production"
-    sh "bundle exec foreman export systemd-user --app clients"
+    sh "bundle exec foreman export systemd-user --app tracker"
   end
 end
 

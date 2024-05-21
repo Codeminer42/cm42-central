@@ -49,13 +49,13 @@ Feature: Stories can be added
       |      | B WOW! MG start           |                     |
       |      | F Unstarted start         |                     |
 
-    And "gubs@botandrose.com" should receive an email from "notifications@clients.botandrose.com" with the subject "[Example Project] WOW!" and the following body:
+    And "gubs@botandrose.com" should receive an email from "notifications@tracker.botandrose.com" with the subject "[Example Project] WOW!" and the following body:
       """
       Bug WOW! was created by Micah Geisel (@micahg)
 
       description
 
-      http://clients.botandrose.com/projects/example-project#story-8
+      http://tracker.botandrose.com/projects/example-project#story-8
       """
 
     And "micah@botandrose.com" should receive no emails
@@ -103,13 +103,13 @@ Feature: Stories can be added
       |      | F Started finish          |                     |
       |      | F Unstarted start         |                     |
 
-    And "gubs@botandrose.com" should receive an email from "notifications@clients.botandrose.com" with the subject "[Example Project] WOW!" and the following body:
+    And "gubs@botandrose.com" should receive an email from "notifications@tracker.botandrose.com" with the subject "[Example Project] WOW!" and the following body:
       """
       Bug WOW! was created by Micah Geisel (@micahg)
 
       description
 
-      http://clients.botandrose.com/projects/example-project#story-8
+      http://tracker.botandrose.com/projects/example-project#story-8
       """
 
     And "micah@botandrose.com" should receive no emails

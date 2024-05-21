@@ -41,15 +41,15 @@ Feature: Admins can add users to projects
     And I should see the following project members:
       | Lindsay Caron (pending) | lindsay@gmail.com    |
       | Micah Geisel            | micah@botandrose.com |
-    And "lindsay@gmail.com" should receive an email from "noreply@clients.botandrose.com" with the subject "You have been invited to join the BARD project tracker" and the following body:
+    And "lindsay@gmail.com" should receive an email from "noreply@tracker.botandrose.com" with the subject "You have been invited to join BARD Tracker" and the following body:
       """
       Hello, Lindsay Caron!
 
-      You have been invited to join the BARD project tracker.
+      You have been invited to join BARD Tracker.
 
       Please click on the following link to accept your invitation:
 
-      https://clients.botandrose.com/invitations/
+      https://tracker.botandrose.com/invitations/
       """
 
     Given I am logged out

@@ -20,7 +20,7 @@ class FixtureIncomingEmail < Struct.new(:id)
 end
 
 describe ImportCommentWorker do
-  let!(:project) { Project.create!(name: "Clients") }
+  let!(:project) { Project.create!(name: "Tracker") }
   let!(:story) { project.stories.create!(title: "Problem replying to emails?") }
   let!(:user) { create :user, name: "Micah Geisel", email: "micah@botandrose.com", projects: [project] }
 
