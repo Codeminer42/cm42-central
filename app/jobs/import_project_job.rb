@@ -132,6 +132,7 @@ class ImportProjectJob < ActiveJob::Base
       }
       comment.save(validate: false) # allow comment to be blank in case of attachments
       ConvertsCommentInlineImagesToAttachments.call(comment)
+      FixesCommentStoryLinks.call(comment)
     end
   end
 
