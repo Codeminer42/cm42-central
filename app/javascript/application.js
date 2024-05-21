@@ -11,3 +11,6 @@ import "bard-file"
 window.Stimulus   = Application.start()
 eagerLoadControllersFrom("controllers/?\\w*", window.Stimulus)
 
+import TextareaAutogrow from "stimulus-textarea-autogrow"
+window.Stimulus.register("textarea-autogrow", TextareaAutogrow)
+
