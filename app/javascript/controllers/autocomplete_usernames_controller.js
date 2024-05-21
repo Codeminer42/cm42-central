@@ -18,6 +18,14 @@ export default class extends Controller {
         return `<b>${item.original.key}</b> ${item.original.value}`
       },
     })
+
+    // monkeypatch turbo permanence onto menu
+    this.tribute.original_createMenu = this.tribute.createMenu
+    this.tribute.createMenu = function(containerClass) {
+      const menu = this.original_createMenu(containerClass)
+      menu.setAttribute("data-turbo-permanent", "true")
+      return menu
+    }
   }
 
   connect() {
