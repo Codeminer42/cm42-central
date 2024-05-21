@@ -4,6 +4,7 @@ pin "@hotwired/turbo-rails", to: "turbo.min.js", preload: true
 pin "@hotwired/stimulus", to: "https://ga.jspm.io/npm:@hotwired/stimulus@3.2.2/dist/stimulus.js"
 pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
 pin "stimulus-use-actions", to: "https://ga.jspm.io/npm:stimulus-use-actions@0.1.0/index.js", preload: true
+pin "stimulus-shorthand", to: "https://ga.jspm.io/npm:stimulus-shorthand@0.1.0/index.js"
 pin_all_from "app/javascript/controllers", under: "controllers", preload: true
 
 pin "bard-file", to: "bard-file.js", preload: true

@@ -8,18 +8,16 @@ div
 div
   - if form.object.persisted?
     .col-xs-12.form-group.input-group.input-group-sm
-      input#story-link-5433.form-control.input-sm readonly="" value=story_url(form.object)
-
-      /
-        span.input-group-btn
-          button.btn.btn-default.btn-clipboard data-clipboard-target="#story-link-#{story.id}" type="button" title="Copy URL"
-            img.clipboard-icon src="/clippy.svg" alt="Copy URL"
-          button.btn.btn-default.btn-clipboard-id.btn-clipboard data-clipboard-text="#5433" type="button" title="Copy ID"
-            | ID
-          button.btn.btn-default.toggle-history title="View history"
-            i.mi.md-18 history
-          button.btn.btn-default.clone-story title="Clone story"
-            i.mi.md-18 content_copy
+      span.input-group-btn
+        button.btn.btn-default.btn-clipboard type="button" title="Copy URL" data-clipboard=story_url(form.object)
+          img.clipboard-icon src="/clippy.svg" alt="Copy URL"
+        button.btn.btn-default.btn-clipboard-id.btn-clipboard type="button" title="Copy ID" data-clipboard="##{form.object.id}"
+          | ID
+        /button.btn.btn-default.toggle-history title="View history"
+          i.mi.md-18 history
+        /button.btn.btn-default.clone-story title="Clone story"
+          i.mi.md-18 content_copy
+      input#story-link-5433.form-control.input-sm readonly=true value=story_url(form.object)
 
 .form-group
   = form.label :title
@@ -82,4 +80,3 @@ div
       = comment_form.bard_file_field :attachments, multiple: true, data: { turbo_permanent: true, story_target: "attachment" }
       button.add-comment.btn.btn-default.btn-xs type="submit" data-story-target="submitButton"
         | Add comment
-
