@@ -58,6 +58,10 @@ class User < ActiveRecord::Base
     "#{name} (#{initials}) <#{email}>"
   end
 
+  def initials= value
+    super(value&.upcase)
+  end
+
   # Sets :reset_password_token encrypted by Devise
   # returns the raw token to pass into mailer
   def set_reset_password_token
