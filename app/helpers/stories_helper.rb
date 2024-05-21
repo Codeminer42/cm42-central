@@ -30,6 +30,9 @@ module StoriesHelper
       rendered.gsub!(/@(#{usernames.join("|")})/) do |match|
         %(<b class="red">#{match}</b>)
       end
+      rendered.gsub!(/#\d+/) do |match|
+        %(<a class="story-link" href="#{project_url}#story-#{match[1..]}">#{match}</a>)
+      end
       rendered.html_safe
     end
   end
