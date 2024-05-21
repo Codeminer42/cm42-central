@@ -1,14 +1,18 @@
 # Add your own tasks in files placed in lib/tasks ending in .rake,
 # for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
 
-require File.expand_path('../config/application', __FILE__)
+require_relative "config/application"
 
-Fulcrum::Application.load_tasks
+Rails.application.load_tasks
 
-task :restart do
+task :restart => :clear_cache
   if ENV["RAILS_ENV"] == "production"
     sh "bundle exec foreman export systemd-user --app tracker"
   end
+end
+
+task :clear_cache => :environment do
+  Story.touch_all
 end
 
 Rake.application["spec"].clear
