@@ -14,14 +14,21 @@
   margin-top: 2px;
   padding: 0;
   list-style: none;
-  background: #efefef;
+  background: #fff;
+  border: 1px solid #ccc;
+  box-shadow: rgba(#000, 0.5) 0px 1px 3px;
+  font-size: 0.85em;
 }
 .tribute-container li {
-  padding: 5px 5px;
+  padding: 5px 30px 5px 10px;
   cursor: pointer;
+  color: #4f4f4f;
+}
+.tribute-container li b {
+  color: #303030;
 }
 .tribute-container li.highlight {
-  background: #ddd;
+  background: #efefef;
 }
 .tribute-container li span {
   font-weight: bold;
