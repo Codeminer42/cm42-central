@@ -4,7 +4,7 @@ class ConvertsCommentInlineImagesToAttachments < Struct.new(:comment)
   end
 
   # ![Screen Shot 2023-12-15 at 12.05.39 PM.jpg](/file_attachments/122214293/download)
-  REGEX = /!\[([^]]+)\]\((\/file_attachments\/\d+\/download)\)\s*/
+  REGEX = /!\[([^\]]+)\]\((\/file_attachments\/\d+\/download)\)\s*/
 
   def call
     return if comment.body.blank?
