@@ -37,7 +37,6 @@ html.stories, html.stories body, html.stories .main {
   //height: 100%;
   &:has(.story:target) .column_content {
     top: 164px;
-    border: 2px solid red;
     position: relative;
   }
 }

@@ -24,7 +24,7 @@ module WithinHelpers
       [".pivotal-projects .project-item", text: $1]
 
     when /the "(.+)?" column/
-      [".stories td", text: $1]
+      [".stories .story-col", text: $1]
 
     when /the "(.+)?" story/
       ["#in_progress .story, #chilly_bin .story", text: $1]
@@ -72,4 +72,3 @@ end
 When /^(.*) within (.*[^:]):$/ do |step_fragment, parent, table_or_string|
   with_scope(parent) { step "#{step_fragment}:", table_or_string }
 end
-
