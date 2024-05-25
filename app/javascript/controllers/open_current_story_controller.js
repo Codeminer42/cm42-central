@@ -15,7 +15,10 @@ export default class extends Controller {
       : window.location
     const selector = `${location.hash}-toggle`
     const toggle = document.querySelector(selector)
-    if(toggle) toggle.checked = true
+    if(toggle) {
+      toggle.checked = true
+      toggle.scrollIntoView(true)
+    }
   }
 }
 
