@@ -18,12 +18,20 @@ export default class extends Controller {
         "direct-upload:start->disableSubmitButtons",
         "direct-upload:end->enableSubmitButtons",
       ],
+      commentTarget: "keydown->controlEnterSubmits",
     })
   }
 
   clearCommentForm() {
     this.commentTarget.value = ''
     this.attachmentTarget.value = []
+  }
+
+  controlEnterSubmits(event) {
+    if(event.ctrlKey && event.key === 'Enter') {
+      event.preventDefault()
+      this.submitButtonTargets.at(-1).click() // Try to submit the form
+    }
   }
 
   open(event) {
