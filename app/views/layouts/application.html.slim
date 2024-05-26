@@ -15,7 +15,7 @@ html
     = favicon_link_tag "favicon.png"
     = preload_link_tag "MaterialIcons-Regular.woff2"
 
-    = stylesheet_link_tag :application
+    = stylesheet_link_tag :application, data: { turbo_track: "reload" }
     = javascript_importmap_tags
 
   body class=("board" if @fluid_layout) data-turbo="false"
