@@ -16,7 +16,7 @@
 - content_for :navbar do
   = render 'navbar', project: @project
 
-div data-controller="stream"
+div data-controller="stream" data-turbo-permanent="true"
   = turbo_stream_from @project, data: { stream_target: "stream" }
   dialog.offline data-stream-target="dialog"
     .flex
