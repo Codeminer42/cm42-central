@@ -7,4 +7,14 @@ module ApplicationHelper
       class: 'global-alert'
     )
   end
+
+  def cookie_check_box id, options={}
+    checked = cookies[id].to_s == "true"
+    tag.input **options.merge({
+      id:,
+      checked:,
+      type: "checkbox",
+      data: { controller: "cookie-check-box" },
+    })
+  end
 end

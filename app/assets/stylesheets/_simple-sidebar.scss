@@ -6,7 +6,7 @@
 
 .sidebar-wrapper {
   background: $sidebar-bg-default;
-  width: $sidebar-size;
+  flex: 0 0 $sidebar-size;
   height: 100%;
   float: left;
   transition: 0.1s ease-in-out width;
@@ -16,12 +16,12 @@
   }
 
   &.collapsed {
-    width: $sidebar-size-collapsed;
+    flex: 0 0 $sidebar-size-collapsed;
     overflow: hidden;
   }
 
   &.open {
-    width: $sidebar-size;
+    flex: 0 0 $sidebar-size;
     overflow: auto;
   }
 }
@@ -124,4 +124,70 @@
 
 .sidebar-icon {
   margin-right: 15px;
+}
+
+// TOGGLES
+
+.toggle-inputs{
+  position: absolute;
+  bottom: 0;
+}
+
+.sidebar-link{
+  cursor: pointer;
+  border-left: 3px solid transparent;
+}
+
+.sidebar-link:not(.hide_sidebar){
+  border-left-color: #8AC7FF;
+}
+
+.sidebar-wrapper, .story-col{
+  transition: all 0.15s ease-in-out;
+}
+
+#toggle-sidebar:checked{
+  & ~ .sidebar-wrapper{
+    flex: 0 0 46px;
+  }
+}
+
+#toggle-done:checked{
+  & ~ .story-col.done_column{
+    flex: 0 1 0px;
+    width: 0px;
+    overflow: hidden;
+  }
+  & ~ .sidebar-wrapper .sidebar-link.hide_done{
+    color: #bbb;
+    border-left-color: transparent;
+  }
+}
+
+#toggle-todo:checked{
+  & ~ .story-col.in_progress_column{
+    flex: 0 1 0px;
+    width: 0px;
+    overflow: hidden;
+  }
+  & ~ .sidebar-wrapper .sidebar-link.hide_in_progress{
+    color: #bbb;
+    border-left-color: transparent;
+  }
+}
+
+#toggle-icebox:checked{
+  & ~ .story-col.chilly_bin_column{
+    flex: 0 1 0px;
+    width: 0px;
+    overflow: hidden;
+  }
+  & ~ .sidebar-wrapper .sidebar-link.hide_chilly_bin{
+    color: #bbb;
+    border-left-color: transparent;
+  }
+}
+
+.sidebar-link.hide_done, .sidebar-link.hide_in_progress, .sidebar-link.hide_chilly_bin{
+  color: #8AC7FF;
 }

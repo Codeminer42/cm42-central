@@ -1,13 +1,15 @@
-<ul class="sidebar-nav settings-sidebar">
-  <li class="sidebar-item sidebar-brand">
-    <%= Project.model_name %> <%= t('settings') %>
-  </li>
-
-  <% if policy(project).manage? %>
-    <li role="presentation" class="sidebar-item settings-sidebar-item">
-      <%= link_to edit_project_path(project), class: "sidebar-link #{active_class(edit_project_path(project))}" do %>
-        <%= material_icon.edit.md_18.css_class('sidebar-icon') %> <%= t('edit') %>
-      <% end %>
+<div class="sidebar-wrapper">
+  <ul class="sidebar-nav settings-sidebar">
+    <li class="sidebar-item sidebar-brand">
+      <%= Project.model_name %> <%= t('settings') %>
     </li>
-  <% end %>
-</ul>
+
+    <% if policy(project).manage? %>
+      <li role="presentation" class="sidebar-item settings-sidebar-item">
+        <%= link_to edit_project_path(project), class: "sidebar-link #{active_class(edit_project_path(project))}" do %>
+          <%= material_icon.edit.md_18.css_class('sidebar-icon') %> <%= t('edit') %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</div>

@@ -1,6 +1,3 @@
-/
-  = render partial: 'sidebar', layout: 'sidebar_wrapper', locals: { wrapper_class: 'collapsed' }
-
 - content_for :title_bar do
   ul.nav.navbar-nav
     li = link_to @project.name, @project
@@ -25,4 +22,3 @@ div data-controller="stream" data-turbo-permanent="true"
       / = link_to "Reconnect now", "#", class: "reconnect-button", onclick: "window.location.reload(); return false"
 
 = render @project.board
-

@@ -1,0 +1,26 @@
+.sidebar-wrapper.open
+  ul.sidebar-nav
+    li.toggle.sidebar-item
+      label.sidebar-link.hide_sidebar for="toggle-sidebar"
+        i.mi.md-18.sidebar-icon menu
+
+    li.sidebar-item
+      li.sidebar-item
+        label.sidebar-link.hide_done for="toggle-done"
+          i.mi.md-18.sidebar-icon done
+          | Done
+
+      li.sidebar-item
+        label.sidebar-link.hide_in_progress for="toggle-todo"
+          i.mi.md-18.sidebar-icon inbox
+          | Todo
+
+      li.sidebar-item
+        label.sidebar-link.hide_chilly_bin for="toggle-icebox"
+          i.mi.md-18.sidebar-icon ac_unit
+          | Icebox
+    /
+      li.sidebar-item
+        a.sidebar-link.hide_search_results href="#"
+          i.mi.md-18.sidebar-icon search
+          | Search Results

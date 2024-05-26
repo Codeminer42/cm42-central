@@ -1,9 +1,15 @@
 #project-stories.project-stories data-turbo="true" data-controller="open-current-story autocomplete-usernames" data-autocomplete-usernames-users-value=@project.users_for_autocomplete.to_json
   .stories
+    = cookie_check_box "toggle-sidebar", class: "toggle-inputs"
+    = cookie_check_box "toggle-done", class: "toggle-inputs"
+    = cookie_check_box "toggle-todo", class: "toggle-inputs"
+    = cookie_check_box "toggle-icebox", class: "toggle-inputs"
+    = render "sidebar"
+
     .story-col.done_column
       .column_header
         a.toggle-title href="#" title="Done" Done
-        / a.toggle-column.hide_done href="#" title="Close" ×
+        label.toggle-column title="Close" for="toggle-done" ×
 
       #done.column_content.story_column
         = render board.past_iterations.last(4)
@@ -11,8 +17,8 @@
     .story-col.in_progress_column data-controller="column"
       .column_header
         a.toggle-title href="#" title="Todo" Todo
-        / a.toggle-column.hide_in_progress href="#" title="Close" ×
         label.add-story-button for="new-story-in_progress-toggle" data-action="click->column#focusNewStoryTitleField" + Add Story
+        label.toggle-column title="Close" for="toggle-todo" ×
 
       #in_progress.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#in_progress"
         = render board.current_accepted
@@ -23,8 +29,8 @@
     .story-col.chilly_bin_column data-controller="column"
       .column_header
         a.toggle-title href="#" title="Icebox" Icebox
-        / a.toggle-column.hide_chilly_bin href="#" title="Close" ×
         label.add-story-button for="new-story-chilly_bin-toggle" data-action="click->column#focusNewStoryTitleField" + Add Story
+        label.toggle-column title="Close" for="toggle-icebox" ×
 
       #chilly_bin.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#chilly_bin"
         = render @new_icebox_story
