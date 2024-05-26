@@ -39,11 +39,12 @@
         = render @new_icebox_story
         = render board.current_icebox
 
-    / .story-col.history_column
+    .story-col.history_column
       .column_header
         a.toggle-title href="#" title="Project History" Project History
         / a.toggle-column.hide_history href="#" title="Close" ×
       #history.column_content.activity_column
+        = render board.recent_activities
 
     - if @search
       .story-col.search_results_column

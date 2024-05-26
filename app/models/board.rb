@@ -74,5 +74,9 @@ class Board < Struct.new(:project)
       "icebox"
     )
   end
+
+  def recent_activities
+    project.activities.order(created_at: :desc).limit(25)
+  end
 end
 
