@@ -23,6 +23,10 @@ class Story < ActiveRecord::Base
     end
   end
 
+  def self.with_dependencies
+    includes(:tasks, comments: { attachments_attachments: :blob })
+  end
+
   scope :not_accepted, -> { where(accepted_at: nil) }
   scope :accepted,    -> { where(state: 'accepted').where.not(accepted_at: nil) }
   scope :done,        -> { where(state: :accepted) }
@@ -57,24 +61,6 @@ class Story < ActiveRecord::Base
 
   attr_accessor :acting_user, :base_uri
   attr_accessor :iteration_number, :iteration_start_date # helper fields for IterationService
-
-  # include PgSearch::Model
-  # pg_search_scope :search,
-  #                 against: {
-  #                   title: 'A',
-  #                   description: 'B',
-  #                   labels: 'C'
-  #                 },
-  #                 using: {
-  #                   tsearch: {
-  #                     prefix: true,
-  #                     negation: true
-  #                   }
-  #                 }
-
-  # pg_search_scope :search_labels,
-  #                 against: :labels,
-  #                 ranked_by: ':trigram'
 
   ESTIMABLE_TYPES = %w[feature].freeze
   STORY_TYPES     = %i[feature chore bug release].freeze

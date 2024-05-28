@@ -12,8 +12,8 @@ Feature: Stories can be edited
     Given I am logged in as "micah@botandrose.com"
     And I am on the "Example Project" project page
     Then I should see the following project board:
-      | Done | Current | Icebox      |
-      |      |         | F WOW start |
+      | Done | Todo | Icebox      |
+      |      |      | F WOW start |
 
     When I open the "WOW" story
     Then I should see the following "WOW" story form:
@@ -35,6 +35,6 @@ Feature: Stories can be edited
       | Description  | description  |
     And I press "Save"
     Then I should see the following project board:
-      | Done | Current          | Icebox |
+      | Done | Todo             | Icebox |
       |      | B WOW! MG finish |        |
 

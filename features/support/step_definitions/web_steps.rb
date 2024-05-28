@@ -26,6 +26,11 @@ When "I press and confirm {string}" do |button|
   accept_confirm { click_button button }
 end
 
+When "I fill in {string} with {string} and press enter" do |field, value|
+  fill_in field, with: value
+  find_field(field).native.send_keys(:return)
+end
+
 When "I fill in {string} with {string}" do |field, value|
   fill_in field, with: value
 end

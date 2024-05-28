@@ -13,17 +13,16 @@ end
 
 Then "I should see the following project board:" do |table|
   page.document.synchronize errors: page.driver.invalid_element_errors + [Capybara::ElementNotFound, Cucumber::MultilineArgument::DataTable::Different] do
-    actual = normalize_table([
-      ["Done", *stories_for("#done")],
-      ["Current", *stories_for("#in_progress")],
-      ["Icebox", *stories_for("#chilly_bin")],
-    ])
-    table.diff! actual.transpose
+    actual = all(".story-col").map do |column|
+      [column.find(".toggle-title").text, *stories_for(column)]
+    end
+    actual = normalize_table(actual).transpose
+    table.diff! actual
   end
 end
 
-def stories_for column_id
-  find(column_id).all(".story").map do |story|
+def stories_for column
+  column.all(".story").map do |story|
     initial = (story["data-story-type"] || "").capitalize[0]
     name_and_owner = story.all(".story-title").map(&:text).join(" ")
     actions = story.all(".transition").map(&:value)

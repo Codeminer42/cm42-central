@@ -67,16 +67,6 @@ class StoriesController < ApplicationController
 
   private
 
-  def select_stories_by_params
-    if params[:q]
-      StorySearch.query(policy_scope(Story), params[:q])
-    elsif params[:label]
-      StorySearch.labels(policy_scope(Story), params[:label])
-    else
-      @project.stories.with_dependencies
-    end
-  end
-
   def allowed_params
     params.require(:story).permit(
       :title, :description, :estimate, :story_type, :release_date,

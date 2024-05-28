@@ -16,8 +16,8 @@ Feature: Stories have a lifecycle
       | Requested by | Michael Gubitosa |
     And I press "Save"
     Then I should see the following project board:
-      | Done | Current | Icebox      |
-      |      |         | F WOW start |
+      | Done | Todo | Icebox      |
+      |      |      | F WOW start |
     And "micah@botandrose.com" should receive an email from "notifications@tracker.botandrose.com" with the subject "[Example Project] WOW" and the following body:
       """
       Feature WOW was created by Michael Gubitosa (@gubs)
@@ -31,7 +31,7 @@ Feature: Stories have a lifecycle
     And a clear email queue
     When I press "start" within the "WOW" story
     Then I should see the following project board:
-      | Done | Current         | Icebox |
+      | Done | Todo            | Icebox |
       |      | F WOW MG finish |        |
     And no emails should have been sent
 
@@ -40,7 +40,7 @@ Feature: Stories have a lifecycle
     And I select "Michael Gubitosa" from "Owned by"
     And I press "Save"
     Then I should see the following project board:
-      | Done | Current           | Icebox |
+      | Done | Todo              | Icebox |
       |      | F WOW GUBS finish |        |
     And "gubs@botandrose.com" should receive an email from "notifications@tracker.botandrose.com" with the subject "[Example Project] WOW" and the following body:
       """
@@ -57,7 +57,7 @@ Feature: Stories have a lifecycle
     And I select "Micah Geisel" from "Owned by"
     And I press "Save"
     Then I should see the following project board:
-      | Done | Current         | Icebox |
+      | Done | Todo            | Icebox |
       |      | F WOW MG finish |        |
     And "micah@botandrose.com" should receive an email from "notifications@tracker.botandrose.com" with the subject "[Example Project] WOW" and the following body:
       """
@@ -72,14 +72,14 @@ Feature: Stories have a lifecycle
     And a clear email queue
     When I press "finish" within the "WOW" story
     Then I should see the following project board:
-      | Done | Current          | Icebox |
+      | Done | Todo             | Icebox |
       |      | F WOW MG deliver |        |
     And no emails should have been sent
 
     Given a clear email queue
     When I press "deliver" within the "WOW" story
     Then I should see the following project board:
-      | Done | Current                | Icebox |
+      | Done | Todo                   | Icebox |
       |      | F WOW MG accept reject |        |
     And "gubs@botandrose.com" should receive an email from "notifications@tracker.botandrose.com" with the subject "[Example Project] WOW" and the following body:
       """
@@ -96,7 +96,7 @@ Feature: Stories have a lifecycle
     And a clear email queue
     When I press "reject" within the "WOW" story
     Then I should see the following project board:
-      | Done | Current          | Icebox |
+      | Done | Todo             | Icebox |
       |      | F WOW MG restart |        |
     And "micah@botandrose.com" should receive an email from "notifications@tracker.botandrose.com" with the subject "[Example Project] WOW" and the following body:
       """
@@ -111,21 +111,21 @@ Feature: Stories have a lifecycle
     And a clear email queue
     When I press "restart" within the "WOW" story
     Then I should see the following project board:
-      | Done | Current         | Icebox |
+      | Done | Todo            | Icebox |
       |      | F WOW MG finish |        |
     And no emails should have been sent
 
     Given a clear email queue
     When I press "finish" within the "WOW" story
     Then I should see the following project board:
-      | Done | Current          | Icebox |
+      | Done | Todo             | Icebox |
       |      | F WOW MG deliver |        |
     And no emails should have been sent
 
     Given a clear email queue
     When I press "deliver" within the "WOW" story
     Then I should see the following project board:
-      | Done | Current                | Icebox |
+      | Done | Todo                   | Icebox |
       |      | F WOW MG accept reject |        |
     And "gubs@botandrose.com" should receive an email from "notifications@tracker.botandrose.com" with the subject "[Example Project] WOW" and the following body:
       """
@@ -142,7 +142,7 @@ Feature: Stories have a lifecycle
     And a clear email queue
     When I press "accept" within the "WOW" story
     Then I should see the following project board:
-      | Done | Current  | Icebox |
+      | Done | Todo     | Icebox |
       |      | F WOW MG |        |
     And "micah@botandrose.com" should receive an email from "notifications@tracker.botandrose.com" with the subject "[Example Project] WOW" and the following body:
       """

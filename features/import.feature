@@ -63,7 +63,7 @@ Feature: Admins can import project from Pivotal Tracker via its API
 
     When I follow "Visit imported project" with a 10 second timeout
     Then I should see the following project board:
-      | Done                                                                                                               | Current                                                                                        | Icebox                                                                                   |
+      | Done                                                                                                               | Todo                                                                                           | Icebox                                                                                   |
       | C If the URL does not literally state the resource, how can it still show up towards the top of Google Results? LC | F Optimize for mobile GUBS                                                                     | F Show linked calendars on Organizations GUBS start                                      |
       | C Survey to send to Adaptive Athletes for appropriate name options LC                                              | B About Page: wrong Insta Link GUBS                                                            | F Update site fonts? GUBS start                                                          |
       | C Switch to dartsass MG                                                                                            | F New homepage GUBS                                                                            | C Transfer disabilityinspiration.com registration from Wordpress to Cloudflare? MG start |

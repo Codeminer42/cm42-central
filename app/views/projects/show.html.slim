@@ -4,11 +4,12 @@
 
   p#velocity.navbar-text.velocity
 
-/ - content_for :right_menu do
-  = form_tag '#', id: 'form_search', class: 'navbar-form navbar-left navbar-search', html: { role: 'search' } do
+- content_for :right_menu do
+  = form_tag nil, method: :get, class: "navbar-form navbar-left navbar-search", data: { turbo_frame: "search-results-frame" }
     .form-group
-      input.form-control.input-sm type="text" name="q" placeholder="Search"
-      i.mi.md-20.drop-target help
+      label.hidden for="q" Search
+      input#q.form-control.input-sm type="text" name="q" placeholder="Search" value=params[:q]
+      / i.mi.md-20.drop-target help
 
 - content_for :navbar do
   = render 'navbar', project: @project

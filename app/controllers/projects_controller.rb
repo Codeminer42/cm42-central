@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show edit update destroy
+  before_action :set_project, only: %i[show search edit update destroy
                                        reports archive unarchive]
   before_action -> { define_sidebar :project_settings }, only: :edit
   before_action :set_story_flow, only: %i[show]
@@ -12,15 +12,20 @@ class ProjectsController < ApplicationController
     redirect_to @projects.first if !current_user.admin? && @projects.size == 1
   end
 
-  def show
-    @new_todo_story = @project.stories.build(state: "unstarted")
-    @new_icebox_story = @project.stories.build(state: "unscheduled")
-    session[:current_project_slug] = @project.slug
-  end
-
   def new
     @project = policy_scope(Project).new
     authorize @project
+  end
+
+  def show
+    if params[:q]
+      @search = StorySearch.query(policy_scope(Story), params[:q])
+    elsif params[:label]
+      @search = StorySearch.labels(policy_scope(Story), params[:label])
+    end
+    @new_todo_story = @project.stories.build(state: "unstarted")
+    @new_icebox_story = @project.stories.build(state: "unscheduled")
+    session[:current_project_slug] = @project.slug
   end
 
   def edit

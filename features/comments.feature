@@ -17,8 +17,8 @@ Feature: Stories can contain comments
     Given I am logged in as "micah@botandrose.com"
     And I am on the "Example Project" project page
     Then I should see the following project board:
-      | Done | Current | Icebox      |
-      |      |         | F WOW start |
+      | Done | Todo | Icebox      |
+      |      |      | F WOW start |
 
     When I open the "WOW" story
     Then I should see the following comments:
@@ -36,8 +36,8 @@ Feature: Stories can contain comments
     Given I am logged in as "micah@botandrose.com"
     And I am on the "Example Project" project page
     Then I should see the following project board:
-      | Done | Current | Icebox      |
-      |      |         | F WOW start |
+      | Done | Todo | Icebox      |
+      |      |      | F WOW start |
 
     When I open the "WOW" story
     Then I should see the following comments:
@@ -55,8 +55,8 @@ Feature: Stories can contain comments
     Given I am logged in as "micah@botandrose.com"
     And I am on the "Example Project" project page
     Then I should see the following project board:
-      | Done | Current | Icebox      |
-      |      |         | F WOW start |
+      | Done | Todo | Icebox      |
+      |      |      | F WOW start |
 
     When I open the "WOW" story
     Then I should see the following comments:
@@ -74,8 +74,8 @@ Feature: Stories can contain comments
     Given I am logged in as "micah@botandrose.com"
     And I am on the "Example Project" project page
     Then I should see the following project board:
-      | Done | Current | Icebox      |
-      |      |         | F WOW start |
+      | Done | Todo | Icebox      |
+      |      |      | F WOW start |
 
     When I open the "WOW" story
     Then I should see the following comments:
@@ -92,8 +92,8 @@ Feature: Stories can contain comments
     Given I am logged in as "micah@botandrose.com"
     And I am on the "Example Project" project page
     Then I should see the following project board:
-      | Done | Current | Icebox      |
-      |      |         | F WOW start |
+      | Done | Todo | Icebox      |
+      |      |      | F WOW start |
 
     When I open the "WOW" story
     Then I should see the following comments:
@@ -106,17 +106,17 @@ Feature: Stories can contain comments
     And I am on the "Example Project" project page
 
     Then I should see the following project board:
-      | Done | Current | Icebox      |
-      |      |         | F WOW start |
+      | Done | Todo | Icebox      |
+      |      |      | F WOW start |
     When I click the "Add Story" label within the "Icebox" column
     And I fill in the following form within the "Icebox" column:
       | Title    | With comment                  |
       | Comments | this is a comment on creation |
     And I press "Save"
     Then I should see the following project board:
-      | Done | Current | Icebox               |
-      |      |         | F With comment start |
-      |      |         | F WOW start          |
+      | Done | Todo | Icebox               |
+      |      |      | F With comment start |
+      |      |      | F WOW start          |
 
     When I open the "With comment" story
     Then I should see the following comments:

@@ -1,4 +1,29 @@
 class StorySearch
+  # include PgSearch::Model
+  # pg_search_scope :search,
+  #                 against: {
+  #                   title: 'A',
+  #                   description: 'B',
+  #                   labels: 'C'
+  #                 },
+  #                 using: {
+  #                   tsearch: {
+  #                     prefix: true,
+  #                     negation: true
+  #                   }
+  #                 }
+
+  # pg_search_scope :search_labels,
+  #                 against: :labels,
+  #                 ranked_by: ':trigram'
+
+  include Minidusen::Filter
+
+  filter :text do |scope, phrases|
+    columns = [:title, :description, :labels]
+    scope.where_like(columns => phrases)
+  end
+
   extend Enumerize
   SEARCH_RESULTS_LIMIT = 40
   attr_reader :relation, :query_params, :parsed_params, :conditions
@@ -16,11 +41,7 @@ class StorySearch
         requested_by_name ]
 
   def self.query(relation, query_params)
-    new(relation, query_params).search
-  end
-
-  def self.labels(relation, query_params)
-    new(relation, query_params).search_labels
+    new(relation, query_params)
   end
 
   def initialize(relation, query_params)
@@ -31,12 +52,8 @@ class StorySearch
     parse(query_params)
   end
 
-  def search
-    add_conditions_to :search
-  end
-
-  def search_labels
-    add_conditions_to :search_labels
+  def results
+    @results ||= filter(relation, parsed_params)
   end
 
   private

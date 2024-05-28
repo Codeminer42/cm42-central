@@ -43,12 +43,7 @@ class Project < ActiveRecord::Base
     users_for_autocomplete.map(&:last)
   end
 
-  has_many :stories, dependent: :destroy do
-    def with_dependencies
-      includes(:tasks, :comments => { :attachments_attachments => :blob })
-    end
-  end
-
+  has_many :stories, dependent: :destroy
   has_many :comments, through: :stories
   has_many :attachments_attachments, through: :comments
 

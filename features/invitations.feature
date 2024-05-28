@@ -62,7 +62,7 @@ Feature: Admins can add users to projects
     And I press "Confirm new password"
     Then I should see "Your password was changed successfully."
     And I should see the following project board:
-      | Done | Current | Icebox |
+      | Done | Todo | Icebox |
 
     Given I am logged in as "micah@botandrose.com"
     And I am on the "Example Project" project page

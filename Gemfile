@@ -12,6 +12,7 @@ gem 'trilogy'
 gem 'bard-rake'
 gem 'backhoe'
 gem 'transitions', require: ["transitions", "active_model/transitions"]
+gem 'minidusen'
 gem 'virtus'
 gem 'positioning'
 gem 'configuration'

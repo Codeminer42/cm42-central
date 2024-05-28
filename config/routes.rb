@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   resources :projects do
     get :archived, on: :collection
     member do
-      get :join, :search, :reports
+      get :join, :reports
       patch :archive, :unarchive
     end
     resources :users, only: [:index, :create, :destroy]

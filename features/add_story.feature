@@ -40,7 +40,7 @@ Feature: Stories can be added
     And I press "Save"
 
     Then I should see the following project board:
-      | Done | Current                   | Icebox              |
+      | Done | Todo                      | Icebox              |
       |      | F Accepted                | F Unscheduled start |
       |      | F Rejected restart        |                     |
       |      | F Delivered accept reject |                     |
@@ -62,7 +62,7 @@ Feature: Stories can be added
 
     When I press "start" within the "WOW!" story
     Then I should see the following project board:
-      | Done | Current                   | Icebox              |
+      | Done | Todo                      | Icebox              |
       |      | F Accepted                | F Unscheduled start |
       |      | F Rejected restart        |                     |
       |      | F Delivered accept reject |                     |
@@ -95,7 +95,7 @@ Feature: Stories can be added
       | Description  | description  |
     And I press "Save"
     Then I should see the following project board:
-      | Done | Current                   | Icebox              |
+      | Done | Todo                      | Icebox              |
       |      | F Accepted                | B WOW! MG start     |
       |      | F Rejected restart        | F Unscheduled start |
       |      | F Delivered accept reject |                     |
@@ -116,7 +116,7 @@ Feature: Stories can be added
 
     When I press "start" within the "WOW!" story
     Then I should see the following project board:
-      | Done | Current                   | Icebox              |
+      | Done | Todo                      | Icebox              |
       |      | F Accepted                | F Unscheduled start |
       |      | F Rejected restart        |                     |
       |      | F Delivered accept reject |                     |
