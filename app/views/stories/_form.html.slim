@@ -6,6 +6,11 @@ div
     input.cancel type="button" value="Cancel" data-action="click->story#close:prevent:stop" data-story-target="submitButton"
 
 div
+
+.form-group
+  = form.label :title
+  = form.text_field :title, placeholder: "Story title", maxlength: "255", class: "title form-control input-sm", data: { story_target: "permanent" }
+
   - if form.object.persisted?
     .col-xs-12.form-group.input-group.input-group-sm
       span.input-group-btn
@@ -17,9 +22,6 @@ div
           i.mi.md-18 content_copy
       input#story-link-5433.form-control.input-sm readonly=true value=story_url(form.object)
 
-.form-group
-  = form.label :title
-  = form.text_field :title, placeholder: "Story title", maxlength: "255", class: "title form-control input-sm", data: { story_target: "permanent" }
 
 .form-group.form-inline
   .form-group

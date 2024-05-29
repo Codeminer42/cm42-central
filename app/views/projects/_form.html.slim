@@ -19,7 +19,7 @@
     br
     = form.date_select :start_date, {}, { class: "form-control auth-form-control" }
 
-  .form-group 
+  .form-group
     = form.label :iteration_start_day, class: "control-label"
     = form.select :iteration_start_day, form.object.day_name_options, {}, { class: "form-control auth-form-control" }
 
@@ -49,4 +49,3 @@
 
 dialog.modal.fade#delete-confirmation-modal modal=true role="dialog"
   = render "delete_confirmation", project: project
-
