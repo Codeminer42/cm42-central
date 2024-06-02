@@ -19,9 +19,8 @@ class ProjectsController < ApplicationController
 
   def show
     if params[:q]
-      @search = StorySearch.query(policy_scope(Story), params[:q])
-    elsif params[:label]
-      @search = StorySearch.labels(policy_scope(Story), params[:label])
+      scope = policy_scope(Story).where(project: @project)
+      @search = StorySearch.query(scope, params[:q])
     end
     @new_todo_story = @project.stories.build(state: "unstarted")
     @new_icebox_story = @project.stories.build(state: "unscheduled")

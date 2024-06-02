@@ -24,6 +24,10 @@ class StorySearch
     scope.where_like(columns => phrases)
   end
 
+  filter :user do |scope, initials|
+    scope.where(:owned_by_initials => initials)
+  end
+
   extend Enumerize
   SEARCH_RESULTS_LIMIT = 40
   attr_reader :relation, :query_params, :parsed_params, :conditions
@@ -46,6 +50,12 @@ class StorySearch
 
   def initialize(relation, query_params)
     @relation      = relation
+      .with_dependencies
+      .where("accepted_at IS NULL OR accepted_at > ?", Time.zone.now.beginning_of_week)
+      .order(Arel.sql("accepted_at IS NULL")).order(:accepted_at)
+      .order(Arel.sql("find_in_set(positioning_column, '#todo,#icebox')"))
+      .order(:position)
+
     @query_params  = query_params
     @parsed_params = []
     @conditions    = {}
@@ -53,7 +63,7 @@ class StorySearch
   end
 
   def results
-    @results ||= filter(relation, parsed_params)
+    @results ||= filter(relation, query_params)
   end
 
   private

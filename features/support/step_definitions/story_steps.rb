@@ -4,6 +4,7 @@ Given "the {string} project has the following stories:" do |project_name, table|
     default(:project) { project }
     rename :type => :story_type
     belongs_to :requested_by, User, name_field: :username
+    belongs_to({ :owner => :owned_by }, User, name_field: :username)
   end
 end
 
