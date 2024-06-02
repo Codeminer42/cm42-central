@@ -1,6 +1,16 @@
 - content_for :title_bar do
-  ul.nav.navbar-nav
-    li = link_to @project.name, @project
+  - if current_user.projects.count > 1
+    .nav.navbar-nav
+      .dropdown
+        button.btn.btn-link.projects-dropdown type="button" onclick="var e = this.nextElementSibling; e.hidden = !e.hidden"
+          b = @project.name
+          span.caret
+        ul.dropdown-menu.dropdown-menu-left hidden="true"
+          - topbar_projects do |project|
+            li = link_to project.name, project
+  - else
+    ul.nav.navbar-nav
+      li = link_to @project.name, @project
 
   p#velocity.navbar-text.velocity
 

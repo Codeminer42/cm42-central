@@ -37,16 +37,6 @@ html
               = yield :right_menu
 
               - if current_user
-                - if current_user.projects.count > 1
-                  .dropdown
-                    button.btn.btn-link.projects-dropdown type="button" onclick="var e = this.nextElementSibling; e.hidden = !e.hidden"
-                      | Project
-                      span.caret
-
-                    ul.dropdown-menu.dropdown-menu-right hidden="true"
-                      - topbar_projects do |project|
-                        li = link_to project.name, project
-
                 .dropdown
                   button.btn.btn-link.user-dropdown type="button" onclick="var e = this.nextElementSibling; e.hidden = !e.hidden"
                     = current_user.name

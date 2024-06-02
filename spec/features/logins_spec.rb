@@ -40,26 +40,7 @@ describe 'Logins' do
         fill_in 'Email',    with: 'user@example.com'
         fill_in 'Password', with: 'password'
         click_button 'Log in'
-
-        expect(page).to_not have_selector('.projects-dropdown', text: "Project")
         expect(page).to have_selector('.user-dropdown', text: 'Test User')
-      end
-    end
-
-    context 'when user has multiples projects' do
-      before do
-        user.projects << create(:project)
-        user.projects << create(:project)
-      end
-
-      it 'logs in the user' do
-        visit root_path
-        fill_in 'Email',    with: 'user@example.com'
-        fill_in 'Password', with: 'password'
-        click_button 'Log in'
-
-        expect(page).to have_selector('.projects-dropdown', text: "Project") &
-                        have_selector('.user-dropdown', text: 'Test User')
       end
     end
 
@@ -70,8 +51,6 @@ describe 'Logins' do
         fill_in 'Password', with: 'password'
 
         click_button 'Log in'
-
-        expect(page).to_not have_selector('.projects-dropdown', text: "Project")
         expect(page)
           .to have_selector('.user-dropdown', text: 'Test User') &
               have_selector('.simple-alert', text: "You're not enrolled to a project yet.")
