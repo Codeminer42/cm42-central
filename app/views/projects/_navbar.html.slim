@@ -1,0 +1,16 @@
+.menu
+  ul.nav.nav-pills
+    li.nav-item class=active_class(project) role="presentation"
+      = link_to "Stories", project, class: "nav-link"
+
+    li.nav-item class=active_class([project, :users]) role="presentation"
+      = link_to "Members", [project, :users], class: "nav-link", data: { step: "members" }
+
+    /
+      li.nav-item class=active_class(reports_project_path(project)) role="presentation"
+        = link_to "Reports", reports_project_path(project, since: 3), class: "nav-link"
+
+    - if policy(project).manage?
+      li.nav-item class=settings_active_class role="presentation"
+        = link_to "Settings", [:edit, project], class: 'nav-link'
+
