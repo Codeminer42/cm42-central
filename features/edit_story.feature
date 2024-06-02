@@ -20,8 +20,8 @@ Feature: Stories can be edited
       | Title        | WOW         |
       | Story type   | feature     |
       | State        | unscheduled |
-      | Requested by |             |
-      | Owned by     |             |
+      | Requested by | ---         |
+      | Owned by     | ---         |
       | Labels       |             |
       | Description  |             |
 

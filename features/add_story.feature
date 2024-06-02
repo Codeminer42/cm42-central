@@ -21,13 +21,13 @@ Feature: Stories can be added
 
     When I click the "Add Story" label within the "Todo" column
     Then I should see the following new story form within the "Todo" column:
-      | Title        |             |
-      | Story type   | feature     |
-      | State        | unstarted   |
-      | Requested by |             |
-      | Owned by     |             |
-      | Labels       |             |
-      | Description  |             |
+      | Title        |              |
+      | Story type   | feature      |
+      | State        | unstarted    |
+      | Requested by | Micah Geisel |
+      | Owned by     | ---          |
+      | Labels       |              |
+      | Description  |              |
 
     When I fill in the following form within the "Todo" column:
       | Title        | WOW!         |
@@ -77,13 +77,13 @@ Feature: Stories can be added
 
     When I click the "Add Story" label within the "Icebox" column
     Then I should see the following new story form within the "Icebox" column:
-      | Title        |             |
-      | Story type   | feature     |
-      | State        | unscheduled |
-      | Requested by |             |
-      | Owned by     |             |
-      | Labels       |             |
-      | Description  |             |
+      | Title        |              |
+      | Story type   | feature      |
+      | State        | unscheduled  |
+      | Requested by | Micah Geisel |
+      | Owned by     | ---          |
+      | Labels       |              |
+      | Description  |              |
 
     When I fill in the following form within the "Icebox" column:
       | Title        | WOW!         |

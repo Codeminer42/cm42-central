@@ -25,3 +25,11 @@ Then "I should see the following {string} story form:" do |story_name, table|
   table.diff! "#story_#{id}_edit_story_#{id}"
 end
 
+# FIXME push upstream into chop?
+Chop::Form::Select.include Module.new {
+  def get_value
+    if selected_value = field.value
+      field.find("option[value='#{selected_value}']").text
+    end
+  end
+}

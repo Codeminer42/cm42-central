@@ -12,7 +12,8 @@ Given "I am on the {string} project page" do |project_name|
 end
 
 Then "I should see the following project board:" do |table|
-  page.document.synchronize errors: page.driver.invalid_element_errors + [Capybara::ElementNotFound, Cucumber::MultilineArgument::DataTable::Different] do
+  page.document.synchronize 5.seconds, errors: page.driver.invalid_element_errors + [Capybara::ElementNotFound, Cucumber::MultilineArgument::DataTable::Different] do
+    puts all(".story-col").length # WTF why does this fix things
     actual = all(".story-col").map do |column|
       [column.find(".toggle-title").text, *stories_for(column)]
     end

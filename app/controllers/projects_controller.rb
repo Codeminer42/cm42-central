@@ -22,8 +22,8 @@ class ProjectsController < ApplicationController
       scope = policy_scope(Story).where(project: @project)
       @search = StorySearch.query(scope, params[:q])
     end
-    @new_todo_story = @project.stories.build(state: "unstarted")
-    @new_icebox_story = @project.stories.build(state: "unscheduled")
+    @new_todo_story = @project.stories.build(state: "unstarted", requested_by: current_user)
+    @new_icebox_story = @project.stories.build(state: "unscheduled", requested_by: current_user)
     session[:current_project_slug] = @project.slug
   end
 
