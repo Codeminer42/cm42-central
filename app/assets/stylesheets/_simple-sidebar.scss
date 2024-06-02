@@ -177,17 +177,17 @@
 }
 
 #toggle-icebox:checked{
-  & ~ .story-col.chilly_bin_column{
+  & ~ .story-col.icebox_column{
     flex: 0 1 0px;
     width: 0px;
     overflow: hidden;
   }
-  & ~ .sidebar-wrapper .sidebar-link.hide_chilly_bin{
+  & ~ .sidebar-wrapper .sidebar-link.hide_icebox{
     color: #bbb;
     border-left-color: transparent;
   }
 }
 
-.sidebar-link.hide_done, .sidebar-link.hide_in_progress, .sidebar-link.hide_chilly_bin{
+.sidebar-link.hide_done, .sidebar-link.hide_in_progress, .sidebar-link.hide_icebox{
   color: #8AC7FF;
 }

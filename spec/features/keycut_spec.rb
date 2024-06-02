@@ -46,7 +46,7 @@ xdescribe 'Keycuts' do
     it 'saves currently open story (<ctl> + s)', js: true do
       wait_page_load
       click_on 'Add story'
-      within(chilly_bin_column) do
+      within(icebox_column) do
         fill_in 'title', with: 'New story'
       end
       send_keys :pause # this is equivalent to keycode 19, or ctl+s (at least on my machine)
@@ -61,9 +61,9 @@ xdescribe 'Keycuts' do
       expect(page).not_to have_css('.hide_backlog.pressed')
 
       send_keys 'C'
-      expect(page).to have_css('.hide_chilly_bin.pressed')
+      expect(page).to have_css('.hide_icebox.pressed')
       send_keys 'C'
-      expect(page).not_to have_css('.hide_chilly_bin.pressed')
+      expect(page).not_to have_css('.hide_icebox.pressed')
 
       send_keys 'D'
       expect(page).to have_css('.hide_done.pressed')

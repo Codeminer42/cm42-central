@@ -10,7 +10,7 @@ end
 When "I open the {string} story" do |name|
   find(
     "#in_progress .story:has(.toggle-story:not(:checked)),
-     #chilly_bin .story:has(.toggle-story:not(:checked))",
+     #icebox .story:has(.toggle-story:not(:checked))",
     text: name,
   ).click
 end

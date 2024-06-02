@@ -68,36 +68,36 @@ describe 'Stories' do
 
       it 'drags a story to other column with the mouse in card', js: true do
         source = story_element(story)
-        source.drag_to(chilly_bin_column)
+        source.drag_to(icebox_column)
 
-        expect(chilly_bin_column).to have_css("div#{story_selector(story)}")
+        expect(icebox_column).to have_css("div#{story_selector(story)}")
         expect(in_progress_column).not_to have_css("div#{story_selector(story)}")
       end
 
 
       it 'drags a story to other column with the mouse in estimates items', js: true do
         source = story_element(story).find('.estimates')
-        source.drag_to(chilly_bin_column)
+        source.drag_to(icebox_column)
 
-        expect(chilly_bin_column).to have_css("div#{story_selector(story)}")
+        expect(icebox_column).to have_css("div#{story_selector(story)}")
         expect(in_progress_column).not_to have_css("div#{story_selector(story)}")
       end
 
 
       it 'drags a story to other column with the mouse in story icons', js: true do
         source = story_element(story).find('.story-icons')
-        source.drag_to(chilly_bin_column)
+        source.drag_to(icebox_column)
 
-        expect(chilly_bin_column).to have_css("div#{story_selector(story)}")
+        expect(icebox_column).to have_css("div#{story_selector(story)}")
         expect(in_progress_column).not_to have_css("div#{story_selector(story)}")
       end
 
 
       it 'drags a story to other column with the mouse in story title', js: true do
         source = story_element(story).find('.story-title')
-        source.drag_to(chilly_bin_column)
+        source.drag_to(icebox_column)
 
-        expect(chilly_bin_column).to have_css("div#{story_selector(story)}")
+        expect(icebox_column).to have_css("div#{story_selector(story)}")
         expect(in_progress_column).not_to have_css("div#{story_selector(story)}")
       end
     end
@@ -109,17 +109,17 @@ describe 'Stories' do
       wait_page_load
       click_on 'Add story'
 
-      within(chilly_bin_column) do
+      within(icebox_column) do
         fill_in 'title', with: 'New story'
         click_on 'Save'
       end
 
       # Estimate the story
-      within(chilly_bin_column.find('.story')) do
+      within(icebox_column.find('.story')) do
         find('#estimate-1').click
       end
 
-      within(chilly_bin_column.find('.story')) do
+      within(icebox_column.find('.story')) do
         click_on 'start'
       end
 
@@ -167,7 +167,7 @@ describe 'Stories' do
 
         wait_page_load
         click_on 'Add story'
-        within(chilly_bin_column) do
+        within(icebox_column) do
           select 'release', from: 'story_type'
 
           expect(page).not_to have_selector('estimate')
@@ -294,11 +294,11 @@ describe 'Stories' do
       wait_spinner
     end
 
-    it 'clones the story to the chilly bin', js: true do
+    it 'clones the story to the icebox', js: true do
       find('.story-title').click
       find('.clone-story').click
 
-      expect(chilly_bin_column).to have_content('Clone Me')
+      expect(icebox_column).to have_content('Clone Me')
     end
   end
 
@@ -433,11 +433,11 @@ describe 'Stories' do
       page.execute_script("$('#form_search').submit()")
 
       result_story = find('.searchResult')
-      target = chilly_bin_column
+      target = icebox_column
       result_story.drag_to(target)
 
       expect(page).to_not have_css('.searchResult')
-      expect(chilly_bin_column).to have_content('Search for me')
+      expect(icebox_column).to have_content('Search for me')
     end
   end
 
@@ -455,7 +455,7 @@ describe 'Stories' do
         'done'        => 'Done',
         'in_progress' => 'Current Sprint',
         'backlog'     => 'Backlog',
-        'chilly_bin'  => 'Chilly Bin'
+        'icebox'      => 'Icebox'
       }
 
       find('#sidebar-toggle').click
@@ -552,7 +552,7 @@ describe 'Stories' do
       end
     end
 
-    it 'drags the story to chilly bin', js: true do
+    it 'drags the story to icebox', js: true do
       visit project_path(project)
       wait_spinner
       wait_page_load
@@ -560,10 +560,10 @@ describe 'Stories' do
       first(:link, 'epic2').click
 
       resultStory = find(story_search_result_selector(story3))
-      target = chilly_bin_column
+      target = icebox_column
       resultStory.drag_to(target)
 
-      within(chilly_bin_column) do
+      within(icebox_column) do
         expect(page).to have_content 'Task 3'
       end
     end

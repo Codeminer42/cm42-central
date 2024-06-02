@@ -158,7 +158,7 @@ en:
     toggle_backlog: Toggle backlog
     toggle_done: Toggle done
     toggle_history: Toggle history
-    toggle_icebox: Toggle chilly bin
+    toggle_icebox: Toggle icebox
     toggle_my_work: Toggle my work
     toggle_labels_searches: Toggle labels &amp; searches
     toggle_current: Toggle current
@@ -269,7 +269,7 @@ en:
         title: "Velocity per Member"
       burn_up:
         title: "Burn Up Chart"
-        backlog_points_html: "The current backlog has a total of <strong>%{count} points</strong>. This is without counting the stories in the Chilly Bin!"
+        backlog_points_html: "The current backlog has a total of <strong>%{count} points</strong>. This is without counting the stories in the Icebox!"
         remaining_time: "At the current velocity (%{velocity} points) the existing backlog should only be finished around the iteration %{last_iteration_number} (%{last_iteration_start_date})."
         on_track: "If the velocity keeps up this pace we should be on track to the date above."
         realistic_remaining_time: "But with a standard deviation of %{standard_deviation}, it's more realistic to expect the project to finish around <strong>iteration %{last_iteration_number}</strong> (%{last_iteration_start_date}), if the velocity doesn't increase or the backlog is not simplified."
@@ -322,7 +322,7 @@ en:
       done: "Done"
       in_progress: "Current Sprint"
       backlog: "Backlog"
-      chilly_bin: "Chilly Bin"
+      icebox: "Icebox"
       search_results: "Search Results"
       epic: 'Epic'
       history: 'History Of'
@@ -393,10 +393,10 @@ en:
       text: "Every time you change something in the Project or its Story they will be audited and the details of the changes will be visible to every team member from this Activity timeline box. <br> <strong>Pro tip</strong>: you shouldn't change a Story after the team started working on it, you must add a new Story."
     create_story:
       title: "Create Story"
-      text: "Click this button to create new Stories. A Story can be the description of a new feature or a bug report, for example. New stories will be created first at the Chilly Bin box."
-    chilly_bin:
-      title: "Chilly Bin"
-      text: "All new stories are stores in this Chilly Bin. You should describe your stories expecting that the description will suffice for the story to be implemented. Project members should estimate those stories."
+      text: "Click this button to create new Stories. A Story can be the description of a new feature or a bug report, for example. New stories will be created first at the Icebox."
+    icebox:
+      title: "Icebox"
+      text: "All new stories are stores in this Icebox. You should describe your stories expecting that the description will suffice for the story to be implemented. Project members should estimate those stories."
     backlog:
       title: "Backlog"
       text: "The backlog MUST have all stories by order of PRIORITY. Most valuable and ready-to-start stories at the top and optional or uncertain stories at the very bottom"

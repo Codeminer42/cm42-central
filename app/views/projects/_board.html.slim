@@ -26,13 +26,13 @@
         = render @new_todo_story
         = render board.current_unstarted
 
-    .story-col.chilly_bin_column data-controller="column"
+    .story-col.icebox_column data-controller="column"
       .column_header
         a.toggle-title href="#" title="Icebox" Icebox
-        label.add-story-button for="new-story-chilly_bin-toggle" data-action="click->column#focusNewStoryTitleField" + Add Story
+        label.add-story-button for="new-story-icebox-toggle" data-action="click->column#focusNewStoryTitleField" + Add Story
         label.toggle-column title="Close" for="toggle-icebox" ×
 
-      #chilly_bin.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#chilly_bin"
+      #icebox.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#icebox"
         = render @new_icebox_story
         = render board.current_icebox
 

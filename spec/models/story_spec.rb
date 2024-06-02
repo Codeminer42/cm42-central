@@ -250,7 +250,7 @@ describe Story do
   context 'when unscheduled' do
     before { subject.state = 'unscheduled' }
     its(:events)  { should == [:start] }
-    its(:column)  { should == '#chilly_bin' }
+    its(:column)  { should == '#icebox' }
   end
 
   context 'when unstarted' do

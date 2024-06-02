@@ -16,7 +16,7 @@ xdescribe 'Tour' do
       expect(tour_title).to have_content('Create Story')
       next_button
 
-      expect(tour_title).to have_content('Chilly Bin')
+      expect(tour_title).to have_content('Icebox')
       next_button
 
       expect(tour_title).to have_content('Backlog')

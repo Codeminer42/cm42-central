@@ -12,8 +12,8 @@ task populate_newposition: :environment do
   end
 
   Project.find_each do |project|
-    puts 'Updating chilly_bin column...'
-    update_column(project.stories.chilly_bin.order(:position))
+    puts 'Updating icebox column...'
+    update_column(project.stories.icebox.order(:position))
     puts 'Updating backlog column...'
     update_column(project.stories.backlog.order(:position))
     puts 'Updating in_progress column...'

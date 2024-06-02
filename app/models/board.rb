@@ -65,7 +65,7 @@ class Board < Struct.new(:project)
   end
 
   def current_icebox
-    stories = project.stories.chilly_bin.order(:position)
+    stories = project.stories.icebox.order(:position)
     Iteration.new(
       project,
       stories,

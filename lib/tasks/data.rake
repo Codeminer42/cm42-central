@@ -1,4 +1,8 @@
 namespace :data do
+  task :rename_chilly_bin_to_icebox => :environment do
+    Story.where(positioning_column: "#chilly_bin").update_all(positioning_column: "#icebox")
+  end
+
   task :fix_positioning => :environment do
     project = Project.first
     stories = project.current_in_progress.stories.to_a + project.current_unstarted.stories.to_a

@@ -64,7 +64,7 @@ module StoryOperations
       end
 
       if after == "unscheduled"
-        story.positioning_column = "#chilly_bin"
+        story.positioning_column = "#icebox"
         story.position = :first
       end
       Success(story)

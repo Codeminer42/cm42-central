@@ -54,7 +54,7 @@ export default class extends Controller {
 
     let state = story.dataset.state
     if(event.to !== event.from) {
-      const isChillyBin = this.positioningColumnValue === "#chilly_bin"
+      const isChillyBin = this.positioningColumnValue === "#icebox"
       state = isChillyBin ? "unscheduled" : "unstarted"
     }
 

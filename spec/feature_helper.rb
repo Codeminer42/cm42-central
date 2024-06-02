@@ -27,8 +27,8 @@ RSpec.configure do |config|
     "#story-search-result-#{story.id}"
   end
 
-  def chilly_bin_column
-    page.find('#chilly_bin')
+  def icebox_column
+    page.find('#icebox')
   end
 
   def backlog_column

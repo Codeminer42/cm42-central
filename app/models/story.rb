@@ -33,7 +33,7 @@ class Story < ActiveRecord::Base
   scope :delivered,   -> { where(state: [:delivered, :rejected]) }
   scope :in_progress, -> { where(state: [:started, :finished, :delivered, :rejected]) }
   scope :backlog,     -> { where(state: :unstarted) }
-  scope :chilly_bin,  -> { where(state: :unscheduled) }
+  scope :icebox,      -> { where(state: :unscheduled) }
   scope :accepted_between, lambda { |start_date, end_date|
                              where('accepted_at >= ? AND accepted_at <= ?',
                                start_date.beginning_of_day,
@@ -123,7 +123,7 @@ class Story < ActiveRecord::Base
   def column
     case state
     when 'unscheduled'
-      '#chilly_bin'
+      '#icebox'
     when 'unstarted'
       '#backlog'
     when 'accepted'

@@ -6,9 +6,9 @@ class WelcomeTour
       attachTo: '[data-step="add-story"] bottom'
     },
     {
-      title: 'welcome_tour.chilly_bin.title',
-      text: 'welcome_tour.chilly_bin.text',
-      attachTo: '[data-step="chilly-bin"] bottom'
+      title: 'welcome_tour.icebox.title',
+      text: 'welcome_tour.icebox.text',
+      attachTo: '[data-step="icebox"] bottom'
     },
     {
       title: 'welcome_tour.backlog.title',

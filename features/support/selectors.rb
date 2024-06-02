@@ -27,7 +27,7 @@ module WithinHelpers
       [".stories .story-col", text: $1]
 
     when /the "(.+)?" story/
-      ["#in_progress .story, #chilly_bin .story", text: $1]
+      ["#in_progress .story, #icebox .story", text: $1]
 
     when /the "(.+)?" comment/
       [".commentlist .comment", text: $1]
