@@ -45,7 +45,7 @@ module StoryOperations
 
       if (%w[unscheduled unstarted].include?(before) && after == "started") || (before == "rejected" && after == "started")
         position = :first
-        if last_started_story = story.project.board.current_in_progress.stories.where.not(id: story.id).last
+        if last_started_story = story.project.board.current_todo.stories.where.not(id: story.id).last
           position = { after: last_started_story }
         elsif first_unstarted_story = story.project.board.current_unstarted.stories.where.not(id: story.id).first
           position = { before: first_unstarted_story }
@@ -57,8 +57,8 @@ module StoryOperations
         position = :first
         if last_delivered_story = story.project.board.current_delivered.stories.where.not(id: story.id).last
           position = { after: last_delivered_story }
-        elsif first_in_progress_story = story.project.board.current_in_progress.stories.where.not(id: story.id).first
-          position = { before: first_in_progress_story }
+        elsif first_todo_story = story.project.board.current_todo.stories.where.not(id: story.id).first
+          position = { before: first_todo_story }
         end
         story.position = position
       end

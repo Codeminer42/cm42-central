@@ -42,14 +42,14 @@ class Board < Struct.new(:project)
     )
   end
 
-  def current_in_progress
-    stories = project.stories.in_progress.order(:position)
+  def current_todo
+    stories = project.stories.todo.order(:position)
     Iteration.new(
       project,
       stories,
       nil,
       nil,
-      "in_progress"
+      "todo"
     )
   end
 

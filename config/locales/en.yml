@@ -320,7 +320,7 @@ en:
 
     show:
       done: "Done"
-      in_progress: "Current Sprint"
+      todo: "Current Sprint"
       backlog: "Backlog"
       icebox: "Icebox"
       search_results: "Search Results"
@@ -400,7 +400,7 @@ en:
     backlog:
       title: "Backlog"
       text: "The backlog MUST have all stories by order of PRIORITY. Most valuable and ready-to-start stories at the top and optional or uncertain stories at the very bottom"
-    in_progress:
+    todo:
       title: "Current sprint"
       text: "This is where stories that must be worked on right now will reside. Central will automatically pick up the top stories from the Backlog to fit the team's current Velocity"
     done:

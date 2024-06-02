@@ -71,9 +71,9 @@ xdescribe 'Keycuts' do
       expect(page).not_to have_css('.hide_done.pressed')
 
       send_keys 'P'
-      expect(page).to have_css('.hide_in_progress.pressed')
+      expect(page).to have_css('.hide_todo.pressed')
       send_keys 'P'
-      expect(page).not_to have_css('.hide_in_progress.pressed')
+      expect(page).not_to have_css('.hide_todo.pressed')
     end
   end
 end

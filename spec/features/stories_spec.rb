@@ -71,7 +71,7 @@ describe 'Stories' do
         source.drag_to(icebox_column)
 
         expect(icebox_column).to have_css("div#{story_selector(story)}")
-        expect(in_progress_column).not_to have_css("div#{story_selector(story)}")
+        expect(todo_column).not_to have_css("div#{story_selector(story)}")
       end
 
 
@@ -80,7 +80,7 @@ describe 'Stories' do
         source.drag_to(icebox_column)
 
         expect(icebox_column).to have_css("div#{story_selector(story)}")
-        expect(in_progress_column).not_to have_css("div#{story_selector(story)}")
+        expect(todo_column).not_to have_css("div#{story_selector(story)}")
       end
 
 
@@ -89,7 +89,7 @@ describe 'Stories' do
         source.drag_to(icebox_column)
 
         expect(icebox_column).to have_css("div#{story_selector(story)}")
-        expect(in_progress_column).not_to have_css("div#{story_selector(story)}")
+        expect(todo_column).not_to have_css("div#{story_selector(story)}")
       end
 
 
@@ -98,7 +98,7 @@ describe 'Stories' do
         source.drag_to(icebox_column)
 
         expect(icebox_column).to have_css("div#{story_selector(story)}")
-        expect(in_progress_column).not_to have_css("div#{story_selector(story)}")
+        expect(todo_column).not_to have_css("div#{story_selector(story)}")
       end
     end
 
@@ -124,7 +124,7 @@ describe 'Stories' do
       end
 
       sleep 0.5
-      within('#in_progress .story') do
+      within('#todo .story') do
         click_on 'finish'
         sleep 0.5
         click_on 'deliver'
@@ -134,7 +134,7 @@ describe 'Stories' do
         end
       end
 
-      expect(find('#in_progress .story.accepted .story-title')).to have_content('New story')
+      expect(find('#todo .story.accepted .story-title')).to have_content('New story')
     end
   end
 
@@ -425,7 +425,7 @@ describe 'Stories' do
     end
 
     it 'drags the story to other columns', js: true do
-      within('#in_progress .story') do
+      within('#todo .story') do
         find('#estimate-1').click
         click_on 'start'
       end
@@ -452,10 +452,10 @@ describe 'Stories' do
       wait_spinner
 
       columns = {
-        'done'        => 'Done',
-        'in_progress' => 'Current Sprint',
-        'backlog'     => 'Backlog',
-        'icebox'      => 'Icebox'
+        'done'    => 'Done',
+        'todo'    => 'Current Sprint',
+        'backlog' => 'Backlog',
+        'icebox'  => 'Icebox'
       }
 
       find('#sidebar-toggle').click

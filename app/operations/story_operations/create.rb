@@ -47,7 +47,7 @@ module StoryOperations
 
     def position_story
       position = :first
-      if story.positioning_column == "#in_progress"
+      if story.positioning_column == "#todo"
         next_story = Story.where({
           positioning_column: story.positioning_column,
           state: "unstarted",

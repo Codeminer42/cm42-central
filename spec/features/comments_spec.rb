@@ -18,14 +18,14 @@ xdescribe 'Notes' do
   it 'adds a comment to a story', js: true do
     visit project_path(project)
 
-    within('#in_progress .story') do
+    within('#todo .story') do
       find('.story-title').click
       fill_in 'comment', with: 'Adding a new comment'
       click_on 'Add comment'
     end
 
     wait_spinner
-    expect(find('#in_progress .story .commentlist .comment')).to have_content('Adding a new comment')
+    expect(find('#todo .story .commentlist .comment')).to have_content('Adding a new comment')
   end
 
   it 'deletes a comment from a story', js: true do
@@ -33,7 +33,7 @@ xdescribe 'Notes' do
 
     visit project_path(project)
 
-    within('#in_progress .story') do
+    within('#todo .story') do
       find('.story-title').click
       within('.commentlist') do
         find('.delete-btn').click
@@ -41,6 +41,6 @@ xdescribe 'Notes' do
     end
 
     wait_spinner
-    expect(find('#in_progress .story')).not_to have_content('Delete me please')
+    expect(find('#todo .story')).not_to have_content('Delete me please')
   end
 end

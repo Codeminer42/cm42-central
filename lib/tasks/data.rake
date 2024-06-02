@@ -3,9 +3,14 @@ namespace :data do
     Story.where(positioning_column: "#chilly_bin").update_all(positioning_column: "#icebox")
   end
 
+  task :rename_in_progress_to_todo => :environment do
+    Story.where(positioning_column: "#in_progress").update_all(positioning_column: "#todo")
+  end
+
+
   task :fix_positioning => :environment do
     project = Project.first
-    stories = project.current_in_progress.stories.to_a + project.current_unstarted.stories.to_a
+    stories = project.current_todo.stories.to_a + project.current_unstarted.stories.to_a
     stories.each.with_index(1) { |s,i| s.update position: i }
   end
 

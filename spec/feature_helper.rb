@@ -35,8 +35,8 @@ RSpec.configure do |config|
     page.find('#backlog')
   end
 
-  def in_progress_column
-    page.find('#in_progress')
+  def todo_column
+    page.find('#todo')
   end
 
   def done_column

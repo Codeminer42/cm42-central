@@ -14,15 +14,15 @@
       #done.column_content.story_column
         = render board.past_iterations.last(4)
 
-    .story-col.in_progress_column data-controller="column"
+    .story-col.todo_column data-controller="column"
       .column_header
         a.toggle-title href="#" title="Todo" Todo
-        label.add-story-button for="new-story-in_progress-toggle" data-action="click->column#focusNewStoryTitleField" + Add Story
+        label.add-story-button for="new-story-todo-toggle" data-action="click->column#focusNewStoryTitleField" + Add Story
         label.toggle-column title="Close" for="toggle-todo" ×
 
-      #in_progress.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#in_progress"
+      #todo.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#todo"
         = render board.current_accepted
-        = render board.current_in_progress
+        = render board.current_todo
         = render @new_todo_story
         = render board.current_unstarted
 

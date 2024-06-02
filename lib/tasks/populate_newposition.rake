@@ -16,8 +16,8 @@ task populate_newposition: :environment do
     update_column(project.stories.icebox.order(:position))
     puts 'Updating backlog column...'
     update_column(project.stories.backlog.order(:position))
-    puts 'Updating in_progress column...'
-    update_column(project.stories.in_progress.order(:position))
+    puts 'Updating todo column...'
+    update_column(project.stories.todo.order(:position))
     puts 'Updating done column...'
     update_column(project.stories.done.order(:position))
   end

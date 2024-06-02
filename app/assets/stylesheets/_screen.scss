@@ -235,14 +235,14 @@ div.story-title abbr.initials {
   padding-top: 6px;
 }
 
-#in_progress div.story,
+#todo div.story,
 #backlog div.story,
 #icebox div.story,
 #search_results div.story,
 #epic div.story {
   cursor: move;
 }
-#in_progress div.story.accepted div.story {
+#todo div.story.accepted div.story {
   cursor: inherit;
 }
 

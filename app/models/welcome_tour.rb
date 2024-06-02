@@ -16,9 +16,9 @@ class WelcomeTour
       attachTo: '[data-step="backlog"] bottom'
     },
     {
-      title: 'welcome_tour.in_progress.title',
-      text: 'welcome_tour.in_progress.text',
-      attachTo: '[data-step="in-progress"] bottom'
+      title: 'welcome_tour.todo.title',
+      text: 'welcome_tour.todo.text',
+      attachTo: '[data-step="todo"] bottom'
     },
     {
       title: 'welcome_tour.done.title',

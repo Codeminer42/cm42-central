@@ -41,10 +41,10 @@ describe StoryOperations::Update do
 
       context 'when transitioning' do
         before do
-          project.stories.create(title: "Accepted", accepted_at: Time.zone.now, state: "accepted", estimate: 1, position: 1, positioning_column: "#in_progress")
-          project.stories.create(title: "Delivered", state: "delivered", estimate: 1, position: 2, positioning_column: "#in_progress")
-          project.stories.create(title: "Started", state: "started", estimate: 1, position: 3, positioning_column: "#in_progress")
-          project.stories.create(title: "Unstarted", state: "unstarted", estimate: 1, position: 4, positioning_column: "#in_progress")
+          project.stories.create(title: "Accepted", accepted_at: Time.zone.now, state: "accepted", estimate: 1, position: 1, positioning_column: "#todo")
+          project.stories.create(title: "Delivered", state: "delivered", estimate: 1, position: 2, positioning_column: "#todo")
+          project.stories.create(title: "Started", state: "started", estimate: 1, position: 3, positioning_column: "#todo")
+          project.stories.create(title: "Unstarted", state: "unstarted", estimate: 1, position: 4, positioning_column: "#todo")
         end
 
         context 'from unscheduled to started' do

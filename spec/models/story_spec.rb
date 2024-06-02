@@ -262,26 +262,26 @@ describe Story do
   context 'when started' do
     before { subject.state = 'started' }
     its(:events)  { should == [:finish] }
-    its(:column)  { should == '#in_progress' }
+    its(:column)  { should == '#todo' }
   end
 
   context 'when finished' do
     before { subject.state = 'finished' }
     its(:events)  { should == [:deliver] }
-    its(:column)  { should == '#in_progress' }
+    its(:column)  { should == '#todo' }
   end
 
   context 'when delivered' do
     before { subject.state = 'delivered' }
     its(:events)  { should include(:accept) }
     its(:events)  { should include(:reject) }
-    its(:column)  { should == '#in_progress' }
+    its(:column)  { should == '#todo' }
   end
 
   context 'when rejected' do
     before { subject.state = 'rejected' }
     its(:events)  { should == [:restart] }
-    its(:column)  { should == '#in_progress' }
+    its(:column)  { should == '#todo' }
   end
 
   context 'when accepted today' do
@@ -290,7 +290,7 @@ describe Story do
       subject.accepted_at = Time.zone.now
     end
     its(:events)  { should == [] }
-    its(:column)  { should == '#in_progress' }
+    its(:column)  { should == '#todo' }
   end
 
   context 'when accepted last week' do

@@ -165,12 +165,12 @@
 }
 
 #toggle-todo:checked{
-  & ~ .story-col.in_progress_column{
+  & ~ .story-col.todo_column{
     flex: 0 1 0px;
     width: 0px;
     overflow: hidden;
   }
-  & ~ .sidebar-wrapper .sidebar-link.hide_in_progress{
+  & ~ .sidebar-wrapper .sidebar-link.hide_todo{
     color: #bbb;
     border-left-color: transparent;
   }
@@ -188,6 +188,6 @@
   }
 }
 
-.sidebar-link.hide_done, .sidebar-link.hide_in_progress, .sidebar-link.hide_icebox{
+.sidebar-link.hide_done, .sidebar-link.hide_todo, .sidebar-link.hide_icebox{
   color: #8AC7FF;
 }

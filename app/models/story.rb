@@ -11,7 +11,7 @@ class Story < ActiveRecord::Base
   before_save { |record| record.positioning_column = record.calculate_positioning_column }
   def calculate_positioning_column
     if column == "#backlog"
-      "#in_progress"
+      "#todo"
     else
       column
     end
@@ -31,7 +31,7 @@ class Story < ActiveRecord::Base
   scope :accepted,    -> { where(state: 'accepted').where.not(accepted_at: nil) }
   scope :done,        -> { where(state: :accepted) }
   scope :delivered,   -> { where(state: [:delivered, :rejected]) }
-  scope :in_progress, -> { where(state: [:started, :finished, :delivered, :rejected]) }
+  scope :todo,        -> { where(state: [:started, :finished, :delivered, :rejected]) }
   scope :backlog,     -> { where(state: :unstarted) }
   scope :icebox,      -> { where(state: :unscheduled) }
   scope :accepted_between, lambda { |start_date, end_date|
@@ -128,12 +128,12 @@ class Story < ActiveRecord::Base
       '#backlog'
     when 'accepted'
       if !accepted_at || (accepted_at > Time.zone.now.beginning_of_week)
-        '#in_progress'
+        '#todo'
       else
         '#done'
       end
     else
-      '#in_progress'
+      '#todo'
     end
   end
 
