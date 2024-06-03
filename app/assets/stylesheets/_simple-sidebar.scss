@@ -188,6 +188,18 @@
   }
 }
 
-.sidebar-link.hide_done, .sidebar-link.hide_todo, .sidebar-link.hide_icebox{
+#toggle-history:checked{
+  & ~ .story-col.history_column{
+    flex: 0 1 0px;
+    width: 0px;
+    overflow: hidden;
+  }
+  & ~ .sidebar-wrapper .sidebar-link.hide_history{
+    color: #bbb;
+    border-left-color: transparent;
+  }
+}
+
+.sidebar-link.hide_done, .sidebar-link.hide_todo, .sidebar-link.hide_icebox, .sidebar-link.hide_history{
   color: #8AC7FF;
 }

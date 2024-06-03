@@ -4,6 +4,7 @@
     = cookie_check_box "toggle-done", class: "toggle-inputs"
     = cookie_check_box "toggle-todo", class: "toggle-inputs"
     = cookie_check_box "toggle-icebox", class: "toggle-inputs"
+    = cookie_check_box "toggle-history", class: "toggle-inputs"
     = render "sidebar"
 
     .story-col.done_column
@@ -42,7 +43,7 @@
     .story-col.history_column
       .column_header
         a.toggle-title href="#" title="Project History" Project History
-        / a.toggle-column.hide_history href="#" title="Close" ×
+        label.toggle-column title="Close" for="toggle-history" ×
       #history.column_content.activity_column
         = render board.recent_activities
 

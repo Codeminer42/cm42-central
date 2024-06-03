@@ -809,17 +809,17 @@ div#keycut-help {
   border-top: 1px solid $white;
   min-height: 37px;
   padding: 7px 8px;
-
   &-date {
-    float: right;
+    font-style: italic;
     font-size: 10px;
-    font-weight: bold;
   }
 
   &-info {
-    margin: .5em 0;
-    margin-left: 5%;
-    width: 94%;
+    max-height: 0px;
+    overflow: hidden;
+    margin-left: 15px;
+    width: calc(100% - 10px);
+    transition: all 0.15s ease-in-out;
   }
 
   &-changes {
@@ -844,6 +844,51 @@ div#keycut-help {
   &-change-attribute {
     white-space: nowrap;
   }
+}
+
+.history-header{
+  background: #dfdfdf;
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  h4{
+    font-size: 1.05em;
+    font-weight: bold;
+    margin: 0;
+  }
+}
+
+.history-content{
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+
+.toggle-history{
+  position: absolute;
+  z-index: 1;
+  opacity: 0.01;
+  &:checked{
+    & ~ .story-activity-info{
+      max-height: 300px;
+    }
+    & ~ .history-content .history-caret{
+      transform: rotate(90deg);
+    }
+  }
+}
+.history-caret{
+  cursor: pointer;
+  display: inline-block;
+  height: 0;
+  width: 0;
+  margin-right: 5px;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-color: transparent transparent transparent #b0b0b0;
+  transform-origin: 50% 50%;
+  transition: transform 0.1s ease-in;
 }
 
 // MISSING?
