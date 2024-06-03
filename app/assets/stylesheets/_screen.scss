@@ -138,6 +138,12 @@ div.story {
   .input-group {
     border-collapse: collapse;
   }
+
+  & > .flex{
+    display: flex;
+    align-items: center;
+  }
+
 }
 
 div.story:hover {
@@ -186,7 +192,8 @@ div.story textarea {
 }
 
 .story-icons {
-  float: left;
+  order: 1;
+  flex: 0 0 60px;
 
   .mi:first-child {
     position: relative;
@@ -216,7 +223,8 @@ div.story-controls {
 }
 
 div.story-title {
-  margin-left: 65px;
+  order: 2;
+  flex: 1 0;
   word-wrap: break-word;
 }
 
@@ -316,8 +324,9 @@ div.story-title abbr.initials {
 
 /* Story action buttons */
 .state-actions {
-  float: right;
-  margin-left: .2em;
+  order: 3;
+  display: flex;
+  margin-left: 10px;
 }
 
 .state-actions form div,

@@ -5,7 +5,7 @@
 - cache_if story.persisted?, story do
   .story.closed class=[story.story_type, story.state, ("new-story" if story.new_record?), ("searchResult" if search_result)] id=story_dom_id data-id=story.id data-position=story.position data-state=story.state data-story-type=story.story_type data-controller="story" data-action="click->story#open"
     input.toggle-story type="checkbox" data-story-target="checkbox" data-turbo-permanent=true id="#{story_dom_id}-toggle"
-    .closed
+    .closed.flex
       .state-actions
         - if search_result
           a#locate.btn.btn-default.locate-btn href=story_url(story)
@@ -36,4 +36,3 @@
 
       = form_for [@project, story], namespace: dom_id(story), data: { story_target: "form" } do |form|
         = render "stories/form", form: form
-
