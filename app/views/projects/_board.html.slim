@@ -21,6 +21,8 @@
         label.toggle-column title="Close" for="toggle-todo" ×
 
       #todo.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#todo"
+        input#toggle-accepted type="checkbox"
+        label.accepted-label for="toggle-accepted" &nbsp;accepted stories
         = render board.current_accepted
         = render board.current_todo
         = render @new_todo_story
@@ -57,4 +59,3 @@
                 | Points: #{search_results.sum(:estimate)}
 
           = render @search.results, search_result: true
-

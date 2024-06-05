@@ -12,3 +12,36 @@
 
 input.title
   font-size: 16px
+
+#toggle-accepted
+  position: absolute
+  z-index: 1
+  opacity: 0.01
+  &:checked
+    & + .accepted-label::before
+      content: "Show"
+    & ~ .story.accepted
+      min-height: 0
+      height: 0
+      padding-top: 0
+      padding-bottom: 0
+      border-top-width: 0px
+      border-bottom-width: 0px
+
+.story
+  overflow: hidden
+  transition: all 0.15s ease-in
+
+.accepted-label
+  background: #daebcf
+  width: 100%
+  text-align: center
+  line-height: 36px
+  margin: 0
+  font-size: 11px
+  font-weight: 700
+  color: #676e7a
+  cursor: pointer
+  &::before
+    display: inline-block
+    content: "Hide"
