@@ -1,12 +1,17 @@
 name: ci
 on:
-  pull_request:
+  pull_request_target:
   workflow_dispatch:
     inputs:
       git-ref:
         description: Git Ref
         default: master
         required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   test:
     runs-on: ubuntu-20.04-16core
@@ -30,4 +35,30 @@ jobs:
         run: bin/setup
       - name: Run tests
         run: bin/ci
+
+  autodeploy-dependabot-prs:
+    needs: test
+    runs-on: ubuntu-20.04
+    if: github.actor == 'dependabot[bot]'
+    steps:
+      - name: Merge Dependabot PR
+        run: gh pr merge --auto --rebase "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+          known_hosts: unnecessary
+          config: |
+            Host *
+              StrictHostKeyChecking no
+              UserKnownHostsFile=/dev/null
+      - name: deploy
+        run: bundle exec bard deploy --skip-ci
 
