@@ -22,7 +22,8 @@
 
       #todo.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#todo"
         = cookie_check_box "toggle-accepted"
-        label.accepted-label for="toggle-accepted" &nbsp;accepted stories
+        - if board.current_accepted.stories.length > 0
+          label.accepted-label for="toggle-accepted" &nbsp;#{board.current_accepted.stories.length} accepted stories
         = render board.current_accepted
         = render board.current_todo
         = render @new_todo_story
