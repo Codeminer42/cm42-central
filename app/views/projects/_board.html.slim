@@ -21,7 +21,7 @@
         label.toggle-column title="Close" for="toggle-todo" ×
 
       #todo.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#todo"
-        input#toggle-accepted type="checkbox"
+        = cookie_check_box "toggle-accepted"
         label.accepted-label for="toggle-accepted" &nbsp;accepted stories
         = render board.current_accepted
         = render board.current_todo
