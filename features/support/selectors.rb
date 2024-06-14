@@ -11,6 +11,11 @@ module WithinHelpers
     when /the header/
       "header"
 
+    when "the user dropdown menu"
+      menu = find(".dropdown:has(.user-dropdown)")
+      menu.click
+      menu
+
     when /the body/
       "main"
 
