@@ -2,9 +2,9 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  cm-central:  "CM42 Central"
+  cm-central:  "BARD Tracker"
 
-  welcome: "Welcome to CM42 Central"
+  welcome: "Welcome to BARD Tracker"
 
   date:
     formats:
