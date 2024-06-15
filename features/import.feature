@@ -45,7 +45,7 @@ Feature: Admins can import project from Pivotal Tracker via its API
       | TSN                                     |
       | Vagrant VM                              |
 
-    When I follow "Import project" within the "Adapt2Play" pivotal project with a 30 second timeout
+    When I follow "Import project" within the "Adapt2Play" pivotal project with a 45 second timeout
     Then I should see "Import from Pivotal Tracker"
     And I should see the following project import results:
       | Resource    | Count      |

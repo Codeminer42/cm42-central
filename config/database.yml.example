@@ -11,7 +11,7 @@ development:
 
 test:
   <<: *base
-  database: fulcrum_test
+  database: fulcrum_test<%= ENV["TEST_ENV_NUMBER"] %>
 
 production:
   <<: *base

@@ -396,6 +396,9 @@ GEM
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     orm_adapter (0.5.0)
+    parallel (1.25.1)
+    parallel_tests (3.9.1)
+      parallel
     positioning (0.2.1)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
@@ -669,6 +672,7 @@ DEPENDENCIES
   material_icons (~> 2.0)
   memory_profiler
   minidusen
+  parallel_tests (~> 3.9.0)
   pivotal-tracker-api!
   positioning
   pry-rails
