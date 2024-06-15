@@ -12,11 +12,10 @@ end
 
 Capybara.register_driver(:cuprite) do |app|
   Capybara::Cuprite::Driver.new(app, {
-    window_size: [1200, 2048],
-    timeout: 30,
-    process_timeout: 20,
+    window_size: [1920, 2048],
+    timeout: 10,
+    process_timeout: 10,
     js_errors: true, 
-    inspector: !ENV["CI"],
     logger: FerrumLogger.new,
     # headless: false,
   })
