@@ -61,7 +61,7 @@ class Activity < ActiveRecord::Base
             end.map do |subject_type, activities|
               [
                 subject_type,
-                activities.map(&:decorate)
+                activities.map { |a| GroupedActivityPresenter.new(a) },
               ]
             end
           ]

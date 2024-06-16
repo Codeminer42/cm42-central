@@ -1,0 +1,11 @@
+header.history-header
+  h4 => activity.title
+  span.story-activity-date = activity.created_at
+
+main.history-content
+  div
+    => activity.user.name
+    strong => activity.past_tense_action
+    ' this
+    span => activity.noun
+

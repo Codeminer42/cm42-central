@@ -1,4 +1,4 @@
-class ActivityPresenter < SimpleDelegator
+class GroupedActivityPresenter < SimpleDelegator
   include Rails.application.routes.url_helpers
 
   attr_reader :activity
@@ -30,68 +30,26 @@ class ActivityPresenter < SimpleDelegator
                return nil if subject.nil?
                "#{noun} #{predicate}".strip
              end
-    "#{user.name} #{past_tense_action} #{clause}"
-  end
-
-  def to_partial_path
-    "activities/#{activity.action}_#{(activity.subject_type || activity.subject_destroyed_type).downcase}"
-  end
-
-  def title
-    subject&.title || subject_changes["title"] || "Story #{subject_id}"
-  end
-
-  def story_title
-    subject.story.title
-  end
-
-  def body
-    subject&.body || subject_changes["body"] || "Comment #{subject_id}"
-  end
-
-  def noun
-    if story?
-      subject&.story_type || subject_changes["story_type"]
-    else
-      subject_type.downcase
-    end
-  end
-
-  def past_tense_action
-    verb = action
-    verb = "delete" if action == "destroy"
-    verb + (verb.at(-1) == 'e' ? 'd' : 'ed')
-  end
-
-  def project?
-    subject_type == "Project"
-  end
-
-  def story?
-    (subject_type || subject_destroyed_type) == "Story"
-  end
-
-  def comment?
-    (subject_type || subject_destroyed_type) == "Comment"
+    "#{user.name} #{past_tense action} #{clause}"
   end
 
   private
 
   delegate :helpers, to: ApplicationController
 
-  # def noun
-  #   case subject_type
-  #   when 'Project'
-  #     "#{subject_type} '#{helpers.link_to subject.name, project_path(subject)}'"
-  #   when 'Story'
-  #     path = project_path(subject.try(:project_id)) + '#story-' + subject_id.to_s
-  #     "#{subject_type} ##{subject_id} - '#{helpers.link_to subject.title, path}'"
-  #   when 'Comment', 'Task'
-  #     name = (subject.try(:body) || subject.try(:name)).truncate(40)
-  #     path = project_path(subject.story.project_id) + '#story-' + subject.story_id.to_s
-  #     "#{subject_type} '#{name}' for Story '#{helpers.link_to subject.story.title, path}'"
-  #   end
-  # end
+  def noun
+    case subject_type
+    when 'Project'
+      "#{subject_type} '#{helpers.link_to subject.name, project_path(subject)}'"
+    when 'Story'
+      path = project_path(subject.try(:project_id)) + '#story-' + subject_id.to_s
+      "#{subject_type} ##{subject_id} - '#{helpers.link_to subject.title, path}'"
+    when 'Comment', 'Task'
+      name = (subject.try(:body) || subject.try(:name)).truncate(40)
+      path = project_path(subject.story.project_id) + '#story-' + subject.story_id.to_s
+      "#{subject_type} '#{name}' for Story '#{helpers.link_to subject.story.title, path}'"
+    end
+  end
 
   def predicate
     return '' unless action == 'update'
@@ -106,6 +64,10 @@ class ActivityPresenter < SimpleDelegator
       end
     end.join(', ')
     'changing ' + changes
+  end
+
+  def past_tense(verb)
+    verb + (verb.at(-1) == 'e' ? 'd' : 'ed')
   end
 
   def document_changes(changes)

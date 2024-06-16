@@ -1,0 +1,24 @@
+header.history-header
+  h4 => activity.title
+  span.story-activity-date = activity.created_at
+
+input.toggle-history type="checkbox" id=dom_id(activity)
+main.history-content
+  label.history-caret for=dom_id(activity)
+  div
+    => activity.user.name
+    strong => activity.past_tense_action
+    ' this
+    span => activity.noun
+
+.story-activity-info
+  - activity.subject_changes.each do |attribute, (old, new)|
+    .story-activity-changes
+      .story-activity-change-attribute
+        strong = attribute
+
+      .story-activity-change-history
+        = old || '---'
+        i.mi.md-18 arrow_forward
+        = new || '---'
+

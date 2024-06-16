@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-describe ActivityPresenter do
+describe GroupedActivityPresenter do
   let(:story) { create(:story, :with_project) }
   let(:comment) { create(:comment, story: story) }
   let(:activity) { build(:activity, project: story.project, user: story.requested_by) }
   let(:user_name) { story.requested_by.name }
   let(:project) { story.project }
 
-  subject { ActivityPresenter.new(activity) }
+  subject { described_class.new(activity) }
 
   context 'destroyed' do
     before { activity.action = 'destroy' }

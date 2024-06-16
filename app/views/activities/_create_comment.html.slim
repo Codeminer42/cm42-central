@@ -1,0 +1,10 @@
+header.history-header
+  h4 => activity.story_title
+  span.story-activity-date = activity.created_at
+
+main.history-content
+  div
+    => activity.user.name
+    strong added comment:
+    span "#{activity.body}"
+
