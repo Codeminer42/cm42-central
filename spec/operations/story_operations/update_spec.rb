@@ -7,6 +7,7 @@ describe StoryOperations::Update do
     let(:membership) { create(:membership) }
     let(:user)        { membership.user }
     let(:project)     { membership.project }
+    let(:board) { project.board }
     let(:create_story_params) do
       { title: 'Story', requested_by: user, accepted_at: nil, story_type: 'feature', state: 'started', estimate: 1 }
     end
@@ -47,6 +48,10 @@ describe StoryOperations::Update do
           project.stories.create(title: "Unstarted", state: "unstarted", estimate: 1, position: 4, positioning_column: "#todo")
         end
 
+        let(:stories) {
+          board.current_todo.stories + board.current_unstarted.stories
+        }
+
         context 'from unscheduled to started' do
           let(:create_story_params) { { title: 'Story', requested_by: user, accepted_at: nil, story_type: 'feature', state: 'unscheduled', estimate: 1 } }
           let(:story_params) { {} }
@@ -54,8 +59,7 @@ describe StoryOperations::Update do
           it 'moves it to the bottom of the started list'  do
             story.start
             subject.call
-            expect(project.stories.order(:position).pluck(:title)).to eq([
-              "Accepted",
+            expect(stories.map(&:title)).to eq([
               "Delivered",
               "Started",
               "Story",
@@ -71,8 +75,7 @@ describe StoryOperations::Update do
           it 'moves it to the bottom of the started list'  do
             story.restart
             subject.call
-            expect(project.stories.order(:position).pluck(:title)).to eq([
-              "Accepted",
+            expect(stories.map(&:title)).to eq([
               "Delivered",
               "Started",
               "Story",
@@ -88,8 +91,7 @@ describe StoryOperations::Update do
           it 'moves it to the bottom of the delivered list'  do
             story.deliver
             subject.call
-            expect(project.stories.order(:position).pluck(:title)).to eq([
-              "Accepted",
+            expect(stories.map(&:title)).to eq([
               "Delivered",
               "Story",
               "Started",

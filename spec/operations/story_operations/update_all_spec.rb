@@ -18,8 +18,7 @@ describe StoryOperations::UpdateAll do
         { title: 'Updated Story', story_type: 'feature', state: 'started', estimate: 1 }
       end
 
-      it 'updates all stories', :aggregate_failures do
-        updated_story_1, updated_story_2, updated_story_3 = *subject.call.success
+      it 'updates all stories', :aggregate_failures do updated_story_1, updated_story_2, updated_story_3 = *subject.call.success
 
         expect(updated_story_1.title).to eq(story_params[:title])
         expect(updated_story_2.title).to eq(story_params[:title])

@@ -8,14 +8,7 @@ class Story < ActiveRecord::Base
   before_save :cache_user_names
 
   positioned on: [:project, :positioning_column]
-  before_save { |record| record.positioning_column = record.calculate_positioning_column }
-  def calculate_positioning_column
-    if column == "#backlog"
-      "#todo"
-    else
-      column
-    end
-  end
+  before_save { |record| record.positioning_column = record.column }
 
   def saved_changes
     super.select do |key, value|
@@ -32,7 +25,7 @@ class Story < ActiveRecord::Base
   scope :done,        -> { where(state: :accepted) }
   scope :delivered,   -> { where(state: [:delivered, :rejected]) }
   scope :todo,        -> { where(state: [:started, :finished, :delivered, :rejected]) }
-  scope :backlog,     -> { where(state: :unstarted) }
+  scope :unstarted,     -> { where(state: :unstarted) }
   scope :icebox,      -> { where(state: :unscheduled) }
   scope :accepted_between, lambda { |start_date, end_date|
                              where('accepted_at >= ? AND accepted_at <= ?',
@@ -125,10 +118,10 @@ class Story < ActiveRecord::Base
     when 'unscheduled'
       '#icebox'
     when 'unstarted'
-      '#backlog'
+      '#unstarted'
     when 'accepted'
       if !accepted_at || (accepted_at > Time.zone.now.beginning_of_week)
-        '#todo'
+        '#accepted'
       else
         '#done'
       end

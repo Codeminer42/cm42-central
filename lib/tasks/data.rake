@@ -1,4 +1,12 @@
 namespace :data do
+  task :sorting_sanity => :environment do
+    Story.where(positioning_column: "#todo", state: "unstarted").find_each do |story|
+      story.update_columns positioning_column: story.column
+    end
+    Story.touch_all
+    Project.touch_all
+  end
+
   task :rename_chilly_bin_to_icebox => :environment do
     Story.where(positioning_column: "#chilly_bin").update_all(positioning_column: "#icebox")
   end

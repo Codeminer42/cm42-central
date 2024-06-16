@@ -29,10 +29,10 @@ module WithinHelpers
       [".pivotal-projects .project-item", text: $1]
 
     when /the "(.+)?" column/
-      [".stories .story-col", text: $1]
+      [".stories .story-col[title='#{$1}']"]
 
     when /the "(.+)?" story/
-      ["#todo .story, #icebox .story", text: $1]
+      ["#todo .story, #unstarted .story, #icebox .story", text: $1]
 
     when /the "(.+)?" comment/
       [".commentlist .comment", text: $1]

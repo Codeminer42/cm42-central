@@ -54,7 +54,7 @@ class Board < Struct.new(:project)
   end
 
   def current_unstarted
-    stories = project.stories.backlog.order(:position)
+    stories = project.stories.unstarted.order(:position)
     Iteration.new(
       project,
       stories,

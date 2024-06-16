@@ -128,7 +128,8 @@ describe GroupedActivityPresenter do
             "'<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>' " \
             "changing description to " \
             "'<del class=\"differ\">old</del><ins class=\"differ\">new</ins> description', estimate from '2' to '4', " \
-            "state moved forward to started, started_at to '2016/07/01 00:00:00 -0700'"
+            "state moved forward to started, started_at to '2016/07/01 00:00:00 -0700', " \
+            "positioning_column from '#unstarted' to '#todo'"
           )
         end
       end

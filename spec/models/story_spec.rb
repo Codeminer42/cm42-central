@@ -256,7 +256,7 @@ describe Story do
   context 'when unstarted' do
     before { subject.state = 'unstarted' }
     its(:events)  { should == [:start] }
-    its(:column)  { should == '#backlog' }
+    its(:column)  { should == '#unstarted' }
   end
 
   context 'when started' do
@@ -290,7 +290,7 @@ describe Story do
       subject.accepted_at = Time.zone.now
     end
     its(:events)  { should == [] }
-    its(:column)  { should == '#todo' }
+    its(:column)  { should == '#accepted' }
   end
 
   context 'when accepted last week' do

@@ -32,8 +32,12 @@ export default class extends Controller {
   }
 
   onMove(event) {
-    if(event.related.classList.contains("accepted")) {
-      return false
+    // only permit cross dragging betwen icebox and unstarted
+    if(event.to !== event.from) {
+      const action = [event.to.id, event.from.id].sort().join()
+      if(action !== "icebox,unstarted") {
+        return false
+      }
     }
   }
 
