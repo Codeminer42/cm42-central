@@ -42,7 +42,7 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def story_title
-    subject.story.title
+    subject&.story&.title
   end
 
   def body
