@@ -21,19 +21,7 @@ module StoriesHelper
     }.fetch(story.story_type).html_safe
   end
 
-  def comment_format comment, usernames
-    if comment.body.present?
-      rendered = Commonmarker.to_html(comment.body, options: {
-        extensions: { autolink: true },
-        parse: { smart: true }
-      })
-      rendered.gsub!(/@(#{usernames.join("|")})/) do |match|
-        %(<b class="red">#{match}</b>)
-      end
-      rendered.gsub!(/#\d+/) do |match|
-        %(<a class="story-link" href="#{project_url}#story-#{match[1..]}">#{match}</a>)
-      end
-      rendered.html_safe
-    end
+  def comment_format comment
+    CommentFormatter.call(comment)
   end
 end
