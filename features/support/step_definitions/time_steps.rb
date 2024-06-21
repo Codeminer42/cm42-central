@@ -9,8 +9,14 @@ When "I wait for {int} seconds" do |seconds|
 end
 
 When /^(.*) with a (\d+) second timeout$/ do |step_fragment, timeout|
-  Capybara.using_wait_time timeout.to_i do
-    step step_fragment
+  begin
+    original = page.driver.timeout
+    page.driver.timeout = timeout.to_i
+    Capybara.using_wait_time timeout.to_i do
+      step step_fragment
+    end
+  ensure
+    page.driver.timeout = original
   end
 end
 
