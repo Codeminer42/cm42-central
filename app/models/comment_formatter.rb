@@ -11,12 +11,13 @@ class CommentFormatter < Struct.new(:comment)
     if comment.body.present?
       rendered = Commonmarker.to_html(comment.body, options: {
         extensions: { autolink: true },
-        parse: { smart: true }
+        parse: { smart: true },
+        render: { escape: true },
       })
       rendered.gsub!(/@(#{project.usernames.join("|")})/) do |match|
         %(<b class="red">#{match}</b>)
       end
-      rendered.gsub!(/#\d+/) do |match|
+      rendered.gsub!(/#(#{project.story_ids.join("|")})\b/) do |match|
         %(<a class="story-link" href="#{project_url}#story-#{match[1..]}">#{match}</a>)
       end
       rendered.html_safe
