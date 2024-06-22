@@ -71,4 +71,7 @@
               span.points
                 | Points: #{search_results.sum(:estimate)}
 
+          = cookie_check_box "toggle-search-accepted"
+          - if @search.results.accepted.length > 0
+            label.accepted-label for="toggle-search-accepted" &nbsp;#{@search.results.accepted.count} accepted stories
           = render @search.results, search_result: true
