@@ -37,13 +37,21 @@ class Project < ActiveRecord::Base
 
   has_many :users, -> { distinct }, through: :memberships
   def users_for_autocomplete
-    users.pluck(:name, :username)
+    users.pluck(:name, :username).map do |(name, username)|
+      { key: name, value: username }
+    end
   end
   def usernames
-    users_for_autocomplete.map(&:last)
+    users.pluck(:username)
   end
 
   has_many :stories, dependent: :destroy
+  def stories_for_autocomplete
+    stories.order(updated_at: :desc).pluck(:id, :title).map do |(id, title)|
+      { key: id.to_s, value: title }
+    end
+  end
+
   has_many :comments, through: :stories
   has_many :attachments_attachments, through: :comments
 

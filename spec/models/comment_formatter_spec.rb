@@ -3,8 +3,10 @@ require "comment_formatter"
 
 describe CommentFormatter do
   let(:comment) { Struct.new(:project, :body).new(project) }
-  let(:project) { double(slug: "tracker", usernames: usernames, story_ids: [1234]) }
+  let(:project) { double(slug: "tracker", usernames: usernames, story_ids: [1234], stories: stories) }
   let(:usernames) { %w[gubs micahg simonm] }
+  let(:stories) { double(find: story) }
+  let(:story) { double(title: "bash face into javascript ecosystem") }
 
   subject do
     described_class.call(comment)
@@ -35,9 +37,21 @@ describe CommentFormatter do
     HTML
   end
 
-  it "simplifies story references" do
-    assert "duplicate of #1234", <<~HTML
-      <p>duplicate of <a class="story-link" href="/projects/tracker#story-1234">#1234</a></p>
+  it "detects and expands story links" do
+    assert "duplicate of http://tracker.localhost/projects/tracker#story-1234", <<~HTML
+      <p>duplicate of <a class="story-link" href="http://tracker.localhost/projects/tracker#story-1234">#1234: bash face into javascript ecosystem</a></p>
+    HTML
+  end
+
+  it "doesn't try with links to non-existant stories" do
+    assert "reminds me of http://tracker.localhost/projects/tracker#story-69", <<~HTML
+      <p>reminds me of <a href="http://tracker.localhost/projects/tracker#story-69">http://tracker.localhost/projects/tracker#story-69</a></p>
+    HTML
+  end
+
+  it "doesn't try with links to other projects' stories" do
+    assert "reminds me of http://tracker.localhost/projects/eboshi#story-1234", <<~HTML
+      <p>reminds me of <a href="http://tracker.localhost/projects/eboshi#story-1234">http://tracker.localhost/projects/eboshi#story-1234</a></p>
     HTML
   end
 

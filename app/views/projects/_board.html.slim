@@ -1,4 +1,10 @@
-#project-stories.project-stories data-turbo="true" data-controller="open-current-story autocomplete-usernames" data-autocomplete-usernames-users-value=@project.users_for_autocomplete.to_json
+#project-stories.project-stories[
+  data-turbo="true"
+  data-controller="open-current-story autocomplete"
+  data-autocomplete-project-url-value=project_url(@project)
+  data-autocomplete-users-value=@project.users_for_autocomplete.to_json
+  data-autocomplete-stories-value=@project.stories_for_autocomplete.to_json
+]
   .stories
     = cookie_check_box "toggle-sidebar", class: "toggle-inputs"
     = cookie_check_box "toggle-done", class: "toggle-inputs"

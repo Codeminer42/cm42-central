@@ -4,7 +4,9 @@ import Tribute from "tributejs"
 
 export default class extends Controller {
   static values = {
+    projectUrl: String,
     users: Array,
+    stories: Array,
   }
 
   static targets = [
@@ -13,10 +15,24 @@ export default class extends Controller {
 
   initialize() {
     this.tribute = new Tribute({
-      values: [],
-      menuItemTemplate: item => {
-        return `<b>${item.original.key}</b> ${item.original.value}`
-      },
+      collection: [{
+          trigger: '@',
+          values: [],
+          menuItemTemplate: item => {
+            return `<b>${item.original.key}</b> ${item.original.value}`
+          },
+        },
+        {
+          trigger: '#',
+          values: [],
+          menuItemTemplate: item => {
+            return `<b>${item.original.key}</b> ${item.original.value}`
+          },
+          selectTemplate: item => {
+            return `${this.projectUrlValue}#story-${item.original.key}`
+          },
+        },
+      ],
     })
 
     // monkeypatch turbo permanence onto menu
@@ -29,10 +45,8 @@ export default class extends Controller {
   }
 
   connect() {
-    const values = this.usersValue.map(([name, username]) => {
-      return { key: name, value: username }
-    })
-    this.tribute.collection[0].values = values
+    this.tribute.collection[0].values = this.usersValue
+    this.tribute.collection[1].values = this.storiesValue
   }
 
   fieldTargetConnected(target) {

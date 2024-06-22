@@ -17,8 +17,9 @@ class CommentFormatter < Struct.new(:comment)
       rendered.gsub!(/@(#{project.usernames.join("|")})/) do |match|
         %(<b class="red">#{match}</b>)
       end
-      rendered.gsub!(/#(#{project.story_ids.join("|")})\b/) do |match|
-        %(<a class="story-link" href="#{project_url}#story-#{match[1..]}">#{match}</a>)
+      rendered.gsub! %r{<a href="(https?://tracker\.[^/]+#{project_url}#story-(#{project.story_ids.join("|")}))">[^<]+</a>} do |match|
+        story = project.stories.find($2)
+        %(<a class="story-link" href="#{$1}">##{$2}: #{story.title}</a>)
       end
       rendered.html_safe
     end

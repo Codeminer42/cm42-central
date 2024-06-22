@@ -1,4 +1,26 @@
 namespace :data do
+  task :fix_comment_story_links => :environment do
+    Project.find_each do |project|
+      project.comments.where("body REGEXP '#\\\\d{2,}\\\\b'").find_each do |comment|
+        puts comment.body
+        comment.body.gsub!(/#\d{2,}\b/) do |match|
+          puts match
+          url = "https://tracker.botandrose.com/projects/#{project.slug}#story-#{match[1..]}"
+          puts "Replace with #{url}? (y/N)"
+          if STDIN.gets == "y"
+            puts "Replacing!"
+            url
+          else
+            puts "Skipping..."
+            match
+          end
+        end
+        comment.save!
+        puts ("-" * 80)
+      end
+    end
+  end
+
   task :sorting_sanity => :environment do
     Story.where(positioning_column: "#todo", state: "unstarted").find_each do |story|
       story.update_columns positioning_column: story.column
