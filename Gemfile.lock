@@ -128,7 +128,7 @@ GEM
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
-    backhoe (0.8.1)
+    backhoe (0.8.2)
       activerecord
     bard (0.61.0)
       bard-rake (>= 0.19.0)
