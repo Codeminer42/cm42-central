@@ -7,7 +7,7 @@ namespace :data do
           puts match
           url = "https://tracker.botandrose.com/projects/#{project.slug}#story-#{match[1..]}"
           puts "Replace with #{url}? (y/N)"
-          if STDIN.gets == "y"
+          if STDIN.gets.chomp == "y"
             puts "Replacing!"
             url
           else
