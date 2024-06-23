@@ -1,13 +1,22 @@
 - if activity.displayable?
-  input.toggle-history type="checkbox" id=dom_id(activity)
-  main.history-content
-    label.history-caret for=dom_id(activity)
-    div
-      => activity.user.name
-      strong => activity.past_tense_action
-      ' this
-      span => activity.noun
+  - if activity.state_change?
+    main.history-content
+      div.history-padding
+        => activity.user.name
+        strong => activity.compile_changes[0].new
+        ' this
+        span => activity.noun
 
-  .story-activity-info
-    = render activity.compile_changes
+  - else
+    input.toggle-history type="checkbox" id=dom_id(activity)
+    main.history-content
+      label.history-caret for=dom_id(activity)
+      div
+        => activity.user.name
+        strong => activity.past_tense_action
+        ' this
+        span => activity.noun
+
+    .story-activity-info
+      = render activity.compile_changes
 

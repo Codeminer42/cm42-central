@@ -20,6 +20,10 @@ class Activity < ActiveRecord::Base
     compile_changes.any?
   end
 
+  def state_change?
+    compile_changes.length == 1 && compile_changes[0].attribute == "state"
+  end
+
   scope :projects, lambda { |ids|
     where(project_id: ids) if ids
   }
