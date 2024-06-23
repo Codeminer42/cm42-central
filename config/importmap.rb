@@ -18,4 +18,6 @@ with_options preload: true do
   pin "stimulus-textarea-autogrow", to: "https://ga.jspm.io/npm:stimulus-textarea-autogrow@4.1.0/dist/stimulus-textarea-autogrow.mjs"
 
   pin "js-cookie", to: "https://ga.jspm.io/npm:js-cookie@3.0.5/dist/js.cookie.mjs"
+
+  pin "@github/relative-time-element", to: "https://ga.jspm.io/npm:@github/relative-time-element@4.4.2/dist/index.js"
 end

@@ -1,7 +1,8 @@
 section.story-activity
   header.history-header
     h4 => group.title
-    span.story-activity-date = group.timestamp
+    relative-time datetime=group.timestamp
+      = group.timestamp
 
   = render group.activities
 
