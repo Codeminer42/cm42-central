@@ -12,6 +12,14 @@ class Activity < ActiveRecord::Base
 
   before_save :parse_changes
 
+  def compile_changes
+    @compile_changes ||= Change.from(self)
+  end
+
+  def displayable?
+    compile_changes.any?
+  end
+
   scope :projects, lambda { |ids|
     where(project_id: ids) if ids
   }
