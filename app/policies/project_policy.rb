@@ -3,6 +3,8 @@ class ProjectPolicy < ApplicationPolicy
     admin? || current_user.projects.find_by(id: record.id)
   end
 
+  alias done? show?
+
   def search?
     return false if guest?
     admin? || project_member?

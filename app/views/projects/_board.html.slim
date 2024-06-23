@@ -19,7 +19,7 @@
         label.toggle-column title="Close" for="toggle-done" ×
 
       #done.column_content.story_column
-        = render board.past_iterations.last(4)
+        = turbo_frame_tag "done", src: [:done, @project, :stories], loading: "lazy"
 
     .story-col.todo_column data-controller="column" title="Todo"
       .column_header
