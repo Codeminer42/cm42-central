@@ -100,7 +100,7 @@ class Board < Struct.new(:project)
         end
       end
       array
-    end
+    end.sort_by(&:timestamp).reverse
   end
 end
 
