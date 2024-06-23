@@ -76,7 +76,31 @@ class Board < Struct.new(:project)
   end
 
   def recent_activities
-    project.activities.order(created_at: :desc).limit(25)
+    project.activities.order(created_at: :desc).limit(50)
+  end
+
+  def recent_activity_groups
+    groups = recent_activities.group_by do |activity|
+      if activity.subject_type == "Comment"
+        activity.subject&.story
+      else
+        activity.subject
+      end
+    end
+
+    groups.delete(nil)
+
+    groups.reduce([]) do |array, (story, activities)|
+      activities.each do |activity|
+        activity_group = array.last
+        if activity_group&.cover?(activity)
+          activity_group << activity
+        else
+          array << ActivityGroup.new(activity)
+        end
+      end
+      array
+    end
   end
 end
 

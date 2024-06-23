@@ -38,7 +38,11 @@ class ActivityPresenter < SimpleDelegator
   end
 
   def title
-    subject&.title || subject_changes["title"] || "Story #{subject_id}"
+    if comment?
+      story_title
+    else
+      subject&.title || subject_changes["title"] || "Story #{subject_id}"
+    end
   end
 
   def story_title
