@@ -23,7 +23,7 @@ end
 
 class FerrumLogger
   def puts(log_str)
-    _log_symbol, _log_time, log_body_str = log_str.strip.split(' ', 3)
+    _log_symbol, _log_time, log_body_str = log_str.to_s.strip.split(' ', 3)
 
     return if log_body_str.nil?
 
