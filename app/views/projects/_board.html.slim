@@ -55,7 +55,7 @@
         a.toggle-title href="#" title="Project History" Project History
         label.toggle-column title="Close" for="toggle-history" ×
       #history.column_content.activity_column
-        = render board.recent_activity_groups
+        = turbo_frame_tag "history", src: [@project, :activities], loading: "lazy"
 
     - if @search
       .story-col.search_results_column title="Search results"
