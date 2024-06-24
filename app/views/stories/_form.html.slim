@@ -64,7 +64,7 @@ div
   .story-description
     = form.label :description
     br
-    = form.text_area :description , class: "form-control description-textarea", data: { story_target: "permanent", controller: "textarea-autogrow" }
+    = form.text_area :description , class: "form-control description-textarea", data: { story_target: "permanent" }
 
 = form.fields_for :comments, Comment.new do |comment_form|
   div
@@ -77,7 +77,8 @@ div
     .comment_form.clearfix
       = comment_form.text_area :body, class: "form-control comment-textarea", data: { story_target: "permanent comment", autocomplete_target: "field", controller: "textarea-autogrow" }
       = comment_form.label :attachments, "Attachment(s)"
-      = comment_form.bard_file_field :attachments, multiple: true, data: { turbo_permanent: true, story_target: "attachment" }
+      template data-controller="lazy-template"
+        = comment_form.bard_file_field :attachments, multiple: true, data: { turbo_permanent: true, story_target: "attachment" }
       button.add-comment.btn.btn-default.btn-xs type="submit" data-story-target="submitButton" hidden=form.object.new_record?
         | Add comment
 

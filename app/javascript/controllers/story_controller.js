@@ -38,9 +38,7 @@ export default class extends Controller {
     if(event.target.closest(".state-actions")) return
     this.checkboxTarget.checked = true
     this.permanentTargets.forEach(e => e.setAttribute("data-turbo-permanent", "true"))
-
-    // hacky way to trigger internal textarea's autogrow behavior
-    window.dispatchEvent(new Event('resize'))
+    this.commentTarget.setAttribute("controller", "textarea-autogrow")
   }
 
   close(event) {
