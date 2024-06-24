@@ -7,6 +7,16 @@
         ' this
         span => activity.noun
 
+  - elsif activity.move?
+    main.history-content
+      div.history-padding
+        => activity.user.name
+        strong
+          ' moved
+        ' this
+        span => activity.noun
+        => activity.move_direction
+
   - else
     input.toggle-history type="checkbox" id=dom_id(activity)
     main.history-content

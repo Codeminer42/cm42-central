@@ -24,6 +24,15 @@ class Activity < ActiveRecord::Base
     compile_changes.length == 1 && compile_changes[0].attribute == "state"
   end
 
+  def move?
+    compile_changes.length == 1 && compile_changes[0].attribute == "position"
+  end
+
+  def move_direction
+    change = compile_changes[0]
+    change.old > change.new ? "up" : "down"
+  end
+
   scope :projects, lambda { |ids|
     where(project_id: ids) if ids
   }
