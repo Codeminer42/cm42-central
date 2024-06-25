@@ -77,8 +77,7 @@
           - if @search.results.accepted.length > 0
             label.accepted-label for="toggle-search-accepted"
               |  #{@search.results.accepted.count} accepted stories
-          #accepted-search-results
+          #accepted-search-results.loading-stories
             = turbo_frame_tag "accepted-search-results", src: [:accepted_search_results, @project, :stories, q: params[:q]], loading: "lazy", refresh: "morph" do
-              h1 LOADING...
+              .loading-stories-spinner Loading
           = render @search.results.not_accepted, search_result: true
-
