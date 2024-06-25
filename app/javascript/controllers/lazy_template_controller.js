@@ -3,7 +3,6 @@ import useActions from "stimulus-use-actions"
 
 export default class extends Controller {
   connect() {
-    this.element.style.display = "block" // force visibility detection for <template>
     respondToVisibility(this.element, visible => {
       if(visible) this.render()
     })
