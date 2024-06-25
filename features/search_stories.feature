@@ -33,6 +33,16 @@ Feature: Users can search stories
     When I fill in "Search" with "user:MG" and press enter
     Then I should see the following project board:
       | Done | Todo                         | Icebox                 | Search results               |
+      |      | F Accepted MG                | F Unscheduled MG start | F Delivered MG accept reject |
+      |      | F Rejected GUBS restart      |                        | F Started MG finish          |
+      |      | F Delivered MG accept reject |                        | F Unscheduled MG start       |
+      |      | F Finished GUBS deliver      |                        |                              |
+      |      | F Started MG finish          |                        |                              |
+      |      | F Unstarted GUBS start       |                        |                              |
+
+    When I uncheck "1 accepted stories"
+    Then I should see the following project board:
+      | Done | Todo                         | Icebox                 | Search results               |
       |      | F Accepted MG                | F Unscheduled MG start | F Accepted MG                |
       |      | F Rejected GUBS restart      |                        | F Delivered MG accept reject |
       |      | F Delivered MG accept reject |                        | F Started MG finish          |

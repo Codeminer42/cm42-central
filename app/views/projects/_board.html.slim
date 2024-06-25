@@ -31,7 +31,8 @@
         = render board.iteration_header
         = cookie_check_box "toggle-accepted"
         - if board.current_accepted.stories.length > 0
-          label.accepted-label for="toggle-accepted" &nbsp;#{board.current_accepted.stories.length} accepted stories
+          label.accepted-label for="toggle-accepted"
+            |  #{board.current_accepted.stories.length} accepted stories
         #accepted
           = render board.current_accepted
         #todo data-controller="sort" data-sort-positioning-column-value="#todo"
@@ -72,9 +73,10 @@
               span.points
                 | Points: #{search_results.sum(:estimate)}
 
-          = cookie_check_box "toggle-search-accepted"
+          input#toggle-search-accepted type="checkbox" checked=true data-turbo-permanent=true
           - if @search.results.accepted.length > 0
-            label.accepted-label for="toggle-search-accepted" &nbsp;#{@search.results.accepted.count} accepted stories
+            label.accepted-label for="toggle-search-accepted"
+              |  #{@search.results.accepted.count} accepted stories
           #accepted-search-results
             = turbo_frame_tag "accepted-search-results", src: [:accepted_search_results, @project, :stories, q: params[:q]], loading: "lazy", refresh: "morph" do
               h1 LOADING...
