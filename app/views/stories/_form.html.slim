@@ -1,9 +1,9 @@
 div
   .form-group.story-controls
-    = form.submit "Save", data: { action: "click->story#close:stop", story_target: "submitButton" }
+    = form.submit "Save", data: { action: "click->story#close:stop", story_form_target: "submitButton" }
     - if form.object.persisted?
-      = form.submit "Delete", class: "delete", form: "delete_story_#{form.object.id}", data: { story_target: "submitButton", confirm: "Are you sure you want to delete this story?" }
-    input.cancel type="button" value="Cancel" data-action="click->story#close:prevent:stop" data-story-target="submitButton"
+      = form.submit "Delete", class: "delete", form: "delete_story_#{form.object.id}", data: { story_form_target: "submitButton", confirm: "Are you sure you want to delete this story?" }
+    input.cancel type="button" value="Cancel" data-action="click->story#close:prevent:stop" data-story-form-target="submitButton"
 
 div
 
@@ -75,10 +75,9 @@ div
 
   div
     .comment_form.clearfix
-      = comment_form.text_area :body, class: "form-control comment-textarea", data: { story_target: "permanent comment", autocomplete_target: "field", controller: "textarea-autogrow" }
+      = comment_form.text_area :body, class: "form-control comment-textarea", data: { story_target: "permanent", story_form_target: "comment", autocomplete_target: "field", controller: "textarea-autogrow" }
       = comment_form.label :attachments, "Attachment(s)"
-      template data-controller="lazy-template"
-        = comment_form.bard_file_field :attachments, multiple: true, data: { turbo_permanent: true, story_target: "attachment" }
-      button.add-comment.btn.btn-default.btn-xs type="submit" data-story-target="submitButton" hidden=form.object.new_record?
+      = comment_form.bard_file_field :attachments, multiple: true, data: { turbo_permanent: true, story_form_target: "attachment" }
+      button.add-comment.btn.btn-default.btn-xs type="submit" data-story-form-target="submitButton" hidden=form.object.new_record?
         | Add comment
 
