@@ -17,16 +17,20 @@ input.title
   position: absolute
   z-index: 1
   opacity: 0.01
+  & + .accepted-label + div
+    display: block
   &:checked
     & + .accepted-label::before
       content: "Show"
-    & ~ .story.accepted
-      min-height: 0
-      height: 0
-      padding-top: 0
-      padding-bottom: 0
-      border-top-width: 0px
-      border-bottom-width: 0px
+    & + .accepted-label + div
+      display: none
+      & > .story
+        min-height: 0
+        height: 0
+        padding-top: 0
+        padding-bottom: 0
+        border-top-width: 0px
+        border-bottom-width: 0px
 
 .story
   overflow: hidden

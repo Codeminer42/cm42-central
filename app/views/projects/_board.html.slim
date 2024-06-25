@@ -28,6 +28,7 @@
         label.toggle-column title="Close" for="toggle-todo" ×
 
       .column_content.story_column
+        = render board.iteration_header
         = cookie_check_box "toggle-accepted"
         - if board.current_accepted.stories.length > 0
           label.accepted-label for="toggle-accepted" &nbsp;#{board.current_accepted.stories.length} accepted stories
@@ -74,4 +75,8 @@
           = cookie_check_box "toggle-search-accepted"
           - if @search.results.accepted.length > 0
             label.accepted-label for="toggle-search-accepted" &nbsp;#{@search.results.accepted.count} accepted stories
-          = render @search.results, search_result: true
+          #accepted-search-results
+            = turbo_frame_tag "accepted-search-results", src: [:accepted_search_results, @project, :stories, q: params[:q]], loading: "lazy", refresh: "morph" do
+              h1 LOADING...
+          = render @search.results.not_accepted, search_result: true
+

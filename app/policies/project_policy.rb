@@ -4,6 +4,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   alias done? show?
+  alias accepted_search_results? show?
 
   def search?
     return false if guest?

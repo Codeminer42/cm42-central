@@ -18,16 +18,27 @@ class Board < Struct.new(:project)
     end
   end
 
-  def current_accepted
+  def iteration_header
     start_date = Time.zone.now.beginning_of_week
-    stories = project.stories.accepted_after(start_date).order(:accepted_at)
     number = ((Date.today.beginning_of_week - project.start_date.beginning_of_week) / 7 + 1).to_i
     Iteration.new(
       project,
-      stories,
+      project.stories.none,
       start_date,
       number,
       number
+    )
+  end
+
+  def current_accepted
+    start_date = Time.zone.now.beginning_of_week
+    stories = project.stories.accepted_after(start_date).order(:accepted_at)
+    Iteration.new(
+      project,
+      stories,
+      nil,
+      nil,
+      "current_accepted"
     )
   end
 

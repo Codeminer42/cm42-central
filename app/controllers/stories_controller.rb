@@ -11,6 +11,12 @@ class StoriesController < ApplicationController
     authorize @project
   end
 
+  def accepted_search_results
+    scope = policy_scope(Story).where(project: @project)
+    @search = StorySearch.query(scope, params[:q])
+    authorize @project
+  end
+
   def create
     @story = policy_scope(Story).build
     authorize @story
