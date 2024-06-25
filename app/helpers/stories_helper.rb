@@ -21,7 +21,7 @@ module StoriesHelper
     }.fetch(story.story_type).html_safe
   end
 
-  def comment_format comment
-    CommentFormatter.call(comment)
+  def comment_format comment, project
+    CommentFormatter.call(comment, project)
   end
 end

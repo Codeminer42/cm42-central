@@ -2,14 +2,14 @@ $: << "app/models"
 require "comment_formatter"
 
 describe CommentFormatter do
-  let(:comment) { Struct.new(:project, :body).new(project) }
+  let(:comment) { Struct.new(:body).new }
   let(:project) { double(slug: "tracker", usernames: usernames, story_ids: [1234], stories: stories) }
   let(:usernames) { %w[gubs micahg simonm] }
   let(:stories) { double(find: story) }
   let(:story) { double(title: "bash face into javascript ecosystem") }
 
   subject do
-    described_class.call(comment)
+    described_class.call(comment, project)
   end
 
   def assert input, output

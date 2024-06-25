@@ -17,7 +17,7 @@ class Story < ActiveRecord::Base
   end
 
   def self.with_dependencies
-    includes(:tasks, comments: { attachments_attachments: :blob })
+    includes(comments: { attachments_attachments: :blob })
   end
 
   scope :not_accepted, -> { where(accepted_at: nil) }

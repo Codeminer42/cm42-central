@@ -2,9 +2,9 @@ require "active_support/core_ext/object/blank"
 require "active_support/core_ext/string/output_safety"
 require "commonmarker"
 
-class CommentFormatter < Struct.new(:comment)
-  def self.call comment
-    new(comment).call
+class CommentFormatter < Struct.new(:comment, :project)
+  def self.call comment, project
+    new(comment, project).call
   end
 
   def call
@@ -26,10 +26,6 @@ class CommentFormatter < Struct.new(:comment)
   end
 
   private
-
-  def project
-    comment.project
-  end
 
   def project_url
     "/projects/#{project.slug}"
