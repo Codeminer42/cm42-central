@@ -9,6 +9,7 @@ export default class extends Controller {
 
   open(event) {
     if(event.target.closest(".state-actions")) return
+    if(event.target.classList.contains(".initials")) return
     this.checkboxTarget.checked = true
     this.permanentTargets.forEach(e => e.setAttribute("data-turbo-permanent", "true"))
   }
