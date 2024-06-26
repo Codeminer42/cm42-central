@@ -9,7 +9,7 @@ const DefaultPoints = ({ points, completedPoints }) => (
 );
 
 const expandedStyle = (hasStories, isClosed) =>
-  hasStories && !isClosed ? 'Sprint__icon--expanded' : ''
+  hasStories && !isClosed ? 'Sprint__icon--expanded' : '';
 
 const DonePoints = ({ points, hasStories, isClosed }) => (
   <div>
@@ -24,22 +24,21 @@ const DonePoints = ({ points, hasStories, isClosed }) => (
 
 const SprintHeader = props => (
   <div className="Sprint__header" onClick={props.onClick}>
-    {props.number} - {I18n.l("date.formats.long", props.startDate)}
-    {
-      props.isDone
-        ? <DonePoints
-          hasStories={props.hasStories}
-          points={props.points}
-          isClosed={props.isClosed}
-        />
-        : <DefaultPoints
-          points={props.points}
-          completedPoints={props.completedPoints}
-        />
-    }
+    {props.number} - {I18n.l('date.formats.long', props.startDate)}
+    {props.isDone ? (
+      <DonePoints
+        hasStories={props.hasStories}
+        points={props.points}
+        isClosed={props.isClosed}
+      />
+    ) : (
+      <DefaultPoints
+        points={props.points}
+        completedPoints={props.completedPoints}
+      />
+    )}
   </div>
 );
-
 
 SprintHeader.propTypes = {
   onClick: PropTypes.func.isRequired,
@@ -49,7 +48,7 @@ SprintHeader.propTypes = {
   hasStories: PropTypes.bool,
   points: PropTypes.number.isRequired,
   isClosed: PropTypes.bool.isRequired,
-  completedPoints: PropTypes.number
-}
+  completedPoints: PropTypes.number,
+};
 
-export default SprintHeader
+export default SprintHeader;

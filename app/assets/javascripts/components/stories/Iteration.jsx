@@ -8,13 +8,13 @@ const propTypes = {
 };
 
 const Iteration = ({ number, startDate, points }) => {
-    return (
-      <Fragment>
-        {number} - {startDate}
-        <span className="points">{points}</span>
-      </Fragment>
-    );
-}
+  return (
+    <Fragment>
+      {number} - {startDate}
+      <span className="points">{points}</span>
+    </Fragment>
+  );
+};
 
 Iteration.propTypes = propTypes;
 

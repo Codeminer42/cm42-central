@@ -179,24 +179,6 @@ describe Project, type: :model do
       end
     end
 
-    context 'with document' do
-      let(:csv_string) { "Id,Story,Story Type,Requested By,Owned By,Description,Document\n" }
-      let(:documents) { project.stories.first.documents }
-
-      it 'imports document' do
-        csv_string << '9,Story title,feature,' + user.name + ',' + user.name +
-                      ',,"{""attachinariable_type"":""Story"",""scope"":""documents"",' \
-                      '""public_id"":""road_marking_bridge_123398_2560x1080_odwfow"",' \
-                      '""version"":""1542027351"",""width"":2560,""height"":1080,' \
-                      '""format"":""jpg"",""resource_type"":""image""}"'
-
-        VCR.use_cassette('cloudinary_upload_import_csv', match_requests_on: %i[uri method]) do
-          project.stories.from_csv csv_string
-          expect(documents.count).to eq(1)
-        end
-      end
-    end
-
     context 'with task' do
       let(:csv_string) do
         "Id,Story,Story Type,Requested By,Owned By,Description,Task,Task Status\n"
@@ -307,6 +289,7 @@ describe Project, type: :model do
     subject { build :project }
     it { is_expected.to belong_to(:tag_group) }
     it { is_expected.to have_many(:changesets) }
+    it { is_expected.to have_many(:ownerships).dependent(:destroy) }
   end
 
   describe '#as_json' do

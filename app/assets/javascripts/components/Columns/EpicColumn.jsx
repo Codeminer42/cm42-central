@@ -1,19 +1,26 @@
 import React from 'react';
 import Column from './ColumnItem';
 import Stories from '../stories/Stories';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import StoryPropTypes from '../shapes/story';
-import { totalPoints, donePoints, remainingPoints } from '../../models/beta/story';
+import {
+  totalPoints,
+  donePoints,
+  remainingPoints,
+} from '../../models/beta/story';
 import { EPIC } from '../../models/beta/column';
 import { closeEpicColumn } from '../../actions/story';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 
-export const EpicColumnHeader = ({ stories }) =>
+export const EpicColumnHeader = ({ stories }) => (
   <div className="Sprint__header">
-    {I18n.t('projects.show.done')}: { donePoints(stories) } / {I18n.t('remaining')}: { remainingPoints(stories) }
-
-    <span className="done-points">{I18n.t('projects.reports.points')}: { totalPoints(stories) }</span>
+    {I18n.t('projects.show.done')}: {donePoints(stories)} /{' '}
+    {I18n.t('remaining')}: {remainingPoints(stories)}
+    <span className="done-points">
+      {I18n.t('projects.reports.points')}: {totalPoints(stories)}
+    </span>
   </div>
+);
 
 const EpicColumn = ({ stories, closeEpicColumn }) => (
   <Column
@@ -23,9 +30,7 @@ const EpicColumn = ({ stories, closeEpicColumn }) => (
     visible
   >
     <div className="Sprint">
-      <EpicColumnHeader
-        stories={stories}
-      />
+      <EpicColumnHeader stories={stories} />
       <div className="Sprint__body">
         <Stories columnId="epic" stories={stories} isDropDisabled from={EPIC} />
       </div>
@@ -35,18 +40,15 @@ const EpicColumn = ({ stories, closeEpicColumn }) => (
 
 EpicColumn.propTypes = {
   closeEpicColumn: PropTypes.func.isRequired,
-  stories: PropTypes.arrayOf(StoryPropTypes)
-}
-
-EpicColumn.defaultProps = {
-  stories: []
-}
-
-const mapDispatchToProps = {
-  closeEpicColumn
+  stories: PropTypes.arrayOf(StoryPropTypes),
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(EpicColumn);
+EpicColumn.defaultProps = {
+  stories: [],
+};
+
+const mapDispatchToProps = {
+  closeEpicColumn,
+};
+
+export default connect(null, mapDispatchToProps)(EpicColumn);

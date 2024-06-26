@@ -7,46 +7,47 @@ import { isEmpty } from 'underscore';
 const propTypes = {
   sprints: PropTypes.array,
   fetchStories: PropTypes.func,
-  columnId: PropTypes.string
+  columnId: PropTypes.string,
 };
 
 const defaultProps = {
   sprints: [],
 };
 
-const renderSprints = (sprints, fetchStories, columnId) => (
-  sprints.map(
-    (sprint, index) => (
-      <Sprint
-        key={sprint.number}
-        sprint={sprint}
-        sprintIndex={index}
-        columnId={columnId}
-        fetchStories={fetchStories}
-        isDropDisabled={sprint.isDropDisabled}
-      />
-    )
-  )
-)
+const renderSprints = (sprints, fetchStories, columnId) =>
+  sprints.map((sprint, index) => (
+    <Sprint
+      key={sprint.number}
+      sprint={sprint}
+      sprintIndex={index}
+      columnId={columnId}
+      fetchStories={fetchStories}
+      isDropDisabled={sprint.isDropDisabled}
+    />
+  ));
 
 const droppableContainer = columnId => (
-  <Droppable droppableId={JSON.stringify({columnId, sprintIndex: 0})} type='sprints'>
+  <Droppable
+    droppableId={JSON.stringify({ columnId, sprintIndex: 0 })}
+    type="sprints"
+  >
     {provided => (
-      <div className='Sprints' ref={provided.innerRef} {...provided.droppableProps}>
+      <div
+        className="Sprints"
+        ref={provided.innerRef}
+        {...provided.droppableProps}
+      >
         {provided.placeholder}
       </div>
     )}
   </Droppable>
 );
 
-
 const Sprints = ({ sprints, fetchStories, columnId }) => (
-  <div className='Sprints'>
-    {
-      isEmpty(sprints)
-        ? droppableContainer(columnId)
-        : renderSprints(sprints, fetchStories, columnId)
-    }
+  <div className="Sprints">
+    {isEmpty(sprints)
+      ? droppableContainer(columnId)
+      : renderSprints(sprints, fetchStories, columnId)}
   </div>
 );
 

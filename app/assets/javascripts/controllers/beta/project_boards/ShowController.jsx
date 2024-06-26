@@ -10,7 +10,8 @@ export default () => {
 
   render(
     <Provider store={store}>
-      <ProjectBoard projectId={ projectId } />
-    </Provider>
-  , appElement);
+      <ProjectBoard projectId={projectId} />
+    </Provider>,
+    appElement
+  );
 };

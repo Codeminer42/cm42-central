@@ -1,20 +1,22 @@
-import React,{ useState } from 'react'
+import React, { useState } from 'react';
 
 export const SprintVelocitySimulationForm = ({
   currentSprintVelocity,
   calculatedSprintVelocity,
   simulateSprintVelocity,
   revertSprintVelocity,
-  setVisible
+  setVisible,
 }) => {
-  const [sprintVelocityToSimulate, setSprintVelocityToSimulate] = useState(currentSprintVelocity)
+  const [sprintVelocityToSimulate, setSprintVelocityToSimulate] = useState(
+    currentSprintVelocity
+  );
   const revertToCalculatedVelocity = () => {
     setSprintVelocityToSimulate(calculatedSprintVelocity);
     revertSprintVelocity();
     setVisible(false);
-  }
+  };
 
-  return(
+  return (
     <div className="velocity-change">
       <div className="form-inline velocity-form">
         <div className="form-group">
@@ -29,7 +31,7 @@ export const SprintVelocitySimulationForm = ({
             size="2"
             placeholder={I18n.t('override.velocity')}
             value={sprintVelocityToSimulate}
-            onChange={ e => setSprintVelocityToSimulate(e.target.value)}
+            onChange={e => setSprintVelocityToSimulate(e.target.value)}
           />
         </div>
         <div className="btn-group">
@@ -51,8 +53,12 @@ export const SprintVelocitySimulationForm = ({
           </button>
         </div>
       </div>
-      <p className="velocity-change-notice">{I18n.t('override.explanation_1')}</p>
-      <p className="velocity-change-notice">{I18n.t('override.explanation_2')}</p>
+      <p className="velocity-change-notice">
+        {I18n.t('override.explanation_1')}
+      </p>
+      <p className="velocity-change-notice">
+        {I18n.t('override.explanation_2')}
+      </p>
     </div>
-  )
+  );
 };
