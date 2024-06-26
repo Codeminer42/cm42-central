@@ -40,7 +40,7 @@ Feature: Users can search stories
       |      | F Started MG finish          |                        |                              |
       |      | F Unstarted GUBS start       |                        |                              |
 
-    When I uncheck "1 accepted stories"
+    When I uncheck "1 accepted stories" within the "Search results" column
     Then I should see the following project board:
       | Done | Todo                         | Icebox                 | Search results               |
       |      | F Accepted MG                | F Unscheduled MG start | F Accepted MG                |
