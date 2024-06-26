@@ -9,14 +9,18 @@ import moment from 'moment';
 describe('<StoryItem />', () => {
   it('renders the StoryItem component within a Collapsed Story', () => {
     const story = storyFactory({ collapsed: true });
-    const wrapper = shallow(<StoryItem story={story} toggleStory={sinon.stub()} />);
+    const wrapper = shallow(
+      <StoryItem story={story} toggleStory={sinon.stub()} />
+    );
 
     expect(wrapper.find(CollapsedStory)).toExist();
   });
 
   it('renders the StoryItem component within a Expanded Story', () => {
     const story = storyFactory({ collapsed: false });
-    const wrapper = shallow(<StoryItem story={story} toggleStory={sinon.stub()} />);
+    const wrapper = shallow(
+      <StoryItem story={story} toggleStory={sinon.stub()} />
+    );
 
     expect(wrapper.find(ExpandedStory)).toExist();
   });
@@ -26,11 +30,13 @@ describe('<StoryItem />', () => {
       const story = storyFactory({
         collapsed: false,
         storyType: 'release',
-        releaseDate: moment().subtract(3, 'days')
+        releaseDate: moment().subtract(3, 'days'),
       });
       const className = 'Story--late-release';
 
-      const wrapper = shallow(<StoryItem story={story} toggleStory={sinon.stub()} />);
+      const wrapper = shallow(
+        <StoryItem story={story} toggleStory={sinon.stub()} />
+      );
       const children = wrapper.find(ExpandedStory);
 
       expect(children.prop('className')).toContain(className);
@@ -40,11 +46,13 @@ describe('<StoryItem />', () => {
       const story = storyFactory({
         collapsed: false,
         storyType: 'release',
-        releaseDate: moment().subtract(3, 'days')
+        releaseDate: moment().subtract(3, 'days'),
       });
       const title = I18n.t('story.warnings.backlogged_release');
 
-      const wrapper = shallow(<StoryItem story={story} toggleStory={sinon.stub()} />);
+      const wrapper = shallow(
+        <StoryItem story={story} toggleStory={sinon.stub()} />
+      );
       const children = wrapper.find(ExpandedStory);
 
       expect(children).toHaveProp('title', title);
@@ -56,11 +64,13 @@ describe('<StoryItem />', () => {
       const story = storyFactory({
         collapsed: false,
         storyType: 'release',
-        releaseDate: moment().add(3, 'days')
+        releaseDate: moment().add(3, 'days'),
       });
       const className = '';
 
-      const wrapper = shallow(<StoryItem story={story} toggleStory={sinon.stub()} />);
+      const wrapper = shallow(
+        <StoryItem story={story} toggleStory={sinon.stub()} />
+      );
       const children = wrapper.find(ExpandedStory);
 
       expect(children).toHaveProp('className', className);
@@ -70,11 +80,13 @@ describe('<StoryItem />', () => {
       const story = storyFactory({
         collapsed: false,
         storyType: 'release',
-        releaseDate: moment().add(3, 'days')
+        releaseDate: moment().add(3, 'days'),
       });
       const title = '';
 
-      const wrapper = shallow(<StoryItem story={story} toggleStory={sinon.stub()} />);
+      const wrapper = shallow(
+        <StoryItem story={story} toggleStory={sinon.stub()} />
+      );
       const children = wrapper.find(ExpandedStory);
 
       expect(children).toHaveProp('title', title);
@@ -82,18 +94,20 @@ describe('<StoryItem />', () => {
   });
 
   const render = props => {
-    const wrapper = shallow(<StoryItem {...props} toggleStory={sinon.stub()} />);
+    const wrapper = shallow(
+      <StoryItem {...props} toggleStory={sinon.stub()} />
+    );
     const expandedStory = wrapper.find('[data-id="expanded-story"]');
     return { wrapper, expandedStory };
-  }
+  };
 
-  describe('when the story is accepted', () => {  
+  describe('when the story is accepted', () => {
     it('puts .Story--accepted on childrens prop className', () => {
       const { expandedStory } = render({
         story: storyFactory({
           collapsed: false,
-          state: 'accepted'
-        })
+          state: 'accepted',
+        }),
       });
       expect(expandedStory.prop('className')).toContain('Story--accepted');
     });
@@ -104,8 +118,8 @@ describe('<StoryItem />', () => {
       const { expandedStory } = render({
         story: storyFactory({
           collapsed: false,
-          state: 'unscheduled'
-        })
+          state: 'unscheduled',
+        }),
       });
       expect(expandedStory.prop('className')).not.toContain('Story--accepted');
     });
