@@ -9,7 +9,7 @@ module ApplicationHelper
   end
 
   def cookie_check_box id, options={}
-    checked = cookies[id].to_s == "true"
+    checked = options.fetch(:checked) { cookies[id].to_s == "true" }
     tag.input **options.merge({
       id:,
       checked:,

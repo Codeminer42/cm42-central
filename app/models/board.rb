@@ -1,4 +1,4 @@
-class Board < Struct.new(:project)
+class Board < Struct.new(:project, :query)
   def to_partial_path
     "projects/board"
   end
@@ -112,6 +112,14 @@ class Board < Struct.new(:project)
       end
       array
     end.sort_by(&:timestamp).reverse
+  end
+
+  def search_results
+    @search ||= StorySearch.query(project.stories, query)
+  end
+
+  def search?
+    query.present?
   end
 end
 

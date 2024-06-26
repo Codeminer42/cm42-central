@@ -11,6 +11,7 @@
     = cookie_check_box "toggle-todo", class: "toggle-inputs"
     = cookie_check_box "toggle-icebox", class: "toggle-inputs"
     = cookie_check_box "toggle-history", class: "toggle-inputs"
+    = cookie_check_box "toggle-search-results", class: "toggle-inputs", value: @query, checked: @query.present?
     = render "sidebar"
 
     .story-col.done_column title="Done"
@@ -59,25 +60,23 @@
       #history.column_content.activity_column
         = turbo_frame_tag "history", src: [@project, :activities], loading: "lazy", refresh: "morph"
 
-    - if @search
+    - if board.search?
       .story-col.search_results_column title="Search results"
         .column_header
           a.toggle-title href="#" title="Search Results" Search results
-          | containing: #{@search.query_params}
-          label.toggle-column title="Close" onclick="this.closest('.story-col').remove()" ×
+          | containing: #{board.search_results.query_params}
+          label.toggle-column title="Close" for="toggle-search-results" data-controller="clear-search-results" ×
 
         #search_results.column_content.story_column
           .iteration
-            |  Stories found: #{@search.results.count}
-            /
-              span.points
-                | Points: #{search_results.sum(:estimate)}
+            |  Stories found: #{board.search_results.results.count}
 
           input#toggle-search-accepted type="checkbox" checked=true data-turbo-permanent=true
-          - if @search.results.accepted.length > 0
+          - if board.search_results.results.accepted.length > 0
             label.accepted-label for="toggle-search-accepted"
-              |  #{@search.results.accepted.count} accepted stories
+              |  #{board.search_results.results.accepted.count} accepted stories
           #accepted-search-results.loading-stories
-            = turbo_frame_tag "accepted-search-results", src: [:accepted_search_results, @project, :stories, q: params[:q]], loading: "lazy", refresh: "morph" do
+            = turbo_frame_tag "accepted-search-results", src: [:accepted_search_results, @project, :stories, q: @query], loading: "lazy", refresh: "morph" do
               .loading-stories-spinner Loading
-          = render @search.results.not_accepted, search_result: true
+          = render board.search_results.results.not_accepted, search_result: true
+

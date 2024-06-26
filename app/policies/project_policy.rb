@@ -6,11 +6,6 @@ class ProjectPolicy < ApplicationPolicy
   alias done? show?
   alias accepted_search_results? show?
 
-  def search?
-    return false if guest?
-    admin? || project_member?
-  end
-
   def reports?
     admin? || project_member?
   end

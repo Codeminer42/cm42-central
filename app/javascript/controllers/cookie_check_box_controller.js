@@ -11,7 +11,19 @@ export default class extends Controller {
 
   change(event) {
     const key = this.element.id
-    const value = this.element.checked.toString()
+    const value = this.getValue()
     Cookies.set(key, value, { expires: 3650 }) // ten year expiration
+  }
+
+  getValue() {
+    if(this.element.hasAttribute("value")) {
+      if(this.element.checked) {
+        return this.element.value
+      } else {
+        return ""
+      }
+    } else {
+      return this.element.checked.toString()
+    }
   }
 }

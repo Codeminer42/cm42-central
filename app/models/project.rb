@@ -96,8 +96,8 @@ class Project < ActiveRecord::Base
     name
   end
 
-  def board
-    @board ||= Board.new(self)
+  def board query=nil
+    @board ||= Board.new(self, query)
   end
 
   def point_values

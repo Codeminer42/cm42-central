@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show search edit update destroy
+  before_action :set_project, only: %i[show edit update destroy
                                        reports archive unarchive]
   before_action -> { define_sidebar :project_settings }, only: :edit
   before_action :set_story_flow, only: %i[show]
@@ -18,10 +18,8 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    if params[:q]
-      scope = policy_scope(Story).where(project: @project)
-      @search = StorySearch.query(scope, params[:q])
-    end
+    cookies["toggle-search-results"] = params[:q] if params.has_key?(:q)
+    @query = cookies["toggle-search-results"]
     @new_todo_story = @project.stories.build(state: "unstarted", requested_by: current_user)
     @new_icebox_story = @project.stories.build(state: "unscheduled", requested_by: current_user)
     session[:current_project_slug] = @project.slug

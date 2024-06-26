@@ -18,7 +18,7 @@
   = form_tag nil, method: :get, class: "navbar-form navbar-left navbar-search", data: { turbo_frame: "search-results-frame" }
     .form-group
       label.hidden for="q" Search
-      input#q.form-control.input-sm type="text" name="q" placeholder="Search" value=params[:q]
+      input#q.form-control.input-sm type="text" name="q" placeholder="Search" value=@query
       / i.mi.md-20.drop-target help
 
 - content_for :navbar do
@@ -32,4 +32,4 @@ div data-controller="stream" data-turbo-permanent="true"
       a.reconnect-button disabled=true Reconnecting...
       / = link_to "Reconnect now", "#", class: "reconnect-button", onclick: "window.location.reload(); return false"
 
-= render @project.board
+= render @project.board(@query)

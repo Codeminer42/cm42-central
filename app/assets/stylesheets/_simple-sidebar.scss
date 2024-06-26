@@ -200,6 +200,29 @@
   }
 }
 
+#toggle-search-results{
+  & ~ .story-col.search_results_column{
+    flex: 0 1 0px;
+    width: 0px;
+    overflow: hidden;
+  }
+  & ~ .sidebar-wrapper .sidebar-link.hide_search_results{
+    color: #bbb;
+    border-left-color: transparent;
+  }
+}
+#toggle-search-results:checked{
+  & ~ .story-col.search_results_column{
+    flex: 1 0;
+    width: auto;
+    overflow: auto;
+  }
+  & ~ .sidebar-wrapper .sidebar-link.hide_search_results{
+    border-left-color: #8AC7FF;
+  }
+}
+
+
 .sidebar-link.hide_done, .sidebar-link.hide_todo, .sidebar-link.hide_icebox, .sidebar-link.hide_history{
   color: #8AC7FF;
 }
