@@ -63,7 +63,7 @@
     "cloudinary-jquery": "^2.13.0",
     "cloudinary-jquery-file-upload": "^2.13.0",
     "dotenv": "^8.2.0",
-    "ejs": "^3.1.9",
+    "ejs": "^3.1.10",
     "glob": "^7.1.6",
     "gritter": "^1.7.4",
     "html-react-parser": "^0.10.0",
