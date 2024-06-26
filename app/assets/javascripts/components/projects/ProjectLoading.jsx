@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProjectLoading = () => 
+const ProjectLoading = () => (
   <div className="ProjectBoard-loading">
     <div className="ProjectBoard-loading__content">
       <div className="ProjectBoard-loading__spinner">
@@ -9,5 +9,6 @@ const ProjectLoading = () =>
       <h2 className="ProjectBoard-loading__text">{I18n.t('loading')}</h2>
     </div>
   </div>
+);
 
 export default ProjectLoading;

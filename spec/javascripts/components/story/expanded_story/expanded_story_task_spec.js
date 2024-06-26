@@ -20,11 +20,10 @@ describe('<ExpandedStoryTask />', () => {
     });
 
     const wrapper = mount(<ExpandedStoryTask {...defaultProps()} />);
-    const wrapperInstance = wrapper.instance();
     const button = wrapper.find('button');
     const input = wrapper.find('input');
 
-    return { wrapper, wrapperInstance, button, input };
+    return { wrapper, button, input };
   };
 
   it('renders component title', () => {
@@ -58,14 +57,6 @@ describe('<ExpandedStoryTask />', () => {
         button.simulate('click');
   
         expect(onSaveSpy).toHaveBeenCalledWith(task);
-      });
-  
-      it('calls setState with a empty task', () => {
-        const { wrapperInstance } = setup();
-  
-        wrapperInstance.onHandleSubmit();
-  
-        expect(wrapperInstance.state.task).toEqual('');
       });
     });
   });

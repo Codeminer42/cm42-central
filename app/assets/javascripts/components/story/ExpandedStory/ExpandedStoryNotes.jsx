@@ -1,84 +1,60 @@
-import React, { Fragment } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import NotesList from '../note/NotesList';
 import { editingStoryPropTypesShape } from '../../../models/beta/story';
 import ExpandedStorySection from './ExpandedStorySection';
 
-class ExpandedStoryNotes extends React.Component {
-  constructor(props) {
-    super(props);
+const ExpandedStoryNotes = ({ story, onCreate, onDelete, disabled }) => {
+  const [value, setValue] = useState('');
 
-    this.state = {
-      value: ''
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSave = this.handleSave.bind(this);
+  const handleChange = event => {
+    setValue(event.target.value);
   };
 
-  handleChange(event) {
-    this.setState({ value: event.target.value })
-  }
+  const handleSave = () => {
+    onCreate(value);
+    setValue('');
+  };
 
-  handleSave() {
-    const { onCreate } = this.props;
+  const hasAnEmptyValue = () => {
+    return !value.trim();
+  };
 
-    onCreate(this.state.value);
-    this.setState({ value: '' });
-  }
+  const notesForm = () => (
+    <>
+      <textarea
+        className="form-control input-sm create-note-text"
+        value={value}
+        onChange={handleChange}
+      />
 
-  hasAnEmptyValue() {
-    return !this.state.value.trim()
-  }
-
-  notesForm() {
-    return (
-      <Fragment>
-        <textarea
-          className="form-control input-sm create-note-text"
-          value={this.state.value}
-          onChange={this.handleChange}
+      <div className="create-note-button">
+        <input
+          type="button"
+          value={I18n.t('add note')}
+          onClick={handleSave}
+          disabled={hasAnEmptyValue()}
         />
+      </div>
+    </>
+  );
 
-        <div className='create-note-button'>
-          <input
-            type='button'
-            value={I18n.t('add note')}
-            onClick={this.handleSave}
-            disabled={this.hasAnEmptyValue()}
-          />
-        </div>
-      </Fragment>
-    );
-  }
+  if (disabled && !story.notes.length) return null;
 
-  render() {
-    const { story, onDelete, disabled } = this.props;
+  return (
+    <ExpandedStorySection title={I18n.t('story.notes')} identifier="notes">
+      <NotesList notes={story.notes} onDelete={onDelete} disabled={disabled} />
 
-    if(disabled && !story.notes.length) return null
-
-    return (
-      <ExpandedStorySection
-        title={I18n.t('story.notes')}
-        identifier="notes"
-      >
-        <NotesList
-          notes={story.notes}
-          onDelete={onDelete}
-          disabled={disabled}
-        />
-
-        {!disabled && this.notesForm()}
-      </ExpandedStorySection>
-    );
-  }
+      {!disabled && notesForm()}
+    </ExpandedStorySection>
+  );
 };
 
 ExpandedStoryNotes.propTypes = {
   story: editingStoryPropTypesShape.isRequired,
   onCreate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired
+  disabled: PropTypes.bool.isRequired,
 };
 
 export default ExpandedStoryNotes;

@@ -8,16 +8,14 @@ const Markdown = ({ source }) => {
     const descriptionHTML = window.md.makeHtml(source);
     const descriptionComponent = Parser(descriptionHTML);
 
-    return (
-      <div className='Markdown'>{ descriptionComponent }</div>
-    );
+    return <div className="Markdown">{descriptionComponent}</div>;
   }
 
   return null;
-}
+};
 
 Markdown.propTypes = {
-  source: PropTypes.string
+  source: PropTypes.string,
 };
 
 const MemoizedMarkdown = memoize(Markdown);

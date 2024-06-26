@@ -1,7 +1,6 @@
 import noteTemplate from 'templates/note.ejs';
 
 const NoteView = Backbone.View.extend({
-
   template: noteTemplate,
 
   tagName: 'div',
@@ -9,19 +8,19 @@ const NoteView = Backbone.View.extend({
   className: 'note',
 
   events: {
-    "click a.delete-note": "deleteNote"
+    'click a.delete-note': 'deleteNote',
   },
 
-  render: function() {
-    this.$el.html(this.template({note: this.model}));
+  render: function () {
+    this.$el.html(this.template({ note: this.model }));
     return this;
   },
 
-  deleteNote: function() {
+  deleteNote: function () {
     this.model.destroy();
     this.$el.remove();
     return false;
-  }
+  },
 });
 
 export default NoteView;
