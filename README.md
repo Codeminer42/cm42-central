@@ -1,5 +1,4 @@
-CM42 Central
-============
+# CM42 Central
 
 [CM42 Central](http://www.centralcm42.com/) is an application to provide a user story based backlog management
 system for agile development teams.
@@ -11,8 +10,7 @@ system for agile development teams.
 ![Project Screenshot](https://raw.githubusercontent.com/Codeminer42/cm42-central/master/doc/cm42-central-screenshot.png)
 ![Reports Screenshot](https://raw.githubusercontent.com/Codeminer42/cm42-central/master/doc/cm42-central-reports.png)
 
-The Codeminer 42 Feature Set
-----------------------------
+## The Codeminer 42 Feature Set
 
 CM42-Central is a fork of the discontinued Fulcrum project.
 The old project has not received anything new in the last couple of years, but our fork has evolved considerably
@@ -68,8 +66,7 @@ Some of the improvements we added since the end of 2015:
 
 We already have more features in development and you can follow what needs to be built or fixed in the [Issues](http://github.com/codeminer42/cm42-central/issues) page.
 
-Goals
------
+## Goals
 
 CM42-Central starts as a clone of [Pivotal Tracker](http://pivotaltracker.com/).
 
@@ -84,8 +81,7 @@ The principles that we believe in are:
 - Velocity is the the key managerial element.
 - Stakeholders must test and accept/reject stories within the same Iteration.
 
-Installation
-------------
+## Installation
 
 **WARNING**: It is **NOT** recommended to create the database using the db:migrate command during the installation process. Some migrations in the project have become outdated due to Rails updates during the application's development. Therefore, if you create the database from scratch using these outdated migrations instead of loading the current schema, the application will not function as intended, and some tests will fail. Be aware!
 
@@ -104,7 +100,7 @@ Once you have these:
     # Install the project dependencies
     $ gem install bundler
     $ bundle install
-    $ yarn install
+    $ npm install (or yarn install)
 
     # If you want working with import option, have to activated the option memcached
     $ CentOS 6.4
@@ -113,11 +109,14 @@ Once you have these:
      - sudo apt-get install memcached
     $ MacOS
      - brew install memcached
-    $ Option memcached 
+    $ Option memcached
      - sudo /etc/init.d/memcached start
      - sudo /etc/init.d/memcached stop
      - sudo /etc/init.d/memcached restart
-    
+
+    # Prepare husky
+    $ npm run prepare (or yarn prepare)
+
     # Set up the development database
     $ bundle exec rake fulcrum:setup db:setup
 
@@ -139,6 +138,10 @@ Or using docker:
     $ docker compose run --rm web yarn install
     $ docker compose run --rm web bundle exec rake db:setup
 
+    # Prepare husky
+    $ npm install (to install husky locally)
+    $ npm run prepare (or yarn prepare)
+
     # Up container
     $ docker compose up
 
@@ -155,8 +158,7 @@ If you need to cleanup your docker install, run:
 
     $ docker compose down -v
 
-Heroku setup
-------------
+## Heroku setup
 
 You can use the Deploy button above or manually install like this:
 
@@ -235,65 +237,62 @@ Once that's done, you will be able to view your site at
 
 The recommendation is to create a proper domain and add the herokuapp URL as the CNAME.
 
-Translating
------------
+## Translating
 
 Below is an example of how you might go about translating to German.
 
-* Find the name of your locale, in this case we are using `de`
-* Copy the `config/locales/en.yml` file to `config/locales/de.yml`
-* Edit the file and update all the translated strings in quotes on the right
+- Find the name of your locale, in this case we are using `de`
+- Copy the `config/locales/en.yml` file to `config/locales/de.yml`
+- Edit the file and update all the translated strings in quotes on the right
   hand side.
-* Add your new locale to `config.i18n.available_locales` in
+- Add your new locale to `config.i18n.available_locales` in
   `config/application.rb`
 
-Thats it!  Ideally you should send your translation as a pull request so you
+Thats it! Ideally you should send your translation as a pull request so you
 get credit for it, but if you do not wish to do this please send the file to
 one of the mailing lists.
 
 If we have already translated for your language, please take the time
-to check the translation database is complete for your language.  You can do
-this by running the `rake i18n:missing_keys` task.  If you find any missing
+to check the translation database is complete for your language. You can do
+this by running the `rake i18n:missing_keys` task. If you find any missing
 keys for your language please add them.
 
-Disabling registration
------------
+## Disabling registration
 
 To disable public registration you can set the enviroment variable `DISABLE_REGISTRATION`
 to true. If set to true, users will need to be invited to a project rather than being
 able to self sign-up.
 
-Development
------------
+## Development
 
 If you'd like to help:
 
-* Check the [issue queue](http://github.com/codeminer42/cm42-central/issues) for a
-  list of the major features which are yet to be implemented.  These have the
-  `feature` and `unstarted` labels.  If a feature you'd like to work on isn't
+- Check the [issue queue](http://github.com/codeminer42/cm42-central/issues) for a
+  list of the major features which are yet to be implemented. These have the
+  `feature` and `unstarted` labels. If a feature you'd like to work on isn't
   there, add an issue.
-* Leave a description of how you are going to implement the feature.  Failure
+- Leave a description of how you are going to implement the feature. Failure
   to do this may lead to you implementing the feature in a way that might
   conflict with future plans, and so increase the chances of your
   work being rejected or needing a rework.
 
 Here are some general guidelines for contributing:
 
-* Make your changes on a branch, and use that branch as the base for pull
+- Make your changes on a branch, and use that branch as the base for pull
   requests.
-* Try to break changes up into the smallest logical blocks possible.  We'd
+- Try to break changes up into the smallest logical blocks possible. We'd
   prefer to receive many small commits to one large one in a pull request.
-* Feel free to open unfinished pull requests if you'd like to discuss work
+- Feel free to open unfinished pull requests if you'd like to discuss work
   in progress, or would like other developers to test it.
-* All patches changes be covered by tests, and should not break the existing
-  tests, unless a current test is invalidated by a code change.  This includes
+- All patches changes be covered by tests, and should not break the existing
+  tests, unless a current test is invalidated by a code change. This includes
   Javascript, which is covered with a Jasmine test suite in `spec/javascripts/`.
-* Run `bundle exec rspec spec/` to check the Rails test suite is green. You will need
+- Run `bundle exec rspec spec/` to check the Rails test suite is green. You will need
   Chrome installed to run the integration tests.
-* To run the Javascript test suite, run `npm test`.
+- To run the Javascript test suite, run `npm test`.
 
-License
--------
+## License
+
 Copyright 2011-2015, Malcolm Locke.
 Copyright 2015-2022, [Codeminer42](https://www.codeminer42.com).
 
