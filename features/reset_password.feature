@@ -13,14 +13,15 @@ Feature: Reset password
 
     Then "gubs@botandrose.com" should receive an email from "noreply@tracker.botandrose.com" with the subject "[BARD Tracker] Password reset instructions" and the following html body:
       """
-      Hello gubs@botandrose.com!
+      Password Reset Instructions
       
-      Someone has requested a link to change your password. You can do this through the link below.
       
-      Change my password
+        A request to reset your password has been made. If you did not make
+        this request, simply ignore this email. If you did make this
+        request, please follow the link below.
       
-      If you didn't request this, please ignore this email.
-      Your password won't change until you access the link above and create a new one.
+      
+      Reset Password
       """
     When I follow the first link in the email
     And I fill in "New password" with "newpassword"
