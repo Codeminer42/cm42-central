@@ -4,14 +4,11 @@ CM42 Central
 [CM42 Central](http://www.centralcm42.com/) is an application to provide a user story based backlog management
 system for agile development teams.
 
+[![Build Status](https://github.com/Codeminer42/cm42-central/actions/workflows/cm42-central.yml/badge.svg)](https://github.com/Codeminer42/cm42-central/actions/workflows/cm42-central.yml)
 [![Code Climate](https://codeclimate.com/github/Codeminer42/cm42-central/badges/gpa.svg)](https://codeclimate.com/github/Codeminer42/cm42-central)
-[![Build Status](https://travis-ci.org/Codeminer42/cm42-central.svg?branch=master)](https://travis-ci.org/Codeminer42/cm42-central)
 [![JavaScript Coverage Status](https://coveralls.io/repos/github/Codeminer42/cm42-central/badge.svg?branch=master)](https://coveralls.io/github/Codeminer42/cm42-central?branch=master)
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
-
 ![Project Screenshot](https://raw.githubusercontent.com/Codeminer42/cm42-central/master/doc/cm42-central-screenshot.png)
-
 ![Reports Screenshot](https://raw.githubusercontent.com/Codeminer42/cm42-central/master/doc/cm42-central-reports.png)
 
 The Codeminer 42 Feature Set
@@ -90,6 +87,8 @@ The principles that we believe in are:
 Installation
 ------------
 
+**WARNING**: It is **NOT** recommended to create the database using the db:migrate command during the installation process. Some migrations in the project have become outdated due to Rails updates during the application's development. Therefore, if you create the database from scratch using these outdated migrations instead of loading the current schema, the application will not function as intended, and some tests will fail. Be aware!
+
 First up, your system will need the
 [prerequisites for running Ruby on Rails installed](https://guides.rubyonrails.org/getting_started.html)
 Once you have these:
@@ -105,7 +104,7 @@ Once you have these:
     # Install the project dependencies
     $ gem install bundler
     $ bundle install
-    $ yarn install (while using Node version 9. Check [this link](https://github.com/creationix/nvm#deeper-shell-integration) if you use NVM)
+    $ yarn install
 
     # If you want working with import option, have to activated the option memcached
     $ CentOS 6.4
@@ -136,14 +135,12 @@ Or using docker:
     $ cp config/database.yml.example config/database.yml
 
     # Prepare container
-    $ docker-compose build
-    $ docker-compose run --rm web yarn install
-    $ docker-compose run --rm web bundle exec rake db:create
-    $ docker-compose run --rm web bundle exec rake db:migrate
-    $ docker-compose run --rm web bundle exec rake db:seed
+    $ docker compose build
+    $ docker compose run --rm web yarn install
+    $ docker compose run --rm web bundle exec rake db:setup
 
     # Up container
-    $ docker-compose up
+    $ docker compose up
 
 You should then be able to navigate to http://cm42-central.localhost/ in a web browser.
 You can log in with the test username `foo@bar.com`, password `asdfasdf`.
@@ -153,6 +150,10 @@ To manage the postgres database, you can access http://adminer.cm42-central.loca
 - **server**: postgres
 - **username**: postgres
 - **passowrd**: postgres
+
+If you need to cleanup your docker install, run:
+
+    $ docker compose down -v
 
 Heroku setup
 ------------
@@ -164,7 +165,7 @@ You will need a Heroku Postgresql plan, and you will also need:
 - Postgresql (ex. Heroku Postgresql)
 - Redis (ex. Heroku Redis)
 - Memcached (ex. Memcachier)
-- Sendgrid (for email notifications)
+- Mailgun (for email notifications)
 - Cloudinary (for direct client-side uploads, we don't want Carrierwave)
 - Google Recaptcha keys (create for free [here](https://www.google.com/recaptcha/admin))
 
@@ -218,7 +219,7 @@ to the previous section for instructions. Then:
     $ heroku addons:add memcachier:dev
 
     # Allow emails to be sent
-    $ heroku addons:add sendgrid:starter
+    $ heroku addons:add mailgun:starter
 
     # Add Cloudinary
     $ heroku addons:create cloudinary:starter
@@ -287,15 +288,14 @@ Here are some general guidelines for contributing:
 * All patches changes be covered by tests, and should not break the existing
   tests, unless a current test is invalidated by a code change.  This includes
   Javascript, which is covered with a Jasmine test suite in `spec/javascripts/`.
-* Run `rake spec` to check the Rails test suite is green. You will need
-  Firefox with Selenium installed to run the integration tests.
+* Run `bundle exec rspec spec/` to check the Rails test suite is green. You will need
+  Chrome installed to run the integration tests.
 * To run the Javascript test suite, run `npm test`.
 
 License
 -------
 Copyright 2011-2015, Malcolm Locke.
-
-Copyright 2015-2017, Codeminer 42.
+Copyright 2015-2022, [Codeminer42](https://www.codeminer42.com).
 
 CM42-Central is made available under the Affero GPL license version 3, see
 [LICENSE.txt](https://github.com/Codeminer42/cm42-central/blob/master/LICENCE.txt).

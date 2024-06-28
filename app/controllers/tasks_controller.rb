@@ -4,10 +4,17 @@ class TasksController < ApplicationController
   def create
     @task = policy_scope(Task).build(allowed_params)
     authorize @task
-    if TaskOperations::Create.call(@task, current_user)
-      render json: @task
-    else
-      render json: @task, status: :unprocessable_entity
+
+    result = TaskOperations::Create.call(task: @task, current_user: current_user)
+
+    match_result(result) do |on|
+      on.success do |task|
+        render json: task
+      end
+
+      on.failure do |task|
+        render json: task, status: :unprocessable_entity
+      end
     end
   end
 
@@ -22,7 +29,7 @@ class TasksController < ApplicationController
   def update
     @task = policy_scope(Task).find(params[:id])
     authorize @task
-    @task.update_attributes(allowed_params)
+    @task.update(allowed_params)
     render json: @task
   end
 

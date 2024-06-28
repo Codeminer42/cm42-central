@@ -1,7 +1,10 @@
+require 'dry/monads/result'
+require 'dry/matcher/result_matcher'
+
 class ApplicationController < ActionController::Base
   protect_from_forgery prepend: true
 
-  include Pundit
+  include Pundit::Authorization
   include SidebarController
   include Renderers::CSV
 
@@ -87,7 +90,7 @@ class ApplicationController < ActionController::Base
   end
 
   def must_pundit?
-    !devise_controller? && self.class.parent != Manage
+    !devise_controller? && self.class.module_parent != Manage
   end
 
   def set_layout_settings
@@ -103,4 +106,8 @@ class ApplicationController < ActionController::Base
     ENV.fetch('ENABLE_RECAPTCHA', false)
   end
   helper_method :show_recaptcha?
+
+  def match_result(result)
+    Dry::Matcher::ResultMatcher.call(result) { |on| yield on }
+  end
 end

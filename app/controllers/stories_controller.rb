@@ -1,3 +1,5 @@
+require 'dry/matcher/result_matcher'
+
 class StoriesController < ApplicationController
   include ActionView::Helpers::TextHelper
 
@@ -32,15 +34,26 @@ class StoriesController < ApplicationController
   def update
     @story = policy_scope(Story).find(params[:id])
     authorize @story
+
     @story.acting_user = current_user
     @story.base_uri = project_url(@story.project)
+
+    result = StoryOperations::Update.call(
+      story: @story,
+      story_attrs: allowed_params,
+      current_user: current_user
+    )
+
     respond_to do |format|
-      if StoryOperations::Update.call(@story, allowed_params, current_user)
-        format.html { redirect_to project_url(@project) }
-        format.js   { render json: @story }
-      else
-        format.html { render action: 'edit' }
-        format.js   { render json: @story, status: :unprocessable_entity }
+      match_result(result) do |on|
+        on.success do |story|
+          format.html { redirect_to project_url(@project) }
+          format.js   { render json: story }
+        end
+        on.failure do |story|
+          format.html { render action: 'edit' }
+          format.js   { render json: story, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -48,7 +61,7 @@ class StoriesController < ApplicationController
   def destroy
     @story = policy_scope(Story).find(params[:id])
     authorize @story
-    StoryOperations::Destroy.call(@story, current_user)
+    StoryOperations::Destroy.call(story: @story, current_user: current_user)
     head :ok
   end
 
@@ -72,16 +85,24 @@ class StoriesController < ApplicationController
 
   def create
     update_current_team
+
     @story = policy_scope(Story).build(allowed_params)
     authorize @story
+
     @story.requested_by_id = current_user.id unless @story.requested_by_id
+
+    result = StoryOperations::Create.call(story: @story, current_user: current_user)
+
     respond_to do |format|
-      if StoryOperations::Create.call(@story, current_user)
-        format.html { redirect_to project_url(@project) }
-        format.js   { render json: @story }
-      else
-        format.html { render action: 'new' }
-        format.js   { render json: @story, status: :unprocessable_entity }
+      match_result(result) do |on|
+        on.success do |story|
+          format.html { redirect_to project_url(@project) }
+          format.js   { render json: story }
+        end
+        on.failure do |story|
+          format.html { render action: 'new' }
+          format.js   { render json: story, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -99,15 +120,9 @@ class StoriesController < ApplicationController
   end
 
   def allowed_params
-    attachinary_params = %i[
-      id public_id version signature width height format resource_type
-      created_at tags bytes type etag url secure_url original_filename
-    ]
-
     params.require(:story).permit(
       :title, :description, :estimate, :story_type, :release_date,
       :state, :requested_by_id, :owned_by_id, :position, :labels,
-      documents: attachinary_params,
       tasks_attributes: %i[id name done],
       notes_attributes: %i[id note]
     )

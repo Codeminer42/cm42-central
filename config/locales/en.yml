@@ -120,7 +120,6 @@ en:
     no_estimate: "no estimate"
     tasks: "Tasks"
     notes: "Notes"
-    attachments: "Attachments"
     warnings:
       backlogged_release: "This release is in danger of being completed after the set release date."
     errors:
@@ -195,7 +194,6 @@ en:
     attributes:
       note:
         note:                 'Note'
-        documents:            'Attachments'
       project:
         name:                 'Name'
         point_scale:          'Point scale'
@@ -223,10 +221,8 @@ en:
         owned_by_name:        'Owned by'
         owned_by_initials:    'Owned by'
         owned_by_id:          'Owned by id'
-        documents:            'Attachments'
         release_date:         'Release Date'
         delivered_at:         'Delivered at'
-        documents_attributes: 'Attachments'
       user:
         name:                 'Full Name'
         username:             'Username'
@@ -459,7 +455,7 @@ en:
       text: "Click this button to create new Stories. A Story can be the description of a new feature or a bug report, for example. New stories will be created first at the Chilly Bin box."
     chilly_bin:
       title: "Chilly Bin"
-      text: "All new stories are stores in this Chilly Bin. You should describe your stories expecting that the description and attachments will suffice for the story to be implemented. Project members should estimate those stories."
+      text: "All new stories are stores in this Chilly Bin. You should describe your stories expecting that the description will suffice for the story to be implemented. Project members should estimate those stories."
     backlog:
       title: "Backlog"
       text: "The backlog MUST have all stories by order of PRIORITY. Most valuable and ready-to-start stories at the top and optional or uncertain stories at the very bottom"
@@ -487,5 +483,7 @@ en:
         default_error: 'Something went wrong, please try again'
       cancel:
         default_cancel: 'Operation canceled'
-    attachments:
-      needs_to_save: "You need to save the story to delete the attachment"
+
+  cookies_banner:
+    message: "We use cookies and other similar technologies to improve your experience on our services. By using our services, you agree to such monitoring."
+    button: "Accept"

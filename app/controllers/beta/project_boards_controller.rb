@@ -3,16 +3,16 @@ class Beta::ProjectBoardsController < ApplicationController
 
   def show
     result = Beta::ProjectBoardOperations::Read.call(
-      params[:id],
-      current_user,
+      project_id: params[:id],
+      current_user: current_user,
       current_flow: cookies[:current_flow],
       projects_scope: policy_scope(Project)
     )
 
-    @project = result.data.project
+    @project = result.success.project
     authorize @project, policy_class: Beta::ProjectPolicy
 
-    render json: result.data.as_json(root: false)
+    render json: result.success.as_json(root: false)
   end
 
   private

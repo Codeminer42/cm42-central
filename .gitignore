@@ -21,10 +21,18 @@ dump.rdb
 public/test_assets/
 public/javascripts/*
 public/javascripts-test/*
-public/packs/*
-public/packs-test/*
 /node_modules
-/public/webpack
 js_coverage/
 coverage
 package-lock.json
+.nvmrc
+.rspec
+.tool-versions
+
+# Vite Ruby
+/public/vite*
+node_modules
+# Vite uses dotenv and suggests to ignore local-only env files. See
+# https://vitejs.dev/guide/env-and-mode.html#env-files
+*.local
+

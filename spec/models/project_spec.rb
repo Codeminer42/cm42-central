@@ -179,24 +179,6 @@ describe Project, type: :model do
       end
     end
 
-    context 'with document' do
-      let(:csv_string) { "Id,Story,Story Type,Requested By,Owned By,Description,Document\n" }
-      let(:documents) { project.stories.first.documents }
-
-      it 'imports document' do
-        csv_string << '9,Story title,feature,' + user.name + ',' + user.name +
-                      ',,"{""attachinariable_type"":""Story"",""scope"":""documents"",' \
-                      '""public_id"":""road_marking_bridge_123398_2560x1080_odwfow"",' \
-                      '""version"":""1542027351"",""width"":2560,""height"":1080,' \
-                      '""format"":""jpg"",""resource_type"":""image""}"'
-
-        VCR.use_cassette('cloudinary_upload_import_csv', match_requests_on: %i[uri method]) do
-          project.stories.from_csv csv_string
-          expect(documents.count).to eq(1)
-        end
-      end
-    end
-
     context 'with task' do
       let(:csv_string) do
         "Id,Story,Story Type,Requested By,Owned By,Description,Task,Task Status\n"
@@ -263,20 +245,20 @@ describe Project, type: :model do
   end
 
   describe '#iteration_service' do
-    let(:iteration_service_stub) { instance_double('Central::Support::IterationService') }
+    let(:iteration_service_stub) { instance_double('IterationService') }
 
     context 'when since and current_time are defined' do
       let(:since) { Time.current - 1.day }
       let(:current_time) { Time.current }
 
       before do
-        allow(Central::Support::IterationService)
+        allow(IterationService)
           .to receive(:new)
           .with(subject, since: since, current_time: current_time)
           .and_return(iteration_service_stub)
       end
 
-      it 'uses them to initialize Central::Support::IterationService' do
+      it 'uses them to initialize IterationService' do
         expect(subject.iteration_service(since: since, current_time: current_time))
           .to eq iteration_service_stub
       end
@@ -287,7 +269,7 @@ describe Project, type: :model do
 
       before do
         Timecop.freeze(current_time) do
-          allow(Central::Support::IterationService)
+          allow(IterationService)
             .to receive(:new)
             .with(subject, since: nil, current_time: current_time)
             .and_return(iteration_service_stub)
@@ -307,6 +289,7 @@ describe Project, type: :model do
     subject { build :project }
     it { is_expected.to belong_to(:tag_group) }
     it { is_expected.to have_many(:changesets) }
+    it { is_expected.to have_many(:ownerships).dependent(:destroy) }
   end
 
   describe '#as_json' do
@@ -378,7 +361,7 @@ describe Project, type: :model do
     it 'should return a message error when a slug is reserved word' do
       project = build(:project, name: 'new')
       expect(project.save).to be_falsey
-      expect(project.errors.messages).to include(friendly_id: ['is reserved'])
+      expect(project.errors.messages.to_h).to include(friendly_id: ['is reserved'])
     end
   end
 end

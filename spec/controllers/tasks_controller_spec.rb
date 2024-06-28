@@ -44,7 +44,7 @@ describe TasksController do
         expect(assigns[:project]).to eq(project)
         expect(assigns[:story]).to eq(story)
         expect(task).to_not be_nil
-        expect(response.content_type).to eq('application/json')
+        expect(response.content_type).to include('application/json')
         expect(response.body).to eq(task.to_json)
       end
 

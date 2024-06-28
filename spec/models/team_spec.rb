@@ -55,7 +55,7 @@ describe Team, type: :model do
     it 'should return a message error when a slug is reserved word' do
       team = build(:team, name: 'new')
       expect(team.save).to be_falsey
-      expect(team.errors.messages).to include(friendly_id: ['is reserved'])
+      expect(team.errors.messages.to_h).to include(friendly_id: ['is reserved'])
     end
   end
 end

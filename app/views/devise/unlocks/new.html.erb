@@ -6,7 +6,7 @@
     <div class="form-wrapper">
       <% resource.team_slug = session[:team_slug] if session[:team_slug] %>
       <%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
-        <%= devise_error_messages! %>
+        <%= render "devise/shared/error_messages", resource: resource %>
 
         <div class="field-wrapper">
           <%= f.label :email %>

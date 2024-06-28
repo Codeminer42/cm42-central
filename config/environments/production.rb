@@ -61,7 +61,7 @@ Rails.application.configure do
     socket_timeout: 1.5,
     socket_failure_delay: 0.2,
     value_max_bytes: 10485760 }
-  config.cache_store = :dalli_store, memcachier_servers, memcachier_options
+  config.cache_store = :mem_cache_store, memcachier_servers, memcachier_options
   client = Dalli::Client.new(memcachier_servers, memcachier_options)
   config.action_dispatch.rack_cache = {
     metastore: client,

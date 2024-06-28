@@ -28,6 +28,7 @@ ActiveRecord::Migration.maintain_test_schema!
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.file_fixture_path = "#{::Rails.root}/spec/fixtures"
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
@@ -50,6 +51,7 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   config.verbose_retry = true
+  config.display_try_failure_messages = true
   config.default_retry_count = 2
   config.exceptions_to_retry = [Net::ReadTimeout]
 

@@ -1,18 +1,6 @@
 class Story < ApplicationRecord
-  include ActiveRecord::Transitions
+  include ActiveModel::Transitions
   extend Enumerize
-
-  module ReadOnlyDocuments
-    def documents=(attachments)
-      raise ActiveRecord::ReadOnlyRecord if readonly?
-      # convert from ActionController::Parameters which doesn't have symbolize_keys!
-      super(attachments.map(&:to_hash)) if attachments
-    end
-
-    def documents_attributes
-      documents.map(&:public_id)
-    end
-  end
 
   before_validation :set_position_to_last
   before_save :set_started_at
@@ -69,19 +57,13 @@ class Story < ApplicationRecord
     end
   end
 
-has_attachments :documents,
-                accept: %i[raw jpg png psd docx xlsx doc xls pdf odt odm ods odg odp odb],
-                maximum: 10
-
   accepts_nested_attributes_for :tasks, :notes
 
   attr_accessor :acting_user, :base_uri
   attr_accessor :iteration_number, :iteration_start_date # helper fields for IterationService
   attr_accessor :iteration_service
-  attr_accessor :documents_attributes_was
-  prepend ReadOnlyDocuments
 
-  include PgSearch
+  include PgSearch::Model
   pg_search_scope :search,
                   against: {
                     title: 'A',
@@ -106,7 +88,7 @@ has_attachments :documents,
     state position id labels new_position
   ].freeze
 
-  JSON_METHODS = %w[errors notes documents tasks].freeze
+  JSON_METHODS = %w[errors notes tasks].freeze
 
   CSV_HEADERS = [
     "Id", "Story", "Labels", "Iteration", "Iteration Start", "Iteration End",
@@ -264,13 +246,11 @@ has_attachments :documents,
   end
 
   def saved_changes
-    return super unless Array(documents_attributes_was) != documents_attributes
-
-    super.merge(documents_attributes: [documents_attributes_was, documents_attributes])
+    super
   end
 
   def saved_changes?
-    documents_attributes_was != documents_attributes || super
+    super
   end
 
   def self.can_be_estimated?(story_type)
@@ -317,7 +297,6 @@ has_attachments :documents,
   def extra_columns(number_of_extra_columns)
     [
       fill_columns_with(notes, number_of_extra_columns[:notes]),
-      fill_columns_with(documents, number_of_extra_columns[:documents]),
       fill_columns_with(tasks, number_of_extra_columns[:tasks]).flatten
     ].flatten
   end

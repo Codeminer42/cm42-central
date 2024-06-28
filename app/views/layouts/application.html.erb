@@ -10,15 +10,17 @@
   <%= stylesheet_link_tag "https://www.authy.com/form.authy.min.css" %>
   <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Noto+Sans:400,700" %>
   <%= stylesheet_link_tag "https://use.fontawesome.com/releases/v5.5.0/css/all.css" %>
+  <%= render 'shared/google_analytics'%>
+  <%= vite_client_tag %>
+  <%= vite_javascript_tag 'application' %>
 </head>
 <body class='<%= "board" if @layout_settings[:fluid] %>'
       data-page='<%= "#{params[:controller]}.#{params[:action]}" %>'
       data-notification-icon-url="<%= asset_url('notification.ico') %>"
       data-favicon-icon-url="<%= asset_url('favicon.ico') %>">
-
 <div class="click-overlay"></div>
 <div class="content-wrapper">
-
+  <%= global_alert %>
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -126,14 +128,15 @@
     <span class="icons-spinner"></span>
   </div>
 </div>
+
+<%= render 'shared/cookies_banner' %>
+
 <script>
   window._railsEnv = "<%= Rails.env %>";
 </script>
-<%= javascript_pack_tag 'app' %>
 <%= javascript_include_tag 'i18n/translations' %>
-<%= javascript_include_tag :attachinary %>
 <%= yield :charts_data %>
-<%= cloudinary_js_config %>
+<%= cloudinary_config %>
 <script type="text/javascript">
   I18n.defaultLocale = "<%= I18n.default_locale %>";
   I18n.locale = "<%= I18n.locale %>";

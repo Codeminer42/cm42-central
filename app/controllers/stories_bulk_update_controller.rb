@@ -3,9 +3,21 @@ class StoriesBulkUpdateController < ApplicationController
     authorize stories
 
     return render(json: { message: 'Stories not found' }, status: :not_found) if stories.blank?
-    @updater = StoryOperations::UpdateAll.call(stories, allowed_params, current_user)
 
-    returns_message @updater
+    result = StoryOperations::UpdateAll.call(
+      stories: stories,
+      stories_attrs: allowed_params,
+      current_user: current_user
+    )
+
+    match_result(result) do |on|
+      on.success do |stories|
+        returns_message stories
+      end
+      on.failure do
+        returns_message false
+      end
+    end
   end
 
   private
