@@ -14,31 +14,34 @@ const Activity = Backbone.Model.extend({
 
   timestampFormat: 'd mmm yyyy',
 
-  initialize: function(args) {
+  initialize: function (args) {
     var data = args.activity;
 
     this.i18nScope += data.subject_type.toLowerCase();
     this.set({
       date: new Date(data.updated_at).format(this.timestampFormat),
       action: this.humanActionName(data.action),
-      subject_changes: this.parseChanges(data.subject_changes)
+      subject_changes: this.parseChanges(data.subject_changes),
     });
   },
 
-  humanActionName: function(action) {
-    return I18n.t(action, {scope: 'activity.actions'});
+  humanActionName: function (action) {
+    return I18n.t(action, { scope: 'activity.actions' });
   },
 
-  parseChanges: function(changes) {
-    return _.map(changes, function(value, key) {
-      if (key === 'documents_attributes') key = 'documents';
-      return {
-        attribute: this.humanAttributeName(key),
-        oldValue: value[0],
-        newValue: value[1]
-      }
-    }, this);
-  }
+  parseChanges: function (changes) {
+    return _.map(
+      changes,
+      function (value, key) {
+        return {
+          attribute: this.humanAttributeName(key),
+          oldValue: value[0],
+          newValue: value[1],
+        };
+      },
+      this
+    );
+  },
 });
 
 _.defaults(Activity.prototype, SharedModelMethods);

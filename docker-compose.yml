@@ -27,10 +27,6 @@ services:
   web:
     build: .
     environment:
-      WEBPACK_HOST: "0.0.0.0"
-      WEBPACK_MANIFEST_HOST: "webpack"
-      WEBPACK_MANIFEST_PORT: "3808"
-      WEBPACK_PORT: "3808"
       MAIN_HOST: "localhost:3000"
       DB_USERNAME: 'postgres'
       DB_PASSWORD: 'postgres'
@@ -64,14 +60,28 @@ services:
       - .:/app
     command: sidekiq
 
-  webpack:
+  vite:
     build: .
     ports:
-      - "3808:3808"
+      - "3036:3036"
     volumes:
       - .:/app
       - ./node_modules:/app/node_modules
-    command: ruby ./bin/webpack-dev-server
+    command: sh -c "bundle binstubs bundler --force && ruby ./bin/vite dev"
+
+  pusherfake:
+    build: .
+    ports:
+      - "8888:8888" # Pusher-Fake web port
+      - "45449:45449" # Pusher-Fake socket port
+    volumes:
+     - .:/app
+    environment:
+      PUSHER_APP_ID: 1234
+      PUSHER_WS_PORT: 45449
+      PUSHER_PORT: 8888
+      PUSHER_APP_KEY: 123456
+      PUSHER_APP_SECRET: 34214341
 
   adminer:
     image: adminer:4.8.1

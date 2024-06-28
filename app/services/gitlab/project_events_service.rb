@@ -19,7 +19,11 @@ module Gitlab
     end
 
     def deliver_story
-      StoryOperations::Update.call(story, { state: 'delivered' }, user)
+      StoryOperations::Update.call(
+        story: story,
+        story_attrs: { state: 'delivered' },
+        current_user: user
+      )
     end
 
     def user

@@ -1,0 +1,9 @@
+.global-alert {
+  color: $message-error-color;
+  background-color: $message-error-background-color;
+  height: 35px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

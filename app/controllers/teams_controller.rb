@@ -63,17 +63,26 @@ class TeamsController < ApplicationController
   def create
     @team = Team.new(allowed_params)
     authorize @team
+
+    return unless check_recaptcha
+
+    result = TeamOperations::Create.call(team: @team, current_user: current_user)
+
     respond_to do |format|
-      if can_create?
-        format.html do
-          session[:current_team_slug] = @team.slug
-          flash[:notice] = t('teams.team was successfully created')
-          redirect_to(root_path)
+      match_result(result) do |on|
+        on.success do |team|
+          format.html do
+            session[:current_team_slug] = team.slug
+            flash[:notice] = t('teams.team was successfully created')
+            redirect_to(root_path)
+          end
+          format.xml  { render xml: team, status: :created, location: team }
         end
-        format.xml  { render xml: @team, status: :created, location: @team }
-      else
-        format.html { render action: 'new' }
-        format.xml  { render xml: @team.errors, status: :unprocessable_entity }
+
+        on.failure do
+          format.html { render action: 'new' }
+          format.xml  { render xml: @team.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -84,18 +93,27 @@ class TeamsController < ApplicationController
     @team = current_team
     authorize @team
 
-    respond_to do |format|
-      if TeamOperations::Update.call(@team, allowed_params, current_user)
-        @team.reload
+    result = TeamOperations::Update.call(
+      team: @team,
+      team_attrs: allowed_params,
+      current_user: current_user
+    )
 
-        format.html do
-          flash[:notice] = t('teams.team_was_successfully_updated')
-          redirect_to edit_team_path(@team)
+    respond_to do |format|
+      match_result(result) do |on|
+        on.success do |team|
+          team.reload
+
+          format.html do
+            flash[:notice] = t('teams.team_was_successfully_updated')
+            redirect_to edit_team_path(team)
+          end
+          format.xml  { head :ok }
         end
-        format.xml  { head :ok }
-      else
-        format.html { render action: 'edit' }
-        format.xml  { render xml: @team.errors, status: :unprocessable_entity }
+        on.failure do |team|
+          format.html { render action: 'edit' }
+          format.xml  { render xml: team.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -106,7 +124,7 @@ class TeamsController < ApplicationController
     @team = current_team
     authorize @team
 
-    TeamOperations::Destroy.call(@team, current_user)
+    TeamOperations::Destroy.call(team: @team, current_user: current_user)
     unselect_slug
     send_notification
 
@@ -121,10 +139,11 @@ class TeamsController < ApplicationController
   def unarchive
     archived_team = Team.find_by(id: params[:id])
     authorize archived_team, :update?
-    unarchived_team = TeamOperations::Unarchive.call(archived_team)
+
+    result = TeamOperations::Unarchive.call(team: archived_team)
 
     respond_to do |format|
-      if unarchived_team
+      if result.success?
         format.html do
           flash[:notice] = t('teams.successfully_unarchived')
           redirect_to teams_path
@@ -140,10 +159,6 @@ class TeamsController < ApplicationController
       :name, :disable_registration, :registration_domain_whitelist,
       :registration_domain_blacklist, :logo
     )
-  end
-
-  def can_create?
-    check_recaptcha && TeamOperations::Create.call(@team, current_user)
   end
 
   def add_team_for(user)

@@ -2,6 +2,36 @@
 
 ## [Unreleased]
 
+## [3.0.0] 2023-10-10
+
+- Remove "Story attachments" feature
+- Implement real-time updates in the beta board
+- Refactor some components to be functional components
+
+## [2.10.0] 2023-06-08
+
+- Refactor Note Operations to use dry-monads
+- Refactor Project Operations to use dry-monads
+- Refactor Team Operations to use dry-monads
+- Refactor Task Operations to use dry-monads
+- Refactor Project Board Operations to use dry-monads
+- Refactor Iteration Operations to use dry-monads
+- Remove Grape Gem
+- Add global message about attachments feature removal
+
+## [2.9.0] 2023-05-26
+
+- Migrate from Webpacker to Vite Ruby
+
+## [2.8.0] 2023-05-15
+
+- Update Ruby to version 2.7.8
+- Upgrade Node to 16.20
+
+## [2.7.3] 2023-05-09
+
+- Refactor Story operations to use dry-monads
+
 ## [2.7.2] 2022-12-28
 
 ### Update
@@ -629,7 +659,6 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
-[unreleased]: https://github.com/Codeminer42/cm42-central/compare/v2.7.1...HEAD
 [1.0.0]: https://github.com/Codeminer42/cm42-central/tree/v1.0.0
 [1.1.0]: https://github.com/Codeminer42/cm42-central/tree/v1.1.0
 [1.1.1]: https://github.com/Codeminer42/cm42-central/tree/v1.1.1
@@ -672,3 +701,8 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 [2.7.0]: https://github.com/Codeminer42/cm42-central/tree/v2.7.0
 [2.7.1]: https://github.com/Codeminer42/cm42-central/tree/v2.7.1
 [2.7.2]: https://github.com/Codeminer42/cm42-central/tree/v2.7.2
+[2.7.3]: https://github.com/Codeminer42/cm42-central/tree/v2.7.3
+[2.8.0]: https://github.com/Codeminer42/cm42-central/tree/v2.8.0
+[2.9.0]: https://github.com/Codeminer42/cm42-central/tree/v2.9.0
+[2.10.0]: https://github.com/Codeminer42/cm42-central/tree/v2.10.0
+[3.0.0]: https://github.com/Codeminer42/cm42-central/tree/v3.0.0

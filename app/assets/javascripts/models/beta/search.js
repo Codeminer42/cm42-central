@@ -15,7 +15,7 @@ export const searchStories = async (keyWord, projectId, callback) => {
       return callback.onError(error);
     }
   }
-}
+};
 
 export const serializeKeyWordSearch = keyWord => {
   if (ProjectBoard.isOperandSearch(keyWord)) {
@@ -23,7 +23,9 @@ export const serializeKeyWordSearch = keyWord => {
 
     if (!ProjectBoard.isEnglishLocale()) {
       const translations = ProjectBoard.translateOperand(firstKeyWord);
-      const translatedWord = ProjectBoard.translateWord(firstKeyWord, secondKeyWord, translations) || secondKeyWord;
+      const translatedWord =
+        ProjectBoard.translateWord(firstKeyWord, secondKeyWord, translations) ||
+        secondKeyWord;
 
       return `${operands[firstKeyWord] || firstKeyWord}:${translatedWord}`;
     }
@@ -32,4 +34,4 @@ export const serializeKeyWordSearch = keyWord => {
   }
 
   return keyWord;
-}
+};
