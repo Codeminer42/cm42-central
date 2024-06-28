@@ -7,7 +7,7 @@ const sprintPropTypesShape = PropTypes.shape({
   completedPoints: PropTypes.number,
   stories: PropTypes.array,
   isFiller: PropTypes.bool,
-  remainingPoints: PropTypes.bool
+  remainingPoints: PropTypes.bool,
 });
 
 export default sprintPropTypesShape;

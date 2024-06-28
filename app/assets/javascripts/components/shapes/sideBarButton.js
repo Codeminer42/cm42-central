@@ -5,7 +5,7 @@ export const sideBarButtonShape = PropTypes.shape({
   onClick: PropTypes.func.isRequired,
   isVisible: PropTypes.bool.isRequired,
   'data-id': PropTypes.string.isRequired,
-  icon: PropTypes.string.isRequired
+  icon: PropTypes.string.isRequired,
 });
 
 export default sideBarButtonShape;

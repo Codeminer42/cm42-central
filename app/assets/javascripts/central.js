@@ -16,10 +16,16 @@ const Central = () => {
     data.project.current_flow = data.currentFlow;
     data.project.default_flow = data.defaultFlow;
 
-    var project  = new Project(data.project);
-    var view     = new ProjectView({ model: project, el: $('#project-stories') });
-    var search   = new ProjectSearchView({ model: project, el: $('#form_search') });
-    var velocity = new ProjectVelocityView({ model: project, el: $('#velocity') });
+    var project = new Project(data.project);
+    var view = new ProjectView({ model: project, el: $('#project-stories') });
+    var search = new ProjectSearchView({
+      model: project,
+      el: $('#form_search'),
+    });
+    var velocity = new ProjectVelocityView({
+      model: project,
+      el: $('#velocity'),
+    });
     var title = document.title;
 
     project.users.reset(data.users);
@@ -34,8 +40,7 @@ const Central = () => {
     });
 
     document.addEventListener('visibilitychange', () => {
-      if (!document.hidden)
-        TabNotification.changeTitle(title, document.hidden);
+      if (!document.hidden) TabNotification.changeTitle(title, document.hidden);
     });
 
     $(window).resize(view.scaleToViewport);
@@ -51,6 +56,6 @@ const Central = () => {
     const tourController = new TourController();
     tourController.initialize();
   }, 200);
-}
+};
 
 export default Central;

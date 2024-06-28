@@ -7,17 +7,17 @@ describe('<ExpandedStoryNotes />', () => {
   let onCreate;
   let onDelete;
 
-  const newStory = notes => ({
+  const newStory = (notes) => ({
     ...storyFactory({ notes: notes || [] }),
     _editing: {
-      ...storyFactory({ notes: notes || [] })
-    }
-  })
+      ...storyFactory({ notes: notes || [] }),
+    },
+  });
 
   beforeEach(() => {
     onCreate = sinon.stub();
     onDelete = sinon.stub();
-  })
+  });
 
   it('renders component title', () => {
     const story = newStory();
@@ -62,7 +62,7 @@ describe('<ExpandedStoryNotes />', () => {
   
         const onCreateSpy = sinon.spy();
   
-        const wrapper = shallow(
+        const wrapper = mount(
           <ExpandedStoryNotes
             story={story}
             onCreate={onCreateSpy}
@@ -83,7 +83,7 @@ describe('<ExpandedStoryNotes />', () => {
 
     it('disables the add note button if text area is empty', () => {
       const story = newStory();
-  
+
       const wrapper = shallow(
         <ExpandedStoryNotes
           story={story}
@@ -92,10 +92,10 @@ describe('<ExpandedStoryNotes />', () => {
           disabled={false}
         />
       );
-  
+
       const textArea = wrapper.find('.create-note-text');
       const button = wrapper.find('.create-note-button input');
-  
+
       textArea.simulate('change', { target: { value: '' } });
       expect(button.prop('disabled')).toBe(true);
     });
@@ -103,9 +103,9 @@ describe('<ExpandedStoryNotes />', () => {
 
   describe('when component is disabled', () => {
     it('does not render a create note button', () => {
-      const notes = [{id: 0, note: 'foo'}]
+      const notes = [{ id: 0, note: 'foo' }];
       const story = newStory(notes);
-  
+
       const wrapper = shallow(
         <ExpandedStoryNotes
           story={story}
@@ -114,14 +114,14 @@ describe('<ExpandedStoryNotes />', () => {
           disabled={true}
         />
       );
-      
+
       expect(wrapper.exists('.create-note-button')).toBe(false);
     });
 
     it('does not render a create note text area', () => {
-      const notes = [{id: 0, note: 'foo'}]
+      const notes = [{ id: 0, note: 'foo' }];
       const story = newStory(notes);
-  
+
       const wrapper = shallow(
         <ExpandedStoryNotes
           story={story}
@@ -130,14 +130,14 @@ describe('<ExpandedStoryNotes />', () => {
           disabled={true}
         />
       );
-      
+
       expect(wrapper.exists('.create-note-text')).toBe(false);
     });
 
     describe('when there are no notes', () => {
       it('renders nothing', () => {
         const story = newStory();
-  
+
         const wrapper = shallow(
           <ExpandedStoryNotes
             story={story}
@@ -152,4 +152,3 @@ describe('<ExpandedStoryNotes />', () => {
     });
   });
 });
-

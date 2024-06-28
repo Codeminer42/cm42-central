@@ -8,7 +8,7 @@ const pastIterationPropTypesShape = PropTypes.shape({
   storyIds: PropTypes.array,
   points: PropTypes.number,
   fetched: PropTypes.bool,
-  isFetching: PropTypes.bool
+  isFetching: PropTypes.bool,
 });
 
 export default pastIterationPropTypesShape;

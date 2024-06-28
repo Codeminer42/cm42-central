@@ -4,7 +4,7 @@ class IterationsController < ApplicationController
     iteration =
       IterationOperations::Read.call(start_date: params.require(:start_date).to_date,
                                      end_date: params.require(:end_date).to_date,
-                                     project: project)
+                                     project: project).success
 
     render json: iteration
   end

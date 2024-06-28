@@ -1,7 +1,7 @@
-import * as Story from "../models/beta/story";
-import { status } from "libs/beta/constants";
-import _ from "underscore";
-import * as Iteration from "models/beta/iteration";
+import * as Story from '../models/beta/story';
+import { status } from 'libs/beta/constants';
+import _ from 'underscore';
+import * as Iteration from 'models/beta/iteration';
 
 export const orderByState = stories => {
   const ordered = [...stories];
@@ -20,7 +20,7 @@ export const orderByState = stories => {
     ...rejectedStories,
     ...finishedStories,
     ...startedStories,
-    ...unstartedStories
+    ...unstartedStories,
   ];
 };
 
@@ -28,31 +28,26 @@ const filterByState = state => story => {
   return story.state === state;
 };
 
-const sortAcceptedStories = (stories) => {
-  return stories.filter(filterByState(status.ACCEPTED))
+const sortAcceptedStories = stories => {
+  return stories
+    .filter(filterByState(status.ACCEPTED))
     .sort(Story.compareAcceptedAt);
-}
+};
 
-const sortDeliveredStories = (stories) => {
-  return stories.filter(filterByState(status.DELIVERED))
+const sortDeliveredStories = stories => {
+  return stories
+    .filter(filterByState(status.DELIVERED))
     .sort(Story.compareDeliveredAt);
-}
+};
 
-const sortStartedStories = (stories) => {
-  return stories.filter(filterByState(status.STARTED))
+const sortStartedStories = stories => {
+  return stories
+    .filter(filterByState(status.STARTED))
     .sort(Story.compareStartedAt);
-}
+};
 
 export const groupStoriesInSprints = (stories, project, initialSprintNumber) =>
-  Iteration.groupBySprints(
-    stories,
-    project,
-    initialSprintNumber,
-  );
+  Iteration.groupBySprints(stories, project, initialSprintNumber);
 
-export const getSprintVelocity = (project, pastIterations) => 
-  Iteration.sprintVelocity(
-    project,
-    pastIterations
-);
-
+export const getSprintVelocity = (project, pastIterations) =>
+  Iteration.sprintVelocity(project, pastIterations);

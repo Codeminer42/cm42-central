@@ -10,12 +10,18 @@ const projectReducer = (state = initialState, action) => {
     case actionTypes.ADD_LABEL_TO_PROJECT:
       return Project.addLabel(state, action.label);
     case actionTypes.REVERT_TO_CALCULATED_VELOCITY:
-      return  {...state, currentSprintVelocity: state.calculatedSprintVelocity};
+      return {
+        ...state,
+        currentSprintVelocity: state.calculatedSprintVelocity,
+      };
     case actionTypes.SIMULATE_SPRINT_VELOCITY:
-      return  {...state, currentSprintVelocity: action.simulatedSprintVelocity};
+      return {
+        ...state,
+        currentSprintVelocity: action.simulatedSprintVelocity,
+      };
     default:
       return state;
-  };
+  }
 };
 
 export default projectReducer;

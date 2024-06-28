@@ -50,7 +50,9 @@ describe('<ExpandedStoryLabels />', () => {
     it('does not allow deleting labels', () => {
       const { wrapper, onRemoveLabel } = setup({ disabled: true });
 
-      wrapper.instance().handleDelete(0);
+      const handleDelete = wrapper.find('ReactTags').prop('handleDelete');
+
+      handleDelete(0);
 
       expect(onRemoveLabel).not.toHaveBeenCalled();
     });
@@ -68,13 +70,15 @@ describe('<ExpandedStoryLabels />', () => {
     it('allows deleting labels', () => {
       const { wrapper, onRemoveLabel } = setup();
 
-      wrapper.instance().handleDelete(0);
+      const handleDelete = wrapper.find('ReactTags').prop('handleDelete');
+
+      handleDelete(0);
 
       expect(onRemoveLabel).toHaveBeenCalled();
     });
 
     it('allows adding labels', () => {
-      const { wrapper, reactTags } = setup();
+      const { reactTags } = setup();
 
       expect(reactTags.prop('allowNew')).toBe(true);
     });
@@ -82,7 +86,7 @@ describe('<ExpandedStoryLabels />', () => {
 
   describe('<ReactTags />', () => {
     it('renders with the right tags prop', () => {
-      const { wrapper, labels, reactTags } = setup();
+      const { labels, reactTags } = setup();
 
       expect(reactTags.prop('tags')).toEqual(labels);
     });

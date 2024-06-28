@@ -1,8 +1,8 @@
 module.exports = {
   process(src, filename, config, options) {
     return `
-      const _ = require('underscore');
-      module.exports = _.template(\`${src}\`);
+      const ejs = require('ejs');
+      module.exports = ejs.compile(\`${src}\`);
     `;
-  }
+  },
 };

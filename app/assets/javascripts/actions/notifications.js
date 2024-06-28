@@ -1,21 +1,22 @@
 import actionTypes from './actionTypes';
 import status from 'http-status';
 
-export const addNotification = (notification) => ({
+export const addNotification = notification => ({
   type: actionTypes.ADD_NOTIFICATION,
-  notification
+  notification,
 });
 
-export const removeNotification = (id) => ({
+export const removeNotification = id => ({
   type: actionTypes.REMOVE_NOTIFICATION,
-  id
+  id,
 });
 
-export const sendSuccessNotification = (message) =>
+export const sendSuccessNotification =
+  message =>
   (dispatch, getState, { Notification }) => {
     const newNotification = Notification.createNotification({
       type: Notification.types.SUCCESS,
-      message
+      message,
     });
 
     dispatch(addNotification(newNotification));
@@ -23,26 +24,28 @@ export const sendSuccessNotification = (message) =>
     setTimeout(() => {
       dispatch(removeNotification(newNotification.id));
     }, 4000);
-  }
+  };
 
 export const sendErrorNotification = (error, { custom = false } = {}) => {
   if (error.response) return sendServerErrorNotification(error);
   if (custom) return sendCustomErrorNotification(error);
   return sendDefaultErrorNotification();
-}
+};
 
-export const sendCustomErrorNotification = code =>
+export const sendCustomErrorNotification =
+  code =>
   (dispatch, _, { Notification }) =>
     dispatch(
       addNotification(
         Notification.createNotification({
           type: Notification.types.ERROR,
-          message: I18n.t(code)
+          message: I18n.t(code),
         })
       )
     );
 
-const sendServerErrorNotification = (error) =>
+const sendServerErrorNotification =
+  error =>
   (dispatch, getState, { Notification }) => {
     const type = Notification.types.ERROR;
 
@@ -56,7 +59,9 @@ const sendServerErrorNotification = (error) =>
           addNotification(
             Notification.createNotification({
               type,
-              message: I18n.t('users.You are not authorized to perform this action')
+              message: I18n.t(
+                'users.You are not authorized to perform this action'
+              ),
             })
           )
         );
@@ -65,39 +70,37 @@ const sendServerErrorNotification = (error) =>
           addNotification(
             Notification.createNotification({
               type,
-              message: I18n.t('not_found')
+              message: I18n.t('not_found'),
             })
           )
         );
       default:
-        return dispatch(
-          addDefaultErrorNotification(Notification)
-        );
+        return dispatch(addDefaultErrorNotification(Notification));
     }
-  }
+  };
 
-export const sendDefaultErrorNotification = () =>
+export const sendDefaultErrorNotification =
+  () =>
   (dispatch, getState, { Notification }) =>
-    dispatch(
-      addDefaultErrorNotification(Notification)
-    );
+    dispatch(addDefaultErrorNotification(Notification));
 
 const addDefaultErrorNotification = Notification =>
   addNotification(
     Notification.createNotification({
       type: Notification.types.ERROR,
-      message: I18n.t('messages.operations.error.default_error')
+      message: I18n.t('messages.operations.error.default_error'),
     })
-  )
+  );
 
-export const addValidationNotifications = (errors) =>
+export const addValidationNotifications =
+  errors =>
   (dispatch, getState, { Notification }) => {
     const notifications = Object.keys(errors).map(error =>
       Notification.createNotification({
         type: Notification.types.ERROR,
-        message: `Error. ${error}: ${errors[error]}`
+        message: `Error. ${error}: ${errors[error]}`,
       })
     );
 
     dispatch(addNotification(notifications));
-  }
+  };

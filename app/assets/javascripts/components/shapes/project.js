@@ -8,10 +8,12 @@ const projectPropTypesShape = PropTypes.shape({
   defaultVelocity: PropTypes.number,
   lastChangesetId: PropTypes.number,
   pointValues: PropTypes.arrayOf(PropTypes.number),
-  labels: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string
-  }))
+  labels: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+    })
+  ),
 });
 
 export default projectPropTypesShape;

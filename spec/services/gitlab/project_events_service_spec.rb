@@ -10,9 +10,9 @@ describe Gitlab::ProjectEventsService do
     before do
       allow(Story).to receive(:find_by).with(branch: 'test-branch').and_return(story)
       allow(StoryOperations::Update).to receive(:call).with(
-        story,
-        { state: 'delivered' },
-        story.requested_by
+        story: story,
+        story_attrs: { state: 'delivered' },
+        current_user: story.requested_by
       ).and_return(true)
     end
 

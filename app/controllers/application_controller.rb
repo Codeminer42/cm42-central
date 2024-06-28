@@ -1,3 +1,6 @@
+require 'dry/monads/result'
+require 'dry/matcher/result_matcher'
+
 class ApplicationController < ActionController::Base
   protect_from_forgery prepend: true
 
@@ -103,4 +106,8 @@ class ApplicationController < ActionController::Base
     ENV.fetch('ENABLE_RECAPTCHA', false)
   end
   helper_method :show_recaptcha?
+
+  def match_result(result)
+    Dry::Matcher::ResultMatcher.call(result) { |on| yield on }
+  end
 end

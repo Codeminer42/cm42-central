@@ -18,7 +18,7 @@ class AsyncForm extends React.Component {
   render() {
     return this.props.children({
       loading: this.state.loading,
-      handleSubmit: this._handleSubmit
+      handleSubmit: this._handleSubmit,
     });
   }
 }

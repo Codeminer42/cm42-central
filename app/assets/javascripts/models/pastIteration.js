@@ -14,17 +14,23 @@ class PastIteration {
   }
 
   fetch() {
-    if(this.needsLoad) {
+    if (this.needsLoad) {
       this.needsLoad = false;
     }
 
     const that = this;
     return $.ajax(`/project_boards/${this.project.get('id')}/iterations`, {
-      data: { start_date: this._startDate.toISOString(), end_date: this._endDate.toISOString() }
-    }).then((data) => {
-      that._stories = data.stories.map((attrs) => new Story(attrs, {
-        collection: that.project.projectBoard.stories
-      }));
+      data: {
+        start_date: this._startDate.toISOString(),
+        end_date: this._endDate.toISOString(),
+      },
+    }).then(data => {
+      that._stories = data.stories.map(
+        attrs =>
+          new Story(attrs, {
+            collection: that.project.projectBoard.stories,
+          })
+      );
       that.project.projectBoard.stories.add(that._stories);
     });
   }

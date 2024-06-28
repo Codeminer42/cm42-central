@@ -158,25 +158,6 @@ describe ActivityPresenter do
           "changing note from 'Test note' to 'new note'"
         )
       end
-
-      it 'describes changing attachments in story' do
-        documents_changes = {
-          'documents_attributes' => [
-            ['old_file1.jpg', 'old_file2.jpg'],
-            ['old_file2.jpg', 'new_file3.jpg']
-          ]
-        }
-
-        expect(story).to receive(:saved_changes).and_return(documents_changes).twice
-        activity.subject = story
-        activity.save
-
-        expect(subject.description).to eq(
-          "#{user_name} updated Story ##{story.id} - " \
-          "'<a href=\"/projects/#{project.id}#story-#{story.id}\">Test story</a>' " \
-          "changing documents by uploading 'new_file3.jpg' and by deleting 'old_file1.jpg'"
-        )
-      end
     end
   end
 end

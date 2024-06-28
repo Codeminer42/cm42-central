@@ -5,4 +5,4 @@ const Operands = {
   type: 'story_type:',
 };
 
-module.exports = Operands;
+export default Operands;

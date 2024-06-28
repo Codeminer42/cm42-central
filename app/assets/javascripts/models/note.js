@@ -12,13 +12,12 @@ const Note = Backbone.Model.extend({
 
   isReadonly: false,
 
-  sync: function(method, model, options) {
-    if( model.isReadonly ) {
+  sync: function (method, model, options) {
+    if (model.isReadonly) {
       return true;
     }
     return Backbone.sync(method, model, options);
-  }
-
+  },
 });
 
 _.defaults(Note.prototype, SharedModelMethods);

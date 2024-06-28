@@ -25,7 +25,6 @@ Rails.application.routes.draw do
   get 'story/new'
   get 'projects/archived' => 'projects#archived'
   put 'locales' => 'locales#update', as: :locales
-  get 'attachments/signature', to: 'attachments#signature'
   get 't/:id' => 'teams#switch', as: :teams_switch
 
   get '/404', to: 'errors#not_found', :via => :all
@@ -120,9 +119,6 @@ Rails.application.routes.draw do
   root 'projects#index'
 
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
-
-  mount GrapeSwaggerRails::Engine => '/api/v1/explore'
-  mount API => '/'
 
   namespace :gitlab do
     namespace :projects do

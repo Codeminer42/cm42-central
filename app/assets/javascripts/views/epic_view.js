@@ -2,38 +2,37 @@ import EpicBarView from './epic_bar_view';
 import StoryView from './story_view';
 
 const EpicView = Backbone.View.extend({
-
-  initialize: function(options) {
+  initialize: function (options) {
     this.options = options;
     this.$('td.epic_column').css('display', 'table-cell');
     this.doSearch();
   },
 
-  addBar: function(column) {
-    var view = new EpicBarView({model: this.model}).render();
+  addBar: function (column) {
+    var view = new EpicBarView({ model: this.model }).render();
     this.appendViewToColumn(view, column);
   },
 
-  addStory: function(story, column) {
-    var view = new StoryView({model: story, isSearchResult: true}).render();
+  addStory: function (story, column) {
+    var view = new StoryView({ model: story, isSearchResult: true }).render();
     this.appendViewToColumn(view, column);
     view.setFocus();
   },
 
-  appendViewToColumn: function(view, columnName) {
+  appendViewToColumn: function (view, columnName) {
     $(columnName).append(view.el);
   },
 
-  addAll: function() {
+  addAll: function () {
     var that = this;
-    that.$ = $
-    that.$('#epic').html("");
+    that.$ = $;
+    that.$('#epic').html('');
     that.$('td.epic_column').show();
     this.addBar('#epic');
 
-    var search_results_ids = this.model.search.pluck("id");
+    var search_results_ids = this.model.search.pluck('id');
     var stories = this.model.projectBoard.stories;
-    _.each(search_results_ids, function(id) {
+    _.each(search_results_ids, function (id) {
       var story = stories.get(id);
       if (!_.isUndefined(story)) {
         that.addStory(story, '#epic');
@@ -46,23 +45,23 @@ const EpicView = Backbone.View.extend({
     this.$('.loading-spin').removeClass('show');
   },
 
-  doSearch: function(e) {
+  doSearch: function (e) {
     this.$('.loading-spin').addClass('show');
     var that = this;
     this.model.search.fetch({
       reset: true,
       data: {
-        label: this.options.label
+        label: this.options.label,
       },
-      success: function() {
+      success: function () {
         that.addAll();
       },
-      error: function(e) {
+      error: function (e) {
         window.projectView.notice({
           title: 'Search Error',
-          text: e
+          text: e,
         });
-      }
+      },
     });
   },
 });

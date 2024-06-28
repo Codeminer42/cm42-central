@@ -9,7 +9,7 @@ import history from 'reducers/history';
 import pastIterations from 'reducers/pastIterations';
 import notifications from 'reducers/notifications';
 import * as Story from '../models/beta/story';
-import * as Task from '../models/beta/task'
+import * as Task from '../models/beta/task';
 import * as Search from '../models/beta/search';
 import * as ProjectBoard from '../models/beta/projectBoard';
 import * as Note from '../models/beta/note';
@@ -25,7 +25,7 @@ const dependencies = {
   PastIteration,
   Notification,
   UrlService,
-  Search
+  Search,
 };
 
 const reducer = combineReducers({
@@ -35,15 +35,12 @@ const reducer = combineReducers({
   stories,
   history,
   pastIterations,
-  notifications
+  notifications,
 });
 
 const store = createStore(
-  reducer, composeWithDevTools(
-    applyMiddleware(
-      thunk.withExtraArgument(dependencies)
-    )
-  )
+  reducer,
+  composeWithDevTools(applyMiddleware(thunk.withExtraArgument(dependencies)))
 );
 
 export default store;

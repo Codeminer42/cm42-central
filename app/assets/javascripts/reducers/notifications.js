@@ -11,7 +11,7 @@ const notificationsReducer = (state = initialState, action) => {
       return Notification.removeNotification(state, action.id);
     default:
       return state;
-  };
+  }
 };
 
 export default notificationsReducer;
