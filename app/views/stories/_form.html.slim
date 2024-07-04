@@ -64,7 +64,7 @@ div
   .story-description
     = form.label :description
     br
-    = form.text_area :description , class: "form-control description-textarea", data: { story_target: "permanent" }
+    = form.text_area :description , class: "form-control description-textarea", data: { story_target: "permanent", controller: "textarea-autogrow" }
 
 = form.fields_for :comments, Comment.new do |comment_form|
   div
