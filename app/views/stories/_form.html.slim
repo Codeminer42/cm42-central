@@ -9,7 +9,7 @@ div
 
 .form-group
   = form.label :title
-  = form.text_field :title, placeholder: "Story title", maxlength: "255", class: "title form-control input-sm", data: { story_target: "permanent" }
+  = form.text_field :title, placeholder: "Story title", maxlength: "255", class: "title form-control input-sm", data: { story_target: "permanent", controller: ("focus-on-reveal" if form.object.new_record?) }
 
   - if form.object.persisted?
     .col-xs-12.form-group.input-group.input-group-sm

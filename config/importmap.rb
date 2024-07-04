@@ -7,6 +7,7 @@ with_options preload: true do
   pin "stimulus-use-actions", to: "https://ga.jspm.io/npm:stimulus-use-actions@0.1.0/index.js"
   pin "stimulus-shorthand", to: "https://ga.jspm.io/npm:stimulus-shorthand@0.1.0/index.js"
   pin_all_from "app/javascript/controllers", under: "controllers"
+  pin_all_from "app/javascript/lib", under: "lib"
 
   pin "bard-file", to: "bard-file.js"
   pin "sortablejs", to: "https://ga.jspm.io/npm:sortablejs@1.15.2/modular/sortable.esm.js"

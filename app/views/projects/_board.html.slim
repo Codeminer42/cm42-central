@@ -29,7 +29,7 @@
             .loading-stories-spinner Loading
         = turbo_frame_tag "done", src: [:done, @project, :stories], loading: "lazy", refresh: "morph"
 
-    .story-col.todo_column data-controller="column" title="Todo"
+    .story-col.todo_column title="Todo"
       .column_header
         a.toggle-title href="#" title="Todo" Todo
         label.add-story-button for="new-story-unstarted-toggle" data-action="click->column#focusNewStoryTitleField" + Add Story
@@ -50,7 +50,7 @@
         #unstarted
           = render board.current_unstarted
 
-    .story-col.icebox_column data-controller="column" title="Icebox"
+    .story-col.icebox_column title="Icebox"
       .column_header
         a.toggle-title href="#" title="Icebox" Icebox
         label.add-story-button for="new-story-icebox-toggle" data-action="click->column#focusNewStoryTitleField" + Add Story
