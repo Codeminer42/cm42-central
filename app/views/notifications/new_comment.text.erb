@@ -1,6 +1,12 @@
-<%= @comment.user.name %> added the following comment to the story
-"<%= @story.title %>":
+<%= @comment.user.name %> added the following comment to the story '<%= @story.title %>':
 
 <%= @comment.body %>
 
+<%- if @comment.attachments.any? -%>
+Attachments:
+<%- @comment.attachments.each do |attachment| -%>
+<%= rails_blob_url(attachment, disposition: "attachment") %>
+<%- end -%>
+
+<%- end -%>
 <%= story_url @story %>

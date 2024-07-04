@@ -48,7 +48,14 @@ Feature: Stories can contain comments
     Then I should see the following comments:
       | this is a comment             | Micah Geisel |
       | @gubs this is another comment | Micah Geisel |
-    And "gubs@botandrose.com" should receive an email
+    And "gubs@botandrose.com" should receive an email from "notifications@tracker.botandrose.com" with the subject "[Example Project] WOW" and the following body:
+      """
+      Micah Geisel added the following comment to the story 'WOW':
+
+      @gubs this is another comment
+
+      http://tracker.botandrose.com/projects/example-project#story-1
+      """
     And "micah@botandrose.com" should receive no emails
 
   Scenario: User tags self in a comment
@@ -67,7 +74,14 @@ Feature: Stories can contain comments
     Then I should see the following comments:
       | this is a comment               | Micah Geisel |
       | @micahg this is another comment | Micah Geisel |
-    And "micah@botandrose.com" should receive an email
+    And "micah@botandrose.com" should receive an email from "notifications@tracker.botandrose.com" with the subject "[Example Project] WOW" and the following body:
+      """
+      Micah Geisel added the following comment to the story 'WOW':
+
+      @micahg this is another comment
+
+      http://tracker.botandrose.com/projects/example-project#story-1
+      """
     And "gubs@botandrose.com" should receive no emails
 
   Scenario: User adds comment to a story with attachment
@@ -81,12 +95,26 @@ Feature: Stories can contain comments
     Then I should see the following comments:
       | this is a comment | Micah Geisel |
 
-    When I fill in "Comments" with "this is another comment"
+    When I fill in "Comments" with "@gubs this is a comment with an attachment"
     And I attach "screenshot.png" to "Attachment(s)"
     And I press "Add comment"
     Then I should see the following comments:
-      | this is a comment       | Micah Geisel |                |
-      | this is another comment | Micah Geisel | screenshot.png |
+      | this is a comment                          | Micah Geisel |                |
+      | @gubs this is a comment with an attachment | Micah Geisel | screenshot.png |
+    And "gubs@botandrose.com" should receive an email from "notifications@tracker.botandrose.com" with the subject "[Example Project] WOW" and the following body:
+      """
+      Micah Geisel added the following comment to the story 'WOW':
+
+      @gubs this is a comment with an attachment
+
+      Attachments:
+      http://tracker.botandrose.com/rails/active_storage/blobs/redirect
+      """
+      # FIXME
+      # /eyJfcmFpbHMiOnsiZGF0YSI6MSwicHVyIjoiYmxvYl9pZCJ9fQ==--833ecff332dc6d31906849d4f58409ab87bd6e6d/screenshot.png?disposition=attachment
+
+      # http://tracker.botandrose.com/projects/example-project#story-1
+      # """
 
   Scenario: User deletes comment from a story
     Given I am logged in as "micah@botandrose.com"

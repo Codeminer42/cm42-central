@@ -100,7 +100,7 @@ describe Notifications do
   describe '#new_comment' do
     let(:recipient) { mock_model(User, email: 'foo@example.com') }
     let(:user)      { mock_model(User, name: 'Comment User') }
-    let(:comment)   { mock_model(Comment, story: story, user: user) }
+    let(:comment)   { mock_model(Comment, story: story, user: user, attachments: []) }
 
     subject { Notifications.new_comment(recipient.email, comment) }
     before { allow(Comment).to receive_message_chain(:includes, :find).and_return(comment) }
