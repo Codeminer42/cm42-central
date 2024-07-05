@@ -41,3 +41,13 @@ Cypress.Commands.add('waitUpdateStory', (httpCode = 200) => {
   cy.wait('@update-story')
     .should('have.property', 'status', httpCode);
 })
+
+Cypress.Commands.add('aliasUpdateStoryPosition', () => {
+  cy.server();
+  cy.route('POST', '/beta/stories/**').as('update-story-position');
+})
+
+Cypress.Commands.add('waitUpdateStoryPosition', (httpCode = 200) => {
+  cy.wait('@update-story-position')
+    .should('have.property', 'status', httpCode);
+})

@@ -10,9 +10,11 @@ describe("DragAndDrop", () => {
   beforeEach(() => {
     cy.app("clean"); //clean the db
     cy.app("load_seed"); // load the seeds
+    cy.exec("bundle exec rake populate_newposition");
     cy.loginWith("foo@bar.com", "asdfasdf");
 
     cy.aliasUpdateStory();
+    cy.aliasUpdateStoryPosition();
   });
 
   describe("Drag and drop in same column", () => {
@@ -30,7 +32,10 @@ describe("DragAndDrop", () => {
       // reorder
       cy.moveStory("@first", Keys.arrowDown, Keys.space);
 
-      cy.waitUpdateStory(200);
+      cy.waitUpdateStoryPosition(200);
+
+      // wait loading story
+      cy.wait(300);
 
       // check new order
       cy.getDraggableByIndex(2).should("contain", hoverStory);
@@ -50,6 +55,11 @@ describe("DragAndDrop", () => {
 
       // reorder
       cy.moveStory("@second", Keys.arrowUp, Keys.space);
+
+      cy.waitUpdateStoryPosition(200);
+
+      // wait loading story
+      cy.wait(300);
 
       // check new order
       cy.getDraggableByIndex(2).should("contain", dragStory);
@@ -75,7 +85,7 @@ describe("DragAndDrop", () => {
         .as("drag-story")
         .moveStory("@drag-story", Keys.arrowLeft, Keys.space);
 
-      cy.waitUpdateStory(200);
+      cy.waitUpdateStoryPosition(200);
 
       // check new order
       cy.getDraggablesFromColumn(backlog).should("not.contain", dragStory);
@@ -104,7 +114,7 @@ describe("DragAndDrop", () => {
           .as("drag-element")
           .moveStory("@drag-element", Keys.arrowRight, Keys.space);
 
-        cy.waitUpdateStory(200);
+        cy.waitUpdateStoryPosition(200);
 
         // check new order
         cy.getDraggablesFromColumn(chillyBin).should("not.contain", dragStory);
@@ -125,7 +135,7 @@ describe("DragAndDrop", () => {
           .as("drag-element")
           .moveStory("@drag-element", Keys.arrowRight, Keys.space);
 
-        cy.waitUpdateStory(200);
+        cy.waitUpdateStoryPosition(200);
 
         // check new order
         cy.getDraggablesFromColumn(chillyBin).should("not.contain", dragStory);
@@ -145,8 +155,6 @@ describe("DragAndDrop", () => {
           .first()
           .as("drag-element")
           .moveStory("@drag-element", Keys.arrowRight, Keys.space);
-
-        cy.waitUpdateStory(200);
 
         // check new order
         cy.getDraggablesFromColumn(chillyBin).should("contain", dragStory);
@@ -171,6 +179,38 @@ describe("DragAndDrop", () => {
       // check new order
       cy.getDraggablesFromColumn(backlog).should("contain", dragStory);
       cy.getDraggablesFromColumn(done).should("not.contain", dragStory);
-    })
+    });
+
+    it("Drags to closed and reopened columns", () => {
+      const dragStory =
+        "A user should be able drag this story from chilly bean and drop to backlog";
+
+      // close first column
+      cy.contains("close").click();
+
+      cy.wait(300);
+
+      // close second column
+      cy.contains("close").click();
+
+      cy.wait(300);
+
+      // reopen chillybin column
+      cy.get('i[class$="fa-snowflake"]').click();
+
+      cy.wait(300);
+
+      //reopen backlog/current sprint column
+      cy.get('i[class$="fa-th-list"]').click();
+
+      // move story
+      cy.getDraggablesFromColumn(chillyBin)
+        .eq(1)
+        .as("drag-element")
+        .moveStory("@drag-element", Keys.arrowRight, Keys.space);
+
+      cy.getDraggablesFromColumn(backlog).should("contain", dragStory);
+
+    });
   });
 });

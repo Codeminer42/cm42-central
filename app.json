@@ -75,6 +75,9 @@
     },
     "CLOUDINARY_UPLOAD_PRESET": {
       "required": true
+    },
+    "GOOGLE_ANALYTICS_ID": {
+      "required": false
     }
   },
   "formation": {
@@ -90,7 +93,7 @@
     "memcachier",
     "heroku-postgresql",
     "heroku-redis",
-    "sendgrid",
+    "mailgun",
     "pusher:sandbox",
     "rollbar:free"
   ],

@@ -9,7 +9,7 @@
 
       <div class="auth-wrapper">
         <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'form-horizontal' }) do |f| %>
-          <%= devise_error_messages! %>
+          <%= render "devise/shared/error_messages", resource: resource %>
 
           <div class="auth-form-group">
             <%= f.label :email, class: 'sr-only' %>

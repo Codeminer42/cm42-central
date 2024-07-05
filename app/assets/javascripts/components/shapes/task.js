@@ -6,7 +6,7 @@ const taskPropTypesShape = PropTypes.shape({
   name: PropTypes.string,
   done: PropTypes.bool,
   createdAt: PropTypes.string,
-  updatedAt: PropTypes.string
+  updatedAt: PropTypes.string,
 });
 
 export default taskPropTypesShape;

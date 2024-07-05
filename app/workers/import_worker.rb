@@ -1,7 +1,8 @@
-require 'dalli'
 class ImportWorker
   include Sidekiq::Worker
 
+  # FIXME: Change this to use connection pool
+  # https://github.com/mperham/connection_pool/blob/master/README.md
   MEMCACHED_POOL = ConnectionPool.new(size: 10, timeout: 3) do
     if ENV['MEMCACHIER_SERVERS'].present?
       Dalli::Client.new(ENV['MEMCACHIER_SERVERS'].split(','),
@@ -36,7 +37,7 @@ class ImportWorker
   def fix_project_start_date(project)
     oldest_story = project.stories.where.not(accepted_at: nil).order(:accepted_at).first
     return if oldest_story.nil? || (project.start_date <= oldest_story.accepted_at)
-    project.update_attributes(start_date: oldest_story.accepted_at)
+    project.update(start_date: oldest_story.accepted_at)
   end
 
   def self.new_job_id

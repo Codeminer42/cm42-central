@@ -3,8 +3,19 @@ require 'rails_helper'
 RSpec.configure do |config|
   config.before(:suite) do
     `bundle exec rake assets:precompile`
-    Webpacker.compile
   end
+
+  config.around(:each) do |ex|
+    ex.run_with_retry retry: 3
+  end
+
+  config.retry_callback = proc do |ex|
+    # run some additional clean up task
+    Capybara.reset!
+  end
+
+  # All exceptions will trigger a retry
+  config.exceptions_to_retry = []
 
   config.include Warden::Test::Helpers
 

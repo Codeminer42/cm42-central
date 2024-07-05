@@ -28,7 +28,7 @@ task first_team: :environment do
   end
 
   user = User.find_by(email: ENV['FIRST_TEAM_ADMIN_EMAIL'])
-  user.enrollments.first.update_attributes(is_admin: true)
+  user.enrollments.first.update(is_admin: true)
 
   puts "Team #{team.name} with slug #{team.slug} was successfully created."
   puts "Enrolled #{users.size} users to the team."

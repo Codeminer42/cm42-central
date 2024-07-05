@@ -1,59 +1,71 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render } from "@testing-library/react";
+import { screen } from '@testing-library/dom';
+import userEvent from "@testing-library/user-event";
 import NoteComponent from 'components/notes/Note';
 import Note from 'models/note.js';
 
-describe('<Note />', function() {
-  let note;
+global.document.createRange = () => ({
+  setStart: () => { },
+  setEnd: () => { },
+  commonAncestorContainer: {
+    nodeName: 'BODY',
+    ownerDocument: document,
+  },
+});
 
-  beforeEach(function() {
-    sinon.stub(I18n, 't');
-    sinon.stub(window.md, 'makeHtml');
-    note = new Note({note: 'Test Note'});
+describe('<Note />', () => {
+  beforeEach(() => {
+    window.document.getSelection = jest.fn();
+    jest.spyOn(I18n, 't');
+    jest.spyOn(window.md, 'makeHtml');
   });
 
-  afterEach(function() {
-    I18n.t.restore();
-    window.md.makeHtml.restore();
+  const setup = (data) => {
+    let note;
+
+    note = new Note({ note: 'Test Note' });
+    const onDelete = jest.fn();
+
+    render(<NoteComponent note={note} disabled={data?.disabled} onDelete={onDelete}/>);
+
+    return { onDelete };
+  }
+
+  afterEach(() => {
+    I18n.t.mockClear();
+    window.md.makeHtml.mockClear();
   });
 
-  it("should have its content parsed", function() {
-    const wrapper = shallow(<NoteComponent note={note} />);
+  it("should have its content parsed", () => {
+    setup();
     const expectedNote = 'Test Note';
     expect(window.md.makeHtml).toHaveBeenCalledWith(expectedNote);
   });
 
-  it("should be able to call handleDelete", function() {
-    const handleDelete = sinon.stub();
-    const wrapper = shallow(
-      <NoteComponent
-        note={note}
-        disabled={false}
-        handleDelete={handleDelete}
-      />
-    );
-    wrapper.find('.delete-note').simulate('click');
-    expect(handleDelete).toHaveBeenCalled();
+  it("should be able to call onDelete", async () => {
+    const { onDelete } = setup();
+    const deleteButton = screen.getByRole("button", { name: /Delete/i });
+    await userEvent.click(deleteButton);
+    expect(onDelete).toHaveBeenCalled();
   });
 
-  describe("when not disabled", function() {
+  describe("when not disabled", () => {
 
-    it("should have an delete button", function() {
-      const wrapper = shallow(
-        <NoteComponent note={note} disabled={false} />
-      );
-      expect(wrapper.find('.delete-note')).toExist();
+    it("should have an delete button", () => {
+      setup();
+      const deleteButton = screen.getByRole("button", { name: /Delete/i });
+      expect(deleteButton).toBeInTheDocument();
     });
 
   });
 
-  describe("when disabled", function() {
+  describe("when disabled", () => {
 
-    it("should not have a delete button", function() {
-      const wrapper = shallow(
-        <NoteComponent note={note} disabled={true} />
-      );
-      expect(wrapper.find('.delete-note')).not.toExist();
+    it("should not have a delete button", () => {
+      setup({ disabled: true });
+      const deleteButton = screen.queryByRole("button", { name: /Delete/i });
+      expect(deleteButton).not.toBeInTheDocument();
     });
 
   });

@@ -30,6 +30,7 @@ es:
   points:   "Puntos"
   saving:   "Ahorro ..."
   expand:   "Expandir"
+  remaining: "Restante"
   not_found: "Recurso no encontrado"
   nothing uploaded yet: "Nada se ha subido todavía"
   day:      "Day"
@@ -115,7 +116,6 @@ es:
     no_estimate: "no hay una estimación"
     tasks: "Tareas"
     notes: "Notas"
-    attachments: "Adjuntos"
     warnings:
       backlogged_release: "Este lanzamiento está en peligro de ser completada después de la fecha de lanzamiento establecida."
     errors:
@@ -212,10 +212,8 @@ es:
         owned_by_name:        'Propiedad de'
         owned_by_initials:    'Propiedad de'
         owned_by_id:          'Propiedad de id'
-        documents:            'Archivos adjuntos'
         release_date:         'Fecha de lanzamiento'
         delivered_at:         'Entregado en'
-        documents_attributes: 'Archivos adjuntos'
       user:
         name:                 'Nombre completo'
         username:             'Nombre de usuario'
@@ -454,7 +452,7 @@ es:
       text: "Haga clic en este botón para crear nuevas historias. Una historia puede ser la descripción de una nueva función o un informe de error, por ejemplo. Las nuevas historias serán creadas primero en la caja de Chilly Bin."
     chilly_bin:
       title: "Chilly Bin"
-      text: "Todas las nuevas historias son tiendas en esta Chilly Bin. Debe describir sus historias esperando que la descripción y los anexos sean suficientes para que la historia se implemente. Los miembros del proyecto deben estimar esas historias."
+      text: "Todas las nuevas historias son tiendas en esta Chilly Bin. Debe describir sus historias esperando que la descripción sea suficiente para que la historia se implemente. Los miembros del proyecto deben estimar esas historias."
     backlog:
       title: "Backlog"
       text: "Lo Backlog debe tener todas las historias por orden de PRIORIDAD. Historias más valiosas y listas para empezar en la parte superior e historias opcionales o inciertas en la parte inferior"
@@ -482,5 +480,7 @@ es:
         default_error: 'Algo salió mal. Por favor, vuelva a intentarlo'
       cancel:
         default_cancel: "Operación cancelada"
-    attachments:
-      needs_to_save: "Debes guardar la historia para eliminar el archivo adjunto."
+
+  cookies_banner:
+    message: "Utilizamos cookies y otras tecnologías similares para mejorar su experiencia en nuestros servicios. Al utilizar nuestros servicios, usted da su consentimiento para dicho control."
+    button: "Aceptar"

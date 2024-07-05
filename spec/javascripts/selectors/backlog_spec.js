@@ -75,7 +75,7 @@ describe('Backlog selector functions', () => {
 
         const stories = [newStory, oldStory];
         const orderedStories = orderByState(stories);
-        
+
         expect(orderedStories[0]).toEqual(oldStory);
         expect(orderedStories[1]).toEqual(newStory);
       });
@@ -97,7 +97,7 @@ describe('Backlog selector functions', () => {
 
         const stories = [newStory, oldStory];
         const orderedStories = orderByState(stories);
-        
+
         expect(orderedStories[0]).toEqual(oldStory);
         expect(orderedStories[1]).toEqual(newStory);
       });
@@ -119,7 +119,7 @@ describe('Backlog selector functions', () => {
 
         const stories = [newStory, oldStory];
         const orderedStories = orderByState(stories);
-        
+
         expect(orderedStories[0]).toEqual(oldStory);
         expect(orderedStories[1]).toEqual(newStory);
       });
@@ -127,24 +127,24 @@ describe('Backlog selector functions', () => {
 
     describe('All stories are rejected, finished or unstarted', () => {
       const storyStates = ['rejected', 'finished', 'unstarted'];
-      
+
       it('sort by position', () => {
         storyStates.forEach(state => {
           const firstPosition = storyFactory({
             id: 1,
-            position: '1',
+            newPosition: 1,
             state,
           });
 
           const secondPosition = storyFactory({
             id: 0,
-            position: '2',
+            newPosition: 2,
             state,
           });
-  
+
           const stories = [secondPosition, firstPosition];
           const orderedStories = orderByState(stories);
-          
+
           expect(orderedStories[0]).toEqual(firstPosition);
           expect(orderedStories[1]).toEqual(secondPosition);
         });

@@ -253,20 +253,16 @@ describe Story do
   describe '#to_csv' do
     let(:story) { create(:story, :with_project) }
 
-    let(:number_of_extra_columns) { { tasks: 0, notes: 0, documents: 0 } }
+    let(:number_of_extra_columns) { { tasks: 0, notes: 0 } }
     let(:task) { double('task') }
     let(:tasks) { [task] }
 
     let(:note) { double('note') }
     let(:notes) { [note] }
 
-    let(:document) { double('document') }
-    let(:documents) { [document] }
-
     before do
       allow(story).to receive(:tasks).and_return(tasks)
       allow(story).to receive(:notes).and_return(notes)
-      allow(story).to receive(:documents).and_return(documents)
     end
 
     it 'returns an array' do
@@ -303,35 +299,13 @@ describe Story do
         expect(story.to_csv(number_of_extra_columns)).to include(note_body)
       end
     end
-
-    context 'when story have documents' do
-      let(:document_content) do
-        '{"attachinariable_type"=>"Story",
-          "scope"=>"documents",
-          "public_id"=>"programming-motherfucker-1-728_qhl2tl",
-          "version"=>"1540488712",
-          "width"=>728,
-          "height"=>546,
-          "format"=>"jpg",
-          "resource_type"=>"image"}'
-      end
-
-      before do
-        allow(document).to receive(:to_csv).and_return(document_content)
-        number_of_extra_columns[:documents] = 1
-      end
-
-      it 'return note body' do
-        expect(story.to_csv(number_of_extra_columns)).to include(document_content)
-      end
-    end
   end
 
   describe '#stakeholders_users' do
     let(:requested_by)  { mock_model(User) }
     let(:owned_by)      { mock_model(User) }
     let(:note_user)     { mock_model(User) }
-    let(:notes)         { [mock_model(Note, user: note_user)] }
+    let(:notes)         { [build_stubbed(:note, user: note_user)] }
 
     before do
       subject.requested_by  = requested_by
@@ -469,7 +443,7 @@ describe Story do
           title accepted_at created_at release_date updated_at delivered_at description
           project_id story_type owned_by_id requested_by_id
           requested_by_name owned_by_name owned_by_initials estimate
-          state position id errors labels notes tasks documents
+          state position id errors labels notes tasks new_position
         ].sort
       )
     end
@@ -547,49 +521,6 @@ describe Story do
 
     it 'can destroy accepted story when deleting the project' do
       expect { subject.project.destroy }.not_to raise_error
-    end
-
-    context 'with attachments' do
-      let(:attachments) do
-        [
-          {
-            'id' => 30,
-            'public_id' => 'Screen_Shot_2016-08-19_at_09.30.57_blnr1a',
-            'version' => '1471624237',
-            'format' => 'png',
-            'resource_type' => 'image',
-            'path' => 'v1471624237/Screen_Shot_2016-08-19_at_09.30.57_blnr1a.png'
-          },
-          {
-            'id' => 31,
-            'public_id' => 'Screen_Shot_2016-08-19_at_09.30.57_blnr1a',
-            'version' => '1471624237',
-            'format' => 'png',
-            'resource_type' => 'image',
-            'path' => 'v1471624237/Screen_Shot_2016-08-19_at_09.30.57_blnr1a.png'
-          }
-        ]
-      end
-
-      before do
-        attachments.each do |a|
-          a.delete('path')
-          Story.connection.execute(
-            'insert into attachinary_files ' \
-            "(#{a.keys.join(', ')}, scope, attachinariable_id, attachinariable_type) " \
-            "values ('#{a.values.join("', '")}', 'documents', #{subject.id}, 'Story')"
-          )
-        end
-      end
-
-      it "can't delete attachments of an accepted story" do
-        expect(subject.documents.count).to eq(2)
-
-        expect { subject.documents = [] }.to raise_error(ActiveRecord::ReadOnlyRecord)
-
-        subject.reload
-        expect(subject.documents.count).to eq(2)
-      end
     end
   end
 

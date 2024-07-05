@@ -1,5 +1,4 @@
-import 'cloudinary_js/js/jquery.ui.widget';
-import 'cloudinary_js/js/jquery.iframe-transport';
-import 'cloudinary_js/js/jquery.fileupload';
-import 'cloudinary_js';
-
+import 'blueimp-file-upload/js/vendor/jquery.ui.widget';
+import 'blueimp-file-upload/js/jquery.iframe-transport';
+import 'blueimp-file-upload/js/jquery.fileupload';
+import 'cloudinary-jquery-file-upload/cloudinary-jquery-file-upload';

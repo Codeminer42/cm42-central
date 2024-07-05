@@ -1,4 +1,4 @@
-import keyMirror from "keymirror";
+import keyMirror from 'keymirror';
 
 export default keyMirror({
   REQUEST_PROJECT_BOARD: null,
@@ -22,6 +22,7 @@ export default keyMirror({
   RECEIVE_HISTORY_ERROR: null,
   CLOSE_HISTORY: null,
   UPDATE_STORY_SUCCESS: null,
+  SORT_STORIES_SUCCESS: null,
   STORY_FAILURE: null,
   SET_LOADING_STORY: null,
   ADD_TASK: null,
@@ -33,16 +34,16 @@ export default keyMirror({
   ADD_LABEL_TO_PROJECT: null,
   ADD_LABEL: null,
   DELETE_LABEL: null,
-  ADD_ATTACHMENT: null,
-  DELETE_ATTACHMENT: null,
   ADD_NOTIFICATION: null,
   REMOVE_NOTIFICATION: null,
   SEARCH_STORIES_SUCCESS: null,
   CLOSE_SEARCH: null,
+  CLOSE_EPIC_COLUMN: null,
   HIGHLIGHT_STORY: null,
   LOADING_SEARCH: null,
   REVERSE_COLUMNS: null,
   TOGGLE_COLUMN_VISIBILITY: null,
   REVERT_TO_CALCULATED_VELOCITY: null,
-  SIMULATE_SPRINT_VELOCITY: null
+  SIMULATE_SPRINT_VELOCITY: null,
+  OPTIMISTICALLY_UPDATE: null,
 });

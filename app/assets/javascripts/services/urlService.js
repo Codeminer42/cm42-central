@@ -7,6 +7,6 @@ const getHash = word => {
   }
 
   return null;
-}
+};
 
-export { getHash }
+export { getHash };

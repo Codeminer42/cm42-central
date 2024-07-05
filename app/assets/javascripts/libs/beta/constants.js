@@ -2,43 +2,45 @@ export const historyStatus = {
   DISABLED: 'DISABLED',
   LOADING: 'LOADING',
   LOADED: 'LOADED',
-  FAILED: 'FAILED'
-}
+  FAILED: 'FAILED',
+};
 
 export const status = {
-  ACCEPTED: "accepted",
-  DELIVERED: "delivered",
-  STARTED: "started",
-  REJECTED: "rejected",
-  FINISHED: "finished",
-  UNSTARTED: "unstarted",
-  UNSCHEDULED: "unscheduled",
-  RELEASE: "release"
+  ACCEPTED: 'accepted',
+  DELIVERED: 'delivered',
+  STARTED: 'started',
+  REJECTED: 'rejected',
+  FINISHED: 'finished',
+  UNSTARTED: 'unstarted',
+  UNSCHEDULED: 'unscheduled',
+  RELEASE: 'release',
 };
 
 export const storyTypes = {
-  BUG: "bug",
-  CHORE: "chore",
-  FEATURE: "feature",
-  RELEASE: "release"
+  BUG: 'bug',
+  CHORE: 'chore',
+  FEATURE: 'feature',
+  RELEASE: 'release',
 };
 
 export const storyScopes = {
   ALL: 'all',
-  SEARCH: 'search'
-}
+  SEARCH: 'search',
+  EPIC: 'epic',
+};
 
 export const operands = {
   requester: 'requested_by_name',
   owner: 'owned_by_name',
   initials: 'owned_by_initials',
   type: 'story_type',
-  state: 'state'
-}
+  state: 'state',
+};
 
 export const columns = {
   CHILLY_BIN: 'chillyBin',
   DONE: 'done',
   BACKLOG: 'backlog',
-  SEARCH: 'search'
-}
+  EPIC: 'epic',
+  SEARCH: 'search',
+};

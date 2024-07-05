@@ -1,5 +1,5 @@
 class ProjectMembershipEnrollerService
-  include Pundit
+  include Pundit::Authorization
   attr_reader :message
 
   def initialize(user, current_team, project)

@@ -1,0 +1,56 @@
+.cookies-banner {
+  background-color: $lightgrey-10;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;  
+  border-radius: 4px;
+  margin: 0 auto;
+  padding: 10px;
+  left: 20px;
+  right: 20px;
+  max-width: fit-content;
+  bottom: -400px;
+  box-shadow: $lightgrey-16 0px 0px 12px 0px;
+  z-index: 1000;
+  visibility: hidden;
+  transition: bottom 0.8s ease-in-out,
+              visibility 0.8s ease-in-out;  
+
+  &__msg {
+    margin: 0 20px 0 0;
+  }
+
+  &__btn {
+    background-color: $blue;
+    color: $lightgrey-20;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    &:hover {
+      background-color: $blue-2;
+    }
+  }
+}
+
+@media (orientation: portrait) {
+  .cookies-banner {
+    flex-direction: column;
+
+    &__msg {
+      margin: 0 0 10px 0;
+    }
+
+    &__btn {
+      width: 100%;
+    }
+  }
+}
+
+.cookies-banner--visible {
+  visibility: visible;
+  bottom: 10px;
+}

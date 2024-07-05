@@ -66,10 +66,14 @@
         opacity: 0.8;
       }
 
+      &.Story--cantBeMoved {
+        cursor: pointer;
+      }
+
       .Story {
         &__description-icon {
           display: flex;
-          justify-content: start;
+          justify-content: flex-start;
           align-items: center;
           margin-left: 5px;
         }
@@ -165,6 +169,10 @@
           text-decoration: none;
           font-style: normal;
           margin-right: 5px;
+
+          &:hover {
+            text-decoration: underline;
+          }
         }
 
         &__labels {
@@ -236,73 +244,6 @@
         &__section {
           margin: 5px 5px 5px 0;
 
-          &__attachments {
-            font-size: 12px;
-
-            .attachments-dropzone {
-              width: 100%;
-              margin: 5px 0;
-              white-space: normal;
-              outline: none;
-            }
-
-            .attachments-dropzone--drag {
-              background-color: $white;
-              color: $success;
-              border: 2px dashed $success;
-              margin: 4px 0;
-            }
-
-            .attachments-dropzone--reject {
-              background-color: $white;
-              color: $red;
-              border: 2px dashed $red;
-              margin: 4px 0;
-            }
-
-            .attachments-dropzone--loading {
-              opacity: 0.65;
-              background-color: $lightgrey;
-              color: $darkgrey-7;
-              border: none;
-              cursor: wait;
-            }
-
-            .attachment {
-              margin: 5px 0;
-              display: flex;
-              align-items: center;
-              justify-content: flex-start;
-
-              &--image {
-                img {
-                  margin-right: 10px;
-                  width: 50px;
-                  height: 50px;
-                  border: 1px solid $black;
-                  border-radius: 5px;
-                }
-              }
-
-              &--raw {
-                margin-right: 10px;
-                font-size: 12px;
-              }
-            }
-
-            .attachments-info {
-              background: $lightgrey-14;
-              text-align: center;
-              color: $darkgrey-2;
-              border-radius: 4px;
-              padding: 7px;
-              text-transform: uppercase;
-              font-style: italic;
-              font-weight: 700;
-              cursor: help;
-            }
-          }
-
           &__notes {
             .delete-note-button {
               margin-left: 5px;
@@ -369,6 +310,10 @@
           }
 
           &__description {
+            .story-description-content {
+              cursor: text;
+            }
+
             .edit-description-button {
               font-size: 12px;
               border-radius: 5px;
@@ -382,6 +327,11 @@
             .edit-description-text {
               resize: vertical;
               min-height: 100px;
+              background-color: #fff;
+
+              &__input {
+                @extend .form-control;
+              }
 
               &__suggestions {
                 position: absolute !important;
@@ -410,7 +360,7 @@
             @extend .btn-default;
             @extend .btn-xs;
           }
-          
+
           .infoToolTip {
             height: 22px;
             cursor: default;

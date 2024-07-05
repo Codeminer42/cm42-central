@@ -13,7 +13,7 @@ class SortStories
   private
 
   def update_position(story)
-    story.tap { |s| s.update_attributes position: position_for(story) }
+    story.tap { |s| s.update position: position_for(story) }
   end
 
   def position_for(story)

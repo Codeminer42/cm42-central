@@ -31,6 +31,7 @@ pt-BR:
   points:   "Pontos"
   saving:   "Salvando ..."
   expand:   "Expandir"
+  remaining: "Restante"
   not_found: "Recurso não encontrado"
   nothing uploaded yet: "Nada ainda carregado"
   day:      "Dia"
@@ -117,7 +118,6 @@ pt-BR:
     no_estimate: "sem estimativa"
     tasks: "Tarefas"
     notes: "Notas"
-    attachments: "Anexos"
     warnings:
       backlogged_release: "Esse lançamento está com risco de ser completo depois da data de lançamento definida."
     errors:
@@ -220,11 +220,9 @@ pt-BR:
         owned_by_name:        'Pertence à'
         owned_by_initials:    'Pertence à'
         owned_by_id:          'Pertece ao id'
-        documents:            'Anexos'
         tasks:                'Tarefas'
         release_date:         'Data de Lançamento'
         delivered_at:         'Entregue em'
-        documents_attributes: 'Anexos'
       task:
         name:                 'Nome'
       user:
@@ -466,7 +464,7 @@ pt-BR:
       text: "Clique nesse botão para criar novas histórias. Uma história pode ser a descrição de uma nova feature ou um relato de um bug, por exemplo. Novas histórias serão criadas primeiro na coluna Chilly Bin."
     chilly_bin:
       title: "Chilly Bin"
-      text: "Todas as novas histórias serão armazenadas nesse Chilly Bin. Você deve descrevê-las esperando que essa descrição e os anexos serão suficientes para a história ser implementada. Os membros do projeto devem estimar essas histórias."
+      text: "Todas as novas histórias serão armazenadas nesse Chilly Bin. Você deve descrevê-las esperando que essa descrição será suficiente para a história ser implementada. Os membros do projeto devem estimar essas histórias."
     backlog:
       title: "Backlog"
       text: "O <strong>Backlog</strong> DEVE ter todas as histórias por ordem de PRIORIDADE. As histórias mais valiosas e que estão prontas para serem iniciadas no topo e as histórias opcionais ou incertas devem ficar embaixo."
@@ -494,5 +492,7 @@ pt-BR:
         default_error: 'Algo deu errado, tente novamente por favor'
       cancel:
         default_cancel: "Ação cancelada"
-    attachments:
-      needs_to_save: "Você precisa salvar a história para excluir o anexo"
+
+  cookies_banner:
+    message: "Nós usamos cookies e outras tecnologias semelhantes para melhorar a sua experiência em nossos serviços. Ao utilizar nossos serviços, você concorda com tal monitoramento."
+    button: "Aceitar"

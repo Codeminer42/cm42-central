@@ -28,13 +28,13 @@ class Project < ApplicationRecord
   has_many :integrations, dependent: :destroy
   has_many :changesets, dependent: :destroy
   has_many :integrations, dependent: :destroy
-  has_many :ownerships
+  has_many :ownerships, dependent: :destroy
   has_many :teams, through: :ownerships
   has_many :memberships, dependent: :destroy
   has_many :users, -> { distinct }, through: :memberships
   has_many :stories, dependent: :destroy do
     def with_dependencies
-      includes(:notes, :tasks, :document_files)
+      includes(:notes, :tasks)
     end
 
     # Populates the stories collection from a CSV string.
@@ -68,8 +68,6 @@ class Project < ApplicationRecord
           next if value.blank?
 
           case header
-          when 'Document'
-            story.documents << ::Attachinary::File.new(JSON.parse(value))
           when 'Task'
             next_value = row[index + 1].presence
             next if next_value.blank?
@@ -100,7 +98,7 @@ class Project < ApplicationRecord
 
   validates :point_scale, inclusion: { in: POINT_SCALES.keys,
                                        message: '%{value} is not a valid estimation scheme' }
-  
+
   validates :iteration_length,
     numericality: { greater_than_or_equal_to: ITERATION_LENGTH_RANGE.min,
                     less_than_or_equal_to: ITERATION_LENGTH_RANGE.max, only_integer: true,
@@ -143,7 +141,7 @@ class Project < ApplicationRecord
   end
 
   def iteration_service(since: nil, current_time: Time.current)
-    @iteration_service ||= Central::Support::IterationService.new(self, since: since, current_time: current_time)
+    @iteration_service ||= IterationService.new(self, since: since, current_time: current_time)
   end
 
   def point_values

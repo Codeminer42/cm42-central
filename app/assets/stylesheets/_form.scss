@@ -55,6 +55,13 @@
   }
 }
 
+.delete-note {
+  background: transparent;
+  border: none;
+  margin-left: 0;
+  padding: 0;
+}
+
 .locate-btn {
   @extend input;
   border-color: #ccc !important;
