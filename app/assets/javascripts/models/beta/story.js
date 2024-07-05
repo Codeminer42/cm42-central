@@ -165,6 +165,10 @@ export const search = async (queryParam, projectId) => {
   return data.map(item => deserialize(item.story));
 };
 
+export const isStoryLoading = story => {
+  return story._editing?.loading;
+};
+
 export const getByLabel = async (label, projectId) => {
   const { data } = await httpService.get(
     `/projects/${projectId}/stories?label=${label}`,
@@ -188,18 +192,6 @@ export const storyFailure = (story, error) => ({
   errors: error,
   needsToSave: false,
 });
-
-export const toggleStory = story => {
-  const editing = story.collapsed
-    ? { ...story, _isDirty: false, loading: false }
-    : null;
-
-  return {
-    ...story,
-    _editing: editing,
-    collapsed: !story.collapsed,
-  };
-};
 
 const isUnscheduledState = (story, newAttributes) =>
   isFeature(story._editing) &&
@@ -293,6 +285,7 @@ export const deserialize = (data, options) => {
     ...story,
     labels: Label.splitLabels(story.labels),
     estimate: story.estimate || '',
+    documents: (story.documents ?? []).map(document => document.file),
     collapsed,
   };
 };
