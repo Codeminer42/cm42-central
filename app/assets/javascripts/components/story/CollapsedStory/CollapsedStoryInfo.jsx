@@ -13,7 +13,7 @@ const CollapsedStoryInfo = ({ story, onLabelClick }) => (
 
 CollapsedStoryInfo.propTypes = {
   story: StoryPropTypes,
-  onLabelClick: PropTypes.func.isRequired
+  onLabelClick: PropTypes.func.isRequired,
 };
 
 export default CollapsedStoryInfo;

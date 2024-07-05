@@ -5,12 +5,7 @@ import ExpandedStorySection from '../ExpandedStorySection';
 import ExpandedStoryContentArea from './ExpandedStoryContentArea';
 import ExpandedStoryDescriptionTextArea from './ExpandedStoryDescriptionTextArea';
 
-const ExpandedStoryDescription = ({
-  disabled,
-  onEdit,
-  users,
-  story
-}) => {
+const ExpandedStoryDescription = ({ disabled, onEdit, users, story }) => {
   if (disabled && !story.description) return null;
 
   const [editing, setEditing] = useState(false);
@@ -21,24 +16,22 @@ const ExpandedStoryDescription = ({
       title={I18n.t('activerecord.attributes.story.description')}
       identifier="description"
     >
-      {
-        editing || !story.description
-          ? <ExpandedStoryDescriptionTextArea
-            description={story._editing.description || ''}
-            onEdit={onEdit}
-            disabled={disabled}
-            users={users}
-            data-id="text-area"
-          />
-          : (
-            <ExpandedStoryContentArea
-              onClick={toggleField}
-              description={story.description}
-            />
-          )
-      }
+      {editing || !story.description ? (
+        <ExpandedStoryDescriptionTextArea
+          description={story._editing.description || ''}
+          onEdit={onEdit}
+          disabled={disabled}
+          users={users}
+          data-id="text-area"
+        />
+      ) : (
+        <ExpandedStoryContentArea
+          onClick={toggleField}
+          description={story.description}
+        />
+      )}
     </ExpandedStorySection>
-  )
+  );
 };
 
 ExpandedStoryDescription.defaultProps = {
@@ -49,7 +42,7 @@ ExpandedStoryDescription.propTypes = {
   story: editingStoryPropTypesShape.isRequired,
   onEdit: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
-  users: PropTypes.array
+  users: PropTypes.array,
 };
 
 export default ExpandedStoryDescription;

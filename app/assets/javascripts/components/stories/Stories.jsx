@@ -1,5 +1,5 @@
-import React from "react";
-import StoryItem from "../story/StoryItem";
+import React from 'react';
+import StoryItem from '../story/StoryItem';
 import PropTypes from 'prop-types';
 import StoryPropTypes from '../shapes/story';
 import { Droppable } from 'react-beautiful-dnd';
@@ -8,7 +8,7 @@ const Stories = ({ stories, from, sprintIndex, columnId, isDropDisabled }) => (
   <Droppable
     droppableId={JSON.stringify({ columnId, sprintIndex })}
     isDropDisabled={isDropDisabled}
-    type='stories'
+    type="stories"
   >
     {provided => (
       <div
@@ -18,7 +18,7 @@ const Stories = ({ stories, from, sprintIndex, columnId, isDropDisabled }) => (
       >
         {stories.map((story, index) => (
           <StoryItem
-            key={story.id}
+            key={story.id.toString()}
             story={story}
             from={from}
             index={index}
@@ -37,7 +37,7 @@ Stories.propTypes = {
   from: PropTypes.string,
   isDropDisabled: PropTypes.bool.isRequired,
   columnId: PropTypes.string,
-  sprintIndex: PropTypes.number
+  sprintIndex: PropTypes.number,
 };
 
 export default Stories;

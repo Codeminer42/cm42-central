@@ -1,6 +1,6 @@
 import React from 'react';
 
-const renderInputButton = (event) => (
+const renderInputButton = event => (
   <input
     type="button"
     key={event}
@@ -10,9 +10,7 @@ const renderInputButton = (event) => (
 );
 
 const StateButtons = ({ events }) => (
-  <div className="state-actions">
-    { events.map(renderInputButton) }
-  </div>
+  <div className="state-actions">{events.map(renderInputButton)}</div>
 );
 
 export default StateButtons;

@@ -5,10 +5,5 @@ FactoryBot.define do
     format { 'png' }
     resource_type { 'image' }
     attachinariable_id { nil }
-
-    trait :story do
-      scope { 'documents' }
-      attachinariable_type { 'Story' }
-    end
   end
 end

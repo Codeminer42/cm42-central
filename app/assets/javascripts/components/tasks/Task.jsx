@@ -26,10 +26,10 @@ class Task extends React.Component {
       <span
         onClick={this._handleDelete}
         title={I18n.t('delete')}
-        className='delete-btn'
+        className="delete-btn"
         key={this.props.task.get('id')}
       >
-        { I18n.t('delete') }
+        {I18n.t('delete')}
       </span>
     );
   }
@@ -37,13 +37,13 @@ class Task extends React.Component {
   render() {
     const { task, disabled } = this.props;
     return (
-      <div className='task'>
+      <div className="task">
         <Checkbox
-          name='done'
+          name="done"
           disabled={disabled}
           onChange={this._handleChange}
           checked={task.get('done')}
-          label={[task.get('name'), (!disabled && this.renderDelete())]}
+          label={[task.get('name'), !disabled && this.renderDelete()]}
         />
       </div>
     );

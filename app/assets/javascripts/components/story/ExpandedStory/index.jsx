@@ -1,81 +1,96 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import ExpandedStoryControls from './ExpandedStoryControls';
 import ExpandedStoryDefault from './ExpandedStoryDefault';
 import ExpandedStoryRelease from './ExpandedStoryRelease';
-import { editStory, saveStory, deleteStory, cloneStory, showHistory } from '../../../actions/story';
+import {
+  editStory,
+  saveStory,
+  deleteStory,
+  cloneStory,
+  showHistory,
+} from '../../../actions/story';
 import { connect } from 'react-redux';
 import * as Story from '../../../models/beta/story';
 import ProjectPropTypes from '../../shapes/project';
 
-export class ExpandedStory extends React.Component {
-  constructor(props) {
-    super(props);
+export function ExpandedStory({
+  story,
+  onToggle,
+  editStory,
+  saveStory,
+  cloneStory,
+  showHistory,
+  deleteStory,
+  project,
+  className,
+  title,
+  from,
+}) {
+  const titleRef = useRef();
 
-    this.titleRef = React.createRef();
-  }
+  const loading = story._editing.loading;
+  const disabled = !Story.canEdit(story);
 
-  componentDidMount() {
-    this.titleRef.current.focus();
-  }
+  const handleEditStory = newAttributes => {
+    editStory(story.id, newAttributes, from);
+  };
 
-  render() {
-    const {
-      story,
-      onToggle,
-      editStory,
-      saveStory,
-      cloneStory,
-      showHistory,
-      deleteStory,
-      project,
-      className,
-      title,
-      from
-    } = this.props;
+  const handleSaveStory = () => {
+    saveStory(story.id, project.id, from);
+  };
 
-    const loading = story._editing.loading ? "Story__enable-loading" : "";
-    const disabled = !Story.canEdit(story);
+  const handleDeleteStory = () => {
+    deleteStory(story.id, project.id, from);
+  };
 
-    return (
-      <div
-        className={`Story Story--expanded ${loading} ${className}`}
-        title={title}
-      >
-        <div className="Story__loading"></div>
+  useEffect(() => {
+    titleRef?.current?.focus();
+  }, [titleRef]);
 
-        <ExpandedStoryControls
-          onCancel={onToggle}
-          isDirty={story._editing._isDirty || false}
-          onSave={() => saveStory(story.id, project.id, from)}
-          onDelete={() => deleteStory(story.id, project.id, from)}
-          canSave={Story.canSave(story)}
-          canDelete={Story.canDelete(story)}
+  return (
+    <div
+      className={classNames(
+        'Story Story--expanded',
+        { 'Story__enable-loading': loading },
+        className
+      )}
+      title={title}
+    >
+      <div className="Story__loading" />
+
+      <ExpandedStoryControls
+        onCancel={onToggle}
+        isDirty={story._editing._isDirty || false}
+        onSave={handleSaveStory}
+        onDelete={handleDeleteStory}
+        canSave={Story.canSave(story)}
+        canDelete={Story.canDelete(story)}
+        disabled={disabled}
+      />
+
+      {Story.isRelease(story._editing) ? (
+        <ExpandedStoryRelease
+          story={story}
+          titleRef={titleRef}
+          onEdit={handleEditStory}
+          onClone={cloneStory}
           disabled={disabled}
         />
-
-        {
-          Story.isRelease(story._editing)
-            ? <ExpandedStoryRelease
-              story={story}
-              titleRef={this.titleRef}
-              onEdit={(newAttributes) => editStory(story.id, newAttributes, from)}
-              onClone={cloneStory}
-              disabled={disabled}
-            />
-            : <ExpandedStoryDefault
-              story={story}
-              titleRef={this.titleRef}
-              onEdit={(newAttributes) => editStory(story.id, newAttributes, from)}
-              project={project}
-              onClone={cloneStory}
-              showHistory={showHistory}
-              disabled={disabled}
-            />
-        }
-      </div >
-    );
-  }
+      ) : (
+        <ExpandedStoryDefault
+          story={story}
+          titleRef={titleRef}
+          onEdit={handleEditStory}
+          project={project}
+          onClone={cloneStory}
+          showHistory={showHistory}
+          disabled={disabled}
+        />
+      )}
+    </div>
+  );
 }
 
 ExpandedStory.propTypes = {
@@ -88,18 +103,15 @@ ExpandedStory.propTypes = {
   onToggle: PropTypes.func.isRequired,
   project: ProjectPropTypes.isRequired,
   title: PropTypes.string,
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 const mapStateToProps = ({ project }) => ({ project });
 
-export default connect(
-  mapStateToProps,
-  {
-    editStory,
-    saveStory,
-    deleteStory,
-    cloneStory,
-    showHistory
-  }
-)(ExpandedStory);
+export default connect(mapStateToProps, {
+  editStory,
+  saveStory,
+  deleteStory,
+  cloneStory,
+  showHistory,
+})(ExpandedStory);

@@ -17,14 +17,14 @@ const Message = ({ type, className, message, onRemove }) => {
         </button>
       </div>
     </div>
-  )
+  );
 };
 
 Message.propTypes = {
   type: PropTypes.string,
   className: PropTypes.string,
   message: PropTypes.string.isRequired,
-  onRemove: PropTypes.func.isRequired
+  onRemove: PropTypes.func.isRequired,
 };
 
 export default Message;

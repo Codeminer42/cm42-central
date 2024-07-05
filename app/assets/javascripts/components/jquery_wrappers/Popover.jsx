@@ -10,18 +10,14 @@ export default class Popover extends Component {
   }
 
   componentDidMount() {
-    const {
-      delay,
-      trigger,
-      title
-    } = this.props;
+    const { delay, trigger, title } = this.props;
 
     $(this.childRef).popover({
       delay,
       trigger,
       title,
       html: true,
-      content: this.contentRef
+      content: this.contentRef,
     });
   }
 
@@ -40,21 +36,21 @@ export default class Popover extends Component {
   render() {
     return (
       <Fragment>
-        { this.props.children({ ref: this.saveChildRef }) }
+        {this.props.children({ ref: this.saveChildRef })}
         <div style={{ display: 'none' }}>
-          { this.props.renderContent({ ref: this.saveContentRef })}
+          {this.props.renderContent({ ref: this.saveContentRef })}
         </div>
       </Fragment>
     );
   }
-};
+}
 
 Popover.propTypes = {
   title: PropTypes.string.isRequired,
   trigger: PropTypes.string.isRequired,
-  delay: PropTypes.number
+  delay: PropTypes.number,
 };
 
 Popover.defaultProps = {
-  delay: 0
+  delay: 0,
 };

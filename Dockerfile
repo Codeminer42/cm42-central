@@ -26,6 +26,18 @@ COPY Gemfile.lock Gemfile.lock
 COPY yarn.lock yarn.lock
 COPY .env.sample .env
 
+ADD pusher-fake-entrypoint.sh /tmp/pusher-fake-entrypoint.sh
+
+ENV PUSHER_APP_ID=1234 \
+    PUSHER_APP_KEY=123456 \
+    PUSHER_APP_SECRET=34214341 \
+    PUSHER_PORT=8888 \
+    PUSHER_WS_PORT=45449
+
+EXPOSE $PUSHER_WS_PORT $PUSHER_PORT
+
+CMD ["/tmp/pusher-fake-entrypoint.sh"]
+
 RUN bundle install
 
 WORKDIR /app

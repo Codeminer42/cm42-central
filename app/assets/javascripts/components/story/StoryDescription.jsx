@@ -5,7 +5,7 @@ import DescriptionContent from 'components/description/DescriptionContent';
 class StoryDescription extends React.Component {
   editDescription() {
     const { usernames, name, value, onChange } = this.props;
-    return(
+    return (
       <AtWhoInput
         usernames={usernames}
         name={name}
@@ -16,8 +16,9 @@ class StoryDescription extends React.Component {
   }
 
   descriptionContent() {
-    const { linkedStories, isReadonly, description, onClick, value } = this.props;
-    return(
+    const { linkedStories, isReadonly, description, onClick, value } =
+      this.props;
+    return (
       <DescriptionContent
         linkedStories={linkedStories}
         isReadonly={isReadonly}
@@ -33,10 +34,12 @@ class StoryDescription extends React.Component {
     return (
       <Fragment>
         <label htmlFor={name}>
-          { I18n.t('activerecord.attributes.story.description') }
+          {I18n.t('activerecord.attributes.story.description')}
         </label>
         <br />
-        { (isNew || editingDescription) ? this.editDescription() : this.descriptionContent() }
+        {isNew || editingDescription
+          ? this.editDescription()
+          : this.descriptionContent()}
       </Fragment>
     );
   }
