@@ -19,7 +19,7 @@ describe NoteOperations::UserNotification do
 
     it 'sends notification', :aggregate_failures do
       expect(Notifications).to receive(:new_note).with(note.id, users_to_notify).and_return(notifier)
-      expect(notifier).to receive(:deliver)
+      expect(notifier).to receive(:deliver_later)
 
       subject.call
     end
@@ -59,7 +59,7 @@ describe NoteOperations::UserNotification do
 
       it 'sends notitication to the mentioned user', :aggregate_failures do
         expect(Notifications).to receive(:new_note).with(note.id, users_to_notify).and_return(notifier)
-        expect(notifier).to receive(:deliver)
+        expect(notifier).to receive(:deliver_later)
 
         subject.call
       end
