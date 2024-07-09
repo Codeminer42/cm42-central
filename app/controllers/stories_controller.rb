@@ -7,6 +7,10 @@ class StoriesController < ApplicationController
 
   before_action :set_project
 
+  def done_iterations
+    authorize @project
+  end
+
   def done
     authorize @project
   end
@@ -20,7 +24,7 @@ class StoriesController < ApplicationController
   def create
     @story = policy_scope(Story).build
     authorize @story
-result = StoryOperations::Create.call(
+    result = StoryOperations::Create.call(
       project: @project,
       story: @story,
       story_attrs: allowed_params,

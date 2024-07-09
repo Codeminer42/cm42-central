@@ -3,6 +3,7 @@ class ProjectPolicy < ApplicationPolicy
     admin? || current_user.projects.find_by(id: record.id)
   end
 
+  alias done_iterations? show?
   alias done? show?
   alias accepted_search_results? show?
 

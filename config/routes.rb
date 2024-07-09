@@ -13,7 +13,9 @@ Rails.application.routes.draw do
     resources :invitations, only: [:new, :create, :show, :update]
     resources :stories, only: [:create, :update, :destroy] do
       collection do
-        get :done, :accepted_search_results
+        get :done_iterations
+        get :done
+        get :accepted_search_results
       end
       resources :comments, only: [:index, :create, :show, :destroy]
       resources :tasks, only: [:create, :destroy, :update]
