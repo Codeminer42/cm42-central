@@ -105,7 +105,7 @@ describe StoryOperations::Update do
       context 'when story_type is feature' do
         context 'and estimate is not nil' do
           let(:story_params) do
-            { story_type: 'feature', state: 'started', estimate: 1 }
+            { story_type: 'feature', state: 'started', estimate: 2 }
           end
 
           it 'does not change state to unscheduled' do

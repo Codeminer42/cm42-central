@@ -6,11 +6,12 @@ class Activity < ActiveRecord::Base
   validates :action, presence: true, inclusion: { in: %w[create update destroy] }
   validates :project, presence: true
   validates :user, presence: true
-  validates :subject, presence: true, subject_changed: true
+  validates :subject, subject_changed: true
+  validates :subject, presence: true, unless: ->(r){ r.action == 'destroy' }
 
   serialize :subject_changes, type: Hash, coder: JSON
 
-  before_save :parse_changes
+  before_validation :parse_changes
 
   def compile_changes
     @compile_changes ||= Change.from(self)

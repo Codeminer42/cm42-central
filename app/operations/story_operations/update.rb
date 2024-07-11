@@ -76,7 +76,7 @@ module StoryOperations
     end
 
     def save_comment
-      if comment_attrs.present?
+      if comment_attrs.values.flatten.any?(&:present?)
         CommentOperations::Create.call(
           story: story,
           comment_attrs: comment_attrs,
