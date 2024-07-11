@@ -52,7 +52,8 @@ class ImportCommentWorker
   def comment_attrs
     email_text = extract_text(@mail)
     body = EmailReplyParser.parse_reply(email_text)
-    { body:, user: }
+    attachments = extract_attachments(@mail)
+    { body:, user:, attachments: }
   end
 
   def extract_text(part)
@@ -66,6 +67,16 @@ class ImportCommentWorker
       part.body.decoded
     else
       '' # Return empty string for other types of parts (e.g., attachments)
+    end
+  end
+
+  def extract_attachments mail
+    mail.attachments.map do |attachment|
+      {
+        io: StringIO.new(attachment.decoded),
+        filename: attachment.filename,
+        content_type: attachment.mime_type,
+      }
     end
   end
 end

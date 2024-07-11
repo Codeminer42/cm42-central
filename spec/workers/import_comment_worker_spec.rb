@@ -65,5 +65,33 @@ describe ImportCommentWorker do
       expect(FixtureIncomingEmail.find(comment.smtp_id)).to be_destroyed
     end
   end
+
+  context "with reply with attachment" do
+    let(:email) { "reply_with_attachment.eml" }
+
+    it "sets story, user, comment, and destroys incoming email" do
+      subject.perform(comment.id)
+      comment.reload
+      expect(comment.attributes).to include({
+        "story_id" => story.id,
+        "user_id" => user.id,
+        "user_name" => user.name,
+        "body" => "testing reply with attachment",
+      })
+      expect(comment.attachments.length).to eq 1
+      expect(comment.attachments.first.blob.attributes).to include({
+        "byte_size" => 876444,
+        "filename" => "Screenshot from 2024-04-20 12-39-57.png",
+        "content_type" => "image/png",
+        "metadata" => {
+          "analyzed" => true,
+          "identified" => true,
+          "width" => 1920,
+          "height" => 1200,
+        },
+      })
+      expect(FixtureIncomingEmail.find(comment.smtp_id)).to be_destroyed
+    end
+  end
 end
 
