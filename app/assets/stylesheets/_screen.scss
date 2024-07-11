@@ -304,24 +304,6 @@ div.story-title abbr.initials {
   }
 }
 
-/* Iteration markers */
-.iteration {
-  padding: 5px 10px;
-  font-size: 11px;
-  color: $lightgrey-12;
-  background-color: $darkgrey-7;
-  border-top: 1px solid $darkgrey-8;
-  border-bottom: 1px solid $darkgrey-9;
-}
-
-.iteration .points {
-  float: right;
-}
-
-.collapsed-iteration {
-  display: none;
-}
-
 /* Story action buttons */
 .state-actions {
   order: 3;

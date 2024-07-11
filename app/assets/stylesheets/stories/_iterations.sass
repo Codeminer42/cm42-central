@@ -1,0 +1,50 @@
+/* Iteration markers */
+.iteration
+  display: flex
+  justify-content: space-between
+  align-items: center
+  padding: 5px 10px
+  font-size: 11px
+  color: $lightgrey-12
+  background-color: $darkgrey-7
+  border-top: 1px solid $darkgrey-8
+  border-bottom: 1px solid $darkgrey-9
+
+.collapsed-iteration
+  display: none
+
+.toggle-iteration
+  display: none
+  position: relative
+  top: 2px
+  border-width: 5px 0 5px 6px
+  border-style: solid
+  border-color: transparent transparent transparent #a0a0a0
+  cursor: pointer
+  margin-right: 10px
+  transform-origin: 50% 50%
+  transition: transform 0.15s linear
+  transform: rotate(0deg)
+
+.iteration-stories
+  overflow: hidden
+  transition: max-height 0.2s linear
+
+.toggle-iteration-input
+  position: absolute
+  z-index: 1
+  opacity: 0.01
+  &:checked
+    & + .iteration
+      .toggle-iteration
+        transform: rotate(90deg)
+      & + .iteration-stories
+        max-height: 2000px
+
+
+.done_column
+  .loading-stories
+    .iteration-stories
+      max-height: 0px
+    .toggle-iteration
+      display: inline-block

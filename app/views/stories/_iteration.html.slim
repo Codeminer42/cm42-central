@@ -1,10 +1,12 @@
 - cache iteration do
   - if iteration.number
     - total = defined?(total) ? total : nil
+    input.toggle-iteration-input type="checkbox" id="iteration-toggle-#{iteration.number}"
     .iteration id="iteration-#{iteration.number}"
-      | #{iteration.number} - #{iteration.start_date.to_date.to_fs(:rfc822_with_day)}
+      .flex
+        label.toggle-iteration for="iteration-toggle-#{iteration.number}"
+        | #{iteration.number} - #{iteration.start_date.to_date.to_fs(:rfc822_with_day)}
       span.points
         = [iteration.points, total].compact.join("/")
-
-  = render iteration.stories.with_dependencies
-
+  .iteration-stories
+    = render iteration.stories.with_dependencies
