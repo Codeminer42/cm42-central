@@ -534,7 +534,8 @@ a.button {
 }
 
 // Comments
-div.comment {
+.comment {
+  font-style: normal;
   padding: 0.3em;
   margin: 0.3em 0.3em 0.6em;
   border-bottom: 1px dotted #ccc;
@@ -545,7 +546,7 @@ div.comment {
     padding: 0.3em;
   }
 
-  div.comment_meta {
+  .comment_meta {
     color: $aluminium-4;
     font-style: italic;
     font-size: x-small;
@@ -553,7 +554,7 @@ div.comment {
     margin-right: 5px;
   }
 }
-.popover div.comment {
+.popover .comment {
  a.delete-comment {
     display: none;
   }
