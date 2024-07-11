@@ -6,6 +6,7 @@ class ActivityGroup
   attr_reader :activities
 
   def cover? activity
+    return false if @activities.first.group_key != activity.group_key
     dates = @activities.map(&:created_at)
     min = dates.min - 5.minutes
     max = dates.max + 5.minutes
