@@ -93,15 +93,19 @@ class Board < Struct.new(:project, :query)
   def recent_activity_groups
     groups = recent_activities.group_by do |activity|
       if activity.subject_type == "Comment"
-        activity.subject&.story
+        activity.subject&.story_id
+      elsif activity.subject_destroyed_type == 'Comment'
+        activity.subject_changes["story_id"]
+      elsif activity.subject_destroyed_type == 'Story'
+        activity.subject_changes["id"]
       else
-        activity.subject
+        activity.subject_id
       end
     end
 
     groups.delete(nil)
 
-    groups.reduce([]) do |array, (story, activities)|
+    groups.reduce([]) do |array, (story_id, activities)|
       activities.each do |activity|
         activity_group = array.last
         if activity_group&.cover?(activity)
