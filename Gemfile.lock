@@ -265,6 +265,7 @@ GEM
       zeitwerk (~> 2.6)
     edge_rider (2.3.0)
       activerecord (>= 3.2)
+    email_reply_parser (0.5.11)
     email_spec (2.2.2)
       htmlentities (~> 4.3.3)
       launchy (~> 2.1)
@@ -659,6 +660,7 @@ DEPENDENCIES
   differ
   dry-matcher
   dry-monads
+  email_reply_parser
   email_spec (~> 2.0)
   enumerize (~> 2.5.0)
   exception_notification!

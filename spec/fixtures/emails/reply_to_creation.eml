@@ -1,0 +1,101 @@
+Return-Path: <micah@botandrose.com>
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+ by inbound-smtp.us-west-2.amazonaws.com with SMTP id gqafkeffcr70etq5ao9be000a6o1ocfvv72lcq01
+ for notifications@tracker.botandrose.com;
+ Thu, 11 Jul 2024 13:39:20 +0000 (UTC)
+X-SES-Spam-Verdict: PASS
+X-SES-Virus-Verdict: PASS
+Received-SPF: softfail (spfCheck: transitioning domain of botandrose.com does not designate 209.85.215.181 as permitted sender) client-ip=209.85.215.181; envelope-from=micah@botandrose.com; helo=mail-pg1-f181.google.com;
+Authentication-Results: amazonses.com;
+ spf=softfail (spfCheck: transitioning domain of botandrose.com does not designate 209.85.215.181 as permitted sender) client-ip=209.85.215.181; envelope-from=micah@botandrose.com; helo=mail-pg1-f181.google.com;
+ dkim=pass header.i=@botandrose-com.20230601.gappssmtp.com;
+ dmarc=fail header.from=botandrose.com;
+X-SES-RECEIPT: AEFBQUFBQUFBQUFGK0VLSzBrS1Myd0I0OUlDN1N1Yy9SbzVrSWhpQ3B2U1hoV3lSdlJJSTJDOWMxbmtGTGF1MTJjZGtLUWFiOE1HYW9NNXJ3OU5xZ1ZSdmtYQWlOemtGc2xySS9xSUM3U1BRQlNWQyszcWpKZkxuMlRhbVdNNlVELzFjS3pvTlFMOTZhSkhjUjNoWmMzelVJWGM4YVVqQkJHVXp2U0RwU2xZVHA0T1ZvVEJETTNqMXRWWU5tcEVDeVdpUmZibjNFZ0JFdkVsclR3SXA4QVFvRHB3S054TTJybnJNMGJaOWlNbXorczFzbUs2S2Z0M29QLzc2RENuLzI4WUZpRjd2VzdIUm56RFMxeFhsQ2Z0VENQZW9CcVVJeTJjRUdqM1JyQlVnMENjbFdtN3ZBT1E9PQ==
+X-SES-DKIM-SIGNATURE: a=rsa-sha256; q=dns/txt; b=jimkUGvBqQrY4tmn9fmUQ+XERdHjNwxyPJdgot2mTxXgBQXr/tzSFgC6mtXQyn9n7oykCB8gpeNmPiyryj6I/sfJWcQu5+W3p8/DXiPO2TDOCYtTEImKruersdH7nSd2H0594LUH+JUiGTyr4+SPD6SXSbyTlbGFnutCV3FoTmU=; c=relaxed/simple; s=7v7vs6w47njt4pimodk5mmttbegzsi6n; d=amazonses.com; t=1720705161; v=1; bh=hy7HD2vejMzc1sayZjDGbc1IsBVMJj9dC6WRtV+2FPQ=; h=From:To:Cc:Bcc:Subject:Date:Message-ID:MIME-Version:Content-Type:X-SES-RECEIPT;
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-70df2135426so542041a12.2
+        for <notifications@tracker.botandrose.com>; Thu, 11 Jul 2024 06:39:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=botandrose-com.20230601.gappssmtp.com; s=20230601; t=1720705160; x=1721309960; darn=tracker.botandrose.com;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hy7HD2vejMzc1sayZjDGbc1IsBVMJj9dC6WRtV+2FPQ=;
+        b=o/5RAMrXJTGW566rOFhIZKyv6flyWxWfrBNRdHC8TPQ0GaPB2MySATzSVDm+IGXNgC
+         jnHKL1RLrbOvQ74ooDOIDwZqiMrmGFt5s8sGngupPj8Xv0sk6aF1mKIpztrFPB8GJZZa
+         E2GF+tAvOKt0wF8JEgSAo9YNEwow2Rsdj/CnkfYd+GnZpMhDcMo3JffGbZFWUa8mH9eR
+         mTPAxD6bvEglyn9m58fjx8aOt2YpUZjRLGL9IitOtBPs0pJxdSKJB1Y4jSW+5uEE0rBk
+         128ROEKd/UEzxUozEju2TOhgxD3k7plauxBgypL6WewZ4/2WfB+ZLUc9VQF4LumGmalw
+         kJ8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720705160; x=1721309960;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hy7HD2vejMzc1sayZjDGbc1IsBVMJj9dC6WRtV+2FPQ=;
+        b=YeQ2inOjdIOVja+gEqh+cIdYJu8ghrzd3eu/to5tiYAXfYNmcjYUqmXI7hRLEbzQN7
+         E3vXrvjGh2Q8sD4Lqb+5RKekJeR/XOs2ww6Nsoi7e9NnZcpDWELJsFzMUTOoc4T4mMnU
+         cE3ofcv+QEiipKHxYvYk8GhiDyEX6y+vPDVDoY4kml7SkPPB4d17qaPkCA+ErCXegMLM
+         NIEXCo2MlAsdgRaqZ7gm6bit5QQJeM6nyJ3AnQSrsak0CQRNtvQfZaeg3ROyXbXy1+NA
+         n/8sKLQIgQK2Yut03Lr7Bw1a7uZK0gAjkzck7r0ddF+jYGBiEVBplbEQV2fSNKfhezxi
+         98zg==
+X-Gm-Message-State: AOJu0Yzu+1nX5s6Q8TVNcsjVSQ49xYclNnBVTwUPEqHb4oAU++1kvotJ
+	EKEqcMixidYyyHuXwDFl2ICrM/hGnAFpReIqkfNRrHLvU2ebVPBD7YKvwFW8YZjC/STeVbyjcEt
+	9JA==
+X-Google-Smtp-Source: AGHT+IE+Xi07/zyul1f5frTNHuCRjJ7EXNDAgrOwX7ji3109rmglmA9fgis9y29Xo9QTW+kiZ0eHcw==
+X-Received: by 2002:a05:6a20:9188:b0:1c1:d02b:b94f with SMTP id adf61e73a8af0-1c2984e369emr9381005637.55.1720705159832;
+        Thu, 11 Jul 2024 06:39:19 -0700 (PDT)
+Return-Path: <micah@botandrose.com>
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com. [209.85.215.174])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fbb6ab80bdsm51774865ad.149.2024.07.11.06.39.19
+        for <notifications@tracker.botandrose.com>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Jul 2024 06:39:19 -0700 (PDT)
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-70df2135426so542016a12.2
+        for <notifications@tracker.botandrose.com>; Thu, 11 Jul 2024 06:39:19 -0700 (PDT)
+X-Received: by 2002:a05:6a20:6f0e:b0:1be:cedb:9a97 with SMTP id
+ adf61e73a8af0-1c2984e66bdmr7965299637.60.1720705158730; Thu, 11 Jul 2024
+ 06:39:18 -0700 (PDT)
+MIME-Version: 1.0
+References: <010101909d7486ed-8dac2efc-1c93-4e6e-92a9-42e47938b958-000000@us-west-2.amazonses.com>
+In-Reply-To: <010101909d7486ed-8dac2efc-1c93-4e6e-92a9-42e47938b958-000000@us-west-2.amazonses.com>
+From: Micah Geisel <micah@botandrose.com>
+Date: Thu, 11 Jul 2024 15:39:06 +0200
+X-Gmail-Original-Message-ID: <CACTxBsQ3foipG0pqKRdWaUL+quDhjUaNwbd0f2yFSH5hKe_p4g@mail.gmail.com>
+Message-ID: <CACTxBsQ3foipG0pqKRdWaUL+quDhjUaNwbd0f2yFSH5hKe_p4g@mail.gmail.com>
+Subject: Re: [Tracker] Problem replying to emails?
+To: BARD Tracker <notifications@tracker.botandrose.com>
+Content-Type: multipart/alternative; boundary="000000000000bff71b061cf8e330"
+
+--000000000000bff71b061cf8e330
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+testing reply to story creation
+
+On Wed, Jul 10, 2024 at 6:23=E2=80=AFPM BARD Tracker <
+notifications@tracker.botandrose.com> wrote:
+
+> Bug Clicking user initials in DONE col doesn't load search results col wa=
+s
+> created by Michael Gubitosa (@gubs)
+>
+> https://tracker.botandrose.com/projects/tracker#story-1517
+>
+
+--000000000000bff71b061cf8e330
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">testing reply to story creation</div><br><div class=3D"gma=
+il_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jul 10, 2024 at 6:2=
+3=E2=80=AFPM BARD Tracker &lt;<a href=3D"mailto:notifications@tracker.botan=
+drose.com">notifications@tracker.botandrose.com</a>&gt; wrote:<br></div><bl=
+ockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-lef=
+t:1px solid rgb(204,204,204);padding-left:1ex">Bug Clicking user initials i=
+n DONE col doesn&#39;t load search results col was created by Michael Gubit=
+osa (@gubs)<br>
+<br>
+<a href=3D"https://tracker.botandrose.com/projects/tracker#story-1517" rel=
+=3D"noreferrer" target=3D"_blank">https://tracker.botandrose.com/projects/t=
+racker#story-1517</a><br>
+</blockquote></div>
+
+--000000000000bff71b061cf8e330--

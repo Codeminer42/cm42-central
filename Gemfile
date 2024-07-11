@@ -24,6 +24,7 @@ gem 'aws-sdk-s3'
 gem 'image_processing'
 gem 'pivotal-tracker-api', github: 'AgileVentures/pivotal-tracker-api'
 gem 'sorted_set'
+gem 'email_reply_parser'
 
 # controller
 gem 'pundit'

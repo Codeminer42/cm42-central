@@ -25,7 +25,7 @@ describe ImportCommentWorker do
   let!(:user) { create :user, name: "Micah Geisel", email: "micah@botandrose.com", projects: [project] }
 
   let(:comment) do
-    comment = Comment.new(id: 1, smtp_id: "reply.eml")
+    comment = Comment.new(id: 1, smtp_id: email)
     comment.save(validate: false)
     comment
   end
@@ -34,16 +34,36 @@ describe ImportCommentWorker do
     stub_const("IncomingEmail", FixtureIncomingEmail)
   end
 
-  it "sets story, user, comment, and destroys incoming email" do
-    subject.perform(comment.id)
-    comment.reload
-    expect(comment.attributes).to include({
-      "story_id" => story.id,
-      "user_id" => user.id,
-      "user_name" => user.name,
-      "body" => "testing reply 3",
-    })
-    expect(FixtureIncomingEmail.find(comment.smtp_id)).to be_destroyed
+  context "with reply to creation email" do
+    let(:email) { "reply_to_creation.eml" }
+
+    it "sets story, user, comment, and destroys incoming email" do
+      subject.perform(comment.id)
+      comment.reload
+      expect(comment.attributes).to include({
+        "story_id" => story.id,
+        "user_id" => user.id,
+        "user_name" => user.name,
+        "body" => "testing reply to story creation",
+      })
+      expect(FixtureIncomingEmail.find(comment.smtp_id)).to be_destroyed
+    end
+  end
+
+  context "with reply to comment email" do
+    let(:email) { "reply_to_comment.eml" }
+
+    it "sets story, user, comment, and destroys incoming email" do
+      subject.perform(comment.id)
+      comment.reload
+      expect(comment.attributes).to include({
+        "story_id" => story.id,
+        "user_id" => user.id,
+        "user_name" => user.name,
+        "body" => "testing reply 3",
+      })
+      expect(FixtureIncomingEmail.find(comment.smtp_id)).to be_destroyed
+    end
   end
 end
 

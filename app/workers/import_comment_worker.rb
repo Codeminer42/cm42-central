@@ -51,7 +51,7 @@ class ImportCommentWorker
 
   def comment_attrs
     email_text = extract_text(@mail)
-    body = email_text.split(/\r\n\r\n.+BARD Tracker <[^>]+>/)[0]
+    body = EmailReplyParser.parse_reply(email_text)
     { body:, user: }
   end
 
