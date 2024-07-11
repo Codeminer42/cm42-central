@@ -91,6 +91,18 @@ class Activity < ActiveRecord::Base
     end
   end
 
+  def group_key
+    if subject_type == "Comment"
+      subject&.story_id
+    elsif subject_destroyed_type == 'Comment'
+      subject_changes["story_id"].first
+    elsif subject_destroyed_type == 'Story'
+      subject_changes["id"].first
+    else
+      subject_id
+    end
+  end
+
   def merge_story!(activity)
     return if subject_type != 'Story' # story only
     return if subject_id != activity.subject_id # only merge the exact same story change
