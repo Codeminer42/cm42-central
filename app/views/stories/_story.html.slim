@@ -29,7 +29,8 @@
       .story-title
         = story.title
         '
-        a.initials href="?q=user:#{story.owned_by_initials}" title=story.owned_by_name = story.owned_by_initials
+        a.initials href="?q=user:#{story.owned_by_initials}" title=story.owned_by_name data-turbo-frame="_top"
+          = story.owned_by_initials
 
     .editing
       = form_for([@project, story], method: "delete", html: { id: "delete_story_#{story.id}" }) {}
