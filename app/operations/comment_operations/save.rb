@@ -1,11 +1,12 @@
 module CommentOperations
-  class Create
+  class Save
     include Operation
 
     def initialize(story:, comment_attrs:, current_user:, comment: nil)
       @story = story
       @comment_attrs = comment_attrs
       @comment = comment || story.comments.build
+      @new_comment = comment.nil? || (comment.smtp_id.present? && comment.body.nil?)
       @current_user = current_user
     end
 
@@ -52,7 +53,7 @@ module CommentOperations
       Success ::Base::ActivityRecording.create_activity(
         comment,
         current_user: current_user,
-        action: 'create'
+        action: @new_comment ? 'create' : 'update'
       )
     end
   end

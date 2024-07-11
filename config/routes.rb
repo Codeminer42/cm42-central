@@ -18,7 +18,7 @@ Rails.application.routes.draw do
         get :done
         get :accepted_search_results
       end
-      resources :comments, only: [:index, :create, :show, :destroy]
+      resources :comments
       resources :tasks, only: [:create, :destroy, :update]
       patch :transition, on: :member
     end

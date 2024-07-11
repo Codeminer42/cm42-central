@@ -5,7 +5,7 @@ class ImportCommentWorker
     comment = Comment.find(comment_id)
     incoming_email = IncomingEmail.find(comment.smtp_id)
     @mail = Mail.read_from_string(incoming_email.read)
-    result = CommentOperations::Create.call(
+    result = CommentOperations::Save.call(
       story:,
       comment_attrs:,
       current_user: user,

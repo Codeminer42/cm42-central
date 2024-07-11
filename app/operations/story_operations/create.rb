@@ -65,7 +65,7 @@ module StoryOperations
 
     def save_comment
       if comment_attrs.present?
-        CommentOperations::Create.call(
+        CommentOperations::Save.call(
           story: story,
           comment_attrs: comment_attrs,
           current_user: current_user

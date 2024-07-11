@@ -1,0 +1,10 @@
+= turbo_frame_tag @comment do
+  dfn.comment
+    .comment_form.clearfix
+      = form_for [@project, @story, @comment] do |form|
+        = form.text_area :body, class: "form-control comment-textarea", data: { story_target: "permanent", story_form_target: "comment", autocomplete_target: "field", controller: "textarea-autogrow" }
+        = form.label :attachments, "Attachment(s)"
+        = form.bard_file_field :attachments, multiple: true, data: { turbo_permanent: true, story_form_target: "attachment" }
+        button.add-comment.btn.btn-default.btn-xs type="submit"
+          | Update comment
+

@@ -545,6 +545,10 @@ a.button {
     font-size: x-small;
     text-align: right;
     margin-right: 5px;
+    a{
+      display: inline-block;
+      margin: 0 2px;
+    }
   }
 }
 .popover .comment {

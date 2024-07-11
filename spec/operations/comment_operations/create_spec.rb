@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe CommentOperations::Create do
+describe CommentOperations::Save do
   describe '#call' do
-    subject { -> { CommentOperations::Create.call(story: story, comment_attrs: comment_params, current_user: user) } }
+    subject { -> { described_class.call(story: story, comment_attrs: comment_params, current_user: user) } }
 
     let(:membership) { create(:membership) }
     let(:user)       { membership.user }

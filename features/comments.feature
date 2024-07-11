@@ -99,8 +99,8 @@ Feature: Stories can contain comments
     And I attach "screenshot.png" to "Attachment(s)"
     And I press "Add comment"
     Then I should see the following comments:
-      | this is a comment                          | Micah Geisel |                |
-      | @gubs this is a comment with an attachment | Micah Geisel | screenshot.png |
+      | Micah Geisel | this is a comment                          |                |
+      | Micah Geisel | @gubs this is a comment with an attachment | screenshot.png |
     And "gubs@botandrose.com" should receive an email from "notifications@tracker.botandrose.com" with the subject "[Example Project] WOW" and the following body:
       """
       Micah Geisel added the following comment to the story 'WOW':
@@ -115,6 +115,18 @@ Feature: Stories can contain comments
 
       # http://tracker.botandrose.com/projects/example-project#story-1
       # """
+
+  Scenario: User edits a comment
+    Given I am logged in as "micah@botandrose.com"
+    And I am on the "Example Project" project page
+    And I open the "WOW" story
+    Then I should see the following comments:
+      | Micah Geisel | this is a comment |
+    When I follow "Edit" within the "this is a comment" comment
+    And I fill in "comment_body" with "edit comment" within the edit comment form
+    And I press "Update comment"
+    Then I should see the following comments:
+      | Micah Geisel | edit comment |
 
   Scenario: User deletes comment from a story
     Given I am logged in as "micah@botandrose.com"
@@ -149,4 +161,3 @@ Feature: Stories can contain comments
     When I open the "With comment" story
     Then I should see the following comments:
       | this is a comment on creation | Micah Geisel |
-

@@ -1,13 +1,15 @@
 - @project ||= comment.project
-dfn.comment
-  dt.user => comment.user_name
-  dd.comment_body => comment_format(comment, @project)
-  dd.attachments
-    - comment.attachments.each do |attachment|
-      li = link_to rails_blob_url(attachment, disposition: "attachment"), class: "attachment" do
-        = attachment.filename
-  .comment_meta
-    relative-time.created_at datetime=comment.created_at
-    '
-    span = link_to "Delete", [@project, comment.story, comment], method: :delete, class: "delete-btn delete-comment", title: "Delete"
-
+= turbo_frame_tag comment do
+  - unless comment.destroyed?
+    dfn.comment
+      dt.user => comment.user_name
+      dd.comment_body => comment_format(comment, @project)
+      dd.attachments
+        - comment.attachments.each do |attachment|
+          li = link_to rails_blob_url(attachment, disposition: "attachment"), class: "attachment" do
+            = attachment.filename
+      .comment_meta
+        relative-time.created_at datetime=comment.created_at
+        '
+        = link_to "Edit", [:edit, @project, comment.story, comment], title: "Edit"
+        = link_to "Delete", [@project, comment.story, comment], method: :delete, class: "delete-btn delete-comment", title: "Delete"

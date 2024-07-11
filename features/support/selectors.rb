@@ -37,6 +37,9 @@ module WithinHelpers
     when /the "(.+)?" comment/
       [".commentlist .comment", text: $1]
 
+    when /the edit comment form/
+      ".commentlist form"
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
