@@ -106,7 +106,7 @@ class Board < Struct.new(:project, :query)
     groups.delete(nil)
 
     groups.reduce([]) do |array, (story_id, activities)|
-      activities.each do |activity|
+      activities.select(&:displayable?).each do |activity|
         activity_group = array.last
         if activity_group&.cover?(activity)
           activity_group << activity
