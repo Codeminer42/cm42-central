@@ -87,7 +87,10 @@ class Board < Struct.new(:project, :query)
   end
 
   def recent_activities
-    project.activities.order(created_at: :desc).limit(50)
+    project.activities
+      .where(subject_type: %w[Story Comment])
+      .order(created_at: :desc)
+      .limit(50)
   end
 
   def recent_activity_groups

@@ -111,7 +111,7 @@ class Activity < ActiveRecord::Base
   end
 
   def parse_changes
-    if action == 'update'
+    if action == 'create' || action == 'update'
       self.subject_changes = subject.saved_changes
     elsif action == 'destroy'
       self.subject_changes = subject.attributes

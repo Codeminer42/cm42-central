@@ -1,4 +1,15 @@
 namespace :data do
+  task :backfill_comment_creation_activities => :environment do
+    Activity.where(subject_type: "Comment", subject_changes: {}).find_each do |activity|
+      next unless subject = activity.subject rescue nil
+      subject_changes = subject.attributes.reduce({}) do |attrs, (key, value)|
+        next attrs if value.nil?
+        attrs.merge key.to_s => [nil, value]
+      end
+      activity.update_column :subject_changes, subject_changes
+    end
+  end
+
   task :fix_comment_story_links => :environment do
     Project.find_each do |project|
       project.comments.where("body REGEXP '#\\\\d{2,}\\\\b'").find_each do |comment|
