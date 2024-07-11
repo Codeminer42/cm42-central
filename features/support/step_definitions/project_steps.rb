@@ -1,6 +1,6 @@
 Given "the following projects exist:" do |table|
   table.create! Project do
-    has_many :users, name_field: :email
+    has_many :users, field: :email
     default(:start_date) { Time.zone.now }
     default(:point_scale) { "none" }
   end

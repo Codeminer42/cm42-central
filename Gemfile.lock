@@ -176,7 +176,7 @@ GEM
       capybara (>= 1.0, < 4)
       launchy
     chartkick (5.0.7)
-    chop (0.28.1)
+    chop (0.29.0)
       activerecord
       capybara
       cucumber

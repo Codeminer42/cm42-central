@@ -1,12 +1,13 @@
 - @project ||= comment.project
-.comment
-  .comment_body => comment_format(comment, @project)
-  .comment_meta
-    span.user => comment.user_name
-    span.created_at => comment.created_at
-    span = link_to "Delete", [@project, comment.story, comment], method: :delete, class: "delete-btn delete-comment", title: "Delete"
-  .attachments
+dfn.comment
+  dt.user => comment.user_name
+  dd.comment_body => comment_format(comment, @project)
+  dd.attachments
     - comment.attachments.each do |attachment|
-      => link_to rails_blob_url(attachment, disposition: "attachment"), class: "attachment" do
+      li = link_to rails_blob_url(attachment, disposition: "attachment"), class: "attachment" do
         = attachment.filename
+  .comment_meta
+    relative-time.created_at datetime=comment.created_at
+    '
+    span = link_to "Delete", [@project, comment.story, comment], method: :delete, class: "delete-btn delete-comment", title: "Delete"
 
