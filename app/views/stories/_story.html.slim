@@ -35,7 +35,7 @@
     .editing
       = form_for([@project, story], method: "delete", html: { id: "delete_story_#{story.id}" }) {}
 
-      template data-controller="lazy-template" style="display: block"
+      template data-controller="lazy-template" style="display: block; height: 10px"
         = form_for [@project, story], namespace: dom_id(story), data: { controller: "story-form", story_target: "form" } do |form|
           = render "stories/form", form: form
 

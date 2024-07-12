@@ -39,7 +39,7 @@ describe CommentFormatter do
 
   it "detects and expands story links" do
     assert "duplicate of http://tracker.localhost/projects/tracker#story-1234", <<~HTML
-      <p>duplicate of <a class="story-link" href="http://tracker.localhost/projects/tracker#story-1234">#1234: bash face into javascript ecosystem</a></p>
+      <p>duplicate of <a class="story-link" href="http://tracker.localhost/projects/tracker#story-1234" data-turbo="false">#1234: bash face into javascript ecosystem</a></p>
     HTML
   end
 
