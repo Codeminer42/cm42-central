@@ -28,6 +28,7 @@ Feature: Stories can be added
 
   Scenario: Toggle all previous iterations
     When I uncheck "previous iterations"
+    And I expand all the collapsed iterations
     Then I should see the following project board:
       | Done          | Todo  | Icebox  |
       | F Accepted6   |       |         |

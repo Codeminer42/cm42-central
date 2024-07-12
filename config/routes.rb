@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resources :users, only: [:index, :create, :destroy]
     resources :memberships, only: [:create]
     resources :invitations, only: [:new, :create, :show, :update]
+    resources :iterations, only: :show
     resources :stories, only: [:create, :update, :destroy] do
       collection do
         get :done_iterations

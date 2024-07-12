@@ -27,7 +27,8 @@
         #done-iterations.loading-stories
           = turbo_frame_tag "done-iterations", src: [:done_iterations, @project, :stories], loading: "lazy", refresh: "morph" do
             .loading-stories-spinner Loading
-        = turbo_frame_tag "done", src: [:done, @project, :stories], loading: "lazy", refresh: "morph"
+        = turbo_frame_tag "done", src: [:done, @project, :stories], loading: "lazy", refresh: "morph" do
+          .loading-stories-spinner Loading
 
     .story-col.todo_column title="Todo"
       .column_header
@@ -65,8 +66,8 @@
         a.toggle-title href="#" title="Project History" Project History
         label.toggle-column title="Close" for="toggle-history" ×
       #history.column_content.activity_column
-        = turbo_frame_tag "history", src: [@project, :activities], loading: "lazy", refresh: "morph"
-
+        = turbo_frame_tag "history", src: [@project, :activities], loading: "lazy", refresh: "morph" do
+          .loading-stories-spinner Loading
     - if board.search?
       .story-col.search_results_column title="Search results"
         .column_header

@@ -14,7 +14,6 @@
   display: none
 
 .toggle-iteration
-  display: none
   position: relative
   top: 2px
   border-width: 5px 0 5px 6px
@@ -40,11 +39,12 @@
         transform: rotate(90deg)
       & + .iteration-stories
         max-height: 2000px
-
+        display: block
 
 .done_column
   .loading-stories
     .iteration-stories
       max-height: 0px
+      display: none
     .toggle-iteration
       display: inline-block

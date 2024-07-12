@@ -13,5 +13,10 @@
   .iteration-stories[
     data-controller=("sort" if iteration.sortable?)
     data-sort-positioning-column-value=(iteration.column_key if iteration.sortable?)
-  ] = render iteration.stories.with_dependencies
+  ]
+    - if iteration.lazy?
+      = turbo_frame_tag "iteration-#{iteration.number}", src: [iteration.project, iteration], loading: "lazy", refresh: "morph" do
+        .loading-stories-spinner Loading
+    - else
+      = render iteration.stories.with_dependencies
 
