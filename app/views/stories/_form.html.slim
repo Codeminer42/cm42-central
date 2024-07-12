@@ -45,13 +45,13 @@ div
     br
     = form.collection_select :requested_by_id, form.object.project.users, :id, :name, { include_blank: "---" }, { class: "form-control input-sm requested_by_id", data: { story_target: "permanent" } }
 
-  .form-group data-owned-by=""
+  .form-group
     = form.label :owned_by_id, "Owned by"
     br
     = form.collection_select :owned_by_id, form.object.project.users, :id, :name, { include_blank: "---" }, { class: "form-control input-sm owned_by_id", data: { story_target: "permanent" } }
 
 .form-group
-  .form-group data-tags=""
+  .form-group
     = form.label :labels
     br
     = form.text_field :labels, class: "form-control input-sm labels tagit-hidden-field", data: { story_target: "permanent" }
