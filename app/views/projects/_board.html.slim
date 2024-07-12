@@ -43,11 +43,11 @@
             |  #{board.current_accepted.stories.length} accepted stories
         #accepted
           = render board.current_accepted
-        #todo data-controller="sort" data-sort-positioning-column-value="#todo"
+        #todo
           = render board.current_todo
         #new_todo_story
           = render @new_todo_story
-        #unstarted data-controller="sort" data-sort-positioning-column-value="#unstarted"
+        #unstarted
           = render board.current_unstarted
 
     .story-col.icebox_column data-controller="column" title="Icebox"
@@ -57,7 +57,7 @@
         label.toggle-column title="Close" for="toggle-icebox" ×
       #new_icebox_story
         = render @new_icebox_story
-      #icebox.column_content.story_column data-controller="sort" data-sort-positioning-column-value="#icebox"
+      #icebox.column_content.story_column
         = render board.current_icebox
 
     .story-col.history_column

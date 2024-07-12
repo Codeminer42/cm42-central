@@ -14,5 +14,13 @@ class Iteration < Struct.new(:project, :stories, :start_date, :number, :key)
   def points
     0
   end
+
+  def sortable?
+    %w[todo unstarted icebox].include?(key)
+  end
+
+  def column_key
+    "##{key}"
+  end
 end
 

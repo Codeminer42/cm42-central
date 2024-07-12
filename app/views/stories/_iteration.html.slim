@@ -8,5 +8,8 @@
         | #{iteration.number} - #{iteration.start_date.to_date.to_fs(:rfc822_with_day)}
       span.points
         = [iteration.points, total].compact.join("/")
-  .iteration-stories
-    = render iteration.stories.with_dependencies
+  .iteration-stories[
+    data-controller=("sort" if iteration.sortable?)
+    data-sort-positioning-column-value=(iteration.column_key if iteration.sortable?)
+  ] = render iteration.stories.with_dependencies
+
