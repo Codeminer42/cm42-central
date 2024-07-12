@@ -6,13 +6,12 @@ class Iteration < Struct.new(:project, :stories, :start_date, :number, :key)
     end
   end
 
-
   def to_partial_path
     "stories/iteration"
   end
 
-  def points
-    0
+  def current?
+    start_date == Time.zone.now.beginning_of_week
   end
 
   def sortable?
