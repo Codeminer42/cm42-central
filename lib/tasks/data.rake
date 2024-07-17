@@ -1,4 +1,15 @@
 namespace :data do
+  task :move_story_to_project => :environment do
+    story_ids = [1530, 1531, 1532]
+    project_id = 2
+    Story.where(id: story_ids).each do |story|
+      story.update!(project_id: project_id, position: :last, positioning_column: "#todo", state: "started")
+      Activity.where(subject: [story, *story.comments]).each do |activity|
+        activity.update_columns(project_id: project_id, updated_at: Time.zone.now)
+      end
+    end
+  end
+
   task :backfill_comment_creation_activities => :environment do
     Activity.where(subject_type: "Comment", subject_changes: {}).find_each do |activity|
       next unless subject = activity.subject rescue nil
