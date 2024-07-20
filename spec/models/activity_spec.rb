@@ -49,7 +49,7 @@ describe Activity, type: :model do
     end
 
     it { is_expected.to be_invalid }
-    it { expect(subject.errors[:subject].count).to be(1) }
+    fit { expect(subject.errors[:subject].count).to eq(1) }
     it { expect(subject.errors[:subject].to_sentence).to eq("Record didn't change") }
   end
 
