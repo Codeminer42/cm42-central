@@ -1,3 +1,7 @@
+*{
+  position: relative;
+}
+
 a img {
   border: 0;
 }
@@ -55,6 +59,9 @@ div.column_content {
   border-right: 1px solid $black;
   border-left: 1px solid $black;
   max-height: calc(100vh - 145px);
+  height: calc(100vh - 145px);
+  position: relative;
+
 }
 
 /* Story columns headers */
@@ -122,6 +129,7 @@ label.toggle-column{
   height: 1px;
   opacity: 0.01;
   position: absolute;
+  //top: -50px;
 }
 
 /* Story types */
@@ -131,6 +139,7 @@ div.story {
   background-position: 4px 4px;
   background-color: $lightgrey-11;
   border-bottom: 1px solid $lightgrey-13;
+  position: relative;
 
   &:not(.editing):not(.unestimated) {
     min-height: 37px;
