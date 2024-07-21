@@ -2,7 +2,7 @@
 - story_dom_id = search_result ? "story-search-result-#{story.id}" : story_anchor(story)
 - story_dom_id += "-#{story.column.sub("#","")}" if story.new_record?
 
-- cache_if story.persisted?, story do
+- cache_if story.persisted?, [story, search_result: search_result] do
   .story.closed class=[story.story_type, story.state, ("new-story" if story.new_record?), ("searchResult" if search_result)] id=story_dom_id data-id=story.id data-position=story.position data-state=story.state data-story-type=story.story_type data-controller="story" data-action="click->story#open"
     input.toggle-story type="checkbox" data-controller=("scroll-into-view-on-check" if story.new_record?) data-story-target="checkbox" data-turbo-permanent=true id="#{story_dom_id}-toggle"
     .closed.flex
