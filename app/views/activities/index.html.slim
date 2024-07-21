@@ -1,3 +1,5 @@
-= turbo_frame_tag "history" do
+= turbo_frame_tag "history-page-#{@page}" do
   = render @activity_groups
+  = turbo_frame_tag "history-page-#{@page+1}", src: [@project, :activities, page: @page+1], loading: "lazy"
+    .loading-stories-spinner Loading
 

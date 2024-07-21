@@ -66,7 +66,7 @@
         a.toggle-title href="#" title="Project History" Project History
         label.toggle-column title="Close" for="toggle-history" ×
       #history.column_content.activity_column
-        = turbo_frame_tag "history", src: [@project, :activities], loading: "lazy", refresh: "morph" do
+        = turbo_frame_tag "history-page-0", src: [@project, :activities], loading: "lazy", refresh: "morph" do
           .loading-stories-spinner Loading
     - if board.search?
       .story-col.search_results_column title="Search results"
@@ -87,3 +87,4 @@
             = turbo_frame_tag "accepted-search-results", src: [:accepted_search_results, @project, :stories, q: @query], loading: "lazy", refresh: "morph" do
               .loading-stories-spinner Loading
           = render board.search_results.results.not_accepted, search_result: true
+

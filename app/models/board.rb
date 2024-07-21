@@ -86,15 +86,17 @@ class Board < Struct.new(:project, :query)
     )
   end
 
-  def recent_activities
+  def recent_activities page:
+    page_size = 50
     project.activities
       .where(subject_type: %w[Story Comment])
       .order(created_at: :desc)
-      .limit(50)
+      .offset(page * page_size)
+      .limit(page_size)
   end
 
-  def recent_activity_groups
-    groups = recent_activities.group_by(&:group_key)
+  def recent_activity_groups page:
+    groups = recent_activities(page:).group_by(&:group_key)
 
     groups.delete(nil)
 

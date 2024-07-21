@@ -3,7 +3,8 @@ class ActivitiesController < ApplicationController
   layout false
 
   def index
-    @activity_groups = @project.board.recent_activity_groups
+    @page = params[:page].to_i
+    @activity_groups = @project.board.recent_activity_groups(page: @page)
   end
 
   private
