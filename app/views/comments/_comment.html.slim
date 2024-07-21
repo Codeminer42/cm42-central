@@ -11,5 +11,6 @@
       .comment_meta
         relative-time.created_at datetime=comment.created_at
         '
-        = link_to "Edit", [:edit, @project, comment.story, comment], title: "Edit"
-        = link_to "Delete", [@project, comment.story, comment], method: :delete, class: "delete-btn delete-comment", title: "Delete"
+        span visible-to="admin user-#{comment.user_id}"
+          = link_to "Edit", [:edit, @project, comment.story, comment], title: "Edit"
+          = link_to "Delete", [@project, comment.story, comment], method: :delete, class: "delete-btn delete-comment", title: "Delete"

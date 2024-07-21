@@ -16,6 +16,13 @@ html
     = preload_link_tag "MaterialIcons-Regular.woff2"
 
     = stylesheet_link_tag :application, data: { turbo_track: "reload" }
+    style
+      | [visible-to] { display: none; }
+      - if current_user
+        | [visible-to~=user-#{current_user.id}] { display: revert; }
+        - if current_user.admin?
+          | [visible-to~=admin] { display: revert; }
+
     = javascript_importmap_tags
 
   body class=("board" if @fluid_layout) data-turbo="false"
