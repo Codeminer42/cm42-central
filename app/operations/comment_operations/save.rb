@@ -29,9 +29,13 @@ module CommentOperations
     def set_attrs
       comment.attributes = comment_attrs.merge({
         story: story,
-        user: current_user,
+        user: user,
       })
       Success comment
+    end
+
+    def user
+      @new_comment ? current_user : comment.user
     end
 
     def save_comment
