@@ -106,7 +106,7 @@ group :development, :test do
   gem 'bullet'
   gem 'bard'
   gem 'byebug'
-  gem 'parallel_tests', '~>3.9.0' # 3.10 pegs CPU
+  gem 'parallel_tests', '~>4.7.1' # 3.10 pegs CPU
   gem 'pry-rails'
   gem 'rspec-rails'
 end
