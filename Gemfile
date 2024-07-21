@@ -18,8 +18,8 @@ gem 'positioning'
 gem 'configuration'
 gem 'dalli', '~> 3.2.3'
 gem 'differ'
-gem 'enumerize', '~> 2.8.1'
-gem 'friendly_id', '~> 5.5.1'
+gem 'enumerize', '~> 2.5.0'
+gem 'friendly_id', '~> 5.2.5'
 gem 'aws-sdk-s3'
 gem 'image_processing'
 gem 'pivotal-tracker-api', github: 'AgileVentures/pivotal-tracker-api'
@@ -48,17 +48,17 @@ gem 'chartkick'
 # css
 gem 'sprockets', '~>4.0'
 gem 'sass-rails'
-gem 'material_icons', '~>4.0' # 3.0 breaks shit?
+gem 'material_icons', '~>2.0' # 3.0 breaks shit?
 gem 'bootstrap-sass', '~> 3.4.0'
 
 # js
-gem 'importmap-rails', '~>2.0' # 2.0 vendors
+gem 'importmap-rails', '~>1.0' # 2.0 vendors
 gem 'turbo-rails'
 gem 'stimulus-rails'
 gem 'redis'
 
 # production
-gem 'sidekiq', '~>7.3' # 7.0 requires redis 6.2+
+gem 'sidekiq', '~>6.0' # 7.0 requires redis 6.2+
 gem 'sidekiq-scheduler'
 gem 'sidekiq_mailer'
 gem 'exception_notification', github: 'smartinez87/exception_notification'
@@ -106,7 +106,7 @@ group :development, :test do
   gem 'bullet'
   gem 'bard'
   gem 'byebug'
-  gem 'parallel_tests', '~>4.7.1' # 3.10 pegs CPU
+  gem 'parallel_tests', '~>3.9.0' # 3.10 pegs CPU
   gem 'pry-rails'
   gem 'rspec-rails'
 end
