@@ -52,7 +52,7 @@ gem 'material_icons', '~>4.0' # 3.0 breaks shit?
 gem 'bootstrap-sass', '~> 3.4.0'
 
 # js
-gem 'importmap-rails', '~>1.0' # 2.0 vendors
+gem 'importmap-rails', '~>2.0' # 2.0 vendors
 gem 'turbo-rails'
 gem 'stimulus-rails'
 gem 'redis'
