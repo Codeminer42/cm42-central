@@ -6,15 +6,11 @@ updates:
       interval: "weekly"
     allow:
       - dependency-type: "all"
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
-    commit-message:
-      prefix: "bump dependencies"
-      include: "scope"
     rebase-strategy: "auto"
-    group:
-      # Group all dependencies into a single pull request
-      group-name: "all-dependencies"
-      group-slug: "all-dependencies"
+    groups:
+      semver_updates:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
 
