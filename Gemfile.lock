@@ -137,7 +137,7 @@ GEM
       thor (>= 0.19.0)
     bard-file_field (0.1.1)
       activestorage (~> 7.1.0)
-    bard-rake (0.22.1)
+    bard-rake (0.23.0)
       backhoe (>= 0.6.0)
       railties
       rake
@@ -325,7 +325,7 @@ GEM
       railties (>= 6.0)
       responders (>= 2)
     io-console (0.7.2)
-    irb (1.13.2)
+    irb (1.14.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     jmespath (1.6.2)
