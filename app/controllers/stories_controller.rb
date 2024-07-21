@@ -37,6 +37,11 @@ class StoriesController < ApplicationController
     redirect_to project_url(@project)
   end
 
+  def show
+    @story = policy_scope(Story).find(params[:id])
+    authorize @story
+  end
+
   def update
     @story = policy_scope(Story).find(params[:id])
     authorize @story

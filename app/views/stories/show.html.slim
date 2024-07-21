@@ -1,0 +1,5 @@
+- story = @story
+= turbo_frame_tag story do
+  = form_for [@project, story], namespace: dom_id(story), data: { controller: "story-form", story_target: "form" } do |form|
+    = render "stories/form", form: form
+

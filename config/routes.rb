@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     resources :memberships, only: [:create]
     resources :invitations, only: [:new, :create, :show, :update]
     resources :iterations, only: :show
-    resources :stories, only: [:create, :update, :destroy] do
+    resources :stories, only: [:create, :show, :update, :destroy] do
       collection do
         get :done_iterations
         get :done
