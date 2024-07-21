@@ -58,7 +58,7 @@ gem 'stimulus-rails'
 gem 'redis'
 
 # production
-gem 'sidekiq', '~>6.0' # 7.0 requires redis 6.2+
+gem 'sidekiq', '~>7.3' # 7.0 requires redis 6.2+
 gem 'sidekiq-scheduler'
 gem 'sidekiq_mailer'
 gem 'exception_notification', github: 'smartinez87/exception_notification'

@@ -547,10 +547,12 @@ GEM
     set (1.1.0)
     shoulda-matchers (6.2.0)
       activesupport (>= 5.2.0)
-    sidekiq (6.5.5)
-      connection_pool (>= 2.2.2)
-      rack (~> 2.0)
-      redis (>= 4.5.0)
+    sidekiq (7.3.0)
+      concurrent-ruby (< 2)
+      connection_pool (>= 2.3.0)
+      logger
+      rack (>= 2.2.4)
+      redis-client (>= 0.22.2)
     sidekiq-scheduler (5.0.5)
       rufus-scheduler (~> 3.2)
       sidekiq (>= 6, < 8)
@@ -701,7 +703,7 @@ DEPENDENCIES
   rspec-retry
   sass-rails
   shoulda-matchers
-  sidekiq (~> 6.0)
+  sidekiq (~> 7.3)
   sidekiq-scheduler
   sidekiq_mailer
   simplecov
