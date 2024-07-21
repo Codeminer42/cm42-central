@@ -378,7 +378,7 @@ GEM
       activerecord (>= 3.2)
       activesupport (>= 3.2)
       edge_rider (>= 0.2.5)
-    minitest (5.23.1)
+    minitest (5.24.1)
     mize (0.5.0)
     msgpack (1.7.2)
     multi_test (1.1.0)
@@ -474,7 +474,7 @@ GEM
       thor (~> 1.0, >= 1.2.2)
       zeitwerk (~> 2.6)
     rake (13.2.1)
-    ransack (4.1.1)
+    ransack (4.2.0)
       activerecord (>= 6.1.5)
       activesupport (>= 6.1.5)
       i18n
