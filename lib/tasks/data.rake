@@ -1,4 +1,20 @@
 namespace :data do
+  task :import_other_attachments => :environment do
+    PivotalProject.find_each do |pivotal_project|
+      pivotal_project.stories_attributes.each do |attrs|
+        attrs["comments"].each do |comment_attrs|
+          comment_attrs["attachments"].each do |attachment_attrs|
+            if attachment_attrs["kind"] != "file_attachment"
+              puts attrs["name"]
+              puts attrs["created_at"]
+              puts attachment_attrs["kind"]
+            end
+          end
+        end
+      end
+    end
+  end
+
   task :move_story_to_project => :environment do
     story_ids = [1530, 1531, 1532]
     project_id = 2
