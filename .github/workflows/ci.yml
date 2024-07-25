@@ -5,7 +5,7 @@ on:
     inputs:
       git-ref:
         description: Git Ref
-        default: master
+        default: $GITHUB_SHA
         required: true
 
 permissions:
