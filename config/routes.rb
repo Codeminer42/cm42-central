@@ -59,5 +59,8 @@ Rails.application.routes.draw do
   authenticate :user, ->(u) { u.admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end
+
+  mount ActionCable.server => '/cable'
+
   get '/404', to: 'errors#not_found', :via => :all
 end
