@@ -48,7 +48,7 @@ gem 'chartkick'
 # css
 gem 'sprockets', '~>4.0'
 gem 'sass-rails'
-gem 'material_icons', '~>2.0' # 3.0 breaks shit?
+gem 'material_icons', '~>4.0' # 3.0 breaks shit?
 gem 'bootstrap-sass', '~> 3.4.0'
 
 # js

@@ -366,7 +366,7 @@ GEM
       net-pop
       net-smtp
     marcel (1.0.4)
-    material_icons (2.2.1)
+    material_icons (4.0.0)
       railties (>= 3.2)
     matrix (0.4.2)
     memory_profiler (1.0.2)
@@ -679,7 +679,7 @@ DEPENDENCIES
   importmap-rails (~> 1.0)
   letter_opener
   letter_opener_web
-  material_icons (~> 2.0)
+  material_icons (~> 4.0)
   memory_profiler
   minidusen
   parallel_tests (~> 3.9.0)
