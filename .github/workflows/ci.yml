@@ -1,11 +1,13 @@
 name: ci
 on:
   pull_request_target:
+    inputs:
+      git-ref:
+        default: ${{ github.event.pull_request.head.sha }}
+        required: true
   workflow_dispatch:
     inputs:
       git-ref:
-        description: Git Ref
-        default: $GITHUB_SHA
         required: true
 
 permissions:
