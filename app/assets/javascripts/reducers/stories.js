@@ -134,7 +134,7 @@ const storiesReducer = (state = initialState, action) => {
           );
         })
       );
-    case actionTypes.SORT_STORIES_SUCCESS:
+    case actionTypes.SORT_STORIES:
       return normalizeAllScopes(
         allScopes(state, null, stories => {
           return stories.map(story => {
@@ -150,20 +150,6 @@ const storiesReducer = (state = initialState, action) => {
                 })
               : story;
           });
-        })
-      );
-    case actionTypes.OPTIMISTICALLY_UPDATE:
-      return normalizeAllScopes(
-        allScopes(state, action.story.id, stories => {
-          return stories.map(
-            updateIfSameId(action.story.id, story => {
-              const newStory = setLoadingValue(action.story, true);
-              return addNewAttributes(story, {
-                ...newStory,
-                needsToSave: false,
-              });
-            })
-          );
         })
       );
     case actionTypes.STORY_FAILURE:

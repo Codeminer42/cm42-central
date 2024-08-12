@@ -9,6 +9,7 @@ class Beta::SortStories
   def call
     update_current_story
     update_stories_positions
+    notify_story_update
     stories
   end
 
@@ -16,6 +17,10 @@ class Beta::SortStories
 
   def update_current_story
     @story.update(new_position: @new_position, state: @new_state, position: @position)
+  end
+
+  def notify_story_update
+    StoryOperations::PusherNotification.notify_changes(@story)
   end
 
   def stories_to_update

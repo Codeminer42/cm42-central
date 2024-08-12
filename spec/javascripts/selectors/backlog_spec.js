@@ -41,11 +41,11 @@ describe('Backlog selector functions', () => {
       state: 'delivered',
       deliveredAt: '2018-08-06T16:36:20.811Z',
       estimate: 1,
-    }
+    },
   ];
 
   describe('orderByState', () => {
-    it("return stories ordered by state", () => {
+    it('return stories ordered by state', () => {
       const stories = storiesArray;
       const orderedStories = orderByState(stories);
 
@@ -64,13 +64,13 @@ describe('Backlog selector functions', () => {
         const newStory = storyFactory({
           id: 0,
           state: 'accepted',
-          acceptedAt: '2018-08-03T16:36:20.811Z'
+          acceptedAt: '2018-08-03T16:36:20.811Z',
         });
 
         const oldStory = storyFactory({
           id: 1,
           state: 'accepted',
-          acceptedAt: '2018-08-02T16:36:20.811Z'
+          acceptedAt: '2018-08-02T16:36:20.811Z',
         });
 
         const stories = [newStory, oldStory];
@@ -86,13 +86,13 @@ describe('Backlog selector functions', () => {
         const newStory = storyFactory({
           id: 0,
           state: 'delivered',
-          deliveredAt: '2018-08-03T16:36:20.811Z'
+          deliveredAt: '2018-08-03T16:36:20.811Z',
         });
 
         const oldStory = storyFactory({
           id: 1,
           state: 'delivered',
-          deliveredAt: '2018-08-02T16:36:20.811Z'
+          deliveredAt: '2018-08-02T16:36:20.811Z',
         });
 
         const stories = [newStory, oldStory];
@@ -108,13 +108,13 @@ describe('Backlog selector functions', () => {
         const newStory = storyFactory({
           id: 0,
           state: 'started',
-          startedAt: '2018-08-03T16:36:20.811Z'
+          startedAt: '2018-08-03T16:36:20.811Z',
         });
 
         const oldStory = storyFactory({
           id: 1,
           state: 'started',
-          startedAt: '2018-08-02T16:36:20.811Z'
+          startedAt: '2018-08-02T16:36:20.811Z',
         });
 
         const stories = [newStory, oldStory];
