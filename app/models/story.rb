@@ -20,18 +20,23 @@ class Story < ApplicationRecord
                                start_date.beginning_of_day,
                                end_date.end_of_day)
                            }
-  scope :not_accepted_or_recently_accepted, ->(current_iteration_start) { where.not(state: 'accepted').or(where("accepted_at >= ?", current_iteration_start))}
-  scope :collapsed_story, -> {select(
-    :id,
-    :title,
-    :description,
-    :estimate,
-    :story_type,
-    :state,
-    :requested_by_name,
-    :owned_by_initials,
-    :project_id
-  )}
+  scope :not_accepted_or_recently_accepted, lambda { |current_iteration_start|
+    where.not(state: 'accepted').or(where('accepted_at >= ?', current_iteration_start))
+  }
+
+  scope :collapsed_story, lambda {
+    select(
+      :id,
+      :title,
+      :description,
+      :estimate,
+      :story_type,
+      :state,
+      :requested_by_name,
+      :owned_by_initials,
+      :project_id
+    )
+  }
 
   delegate :suppress_notifications, to: :project
 

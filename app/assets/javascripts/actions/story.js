@@ -223,33 +223,8 @@ export const updateCollapsedStory =
     );
   };
 
-export const toggleStory =
-  (currentStory, from) =>
-  async (dispatch, _, { Story }) => {
-    if (!currentStory.collapsed) {
-      return dispatch(collapseStory(currentStory.id, from));
-    }
-
-    if (isStoryLoading(currentStory)) {
-      return;
-    }
-
-    dispatch(setLoadingStory(currentStory.id, from));
-    try {
-      const { data } = await projectStoriesService.fetchStory(currentStory);
-      dispatch(
-        updateStorySuccess(
-          { ...Story.deserialize(data.story), ...currentStory },
-          from
-        )
-      );
-      dispatch(expandStory(currentStory.id, from));
-    } catch (error) {
-      dispatch(sendErrorNotification(error));
-    }
-  };
-
-export const dragDropStory = (storyId, projectId, newAttributes, from) =>
+export const dragDropStory = 
+  (storyId, projectId, newAttributes, from) =>
   async (dispatch, getState, { Story }) => {
     const { stories } = getState();
 
@@ -263,7 +238,8 @@ export const dragDropStory = (storyId, projectId, newAttributes, from) =>
     );
 
     try {
-      dispatch(optimisticallyUpdate(newStory, from));
+      // Optimistic Update:
+      dispatch(sortStories(storiesWithUpdatedPositions, from));
       const updatedStories = await Story.updatePosition(newStory);
       await wait(300);
       return dispatch(sortStories(updatedStories, from));
@@ -373,7 +349,7 @@ export const saveStory =
       );
     }
 
-    return dispatch(toggleStory(story.id, from));
+    return dispatch(collapseStory(story.id, from));
   };
 
 export const deleteStory =

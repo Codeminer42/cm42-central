@@ -9,7 +9,6 @@ import {
   isHighlighted,
   isAccepted,
 } from '../../models/beta/story';
-import { releaseIsLate, isHighlighted, isAccepted } from '../../models/beta/story';
 import classNames from 'classnames';
 
 export const StoryItem = ({

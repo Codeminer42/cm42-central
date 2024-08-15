@@ -48,7 +48,7 @@ describe('Story Actions', () => {
       );
     });
 
-    it('dispatch only toggleStory when _isDirty is false', async () => {
+    it('dispatches collapseStory when _isDirty is false', async () => {
       const editedStory = {
         ...story,
         _editing: {
@@ -75,7 +75,7 @@ describe('Story Actions', () => {
       );
 
       expect(fakeDispatch).toHaveBeenCalledWith(
-        Story.toggleStory(editedStory.id)
+        Story.collapseStory(editedStory.id)
       );
       expect(fakeDispatch).not.toHaveBeenCalledWith(
         Story.updateStorySuccess(story)
@@ -148,7 +148,7 @@ describe('Story Actions', () => {
         Story.updateStorySuccess(story)
       );
       expect(fakeDispatch).not.toHaveBeenCalledWith(
-        Story.toggleStory(editedStory.id)
+        Story.collapseStory(editedStory.id)
       );
     });
 
@@ -562,96 +562,6 @@ describe('Story Actions', () => {
         expect(fakeDispatch).not.toHaveBeenCalledWith(
           sendDefaultErrorNotification()
         );
-      });
-    });
-  });
-
-  describe('toggleStory', () => {
-    const fakeDispatch = jest.fn();
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
-    const expandedStory = { id: 5 };
-    const collapsedStory = { id: 5, collapsed: true };
-    const dependencies = { Story: { deserialize: () => {} } };
-
-    describe('when is expanded', () => {
-      it('should dispatch collapseStory', async () => {
-        const thunkFunction = Story.toggleStory(expandedStory, undefined);
-        await thunkFunction(fakeDispatch, null, dependencies);
-        expect(fakeDispatch).toHaveBeenCalledWith({
-          type: actionTypes.COLLAPSE_STORY,
-          storyId: expandedStory.id,
-          from: undefined,
-        });
-      });
-
-      it('should not dispatch "updateStorySuccess"', async () => {
-        const thunkFunction = Story.toggleStory(expandedStory, undefined);
-        await thunkFunction(fakeDispatch, null, dependencies);
-        expect(fakeDispatch).not.toHaveBeenCalledWith({
-          type: actionTypes.UPDATE_STORY_SUCCESS,
-          story: expandedStory,
-          from: undefined,
-        });
-      });
-
-      it('should not dispatch loading', async () => {
-        const thunkFunction = Story.toggleStory(expandedStory, undefined);
-        await thunkFunction(fakeDispatch, null, dependencies);
-        expect(fakeDispatch).not.toHaveBeenCalledWith({
-          type: actionTypes.SET_LOADING_STORY,
-          id: expandedStory.id,
-          from: undefined,
-        });
-      });
-    });
-
-    describe('when is collapsed', () => {
-      it('should dispatch loading', async () => {
-        const thunkFunction = Story.toggleStory(collapsedStory, undefined);
-        await thunkFunction(fakeDispatch, null, dependencies);
-        expect(fakeDispatch).toHaveBeenCalledWith({
-          type: actionTypes.SET_LOADING_STORY,
-          id: collapsedStory.id,
-          from: undefined,
-        });
-      });
-
-      describe('when request is successful', () => {
-        beforeEach(() => {
-          httpService.get.mockResolvedValue({ data: { story: {} } });
-        });
-        it('should dispatch "updateStorySuccess"', async () => {
-          const thunkFunction = Story.toggleStory(collapsedStory, undefined);
-          await thunkFunction(fakeDispatch, null, dependencies);
-          expect(fakeDispatch).toHaveBeenCalledWith({
-            type: actionTypes.UPDATE_STORY_SUCCESS,
-            story: collapsedStory,
-            from: undefined,
-          });
-        });
-
-        it('should dispatch expandStory on success', async () => {
-          const thunkFunction = Story.toggleStory(collapsedStory, undefined);
-          await thunkFunction(fakeDispatch, null, dependencies);
-          expect(fakeDispatch).toHaveBeenCalledWith({
-            type: actionTypes.EXPAND_STORY,
-            storyId: collapsedStory.id,
-            from: undefined,
-          });
-        });
-      });
-
-      describe('when request fails', () => {
-        beforeEach(() => {
-          httpService.get.mockRejectedValue();
-        });
-        it('should handle fetch error', async () => {
-          const thunkFunction = Story.toggleStory(collapsedStory, undefined);
-          await thunkFunction(fakeDispatch, null, dependencies);
-          expect(sendErrorNotification).toHaveBeenCalled();
-        });
       });
     });
   });
