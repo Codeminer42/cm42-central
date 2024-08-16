@@ -224,8 +224,12 @@ div.story-controls {
 }
 
 div.story-title {
-  margin-left: 65px;
+  margin-left: 50px;
   word-wrap: break-word;
+}
+
+div.story-title div[data-story-id-copy-clipboard] {
+  display: inline;
 }
 
 .unestimated div.story-title {
@@ -237,6 +241,19 @@ div.story-title abbr.initials {
   font-weight: bold;
   margin-left: 0.2em;
   border: none;
+}
+
+div.story-title {
+  .story-id {
+    cursor: pointer;
+    color: $blue-4;
+    font-weight: bold;
+    border: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .input-group-btn .btn-clipboard-id {
