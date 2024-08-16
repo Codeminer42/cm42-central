@@ -22,7 +22,7 @@ export default keyMirror({
   RECEIVE_HISTORY_ERROR: null,
   CLOSE_HISTORY: null,
   UPDATE_STORY_SUCCESS: null,
-  SORT_STORIES_SUCCESS: null,
+  SORT_STORIES: null,
   STORY_FAILURE: null,
   SET_LOADING_STORY: null,
   ADD_TASK: null,
@@ -45,5 +45,4 @@ export default keyMirror({
   TOGGLE_COLUMN_VISIBILITY: null,
   REVERT_TO_CALCULATED_VELOCITY: null,
   SIMULATE_SPRINT_VELOCITY: null,
-  OPTIMISTICALLY_UPDATE: null,
 });

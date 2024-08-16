@@ -1,12 +1,6 @@
 GEM
-  remote: http://insecure.rails-assets.org/
-  specs:
-    rails-assets-jquery (3.6.4)
-    rails-assets-jquery.gritter (1.7.4)
-      rails-assets-jquery (>= 1.8.2)
-
-GEM
   remote: https://rubygems.org/
+  remote: http://insecure.rails-assets.org/
   specs:
     acme-client (2.0.11)
       faraday (>= 1.0, < 3.0.0)
@@ -325,7 +319,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2022.0105)
     mini_mime (1.1.2)
-    mini_portile2 (2.8.1)
+    mini_portile2 (2.8.2)
     minitest (5.17.0)
     moneta (1.0.0)
     multi_json (1.15.0)
@@ -343,8 +337,8 @@ GEM
     netrc (0.11.0)
     newrelic_rpm (8.9.0)
     nio4r (2.5.8)
-    nokogiri (1.13.10)
-      mini_portile2 (~> 2.8.0)
+    nokogiri (1.15.2)
+      mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     parallel (1.22.1)
@@ -410,6 +404,9 @@ GEM
       bundler (>= 1.15.0)
       railties (= 6.1.7.2)
       sprockets-rails (>= 2.0.0)
+    rails-assets-jquery (3.6.4)
+    rails-assets-jquery.gritter (1.7.4)
+      rails-assets-jquery (>= 1.8.2)
     rails-controller-testing (1.0.5)
       actionpack (>= 5.0.1.rc1)
       actionview (>= 5.0.1.rc1)

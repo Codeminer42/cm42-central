@@ -122,7 +122,7 @@ class StoriesController < ApplicationController
   def allowed_params
     params.require(:story).permit(
       :title, :description, :estimate, :story_type, :release_date,
-      :state, :requested_by_id, :owned_by_id, :position, :labels,
+      :state, :requested_by_id, :owned_by_id, :position, :new_position, :labels,
       tasks_attributes: %i[id name done],
       notes_attributes: %i[id note]
     )
