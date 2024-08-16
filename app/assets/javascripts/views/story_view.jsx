@@ -19,6 +19,7 @@ import storyTemplate from 'templates/story.ejs';
 import alertTemplate from 'templates/alert.ejs';
 import storyHoverTemplate from 'templates/story_hover.ejs';
 import noteTemplate from 'templates/note.ejs';
+import StoryCopyIdClipboard from '../components/story/StoryCopyIdClipboard';
 
 const LOCAL_STORY_REGEXP = /(?!\s|\b)(#\d+)(?!\w)/g;
 
@@ -541,7 +542,21 @@ const StoryView = FormView.extend({
     );
   },
 
-  renderCollapsed: function (isGuest) {
+  appendAttachments: function() {
+    this.$el.append(
+      this.makeFormControl(function(div) {
+        const $storyAttachments = $('<div class="story-attachments"></div>');
+        $(div).append($storyAttachments);
+
+        if(process.env.NODE_ENV !== 'test') {
+          clearTimeout(window.executeAttachinaryTimeout);
+          window.executeAttachinaryTimeout = setTimeout(ExecuteAttachinary, 1000);
+        }
+      })
+    );
+  },
+
+  renderCollapsed: function(isGuest) {
     this.$el.removeClass('editing');
     this.$el.html(this.template({ story: this.model, view: this }));
     this.$el.toggleClass(
@@ -560,12 +575,14 @@ const StoryView = FormView.extend({
     const estimateButtons = this.$('[data-story-estimate-buttons]').get(0);
     if (estimateButtons) {
       ReactDOM.render(
-        <StoryEstimateButtons
-          points={this.model.point_values()}
-          onClick={this.estimate}
-        />,
+        <StoryEstimateButtons points={this.model.point_values()} onClick={this.estimate} />,
         estimateButtons
       );
+    }
+
+    const copyStoryIdClipboardLink = this.$('[data-story-id-copy-clipboard]').get(0)
+    if(copyStoryIdClipboardLink) {
+      ReactDOM.render(<StoryCopyIdClipboard id={this.id} />, copyStoryIdClipboardLink)
     }
 
     if (isGuest) {
