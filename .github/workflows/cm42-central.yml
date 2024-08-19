@@ -1,6 +1,6 @@
 # This workflow will install a prebuilt Ruby version, install dependencies, and
 # run tests and linters.
-name: "CM42 Central CI"
+name: 'CM42 Central CI'
 on:
   push:
     branches: [master]
@@ -14,7 +14,7 @@ jobs:
       postgres:
         image: postgres:11-alpine
         ports:
-          - "5432:5432"
+          - '5432:5432'
         env:
           POSTGRES_DB: rails_test
           POSTGRES_USER: rails
@@ -29,12 +29,12 @@ jobs:
           --health-timeout 5s
           --health-retries 5
         ports:
-          - "6379:6379"
+          - '6379:6379'
 
     env:
       CI: true
       RAILS_ENV: test
-      DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
+      DATABASE_URL: 'postgres://rails:password@localhost:5432/rails_test'
       MAILER_SENDER: noreply@example.com
       CLOUDINARY_URL: cloudinary://username:password@localhost
 
@@ -68,8 +68,8 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v2
         with:
-          node-version: 16.20.0
-          cache: "yarn"
+          node-version: 18.12.0
+          cache: 'yarn'
       - name: Install JS dependencies
         run: yarn install
       # Add or replace test runners here
@@ -83,7 +83,7 @@ jobs:
       postgres:
         image: postgres:11-alpine
         ports:
-          - "5432:5432"
+          - '5432:5432'
         env:
           POSTGRES_DB: rails_test
           POSTGRES_USER: rails
@@ -98,12 +98,12 @@ jobs:
           --health-timeout 5s
           --health-retries 5
         ports:
-          - "6379:6379"
+          - '6379:6379'
 
     env:
       CI: true
       RAILS_ENV: test
-      DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
+      DATABASE_URL: 'postgres://rails:password@localhost:5432/rails_test'
       MAILER_SENDER: noreply@example.com
       CLOUDINARY_URL: cloudinary://username:password@localhost
 
@@ -121,8 +121,8 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v2
         with:
-          node-version: 16.20.0
-          cache: "yarn"
+          node-version: 18.12.0
+          cache: 'yarn'
       - name: Install JS dependencies
         run: yarn install
 
