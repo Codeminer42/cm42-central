@@ -3,43 +3,13 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "test": "jest",
-    "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
+    "test": "vitest",
+    "coveralls": "vitest run --coverage --coverageReporters=text-lcov | coveralls",
     "lint": "eslint app/assets/javascripts",
     "start:test": "rails s -e test -p 5000 & wait-on http://localhost:5000",
     "cy:run": "cypress run -P spec/",
     "format": "prettier --write 'app/assets/javascripts/**/*.{js,jsx}'",
     "prepare": "husky install"
-  },
-  "jest": {
-    "setupFilesAfterEnv": [
-      "jest-sinon",
-      "./node_modules/jest-enzyme/lib/index.js",
-      "<rootDir>/spec/javascripts/support/setup.js"
-    ],
-    "testMatch": [
-      "<rootDir>/spec/javascripts/**/*_spec.js"
-    ],
-    "transform": {
-      "^.+\\.ejs$": "<rootDir>/spec/javascripts/support/ejsTransformer.js",
-      "^.+\\.jsx?$": "babel-jest"
-    },
-    "moduleNameMapper": {
-      "^vendor/(.*)": "<rootDir>/vendor/assets/javascripts/$1",
-      "^collections/(.*)": "<rootDir>/app/assets/javascripts/collections/$1",
-      "^mixins/(.*)": "<rootDir>/app/assets/javascripts/mixins/$1",
-      "^models/(.*)": "<rootDir>/app/assets/javascripts/models/$1",
-      "^templates/(.*)": "<rootDir>/app/assets/javascripts/templates/$1",
-      "^views/(.*)": "<rootDir>/app/assets/javascripts/views/$1",
-      "^libs/(.*)": "<rootDir>/app/assets/javascripts/libs/$1",
-      "^components/(.*)": "<rootDir>/app/assets/javascripts/components/$1",
-      "^controllers/(.*)": "<rootDir>/app/assets/javascripts/controllers/$1",
-      "^reducers/(.*)": "<rootDir>/app/assets/javascripts/reducers/$1",
-      "^actions/(.*)": "<rootDir>/app/assets/javascripts/actions/$1",
-      "^central/(.*)": "<rootDir>/app/assets/javascripts/central/$1",
-      "^store/(.*)": "<rootDir>/app/assets/javascripts/store/$1",
-      "^gritter$": "gritter/js/jquery.gritter.min.js"
-    }
   },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.7.4",
@@ -130,16 +100,14 @@
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-react": "^7.16.0",
     "husky": "^8.0.0",
-    "jest": "^26.6.3",
-    "jest-enzyme": "^7.1.2",
-    "jest-sinon": "^1.0.1",
     "lint-staged": "^15.0.2",
     "prettier": "^3.0.3",
     "react-addons-test-utils": "^15.6.2",
     "react-test-renderer": "^16.12.0",
     "sinon": "^7.5.0",
     "vite": "^4.5.3",
-    "vite-plugin-ruby": "^3.2.0"
+    "vite-plugin-ruby": "^3.2.0",
+    "vitest": "^2.0.5"
   },
   "engines": {
     "node": "18.12.0"
