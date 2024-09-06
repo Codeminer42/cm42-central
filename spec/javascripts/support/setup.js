@@ -1,8 +1,5 @@
 import 'libs/index';
 import 'raf/polyfill';
-import './enzyme';
-import 'jest-enzyme';
-import 'jest-sinon';
 
 import * as JestDom from '@testing-library/jest-dom';
 

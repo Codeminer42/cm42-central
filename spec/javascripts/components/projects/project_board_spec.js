@@ -3,8 +3,8 @@ import { shallow } from 'enzyme';
 import { ProjectBoard } from 'components/projects/ProjectBoard';
 import storyFactory from '../../support/factories/storyFactory';
 
-jest.mock('../../../../app/assets/javascripts/pusherSockets', () => ({
-  subscribeToProjectChanges: jest.fn(),
+vi.mock('../../../../app/assets/javascripts/pusherSockets', () => ({
+  subscribeToProjectChanges: vi.fn(),
 }));
 
 describe('<ProjectBoard />', () => {
@@ -14,14 +14,14 @@ describe('<ProjectBoard />', () => {
         isFetched: false,
         isInitialLoading: true,
         search: {
-          loading: false
+          loading: false,
         },
         reverse: false,
         visibleColumns: {
           backlog: true,
           done: true,
-          chillyBin: true
-        }
+          chillyBin: true,
+        },
       },
       doneSprints: [],
       backlogSprints: [],
@@ -30,7 +30,7 @@ describe('<ProjectBoard />', () => {
       closeHistory: sinon.stub(),
       notifications: [],
       history: {
-        status: 'DISABLED'
+        status: 'DISABLED',
       },
       onRemove: sinon.stub(),
       removeNotification: sinon.stub(),
@@ -38,13 +38,13 @@ describe('<ProjectBoard />', () => {
       reverseColumns: sinon.stub(),
       projectId: '1',
       fetchPastStories: sinon.stub(),
-      epicStories: []
+      epicStories: [],
     };
 
-    return shallow(<ProjectBoard {...defaultProps} {...props } />);
+    return shallow(<ProjectBoard {...defaultProps} {...props} />);
   };
 
-  describe('when projectBoard.isFetched is false and projectBoard.isInitialLoading is true',  () => {
+  describe('when projectBoard.isFetched is false and projectBoard.isInitialLoading is true', () => {
     it('renders <ProjectLoading />', () => {
       const wrapper = render();
       const spinnerLoading = wrapper.find('[data-id="project-loading"]');
@@ -60,14 +60,14 @@ describe('<ProjectBoard />', () => {
           isFetched: true,
           isInitialLoading: false,
           search: {
-            loading: false
+            loading: false,
           },
           visibleColumns: {
             backlog: true,
             done: true,
-            chillyBin: true
+            chillyBin: true,
           },
-          reverse: true
+          reverse: true,
         },
       });
       const spinnerLoading = wrapper.find('[data-id="project-loading"]');
@@ -80,15 +80,15 @@ describe('<ProjectBoard />', () => {
         projectBoard: {
           isFetched: true,
           search: {
-            loading: false
+            loading: false,
           },
           visibleColumns: {
             backlog: true,
             done: true,
-            chillyBin: true
+            chillyBin: true,
           },
-          reverse: true
-        }
+          reverse: true,
+        },
       });
 
       expect(wrapper.find('[data-id="side-bar"]')).toExist();
@@ -99,14 +99,14 @@ describe('<ProjectBoard />', () => {
         projectBoard: {
           isFetched: true,
           search: {
-            loading: false
+            loading: false,
           },
           visibleColumns: {
             backlog: true,
             done: true,
-            chillyBin: true
+            chillyBin: true,
           },
-          reverse: true
+          reverse: true,
         },
       });
 
@@ -118,14 +118,14 @@ describe('<ProjectBoard />', () => {
         projectBoard: {
           isFetched: true,
           search: {
-            loading: false
+            loading: false,
           },
           visibleColumns: {
             backlog: true,
             done: true,
-            chillyBin: true
+            chillyBin: true,
           },
-          reverse: true
+          reverse: true,
         },
       });
 
@@ -138,19 +138,19 @@ describe('<ProjectBoard />', () => {
       history: {
         status: 'LOADING',
         storyTitle: 'I am title!',
-        activities: []
+        activities: [],
       },
       projectBoard: {
         isFetched: true,
         search: {
-          loading: false
+          loading: false,
         },
         reverse: false,
         visibleColumns: {
           backlog: true,
           done: true,
-          chillyBin: true
-        }
+          chillyBin: true,
+        },
       },
     };
 
@@ -178,19 +178,19 @@ describe('<ProjectBoard />', () => {
       history: {
         status: 'LOADED',
         storyTitle: 'I am title!',
-        activities: []
+        activities: [],
       },
       projectBoard: {
         isFetched: true,
         search: {
-          loading: false
+          loading: false,
         },
         reverse: false,
         visibleColumns: {
           backlog: true,
           done: true,
-          chillyBin: true
-        }
+          chillyBin: true,
+        },
       },
     };
 
@@ -218,19 +218,19 @@ describe('<ProjectBoard />', () => {
       history: {
         status: 'DISABLED',
         storyTitle: 'I am title!',
-        activities: []
+        activities: [],
       },
       projectBoard: {
         isFetched: true,
         search: {
-          loading: false
+          loading: false,
         },
         reverse: false,
         visibleColumns: {
           backlog: true,
           done: true,
-          chillyBin: true
-        }
+          chillyBin: true,
+        },
       },
     };
 
@@ -258,19 +258,19 @@ describe('<ProjectBoard />', () => {
       history: {
         status: 'FAILED',
         storyTitle: 'I am title!',
-        activities: []
+        activities: [],
       },
       projectBoard: {
         isFetched: true,
         search: {
-          loading: false
+          loading: false,
         },
         reverse: false,
         visibleColumns: {
           backlog: true,
           done: true,
-          chillyBin: true
-        }
+          chillyBin: true,
+        },
       },
     };
 
@@ -300,14 +300,14 @@ describe('<ProjectBoard />', () => {
         projectBoard: {
           isFetched: true,
           search: {
-            loading: false
+            loading: false,
           },
           reverse: false,
           visibleColumns: {
             backlog: true,
             done: true,
-            chillyBin: true
-          }
+            chillyBin: true,
+          },
         },
       };
       const wrapper = render(props);
@@ -319,18 +319,18 @@ describe('<ProjectBoard />', () => {
   describe('when epicStories is empty', () => {
     it('does not render epic column', () => {
       const props = {
-        epicStories: [ ],
+        epicStories: [],
         projectBoard: {
           isFetched: true,
           search: {
-            loading: false
+            loading: false,
           },
           reverse: false,
           visibleColumns: {
             backlog: true,
             done: true,
-            chillyBin: true
-          }
+            chillyBin: true,
+          },
         },
       };
       const wrapper = render(props);
