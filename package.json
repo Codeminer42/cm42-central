@@ -39,6 +39,8 @@
     "html-react-parser": "^0.10.0",
     "http-status": "^1.4.1",
     "i18n-js": "https://github.com/fnando/i18n-js/archive/v3.0.0.tar.gz",
+    "jest-enzyme": "^7.1.2",
+    "jest-sinon": "^1.1.0",
     "jquery": "^3.4.1",
     "jquery-ui-bundle": "^1.12.1",
     "jquery-ui-dist": "^1.12.1",
