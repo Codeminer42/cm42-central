@@ -1,10 +1,13 @@
 import TabNotification from 'mixins/tab_notification';
 
 describe('Project Notification', function () {
-  var tabNotification = TabNotification;
+  let tabNotificationHandleChange;
 
   beforeAll(function () {
-    sinon.stub(TabNotification, 'handleChangeTitle');
+    tabNotificationHandleChange = vi.spyOn(
+      TabNotification,
+      'handleChangeTitle'
+    );
     $('body').data({
       notificationIconUrl: 'notificationIconUrlValue',
       faviconIconUrl: 'faviconIconUrlValue',
@@ -17,16 +20,16 @@ describe('Project Notification', function () {
   });
 
   it('change the favicon and title', function () {
-    tabNotification.changeTitle('test title', true);
-    expect(tabNotification.handleChangeTitle).toHaveBeenCalledWith(
+    TabNotification.changeTitle('test title', true);
+    expect(tabNotificationHandleChange).toHaveBeenCalledWith(
       ' \u2733 test title',
       'notificationIconUrlValue'
     );
   });
 
   it('restore the favicon and title', function () {
-    tabNotification.changeTitle('test title', false);
-    expect(tabNotification.handleChangeTitle).toHaveBeenCalledWith(
+    TabNotification.changeTitle('test title', false);
+    expect(tabNotificationHandleChange).toHaveBeenCalledWith(
       'test title',
       'faviconIconUrlValue'
     );
