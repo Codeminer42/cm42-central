@@ -2,8 +2,8 @@ import { sendDefaultErrorNotification } from 'actions/notifications';
 import * as Story from 'actions/story';
 import storyFactory from '../support/factories/storyFactory';
 
-jest.mock('../../../app/assets/javascripts/reducers/stories', () => ({
-  storiesWithScope: jest.fn(),
+vi.mock('../../../app/assets/javascripts/reducers/stories', () => ({
+  storiesWithScope: vi.fn(),
 }));
 
 describe('Story Actions', () => {
@@ -524,11 +524,11 @@ describe('Story Actions', () => {
     const label = 'label';
 
     beforeEach(() => {
-      fakeGetState = jest.fn(() => ({
+      fakeGetState = vi.fn(() => ({
         projectBoard: { projectId: 'test-project' },
       }));
       stories = Array(3).fill(storyFactory());
-      fakeDispatch = jest.fn();
+      fakeDispatch = vi.fn();
     });
 
     describe('when does not throws an error', () => {
@@ -536,7 +536,7 @@ describe('Story Actions', () => {
 
       beforeEach(() => {
         fakeStory = {
-          getByLabel: jest.fn().mockResolvedValue(stories),
+          getByLabel: vi.fn().mockResolvedValue(stories),
         };
       });
 

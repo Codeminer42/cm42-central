@@ -1,13 +1,13 @@
 import React from 'react';
-import { render } from "@testing-library/react";
+import { render } from '@testing-library/react';
 import { screen } from '@testing-library/dom';
-import userEvent from "@testing-library/user-event";
+import userEvent from '@testing-library/user-event';
 import NoteComponent from 'components/notes/Note';
 import Note from 'models/note.js';
 
 global.document.createRange = () => ({
-  setStart: () => { },
-  setEnd: () => { },
+  setStart: () => {},
+  setEnd: () => {},
   commonAncestorContainer: {
     nodeName: 'BODY',
     ownerDocument: document,
@@ -16,58 +16,59 @@ global.document.createRange = () => ({
 
 describe('<Note />', () => {
   beforeEach(() => {
-    window.document.getSelection = jest.fn();
-    jest.spyOn(I18n, 't');
-    jest.spyOn(window.md, 'makeHtml');
+    window.document.getSelection = vi.fn();
+    vi.spyOn(I18n, 't');
+    vi.spyOn(window.md, 'makeHtml');
   });
 
-  const setup = (data) => {
+  const setup = data => {
     let note;
 
     note = new Note({ note: 'Test Note' });
-    const onDelete = jest.fn();
+    const onDelete = vi.fn();
 
-    render(<NoteComponent note={note} disabled={data?.disabled} onDelete={onDelete}/>);
+    render(
+      <NoteComponent
+        note={note}
+        disabled={data?.disabled}
+        onDelete={onDelete}
+      />
+    );
 
     return { onDelete };
-  }
+  };
 
   afterEach(() => {
     I18n.t.mockClear();
     window.md.makeHtml.mockClear();
   });
 
-  it("should have its content parsed", () => {
+  it('should have its content parsed', () => {
     setup();
     const expectedNote = 'Test Note';
     expect(window.md.makeHtml).toHaveBeenCalledWith(expectedNote);
   });
 
-  it("should be able to call onDelete", async () => {
+  it('should be able to call onDelete', async () => {
     const { onDelete } = setup();
-    const deleteButton = screen.getByRole("button", { name: /Delete/i });
+    const deleteButton = screen.getByRole('button', { name: /Delete/i });
     await userEvent.click(deleteButton);
     expect(onDelete).toHaveBeenCalled();
   });
 
-  describe("when not disabled", () => {
-
-    it("should have an delete button", () => {
+  describe('when not disabled', () => {
+    it('should have an delete button', () => {
       setup();
-      const deleteButton = screen.getByRole("button", { name: /Delete/i });
+      const deleteButton = screen.getByRole('button', { name: /Delete/i });
       expect(deleteButton).toBeInTheDocument();
     });
-
   });
 
-  describe("when disabled", () => {
-
-    it("should not have a delete button", () => {
+  describe('when disabled', () => {
+    it('should not have a delete button', () => {
       setup({ disabled: true });
-      const deleteButton = screen.queryByRole("button", { name: /Delete/i });
+      const deleteButton = screen.queryByRole('button', { name: /Delete/i });
       expect(deleteButton).not.toBeInTheDocument();
     });
-
   });
-
 });
