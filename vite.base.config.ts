@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import path from 'path';
+import PrecompileEjs from './app/assets/javascripts/libs/precompile_ejs';
 
 const aliasMap = {
   vendor: path.join(__dirname, 'vendor/assets/javascripts'),
@@ -24,6 +25,7 @@ const alias = Object.entries(aliasMap).map(([key, value]) => ({
 }));
 
 export default defineConfig({
+  plugins: [PrecompileEjs()],
   esbuild: {
     loader: 'jsx',
     include: [

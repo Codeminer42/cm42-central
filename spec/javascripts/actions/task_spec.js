@@ -50,8 +50,6 @@ describe('Task Actions', () => {
         Task: FakeTask,
       });
 
-      console.log(fakeDispatch);
-
       expect(fakeDispatch).toHaveBeenCalledWith(
         Story.storyFailure(story.id, error)
       );

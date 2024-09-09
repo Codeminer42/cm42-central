@@ -6,7 +6,10 @@ export default mergeConfig(
   viteBaseConfig,
   defineConfig({
     test: {
-      include: ['spec/javascripts/**/*_spec.js'],
+      include: [
+        'spec/javascripts/**/*_spec.js',
+        'spec/javascripts/**/*_spec.jsx',
+      ],
       globals: true,
       setupFiles: path.join(__dirname, 'spec/javascripts/support/setup.js'),
       environment: 'jsdom',

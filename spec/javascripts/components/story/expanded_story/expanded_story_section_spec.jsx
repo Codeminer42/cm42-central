@@ -7,7 +7,9 @@ describe('<ExpandedStorySection />', () => {
     const title = 'my title';
     const children = 'children';
 
-    const wrapper = shallow(<ExpandedStorySection title={title} children={children} />);
+    const wrapper = shallow(
+      <ExpandedStorySection title={title} children={children} />
+    );
 
     expect(wrapper.find('.Story__section-title').text()).toContain(title);
   });
@@ -18,7 +20,7 @@ describe('<ExpandedStorySection />', () => {
 
     const wrapper = shallow(
       <ExpandedStorySection
-        title='title'
+        title="title"
         identifier={identifier}
         children={children}
       />
@@ -31,11 +33,7 @@ describe('<ExpandedStorySection />', () => {
     const children = <div>{'children'}</div>;
 
     const wrapper = shallow(
-      <ExpandedStorySection
-        title='title'
-      >
-        {children}
-      </ExpandedStorySection>
+      <ExpandedStorySection title="title">{children}</ExpandedStorySection>
     );
 
     expect(wrapper).toContainReact(children);
