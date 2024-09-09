@@ -9,43 +9,52 @@ describe('Task Actions', () => {
 
     it('calls FakeTask.newTask with projectId, story and task', async () => {
       const FakeTask = {
-        post: sinon.stub().resolves(task)
+        post: vi.fn().mockResolvedValue(task),
       };
 
-      const fakeDispatch = sinon.stub().resolves({});
+      const fakeDispatch = vi.fn().mockResolvedValue({});
 
-      await Task.createTask(projectId, story.id, task)
-        (fakeDispatch, null, { Task: FakeTask });
+      await Task.createTask(projectId, story.id, task)(fakeDispatch, null, {
+        Task: FakeTask,
+      });
 
       expect(FakeTask.post).toHaveBeenCalledWith(projectId, story.id, task);
     });
 
     it('dispatch TaskAdd with story and task', async () => {
       const FakeTask = {
-        post: sinon.stub().resolves(task)
+        post: vi.fn().mockResolvedValueOnce(task),
       };
 
-      const fakeDispatch = sinon.stub().resolves({});
+      const fakeDispatch = vi.fn().mockResolvedValueOnce({});
 
-      await Task.createTask(projectId, story.id, task)
-        (fakeDispatch, null, { Task: FakeTask });
+      await Task.createTask(projectId, story.id, task)(fakeDispatch, null, {
+        Task: FakeTask,
+      });
 
-      expect(fakeDispatch).toHaveBeenCalledWith(Task.createTaskSuccess(task, story.id));
+      expect(fakeDispatch).toHaveBeenCalledWith(
+        Task.createTaskSuccess(task, story.id)
+      );
     });
 
     it('dispatches storyFailure when promise fails', async () => {
-      const error = { error: "boom" };
+      const error = { error: 'boom' };
 
       const FakeTask = {
-        post: sinon.stub().rejects(error)
+        post: vi.fn().mockRejectedValueOnce(error),
       };
 
-      const fakeDispatch = sinon.stub().resolves({});
+      const fakeDispatch = vi.fn().mockResolvedValueOnce({});
 
-      await Task.createTask(projectId, story.id, task)
-        (fakeDispatch, null, { Task: FakeTask });
+      await Task.createTask(projectId, story.id, task)(fakeDispatch, null, {
+        Task: FakeTask,
+      });
 
-      expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(story.id, error));
+      console.log(fakeDispatch);
+
+      expect(fakeDispatch).toHaveBeenCalledWith(
+        Story.storyFailure(story.id, error)
+      );
     });
   });
 
@@ -56,43 +65,54 @@ describe('Task Actions', () => {
 
     it('calls FakeTask.destroy with projectId, story and task.id', async () => {
       const FakeTask = {
-        destroy: sinon.stub().resolves({})
+        destroy: vi.fn().mockRejectedValueOnce({}),
       };
 
-      const fakeDispatch = sinon.stub().resolves({});
+      const fakeDispatch = vi.fn().mockRejectedValueOnce({});
 
-      await Task.deleteTask(projectId, story.id, task.id)
-        (fakeDispatch, null, { Task: FakeTask });
+      await Task.deleteTask(projectId, story.id, task.id)(fakeDispatch, null, {
+        Task: FakeTask,
+      });
 
-      expect(FakeTask.destroy).toHaveBeenCalledWith(projectId, story.id, task.id);
+      expect(FakeTask.destroy).toHaveBeenCalledWith(
+        projectId,
+        story.id,
+        task.id
+      );
     });
 
     it('dispatch removeTask with story and task.id', async () => {
       const FakeTask = {
-        destroy: sinon.stub().resolves(task)
+        destroy: vi.fn().mockResolvedValueOnce(task),
       };
 
-      const fakeDispatch = sinon.stub().resolves({});
+      const fakeDispatch = vi.fn().mockResolvedValueOnce({});
 
-      await Task.deleteTask(projectId, story.id, task.id)
-        (fakeDispatch, null, { Task: FakeTask });
+      await Task.deleteTask(projectId, story.id, task.id)(fakeDispatch, null, {
+        Task: FakeTask,
+      });
 
-      expect(fakeDispatch).toHaveBeenCalledWith(Task.deleteTaskSuccess(task.id, story.id));
+      expect(fakeDispatch).toHaveBeenCalledWith(
+        Task.deleteTaskSuccess(task.id, story.id)
+      );
     });
 
     it('dispatches storyFailure when promise fails', async () => {
-      const error = { error: "boom" };
+      const error = { error: 'boom' };
 
       const FakeTask = {
-        destroy: sinon.stub().rejects(error)
+        destroy: vi.fn().mockRejectedValueOnce(error),
       };
 
-      const fakeDispatch = sinon.stub().resolves({});
+      const fakeDispatch = vi.fn().mockResolvedValue({});
 
-      await Task.deleteTask(projectId, story.id, task)
-        (fakeDispatch, null, { Task: FakeTask });
+      await Task.deleteTask(projectId, story.id, task)(fakeDispatch, null, {
+        Task: FakeTask,
+      });
 
-      expect(fakeDispatch).toHaveBeenCalledWith(Story.storyFailure(story.id, error));
+      expect(fakeDispatch).toHaveBeenCalledWith(
+        Story.storyFailure(story.id, error)
+      );
     });
   });
 
@@ -104,28 +124,43 @@ describe('Task Actions', () => {
 
     it('calls FakeTask.toggle with projectId, story, task and status', async () => {
       const FakeTask = {
-        toggle: sinon.stub().resolves(task)
+        toggle: vi.fn().mockResolvedValue(task),
       };
 
-      const fakeDispatch = sinon.stub().resolves({});
+      const fakeDispatch = vi.fn().mockResolvedValue({});
 
-      await Task.toggleTask(projectId, story, task, status)
-        (fakeDispatch, null, { Task: FakeTask });
+      await Task.toggleTask(
+        projectId,
+        story,
+        task,
+        status
+      )(fakeDispatch, null, { Task: FakeTask });
 
-      expect(FakeTask.toggle).toHaveBeenCalledWith(projectId, story.id, task.id, status);
+      expect(FakeTask.toggle).toHaveBeenCalledWith(
+        projectId,
+        story.id,
+        task.id,
+        status
+      );
     });
 
     it('dispatch toggleTaskSuccess with story and task', async () => {
       const FakeTask = {
-        toggle: sinon.stub().resolves(task)
+        toggle: vi.fn().mockResolvedValue(task),
       };
 
-      const fakeDispatch = sinon.stub().resolves({});
+      const fakeDispatch = vi.fn().mockResolvedValue({});
 
-      await Task.toggleTask(projectId, story, task, status)
-        (fakeDispatch, null, { Task: FakeTask });
+      await Task.toggleTask(
+        projectId,
+        story,
+        task,
+        status
+      )(fakeDispatch, null, { Task: FakeTask });
 
-      expect(fakeDispatch).toHaveBeenCalledWith(Task.toggleTaskSuccess(task, story));
+      expect(fakeDispatch).toHaveBeenCalledWith(
+        Task.toggleTaskSuccess(task, story)
+      );
     });
   });
 });
