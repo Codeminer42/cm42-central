@@ -353,12 +353,12 @@ describe("iteration", function () {
         });
 
         it("return an array with just one story in first position", () => {
+          const initialSprintNumber = Iteration.getCurrentIteration(project);
           const sprints = Iteration.groupBySprints(
             stories,
             project,
             initialSprintNumber
           );
-          const initialSprintNumber = Iteration.getCurrentIteration(project);
 
           expect(sprints[0].stories.length).toEqual(1);
         });
