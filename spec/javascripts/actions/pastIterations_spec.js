@@ -8,21 +8,23 @@ describe('Past iteration actions', () => {
   const pastIterationsArray = overrides => [
     {
       iterationNumber: 42,
-      startDate: previousSprintDate.format("YYYY/MM/DD"),
-      endDate: currentSprintDate.format("YYYY/MM/DD"),
+      startDate: previousSprintDate.format('YYYY/MM/DD'),
+      endDate: currentSprintDate.format('YYYY/MM/DD'),
       stories: [41, 42, 43],
-      ...overrides
-    }
+      ...overrides,
+    },
   ];
 
   describe('receivePastIterations', () => {
     const expected = {
       type: actionTypes.RECEIVE_PAST_ITERATIONS,
-      data: pastIterationsArray()
-    }
+      data: pastIterationsArray(),
+    };
 
     it('creates an action to receive past iterations', () => {
-      const created = PastIterations.receivePastIterations(pastIterationsArray());
+      const created = PastIterations.receivePastIterations(
+        pastIterationsArray()
+      );
       expect(created).toEqual(expected);
     });
   });
@@ -30,8 +32,8 @@ describe('Past iteration actions', () => {
   describe('requestPastStories', () => {
     const expected = {
       type: actionTypes.REQUEST_PAST_STORIES,
-      iterationNumber: 42
-    }
+      iterationNumber: 42,
+    };
 
     it('creates an action to request past iteration stories', () => {
       const created = PastIterations.requestPastStories(42);
@@ -44,11 +46,14 @@ describe('Past iteration actions', () => {
       type: actionTypes.RECEIVE_PAST_STORIES,
       stories: pastIterationsArray(),
       iterationNumber: 42,
-      from: undefined
-    }
+      from: undefined,
+    };
 
     it('creates an action to receive past iteration stories', () => {
-      const created = PastIterations.receivePastStories(pastIterationsArray(), 42);
+      const created = PastIterations.receivePastStories(
+        pastIterationsArray(),
+        42
+      );
       expect(created).toEqual(expected);
     });
   });
@@ -57,8 +62,8 @@ describe('Past iteration actions', () => {
     const expected = {
       type: actionTypes.ERROR_REQUEST_PAST_STORIES,
       iterationNumber: 42,
-      error: '404'
-    }
+      error: '404',
+    };
 
     it('creates an action to receive past iteration stories', () => {
       const created = PastIterations.errorRequestPastStories('404', 42);
@@ -74,45 +79,60 @@ describe('Past iteration actions', () => {
     let PastIteration;
     beforeEach(() => {
       PastIteration = {
-        getStories: sinon.stub().returns(stories)
-      }
+        getStories: vi.fn().mockReturnValue(stories),
+      };
     });
 
     it('calls dispatch with requestPastSotires', async () => {
-      const getState = sinon.stub();
-      getState.returns({ project, pastIterations });
-      const dispatch = sinon.stub().resolves({});
+      const getState = vi.fn();
+      getState.mockReturnValue({ project, pastIterations });
+      const dispatch = vi.fn().mockResolvedValue({});
 
-      await PastIterations.fetchPastStories(iterationNumber)
-        (dispatch, getState, { PastIteration });
+      await PastIterations.fetchPastStories(iterationNumber)(
+        dispatch,
+        getState,
+        { PastIteration }
+      );
 
-      expect(dispatch).toHaveBeenCalledWith(PastIterations.requestPastStories(iterationNumber));
+      expect(dispatch).toHaveBeenCalledWith(
+        PastIterations.requestPastStories(iterationNumber)
+      );
     });
 
     it('tries to fetch iteration stories', async () => {
-      const getState = sinon.stub();
-      getState.returns({ project, pastIterations });
-      const dispatch = sinon.stub().resolves({});
+      const getState = vi.fn();
+      getState.mockReturnValue({ project, pastIterations });
+      const dispatch = vi.fn().mockResolvedValue({});
 
-      await PastIterations.fetchPastStories(iterationNumber, startDate, endDate)
-        (dispatch, getState, { PastIteration });
+      await PastIterations.fetchPastStories(
+        iterationNumber,
+        startDate,
+        endDate
+      )(dispatch, getState, { PastIteration });
 
-      expect(PastIteration.getStories).toHaveBeenCalledWith(project.id, startDate, endDate);
+      expect(PastIteration.getStories).toHaveBeenCalledWith(
+        project.id,
+        startDate,
+        endDate
+      );
     });
 
     describe('when request to get stories is sucessful', () => {
       it('calls dispatch with receivePastStories', async () => {
-        const getState = sinon.stub();
-        getState.returns({ project, pastIterations });
-        const dispatch = sinon.stub().resolves({});
+        const getState = vi.fn();
+        getState.mockReturnValue({ project, pastIterations });
+        const dispatch = vi.fn().mockResolvedValue({});
 
-        await PastIterations.fetchPastStories(iterationNumber, startDate, endDate)
-          (dispatch, getState, { PastIteration });
+        await PastIterations.fetchPastStories(
+          iterationNumber,
+          startDate,
+          endDate
+        )(dispatch, getState, { PastIteration });
 
         expect(dispatch).toHaveBeenCalledWith(
           PastIterations.receivePastStories(stories, iterationNumber)
         );
-      })
+      });
     });
 
     describe('when request to get stories throws error', () => {
@@ -120,21 +140,24 @@ describe('Past iteration actions', () => {
       const PastIterationError = {
         getStories: async () => {
           throw error;
-        }
-      }
+        },
+      };
 
       it('calls dispatch with errorRequestPastStories', async () => {
-        const getState = sinon.stub();
-        getState.returns({ project, pastIterations });
-        const dispatch = sinon.stub().resolves({});
+        const getState = vi.fn();
+        getState.mockReturnValue({ project, pastIterations });
+        const dispatch = vi.fn().mockResolvedValue({});
 
-        await PastIterations.fetchPastStories(iterationNumber, startDate, endDate)
-          (dispatch, getState, { PastIteration: PastIterationError });
+        await PastIterations.fetchPastStories(
+          iterationNumber,
+          startDate,
+          endDate
+        )(dispatch, getState, { PastIteration: PastIterationError });
 
         expect(dispatch).toHaveBeenCalledWith(
           PastIterations.errorRequestPastStories(error, iterationNumber)
         );
-      })
+      });
     });
   });
 });
