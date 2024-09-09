@@ -21,16 +21,16 @@ describe('Story Actions', () => {
       };
 
       const FakeStory = {
-        findById: sinon.stub().returns(editedStory),
-        update: sinon.stub().resolves(story),
-        isNew: sinon.stub().returns(false),
-        needConfirmation: sinon.stub().returns(false),
+        findById: vi.fn().mockReturnValue(editedStory),
+        update: vi.fn().mockResolvedValue(story),
+        isNew: vi.fn().mockReturnValue(false),
+        needConfirmation: vi.fn().mockReturnValue(false),
       };
 
-      const fakeDispatch = sinon.stub().resolves({});
+      const fakeDispatch = vi.fn().mockResolvedValue({});
 
-      const fakeGetState = sinon.stub();
-      fakeGetState.returns({ stories: { all: [editedStory] } });
+      const fakeGetState = vi.fn();
+      fakeGetState.mockReturnValue({ stories: { all: [editedStory] } });
 
       await Story.saveStory(editedStory.id, projectId)(
         fakeDispatch,
@@ -40,7 +40,8 @@ describe('Story Actions', () => {
 
       expect(FakeStory.update).toHaveBeenCalledWith(
         editedStory._editing,
-        projectId
+        projectId,
+        undefined
       );
     });
 
@@ -54,15 +55,15 @@ describe('Story Actions', () => {
       };
 
       const FakeStory = {
-        findById: sinon.stub().returns(editedStory),
-        update: sinon.stub().resolves(story),
-        isNew: sinon.stub().returns(false),
+        findById: vi.fn().mockReturnValue(editedStory),
+        update: vi.fn().mockResolvedValue(story),
+        isNew: vi.fn().mockReturnValue(false),
       };
 
-      const fakeDispatch = sinon.stub().resolves({});
+      const fakeDispatch = vi.fn().mockResolvedValue({});
 
-      const fakeGetState = sinon.stub();
-      fakeGetState.returns({ stories: { all: [editedStory] } });
+      const fakeGetState = vi.fn();
+      fakeGetState.mockReturnValue({ stories: { all: [editedStory] } });
 
       await Story.saveStory(editedStory.id, projectId)(
         fakeDispatch,
@@ -88,16 +89,16 @@ describe('Story Actions', () => {
       };
 
       const FakeStory = {
-        findById: sinon.stub().returns(editedStory),
-        update: sinon.stub().resolves(story),
-        isNew: sinon.stub().returns(false),
-        needConfirmation: sinon.stub().returns(false),
+        findById: vi.fn().mockReturnValue(editedStory),
+        update: vi.fn().mockResolvedValue(story),
+        isNew: vi.fn().mockReturnValue(false),
+        needConfirmation: vi.fn().mockReturnValue(false),
       };
 
-      const fakeDispatch = sinon.stub().resolves({});
+      const fakeDispatch = vi.fn().mockResolvedValue({});
 
-      const fakeGetState = sinon.stub();
-      fakeGetState.returns({ stories: { all: [editedStory] } });
+      const fakeGetState = vi.fn();
+      fakeGetState.mockReturnValue({ stories: { all: [editedStory] } });
 
       await Story.saveStory(editedStory.id, projectId)(
         fakeDispatch,
@@ -119,17 +120,17 @@ describe('Story Actions', () => {
       };
 
       const FakeStory = {
-        findById: sinon.stub().returns(editedStory),
-        post: sinon.stub().resolves(story),
-        isNew: sinon.stub().returns(true),
-        needConfirmation: sinon.stub().returns(false),
-        getHighestNewPosition: sinon.stub().returns(1),
+        findById: vi.fn().mockReturnValue(editedStory),
+        post: vi.fn().mockResolvedValue(story),
+        isNew: vi.fn().mockReturnValue(true),
+        needConfirmation: vi.fn().mockReturnValue(false),
+        getHighestNewPosition: vi.fn().mockReturnValue(1),
       };
 
-      const fakeDispatch = sinon.stub().resolves({});
+      const fakeDispatch = vi.fn().mockResolvedValue({});
 
-      const fakeGetState = sinon.stub();
-      fakeGetState.returns({ stories: { all: [editedStory] } });
+      const fakeGetState = vi.fn();
+      fakeGetState.mockReturnValue({ stories: { all: [editedStory] } });
 
       await Story.saveStory(editedStory.id, projectId)(
         fakeDispatch,
@@ -161,15 +162,15 @@ describe('Story Actions', () => {
       };
 
       const FakeStory = {
-        findById: sinon.stub().returns(editedStory),
-        update: sinon.stub().rejects(error),
-        isNew: sinon.stub().returns(false),
-        needConfirmation: sinon.stub().returns(false),
+        findById: vi.fn().mockReturnValue(editedStory),
+        update: vi.fn().mockRejectedValue(error),
+        isNew: vi.fn().mockReturnValue(false),
+        needConfirmation: vi.fn().mockReturnValue(false),
       };
 
-      const fakeDispatch = sinon.stub().resolves({});
-      const fakeGetState = sinon.stub();
-      fakeGetState.returns({ stories: { all: [editedStory] } });
+      const fakeDispatch = vi.fn().mockResolvedValue({});
+      const fakeGetState = vi.fn();
+      fakeGetState.mockReturnValue({ stories: { all: [editedStory] } });
 
       await Story.saveStory(editedStory.id, projectId)(
         fakeDispatch,
@@ -190,15 +191,15 @@ describe('Story Actions', () => {
 
     it('calls Story.deleteStory with projectId and storyId', async () => {
       const FakeStory = {
-        findById: sinon.stub().returns(story),
-        deleteStory: sinon.stub().resolves({}),
+        findById: vi.fn().mockReturnValue(story),
+        deleteStory: vi.fn().mockResolvedValue({}),
       };
-      const fakeGetState = sinon.stub().returns({
+      const fakeGetState = vi.fn().mockReturnValue({
         stories: {
           all: [story],
         },
       });
-      const fakeDispatch = sinon.stub().resolves({});
+      const fakeDispatch = vi.fn().mockResolvedValue({});
 
       await Story.deleteStory(storyId, projectId)(fakeDispatch, fakeGetState, {
         Story: FakeStory,
@@ -209,13 +210,13 @@ describe('Story Actions', () => {
 
     it('dispatch deleteStorySuccess', async () => {
       const FakeStory = {
-        findById: sinon.stub().returns(story),
-        deleteStory: sinon.stub().resolves({}),
+        findById: vi.fn().mockReturnValue(story),
+        deleteStory: vi.fn().mockResolvedValue({}),
       };
-      const fakeGetState = sinon.stub().returns({
+      const fakeGetState = vi.fn().mockReturnValue({
         stories: { all: [story] },
       });
-      const fakeDispatch = sinon.stub().resolves({});
+      const fakeDispatch = vi.fn().mockResolvedValue({});
 
       await Story.deleteStory(storyId, projectId)(fakeDispatch, fakeGetState, {
         Story: FakeStory,
@@ -230,13 +231,13 @@ describe('Story Actions', () => {
       const error = { error: 'boom' };
 
       const FakeStory = {
-        findById: sinon.stub().returns(story),
-        deleteStory: sinon.stub().rejects(error),
+        findById: vi.fn().mockReturnValue(story),
+        deleteStory: vi.fn().mockRejectedValue(error),
       };
-      const fakeGetState = sinon.stub().returns({
+      const fakeGetState = vi.fn().mockReturnValue({
         stories: { all: [story] },
       });
-      const fakeDispatch = sinon.stub().resolves({});
+      const fakeDispatch = vi.fn().mockResolvedValue({});
 
       await Story.deleteStory(storyId, projectId)(fakeDispatch, fakeGetState, {
         Story: FakeStory,
@@ -251,8 +252,8 @@ describe('Story Actions', () => {
   describe('highlight', () => {
     it('always dispatch updateHighlight', () => {
       const storyId = 1;
-      const fakeDispatch = sinon.stub().resolves({});
-      const fakeGetState = sinon.stub().returns({});
+      const fakeDispatch = vi.fn().mockResolvedValue({});
+      const fakeGetState = vi.fn().mockReturnValue({});
 
       Story.highlight(storyId)(fakeDispatch, fakeGetState, {});
 
@@ -273,17 +274,17 @@ describe('Story Actions', () => {
 
     it('calls Story.sortStories with new position', async () => {
       const FakeStory = {
-        findById: sinon.stub().returns(updatedStory),
-        updatePosition: sinon.stub().resolves(updatedStories),
-        isNew: sinon.stub().returns(false),
-        addNewAttributes: sinon.stub().returns(story),
-        sortOptimistically: sinon.stub().resolves(updatedStories),
+        findById: vi.fn().mockReturnValue(updatedStory),
+        updatePosition: vi.fn().mockResolvedValue(updatedStories),
+        isNew: vi.fn().mockReturnValue(false),
+        addNewAttributes: vi.fn().mockReturnValue(story),
+        sortOptimistically: vi.fn().mockResolvedValue(updatedStories),
       };
-      const fakeGetState = sinon.stub().returns({
+      const fakeGetState = vi.fn().mockReturnValue({
         stories: { all: updatedStories },
       });
 
-      const fakeDispatch = sinon.stub().resolves({});
+      const fakeDispatch = vi.fn().mockResolvedValue({});
 
       await Story.dragDropStory(
         story.id,
@@ -304,18 +305,18 @@ describe('Story Actions', () => {
       const error = { error: 'boom' };
 
       const FakeStory = {
-        findById: sinon.stub().returns(updatedStory),
-        updatePosition: sinon.stub().rejects(error),
-        isNew: sinon.stub().returns(false),
-        addNewAttributes: sinon.stub().returns(story),
-        sortOptimistically: sinon.stub().returns(updatedStory),
+        findById: vi.fn().mockReturnValue(updatedStory),
+        updatePosition: vi.fn().mockRejectedValue(error),
+        isNew: vi.fn().mockReturnValue(false),
+        addNewAttributes: vi.fn().mockReturnValue(story),
+        sortOptimistically: vi.fn().mockReturnValue(updatedStory),
       };
 
-      const fakeGetState = sinon.stub().returns({
+      const fakeGetState = vi.fn().mockReturnValue({
         stories: { all: updatedStories },
       });
 
-      const fakeDispatch = sinon.stub().resolves({});
+      const fakeDispatch = vi.fn().mockResolvedValue({});
 
       beforeEach(async () => {
         await Story.dragDropStory(story.id, story.projectId, {
@@ -343,13 +344,13 @@ describe('Story Actions', () => {
       let confirm;
 
       beforeEach(() => {
-        needConfirmation = sinon.stub().returns(false);
-        confirm = sinon.stub();
+        needConfirmation = vi.fn().mockReturnValue(false);
+        confirm = vi.fn();
       });
 
       describe('and callback.onConfirmed do not throws an error', () => {
         it('call callback.onConfirmed', async () => {
-          const callback = { onConfirmed: sinon.stub() };
+          const callback = { onConfirmed: vi.fn() };
 
           await Story.confirmBeforeSaveIfNeeded(
             story,
@@ -368,9 +369,9 @@ describe('Story Actions', () => {
         beforeEach(() => {
           error = { error: 'boom' };
           callback = {
-            onConfirmed: sinon.stub().rejects(error),
-            onError: sinon.stub(),
-            onCanceled: sinon.stub(),
+            onConfirmed: vi.fn().mockRejectedValue(error),
+            onError: vi.fn(),
+            onCanceled: vi.fn(),
           };
         });
 
@@ -416,9 +417,9 @@ describe('Story Actions', () => {
         let confirm;
 
         beforeEach(() => {
-          callback = { onConfirmed: sinon.stub(), onCanceled: sinon.stub() };
-          needConfirmation = sinon.stub().returns(true);
-          confirm = sinon.stub().returns(false);
+          callback = { onConfirmed: vi.fn(), onCanceled: vi.fn() };
+          needConfirmation = vi.fn().mockReturnValue(true);
+          confirm = vi.fn().mockReturnValue(false);
         });
 
         it('do not call callback.onConfirmed', async () => {
@@ -449,13 +450,13 @@ describe('Story Actions', () => {
         let confirm;
 
         beforeEach(() => {
-          needConfirmation = sinon.stub().returns(true);
-          confirm = sinon.stub().returns(true);
+          needConfirmation = vi.fn().mockResolvedValue(true);
+          confirm = vi.fn().mockResolvedValue(true);
         });
 
         describe('and callback.onConfirmed do not throws an error', () => {
           it('call callback.onConfirmed', async () => {
-            const callback = { onConfirmed: sinon.stub() };
+            const callback = { onConfirmed: vi.fn() };
 
             await Story.confirmBeforeSaveIfNeeded(
               story,
@@ -474,9 +475,9 @@ describe('Story Actions', () => {
           beforeEach(() => {
             error = { error: 'boom' };
             callback = {
-              onConfirmed: sinon.stub().rejects(error),
-              onError: sinon.stub(),
-              onCanceled: sinon.stub(),
+              onConfirmed: vi.fn().mockRejectedValue(error),
+              onError: vi.fn(),
+              onCanceled: vi.fn(),
             };
           });
 
