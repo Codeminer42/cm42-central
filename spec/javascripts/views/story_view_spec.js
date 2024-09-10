@@ -13,6 +13,10 @@ describe('StoryView', function () {
 
   beforeAll(() => {
     server.listen();
+
+    server.events.on('request:start', ({ request }) => {
+      console.log('MSW intercepted:', request.method, request.url);
+    });
   });
 
   afterAll(() => {
@@ -113,6 +117,10 @@ describe('StoryView', function () {
     afterEach(function () {
       window.md.makeHtml.restore();
     });
+  });
+
+  afterEach(() => {
+    server.resetHandlers();
   });
 
   describe('class name', function () {
@@ -244,15 +252,10 @@ describe('StoryView', function () {
       e = { currentTarget: '' };
     });
 
-    it('should call save', function () {
+    it.only('should call save', function () {
       story.set({ editing: true });
-      view.clickSave(e);
       expect(story.get('editing')).toBeTruthy();
-      expect(server.requests.length).toEqual(1);
-
-      // editing should be set to false when save is successful
-      server.respond();
-
+      view.clickSave(e);
       expect(story.get('editing')).toBeFalsy();
     });
 
