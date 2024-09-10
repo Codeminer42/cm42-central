@@ -102,6 +102,7 @@
     "husky": "^8.0.0",
     "jsdom": "^25.0.0",
     "lint-staged": "^15.0.2",
+    "msw": "^2.4.4",
     "prettier": "^3.0.3",
     "react-addons-test-utils": "^15.6.2",
     "react-test-renderer": "^16.12.0",
