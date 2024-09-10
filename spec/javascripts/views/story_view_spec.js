@@ -1,6 +1,8 @@
 import StoryView from 'views/story_view';
 import template from 'templates/story.ejs';
 import OriginalStory from 'models/story';
+import { server } from './mocks/server';
+import { afterAll, beforeAll } from 'vitest';
 
 describe('StoryView', function () {
   let story;
@@ -8,22 +10,29 @@ describe('StoryView', function () {
   let view;
   let new_story_view;
   let set;
-  let server;
+
+  beforeAll(() => {
+    server.listen();
+  });
+
+  afterAll(() => {
+    server.close();
+  });
 
   beforeEach(function () {
     window.projectView = {
       availableTags: [],
-      notice: sinon.stub(),
-      noticeSaveError: sinon.stub(),
+      notice: vi.fn(),
+      noticeSaveError: vi.fn(),
     };
-    sinon.stub(window.md, 'makeHtml').returns('');
+    vi.spyOn(window.md, 'makeHtml').mockReturnValue('');
     var Note = Backbone.Model.extend({
       name: 'note',
-      humanAttributeName: sinon.stub(),
+      humanAttributeName: vi.fn(),
     });
     var Task = Backbone.Model.extend({
       name: 'task',
-      humanAttributeName: sinon.stub(),
+      humanAttributeName: vi.fn(),
     });
     var NotesCollection = Backbone.Collection.extend({ model: Note });
     var TasksCollection = Backbone.Collection.extend({ model: Task });
@@ -81,9 +90,9 @@ describe('StoryView', function () {
         return true;
       },
       events: OriginalStory.prototype.events,
-      humanAttributeName: sinon.stub(),
-      setAcceptedAt: sinon.spy(),
-      errorMessages: sinon.stub(),
+      humanAttributeName: vi.fn(),
+      setAcceptedAt: vi.fn(),
+      errorMessages: vi.fn(),
       views: [],
       clickFromSearchResult: false,
       isSearchResult: false,
@@ -99,14 +108,11 @@ describe('StoryView', function () {
       model: new_story,
     });
 
-    window.projectView.usernames = sinon.stub();
+    window.projectView.usernames = vi.fn();
 
-    server = sinon.fakeServer.create();
-  });
-
-  afterEach(function () {
-    server.restore();
-    window.md.makeHtml.restore();
+    afterEach(function () {
+      window.md.makeHtml.restore();
+    });
   });
 
   describe('class name', function () {
@@ -122,7 +128,7 @@ describe('StoryView', function () {
       expect(view.$el[0]).toHaveClass('unestimated');
 
       // Should not have the unestimated class if it's been estimated
-      sinon.stub(view.model, 'estimated').returns(true);
+      vi.spyOn(view.model, 'estimated').mockReturnValueOnce(true);
       view.model.set({ estimate: 1 });
       expect(view.$el[0]).not.toHaveClass('unestimated');
     });
@@ -146,14 +152,16 @@ describe('StoryView', function () {
 
     beforeEach(function () {
       e = {};
-      view.model.set = sinon.stub();
-      view.removeHoverbox = sinon.stub();
+      view.model.set = vi.fn();
+      view.removeHoverbox = vi.fn();
     });
 
     describe('when event should expand story', function () {
       beforeEach(function () {
-        view.eventShouldExpandStory = sinon.stub();
-        view.eventShouldExpandStory.withArgs(e).returns(true);
+        view.eventShouldExpandStory = vi.fn();
+        vi.spyOn(view, 'eventShouldExpandStory').mockImplementation(arg => {
+          return arg === e ? true : undefined;
+        });
       });
 
       it('sets the model attributes correctly', function () {
@@ -212,7 +220,7 @@ describe('StoryView', function () {
   describe('cancel edit', function () {
     it('should remove itself when edit cancelled if its new', function () {
       var view = new StoryView({ model: new_story });
-      var spy = sinon.spy(new_story, 'clear');
+      var spy = vi.spyOn(new_story, 'clear');
 
       view.cancelEdit();
       expect(spy).toHaveBeenCalled();
@@ -221,8 +229,8 @@ describe('StoryView', function () {
     it('should reload after cancel if there were existing errors', function () {
       story.set({ errors: true });
       expect(story.get('errors')).toEqual(true);
-      sinon.stub(story, 'hasErrors').returns(true);
-      var stub = sinon.stub(story, 'fetch');
+      vi.spyOn(story, 'hasErrors').mockReturnValueOnce(true);
+      var stub = vi.spyOn(story, 'fetch');
       view.cancelEdit();
       expect(stub).toHaveBeenCalled();
       expect(story.get('errors')).toBeUndefined();
@@ -237,11 +245,6 @@ describe('StoryView', function () {
     });
 
     it('should call save', function () {
-      server.respondWith('PUT', '/path/to/story', [
-        200,
-        { 'Content-Type': 'application/json' },
-        '{"story":{"title":"Story title"}}',
-      ]);
       story.set({ editing: true });
       view.clickSave(e);
       expect(story.get('editing')).toBeTruthy();
@@ -254,12 +257,6 @@ describe('StoryView', function () {
     });
 
     it('should set editing when errors occur', function () {
-      server.respondWith('PUT', '/path/to/story', [
-        422,
-        { 'Content-Type': 'application/json' },
-        '{"story":{"errors":{"title":["cannot be blank"]}}}',
-      ]);
-
       view.clickSave(e);
       expect(server.responses.length).toEqual(1);
       expect(server.responses[0].method).toEqual('PUT');
@@ -272,14 +269,8 @@ describe('StoryView', function () {
     });
 
     it('should disable all form controls on submit', function () {
-      server.respondWith('PUT', '/path/to/story', [
-        200,
-        { 'Content-Type': 'application/json' },
-        '{"story":{"title":"Story title"}}',
-      ]);
-
-      var disable_spy = sinon.spy(view, 'disableForm');
-      var enable_spy = sinon.spy(view, 'enableForm');
+      var disable_spy = vi.spyOn(view, 'disableForm');
+      var enable_spy = vi.spyOn(view, 'enableForm');
 
       story.set({ editing: true });
       view.clickSave(e);
@@ -292,12 +283,6 @@ describe('StoryView', function () {
     });
 
     it('should disable state transition buttons on click', function () {
-      server.respondWith('PUT', '/path/to/story', [
-        200,
-        { 'Content-Type': 'application/json' },
-        '{"story":{"state":"started"}}',
-      ]);
-
       var ev = { target: { value: 'start' } };
       view.transition(ev);
 
@@ -309,12 +294,6 @@ describe('StoryView', function () {
     });
 
     it('should disable estimate buttons on click', function () {
-      server.respondWith('PUT', '/path/to/story', [
-        200,
-        { 'Content-Type': 'application/json' },
-        '{"story":{"estimate":"1"}}',
-      ]);
-
       var ev = { target: { attributes: { 'data-value': { value: 1 } } } };
       view.estimate(ev);
 
@@ -345,8 +324,8 @@ describe('StoryView', function () {
       story.collection.columns = function () {
         return [];
       };
-      story.collection.project.columnsBefore = sinon.stub();
-      story.collection.project.columnsAfter = sinon.stub();
+      story.collection.project.columnsBefore = vi.fn();
+      story.collection.project.columnsAfter = vi.fn();
     });
 
     it('sets state to unstarted if dropped on the backlog column', function () {
@@ -399,7 +378,7 @@ describe('StoryView', function () {
       );
       var ev = { target: html[1] };
 
-      story.moveAfter = sinon.spy();
+      story.moveAfter = vi.fn();
       view.sortUpdate(ev);
 
       expect(story.moveAfter).toHaveBeenCalledWith(1);
@@ -411,7 +390,7 @@ describe('StoryView', function () {
       );
       var ev = { target: html[0] };
 
-      story.moveBefore = sinon.spy();
+      story.moveBefore = vi.fn();
       view.sortUpdate(ev);
 
       expect(story.moveBefore).toHaveBeenCalledWith(2);
@@ -423,7 +402,7 @@ describe('StoryView', function () {
       );
       var ev = { target: html[1] };
 
-      story.moveBefore = sinon.spy();
+      story.moveBefore = vi.fn();
       view.sortUpdate(ev);
 
       expect(story.moveBefore).toHaveBeenCalledWith(2);
@@ -435,7 +414,7 @@ describe('StoryView', function () {
       );
       var ev = { target: html.find('#story-2') };
 
-      story.moveAfter = sinon.spy();
+      story.moveAfter = vi.fn();
       view.sortUpdate(ev);
 
       expect(story.get('state')).toEqual('unscheduled');
@@ -444,7 +423,7 @@ describe('StoryView', function () {
 
   describe('labels', function () {
     it('should initialize tagit on edit', function () {
-      var spy = sinon.spy(jQuery.fn, 'tagit');
+      var spy = vi.spyOn(jQuery.fn, 'tagit');
       new_story.set({ editing: true });
       expect(spy).toHaveBeenCalled();
       spy.restore();
@@ -462,7 +441,7 @@ describe('StoryView', function () {
 
     describe('when the text area is empty', function () {
       it('disables the add button', function () {
-        view.canEdit = sinon.stub().returns(true);
+        view.canEdit = vi.fn().mockReturnValueOnce(true);
         view.render();
 
         expect(view.$('.add-note').is(':disabled')).toEqual(true);
@@ -470,8 +449,8 @@ describe('StoryView', function () {
     });
 
     it("doesn't add a blank note if the story is new", function () {
-      var stub = sinon.stub(view.model, 'isNew');
-      stub.returns(true);
+      var stub = vi.spyOn(view.model, 'isNew');
+      stub.mockReturnValueOnce(true);
       view.model.notes.reset();
       expect(view.model.notes.length).toEqual(0);
       view.addEmptyNote();
@@ -479,8 +458,8 @@ describe('StoryView', function () {
     });
 
     it("doesn't add a blank note if there is already one", function () {
-      view.model.notes.last = sinon.stub().returns({
-        isNew: sinon.stub().returns(true),
+      view.model.notes.last = vi.fn().mockImplementationOnce({
+        isNew: vi.fn().mockImplementationOnce(true),
       });
       expect(view.model.notes.last().isNew()).toBeTruthy();
       var oldLength = view.model.notes.length;
@@ -489,13 +468,13 @@ describe('StoryView', function () {
     });
 
     it('has a note deletion handler', function () {
-      const note = { destroy: sinon.stub() };
+      const note = { destroy: vi.fn() };
       view.handleNoteDelete(note);
       expect(note.destroy).toHaveBeenCalled();
     });
 
     it('has a <NoteForm /> save handler', function () {
-      const note = { set: sinon.stub(), save: sinon.stub() };
+      const note = { set: vi.fn(), save: vi.fn() };
       view.handleNoteSubmit({ note, newValue: 'TestNote' });
       expect(note.save).toHaveBeenCalled();
     });
@@ -511,15 +490,15 @@ describe('StoryView', function () {
     });
 
     it('disables the add button if the input is empty', function () {
-      view.canEdit = sinon.stub().returns(true);
+      view.canEdit = vi.fn().mockReturnValueOnce(true);
       view.render();
 
       expect(view.$('.add-task').is(':disabled')).toEqual(true);
     });
 
     it("doesn't add a blank task if the story is new", function () {
-      var stub = sinon.stub(view.model, 'isNew');
-      stub.returns(true);
+      var stub = vi.spyOn(view.model, 'isNew');
+      stub.mockReturnValueOnce(true);
       view.model.tasks.reset();
       expect(view.model.tasks.length).toEqual(0);
       view.addEmptyTask();
@@ -527,8 +506,8 @@ describe('StoryView', function () {
     });
 
     it("doesn't add a blank task if there is already one", function () {
-      view.model.tasks.last = sinon.stub().returns({
-        isNew: sinon.stub().returns(true),
+      view.model.tasks.last = vi.fn().mockReturnValueOnce({
+        isNew: vi.fn().mockReturnValueOnce(true),
       });
       expect(view.model.tasks.last().isNew()).toBeTruthy();
       var oldLength = view.model.tasks.length;
@@ -537,13 +516,13 @@ describe('StoryView', function () {
     });
 
     it('has a task deletion handler', function () {
-      const task = { destroy: sinon.stub() };
+      const task = { destroy: vi.fn() };
       view.handleTaskDelete(task);
       expect(task.destroy).toHaveBeenCalled();
     });
 
     it('has a <TaskForm /> submit handler', function () {
-      const task = { set: sinon.stub(), save: sinon.stub() };
+      const task = { set: vi.fn(), save: vi.fn() };
       view.handleTaskSubmit({ task, taskName: 'TestTask' });
       expect(task.save).toHaveBeenCalled();
     });
@@ -559,16 +538,16 @@ describe('StoryView', function () {
     });
 
     it('is text area when story is new', function () {
-      view.model.isNew = sinon.stub().returns(true);
-      view.canEdit = sinon.stub().returns(true);
+      view.model.isNew = vi.fn().mockReturnValueOnce(true);
+      view.canEdit = vi.fn().mockReturnValueOnce(true);
       view.render();
       expect(view.$('textarea[name="description"]').length).toEqual(1);
       expect(view.$('.description').length).toEqual(0);
     });
 
     it("is text when story isn't new and description isn't empty", function () {
-      window.md.makeHtml.returns('<p>foo</p>');
-      view.model.isNew = sinon.stub().returns(false);
+      window.md.makeHtml.mockReturnValueOnce('<p>foo</p>');
+      view.model.isNew = vi.fn().mockReturnValueOnce(false);
       const innerText = 'foo';
       view.model.set({ description: innerText });
       view.render();
@@ -578,7 +557,7 @@ describe('StoryView', function () {
     });
 
     it("is a button when story isn't new and description is empty", function () {
-      view.model.isNew = sinon.stub().returns(false);
+      view.model.isNew = vi.fn().mockReturnValueOnce(false);
       view.model.set({ description: '' });
       view.render();
       expect(
@@ -588,7 +567,7 @@ describe('StoryView', function () {
 
     it('is a text area after .edit-description is clicked', function () {
       const ev = { target: view.$('div.story-description')[0] };
-      view.model.isNew = sinon.stub().returns(false);
+      view.model.isNew = vi.fn().mockReturnValueOnce(false);
       view.editDescription(ev);
       expect(view.model.get('editingDescription')).toBeTruthy();
     });
@@ -605,7 +584,7 @@ describe('StoryView', function () {
 
     beforeEach(function () {
       div = {};
-      view.make = sinon.stub().returns(div);
+      view.make = vi.fn().mockReturnValue(div);
     });
 
     it("calls make('div')", function () {
@@ -618,7 +597,7 @@ describe('StoryView', function () {
     });
 
     it('invokes its callback', function () {
-      var callback = sinon.stub();
+      var callback = vi.fn();
       view.makeFormControl(callback);
       expect(callback).toHaveBeenCalledWith(div);
     });
@@ -654,8 +633,8 @@ describe('StoryView', function () {
 
   describe('disableEstimate', function () {
     it('disables estimate field when story is not estimable', function () {
-      view.model.notEstimable = sinon.stub().returns(true);
-      view.canEdit = sinon.stub().returns(true);
+      view.model.notEstimable = vi.fn().mockReturnValueOnce(true);
+      view.canEdit = vi.fn().mockReturnValueOnce(true);
       view.render();
 
       expect(view.$('.story_estimate').is(':disabled')).toEqual(true);
@@ -666,16 +645,16 @@ describe('StoryView', function () {
     let confirmStub;
 
     beforeEach(function () {
-      confirmStub = sinon.stub(window, 'confirm');
+      confirmStub = vi.spyOn(window, 'confirm');
     });
 
     afterEach(function () {
-      confirmStub.restore();
+      confirmStub.mockRestore();
     });
 
     describe('when accepting a story', function () {
       it('should save story when confirmed', function () {
-        confirmStub.returns(true);
+        confirmStub.mockReturnValueOnce(true);
 
         story.set({ state: 'delivered' });
 
@@ -686,7 +665,7 @@ describe('StoryView', function () {
       });
 
       it('should not save story when not confirmed', function () {
-        confirmStub.returns(false);
+        confirmStub.mockReturnValueOnce(false);
 
         story.set({ state: 'delivered' });
 
@@ -699,7 +678,7 @@ describe('StoryView', function () {
 
     describe('when rejecteing a story', function () {
       it('should save story when confirmed', function () {
-        confirmStub.returns(true);
+        confirmStub.mockReturnValueOnce(true);
 
         story.set({ state: 'delivered' });
 
@@ -710,7 +689,7 @@ describe('StoryView', function () {
       });
 
       it('should not save story when not confirmed', function () {
-        confirmStub.returns(false);
+        confirmStub.mockReturnValueOnce(false);
 
         story.set({ state: 'delivered' });
 
@@ -726,7 +705,7 @@ describe('StoryView', function () {
     var $storyControls;
 
     beforeEach(function () {
-      view.canEdit = sinon.stub().returns(true);
+      view.canEdit = vi.fn().mockReturnValueOnce(true);
       view.render();
     });
 
@@ -785,7 +764,7 @@ describe('StoryView', function () {
     let model;
 
     beforeEach(function () {
-      model = { name: 'note', set: sinon.stub() };
+      model = { name: 'note', set: vi.fn() };
       const responseText = JSON.stringify({ note: { errors: 'Error' } });
       const response = { responseText };
       view.handleSaveError(model, response);
@@ -805,7 +784,7 @@ describe('StoryView', function () {
       describe(`when state is "${state}"`, function () {
         it('shows transition buttons', function () {
           story.set({ state });
-          story.estimable = sinon.stub().returns(false);
+          story.estimable = vi.fn().mockReturnValueOnce(false);
           view.render();
 
           expect(view.$el.html()).toContain('data-story-state-buttons');
@@ -816,7 +795,7 @@ describe('StoryView', function () {
     describe('when state is "accepted"', function () {
       it('does not show transition buttons', function () {
         story.set({ state: 'accepted' });
-        story.estimable = sinon.stub().returns(false);
+        story.estimable = vi.fn().mockReturnValueOnce(false);
         view.render();
 
         expect(view.$el.html()).not.toContain('data-story-state-buttons');
@@ -824,7 +803,7 @@ describe('StoryView', function () {
 
       it('does not show save or delete buttons', function () {
         var $storyControls;
-        view.canEdit = sinon.stub().returns(true);
+        view.canEdit = vi.fn().mockReturnValueOnce(true);
         view.render();
         story.set({ state: 'accepted' });
         $storyControls = view.$el[0];
