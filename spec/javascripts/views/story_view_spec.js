@@ -252,11 +252,14 @@ describe('StoryView', function () {
       e = { currentTarget: '' };
     });
 
-    it.only('should call save', function () {
+    it('should call save', async function () {
       story.set({ editing: true });
-      expect(story.get('editing')).toBeTruthy();
+      expect(view.model.get('editing')).toBeTruthy();
+
       view.clickSave(e);
-      expect(story.get('editing')).toBeFalsy();
+      await new Promise(resolve => view.model.once('change:editing', resolve));
+
+      expect(view.model.get('editing')).toBeFalsy();
     });
 
     it('should set editing when errors occur', function () {
