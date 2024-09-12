@@ -6,12 +6,12 @@ describe('<Column />', () => {
   const render = overrideProps => {
     const defaultProps = {
       title: '',
-      onClose: sinon.stub(),
+      onClose: vi.fn(),
       canClose: true,
       children: '',
-      renderAction: sinon.stub(),
-      providedProps: { },
-      placeholder: ''
+      renderAction: vi.fn(),
+      providedProps: {},
+      placeholder: '',
     };
 
     const wrapper = shallow(<Column {...defaultProps} {...overrideProps} />);
@@ -43,7 +43,7 @@ describe('<Column />', () => {
   });
 
   it('calls renderAction', () => {
-    const renderAction = sinon.stub();
+    const renderAction = vi.fn();
     render({ renderAction });
 
     expect(renderAction).toHaveBeenCalled();
@@ -67,10 +67,10 @@ describe('<Column />', () => {
 
       describe('when button is clicked', () => {
         it('calls onClose', () => {
-          const onClose = sinon.stub();
+          const onClose = vi.fn();
           const { button } = render({ onClose });
           button.simulate('click');
-    
+
           expect(onClose).toHaveBeenCalled();
         });
       });

@@ -41,7 +41,7 @@ describe('Notifications Actions', () => {
         types,
       };
 
-      const clock = sinon.useFakeTimers();
+      const clock = vi.useFakeTimers();
 
       const fakeDispatch = vi.fn();
 
@@ -57,7 +57,7 @@ describe('Notifications Actions', () => {
         Notification.removeNotification(newNotification.id)
       );
 
-      clock.restore();
+      clock.mockRestore();
     });
   });
 

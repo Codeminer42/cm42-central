@@ -5,21 +5,18 @@ import Notifications from 'components/Notifications';
 describe('<Notifications />', () => {
   const defaultProps = () => ({
     messages: [],
-    onRemove: sinon.stub()
+    onRemove: vi.fn(),
   });
 
   it('renders component with the right number of messages', () => {
     const notifications = [
       { id: 1, message: 'message1', type: 'success' },
       { id: 2, message: 'message2', type: 'error' },
-      { id: 3, message: 'message3' }
+      { id: 3, message: 'message3' },
     ];
 
     const wrapper = shallow(
-      <Notifications
-        {...defaultProps()}
-        notifications={notifications}
-      />
+      <Notifications {...defaultProps()} notifications={notifications} />
     );
 
     expect(wrapper.find('Message').length).toBe(notifications.length);

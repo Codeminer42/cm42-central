@@ -115,7 +115,7 @@ describe('StoryView', function () {
     window.projectView.usernames = vi.fn();
 
     afterEach(function () {
-      window.md.makeHtml.restore();
+      window.md.makeHtml.mockRestore();
     });
   });
 

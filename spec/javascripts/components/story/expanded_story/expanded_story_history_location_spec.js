@@ -6,17 +6,17 @@ import { storyTypes } from 'libs/beta/constants';
 
 describe('<ExpandedStoryHistoryLocation />', () => {
   const defaultProps = () => ({
-    onClone: sinon.spy(),
-    showHistory: sinon.spy(),
+    onClone: vi.fn(),
+    showHistory: vi.fn(),
     story: {
       ...storyFactory(),
-      _editing: storyFactory()
+      _editing: storyFactory(),
     },
   });
 
   describe('when user click on clone story', () => {
     it('calls onClone callback', () => {
-      const onClone = sinon.spy();
+      const onClone = vi.fn();
 
       const wrapper = shallow(
         <ExpandedStoryHistoryLocation {...defaultProps()} onClone={onClone} />
@@ -32,7 +32,7 @@ describe('<ExpandedStoryHistoryLocation />', () => {
     it('renders an input with the right story link', () => {
       const story = storyFactory({
         id: 42,
-        _editing: storyFactory()
+        _editing: storyFactory(),
       });
 
       const wrapper = shallow(
@@ -56,12 +56,15 @@ describe('<ExpandedStoryHistoryLocation />', () => {
       const copyIdButton = wrapper.find(`[data-clipboard-text="#${story.id}"]`);
 
       expect(copyIdButton.exists()).toBe(true);
-    })
+    });
   });
 
   describe('when story is release', () => {
     it('doest not render history button', () => {
-      const story = storyFactory({ storyType: storyTypes.RELEASE, _editing: storyFactory() });
+      const story = storyFactory({
+        storyType: storyTypes.RELEASE,
+        _editing: storyFactory(),
+      });
 
       const wrapper = shallow(
         <ExpandedStoryHistoryLocation {...defaultProps()} story={story} />
@@ -70,10 +73,14 @@ describe('<ExpandedStoryHistoryLocation />', () => {
       const historyButton = wrapper.find('[data-id="history-button"]');
 
       expect(historyButton).not.toExist();
-    })
+    });
   });
 
-  const noReleasesTypes = [storyTypes.FEATURE, storyTypes.BUG, storyTypes.CHORE];
+  const noReleasesTypes = [
+    storyTypes.FEATURE,
+    storyTypes.BUG,
+    storyTypes.CHORE,
+  ];
 
   noReleasesTypes.forEach(storyType => {
     describe(`when story is ${storyType}`, () => {
@@ -83,11 +90,11 @@ describe('<ExpandedStoryHistoryLocation />', () => {
         const wrapper = shallow(
           <ExpandedStoryHistoryLocation {...defaultProps()} story={story} />
         );
-  
+
         const historyButton = wrapper.find('[data-id="history-button"]');
-  
+
         expect(historyButton).toExist();
       });
     });
-  })
+  });
 });

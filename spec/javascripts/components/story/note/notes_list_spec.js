@@ -6,16 +6,12 @@ describe('<NotesList/>', () => {
   const notesArray = [{ id: 1 }, { id: 2 }, { id: 3 }];
 
   it('render all notes in a <Note> component', () => {
-    const onDelete = sinon.stub();
+    const onDelete = vi.fn();
 
     const wrapper = shallow(
-      <NotesList
-        notes={notesArray}
-        onDelete={onDelete}
-        disabled={false}
-      />
+      <NotesList notes={notesArray} onDelete={onDelete} disabled={false} />
     );
 
-    expect(wrapper.find('Note').length).toBe(notesArray.length)
+    expect(wrapper.find('Note').length).toBe(notesArray.length);
   });
 });

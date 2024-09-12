@@ -7,12 +7,12 @@ describe('<ExpandedStoryOwnedBy />', () => {
     const defaultProps = () => ({
       users: [
         { id: 1, name: 'foo' },
-        { id: 2, name: 'bar' }
+        { id: 2, name: 'bar' },
       ],
       story: { _editing: { ownedById: '' } },
-      onEdit: sinon.spy(),
+      onEdit: vi.fn(),
       disabled: false,
-      ...propOverrides
+      ...propOverrides,
     });
 
     const wrapper = shallow(<ExpandedStoryOwnedBy {...defaultProps()} />);

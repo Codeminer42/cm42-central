@@ -5,38 +5,31 @@ import ExpandedStoryControls from 'components/story/ExpandedStory/ExpandedStoryC
 describe('<ExpandedStoryControls />', () => {
   const controls = ['save', 'delete', 'cancel'];
   const defaultProps = () => ({
-    onSave: sinon.stub(),
-    onCancel: sinon.stub(),
+    onSave: vi.fn(),
+    onCancel: vi.fn(),
     isDirty: false,
     canSave: true,
     canDelete: true,
-    onDelete: sinon.stub(),
-    disabled: false
+    onDelete: vi.fn(),
+    disabled: false,
   });
 
   it('renders all the control buttons', () => {
     const wrapper = shallow(
-      <ExpandedStoryControls
-        {...defaultProps()}
-        readOnly={false}
-      />
+      <ExpandedStoryControls {...defaultProps()} readOnly={false} />
     );
 
     controls.forEach(control => {
-      expect(wrapper.find(`.${control}`).prop('value')).toBe(I18n.t(control))
+      expect(wrapper.find(`.${control}`).prop('value')).toBe(I18n.t(control));
     });
   });
 
   describe('when the user clicks on save', () => {
     it('triggers the update callback', () => {
-      const onSave = sinon.spy();
+      const onSave = vi.fn();
 
       const wrapper = shallow(
-        <ExpandedStoryControls
-          {...defaultProps()}
-          canSave
-          onSave={onSave}
-        />
+        <ExpandedStoryControls {...defaultProps()} canSave onSave={onSave} />
       );
 
       wrapper.find('.save').simulate('click');
@@ -47,15 +40,15 @@ describe('<ExpandedStoryControls />', () => {
 
   describe('when the user clicks on delete', () => {
     beforeEach(() => {
-      sinon.stub(window, 'confirm').returns(true);
+      vi.spyOn(window, 'confirm').mockReturnValueOnce(true);
     });
 
     afterEach(() => {
-      window.confirm.restore();
+      window.confirm.mockRestore();
     });
 
     it('triggers the delete callback after confirm', () => {
-      const onDelete = sinon.spy();
+      const onDelete = vi.fn();
 
       const wrapper = shallow(
         <ExpandedStoryControls
@@ -72,22 +65,15 @@ describe('<ExpandedStoryControls />', () => {
   });
 
   describe('when the user clicks on cancel', () => {
-    beforeEach(() => {
-      sinon.stub(window, 'confirm')
-    });
-
     afterEach(() => {
-      window.confirm.restore();
+      window.confirm.mockRestore();
     });
 
     it('triggers the toggle callback', () => {
-      const handleCancel = sinon.spy();
+      const handleCancel = vi.fn();
 
       const wrapper = shallow(
-        <ExpandedStoryControls
-          {...defaultProps()}
-          onCancel={handleCancel}
-        />
+        <ExpandedStoryControls {...defaultProps()} onCancel={handleCancel} />
       );
 
       wrapper.find('.cancel').simulate('click');
@@ -97,7 +83,7 @@ describe('<ExpandedStoryControls />', () => {
 
     describe('when there is unsaved changes', () => {
       it('triggers a warning window', () => {
-        const handleCancel = sinon.spy();
+        const handleCancel = vi.fn();
 
         const wrapper = shallow(
           <ExpandedStoryControls
@@ -117,7 +103,7 @@ describe('<ExpandedStoryControls />', () => {
 
     describe('when no changes were made', () => {
       it('does not trigger a warning window ', () => {
-        const handleCancel = sinon.spy();
+        const handleCancel = vi.fn();
 
         const wrapper = shallow(
           <ExpandedStoryControls
@@ -173,10 +159,7 @@ describe('<ExpandedStoryControls />', () => {
 
       beforeEach(() => {
         wrapper = shallow(
-          <ExpandedStoryControls
-            {...defaultProps()}
-            canDelete
-          />
+          <ExpandedStoryControls {...defaultProps()} canDelete />
         );
       });
 
@@ -226,10 +209,7 @@ describe('<ExpandedStoryControls />', () => {
 
       beforeEach(() => {
         wrapper = shallow(
-          <ExpandedStoryControls
-            {...defaultProps()}
-            canSave
-          />
+          <ExpandedStoryControls {...defaultProps()} canSave />
         );
       });
 
@@ -241,25 +221,18 @@ describe('<ExpandedStoryControls />', () => {
     });
   });
 
-  describe("when prop disabled is false", () => {
-    it("should not render ExpandedStoryToolTip", () => {
-      const wrapper = shallow(
-        <ExpandedStoryControls
-          {...defaultProps()}
-        />
-      );
+  describe('when prop disabled is false', () => {
+    it('should not render ExpandedStoryToolTip', () => {
+      const wrapper = shallow(<ExpandedStoryControls {...defaultProps()} />);
 
       expect(wrapper.find('ExpandedStoryToolTip').exists()).toBe(false);
     });
   });
 
-  describe("when prop disabled is true", () => {
-    it("should render ExpandedStoryToolTip", () => {
+  describe('when prop disabled is true', () => {
+    it('should render ExpandedStoryToolTip', () => {
       const wrapper = shallow(
-        <ExpandedStoryControls
-          {...defaultProps()}
-          disabled={true}
-        />
+        <ExpandedStoryControls {...defaultProps()} disabled={true} />
       );
 
       expect(wrapper.find('ExpandedStoryToolTip').exists()).toBe(true);

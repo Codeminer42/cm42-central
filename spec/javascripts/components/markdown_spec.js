@@ -6,11 +6,11 @@ describe('<Markdown />', () => {
   const source = 'some text';
 
   beforeEach(() => {
-    sinon.stub(window.md, 'makeHtml').returns(source);
+    vi.fn(window.md, 'makeHtml').mockReturnValueOnce(source);
   });
 
   afterEach(() => {
-    window.md.makeHtml.restore();
+    window.md.makeHtml.mockRestore();
   });
 
   describe('When source isnt null', () => {

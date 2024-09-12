@@ -5,8 +5,8 @@ import ExpandedStoryDescription from 'components/story/ExpandedStory/ExpandedSto
 describe('<ExpandedStoryDescription />', () => {
   const defaultProps = () => ({
     story: {},
-    onEdit: sinon.spy(),
-    disabled: false
+    onEdit: vi.fn(),
+    disabled: false,
   });
 
   it('renders component', () => {
@@ -19,4 +19,3 @@ describe('<ExpandedStoryDescription />', () => {
     expect(wrapper).toExist();
   });
 });
-

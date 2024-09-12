@@ -47,19 +47,19 @@ describe('iteration', function () {
     it('should report how many points it overflows by', function () {
       // Should return 0
       iteration.set({ maximum_points: 2 });
-      var pointsStub = sinon.stub(iteration, 'points');
+      var pointsStub = vi.spyOn(iteration, 'points');
 
       // Should return 0 if the iteration points are less than maximum_points
-      pointsStub.returns(1);
+      pointsStub.mockReturnValueOnce(1);
       expect(iteration.overflowsBy()).toEqual(0);
 
       // Should return 0 if the iteration points are equal to maximum_points
-      pointsStub.returns(2);
+      pointsStub.mockReturnValueOnce(2);
       expect(iteration.overflowsBy()).toEqual(0);
 
       // Should return the difference if iteration points are greater than
       // maximum_points
-      pointsStub.returns(5);
+      pointsStub.mockReturnValueOnce(5);
       expect(iteration.overflowsBy()).toEqual(3);
     });
 
@@ -70,67 +70,93 @@ describe('iteration', function () {
 
   describe('filling backlog iterations', function () {
     it('should return how many points are available', function () {
-      var pointsStub = sinon.stub(iteration, 'points');
-      pointsStub.returns(3);
+      var pointsStub = vi.spyOn(iteration, 'points');
+      pointsStub.mockReturnValueOnce(3);
 
       iteration.set({ maximum_points: 5 });
       expect(iteration.availablePoints()).toEqual(2);
     });
 
     it('should always accept chores bugs and releases', function () {
-      var stub = sinon.stub();
+      var stub = vi.fn();
       var story = { get: stub };
 
-      stub.withArgs('story_type').returns('chore');
+      stub.mockImplementation(arg => {
+        if (arg === 'story_type') return 'chore';
+      });
       expect(iteration.canTakeStory(story)).toBeTruthy();
-      stub.withArgs('story_type').returns('bug');
+      stub.mockImplementation(arg => {
+        if (arg === 'story_type') return 'bug';
+      });
       expect(iteration.canTakeStory(story)).toBeTruthy();
-      stub.withArgs('story_type').returns('release');
+      stub.mockImplementation(arg => {
+        if (arg === 'story_type') return 'release';
+      });
       expect(iteration.canTakeStory(story)).toBeTruthy();
     });
 
     it('should not accept anything when isFull is true', function () {
-      var stub = sinon.stub();
+      var stub = vi.fn();
       var story = { get: stub };
 
       iteration.isFull = true;
 
-      stub.withArgs('story_type').returns('chore');
+      stub.mockImplementation(arg => {
+        if (arg === 'story_type') return 'chore';
+      });
       expect(iteration.canTakeStory(story)).toBeFalsy();
-      stub.withArgs('story_type').returns('bug');
+      stub.mockImplementation(arg => {
+        if (arg === 'story_type') return 'bug';
+      });
       expect(iteration.canTakeStory(story)).toBeFalsy();
-      stub.withArgs('story_type').returns('release');
+      stub.mockImplementation(arg => {
+        if (arg === 'story_type') return 'release';
+      });
       expect(iteration.canTakeStory(story)).toBeFalsy();
     });
 
     it('should accept a feature if there are enough free points', function () {
-      var availablePointsStub = sinon.stub(iteration, 'availablePoints');
-      availablePointsStub.returns(3);
-      var pointsStub = sinon.stub(iteration, 'points');
-      pointsStub.returns(1);
+      var availablePointsStub = vi.spyOn(iteration, 'availablePoints');
+      availablePointsStub.mockReturnValueOnce(3);
+      var pointsStub = vi.spyOn(iteration, 'points');
+      pointsStub.mockReturnValueOnce(1);
 
-      var stub = sinon.stub();
+      var stub = vi.fn();
       var story = { get: stub };
 
-      stub.withArgs('story_type').returns('feature');
-      stub.withArgs('estimate').returns(3);
+      stub.mockImplementation(arg => {
+        switch (arg) {
+          case 'story_type':
+            return 'feature';
+          case 'estimate':
+            return 3;
+        }
+      });
 
       expect(iteration.canTakeStory(story)).toBeTruthy();
 
       // Story is too big to fit in iteration
-      stub.withArgs('estimate').returns(4);
+      stub.mockImplementation(arg => {
+        if (arg === 'estimate') return 4;
+      });
       expect(iteration.canTakeStory(story)).toBeFalsy();
     });
 
     // Each iteration should take at least one feature
     it('should always take at least one feature no matter how big', function () {
-      var availablePointsStub = sinon.stub(iteration, 'availablePoints');
-      availablePointsStub.returns(1);
+      var availablePointsStub = vi.spyOn(iteration, 'availablePoints');
+      availablePointsStub.mockReturnValueOnce(1);
 
-      var stub = sinon.stub();
+      var stub = vi.fn();
       var story = { get: stub };
-      stub.withArgs('story_type').returns('feature');
-      stub.withArgs('estimate').returns(2);
+      stub.mockImplementation(arg => {
+        switch (arg) {
+          case 'story_type':
+            return 'feature';
+          case 'estimate':
+            return 2;
+        }
+      });
 
       expect(iteration.points()).toEqual(0);
       expect(iteration.canTakeStory(story)).toBeTruthy();
@@ -143,16 +169,22 @@ describe('iteration', function () {
     });
 
     it('should be set to true once canTakeStory has returned false', function () {
-      var stub = sinon.stub();
+      var stub = vi.fn();
       var story = { get: stub };
 
-      iteration.availablePoints = sinon.stub();
-      iteration.availablePoints.returns(0);
-      iteration.points = sinon.stub();
-      iteration.points.returns(1);
+      iteration.availablePoints = vi.fn();
+      iteration.availablePoints.mockReturnValueOnce(0);
+      iteration.points = vi.fn();
+      iteration.points.mockReturnValueOnce(1);
 
-      stub.withArgs('story_type').returns('feature');
-      stub.withArgs('estimate').returns(1);
+      stub.mockImplementation(arg => {
+        switch (arg) {
+          case 'story_time':
+            return 'feature';
+          case 'estimate':
+            return 1;
+        }
+      });
 
       expect(iteration.isFull).toEqual(false);
       expect(iteration.canTakeStory(story)).toBeFalsy();

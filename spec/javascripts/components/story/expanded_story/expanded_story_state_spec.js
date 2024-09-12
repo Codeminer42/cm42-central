@@ -1,32 +1,33 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import ExpandedStoryState from 'components/story/ExpandedStory/ExpandedStoryState';
-import { states, types } from '../../../../../app/assets/javascripts/models/beta/story';
-import { storyTypes } from '../../../../../app/assets/javascripts/libs/beta/constants'
+import {
+  states,
+  types,
+} from '../../../../../app/assets/javascripts/models/beta/story';
+import { storyTypes } from '../../../../../app/assets/javascripts/libs/beta/constants';
 
 describe('<ExpandedStoryState />', () => {
   it('renders component title', () => {
-    const onEditSpy = sinon.spy();
+    const onEditSpy = vi.fn();
 
     const story = { state: 'started', _editing: { state: 'started' } };
 
     const wrapper = mount(
-      <ExpandedStoryState
-        story={story}
-        onEdit={onEditSpy}
-        disabled={false}
-      />
+      <ExpandedStoryState story={story} onEdit={onEditSpy} disabled={false} />
     );
 
-    expect(wrapper.text()).toContain(I18n.t('activerecord.attributes.story.state'));
+    expect(wrapper.text()).toContain(
+      I18n.t('activerecord.attributes.story.state')
+    );
   });
 
-  describe("states at select", () => {
+  describe('states at select', () => {
     let onEditSpy;
 
     beforeEach(() => {
-      onEditSpy = sinon.spy();
-    })
+      onEditSpy = vi.fn();
+    });
 
     const noFeatureTypes = types.filter(type => type !== storyTypes.FEATURE);
 
@@ -35,15 +36,15 @@ describe('<ExpandedStoryState />', () => {
         states.forEach(state => {
           describe(`and state is ${state}`, () => {
             const story = {
-              _editing: { 
+              _editing: {
                 state,
                 estimate: 1,
                 storyType: noFeatureType,
-              }
+              },
             };
-  
+
             let wrapper;
-  
+
             beforeEach(() => {
               wrapper = shallow(
                 <ExpandedStoryState
@@ -53,28 +54,32 @@ describe('<ExpandedStoryState />', () => {
                 />
               );
             });
-  
+
             it('renders all states', () => {
               expect(wrapper.find('option').length).toEqual(7);
             });
-  
+
             it(`has to be ${state}`, () => {
               expect(wrapper.find('select').prop('value')).toBe(state);
             });
           });
         });
-      })
-    })
+      });
+    });
 
     describe('when is unestimated feature', () => {
       let onEditSpy;
 
       beforeEach(() => {
-        onEditSpy = sinon.spy();
-      })
+        onEditSpy = vi.fn();
+      });
 
       const story = {
-        _editing: { state: states[0], estimate: null, storyType: storyTypes.FEATURE }
+        _editing: {
+          state: states[0],
+          estimate: null,
+          storyType: storyTypes.FEATURE,
+        },
       };
       let wrapper;
 
@@ -86,8 +91,8 @@ describe('<ExpandedStoryState />', () => {
             disabled={false}
           />
         );
-      })
-      
+      });
+
       it('renders just one state', () => {
         expect(wrapper.find('option').length).toEqual(1);
       });
@@ -99,10 +104,10 @@ describe('<ExpandedStoryState />', () => {
 
     states.forEach(state => {
       it(`sets select value as ${state}`, () => {
-        const onEditSpy = sinon.spy();
+        const onEditSpy = vi.fn();
 
         const story = {
-          _editing: { state }
+          _editing: { state },
         };
 
         const wrapper = shallow(
@@ -125,17 +130,13 @@ describe('<ExpandedStoryState />', () => {
       const change = states[1];
 
       const story = {
-        _editing: { state }
+        _editing: { state },
       };
 
-      const onEdit = sinon.spy();
+      const onEdit = vi.fn();
 
       const wrapper = shallow(
-        <ExpandedStoryState
-          story={story}
-          onEdit={onEdit}
-          disabled={false}
-        />
+        <ExpandedStoryState story={story} onEdit={onEdit} disabled={false} />
       );
       const select = wrapper.find('select');
 
@@ -147,14 +148,10 @@ describe('<ExpandedStoryState />', () => {
 
   describe('when component is disabled', () => {
     it('select field is editable', () => {
-      const onEditSpy = sinon.spy();
+      const onEditSpy = vi.fn();
       const story = { state: 'started', _editing: { state: 'started' } };
       const wrapper = mount(
-        <ExpandedStoryState
-          story={story}
-          onEdit={onEditSpy}
-          disabled={true}
-        />
+        <ExpandedStoryState story={story} onEdit={onEditSpy} disabled={true} />
       );
       const select = wrapper.find('select');
       expect(select.prop('disabled')).toBe(true);
@@ -163,48 +160,52 @@ describe('<ExpandedStoryState />', () => {
 
   describe('when component is enabled', () => {
     it('select field is enabled', () => {
-      const onEditSpy = sinon.spy();
+      const onEditSpy = vi.fn();
       const story = { state: 'started', _editing: { state: 'started' } };
       const wrapper = mount(
-        <ExpandedStoryState
-          story={story}
-          onEdit={onEditSpy}
-          disabled={false}
-        />
+        <ExpandedStoryState story={story} onEdit={onEditSpy} disabled={false} />
       );
       const select = wrapper.find('select');
       expect(select.prop('disabled')).toBe(false);
     });
   });
 
-  describe("When change estimate", () => {
-    describe("to no estimate", () => {
-      it("disables state select", () => {
-          const story = { _editing: { estimate: '', storyType: 'feature', state: 'unscheduled' } };
-          const onEditSpy = sinon.spy();
-          const wrapper = shallow(
-            <ExpandedStoryState
-              story={story}
-              onEdit={onEditSpy}
-              disabled={false}
-            />
-          );
+  describe('When change estimate', () => {
+    describe('to no estimate', () => {
+      it('disables state select', () => {
+        const story = {
+          _editing: {
+            estimate: '',
+            storyType: 'feature',
+            state: 'unscheduled',
+          },
+        };
+        const onEditSpy = vi.fn();
+        const wrapper = shallow(
+          <ExpandedStoryState
+            story={story}
+            onEdit={onEditSpy}
+            disabled={false}
+          />
+        );
 
-          const select = wrapper.find('select');
+        const select = wrapper.find('select');
 
-          expect(select.prop('disabled')).toBe(true);
+        expect(select.prop('disabled')).toBe(true);
       });
     });
 
-    describe("to a number", () => {
+    describe('to a number', () => {
       it("doesn't disable state select when estimate is a number", () => {
-        const story = { _editing: { estimate: 1, storyType: 'feature', state: 'unstarted' } };
-        const onEditSpy = sinon.stub();
+        const story = {
+          _editing: { estimate: 1, storyType: 'feature', state: 'unstarted' },
+        };
+        const onEditSpy = vi.fn();
         const wrapper = shallow(
           <ExpandedStoryState
-              story={story}
-              onEdit={onEditSpy}
-              disabled={false}
+            story={story}
+            onEdit={onEditSpy}
+            disabled={false}
           />
         );
         const select = wrapper.find('select');

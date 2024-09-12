@@ -5,23 +5,23 @@ import ExpandedStoryLabels from 'components/story/ExpandedStory/ExpandedStoryLab
 describe('<ExpandedStoryLabels />', () => {
   const defaultLabels = [
     { id: 0, name: 'front' },
-    { id: 1, name: 'back' }
+    { id: 1, name: 'back' },
   ];
 
   const defaultProps = () => ({
-    onAddLabel: sinon.spy(),
-    onRemoveLabel: sinon.spy(),
+    onAddLabel: vi.fn(),
+    onRemoveLabel: vi.fn(),
     disabled: false,
-    projectLabels: []
+    projectLabels: [],
   });
-  
+
   const setup = (propOverrides, labelOverrides) => {
     const labels = labelOverrides || defaultLabels;
     const story = { labels, _editing: { labels } };
     const props = {
       ...defaultProps(),
       story,
-      ...propOverrides
+      ...propOverrides,
     };
 
     const wrapper = shallow(<ExpandedStoryLabels {...props} />);
@@ -29,15 +29,17 @@ describe('<ExpandedStoryLabels />', () => {
     const { onRemoveLabel, onAddLabel } = props;
 
     return { wrapper, reactTags, labels, onRemoveLabel, onAddLabel };
-  }
+  };
 
   it('renders component title', () => {
-    const story = { _editing: { defaultLabels } }
+    const story = { _editing: { defaultLabels } };
     const wrapper = mount(
       <ExpandedStoryLabels {...defaultProps()} story={story} />
     );
-    
-    expect(wrapper.text()).toContain(I18n.t('activerecord.attributes.story.labels'));
+
+    expect(wrapper.text()).toContain(
+      I18n.t('activerecord.attributes.story.labels')
+    );
   });
 
   describe('when component is disabled', () => {

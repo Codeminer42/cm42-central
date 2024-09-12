@@ -169,13 +169,13 @@ describe('StoryCollection', function () {
     it('should add labels when adding a story', function () {
       var Story = Backbone.Model.extend({
         name: 'story',
-        labels: sinon.stub(),
+        labels: vi.fn(),
         position: function () {
           return 1;
         },
       });
       var story = new Story({});
-      story.labels.returns(['dummy', 'labels']);
+      story.labels.mockReturnValueOnce(['dummy', 'labels']);
       expect(stories.labels).toEqual([]);
       stories.add(story);
       expect(stories.labels).toEqual(['dummy', 'labels']);

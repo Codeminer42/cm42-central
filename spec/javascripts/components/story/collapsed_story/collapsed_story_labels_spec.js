@@ -7,27 +7,31 @@ describe('<CollapsedStoryLabels />', () => {
   it('renders <CollapsedStoryLabels /> when labels', () => {
     const labels = [
       { id: 0, name: 'front' },
-      { id: 1, name: 'back' }
+      { id: 1, name: 'back' },
     ];
 
     const story = storyFactory({ labels });
 
-    const wrapper = shallow(<CollapsedStoryLabels story={story} onLabelClick={sinon.stub()} />);
+    const wrapper = shallow(
+      <CollapsedStoryLabels story={story} onLabelClick={vi.fn()} />
+    );
     expect(wrapper).toHaveClassName('Story__labels');
   });
 
   it('render all <StoryLabel />', () => {
     const labels = [
       { id: 0, name: 'front' },
-      { id: 1, name: 'back' }
+      { id: 1, name: 'back' },
     ];
 
     const story = storyFactory({ labels });
 
-    const wrapper = shallow(<CollapsedStoryLabels story={story} onLabelClick={sinon.stub()} />);
+    const wrapper = shallow(
+      <CollapsedStoryLabels story={story} onLabelClick={vi.fn()} />
+    );
 
-    labels.forEach((label) => {
+    labels.forEach(label => {
       expect(wrapper.find(`StoryLabel[label="${label.name}"]`)).toExist();
-    })
+    });
   });
 });

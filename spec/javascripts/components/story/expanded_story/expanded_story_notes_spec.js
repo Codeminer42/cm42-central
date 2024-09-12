@@ -7,7 +7,7 @@ describe('<ExpandedStoryNotes />', () => {
   let onCreate;
   let onDelete;
 
-  const newStory = (notes) => ({
+  const newStory = notes => ({
     ...storyFactory({ notes: notes || [] }),
     _editing: {
       ...storyFactory({ notes: notes || [] }),
@@ -15,8 +15,8 @@ describe('<ExpandedStoryNotes />', () => {
   });
 
   beforeEach(() => {
-    onCreate = sinon.stub();
-    onDelete = sinon.stub();
+    onCreate = vi.fn();
+    onDelete = vi.fn();
   });
 
   it('renders component title', () => {
@@ -31,8 +31,9 @@ describe('<ExpandedStoryNotes />', () => {
       />
     );
 
-    expect(wrapper.find('.Story__section-title').text())
-      .toContain(I18n.t('story.notes'));
+    expect(wrapper.find('.Story__section-title').text()).toContain(
+      I18n.t('story.notes')
+    );
   });
 
   it('renders component content', () => {
@@ -57,11 +58,11 @@ describe('<ExpandedStoryNotes />', () => {
     describe('when user create a new note', () => {
       it('triggers the onCreate callback passing the note', () => {
         const story = newStory();
-  
+
         const change = 'newNote';
-  
-        const onCreateSpy = sinon.spy();
-  
+
+        const onCreateSpy = vi.fn();
+
         const wrapper = mount(
           <ExpandedStoryNotes
             story={story}
@@ -70,13 +71,13 @@ describe('<ExpandedStoryNotes />', () => {
             disabled={false}
           />
         );
-  
+
         const textArea = wrapper.find('.create-note-text');
         const button = wrapper.find('.create-note-button input');
-  
+
         textArea.simulate('change', { target: { value: change } });
         button.simulate('click');
-  
+
         expect(onCreateSpy).toHaveBeenCalledWith(change);
       });
     });

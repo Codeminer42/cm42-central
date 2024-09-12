@@ -9,14 +9,14 @@ describe('<Columns />', () => {
       chillyBinStories: [],
       backlogSprints: [],
       doneSprints: [],
-      fetchPastStories: sinon.stub(),
-      toggleColumn: sinon.stub(),
-      createStory: sinon.stub(),
+      fetchPastStories: vi.fn(),
+      toggleColumn: vi.fn(),
+      createStory: vi.fn(),
       visibleColumns: {},
       reverse: false,
-    }
+    };
 
-    return shallow(<Columns {...defaultProps} {...props } />);
+    return shallow(<Columns {...defaultProps} {...props} />);
   };
 
   it('renders the component', () => {

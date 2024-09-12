@@ -9,14 +9,14 @@ describe('<ExpandedStoryTask />', () => {
       story: {
         ...storyFactory({
           tasks: tasks || [],
-          _editing: storyFactory({ tasks: tasks || [] })
-        })
+          _editing: storyFactory({ tasks: tasks || [] }),
+        }),
       },
-      onDelete: sinon.spy(),
-      onToggle: sinon.spy(),
-      onSave: sinon.spy(),
+      onDelete: vi.fn(),
+      onToggle: vi.fn(),
+      onSave: vi.fn(),
       disabled: false,
-      ...propOverrides
+      ...propOverrides,
     });
 
     const wrapper = mount(<ExpandedStoryTask {...defaultProps()} />);
@@ -41,21 +41,21 @@ describe('<ExpandedStoryTask />', () => {
 
     it('disables the add task button if text area is empty', () => {
       const { input, button } = setup();
-  
+
       input.simulate('change', { target: { value: '' } });
       expect(button.prop('disabled')).toBe(true);
     });
-  
+
     describe('onHandleSubmit', () => {
       it('calls onSave with a task', () => {
         const task = 'New Task';
-        const onSaveSpy = sinon.spy();
+        const onSaveSpy = vi.fn();
         const event = { target: { value: task } };
         const { input, button } = setup({ onSave: onSaveSpy });
-        
+
         input.simulate('change', event);
         button.simulate('click');
-  
+
         expect(onSaveSpy).toHaveBeenCalledWith(task);
       });
     });
@@ -67,8 +67,8 @@ describe('<ExpandedStoryTask />', () => {
       storyId: 0,
       name: 'task',
       done: false,
-      createdAt: "2019/04/01",
-      updatedAt: "2019/04/02"
+      createdAt: '2019/04/01',
+      updatedAt: '2019/04/02',
     };
 
     it('does not display task form', () => {
@@ -80,7 +80,7 @@ describe('<ExpandedStoryTask />', () => {
     describe('when there are no tasks', () => {
       it('renders nothing', () => {
         const { wrapper } = setup({ disabled: true });
-  
+
         expect(wrapper.html()).toBeNull();
       });
     });

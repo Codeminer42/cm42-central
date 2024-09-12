@@ -6,13 +6,13 @@ describe('<SearchResults />', () => {
   describe('when isEnabled is false', () => {
     it('does not render the component', () => {
       const wrapper = shallow(
-        <SearchResults 
+        <SearchResults
           isEnabled={false}
           searchResults={[]}
-          closeSearch={sinon.stub()}
+          closeSearch={vi.fn()}
         />
       );
-  
+
       expect(wrapper.instance()).toBeNull();
     });
   });
@@ -20,13 +20,13 @@ describe('<SearchResults />', () => {
   describe('when isEnabled is true', () => {
     it('renders the component', () => {
       const wrapper = shallow(
-        <SearchResults 
+        <SearchResults
           isEnabled={true}
           searchResults={[]}
-          closeSearch={sinon.stub()}
+          closeSearch={vi.fn()}
         />
       );
-  
+
       expect(wrapper).toExist();
     });
   });
