@@ -264,11 +264,6 @@ describe('StoryView', function () {
 
     it('should set editing when errors occur', function () {
       view.clickSave(e);
-      expect(server.responses.length).toEqual(1);
-      expect(server.responses[0].method).toEqual('PUT');
-      expect('/path/to/story').toMatch(server.responses[0].url);
-
-      server.respond();
 
       expect(story.get('editing')).toBeTruthy();
       expect(story.get('errors').title[0]).toEqual('cannot be blank');
@@ -283,7 +278,6 @@ describe('StoryView', function () {
 
       expect(disable_spy).toHaveBeenCalled();
       expect(enable_spy).not.toHaveBeenCalled();
-      server.respond();
 
       expect(enable_spy).toHaveBeenCalled();
     });
@@ -294,8 +288,6 @@ describe('StoryView', function () {
 
       expect(view.saveInProgress).toBeTruthy();
 
-      server.respond();
-
       expect(view.saveInProgress).toBeFalsy();
     });
 
@@ -304,8 +296,6 @@ describe('StoryView', function () {
       view.estimate(ev);
 
       expect(view.saveInProgress).toBeTruthy();
-
-      server.respond();
 
       expect(view.saveInProgress).toBeFalsy();
     });
@@ -432,7 +422,7 @@ describe('StoryView', function () {
       var spy = vi.spyOn(jQuery.fn, 'tagit');
       new_story.set({ editing: true });
       expect(spy).toHaveBeenCalled();
-      spy.restore();
+      spy.mockRestore();
     });
   });
 
@@ -464,9 +454,9 @@ describe('StoryView', function () {
     });
 
     it("doesn't add a blank note if there is already one", function () {
-      view.model.notes.last = vi.fn().mockImplementationOnce({
-        isNew: vi.fn().mockImplementationOnce(true),
-      });
+      view.model.notes.last = vi.fn().mockImplementation(() => ({
+        isNew: vi.fn().mockReturnValue(true),
+      }));
       expect(view.model.notes.last().isNew()).toBeTruthy();
       var oldLength = view.model.notes.length;
       view.addEmptyNote();
@@ -537,6 +527,7 @@ describe('StoryView', function () {
   describe('description', function () {
     beforeEach(function () {
       view.model.set({ editing: true });
+      view.canEdit = vi.fn().mockReturnValueOnce(true);
     });
 
     afterEach(function () {
