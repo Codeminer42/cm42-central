@@ -7,10 +7,10 @@ describe('<TasksList />', () => {
   const setup = propOverrides => {
     const defaultProps = () => ({
       tasks: tasksArray,
-      onDelete: sinon.spy(),
-      onToggle: sinon.spy(),
+      onDelete: vi.fn(),
+      onToggle: vi.fn(),
       disabled: false,
-      ...propOverrides
+      ...propOverrides,
     });
 
     const wrapper = shallow(<TasksList {...defaultProps()} />);

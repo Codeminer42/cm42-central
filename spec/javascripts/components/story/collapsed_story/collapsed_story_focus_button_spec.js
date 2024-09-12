@@ -4,28 +4,20 @@ import CollapsedStoryFocusButton from 'components/story/CollapsedStory/Collapsed
 
 describe('<CollapsedStoryFocusButton />', () => {
   it('renders the component', () => {
-    const wrapper = shallow(
-      <CollapsedStoryFocusButton 
-        onClick={sinon.stub()}
-      />
-    );
+    const wrapper = shallow(<CollapsedStoryFocusButton onClick={vi.fn()} />);
 
     expect(wrapper).toExist();
   });
 
   it('call onClick when button was clicked', () => {
-    const spyOnClick = sinon.spy();
+    const spyOnClick = vi.fn();
 
-    const wrapper = shallow(
-      <CollapsedStoryFocusButton
-        onClick={spyOnClick}
-      />
-    )
+    const wrapper = shallow(<CollapsedStoryFocusButton onClick={spyOnClick} />);
 
     const button = wrapper.find('[data-id="focus-button"]');
 
     button.simulate('click', {
-      stopPropagation: () => sinon.stub()
+      stopPropagation: () => vi.fn(),
     });
 
     expect(spyOnClick.called).toBeTruthy();

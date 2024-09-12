@@ -9,7 +9,7 @@ describe('ProjectBoard model', () => {
     validKeyWords.forEach(keyWord => {
       describe(`when keyword is ${keyWord}`, () => {
         const projectBoard = {
-          search: { keyWord }
+          search: { keyWord },
         };
 
         it('returns truthy', () => {
@@ -21,7 +21,7 @@ describe('ProjectBoard model', () => {
     invalidKeyWords.forEach(keyWord => {
       describe(`when keyword is ${keyWord}`, () => {
         const projectBoard = {
-          search: { keyWord }
+          search: { keyWord },
         };
 
         it('returns falsy', () => {
@@ -33,7 +33,7 @@ describe('ProjectBoard model', () => {
 
   describe('validSearch', () => {
     const validKeyWords = ['foo', 'bar', 'lorem ipsum'];
-    const invalidKeyWords = ['', '   ', '']
+    const invalidKeyWords = ['', '   ', ''];
 
     validKeyWords.forEach(keyWord => {
       describe(`when keyword is ${keyWord}`, () => {
@@ -108,8 +108,8 @@ describe('ProjectBoard model', () => {
       let callback;
 
       beforeEach(() => {
-        onToggle = sinon.spy();
-        callback = { onToggle }
+        onToggle = vi.fn();
+        callback = { onToggle };
       });
 
       describe('and have more of one column open', () => {
@@ -117,8 +117,8 @@ describe('ProjectBoard model', () => {
           const projectBoard = {
             visibleColumns: {
               chillyBin: true,
-              backlog: true
-            }
+              backlog: true,
+            },
           };
 
           ProjectBoard.toggleColumn(projectBoard, column, callback);
@@ -131,8 +131,8 @@ describe('ProjectBoard model', () => {
           const projectBoard = {
             visibleColumns: {
               chillyBin: true,
-              backlog: false
-            }
+              backlog: false,
+            },
           };
 
           ProjectBoard.toggleColumn(projectBoard, column, callback);
@@ -144,15 +144,15 @@ describe('ProjectBoard model', () => {
     describe('when is opening an column', () => {
       const projectBoard = {
         visibleColumns: {
-          chillyBin: false
-        }
+          chillyBin: false,
+        },
       };
       const column = 'chillyBin';
       let onToggle;
       let callback;
 
       beforeEach(() => {
-        onToggle = sinon.spy();
+        onToggle = vi.fn();
         callback = { onToggle };
       });
 
@@ -164,10 +164,16 @@ describe('ProjectBoard model', () => {
     });
   });
 
-
   describe('Drag and Drop', () => {
     describe('getPositions', () => {
-      const array = [{ newPosition: 24, position: 24, state: 'finished' }, { newPosition: 20, position: 20, state: 'finished' }, { newPosition: 16, position: 16, state: 'unstarted' }, { newPosition: 12, position: 12, state: 'unstarted' }, { newPosition: 8, position: 8, state: 'started' }, { newPosition: 4, position: 4, state: 'started' }];
+      const array = [
+        { newPosition: 24, position: 24, state: 'finished' },
+        { newPosition: 20, position: 20, state: 'finished' },
+        { newPosition: 16, position: 16, state: 'unstarted' },
+        { newPosition: 12, position: 12, state: 'unstarted' },
+        { newPosition: 8, position: 8, state: 'started' },
+        { newPosition: 4, position: 4, state: 'started' },
+      ];
 
       describe('same column', () => {
         const isSameColumn = true;
@@ -181,9 +187,9 @@ describe('ProjectBoard model', () => {
                 sourceIndex,
                 array,
                 isSameColumn,
-                'unstarted',
-              ),
-            ).toEqual([15,15]);
+                'unstarted'
+              )
+            ).toEqual([15, 15]);
           });
         });
 
@@ -197,9 +203,9 @@ describe('ProjectBoard model', () => {
                 sourceIndex,
                 array,
                 isSameColumn,
-                'finished',
-              ),
-            ).toEqual([21,21]);
+                'finished'
+              )
+            ).toEqual([21, 21]);
           });
         });
 
@@ -213,9 +219,9 @@ describe('ProjectBoard model', () => {
                 sourceIndex,
                 array,
                 isSameColumn,
-                'finished',
-              ),
-            ).toEqual([23,1]);
+                'finished'
+              )
+            ).toEqual([23, 1]);
           });
         });
 
@@ -229,16 +235,16 @@ describe('ProjectBoard model', () => {
                 sourceIndex,
                 array,
                 isSameColumn,
-                'started',
-              ),
-            ).toEqual([5,5]);
+                'started'
+              )
+            ).toEqual([5, 5]);
           });
         });
       });
 
-      describe("Different columns", () => {
+      describe('Different columns', () => {
         const isSameColumn = false;
-        describe("Dragging to another column", () => {
+        describe('Dragging to another column', () => {
           const sourceIndex = 3;
           const destinationIndex = 2;
           it('returns a new position', () => {
@@ -248,9 +254,9 @@ describe('ProjectBoard model', () => {
                 sourceIndex,
                 array,
                 isSameColumn,
-                'unstarted',
-              ),
-            ).toEqual([15,15]);
+                'unstarted'
+              )
+            ).toEqual([15, 15]);
           });
         });
 
@@ -264,9 +270,9 @@ describe('ProjectBoard model', () => {
                 sourceIndex,
                 array,
                 isSameColumn,
-                'finished',
-              ),
-            ).toEqual([23,1]);
+                'finished'
+              )
+            ).toEqual([23, 1]);
           });
         });
 
@@ -280,29 +286,42 @@ describe('ProjectBoard model', () => {
                 sourceIndex,
                 array,
                 isSameColumn,
-                'started',
-              ),
-            ).toEqual([5,5]);
+                'started'
+              )
+            ).toEqual([5, 5]);
           });
         });
       });
     });
 
-    describe("moveStory", () => {
+    describe('moveStory', () => {
       let sourceArray;
       let destinationArray;
       let newDestArray;
       beforeEach(() => {
         newDestArray = [];
-        sourceArray = [{ story: 'source1' }, { story: 'source2' }, { story: 'source3' }];
-        destinationArray = [{ story: 'dest1' }, { story: 'dest2' }, { story: 'dest3' }];
+        sourceArray = [
+          { story: 'source1' },
+          { story: 'source2' },
+          { story: 'source3' },
+        ];
+        destinationArray = [
+          { story: 'dest1' },
+          { story: 'dest2' },
+          { story: 'dest3' },
+        ];
       });
 
-      describe("When moving in same column", () => {
+      describe('When moving in same column', () => {
         const sourceIndex = 0;
         const destinationIndex = 1;
         it('returns a new array', () => {
-          newDestArray = ProjectBoard.moveStory(sourceArray, sourceArray, sourceIndex, destinationIndex);
+          newDestArray = ProjectBoard.moveStory(
+            sourceArray,
+            sourceArray,
+            sourceIndex,
+            destinationIndex
+          );
           expect(newDestArray[1].story).toEqual('source1');
         });
       });
@@ -311,7 +330,12 @@ describe('ProjectBoard model', () => {
         const sourceIndex = 0;
         const destinationIndex = 1;
         it('returns a new array', () => {
-          newDestArray = ProjectBoard.moveStory(sourceArray, destinationArray, sourceIndex, destinationIndex);
+          newDestArray = ProjectBoard.moveStory(
+            sourceArray,
+            destinationArray,
+            sourceIndex,
+            destinationIndex
+          );
           expect(newDestArray[1].story).toEqual('source1');
         });
       });

@@ -7,17 +7,17 @@ describe('<ExpandedStoryReleaseDate />', () => {
   const defaultProps = () => ({
     story: {
       ...storyFactory(),
-      _editing: storyFactory({ releaseDate: null })
+      _editing: storyFactory({ releaseDate: null }),
     },
     disabled: false,
-    onEdit: sinon.spy()
+    onEdit: vi.fn(),
   });
 
   it('renders component title', () => {
-    const wrapper = mount(
-      <ExpandedStoryReleaseDate {...defaultProps()}/>
-    );
+    const wrapper = mount(<ExpandedStoryReleaseDate {...defaultProps()} />);
 
-    expect(wrapper.text()).toContain(I18n.t('activerecord.attributes.story.release_date'));
+    expect(wrapper.text()).toContain(
+      I18n.t('activerecord.attributes.story.release_date')
+    );
   });
 });

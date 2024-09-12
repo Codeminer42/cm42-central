@@ -6,17 +6,16 @@ describe('<ExpandedStoryContentArea />', () => {
   const renderContent = propsOverride => {
     const wrapper = shallow(
       <ExpandedStoryContentArea
-        onClick={sinon.stub()}
+        onClick={vi.fn()}
         description=""
         {...propsOverride}
       />
-    )
+    );
     const descriptionContent = wrapper.find('[data-id="description-content"]');
     const editButton = wrapper.find('[data-id="edit-button"]');
 
-    return { wrapper, descriptionContent, editButton }
-  }
-
+    return { wrapper, descriptionContent, editButton };
+  };
 
   describe("when description isn't null", () => {
     const description = 'description example';

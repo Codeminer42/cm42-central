@@ -11,11 +11,11 @@ describe('<SideBar />', () => {
         backlog: true,
         done: true,
       },
-      toggleColumn: sinon.stub(),
-      reverseColumns: sinon.stub()
+      toggleColumn: vi.fn(),
+      reverseColumns: vi.fn(),
     };
 
-    return shallow(<SideBar {...defaultProps} {...props } />);
+    return shallow(<SideBar {...defaultProps} {...props} />);
   };
 
   it('renders the component', () => {

@@ -15,7 +15,7 @@ describe('Project Notification', function () {
   });
 
   afterAll(function () {
-    TabNotification.handleChangeTitle.restore();
+    TabNotification.handleChangeTitle.mockRestore();
     $('body').removeData(['notificationIconUrl', 'faviconIconUrl']);
   });
 

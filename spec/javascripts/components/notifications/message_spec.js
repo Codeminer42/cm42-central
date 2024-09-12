@@ -7,18 +7,13 @@ describe('<Message />', () => {
     type: 'success',
     className: 'Notifications__Message',
     message: 'success',
-    onRemove: sinon.stub()
+    onRemove: vi.fn(),
   });
 
   it('renders component with the right type on className', () => {
     const messageType = 'error';
 
-    const wrapper = shallow(
-      <Message
-        {...defaultProps()}
-        type={messageType}
-      />
-    );
+    const wrapper = shallow(<Message {...defaultProps()} type={messageType} />);
 
     expect(wrapper.find(`.Message--${messageType}`)).toExist();
   });
@@ -26,24 +21,16 @@ describe('<Message />', () => {
   it('renders component with the right message', () => {
     const message = 'error message';
 
-    const wrapper = shallow(
-      <Message
-        {...defaultProps()}
-        message={message}
-      />
-    );
+    const wrapper = shallow(<Message {...defaultProps()} message={message} />);
 
     expect(wrapper.text()).toContain(message);
   });
 
   it('calls onRemove when click on the remove button', () => {
-    const onRemove = sinon.stub();
+    const onRemove = vi.fn();
 
     const wrapper = shallow(
-      <Message
-        {...defaultProps()}
-        onRemove={onRemove}
-      />
+      <Message {...defaultProps()} onRemove={onRemove} />
     );
 
     const button = wrapper.find('#close-button');

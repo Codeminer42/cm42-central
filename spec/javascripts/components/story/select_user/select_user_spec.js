@@ -7,12 +7,12 @@ describe('<SelectUser />', () => {
     const defaultProps = () => ({
       users: [
         { id: 1, name: 'foo' },
-        { id: 2, name: 'bar' }
+        { id: 2, name: 'bar' },
       ],
       selectedUserId: 1,
-      onEdit: sinon.spy(),
+      onEdit: vi.fn(),
       disabled: false,
-      ...propOverrides
+      ...propOverrides,
     });
 
     const wrapper = shallow(<SelectUser {...defaultProps()} />);
@@ -28,7 +28,7 @@ describe('<SelectUser />', () => {
   });
 
   it('calls onEdit with the right params', () => {
-    const mockOnEdit = sinon.spy();
+    const mockOnEdit = vi.fn();
     const value = 1;
     const { select } = setup({ onEdit: mockOnEdit });
 
@@ -67,7 +67,7 @@ describe('<SelectUser />', () => {
 
   describe('when component is disabled', () => {
     it('select field is disabled', () => {
-      const { select } = setup({disabled: true});
+      const { select } = setup({ disabled: true });
 
       expect(select.prop('disabled')).toBe(true);
     });

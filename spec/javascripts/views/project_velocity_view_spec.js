@@ -16,19 +16,19 @@ describe('ProjectVelocityView', function () {
 
     ProjectVelocityOverrideViewStub = () => overrideView;
 
-    ProjectVelocityOverrideViewStub.prototype.template = sinon.stub();
+    ProjectVelocityOverrideViewStub.prototype.template = vi.fn();
 
     ProjectVelocityOverrideView.mockImplementation(
       () => ProjectVelocityOverrideViewStub
     );
 
-    sinon.stub(ProjectVelocityView.prototype, 'listenTo');
+    vi.spyOn(ProjectVelocityView.prototype, 'listenTo');
 
     subject = new ProjectVelocityView({ model: model });
   });
 
   afterEach(() => {
-    ProjectVelocityView.prototype.listenTo.restore();
+    ProjectVelocityView.prototype.listenTo.mockRestore();
   });
 
   it('should have a top level element', function () {
@@ -61,13 +61,14 @@ describe('ProjectVelocityView', function () {
     let template;
 
     beforeEach(function () {
-      subject.$el.html = sinon.stub();
-      subject.setFakeClass = sinon.stub();
+      subject.$el.html = vi.fn();
+      subject.setFakeClass = vi.fn();
       template = {};
-      subject.template = sinon
-        .stub()
-        .withArgs({ project: model })
-        .returns(template);
+      subject.template = vi.fn().mockImplementation(arg => {
+        const object = { project: model };
+
+        if (arg == object) return template;
+      });
     });
 
     it('renders the template', function () {
@@ -90,9 +91,9 @@ describe('ProjectVelocityView', function () {
 
     beforeEach(function () {
       el = {};
-      subject.override_view.render = sinon.stub();
-      subject.override_view.render.returns({ el: el });
-      subject.$el.append = sinon.stub();
+      subject.override_view.render = vi.fn();
+      subject.override_view.render.mockReturnValueOnce({ el: el });
+      subject.$el.append = vi.fn();
     });
 
     it('appends the override view to its $el', function () {
@@ -103,12 +104,12 @@ describe('ProjectVelocityView', function () {
 
   describe('setFakeClass', function () {
     beforeEach(function () {
-      model.velocityIsFake = sinon.stub();
+      model.velocityIsFake = vi.fn();
     });
 
     describe('when velocity is fake', function () {
       beforeEach(function () {
-        model.velocityIsFake.returns(true);
+        model.velocityIsFake.mockReturnValueOnce(true);
       });
 
       it('adds the fake class to $el', function () {
@@ -119,7 +120,7 @@ describe('ProjectVelocityView', function () {
 
     describe('when velocity is not fake', function () {
       beforeEach(function () {
-        model.velocityIsFake.returns(false);
+        model.velocityIsFake.mockReturnValueOnce(false);
       });
 
       it('adds the fake class to $el', function () {

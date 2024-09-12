@@ -6,18 +6,18 @@ import { types } from 'models/beta/story';
 describe('<ExpandedStoryType />', () => {
   const setup = propOverrides => {
     const defaultProps = {
-      onEdit: sinon.spy(),
+      onEdit: vi.fn(),
       story: { _editing: { storyType: 'feature' } },
       disabled: false,
-      ...propOverrides
+      ...propOverrides,
     };
     const wrapper = shallow(<ExpandedStoryType {...defaultProps} />);
     const select = wrapper.find('select');
 
     return { wrapper, select };
-  }
+  };
 
-  types.forEach((type) => {
+  types.forEach(type => {
     it(`sets defaultValue as ${type} in select`, () => {
       const story = { _editing: { storyType: type } };
       const { select } = setup({ story });
@@ -36,7 +36,7 @@ describe('<ExpandedStoryType />', () => {
 
   describe('when component is disabled', () => {
     it('select field is disabled', () => {
-      const { select } = setup({disabled: true});
+      const { select } = setup({ disabled: true });
 
       expect(select.prop('disabled')).toBe(true);
     });

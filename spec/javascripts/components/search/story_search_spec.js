@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { StorySearch } from 'components/search/StorySearch';
 
-describe('<StorySearch />',  () => {
+describe('<StorySearch />', () => {
   beforeEach(() => {
     const divPortal = global.document.createElement('div');
     divPortal.setAttribute('data-portal', 'search');
@@ -12,11 +12,7 @@ describe('<StorySearch />',  () => {
 
   it('renders the component', () => {
     const wrapper = mount(
-      <StorySearch 
-        projectId={1}
-        search={sinon.stub()}
-        loading={false}
-      />
+      <StorySearch projectId={1} search={vi.fn()} loading={false} />
     );
 
     expect(wrapper).toExist();
@@ -25,20 +21,16 @@ describe('<StorySearch />',  () => {
   describe('loading', () => {
     describe('when loading is true', () => {
       let wrapper;
-  
+
       beforeEach(() => {
         wrapper = mount(
-          <StorySearch 
-            projectId={1}
-            search={sinon.stub()}
-            loading={true}
-          />
+          <StorySearch projectId={1} search={vi.fn()} loading={true} />
         );
       });
-  
+
       it('renders the spinner', () => {
         const spinner = wrapper.find('[data-id="spinner-loading"]');
-  
+
         expect(spinner).toBeTruthy();
       });
     });

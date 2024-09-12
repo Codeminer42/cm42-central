@@ -7,11 +7,11 @@ describe('<SideBarButton />', () => {
     const defaultProps = {
       children: '',
       description: '',
-      onClick: sinon.stub(),
-      isVisible: false
+      onClick: vi.fn(),
+      isVisible: false,
     };
 
-    return shallow(<SideBarButton {...defaultProps} {...props } />);
+    return shallow(<SideBarButton {...defaultProps} {...props} />);
   };
 
   it('renders the component', () => {
@@ -24,7 +24,9 @@ describe('<SideBarButton />', () => {
     const children = 'I am children!';
     const wrapper = render({ children });
 
-    expect(wrapper.find('[data-id="side-bar-button"]').text()).toEqual(children);
+    expect(wrapper.find('[data-id="side-bar-button"]').text()).toEqual(
+      children
+    );
   });
 
   it('does not render <SideBarButtonInfo />', () => {
@@ -35,7 +37,7 @@ describe('<SideBarButton />', () => {
 
   describe('when click in <SideBarButton />', () => {
     it('call onClick', () => {
-      const onClick = sinon.stub();
+      const onClick = vi.fn();
       const wrapper = render({ onClick });
 
       wrapper.find('[data-id="side-bar-button"]').simulate('click');

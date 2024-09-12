@@ -9,12 +9,12 @@ describe('<Task />', () => {
         id: 1,
         name: 'Foo',
         done: false,
-        createdAt: '20/06/2018'
+        createdAt: '20/06/2018',
       },
-      onDelete: sinon.spy(),
-      onToggle: sinon.spy(),
+      onDelete: vi.fn(),
+      onToggle: vi.fn(),
       disabled: false,
-      ...propOverrides
+      ...propOverrides,
     });
 
     const wrapper = shallow(<Task {...defaultProps()} />);
@@ -27,8 +27,8 @@ describe('<Task />', () => {
 
   describe('when user deletes a task', () => {
     it('triggers onDelete callback', () => {
-      const onDeleteSpy = sinon.spy();
-      const { deleteLink } = setup({ onDelete: onDeleteSpy })
+      const onDeleteSpy = vi.fn();
+      const { deleteLink } = setup({ onDelete: onDeleteSpy });
 
       deleteLink.simulate('click');
 
@@ -38,7 +38,7 @@ describe('<Task />', () => {
 
   describe('when user update status of the task clicking on checkbox', () => {
     it('triggers onToggle callback', () => {
-      const onToggleCheckedBoxSpy = sinon.spy();
+      const onToggleCheckedBoxSpy = vi.fn();
       const { checkbox } = setup({ onToggle: onToggleCheckedBoxSpy });
 
       checkbox.simulate('click');
@@ -56,7 +56,7 @@ describe('<Task />', () => {
 
     describe('when user tries to update the task clicking on checkbox', () => {
       it('does not trigger onToggle callback', () => {
-        const onToggleCheckedBoxSpy = sinon.spy();
+        const onToggleCheckedBoxSpy = vi.fn();
         const { checkbox } = setup({ disabled: true });
 
         checkbox.simulate('click');
@@ -66,4 +66,3 @@ describe('<Task />', () => {
     });
   });
 });
-

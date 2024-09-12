@@ -7,11 +7,11 @@ describe('<Note/>', () => {
     id: 42,
     note: 'test Note',
     userName: 'foo',
-    createdAt: '27/08/2018'
+    createdAt: '27/08/2018',
   };
 
   const setup = propOverrides => {
-    const onDeleteSpy = sinon.spy();
+    const onDeleteSpy = vi.fn();
 
     const wrapper = shallow(
       <Note

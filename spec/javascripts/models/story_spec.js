@@ -160,11 +160,11 @@ describe('Story', function () {
         story.set({ story_type: 'feature' });
       });
       it('should be estimable when not estimated', function () {
-        sinon.stub(story, 'estimated').returns(false);
+        vi.spyOn(story, 'estimated').mockReturnValueOnce(false);
         expect(story.estimable()).toBeTruthy();
       });
       it('should not be estimable when estimated', function () {
-        sinon.stub(story, 'estimated').returns(true);
+        vi.spyOn(story, 'estimated').mockReturnValueOnce(true);
         expect(story.estimable()).toBeFalsy();
       });
     });
@@ -257,11 +257,13 @@ describe('Story', function () {
       // If the story is accepted, but it's accepted_at date is within the
       // current iteration, it should be in the in_progress column, otherwise
       // it should be in the #done column
-      sinon.stub(story, 'iterationNumber').returns(1);
-      story.collection.project.currentIterationNumber = sinon.stub().returns(2);
+      vi.spyOn(story, 'iterationNumber').mockReturnValueOnce(1);
+      story.collection.project.currentIterationNumber = vi
+        .fn()
+        .mockReturnValueOnce(2);
       story.set({ state: 'accepted' });
       expect(story.column).toEqual('#done');
-      story.collection.project.currentIterationNumber.returns(1);
+      story.collection.project.currentIterationNumber.mockReturnValueOnce(1);
       story.setColumn();
       expect(story.column).toEqual('#in_progress');
     });
@@ -367,7 +369,7 @@ describe('Story', function () {
 
     it('should return true if the story has saved notes', function () {
       expect(story.hasDetails()).toBeFalsy();
-      story.hasNotes = sinon.stub().returns(true);
+      story.hasNotes = vi.fn().mockReturnValueOnce(true);
       expect(story.hasDetails()).toBeTruthy();
     });
   });
@@ -376,7 +378,7 @@ describe('Story', function () {
     it('should return the iteration number for an accepted story', function () {
       story.collection.project.getIterationNumberForDate = sinon
         .stub()
-        .returns(999);
+        .mockReturnValueOnce(999);
       story.set({ accepted_at: '2011/07/25', state: 'accepted' });
       expect(story.iterationNumber()).toEqual(999);
     });
@@ -432,12 +434,13 @@ describe('Story', function () {
 
   describe('humanAttributeName', function () {
     beforeEach(function () {
-      sinon.stub(I18n, 't');
-      I18n.t.withArgs('foo_bar').returns('Foo bar');
+      vi.spyOn(I18n, 't').mockImplementation(arg => {
+        if (arg === 'foo_bar') return 'Foo bar';
+      });
     });
 
     afterEach(() => {
-      I18n.t.restore();
+      I18n.t.mockRestore();
     });
 
     it('returns the translated attribute name', function () {

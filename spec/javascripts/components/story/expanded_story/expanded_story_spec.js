@@ -8,15 +8,15 @@ import ExpandedStoryDefault from 'components/story/ExpandedStory/ExpandedStoryDe
 describe('<ExpandedStory />', () => {
   const defaultProps = () => ({
     story: storyFactory(),
-    editStory: sinon.spy(),
-    saveStory: sinon.spy(),
-    deleteStory: sinon.spy(),
+    editStory: vi.fn(),
+    saveStory: vi.fn(),
+    deleteStory: vi.fn(),
     project: { labels: [] },
     disabled: false,
-    onToggle: sinon.spy(),
-    cloneStory: sinon.spy(),
-    showHistory: sinon.spy(),
-    onClone: sinon.spy()
+    onToggle: vi.fn(),
+    cloneStory: vi.fn(),
+    showHistory: vi.fn(),
+    onClone: vi.fn(),
   });
 
   describe('when storyType is a release', () => {
@@ -24,15 +24,12 @@ describe('<ExpandedStory />', () => {
       const story = storyFactory({
         _editing: {
           ...storyFactory(),
-          storyType: 'release'
-        }
+          storyType: 'release',
+        },
       });
 
       const wrapper = shallow(
-        <ExpandedStory
-          {...defaultProps()}
-          story={story}
-        />,
+        <ExpandedStory {...defaultProps()} story={story} />,
         { disableLifecycleMethods: true }
       );
 
@@ -46,15 +43,12 @@ describe('<ExpandedStory />', () => {
       const story = storyFactory({
         _editing: {
           ...storyFactory(),
-          storyType: 'feature'
-        }
+          storyType: 'feature',
+        },
       });
 
       const wrapper = shallow(
-        <ExpandedStory
-          {...defaultProps()}
-          story={story}
-        />,
+        <ExpandedStory {...defaultProps()} story={story} />,
         { disableLifecycleMethods: true }
       );
 
@@ -68,16 +62,13 @@ describe('<ExpandedStory />', () => {
       _editing: {
         ...storyFactory(),
         storyType: 'feature',
-        state: 'unstarted'
-      }
+        state: 'unstarted',
+      },
     });
-    
+
     it('passes disabled prop as false', () => {
       const wrapper = shallow(
-        <ExpandedStory
-          {...defaultProps()}
-          story={story}
-        />, 
+        <ExpandedStory {...defaultProps()} story={story} />,
         { disableLifecycleMethods: true }
       );
       const expandedStoryDefault = wrapper.find(ExpandedStoryDefault);
@@ -91,18 +82,15 @@ describe('<ExpandedStory />', () => {
       _editing: {
         ...storyFactory(),
         storyType: 'feature',
-        state: 'accepted'
+        state: 'accepted',
       },
       storyType: 'feature',
-      state: 'accepted'
+      state: 'accepted',
     });
-    
+
     it('passes disabled prop as true', () => {
       const wrapper = shallow(
-        <ExpandedStory
-          {...defaultProps()}
-          story={story}
-        />,
+        <ExpandedStory {...defaultProps()} story={story} />,
         { disableLifecycleMethods: true }
       );
       const expandedStoryDefault = wrapper.find(ExpandedStoryDefault);
@@ -115,19 +103,14 @@ describe('<ExpandedStory />', () => {
     const story = storyFactory({
       _editing: {
         ...storyFactory({ loading: true }),
-      }
+      },
     });
 
     const wrapper = shallow(
-      <ExpandedStory
-        {...defaultProps()}
-        story={story}
-        className=''
-      />,
+      <ExpandedStory {...defaultProps()} story={story} className="" />,
       { disableLifecycleMethods: true }
     );
 
     expect(wrapper.find('.Story__enable-loading')).toExist();
   });
-
 });

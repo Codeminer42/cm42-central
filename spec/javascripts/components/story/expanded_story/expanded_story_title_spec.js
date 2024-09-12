@@ -6,9 +6,9 @@ describe('<ExpandedStoryTitle />', () => {
   const setup = propOverrides => {
     const defaultProps = () => ({
       story: { _editing: { title: 'foo' } },
-      onEdit: sinon.spy(),
+      onEdit: vi.fn(),
       disabled: false,
-      ...propOverrides
+      ...propOverrides,
     });
 
     const wrapper = shallow(<ExpandedStoryTitle {...defaultProps()} />);
@@ -25,7 +25,7 @@ describe('<ExpandedStoryTitle />', () => {
 
   describe('input element', () => {
     it('has value equals to story title', () => {
-      const story = { _editing: { title: 'bar' } }
+      const story = { _editing: { title: 'bar' } };
 
       const { input } = setup({ story });
 
@@ -33,18 +33,18 @@ describe('<ExpandedStoryTitle />', () => {
     });
 
     it('calls onEdit with the right params', () => {
-      const mockOnEdit = sinon.spy();
+      const mockOnEdit = vi.fn();
       const eventValue = 'foobar';
       const { input } = setup({ onEdit: mockOnEdit });
 
-      input.simulate('change', { target: { value: eventValue } })
+      input.simulate('change', { target: { value: eventValue } });
 
       expect(mockOnEdit).toHaveBeenCalledWith(eventValue);
     });
 
     describe('when the component is enabled', () => {
       it('should not be read-only', () => {
-        const { input } = setup({disabled: false});
+        const { input } = setup({ disabled: false });
 
         expect(input.prop('readOnly')).toBe(false);
       });
@@ -52,7 +52,7 @@ describe('<ExpandedStoryTitle />', () => {
 
     describe('when component is disabled', () => {
       it('should be read-only', () => {
-        const { input } = setup({disabled: true});
+        const { input } = setup({ disabled: true });
 
         expect(input.prop('readOnly')).toBe(true);
       });

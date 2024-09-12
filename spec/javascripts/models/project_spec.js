@@ -89,7 +89,7 @@ describe('Project model', function () {
 
       expect(spy).toHaveBeenCalledWith(changesets);
 
-      server.restore();
+      server.mockRestore();
     });
 
     it('should reload changed stories from changesets', function () {
@@ -135,7 +135,7 @@ describe('Project model', function () {
         'New changeset story'
       );
 
-      server.restore();
+      server.mockRestore();
     });
 
     it('should only reload a story once if present in multiple changesets', function () {
@@ -225,16 +225,24 @@ describe('Project model', function () {
 
     it('should get all the done iterations', function () {
       var doneIteration = {
-        get: sinon.stub().withArgs('column').returns('#done'),
+        get: vi.fn().mockImplementation(arg => {
+          if (arg === 'column') return '#done';
+        }),
       };
       var inProgressIteration = {
-        get: sinon.stub().withArgs('column').returns('#in_progress'),
+        get: vi.fn().mockImplementation(arg => {
+          if (arg === 'column') return '#in_progress';
+        }),
       };
       var backlogIteration = {
-        get: sinon.stub().withArgs('column').returns('#backlog'),
+        get: vi.fn().mockImplementation(arg => {
+          if (arg === 'column') return '#backlong';
+        }),
       };
       var chillyBinIteration = {
-        get: sinon.stub().withArgs('column').returns('#chilly_bin'),
+        get: vi.fn().mockImplementation(arg => {
+          if (arg === 'column') return '#chilly_bin';
+        }),
       };
 
       project.iterations = [
@@ -274,7 +282,7 @@ describe('Project model', function () {
       var fake_today = new Date('2011/07/29');
       // Stop JSHINT complaining about overriding Date
       /*global Date: true*/
-      project.today = sinon.stub().returns(fake_today);
+      project.today = vi.fn().mockReturnValueOnce(fake_today);
       project.unset('start_date');
       expect(project.startDate()).toEqual(expected_date);
     });
@@ -288,10 +296,10 @@ describe('Project model', function () {
 
     it('should return velocity', function () {
       var doneIterations = _.map([1, 2, 3, 4, 5], function (i) {
-        return { points: sinon.stub().returns(i) };
+        return { points: vi.fn().mockReturnValueOnce(i) };
       });
-      var doneIterationsStub = sinon.stub(project, 'doneIterations');
-      doneIterationsStub.returns(doneIterations);
+      var doneIterationsStub = vi.spyOn(project, 'doneIterations');
+      doneIterationsStub.mockReturnValueOnce(doneIterations);
 
       // By default, should take the average of the last 3 iterations,
       // (3 + 4 + 5) = 12 / 3 = 4
@@ -300,10 +308,10 @@ describe('Project model', function () {
 
     it('should ignore zero points done iterations while calculating velocity', function () {
       var doneIterations = _.map([1, 2, 0, 4, 5], function (i) {
-        return { points: sinon.stub().returns(i) };
+        return { points: vi.fn().mockReturnValueOnce(i) };
       });
-      var doneIterationsStub = sinon.stub(project, 'doneIterations');
-      doneIterationsStub.returns(doneIterations);
+      var doneIterationsStub = vi.spyOn(project, 'doneIterations');
+      doneIterationsStub.mockReturnValueOnce(doneIterations);
 
       // By default, should take the average of the last 3 iterations,
       // (2 + 4 + 5) = 11 / 3 = 5
@@ -312,10 +320,10 @@ describe('Project model', function () {
 
     it('should floor the velocity when it returns a fraction', function () {
       var doneIterations = _.map([3, 2, 2], function (i) {
-        return { points: sinon.stub().returns(i) };
+        return { points: vi.fn().mockReturnValueOnce(i) };
       });
-      var doneIterationsStub = sinon.stub(project, 'doneIterations');
-      doneIterationsStub.returns(doneIterations);
+      var doneIterationsStub = vi.spyOn(project, 'doneIterations');
+      doneIterationsStub.mockReturnValueOnce(doneIterations);
 
       // Should floor the result
       // (3 + 2 + 2) = 7 / 3 = 2.333333
@@ -326,20 +334,20 @@ describe('Project model', function () {
       // Still calculate the average correctly if fewer than the expected
       // number of iterations have been completed.
       var doneIterations = _.map([3, 1], function (i) {
-        return { points: sinon.stub().returns(i) };
+        return { points: vi.fn().mockReturnValueOnce(i) };
       });
-      var doneIterationsStub = sinon.stub(project, 'doneIterations');
-      doneIterationsStub.returns(doneIterations);
+      var doneIterationsStub = vi.spyOn(project, 'doneIterations');
+      doneIterationsStub.mockReturnValueOnce(doneIterations);
 
       expect(project.velocity()).toEqual(2);
     });
 
     it('should not return less than 1', function () {
       var doneIterations = _.map([0, 0, 0], function (i) {
-        return { points: sinon.stub().returns(i) };
+        return { points: vi.fn().mockReturnValueOnce(i) };
       });
-      var doneIterationsStub = sinon.stub(project, 'doneIterations');
-      doneIterationsStub.returns(doneIterations);
+      var doneIterationsStub = vi.spyOn(project, 'doneIterations');
+      doneIterationsStub.mockReturnValueOnce(doneIterations);
 
       expect(project.velocity()).toEqual(1);
     });
@@ -425,25 +433,29 @@ describe('Project model', function () {
 
     beforeEach(function () {
       iteration = {
-        get: sinon.stub(),
+        get: vi.fn(),
       };
     });
 
     it('should add the first iteration to the array', function () {
-      var stub = sinon.stub(Iteration, 'createMissingIterations');
-      stub.returns([]);
+      var stub = vi.spyOn(Iteration, 'createMissingIterations');
+      stub.mockReturnValueOnce([]);
       project.appendIteration(iteration);
       expect(_.last(project.iterations)).toEqual(iteration);
       expect(project.iterations.length).toEqual(1);
-      stub.restore();
+      stub.mockRestore();
     });
 
     it('should create missing iterations if required', function () {
       var spy = vi.spyOn(Iteration, 'createMissingIterations');
-      iteration.get.withArgs('number').returns(1);
+      vi.spyOn(iteration, 'get').mockImplementation(arg => {
+        if (arg === 'number') return 1;
+      });
       project.iterations.push(iteration);
       var currentIteration = {
-        get: sinon.stub().withArgs('number').returns(5),
+        get: vi.fn().mockImplementation(arg => {
+          if (arg === 'number') return 5;
+        }),
       };
       project.appendIteration(currentIteration, '#done');
       expect(spy).toHaveBeenCalledWith('#done', iteration, currentIteration);
@@ -530,7 +542,7 @@ describe('Project model', function () {
 
   describe('rebuildIterations', function () {
     beforeEach(function () {
-      project.projectBoard.stories.invoke = sinon.stub();
+      project.projectBoard.stories.invoke = vi.fn();
     });
 
     it('triggers a rebuilt-iterations event', function () {

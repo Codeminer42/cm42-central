@@ -1,28 +1,27 @@
-import React from "react";
-import { mount } from "enzyme";
-import SprintHeader from "components/stories/SprintHeader";
+import React from 'react';
+import { mount } from 'enzyme';
+import SprintHeader from 'components/stories/SprintHeader';
 
 const defaultProps = {
   number: 42,
-  onClick: sinon.stub(),
+  onClick: vi.fn(),
   startDate: '1420/01/01',
   isDone: false,
   points: 420,
   isClosed: false,
-  completedPoints: 111
+  completedPoints: 111,
 };
 
 const mergeProps = overrides => ({ ...defaultProps, ...overrides });
 
-const renderWrapper = overrides => mount(
-  <SprintHeader {...mergeProps(overrides)} />
-);
+const renderWrapper = overrides =>
+  mount(<SprintHeader {...mergeProps(overrides)} />);
 
 describe('<SprintHeader />', () => {
-  let wrapper, onClick
+  let wrapper, onClick;
 
   beforeEach(() => {
-    onClick = sinon.stub();
+    onClick = vi.fn();
     wrapper = renderWrapper({ onClick });
   });
 
@@ -45,10 +44,10 @@ describe('<SprintHeader />', () => {
   });
 
   it('displays iteration start date', () => {
-    const expected = I18n.l("date.formats.long", defaultProps.startDate);
+    const expected = I18n.l('date.formats.long', defaultProps.startDate);
 
     expect(wrapper.html()).toContain(expected);
-  })
+  });
 
   describe('default sprints', () => {
     it('shows sprint points', () => {
@@ -58,7 +57,7 @@ describe('<SprintHeader />', () => {
     describe('when there are completed points', () => {
       it('shows completed points', () => {
         expect(wrapper.find('div.default-points').html()).toContain('111');
-      })
+      });
     });
   });
 
@@ -67,7 +66,7 @@ describe('<SprintHeader />', () => {
       beforeEach(() => {
         wrapper = renderWrapper({
           hasStories: true,
-          isDone: true
+          isDone: true,
         });
       });
 
@@ -84,7 +83,7 @@ describe('<SprintHeader />', () => {
           isClosed: true,
           hasStories: true,
           isDone: true,
-          points: 0
+          points: 0,
         });
       });
 
@@ -100,7 +99,7 @@ describe('<SprintHeader />', () => {
         wrapper = renderWrapper({
           isDone: true,
           hasStories: true,
-          isClosed: true
+          isClosed: true,
         });
       });
 
@@ -139,7 +138,7 @@ describe('<SprintHeader />', () => {
         wrapper = renderWrapper({
           isDone: true,
           hasStories: false,
-          isClosed: true
+          isClosed: true,
         });
       });
 
