@@ -30,8 +30,10 @@ export default defineConfig({
     loader: 'jsx',
     include: [
       'app/**/*.jsx',
+      'spec/javascripts/**/*.jsx',
       // Add these lines to allow all .js files to contain JSX
       'app/**/*.js',
+      'spec/javascripts/**/*.js',
     ],
     exclude: [],
   },
