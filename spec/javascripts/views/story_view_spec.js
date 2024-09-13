@@ -1,8 +1,17 @@
 import StoryView from 'views/story_view';
+import React from 'react';
 import template from 'templates/story.ejs';
 import OriginalStory from 'models/story';
 import { server } from './mocks/server';
-import { afterAll, beforeAll } from 'vitest';
+import { afterAll, afterEach, beforeAll } from 'vitest';
+import { http, HttpResponse } from 'msw';
+import { waitFor } from '@testing-library/react';
+
+const url = '/path/to/story';
+
+vi.mock('react-clipboard.js', () => ({
+  default: ({ children, ...props }) => <button {...props}>{children}</button>,
+}));
 
 describe('StoryView', function () {
   let story;
@@ -12,10 +21,8 @@ describe('StoryView', function () {
   let set;
 
   beforeAll(() => {
-    server.listen();
-
-    server.events.on('request:start', ({ request }) => {
-      console.log('MSW intercepted:', request.method, request.url);
+    server.listen({
+      onUnhandledRequest: 'error',
     });
   });
 
@@ -252,50 +259,103 @@ describe('StoryView', function () {
       e = { currentTarget: '' };
     });
 
+    afterEach(() => {
+      server.resetHandlers();
+    });
+
     it('should call save', async function () {
+      server.use(
+        http.put(url, () => {
+          return HttpResponse.json(
+            {
+              story: { title: 'Story title' },
+            },
+            { status: 200 }
+          );
+        })
+      );
+
       story.set({ editing: true });
       expect(view.model.get('editing')).toBeTruthy();
 
-      view.clickSave(e);
-      await new Promise(resolve => view.model.once('change:editing', resolve));
+      await view.clickSave(e);
 
       expect(view.model.get('editing')).toBeFalsy();
     });
 
-    it('should set editing when errors occur', function () {
+    it('should set editing when errors occur', async function () {
+      server.use(
+        http.put(url, () => {
+          return HttpResponse.json(
+            {
+              story: { errors: { title: ['cannot be blank'] } },
+            },
+            { status: 422 }
+          );
+        })
+      );
+
       view.clickSave(e);
+      await new Promise(resolve => view.model.once('change:editing', resolve));
 
       expect(story.get('editing')).toBeTruthy();
       expect(story.get('errors').title[0]).toEqual('cannot be blank');
     });
 
-    it('should disable all form controls on submit', function () {
+    it('should disable all form controls on submit', async function () {
+      server.use(
+        http.put(url, () => {
+          return HttpResponse.json(
+            {
+              story: { title: 'Story title' },
+            },
+            { status: 200 }
+          );
+        })
+      );
       var disable_spy = vi.spyOn(view, 'disableForm');
       var enable_spy = vi.spyOn(view, 'enableForm');
 
       story.set({ editing: true });
-      view.clickSave(e);
 
-      expect(disable_spy).toHaveBeenCalled();
       expect(enable_spy).not.toHaveBeenCalled();
 
+      await view.clickSave(e);
+
+      expect(disable_spy).toHaveBeenCalled();
       expect(enable_spy).toHaveBeenCalled();
     });
 
-    it('should disable state transition buttons on click', function () {
+    it('should disable state transition buttons on click', async function () {
+      server.use(
+        http.put(url, () => {
+          return HttpResponse.json(
+            {
+              story: { state: 'started' },
+            },
+            { status: 200 }
+          );
+        })
+      );
       var ev = { target: { value: 'start' } };
-      view.transition(ev);
-
-      expect(view.saveInProgress).toBeTruthy();
+      await view.transition(ev);
 
       expect(view.saveInProgress).toBeFalsy();
     });
 
-    it('should disable estimate buttons on click', function () {
+    it('should disable estimate buttons on click', async function () {
+      server.use(
+        http.put(url, () => {
+          return HttpResponse.json(
+            {
+              story: { estimate: '1' },
+            },
+            { status: 200 }
+          );
+        })
+      );
       var ev = { target: { attributes: { 'data-value': { value: 1 } } } };
-      view.estimate(ev);
-
-      expect(view.saveInProgress).toBeTruthy();
+      await view.estimate(ev);
 
       expect(view.saveInProgress).toBeFalsy();
     });

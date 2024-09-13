@@ -200,7 +200,7 @@ const StoryView = FormView.extend({
     this.model[transitionEvent]({ silent: true });
 
     var that = this;
-    this.model.save(null, {
+    return this.model.save(null, {
       success: function (model, response) {
         that.saveInProgress = false;
         that.render();
@@ -223,7 +223,7 @@ const StoryView = FormView.extend({
     this.model.set({ estimate: points });
 
     var that = this;
-    this.model.save(null, {
+    return this.model.save(null, {
       success: function (model, response) {
         that.saveInProgress = false;
         that.render();
@@ -322,7 +322,7 @@ const StoryView = FormView.extend({
 
     var that = this;
 
-    this.model.save(null, {
+    return this.model.save(null, {
       success: function (model, response) {
         that.enableForm();
         that.model.set({ editing: editMode });
@@ -542,21 +542,24 @@ const StoryView = FormView.extend({
     );
   },
 
-  appendAttachments: function() {
+  appendAttachments: function () {
     this.$el.append(
-      this.makeFormControl(function(div) {
+      this.makeFormControl(function (div) {
         const $storyAttachments = $('<div class="story-attachments"></div>');
         $(div).append($storyAttachments);
 
-        if(process.env.NODE_ENV !== 'test') {
+        if (process.env.NODE_ENV !== 'test') {
           clearTimeout(window.executeAttachinaryTimeout);
-          window.executeAttachinaryTimeout = setTimeout(ExecuteAttachinary, 1000);
+          window.executeAttachinaryTimeout = setTimeout(
+            ExecuteAttachinary,
+            1000
+          );
         }
       })
     );
   },
 
-  renderCollapsed: function(isGuest) {
+  renderCollapsed: function (isGuest) {
     this.$el.removeClass('editing');
     this.$el.html(this.template({ story: this.model, view: this }));
     this.$el.toggleClass(
@@ -575,14 +578,22 @@ const StoryView = FormView.extend({
     const estimateButtons = this.$('[data-story-estimate-buttons]').get(0);
     if (estimateButtons) {
       ReactDOM.render(
-        <StoryEstimateButtons points={this.model.point_values()} onClick={this.estimate} />,
+        <StoryEstimateButtons
+          points={this.model.point_values()}
+          onClick={this.estimate}
+        />,
         estimateButtons
       );
     }
 
-    const copyStoryIdClipboardLink = this.$('[data-story-id-copy-clipboard]').get(0)
-    if(copyStoryIdClipboardLink) {
-      ReactDOM.render(<StoryCopyIdClipboard id={this.id} />, copyStoryIdClipboardLink)
+    const copyStoryIdClipboardLink = this.$(
+      '[data-story-id-copy-clipboard]'
+    ).get(0);
+    if (copyStoryIdClipboardLink) {
+      ReactDOM.render(
+        <StoryCopyIdClipboard id={this.id} />,
+        copyStoryIdClipboardLink
+      );
     }
 
     if (isGuest) {
@@ -1160,7 +1171,7 @@ const StoryView = FormView.extend({
   },
 
   clickSave: function (event) {
-    this.saveEdit(event, false);
+    return this.saveEdit(event, false);
   },
 
   toggleControlButtons: function (isDisabled, changeCancel) {
