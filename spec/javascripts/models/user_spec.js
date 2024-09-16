@@ -19,11 +19,10 @@ describe('User', () => {
         url: '/users/current',
       };
 
-      if (arg === object) return $.when(userData);
+      if (JSON.stringify(arg) === JSON.stringify(object))
+        return $.when(userData);
     });
   });
-
-  afterEach(() => $.ajax.mockRestore());
 
   it('returns current user', function (done) {
     User.getCurrent().then(currentUser => {
