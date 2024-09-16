@@ -136,7 +136,7 @@ describe('ProjectBoard model', () => {
           };
 
           ProjectBoard.toggleColumn(projectBoard, column, callback);
-          expect(onToggle.called).toBeFalsy();
+          expect(callback.onToggle).not.toHaveBeenCalled();
         });
       });
     });
