@@ -376,8 +376,8 @@ describe('Story', function () {
 
   describe('iterations', function () {
     it('should return the iteration number for an accepted story', function () {
-      story.collection.project.getIterationNumberForDate = sinon
-        .stub()
+      story.collection.project.getIterationNumberForDate = vi
+        .fn()
         .mockReturnValueOnce(999);
       story.set({ accepted_at: '2011/07/25', state: 'accepted' });
       expect(story.iterationNumber()).toEqual(999);
