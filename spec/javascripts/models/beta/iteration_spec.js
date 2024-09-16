@@ -144,7 +144,7 @@ describe('iteration', function () {
     });
 
     describe('when 1 out of 2 weeks has passed', function () {
-      it.only('returns 1', function () {
+      it('returns 1', function () {
         const startDate = new Date();
         startDate.setDate(startDate.getDate() - 7);
         const sprintNumber = Iteration.getCurrentIteration({
