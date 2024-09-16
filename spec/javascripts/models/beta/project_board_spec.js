@@ -159,7 +159,7 @@ describe('ProjectBoard model', () => {
       it('always calls callback.onToggle', () => {
         ProjectBoard.toggleColumn(projectBoard, column, callback);
 
-        expect(onToggle.called).toBeTruthy();
+        expect(callback.onToggle).toHaveBeenCalled();
       });
     });
   });
