@@ -118,26 +118,31 @@ describe('iteration', function () {
 
   describe('time related functions', function () {
     let clock;
+    const daysInWeek = 7;
 
     beforeEach(function () {
       clock = vi.useFakeTimers(new Date('2018-05-01T17:00:00').getTime());
     });
 
     describe('when 1 out of 1 week has passed', function () {
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - daysInWeek);
       it('returns 2', function () {
         const sprintNumber = Iteration.getCurrentIteration({
           iterationLength: 1,
-          startDate: '2018-04-24T16:00:00',
+          startDate,
         });
         expect(sprintNumber).toEqual(2);
       });
     });
 
     describe('when 3 out of 3 weeks has passed', function () {
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - daysInWeek * 3);
       it('returns 2', function () {
         const sprintNumber = Iteration.getCurrentIteration({
           iterationLength: 3,
-          startDate: '2018-04-10T16:00:00',
+          startDate,
         });
         expect(sprintNumber).toEqual(2);
       });
@@ -146,7 +151,7 @@ describe('iteration', function () {
     describe('when 1 out of 2 weeks has passed', function () {
       it('returns 1', function () {
         const startDate = new Date();
-        startDate.setDate(startDate.getDate() - 7);
+        startDate.setDate(startDate.getDate() - daysInWeek);
         const sprintNumber = Iteration.getCurrentIteration({
           iterationLength: 2,
           startDate,
