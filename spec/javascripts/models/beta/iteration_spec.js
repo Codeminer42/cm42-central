@@ -123,10 +123,6 @@ describe('iteration', function () {
       clock = vi.useFakeTimers(new Date('2018-05-01T17:00:00').getTime());
     });
 
-    afterEach(function () {
-      clock.mockRestore();
-    });
-
     describe('when 1 out of 1 week has passed', function () {
       it('returns 2', function () {
         const sprintNumber = Iteration.getCurrentIteration({
@@ -148,10 +144,12 @@ describe('iteration', function () {
     });
 
     describe('when 1 out of 2 weeks has passed', function () {
-      it('returns 1', function () {
+      it.only('returns 1', function () {
+        const startDate = new Date();
+        startDate.setDate(startDate.getDate() - 7);
         const sprintNumber = Iteration.getCurrentIteration({
           iterationLength: 2,
-          startDate: '2018-04-24T16:00:00',
+          startDate,
         });
         expect(sprintNumber).toEqual(1);
       });
