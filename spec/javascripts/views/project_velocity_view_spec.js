@@ -12,7 +12,7 @@ describe('ProjectVelocityView', function () {
   beforeEach(function () {
     model = {};
 
-    overrideView = overrideView = {};
+    overrideView = {};
 
     ProjectVelocityOverrideViewStub = () => overrideView;
 
