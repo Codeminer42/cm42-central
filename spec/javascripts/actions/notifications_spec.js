@@ -51,13 +51,11 @@ describe('Notifications Actions', () => {
         { Notification: FakeNotification }
       );
 
-      clock.tick(5000);
+      clock.advanceTimersByTime(5000);
 
       expect(fakeDispatch).toHaveBeenCalledWith(
         Notification.removeNotification(newNotification.id)
       );
-
-      clock.mockRestore();
     });
   });
 
