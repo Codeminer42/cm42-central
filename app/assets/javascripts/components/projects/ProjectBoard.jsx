@@ -74,14 +74,15 @@ export const ProjectBoard = ({
     const unsubscribe = subscribeToProjectChanges(project, () => {
       fetchProjectBoard(projectId);
     });
-
-    return () => {
-      unsubscribe();
-    };
   }, [projectId, fetchProjectBoard]);
 
   if (!projectBoard.isFetched && projectBoard.isInitialLoading) {
-    return <ProjectLoading data-id="project-loading" />;
+    return (
+      <ProjectLoading
+        data-id="project-loading"
+        data-testid="project-loading-component"
+      />
+    );
   }
 
   const onDragEnd = ({ source, destination }) => {
@@ -213,7 +214,10 @@ export const ProjectBoard = ({
             {history.status === historyStatus.LOADED ? (
               <History history={history.activities} data-id="history" />
             ) : (
-              <ProjectLoading data-id="project-loading" />
+              <ProjectLoading
+                data-id="project-loading"
+                data-testid="project-loading-component"
+              />
             )}
           </Column>
         )}

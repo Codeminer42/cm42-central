@@ -1,7 +1,7 @@
 import React from 'react';
 
-const ProjectLoading = () => (
-  <div className="ProjectBoard-loading">
+const ProjectLoading = ({ ...props }) => (
+  <div className="ProjectBoard-loading" {...props}>
     <div className="ProjectBoard-loading__content">
       <div className="ProjectBoard-loading__spinner">
         <i className="fas fa-circle-notch fa-spin"></i>
