@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { fireEvent, render } from '@testing-library/react';
 
 import NoteForm from 'components/notes/NoteForm';
 import Note from 'models/note.js';
@@ -22,8 +22,12 @@ describe('<NoteForm />', function () {
 
   it('should have an onSubmit callback', function () {
     const onSubmit = vi.fn().mockReturnValueOnce($.Deferred());
-    const wrapper = mount(<NoteForm note={note} onSubmit={onSubmit} />);
-    wrapper.find('.add-note').simulate('click');
+    const { getByTestId } = render(
+      <NoteForm note={note} onSubmit={onSubmit} />
+    );
+    const addNoteButton = getByTestId('add-note-button');
+    fireEvent.click(addNoteButton);
+
     expect(onSubmit).toHaveBeenCalled();
   });
 });

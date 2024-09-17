@@ -31,6 +31,7 @@ class NoteForm extends React.Component {
             />
             <button
               type="submit"
+              data-testid="add-note-button"
               className={`add-note btn btn-default btn-xs ${
                 loading ? 'icons-throbber saving' : ''
               }`}
