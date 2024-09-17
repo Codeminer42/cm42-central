@@ -173,6 +173,7 @@ export const ProjectBoard = ({
 
         <SideBar
           data-id="side-bar"
+          data-testid="sidebar-component"
           reverse={projectBoard.reverse}
           visibleColumns={projectBoard.visibleColumns}
           toggleColumn={toggleColumn}

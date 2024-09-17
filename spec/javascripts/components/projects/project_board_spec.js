@@ -101,7 +101,7 @@ describe('<ProjectBoard />', () => {
     });
 
     it('renders <SideBar />', () => {
-      const wrapper = renderComponent({
+      const { getByTestId } = renderComponent({
         projectBoard: {
           isFetched: true,
           search: {
@@ -116,7 +116,7 @@ describe('<ProjectBoard />', () => {
         },
       });
 
-      expect(wrapper.find('[data-id="side-bar"]')).toExist();
+      expect(getByTestId('sidebar-component')).toBeInTheDocument();
     });
 
     it('render <Notifications />', () => {
