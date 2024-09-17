@@ -1,8 +1,10 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import store from 'store';
 import { ProjectBoard } from 'components/projects/ProjectBoard';
 import storyFactory from '../../support/factories/storyFactory';
 import { renderWithProviders } from '../setupRedux';
+import { beforeAll } from 'vitest';
 
 vi.mock('../../../../app/assets/javascripts/pusherSockets', () => ({
   subscribeToProjectChanges: vi.fn(),
@@ -40,6 +42,7 @@ describe('<ProjectBoard />', () => {
       projectId: '1',
       fetchPastStories: vi.fn(),
       epicStories: [],
+      chillyBinStories: [],
     };
 
     const mergedProps = {
@@ -47,19 +50,19 @@ describe('<ProjectBoard />', () => {
       ...props,
       projectBoard: {
         ...defaultProps.projectBoard,
-        ...props.projectBoard,
+        ...props?.projectBoard,
         search: {
           ...defaultProps.projectBoard.search,
-          ...props.projectBoard.search,
+          ...props?.projectBoard?.search,
         },
         visibleColumns: {
           ...defaultProps.projectBoard.visibleColumns,
-          ...props.projectBoard.visibleColumns,
+          ...props?.projectBoard?.visibleColumns,
         },
       },
       history: {
         ...defaultProps.history,
-        ...props.history,
+        ...props?.history,
       },
     };
 
@@ -67,6 +70,16 @@ describe('<ProjectBoard />', () => {
       store,
     });
   };
+
+  beforeAll(() => {
+    ReactDOM.createPortal = vi.fn(element => {
+      return element;
+    });
+  });
+
+  afterEach(() => {
+    ReactDOM.createPortal.mockClear();
+  });
 
   describe('when projectBoard.isFetched is false and projectBoard.isInitialLoading is true', () => {
     it('renders <ProjectLoading />', () => {
@@ -77,12 +90,9 @@ describe('<ProjectBoard />', () => {
   });
 
   describe('when projectBoard.isFetched is true and projectBoard.isInitialLoading is false', () => {
-    it.only('does not renders <ProjectLoading />', () => {
-      const { queryByTestId, debug } = renderComponent({
-        projectBoard: {
-          isFetched: true,
-          isInitialLoading: false,
-        },
+    it('does not renders <ProjectLoading />', () => {
+      const { queryByTestId } = renderComponent({
+        projectBoard: { isFetched: true, isInitialLoading: false },
       });
 
       expect(
