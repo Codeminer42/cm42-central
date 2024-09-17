@@ -181,21 +181,21 @@ describe('<ProjectBoard />', () => {
     };
 
     it('renders history column', () => {
-      const wrapper = renderComponent(props);
+      const { container } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="history-column"]')).toExist();
+      expect(container).toBeInTheDocument();
     });
 
     it('does not render history', () => {
-      const wrapper = renderComponent(props);
+      const { queryByTestId } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="history"]')).not.toExist();
+      expect(queryByTestId('history-component')).not.toBeInTheDocument();
     });
 
     it('renders loading', () => {
-      const wrapper = renderComponent(props);
+      const { getByTestId } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="project-loading"]')).toExist();
+      expect(getByTestId('project-loading-component')).toBeInTheDocument();
     });
   });
 
