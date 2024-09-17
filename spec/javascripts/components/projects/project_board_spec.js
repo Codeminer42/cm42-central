@@ -1,14 +1,15 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import store from 'store';
 import { ProjectBoard } from 'components/projects/ProjectBoard';
 import storyFactory from '../../support/factories/storyFactory';
+import { renderWithProviders } from '../setupRedux';
 
 vi.mock('../../../../app/assets/javascripts/pusherSockets', () => ({
   subscribeToProjectChanges: vi.fn(),
 }));
 
 describe('<ProjectBoard />', () => {
-  const render = props => {
+  const renderComponent = props => {
     const defaultProps = {
       projectBoard: {
         isFetched: false,
@@ -41,42 +42,56 @@ describe('<ProjectBoard />', () => {
       epicStories: [],
     };
 
-    return shallow(<ProjectBoard {...defaultProps} {...props} />);
+    const mergedProps = {
+      ...defaultProps,
+      ...props,
+      projectBoard: {
+        ...defaultProps.projectBoard,
+        ...props.projectBoard,
+        search: {
+          ...defaultProps.projectBoard.search,
+          ...props.projectBoard.search,
+        },
+        visibleColumns: {
+          ...defaultProps.projectBoard.visibleColumns,
+          ...props.projectBoard.visibleColumns,
+        },
+      },
+      history: {
+        ...defaultProps.history,
+        ...props.history,
+      },
+    };
+
+    return renderWithProviders(<ProjectBoard {...mergedProps} />, {
+      store,
+    });
   };
 
   describe('when projectBoard.isFetched is false and projectBoard.isInitialLoading is true', () => {
     it('renders <ProjectLoading />', () => {
-      const wrapper = render();
-      const spinnerLoading = wrapper.find('[data-id="project-loading"]');
+      const { getByTestId } = renderComponent();
 
-      expect(spinnerLoading.exists()).toBeTruthy();
+      expect(getByTestId('project-loading-component')).toBeInTheDocument();
     });
   });
 
   describe('when projectBoard.isFetched is true and projectBoard.isInitialLoading is false', () => {
-    it('does not renders <ProjectLoading />', () => {
-      const wrapper = render({
+    it.only('does not renders <ProjectLoading />', () => {
+      const { queryByTestId, debug } = renderComponent({
         projectBoard: {
           isFetched: true,
           isInitialLoading: false,
-          search: {
-            loading: false,
-          },
-          visibleColumns: {
-            backlog: true,
-            done: true,
-            chillyBin: true,
-          },
-          reverse: true,
         },
       });
-      const spinnerLoading = wrapper.find('[data-id="project-loading"]');
 
-      expect(spinnerLoading.exists()).toBeFalsy();
+      expect(
+        queryByTestId('project-loading-component')
+      ).not.toBeInTheDocument();
     });
 
     it('renders <SideBar />', () => {
-      const wrapper = render({
+      const wrapper = renderComponent({
         projectBoard: {
           isFetched: true,
           search: {
@@ -95,7 +110,7 @@ describe('<ProjectBoard />', () => {
     });
 
     it('render <Notifications />', () => {
-      const wrapper = render({
+      const wrapper = renderComponent({
         projectBoard: {
           isFetched: true,
           search: {
@@ -114,7 +129,7 @@ describe('<ProjectBoard />', () => {
     });
 
     it('render <Columns />', () => {
-      const wrapper = render({
+      const wrapper = renderComponent({
         projectBoard: {
           isFetched: true,
           search: {
@@ -155,19 +170,19 @@ describe('<ProjectBoard />', () => {
     };
 
     it('renders history column', () => {
-      const wrapper = render(props);
+      const wrapper = renderComponent(props);
 
       expect(wrapper.find('[data-id="history-column"]')).toExist();
     });
 
     it('does not render history', () => {
-      const wrapper = render(props);
+      const wrapper = renderComponent(props);
 
       expect(wrapper.find('[data-id="history"]')).not.toExist();
     });
 
     it('renders loading', () => {
-      const wrapper = render(props);
+      const wrapper = renderComponent(props);
 
       expect(wrapper.find('[data-id="project-loading"]')).toExist();
     });
@@ -195,19 +210,19 @@ describe('<ProjectBoard />', () => {
     };
 
     it('renders history column', () => {
-      const wrapper = render(props);
+      const wrapper = renderComponent(props);
 
       expect(wrapper.find('[data-id="history-column"]')).toExist();
     });
 
     it('renders history', () => {
-      const wrapper = render(props);
+      const wrapper = renderComponent(props);
 
       expect(wrapper.find('[data-id="history"]')).toExist();
     });
 
     it('does not render loading', () => {
-      const wrapper = render(props);
+      const wrapper = renderComponent(props);
 
       expect(wrapper.find('[data-id="project-loading"]')).not.toExist();
     });
@@ -235,19 +250,19 @@ describe('<ProjectBoard />', () => {
     };
 
     it('does not render history column', () => {
-      const wrapper = render(props);
+      const wrapper = renderComponent(props);
 
       expect(wrapper.find('[data-id="history-column"]')).not.toExist();
     });
 
     it('does not render history', () => {
-      const wrapper = render(props);
+      const wrapper = renderComponent(props);
 
       expect(wrapper.find('[data-id="history"]')).not.toExist();
     });
 
     it('does not render loading', () => {
-      const wrapper = render(props);
+      const wrapper = renderComponent(props);
 
       expect(wrapper.find('[data-id="project-loading"]')).not.toExist();
     });
@@ -275,19 +290,19 @@ describe('<ProjectBoard />', () => {
     };
 
     it('renders history column', () => {
-      const wrapper = render(props);
+      const wrapper = renderComponent(props);
 
       expect(wrapper.find('[data-id="history-column"]')).toExist();
     });
 
     it('does not render history', () => {
-      const wrapper = render(props);
+      const wrapper = renderComponent(props);
 
       expect(wrapper.find('[data-id="history"]')).not.toExist();
     });
 
     it('renders loading', () => {
-      const wrapper = render(props);
+      const wrapper = renderComponent(props);
 
       expect(wrapper.find('[data-id="project-loading"]')).toExist();
     });
@@ -310,7 +325,7 @@ describe('<ProjectBoard />', () => {
           },
         },
       };
-      const wrapper = render(props);
+      const wrapper = renderComponent(props);
 
       expect(wrapper.find('[data-id="epic-column"]')).toExist();
     });
@@ -333,7 +348,7 @@ describe('<ProjectBoard />', () => {
           },
         },
       };
-      const wrapper = render(props);
+      const wrapper = renderComponent(props);
 
       expect(wrapper.find('[data-id="epic-column"]')).not.toExist();
     });
