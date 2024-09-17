@@ -2,7 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const SideBarButtonInfo = ({ description }) => (
-  <span data-id="project-option-info" className="SideBar__info">
+  <span
+    data-id="project-option-info"
+    data-testid="sidebar-button-description"
+    className="SideBar__info"
+  >
     {description}
   </span>
 );
