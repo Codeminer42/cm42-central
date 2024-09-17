@@ -1,27 +1,27 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render } from '@testing-library/react';
 import Columns from 'components/Columns';
 
-describe('<Columns />', () => {
-  const render = props => {
-    const defaultProps = {
-      canClose: true,
-      chillyBinStories: [],
-      backlogSprints: [],
-      doneSprints: [],
-      fetchPastStories: vi.fn(),
-      toggleColumn: vi.fn(),
-      createStory: vi.fn(),
-      visibleColumns: {},
-      reverse: false,
-    };
+vi.mock('react-beautiful-dnd', () => ({
+  default: ({ children, ...props }) => <button {...props}>{children}</button>,
+}));
 
-    return shallow(<Columns {...defaultProps} {...props} />);
+describe('<Columns />', () => {
+  const defaultProps = {
+    canClose: true,
+    chillyBinStories: [],
+    backlogSprints: [],
+    doneSprints: [],
+    fetchPastStories: vi.fn(),
+    toggleColumn: vi.fn(),
+    createStory: vi.fn(),
+    visibleColumns: {},
+    reverse: false,
   };
 
   it('renders the component', () => {
-    const columns = render();
+    const columns = render(<Columns {...defaultProps} />);
 
-    expect(columns.exists()).toBeTruthy();
+    expect(columns.container).toBeInTheDocument();
   });
 });
