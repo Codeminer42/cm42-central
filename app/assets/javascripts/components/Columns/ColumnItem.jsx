@@ -60,7 +60,7 @@ const DroppableColumn = ({
   canClose,
   columnId,
 }) =>
-  visible && (
+  (visible && (
     <Droppable
       droppableId={JSON.stringify({ columnId })}
       isDropDisabled={isDone(columnId)}
@@ -80,7 +80,8 @@ const DroppableColumn = ({
         />
       )}
     </Droppable>
-  );
+  )) ||
+  null;
 
 Column.propTypes = {
   title: PropTypes.string.isRequired,
