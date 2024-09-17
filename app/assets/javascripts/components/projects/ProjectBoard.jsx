@@ -184,6 +184,7 @@ export const ProjectBoard = ({
           notifications={notifications}
           onRemove={removeNotification}
           data-id="notifications"
+          data-testid="notifications-component"
         />
 
         <Columns

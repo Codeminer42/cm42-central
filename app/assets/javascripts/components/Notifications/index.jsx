@@ -2,8 +2,8 @@ import React from 'react';
 import Message from './Message';
 import PropTypes from 'prop-types';
 
-const Notifications = ({ notifications, onRemove }) => (
-  <div className="Notifications">
+const Notifications = ({ notifications, onRemove, ...props }) => (
+  <div className="Notifications" {...props}>
     {notifications.map(notification => (
       <Message
         className="Notifications__Message"
