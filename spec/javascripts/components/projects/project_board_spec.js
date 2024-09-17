@@ -11,6 +11,8 @@ vi.mock('../../../../app/assets/javascripts/pusherSockets', () => ({
 }));
 
 describe('<ProjectBoard />', () => {
+  const COLUMNS_QUANTITY_STD = 3;
+
   const renderComponent = props => {
     const defaultProps = {
       projectBoard: {
@@ -139,7 +141,6 @@ describe('<ProjectBoard />', () => {
     });
 
     it('render <Columns />', () => {
-      const COLUMNS_QUANTITY = 3;
       const { getAllByTestId } = renderComponent({
         projectBoard: {
           isFetched: true,
@@ -155,7 +156,9 @@ describe('<ProjectBoard />', () => {
         },
       });
 
-      expect(getAllByTestId('column-container').length).toBe(COLUMNS_QUANTITY);
+      expect(getAllByTestId('column-container').length).toBe(
+        COLUMNS_QUANTITY_STD
+      );
     });
   });
 
@@ -221,21 +224,25 @@ describe('<ProjectBoard />', () => {
     };
 
     it('renders history column', () => {
-      const wrapper = renderComponent(props);
+      const { getAllByTestId } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="history-column"]')).toExist();
+      expect(getAllByTestId('column-container').length).toBe(
+        COLUMNS_QUANTITY_STD + 1
+      );
     });
 
     it('renders history', () => {
-      const wrapper = renderComponent(props);
+      const { getByTestId } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="history"]')).toExist();
+      expect(getByTestId('history-component')).toBeInTheDocument();
     });
 
     it('does not render loading', () => {
-      const wrapper = renderComponent(props);
+      const { queryByTestId } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="project-loading"]')).not.toExist();
+      expect(
+        queryByTestId('project-loading-component')
+      ).not.toBeInTheDocument();
     });
   });
 
