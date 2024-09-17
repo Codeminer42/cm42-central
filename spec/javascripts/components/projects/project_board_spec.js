@@ -120,7 +120,7 @@ describe('<ProjectBoard />', () => {
     });
 
     it('render <Notifications />', () => {
-      const wrapper = renderComponent({
+      const { getByTestId } = renderComponent({
         projectBoard: {
           isFetched: true,
           search: {
@@ -135,7 +135,7 @@ describe('<ProjectBoard />', () => {
         },
       });
 
-      expect(wrapper.find('[data-id="notifications"]')).toExist();
+      expect(getByTestId('notifications-component')).toBeInTheDocument();
     });
 
     it('render <Columns />', () => {
