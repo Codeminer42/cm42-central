@@ -1,9 +1,9 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { fireEvent, render } from '@testing-library/react';
 import { Column } from 'components/Columns/ColumnItem';
 
 describe('<Column />', () => {
-  const render = overrideProps => {
+  const renderComponent = overrideProps => {
     const defaultProps = {
       title: '',
       onClose: vi.fn(),
@@ -14,37 +14,42 @@ describe('<Column />', () => {
       placeholder: '',
     };
 
-    const wrapper = shallow(<Column {...defaultProps} {...overrideProps} />);
-    const column = wrapper.find('[data-id="column"]');
-    const title = wrapper.find('[data-id="column-title"]');
-    const button = wrapper.find('[data-id="column-button"]');
-    const children = wrapper.find('[data-id="column-children"]');
+    const {
+      getByTestId,
+      queryByTestId,
+      container: wrapper,
+    } = render(<Column {...defaultProps} {...overrideProps} />);
+    const column = getByTestId('column-container');
+    const title = getByTestId('column-header-title');
+    const button = queryByTestId('column-action-button');
+    const children = getByTestId('column-children-content');
+
     return { wrapper, title, button, children, column };
   };
 
   it('renders the component', () => {
-    const { column } = render();
+    const { column } = renderComponent();
 
-    expect(column.exists()).toBeTruthy();
+    expect(column).toBeInTheDocument();
   });
 
   it('renders the title', () => {
     const titleText = 'title';
-    const { title } = render({ title: titleText });
+    const { title } = renderComponent({ title: titleText });
 
-    expect(title.text()).toBe(titleText);
+    expect(title.innerHTML).toBe(titleText);
   });
 
   it('renders the children', () => {
     const childrenContent = 'children!';
-    const { children } = render({ children: childrenContent });
+    const { children } = renderComponent({ children: childrenContent });
 
-    expect(children.text()).toBe(childrenContent);
+    expect(children.innerHTML).toBe(childrenContent);
   });
 
   it('calls renderAction', () => {
     const renderAction = vi.fn();
-    render({ renderAction });
+    renderComponent({ renderAction });
 
     expect(renderAction).toHaveBeenCalled();
   });
@@ -52,24 +57,24 @@ describe('<Column />', () => {
   describe('button', () => {
     describe('when canClose is true', () => {
       it('renders button', () => {
-        const { button } = render();
+        const { button } = renderComponent();
 
-        expect(button.exists()).toBeTruthy();
+        expect(button).toBeInTheDocument();
       });
     });
 
     describe('when canClose is false', () => {
       it('does not render the button', () => {
-        const { button } = render({ canClose: false });
+        const { button } = renderComponent({ canClose: false });
 
-        expect(button.exists()).toBeFalsy();
+        expect(button).not.toBeInTheDocument();
       });
 
       describe('when button is clicked', () => {
         it('calls onClose', () => {
           const onClose = vi.fn();
-          const { button } = render({ onClose });
-          button.simulate('click');
+          const { button } = renderComponent({ onClose });
+          fireEvent.click(button);
 
           expect(onClose).toHaveBeenCalled();
         });
