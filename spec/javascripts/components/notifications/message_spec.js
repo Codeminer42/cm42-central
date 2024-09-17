@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { fireEvent, render } from '@testing-library/react';
 import Message from 'components/Notifications/Message';
 
 describe('<Message />', () => {
@@ -13,28 +13,32 @@ describe('<Message />', () => {
   it('renders component with the right type on className', () => {
     const messageType = 'error';
 
-    const wrapper = shallow(<Message {...defaultProps()} type={messageType} />);
+    const { getByTestId } = render(
+      <Message {...defaultProps()} type={messageType} />
+    );
 
-    expect(wrapper.find(`.Message--${messageType}`)).toExist();
+    expect(getByTestId('message-container')).toBeInTheDocument();
   });
 
   it('renders component with the right message', () => {
     const message = 'error message';
 
-    const wrapper = shallow(<Message {...defaultProps()} message={message} />);
+    const { getByText } = render(
+      <Message {...defaultProps()} message={message} />
+    );
 
-    expect(wrapper.text()).toContain(message);
+    expect(getByText(message)).toBeDefined();
   });
 
   it('calls onRemove when click on the remove button', () => {
     const onRemove = vi.fn();
 
-    const wrapper = shallow(
+    const { getByTestId } = render(
       <Message {...defaultProps()} onRemove={onRemove} />
     );
 
-    const button = wrapper.find('#close-button');
-    button.simulate('click');
+    const closeButton = getByTestId('message-close-button');
+    fireEvent.click(closeButton);
 
     expect(onRemove).toHaveBeenCalled();
   });

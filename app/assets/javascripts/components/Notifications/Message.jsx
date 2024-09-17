@@ -5,11 +5,15 @@ const Message = ({ type, className, message, onRemove }) => {
   const modifierClassName = type ? `Message--${type}` : '';
 
   return (
-    <div className={`Message ${modifierClassName} ${className}`}>
+    <div
+      className={`Message ${modifierClassName} ${className}`}
+      data-testid="message-container"
+    >
       <div className="Message__content">
         {message}
         <button
           id="close-button"
+          data-testid="message-close-button"
           className="Message__content__button"
           onClick={onRemove}
         >
