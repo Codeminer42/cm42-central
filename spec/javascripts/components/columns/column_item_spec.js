@@ -14,17 +14,15 @@ describe('<Column />', () => {
       placeholder: '',
     };
 
-    const {
-      getByTestId,
-      queryByTestId,
-      container: wrapper,
-    } = render(<Column {...defaultProps} {...overrideProps} />);
+    const { getByTestId, queryByTestId } = render(
+      <Column {...defaultProps} {...overrideProps} />
+    );
     const column = getByTestId('column-container');
     const title = getByTestId('column-header-title');
     const button = queryByTestId('column-action-button');
     const children = getByTestId('column-children-content');
 
-    return { wrapper, title, button, children, column };
+    return { title, button, children, column };
   };
 
   it('renders the component', () => {
