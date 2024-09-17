@@ -139,7 +139,8 @@ describe('<ProjectBoard />', () => {
     });
 
     it('render <Columns />', () => {
-      const wrapper = renderComponent({
+      const COLUMNS_QUANTITY = 3;
+      const { getAllByTestId } = renderComponent({
         projectBoard: {
           isFetched: true,
           search: {
@@ -154,7 +155,7 @@ describe('<ProjectBoard />', () => {
         },
       });
 
-      expect(wrapper.find('[data-id="columns"]')).toExist();
+      expect(getAllByTestId('column-container').length).toBe(COLUMNS_QUANTITY);
     });
   });
 
