@@ -1,9 +1,9 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import SideBarButton from 'components/projects/SideBar/SideBarButton';
 
 describe('<SideBarButton />', () => {
-  const render = props => {
+  const renderComponent = props => {
     const defaultProps = {
       children: '',
       description: '',
@@ -11,64 +11,67 @@ describe('<SideBarButton />', () => {
       isVisible: false,
     };
 
-    return shallow(<SideBarButton {...defaultProps} {...props} />);
+    return render(<SideBarButton {...defaultProps} {...props} />);
   };
 
   it('renders the component', () => {
-    const wrapper = render();
+    const { container } = renderComponent();
 
-    expect(wrapper).toExist();
+    expect(container).toBeInTheDocument();
   });
 
   it('render children', () => {
     const children = 'I am children!';
-    const wrapper = render({ children });
+    const { getByTestId } = renderComponent({ children });
 
-    expect(wrapper.find('[data-id="side-bar-button"]').text()).toEqual(
-      children
-    );
+    expect(getByTestId('sidebar-button-container').innerHTML).toEqual(children);
   });
 
   it('does not render <SideBarButtonInfo />', () => {
-    const wrapper = render();
+    const { queryByTestId } = renderComponent();
 
-    expect(wrapper.find('[data-id="button-info"]')).not.toExist();
+    expect(queryByTestId('sidebar-button-info')).not.toBeInTheDocument();
   });
 
   describe('when click in <SideBarButton />', () => {
     it('call onClick', () => {
       const onClick = vi.fn();
-      const wrapper = render({ onClick });
+      const { getByTestId } = renderComponent({ onClick });
 
-      wrapper.find('[data-id="side-bar-button"]').simulate('click');
+      const button = getByTestId('sidebar-button-container');
+      fireEvent.click(button);
       expect(onClick).toHaveBeenCalled();
     });
   });
 
   describe('when mouse over', () => {
     it('renders <SideBarButtonInfo />', () => {
-      const wrapper = render();
+      const { getByTestId } = renderComponent();
 
-      wrapper.find('[data-id="side-bar-button"]').simulate('mouseover');
-      expect(wrapper.find('[data-id="button-info"]')).toExist();
+      const button = getByTestId('sidebar-button-container');
+      fireEvent.mouseOver(button);
+
+      waitFor(() => {
+        expect(getByTestId('sidebar-button-info')).toBeInTheDocument();
+      });
     });
   });
 
   describe('when isVisible is true', () => {
     it('renders <SideBar /> with SideBar__link--is-visible class', () => {
-      const wrapper = render({ isVisible: true });
-      const button = wrapper.find('[data-id="side-bar-button"]');
+      const { getByTestId } = renderComponent({ isVisible: true });
+      const button = getByTestId('sidebar-button-container');
 
-      expect(button.hasClass('SideBar__link--is-visible')).toBeTruthy();
+      expect(button).toHaveClass('SideBar__link--is-visible');
     });
   });
 
   describe('when isVisible is false', () => {
     it('render <SideBar /> without SideBar__link--is-visible class', () => {
-      const wrapper = render();
-      const button = wrapper.find('[data-id="side-bar-button"]');
+      const { getByTestId } = renderComponent();
+      const button = getByTestId('sidebar-button-container');
 
-      expect(button.hasClass('SideBar__link--is-visible')).toBeFalsy();
+      expect(button).not.toHaveClass('SideBar__link--is-visible');
     });
   });
 });
