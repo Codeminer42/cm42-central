@@ -214,7 +214,11 @@ export const ProjectBoard = ({
             canClose
           >
             {history.status === historyStatus.LOADED ? (
-              <History history={history.activities} data-id="history" />
+              <History
+                history={history.activities}
+                data-id="history"
+                data-testid="history-component"
+              />
             ) : (
               <ProjectLoading
                 data-id="project-loading"
