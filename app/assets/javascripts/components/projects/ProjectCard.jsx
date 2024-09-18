@@ -50,6 +50,7 @@ export default class ProjectCard extends React.Component {
               data-toggle="tooltip"
               data-placement="top"
               data-title={I18n.t('reports')}
+              data-testid="report-icon-anchor"
             >
               <i className="mi md-20 heading-icon">insert_chart</i>
             </a>
@@ -59,6 +60,7 @@ export default class ProjectCard extends React.Component {
               className="unstyled-link"
               data-toggle="tooltip"
               data-placement="top"
+              data-testid="user-icon-anchor"
             >
               <i className="mi md-20 heading-icon">group</i>
             </a>
@@ -70,6 +72,7 @@ export default class ProjectCard extends React.Component {
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
+                data-testid="settings-icon-anchor"
               >
                 <i className="mi md-20 heading-icon">settings</i>
               </a>
