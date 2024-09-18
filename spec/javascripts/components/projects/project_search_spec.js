@@ -1,5 +1,10 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import {
+  fireEvent,
+  getAllByTestId,
+  render,
+  waitFor,
+} from '@testing-library/react';
 
 import ProjectSearch from 'components/projects/ProjectSearch';
 import ProjectList from 'components/projects/ProjectList';
@@ -11,78 +16,76 @@ describe('<ProjectSearch />', () => {
 
   beforeEach(() => {
     user = {
-      "user": {
-        "id": 1,
-        "email": "foo@bar.com",
-        "name": "Foo Bar",
-        "initials": "fb",
-        "username": "foobar"
-      }
+      user: {
+        id: 1,
+        email: 'foo@bar.com',
+        name: 'Foo Bar',
+        initials: 'fb',
+        username: 'foobar',
+      },
     };
 
-    projects = [{
-      "name": "Foobar",
-      "slug": "foobar",
-      "path_to": {},
-      "archived_at": null,
-      "velocity": 10,
-      "volatility": "0%",
-      "users_avatar": ["https://secure.gravatar.com/avatar/foobar.png"]
-    }];
+    projects = [
+      {
+        name: 'Foobar',
+        slug: 'foobar',
+        path_to: {},
+        archived_at: null,
+        velocity: 10,
+        volatility: '0%',
+        users_avatar: ['https://secure.gravatar.com/avatar/foobar.png'],
+      },
+    ];
 
     defaultProps = {
       projects: {
         joined: new ProjectCollection(projects),
-        unjoined: new ProjectCollection(projects)
+        unjoined: new ProjectCollection(projects),
       },
-      user: new User(user)
-    }
+      user: new User(user),
+    };
   });
 
-  it('renders two <ProjectList /> components', () => {
-    const wrapper = shallow(<ProjectSearch {...defaultProps} />);
-    expect(wrapper.contains([
-      <ProjectList
-        title={I18n.t('projects.mine')}
-        projects={defaultProps.projects.joined}
-        user={defaultProps.user}
-        joined={true}
-      />,
-      <ProjectList
-        title={I18n.t('projects.not_member_of')}
-        projects={defaultProps.projects.unjoined}
-        user={defaultProps.user}
-        joined={false}
-      />
-    ])).toBe(true);
+  it('renders two <ProjectList /> components', async () => {
+    const { getByText } = render(<ProjectSearch {...defaultProps} />);
+
+    expect(getByText(`${I18n.t('projects.mine')} | 1`)).toBeInTheDocument();
+    expect(
+      getByText(`${I18n.t('projects.not_member_of')} | 1`)
+    ).toBeInTheDocument();
   });
 
   it('should select options', () => {
-    const wrapper = mount(<ProjectSearch {...defaultProps} />);
-    expect(wrapper.contains([
-      <option key={'not_archived'} value={'not_archived'}>{I18n.t('not_archived')}</option>,
-      <option key={'archived'} value={'archived'}>{I18n.t('archived')}</option>,
-      <option key={'all_projects'} value={'all_projects'}>{I18n.t('all_projects')}</option>
-    ])).toBe(true);
+    const { getByText } = render(<ProjectSearch {...defaultProps} />);
+
+    expect(getByText(I18n.t('not_archived'))).toBeInTheDocument();
+    expect(getByText(I18n.t('archived'))).toBeInTheDocument();
+    expect(getByText(I18n.t('all_projects'))).toBeInTheDocument();
   });
 
-  it('should change the visibleProjects state', () => {
-    const wrapper = mount(<ProjectSearch {...defaultProps} />);
-    const select = wrapper.find('select');
+  it('should change the visibleProjects state', async () => {
+    let visibleProjects;
+    const { getByTestId, queryAllByTestId } = render(
+      <ProjectSearch {...defaultProps} />
+    );
+    const select = getByTestId('select-project-filter');
 
-    select.getDOMNode().value = 'all_projects';
-    select.simulate('change');
+    visibleProjects = queryAllByTestId('view-module-title');
+    expect(visibleProjects.length).toBe(2);
 
-    expect(wrapper.state('visibleProjects').joined.projects.length).toBe(1);
+    fireEvent.change(select, { target: { value: 'all_projects' } });
 
-    select.getDOMNode().value = 'archived';
-    select.simulate('change');
+    visibleProjects = queryAllByTestId('view-module-title');
+    expect(visibleProjects.length).toBe(2);
 
-    expect(wrapper.state('visibleProjects').joined.projects.length).toBe(0);
+    fireEvent.change(select, { target: { value: 'archived' } });
 
-    select.getDOMNode().value = 'not_archived';
-    select.simulate('change');
+    visibleProjects = queryAllByTestId('view-module-title');
+    expect(visibleProjects.length).toBe(0);
 
-    expect(wrapper.state('visibleProjects').joined.projects.length).toBe(1);
+    fireEvent.change(select, { target: { value: 'not_archived' } });
+
+    visibleProjects = queryAllByTestId('view-module-title');
+    expect(visibleProjects.length).toBe(2);
   });
 });

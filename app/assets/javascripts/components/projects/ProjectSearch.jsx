@@ -106,6 +106,7 @@ export default class ProjectSearch extends React.Component {
                 <select
                   id="project_type"
                   className="unstyled-input"
+                  data-testid="select-project-filter"
                   onChange={this.handleSearch}
                   ref="projectsFilter"
                 >
