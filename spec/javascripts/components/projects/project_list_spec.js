@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import ProjectList from 'components/projects/ProjectList';
 import ProjectCard from 'components/projects/ProjectCard';
 import ProjectCollection from 'collections/project_collection';

@@ -5,7 +5,6 @@ import OriginalStory from 'models/story';
 import { server } from './mocks/server';
 import { afterAll, afterEach, beforeAll } from 'vitest';
 import { http, HttpResponse } from 'msw';
-import { waitFor } from '@testing-library/react';
 
 const url = '/path/to/story';
 
