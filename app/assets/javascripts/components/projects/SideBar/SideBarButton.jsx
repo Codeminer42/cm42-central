@@ -20,11 +20,7 @@ const SideBarButton = ({ children, description, onClick, isVisible }) => {
       data-testid="sidebar-button-container"
     >
       {showInfo && (
-        <SideBarButtonInfo
-          data-id="button-info"
-          data-testid="sidebar-button-info"
-          description={description}
-        />
+        <SideBarButtonInfo data-id="button-info" description={description} />
       )}
       {children}
     </li>

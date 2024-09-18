@@ -45,15 +45,13 @@ describe('<SideBarButton />', () => {
   });
 
   describe('when mouse over', () => {
-    it('renders <SideBarButtonInfo />', () => {
-      const { getByTestId } = renderComponent();
+    it('renders <SideBarButtonInfo />', async () => {
+      const { getByTestId, rerender } = renderComponent();
 
       const button = getByTestId('sidebar-button-container');
       fireEvent.mouseOver(button);
 
-      waitFor(() => {
-        expect(getByTestId('sidebar-button-info')).toBeInTheDocument();
-      });
+      expect(getByTestId('sidebar-button-description')).toBeInTheDocument();
     });
   });
 
