@@ -73,17 +73,9 @@ describe('<ProjectList />', () => {
 
     describe('without projects', () => {
       it('Title should be present', () => {
-        const wrapper = shallow(<ProjectList {...defaultProps} />);
-        expect(
-          wrapper.contains(
-            <div className="col-md-12 project-list-title">
-              <h4>
-                <i className="mi md-20 heading-icon">view_module</i>{' '}
-                {I18n.t('projects.mine')} | {0}
-              </h4>
-            </div>
-          )
-        ).toBe(true);
+        const { getByText } = render(<ProjectList {...defaultProps} />);
+
+        expect(getByText(`${I18n.t('projects.mine')} | 0`)).toBeInTheDocument();
       });
     });
   });
@@ -108,32 +100,17 @@ describe('<ProjectList />', () => {
       });
 
       it('render <ProjectCard /> components', () => {
-        const wrapper = shallow(<ProjectList {...defaultProps} />);
+        const { getByText } = render(<ProjectList {...defaultProps} />);
+
         expect(
-          wrapper.contains([
-            <ProjectCard
-              key={1}
-              project={defaultProps.projects.at(0)}
-              user={user}
-              joined={false}
-            />,
-          ])
-        ).toBe(true);
+          getByText(defaultProps.projects.models[0].get('name'))
+        ).toBeInTheDocument();
       });
     });
     describe('without projects', () => {
       it('Title should be present', () => {
-        const wrapper = shallow(<ProjectList {...defaultProps} />);
-        expect(
-          wrapper.contains(
-            <div className="col-md-12 project-list-title">
-              <h4>
-                <i className="mi md-20 heading-icon">view_module</i>{' '}
-                {I18n.t('projects.mine')} | {0}
-              </h4>
-            </div>
-          )
-        ).toBe(true);
+        const { getByText } = render(<ProjectList {...defaultProps} />);
+        expect(getByText(`${I18n.t('projects.mine')} | 0`)).toBeInTheDocument();
       });
     });
   });
