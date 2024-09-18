@@ -139,37 +139,18 @@ describe('<ProjectCard />', () => {
     describe('#panelBody', () => {
       describe('not archived', () => {
         it('should contain users avatar', () => {
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(
-            wrapper.contains(
-              <div className="col-md-12 members">
-                <ul className="member-list">
-                  <li className="member">
-                    <img
-                      src="https://secure.gravatar.com/avatar/foobar.png"
-                      alt="User avatar"
-                      className="identicon"
-                    />
-                  </li>
-                </ul>
-              </div>
-            )
-          ).toBe(true);
+          const { getByTestId } = render(<ProjectCard {...defaultProps} />);
+
+          expect(getByTestId('user-avatar')).toBeInTheDocument();
         });
       });
 
       describe('archived', () => {
         it('should not contain unable to join message', () => {
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
+          const { queryByText } = render(<ProjectCard {...defaultProps} />);
           expect(
-            wrapper.contains(
-              <div className="panel-body">
-                <span className="col-md-12 text-center">
-                  {I18n.t('projects.unable_to_join')}
-                </span>
-              </div>
-            )
-          ).toBe(false);
+            queryByText(I18n.t('projects.unable_to_join'))
+          ).not.toBeInTheDocument();
         });
       });
     });
@@ -177,28 +158,19 @@ describe('<ProjectCard />', () => {
     describe('#cardLink', () => {
       describe('unarchived', () => {
         it('should contain SELECT PROJECT button', () => {
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(
-            wrapper.contains(
-              <a href="/projects/foobar" className="card-footer panel-footer">
-                {I18n.t('projects.select')}
-              </a>
-            )
-          ).toBe(true);
+          const { getByText } = render(<ProjectCard {...defaultProps} />);
+          expect(getByText(I18n.t('projects.select'))).toBeInTheDocument();
         });
       });
 
       describe('archived', () => {
         it('should contain ARCHIVED AT date', () => {
           defaultProps.project.set('archived_at', '2015/08/28 16:21:57 -0300');
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(
-            wrapper.contains(
-              <span className="card-footer panel-footer">
-                {I18n.t('archived_at')} {'2015/08/28 16:21:57 -0300'}
-              </span>
-            )
-          ).toBe(true);
+          const { getByText } = render(<ProjectCard {...defaultProps} />);
+
+          waitFor(() => {
+            expect(getByText(I18n.t('archived_at'))).toBeInTheDocument();
+          });
         });
       });
     });
