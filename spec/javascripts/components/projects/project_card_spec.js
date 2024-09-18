@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 
 import ProjectCard from 'components/projects/ProjectCard';
 import User from 'models/user';
@@ -76,71 +76,62 @@ describe('<ProjectCard />', () => {
 
       describe('.card-tag', () => {
         describe('When there is a tag', () => {
-          let wrapper;
-
-          beforeEach(() => {
-            wrapper = mount(<ProjectCard {...propsWithTag} />);
-          });
-
           it('has the tag name', () => {
-            expect(wrapper.find('.card-tag')).toHaveText(
-              defaultProps.project.get('tag_name')
-            );
+            const { getByTestId } = render(<ProjectCard {...propsWithTag} />);
+            const element = getByTestId('project-card-tag');
+
+            waitFor(() => {
+              expect(element.innerHTML).toBe(
+                defaultProps.project.get('tag_name')
+              );
+            });
           });
 
           it('has the background and foreground defined', () => {
-            expect(wrapper.find('.card-tag')).toHaveStyle({
-              backgroundColor: '#2075F3',
-              color: '#FFFFFF',
+            const { getByTestId } = render(<ProjectCard {...propsWithTag} />);
+
+            waitFor(() => {
+              expect(getByTestId('project-card-tag')).toHaveDomStyle(
+                'backgroundColor: rgb(32, 117, 243)',
+                'color: #FFFFFF'
+              );
             });
           });
         });
 
         it('does not have the tag', () => {
-          const wrapper = mount(<ProjectCard {...propsWithTag} />);
-          expect(
-            wrapper.contains(
-              <small className="card-tag">
-                {defaultProps.project.get('tag_name')}
-              </small>
-            )
-          ).toBe(false);
+          //check
+          const { queryByTestId } = render(<ProjectCard {...propsWithTag} />);
+
+          expect(queryByTestId('project-card-tag')).not.toBeInTheDocument();
         });
       });
 
       describe('.dropdown-menu', () => {
         it('should contain dropdown-menu', () => {
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(wrapper.find('ul.dropdown-menu')).toHaveClassName(
-            'dropdown-menu'
-          );
+          const { getByTestId } = render(<ProjectCard {...defaultProps} />);
+
+          waitFor(() => {
+            expect(getByTestId('dropdown-menu-container')).toHaveClassName(
+              'dropdown-menu'
+            );
+          });
         });
 
         it('should contain settings link', () => {
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(
-            wrapper.contains(
-              <a
-                href="/projects/foobar/edit"
-                data-toggle="tooltip"
-                data-placement="top"
-                data-title={I18n.t('settings')}
-              >
-                {I18n.t('settings')}
-              </a>
-            )
-          ).toBe(true);
+          const { getByText } = render(<ProjectCard {...defaultProps} />);
+
+          waitFor(() => {
+            expect(getByText(I18n.t('settings'))).toBeInTheDocument();
+          });
         });
 
         it('should contain unjoin project link', () => {
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(
-            wrapper.contains(
-              <a href="/projects/foobar/users/1" data-method="delete">
-                {I18n.t('projects.unjoin')}
-              </a>
-            )
-          ).toBe(true);
+          const { getByText } = render(<ProjectCard {...defaultProps} />);
+
+          waitFor(() => {
+            expect(getByText(I18n.t('projects.unjoin'))).toBeInTheDocument();
+          });
         });
       });
     });

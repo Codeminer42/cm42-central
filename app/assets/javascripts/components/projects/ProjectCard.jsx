@@ -18,7 +18,7 @@ export default class ProjectCard extends React.Component {
     };
 
     return (
-      <small className="card-tag" style={style}>
+      <small className="card-tag" style={style} data-testid="project-card-tag">
         {project.get('tag_name')}
       </small>
     );
@@ -80,6 +80,7 @@ export default class ProjectCard extends React.Component {
               <ul
                 className="dropdown-menu dropdown-menu-right"
                 aria-labelledby="dLabel"
+                data-testid="dropdown-menu-container"
               >
                 <li className="dropdown-header">{I18n.t('options')}</li>
 
