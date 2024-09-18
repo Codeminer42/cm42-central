@@ -1,33 +1,37 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import ReactDOM from 'react-dom';
+import store from 'store';
 import SearchResults from 'components/search/Search';
+import { renderWithProviders } from '../setupRedux';
 
 describe('<SearchResults />', () => {
+  const renderComponent = props => {
+    return renderWithProviders(
+      <SearchResults
+        isEnabled={false}
+        searchResults={[]}
+        closeSearch={vi.fn()}
+        {...props}
+      />,
+      {
+        store,
+      }
+    );
+  };
+
   describe('when isEnabled is false', () => {
     it('does not render the component', () => {
-      const wrapper = shallow(
-        <SearchResults
-          isEnabled={false}
-          searchResults={[]}
-          closeSearch={vi.fn()}
-        />
-      );
+      const { container } = renderComponent();
 
-      expect(wrapper.instance()).toBeNull();
+      expect(container).not.toBeInTheDocument();
     });
   });
 
   describe('when isEnabled is true', () => {
     it('renders the component', () => {
-      const wrapper = shallow(
-        <SearchResults
-          isEnabled={true}
-          searchResults={[]}
-          closeSearch={vi.fn()}
-        />
-      );
+      const { container } = renderComponent({ isEnabled: true });
 
-      expect(wrapper).toExist();
+      expect(container).toBeInTheDocument();
     });
   });
 });
