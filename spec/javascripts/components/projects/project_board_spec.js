@@ -334,7 +334,7 @@ describe('<ProjectBoard />', () => {
 
   describe('when there are epicStories', () => {
     beforeAll(() => {
-      vi.spyOn(window.md, 'makeHtml').mockReturnValue('<p>Teste</p>');
+      vi.spyOn(window.md, 'makeHtml').mockReturnValue('<p>Test</p>');
     });
 
     it('renders epic column', () => {
