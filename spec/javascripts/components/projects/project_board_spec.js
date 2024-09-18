@@ -4,7 +4,7 @@ import store from 'store';
 import { ProjectBoard } from 'components/projects/ProjectBoard';
 import storyFactory from '../../support/factories/storyFactory';
 import { renderWithProviders } from '../setupRedux';
-import { beforeAll } from 'vitest';
+import { beforeAll, beforeEach } from 'vitest';
 
 vi.mock('../../../../app/assets/javascripts/pusherSockets', () => ({
   subscribeToProjectChanges: vi.fn(),
@@ -268,9 +268,11 @@ describe('<ProjectBoard />', () => {
     };
 
     it('does not render history column', () => {
-      const { queryByTestId } = renderComponent(props);
+      const { getAllByTestId } = renderComponent(props);
 
-      expect(queryByTestId('history-column-component')).not.toBeInTheDocument();
+      expect(getAllByTestId('column-container').length).toBe(
+        COLUMNS_QUANTITY_STD
+      );
     });
 
     it('does not render history', () => {
@@ -310,25 +312,31 @@ describe('<ProjectBoard />', () => {
     };
 
     it('renders history column', () => {
-      const wrapper = renderComponent(props);
+      const { getAllByTestId } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="history-column"]')).toExist();
+      expect(getAllByTestId('column-container').length).toBe(
+        COLUMNS_QUANTITY_STD + 1
+      );
     });
 
     it('does not render history', () => {
-      const wrapper = renderComponent(props);
+      const { queryByTestId } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="history"]')).not.toExist();
+      expect(queryByTestId('history-component')).not.toBeInTheDocument();
     });
 
     it('renders loading', () => {
-      const wrapper = renderComponent(props);
+      const { getByTestId } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="project-loading"]')).toExist();
+      expect(getByTestId('project-loading-component')).toBeInTheDocument();
     });
   });
 
   describe('when there are epicStories', () => {
+    beforeAll(() => {
+      vi.spyOn(window.md, 'makeHtml').mockReturnValue('<p>Teste</p>');
+    });
+
     it('renders epic column', () => {
       const props = {
         epicStories: [storyFactory()],
@@ -345,9 +353,12 @@ describe('<ProjectBoard />', () => {
           },
         },
       };
-      const wrapper = renderComponent(props);
 
-      expect(wrapper.find('[data-id="epic-column"]')).toExist();
+      const { getAllByTestId } = renderComponent(props);
+
+      expect(getAllByTestId('column-container').length).toBe(
+        COLUMNS_QUANTITY_STD + 1
+      );
     });
   });
 
@@ -368,9 +379,11 @@ describe('<ProjectBoard />', () => {
           },
         },
       };
-      const wrapper = renderComponent(props);
+      const { getAllByTestId } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="epic-column"]')).not.toExist();
+      expect(getAllByTestId('column-container').length).toBe(
+        COLUMNS_QUANTITY_STD
+      );
     });
   });
 });
