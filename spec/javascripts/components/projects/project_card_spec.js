@@ -100,7 +100,7 @@ describe('<ProjectCard />', () => {
         });
 
         it('does not have the tag', () => {
-          //check
+          propsWithTag.project.set('tag_name', null);
           const { queryByTestId } = render(<ProjectCard {...propsWithTag} />);
 
           expect(queryByTestId('project-card-tag')).not.toBeInTheDocument();
