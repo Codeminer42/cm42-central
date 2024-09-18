@@ -268,21 +268,23 @@ describe('<ProjectBoard />', () => {
     };
 
     it('does not render history column', () => {
-      const wrapper = renderComponent(props);
+      const { queryByTestId } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="history-column"]')).not.toExist();
+      expect(queryByTestId('history-column-component')).not.toBeInTheDocument();
     });
 
     it('does not render history', () => {
-      const wrapper = renderComponent(props);
+      const { queryByTestId } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="history"]')).not.toExist();
+      expect(queryByTestId('history-component')).not.toBeInTheDocument();
     });
 
     it('does not render loading', () => {
-      const wrapper = renderComponent(props);
+      const { queryByTestId } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="project-loading"]')).not.toExist();
+      expect(
+        queryByTestId('project-loading-component')
+      ).not.toBeInTheDocument();
     });
   });
 
