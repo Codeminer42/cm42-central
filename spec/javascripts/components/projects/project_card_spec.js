@@ -1,9 +1,10 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import ProjectCard from 'components/projects/ProjectCard';
 import User from 'models/user';
 import Project from 'models/project';
+import { expect } from 'vitest';
 
 const user = new User({ user: { id: 1 } });
 
@@ -77,25 +78,19 @@ describe('<ProjectCard />', () => {
       describe('.card-tag', () => {
         describe('When there is a tag', () => {
           it('has the tag name', () => {
-            const { getByTestId } = render(<ProjectCard {...propsWithTag} />);
-            const element = getByTestId('project-card-tag');
+            const { getByText } = render(<ProjectCard {...propsWithTag} />);
 
-            waitFor(() => {
-              expect(element.innerHTML).toBe(
-                defaultProps.project.get('tag_name')
-              );
-            });
+            expect(
+              getByText(propsWithTag.project.get('tag_name'))
+            ).toBeInTheDocument();
           });
 
           it('has the background and foreground defined', () => {
             const { getByTestId } = render(<ProjectCard {...propsWithTag} />);
+            const component = getByTestId('project-card-tag');
 
-            waitFor(() => {
-              expect(getByTestId('project-card-tag')).toHaveDomStyle(
-                'backgroundColor: rgb(32, 117, 243)',
-                'color: #FFFFFF'
-              );
-            });
+            expect(component.style.backgroundColor).toBe('rgb(32, 117, 243)');
+            expect(component.style.color).toBe('rgb(255, 255, 255)');
           });
         });
 
@@ -111,27 +106,21 @@ describe('<ProjectCard />', () => {
         it('should contain dropdown-menu', () => {
           const { getByTestId } = render(<ProjectCard {...defaultProps} />);
 
-          waitFor(() => {
-            expect(getByTestId('dropdown-menu-container')).toHaveClassName(
-              'dropdown-menu'
-            );
-          });
+          expect(getByTestId('dropdown-menu-container')).toHaveClass(
+            'dropdown-menu'
+          );
         });
 
         it('should contain settings link', () => {
           const { getByText } = render(<ProjectCard {...defaultProps} />);
 
-          waitFor(() => {
-            expect(getByText(I18n.t('settings'))).toBeInTheDocument();
-          });
+          expect(getByText(I18n.t('settings'))).toBeInTheDocument();
         });
 
         it('should contain unjoin project link', () => {
           const { getByText } = render(<ProjectCard {...defaultProps} />);
 
-          waitFor(() => {
-            expect(getByText(I18n.t('projects.unjoin'))).toBeInTheDocument();
-          });
+          expect(getByText(I18n.t('projects.unjoin'))).toBeInTheDocument();
         });
       });
     });
@@ -168,9 +157,9 @@ describe('<ProjectCard />', () => {
           defaultProps.project.set('archived_at', '2015/08/28 16:21:57 -0300');
           const { getByText } = render(<ProjectCard {...defaultProps} />);
 
-          waitFor(() => {
-            expect(getByText(I18n.t('archived_at'))).toBeInTheDocument();
-          });
+          expect(
+            getByText(`${I18n.t('archived_at')} 2015/08/28 16:21:57 -0300`)
+          ).toBeInTheDocument();
         });
       });
     });
@@ -188,24 +177,20 @@ describe('<ProjectCard />', () => {
       describe('.icons', () => {
         it('should not have report icon', () => {
           defaultProps.joined = false;
-          const { getByTestId } = render(<ProjectCard {...defaultProps} />);
+          const { queryByTestId } = render(<ProjectCard {...defaultProps} />);
 
-          waitFor(() => {
-            expect(getByTestId('report-icon-anchor')).toBeInTheDocument();
-          });
+          expect(queryByTestId('report-icon-anchor')).not.toBeInTheDocument();
         });
       });
 
       describe('.dropdown-menu', () => {
         it('should not contain dropdown-menu', () => {
           defaultProps.joined = false;
-          const { getByTestId } = render(<ProjectCard {...defaultProps} />);
+          const { queryByTestId } = render(<ProjectCard {...defaultProps} />);
 
-          waitFor(() => {
-            expect(getByTestId('dropdown-menu-container')).not.toHaveClassName(
-              'dropdown-menu'
-            );
-          });
+          expect(
+            queryByTestId('dropdown-menu-container')
+          ).not.toBeInTheDocument();
         });
       });
     });
@@ -253,9 +238,9 @@ describe('<ProjectCard />', () => {
           defaultProps.project.set('archived_at', '9999/99/99 99:99:99 -9999');
           const { getByText } = render(<ProjectCard {...defaultProps} />);
 
-          waitFor(() => {
-            expect(getByText(I18n.t('archived_at'))).toBeInTheDocument();
-          });
+          expect(
+            getByText(`${I18n.t('archived_at')} 9999/99/99 99:99:99 -9999`)
+          ).toBeInTheDocument();
         });
       });
     });
