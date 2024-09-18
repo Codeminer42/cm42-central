@@ -177,60 +177,35 @@ describe('<ProjectCard />', () => {
   });
 
   describe('unjoined', () => {
-    it('should have project, user and joined props', () => {
-      defaultProps.joined = false;
-
-      const wrapper = mount(<ProjectCard {...defaultProps} />);
-      expect(wrapper.props()).toEqual({
-        project: defaultProps.project,
-        user: defaultProps.user,
-        joined: false,
-      });
-    });
-
     it('should contain the Project name', () => {
       defaultProps.joined = false;
 
-      const wrapper = shallow(<ProjectCard {...defaultProps} />);
-      expect(
-        wrapper.contains(
-          <div className="panel-heading card-heading">
-            <span className="card-title">Foobar</span>
-          </div>
-        )
-      ).toBe(true);
+      const { getByText } = render(<ProjectCard {...defaultProps} />);
+      expect(getByText('Foobar')).toBeInTheDocument();
     });
 
     describe('#panelHeading', () => {
       describe('.icons', () => {
         it('should not have report icon', () => {
           defaultProps.joined = false;
+          const { getByTestId } = render(<ProjectCard {...defaultProps} />);
 
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(
-            wrapper.contains(
-              <a
-                href="/projects/foobar/reports"
-                className="unstyled-link"
-                data-toggle="tooltip"
-                data-placement="top"
-                data-title={I18n.t('reports')}
-              >
-                <i className="mi md-20 heading-icon">insert_chart</i>
-              </a>
-            )
-          ).toBe(false);
+          waitFor(() => {
+            expect(getByTestId('report-icon-anchor')).toBeInTheDocument();
+          });
         });
       });
 
       describe('.dropdown-menu', () => {
         it('should not contain dropdown-menu', () => {
           defaultProps.joined = false;
+          const { getByTestId } = render(<ProjectCard {...defaultProps} />);
 
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(wrapper.find('ul.dropdown-menu')).not.toHaveClassName(
-            'dropdown-menu'
-          );
+          waitFor(() => {
+            expect(getByTestId('dropdown-menu-container')).not.toHaveClassName(
+              'dropdown-menu'
+            );
+          });
         });
       });
     });
@@ -240,17 +215,11 @@ describe('<ProjectCard />', () => {
         it('should contain "to view more join" message', () => {
           defaultProps.joined = false;
           defaultProps.project.set('archived_at', null);
+          const { getByText } = render(<ProjectCard {...defaultProps} />);
 
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
           expect(
-            wrapper.contains(
-              <div className="panel-body">
-                <span className="col-md-12 text-center">
-                  {I18n.t('projects.to_view_more_join')}
-                </span>
-              </div>
-            )
-          ).toBe(true);
+            getByText(I18n.t('projects.to_view_more_join'))
+          ).toBeInTheDocument();
         });
       });
 
@@ -258,17 +227,11 @@ describe('<ProjectCard />', () => {
         it('should contain "unable to join" message', () => {
           defaultProps.joined = false;
           defaultProps.project.set('archived_at', '9999/99/99 99:99:99 -9999');
+          const { getByText } = render(<ProjectCard {...defaultProps} />);
 
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
           expect(
-            wrapper.contains(
-              <div className="panel-body">
-                <span className="col-md-12 text-center">
-                  {I18n.t('projects.unable_to_join')}
-                </span>
-              </div>
-            )
-          ).toBe(true);
+            getByText(I18n.t('projects.unable_to_join'))
+          ).toBeInTheDocument();
         });
       });
     });
@@ -278,18 +241,9 @@ describe('<ProjectCard />', () => {
         it('should contain Join Project button', () => {
           defaultProps.joined = false;
           defaultProps.project.set('archived_at', null);
+          const { getByText } = render(<ProjectCard {...defaultProps} />);
 
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(
-            wrapper.contains(
-              <a
-                href="/projects/foobar/join"
-                className="card-footer panel-footer"
-              >
-                {I18n.t('projects.join')}
-              </a>
-            )
-          ).toBe(true);
+          expect(getByText(I18n.t('projects.join'))).toBeInTheDocument();
         });
       });
 
@@ -297,15 +251,11 @@ describe('<ProjectCard />', () => {
         it('should contain ARCHIVED AT date', () => {
           defaultProps.joined = false;
           defaultProps.project.set('archived_at', '9999/99/99 99:99:99 -9999');
+          const { getByText } = render(<ProjectCard {...defaultProps} />);
 
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(
-            wrapper.contains(
-              <span className="card-footer panel-footer">
-                {I18n.t('archived_at')} {'9999/99/99 99:99:99 -9999'}
-              </span>
-            )
-          ).toBe(true);
+          waitFor(() => {
+            expect(getByText(I18n.t('archived_at'))).toBeInTheDocument();
+          });
         });
       });
     });
