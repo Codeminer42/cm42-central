@@ -1,18 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import store from 'store';
-import SearchResults from 'components/search/Search';
+import SearchResults from 'components/search/SearchResults';
 import { renderWithProviders } from '../setupRedux';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 describe('<SearchResults />', () => {
-  const renderComponent = props => {
+  const renderComponent = () => {
     return renderWithProviders(
-      <SearchResults
-        isEnabled={false}
-        searchResults={[]}
-        closeSearch={vi.fn()}
-        {...props}
-      />,
+      <DragDropContext onDragEnd={vi.fn()} onDragUpdate={vi.fn()}>
+        <SearchResults />
+      </DragDropContext>,
       {
         store,
       }
@@ -21,17 +18,17 @@ describe('<SearchResults />', () => {
 
   describe('when isEnabled is false', () => {
     it('does not render the component', () => {
-      const { container } = renderComponent();
+      const { queryByTestId } = renderComponent();
 
-      expect(container).not.toBeInTheDocument();
+      expect(queryByTestId('sprint-container')).not.toBeInTheDocument();
     });
   });
 
   describe('when isEnabled is true', () => {
     it('renders the component', () => {
-      const { container } = renderComponent({ isEnabled: true });
+      const { getByTestId } = renderComponent();
 
-      expect(container).toBeInTheDocument();
+      expect(getByTestId('sprint-container')).toBeInTheDocument();
     });
   });
 });
