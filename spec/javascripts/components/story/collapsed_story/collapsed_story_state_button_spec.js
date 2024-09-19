@@ -1,6 +1,11 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
 import CollapsedStoryStateButton from 'components/story/CollapsedStory/CollapsedStoryStateButton';
+import React from 'react';
+import { describe, expect, it, vi } from 'vitest';
+
+vi.mock('I18n', () => ({
+  translate: key => key,
+}));
 
 describe('<CollapsedStoryStateButton />', () => {
   it('renders <CollapsedStoryStateButton /> with the right content', () => {
@@ -8,22 +13,22 @@ describe('<CollapsedStoryStateButton />', () => {
       action: 'start',
       onUpdate: vi.fn(),
     };
-    const wrapper = shallow(<CollapsedStoryStateButton {...props} />);
-    expect(wrapper.text()).toEqual(
-      I18n.translate('story.events.' + props.action)
-    );
-    expect(wrapper).toHaveClassName(`Story__btn Story__btn--${props.action}`);
+
+    render(<CollapsedStoryStateButton {...props} />);
+
+    const button = screen.getByRole('button');
+    expect(button).toHaveTextContent('story.events.start');
+    expect(button).toHaveClass('Story__btn', 'Story__btn--start');
   });
 
   it('calls onUpdate on click', () => {
     const action = 'start';
     const onUpdate = vi.fn();
 
-    const wrapper = shallow(
-      <CollapsedStoryStateButton action={action} onUpdate={onUpdate} />
-    );
+    render(<CollapsedStoryStateButton action={action} onUpdate={onUpdate} />);
+    const button = screen.getByRole('button');
+    fireEvent.click(button);
 
-    wrapper.find('button').simulate('click');
-    expect(onUpdate).toHaveBeenCalled();
+    expect(onUpdate).toHaveBeenCalledTimes(1);
   });
 });
