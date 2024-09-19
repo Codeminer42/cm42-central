@@ -1,31 +1,19 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { Container as CollapsedStory } from 'components/story/CollapsedStory/index';
 import React from 'react';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import { expect, vi } from 'vitest';
 import storyFactory from '../../../support/factories/storyFactory';
 
-/**
- * needed because testing library's render method
- * returns something html-react-parser doesn't understand
- * and it breaks the test after the component is rendered
- */
-vi.mock('html-react-parser', () => ({
-  default: vi.fn(),
-}));
-
-/**
- * only direct children are mocked and tested for rendering
- */
-vi.mock('components/story/StoryPopover', () => ({
-  default: () => <div data-testid="story-popover" />,
-}));
-vi.mock('components/story/CollapsedStory/CollapsedStoryInfo', () => ({
-  default: () => <div data-testid="collapsed-story-info" />,
-}));
-vi.mock('components/story/CollapsedStory/CollapsedStoryStateActions', () => ({
-  default: () => <div data-testid="collapsed-story-state-actions" />,
-}));
+const mockReducer = (state = {}, action) => state;
+const createMockStore = (initialState = {}) => {
+  return createStore(mockReducer, initialState);
+};
 
 describe('<CollapsedStory />', () => {
+  vi.spyOn(window.md, 'makeHtml').mockReturnValue('<p>Test</p>');
+
   const defaultProps = () => ({
     story: {},
     onToggle: vi.fn(),
@@ -63,9 +51,16 @@ describe('<CollapsedStory />', () => {
   describe('when estimate is null', () => {
     it('renders the component with Story--unestimated className', () => {
       const story = storyFactory({ storyType: 'feature', estimate: null });
+      const mockStore = createMockStore({
+        project: {
+          pointValues: [1, 2, 3, 5, 8],
+        },
+      });
 
       const { container } = render(
-        <CollapsedStory {...defaultProps()} story={story} />
+        <Provider store={mockStore}>
+          <CollapsedStory {...defaultProps()} story={story} />
+        </Provider>
       );
 
       expect(container.firstChild).toHaveClass('Story--unestimated');
@@ -86,18 +81,38 @@ describe('<CollapsedStory />', () => {
 
   it('renders children components', () => {
     const story = storyFactory({ storyType: 'feature', estimate: 1 });
-    const components = [
-      'story-popover',
-      'collapsed-story-info',
-      'collapsed-story-state-actions',
-    ];
 
-    render(<CollapsedStory {...defaultProps()} story={story} />);
+    const { container } = render(
+      <CollapsedStory {...defaultProps()} story={story} />
+    );
 
-    for (const testId of components) {
-      const child = screen.getByTestId(testId);
+    // StoryPopover
+    const storyPopover = container.querySelector('.popover__content');
+    expect(storyPopover).toBeInTheDocument();
 
-      expect(child).toBeInTheDocument();
-    }
+    // CollapsedStoryIcon
+    const collapsedStoreIcon = container.querySelector('.Story__icon');
+    expect(collapsedStoreIcon).toBeInTheDocument();
+
+    // CollapsedStoryEstimate
+    const collapsedStoryEstimate = container.querySelector(
+      '.Story__estimated-value'
+    );
+    expect(collapsedStoryEstimate).toBeInTheDocument();
+
+    // StoryDescriptionIcon
+    const storyDescriptionIcon = container.querySelector(
+      '.Story__description-icon'
+    );
+    expect(storyDescriptionIcon).toBeInTheDocument();
+
+    // CollapsedStoryInfo
+    const collapsedStoryInfo = container.querySelector('.Story__info');
+    expect(collapsedStoryInfo).toBeInTheDocument();
+
+    // CollapsedStoryStateActions
+    const collapsedStoryStateActions =
+      container.querySelector('.Story__actions');
+    expect(collapsedStoryStateActions).toBeInTheDocument();
   });
 });
