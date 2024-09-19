@@ -3,10 +3,6 @@ import CollapsedStoryStateButton from 'components/story/CollapsedStory/Collapsed
 import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
 
-vi.mock('I18n', () => ({
-  translate: key => key,
-}));
-
 describe('<CollapsedStoryStateButton />', () => {
   it('renders <CollapsedStoryStateButton /> with the right content', () => {
     const props = {
