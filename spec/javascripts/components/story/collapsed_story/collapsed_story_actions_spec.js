@@ -6,18 +6,6 @@ import { createStore } from 'redux';
 import { describe, it } from 'vitest';
 import storyFactory from '../../../support/factories/storyFactory';
 
-vi.mock('components/story/CollapsedStory/CollapsedStoryEstimateButton', () => ({
-  default: vi.fn(() => <div data-testid="mocked-estimate-button" />),
-}));
-vi.mock('components/story/CollapsedStory/CollapsedStoryStateButton', () => {
-  const dataTestId = state =>
-    'mocked-state-button-' + (state.action === '' ? 'start' : state.action);
-
-  return {
-    default: vi.fn(state => <div data-testid={dataTestId(state)} />),
-  };
-});
-
 const mockReducer = (state = {}, action) => state;
 const createMockStore = (initialState = {}) => {
   return createStore(mockReducer, initialState);
@@ -27,7 +15,11 @@ describe('<CollapsedStoryStateActions />', () => {
   describe('When estimate is null', () => {
     it('renders <CollapsedStoryEstimateButton /> component', () => {
       const props = storyFactory({ estimate: null });
-      const mockStore = createMockStore();
+      const mockStore = createMockStore({
+        project: {
+          pointValues: [1, 2, 3, 5, 8],
+        },
+      });
 
       const { container } = render(
         <Provider store={mockStore}>
@@ -53,16 +45,24 @@ describe('<CollapsedStoryStateActions />', () => {
       describe(`When state = ${state}`, () => {
         it('renders the <CollapsedStoryStateButton /> component', () => {
           const props = storyFactory({ state });
-          const { container } = render(
-            <CollapsedStoryStateActions story={props} />
+          const mockStore = createMockStore({
+            project: {
+              pointValues: [1, 2, 3, 5, 8],
+            },
+          });
+          render(
+            <Provider store={mockStore}>
+              <CollapsedStoryStateActions story={props} />
+            </Provider>
           );
 
           actions.forEach(action => {
-            const stateButton = screen.getByTestId(
-              'mocked-state-button-' + action
-            );
-            expect(stateButton).toBeInTheDocument();
-            expect(container).toBeInTheDocument();
+            const stateButtons = screen.getAllByText(action, { exact: false });
+            expect(stateButtons.length).toBeGreaterThan(0);
+
+            stateButtons.forEach(stateButton => {
+              expect(stateButton.closest('button')).toBeInTheDocument();
+            });
           });
         });
       });
