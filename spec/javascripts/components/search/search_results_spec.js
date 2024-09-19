@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchResults from 'components/search/SearchResults';
+import { SearchResults } from 'components/search/SearchResults';
 import { renderWithProviders } from '../setupRedux';
 import { DragDropContext } from 'react-beautiful-dnd';
 
@@ -29,14 +29,26 @@ const emptyStory = {
 };
 
 describe('<SearchResults />', () => {
-  const renderComponent = state => {
+  const renderComponent = props => {
+    const defaultProps = {
+      isEnabled: false,
+      searchResults: [],
+      closeSearch: vi.fn(),
+      projectBoard: {
+        search: {},
+      },
+    };
+
+    const mergeProps = {
+      ...defaultProps,
+      ...props,
+    };
+
     return renderWithProviders(
       <DragDropContext onDragEnd={vi.fn()} onDragUpdate={vi.fn()}>
-        <SearchResults />
+        <SearchResults {...mergeProps} />
       </DragDropContext>,
-      {
-        preloadedState: state,
-      }
+      {}
     );
   };
 
@@ -49,23 +61,8 @@ describe('<SearchResults />', () => {
   });
 
   describe('when isEnabled is true', () => {
-    it.only('renders the component', () => {
-      const { getByTestId, store } = renderComponent({
-        stories: {
-          all: {
-            stories: [emptyStory, emptyStory, emptyStory],
-          },
-          epic: {
-            stories: [emptyStory, emptyStory, emptyStory],
-          },
-          search: {
-            stories: [emptyStory, emptyStory, emptyStory],
-          },
-        },
-      });
-
-      const state = store.getState();
-      console.log(state);
+    it('renders the component', () => {
+      const { getByTestId } = renderComponent({ isEnabled: true });
 
       expect(getByTestId('sprint-container')).toBeInTheDocument();
     });
