@@ -43,4 +43,8 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(thunk.withExtraArgument(dependencies)))
 );
 
+export const testStore = preloadedState => {
+  return createStore(reducer, preloadedState);
+};
+
 export default store;
