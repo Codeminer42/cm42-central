@@ -1,25 +1,25 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
 import CollapsedStoryFocusButton from 'components/story/CollapsedStory/CollapsedStoryFocusButton';
+import React from 'react';
+import { describe, expect, it, vi } from 'vitest';
 
 describe('<CollapsedStoryFocusButton />', () => {
   it('renders the component', () => {
-    const wrapper = shallow(<CollapsedStoryFocusButton onClick={vi.fn()} />);
+    const { container } = render(
+      <CollapsedStoryFocusButton onClick={vi.fn()} />
+    );
 
-    expect(wrapper).toExist();
+    expect(container).toBeInTheDocument();
   });
 
-  it('call onClick when button was clicked', () => {
+  it('calls onClick when button is clicked', () => {
     const spyOnClick = vi.fn();
 
-    const wrapper = shallow(<CollapsedStoryFocusButton onClick={spyOnClick} />);
+    render(<CollapsedStoryFocusButton onClick={spyOnClick} />);
 
-    const button = wrapper.find('[data-id="focus-button"]');
+    const button = screen.getByRole('button');
+    fireEvent.click(button);
 
-    button.simulate('click', {
-      stopPropagation: () => vi.fn(),
-    });
-
-    expect(spyOnClick.called).toBeTruthy();
+    expect(spyOnClick).toHaveBeenCalledOnce();
   });
 });
