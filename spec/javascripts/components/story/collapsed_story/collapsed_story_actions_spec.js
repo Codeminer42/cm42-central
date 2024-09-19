@@ -13,7 +13,7 @@ const createMockStore = (initialState = {}) => {
 
 describe('<CollapsedStoryStateActions />', () => {
   describe('When estimate is null', () => {
-    it('renders <CollapsedStoryEstimateButton /> component', () => {
+    it('renders <CollapsedStoryStateActions /> component', () => {
       const props = storyFactory({ estimate: null });
       const mockStore = createMockStore({
         project: {
