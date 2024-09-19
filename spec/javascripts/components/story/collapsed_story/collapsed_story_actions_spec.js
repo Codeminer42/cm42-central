@@ -72,10 +72,12 @@ describe('<CollapsedStoryStateActions />', () => {
       it("Doesn't render <CollapsedStoryStateButton /> component", () => {
         const props = storyFactory({ state: 'accepted' });
 
-        render(<CollapsedStoryStateActions story={props} />);
-        const stateButtons = screen.queryAllByTestId(/^mocked-state-button/);
+        const { container } = render(
+          <CollapsedStoryStateActions story={props} />
+        );
+        const stateButton = container.querySelector('.Story__btn');
 
-        expect(stateButtons).toHaveLength(0);
+        expect(stateButton).not.toBeInTheDocument();
       });
     });
   });
