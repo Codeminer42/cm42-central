@@ -15,7 +15,7 @@ export const SearchHeader = ({ stories }) => (
 );
 
 const Search = ({ stories }) => (
-  <div className="Sprint">
+  <div className="Sprint" data-testid="sprint-container">
     <SearchHeader stories={stories} />
     <div className="Sprint__body" data-id="stories-search">
       <Stories
