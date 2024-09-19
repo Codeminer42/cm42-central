@@ -1,33 +1,34 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import SearchResults from 'components/search/Search';
+import store from 'store';
+import SearchResults from 'components/search/SearchResults';
+import { renderWithProviders } from '../setupRedux';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 describe('<SearchResults />', () => {
+  const renderComponent = () => {
+    return renderWithProviders(
+      <DragDropContext onDragEnd={vi.fn()} onDragUpdate={vi.fn()}>
+        <SearchResults />
+      </DragDropContext>,
+      {
+        store,
+      }
+    );
+  };
+
   describe('when isEnabled is false', () => {
     it('does not render the component', () => {
-      const wrapper = shallow(
-        <SearchResults
-          isEnabled={false}
-          searchResults={[]}
-          closeSearch={vi.fn()}
-        />
-      );
+      const { queryByTestId } = renderComponent();
 
-      expect(wrapper.instance()).toBeNull();
+      expect(queryByTestId('sprint-container')).not.toBeInTheDocument();
     });
   });
 
   describe('when isEnabled is true', () => {
     it('renders the component', () => {
-      const wrapper = shallow(
-        <SearchResults
-          isEnabled={true}
-          searchResults={[]}
-          closeSearch={vi.fn()}
-        />
-      );
+      const { getByTestId } = renderComponent();
 
-      expect(wrapper).toExist();
+      expect(getByTestId('sprint-container')).toBeInTheDocument();
     });
   });
 });
