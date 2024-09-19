@@ -1,6 +1,7 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import CollapsedStoryLabels from 'components/story/CollapsedStory/CollapsedStoryLabels';
+import React from 'react';
+import { describe, expect, it, vi } from 'vitest';
 import storyFactory from '../../../support/factories/storyFactory';
 
 describe('<CollapsedStoryLabels />', () => {
@@ -11,11 +12,11 @@ describe('<CollapsedStoryLabels />', () => {
     ];
 
     const story = storyFactory({ labels });
-
-    const wrapper = shallow(
+    const { container } = render(
       <CollapsedStoryLabels story={story} onLabelClick={vi.fn()} />
     );
-    expect(wrapper).toHaveClassName('Story__labels');
+
+    expect(container.firstChild).toHaveClass('Story__labels');
   });
 
   it('render all <StoryLabel />', () => {
@@ -26,12 +27,10 @@ describe('<CollapsedStoryLabels />', () => {
 
     const story = storyFactory({ labels });
 
-    const wrapper = shallow(
-      <CollapsedStoryLabels story={story} onLabelClick={vi.fn()} />
-    );
+    render(<CollapsedStoryLabels story={story} onLabelClick={vi.fn()} />);
 
     labels.forEach(label => {
-      expect(wrapper.find(`StoryLabel[label="${label.name}"]`)).toExist();
+      expect(screen.getByText(label.name)).toBeInTheDocument();
     });
   });
 });
