@@ -1,41 +1,50 @@
-import React from 'react';
-import { shallow } from 'enzyme';
 import ExpandedStorySection from 'components/story/ExpandedStory/ExpandedStorySection';
+import React from 'react';
+import { renderWithProviders } from '../../setupRedux';
 
 describe('<ExpandedStorySection />', () => {
+  const renderComponent = props => {
+    const defaultProps = {};
+
+    const mergedProps = { ...defaultProps, ...props };
+
+    return renderWithProviders(<ExpandedStorySection {...mergedProps} />);
+  };
+
   it('renders section-title with the right text', () => {
-    const title = 'my title';
-    const children = 'children';
+    const props = {
+      title: 'my title',
+      children: 'children',
+    };
 
-    const wrapper = shallow(
-      <ExpandedStorySection title={title} children={children} />
-    );
+    const { container } = renderComponent(props);
+    const title = container.querySelector('.Story__section-title');
 
-    expect(wrapper.find('.Story__section-title').text()).toContain(title);
+    expect(title).toHaveTextContent(props.title);
   });
 
   it('renders with the right identifier className', () => {
-    const identifier = 'content';
-    const children = 'children';
+    const props = {
+      title: 'title',
+      identifier: 'content',
+      children: 'children',
+    };
 
-    const wrapper = shallow(
-      <ExpandedStorySection
-        title="title"
-        identifier={identifier}
-        children={children}
-      />
-    );
+    const { container } = renderComponent(props);
+    const section = container.querySelector('.Story__section__content');
 
-    expect(wrapper.find(`.Story__section__${identifier}`)).toExist();
+    expect(section).toHaveClass(`Story__section__${props.identifier}`);
   });
 
   it('renders children', () => {
-    const children = <div>{'children'}</div>;
+    const props = {
+      title: 'title',
+      children: <div>{'children'}</div>,
+    };
 
-    const wrapper = shallow(
-      <ExpandedStorySection title="title">{children}</ExpandedStorySection>
-    );
+    const { container } = renderComponent(props);
+    const children = container.querySelector('.Story__section__content');
 
-    expect(wrapper).toContainReact(children);
+    expect(children).toHaveTextContent('children');
   });
 });
