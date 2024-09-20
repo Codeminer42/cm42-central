@@ -1,10 +1,10 @@
-import React from 'react';
-import { shallow } from 'enzyme';
 import ExpandedStoryRequestedBy from 'components/story/ExpandedStory/ExpandedStoryRequestedBy';
+import React from 'react';
+import { renderWithProviders } from '../../setupRedux';
 
 describe('<ExpandedStoryRequestBy />', () => {
-  const setup = propOverrides => {
-    const defaultProps = () => ({
+  const renderComponent = props => {
+    const defaultProps = {
       users: [
         { id: 1, name: 'foo' },
         { id: 2, name: 'bar' },
@@ -12,16 +12,16 @@ describe('<ExpandedStoryRequestBy />', () => {
       story: { _editing: { requestedById: 1 } },
       onEdit: vi.fn(),
       disabled: false,
-      ...propOverrides,
-    });
+    };
 
-    const wrapper = shallow(<ExpandedStoryRequestedBy {...defaultProps()} />);
-    return { wrapper };
+    const mergedProps = { ...defaultProps, ...props };
+
+    return renderWithProviders(<ExpandedStoryRequestedBy {...mergedProps} />);
   };
 
   it('renders properly', () => {
-    const { wrapper } = setup();
+    const { container } = renderComponent();
 
-    expect(wrapper).toExist();
+    expect(container).toBeInTheDocument();
   });
 });
