@@ -1,25 +1,28 @@
-import React from "react";
-import { shallow } from "enzyme";
-import History from "../../../../../app/assets/javascripts/components/stories/History/index";
-import HistoryFactory from "../../../support/factories/historyFactory";
+import React from 'react';
+import { render } from '@testing-library/react';
+import History from '../../../../../app/assets/javascripts/components/stories/History/index';
+import HistoryFactory from '../../../support/factories/historyFactory';
 
-describe("<History />", () => {
-  const render = () => {
-    const wrapper = shallow(<History history={HistoryFactory()} />);
-    const historyActivity = wrapper.find('[data-id="history-activity"]');
+describe('<History />', () => {
+  const renderComponent = () => {
+    const { container: wrapper } = render(
+      <History history={HistoryFactory()} />
+    );
 
-    return { wrapper, historyActivity }
+    const historyActivity = wrapper.querySelector('.HistoryItem');
+
+    return { wrapper, historyActivity };
   };
 
   it('renders the component', () => {
-    const { wrapper } = render();
+    const { wrapper } = renderComponent();
 
-    expect(wrapper).toExist();
+    expect(wrapper).toBeInTheDocument();
   });
 
-  it("renders <historyActivity />", () => {
-    const { historyActivity } = render();
+  it('renders <historyActivity />', () => {
+    const { historyActivity } = renderComponent();
 
-    expect(historyActivity).toExist();
+    expect(historyActivity).toBeInTheDocument();
   });
 });
