@@ -1,31 +1,41 @@
-import React from "react";
-import { shallow } from "enzyme";
-import Sprints from "components/stories/Sprints";
+import React from 'react';
+import Sprints from 'components/stories/Sprints';
+import { renderWithProviders } from '../setupRedux';
+import { DragDropContext } from 'react-beautiful-dnd';
+
+vi.mock('react-clipboard.js', () => ({
+  default: ({ children, ...props }) => <button {...props}>{children}</button>,
+}));
 
 let props = {};
-let wrapper = {};
 
 const createProps = () => ({
   stories: [
     {
       id: 1,
-      position: "3",
-      state: "unstarted",
+      position: '3',
+      state: 'unstarted',
       estimate: 1,
-      storyType: "feature"
+      storyType: 'feature',
+      _editing: {},
+      notes: [],
+      tasks: [],
     },
     {
       id: 2,
-      position: "2",
-      state: "unstarted",
+      position: '2',
+      state: 'unstarted',
       estimate: 1,
-      storyType: "feature"
-    }
+      storyType: 'feature',
+      _editing: {},
+      notes: [],
+      tasks: [],
+    },
   ],
   project: {
-    startDate: "2018-09-03T16:00:00",
+    startDate: '2018-09-03T16:00:00',
     iterationLength: 1,
-    defaultVelocity: 2
+    defaultVelocity: 2,
   },
   sprints: [
     {
@@ -34,45 +44,76 @@ const createProps = () => ({
       number: 1,
       points: 1,
       remainingPoints: 1,
+      startDate: '',
       stories: [
         {
           id: 1,
-          position: "3",
-          state: "unstarted",
+          position: '3',
+          state: 'unstarted',
           estimate: 1,
-          storyType: "feature"
+          storyType: 'feature',
+          _editing: {},
+          notes: [],
+          tasks: [],
         },
         {
           id: 2,
-          position: "2",
-          state: "unstarted",
+          position: '2',
+          state: 'unstarted',
           estimate: 1,
-          storyType: "feature"
-        }
+          storyType: 'feature',
+          _editing: {},
+          notes: [],
+          tasks: [],
+        },
       ],
-    }
-  ]
+    },
+  ],
 });
 
-describe("<Sprints />", () => {
+describe('<Sprints />', () => {
   beforeEach(() => {
     props = createProps();
-    wrapper = shallow(<Sprints {...props} />);
   });
 
-  it("renders one <Sprint> components", () => {
-    expect(wrapper.find("Sprint").exists()).toBe(true);
+  it('renders one <Sprint> components', () => {
+    const { container } = renderWithProviders(
+      <DragDropContext onDragEnd={vi.fn}>
+        <Sprints {...props} />
+      </DragDropContext>,
+      {
+        preloadedState: {
+          project: {
+            pointValues: [],
+          },
+        },
+      }
+    );
+
+    expect(container.querySelector('.Sprints')).toBeInTheDocument();
   });
 
-  describe("when no sprints are passed as props", () => {
+  describe('when no sprints are passed as props', () => {
     beforeEach(() => {
       props = createProps();
       props.sprints = [];
-      wrapper = shallow(<Sprints {...props} />);
     });
 
-    it("does not render any <Sprint> component", () => {
-      expect(wrapper.find("Sprint").exists()).toBe(false);
+    it('does not render any <Sprint> component', () => {
+      const { container } = renderWithProviders(
+        <DragDropContext onDragEnd={vi.fn}>
+          <Sprints {...props} />
+        </DragDropContext>,
+        {
+          preloadedState: {
+            project: {
+              pointValues: [],
+            },
+          },
+        }
+      );
+
+      expect(container.querySelector('.Sprint')).not.toBeInTheDocument();
     });
   });
 });
