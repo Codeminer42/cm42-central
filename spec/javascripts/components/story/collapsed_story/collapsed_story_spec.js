@@ -1,48 +1,53 @@
-import { render } from '@testing-library/react';
 import { Container as CollapsedStory } from 'components/story/CollapsedStory/index';
 import React from 'react';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
 import { expect, vi } from 'vitest';
 import storyFactory from '../../../support/factories/storyFactory';
-
-const mockReducer = (state = {}, action) => state;
-const createMockStore = (initialState = {}) => {
-  return createStore(mockReducer, initialState);
-};
+import { renderWithProviders } from '../../setupRedux';
 
 describe('<CollapsedStory />', () => {
   vi.spyOn(window.md, 'makeHtml').mockReturnValue('<p>Test</p>');
 
-  const defaultProps = () => ({
-    story: {},
-    onToggle: vi.fn(),
-    title: '',
-    className: '',
-    from: 'all',
-    highlight: vi.fn(),
-    stories: {
-      all: [],
-      search: [],
-    },
-    provided: {
-      draggableProps: {
-        style: {},
+  const renderComponent = props => {
+    const defaultProps = {
+      story: {},
+      onToggle: vi.fn(),
+      title: '',
+      className: '',
+      from: 'all',
+      highlight: vi.fn(),
+      stories: {
+        all: [],
+        search: [],
       },
-    },
-    snapshot: {
-      isDragging: false,
-    },
-    onLabelClick: vi.fn(),
-  });
+      provided: {
+        draggableProps: {
+          style: {},
+        },
+      },
+      snapshot: {
+        isDragging: false,
+      },
+      onLabelClick: vi.fn(),
+    };
+
+    const mergedProps = { ...defaultProps, ...props };
+
+    return renderWithProviders(<CollapsedStory {...mergedProps} />, {
+      preloadedState: {
+        project: {
+          pointValues: [],
+        },
+      },
+    });
+  };
 
   describe("when estimate isn't null", () => {
     it('renders the component with Story--estimated className', () => {
-      const story = storyFactory({ storyType: 'feature', estimate: 1 });
+      const props = {
+        story: storyFactory({ storyType: 'feature', estimate: 1 }),
+      };
 
-      const { container } = render(
-        <CollapsedStory {...defaultProps()} story={story} />
-      );
+      const { container } = renderComponent(props);
 
       expect(container.firstChild).toHaveClass('Story--estimated');
     });
@@ -50,18 +55,11 @@ describe('<CollapsedStory />', () => {
 
   describe('when estimate is null', () => {
     it('renders the component with Story--unestimated className', () => {
-      const story = storyFactory({ storyType: 'feature', estimate: null });
-      const mockStore = createMockStore({
-        project: {
-          pointValues: [1, 2, 3, 5, 8],
-        },
-      });
+      const props = {
+        story: storyFactory({ storyType: 'feature', estimate: null }),
+      };
 
-      const { container } = render(
-        <Provider store={mockStore}>
-          <CollapsedStory {...defaultProps()} story={story} />
-        </Provider>
-      );
+      const { container } = renderComponent(props);
 
       expect(container.firstChild).toHaveClass('Story--unestimated');
     });
@@ -69,22 +67,22 @@ describe('<CollapsedStory />', () => {
 
   describe('when storyType = release', () => {
     it('renders the component with Story--release className', () => {
-      const story = storyFactory({ storyType: 'release' });
+      const props = {
+        story: storyFactory({ storyType: 'release' }),
+      };
 
-      const { container } = render(
-        <CollapsedStory {...defaultProps()} story={story} />
-      );
+      const { container } = renderComponent(props);
 
       expect(container.firstChild).toHaveClass('Story--release');
     });
   });
 
   it('renders children components', () => {
-    const story = storyFactory({ storyType: 'feature', estimate: 1 });
+    const props = {
+      story: storyFactory({ storyType: 'feature', estimate: 1 }),
+    };
 
-    const { container } = render(
-      <CollapsedStory {...defaultProps()} story={story} />
-    );
+    const { container } = renderComponent(props);
 
     // StoryPopover
     const storyPopover = container.querySelector('.popover__content');
