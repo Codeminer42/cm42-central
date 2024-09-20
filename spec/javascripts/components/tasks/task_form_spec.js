@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 
 import TaskForm from 'components/tasks/TaskForm';
 import Task from 'models/task';
@@ -13,21 +13,23 @@ describe('<TaskForm />', function () {
 
   it('should have an onSubmit callback', function () {
     const onSubmit = vi.fn().mockReturnValueOnce(Promise.resolve());
-    const wrapper = mount(<TaskForm task={task} onSubmit={onSubmit} />);
-    wrapper.find('.add-task').simulate('click');
+    const { getByRole } = render(<TaskForm task={task} onSubmit={onSubmit} />);
+
+    const button = getByRole('button');
+    fireEvent.click(button);
+
     expect(onSubmit).toHaveBeenCalled();
   });
 
-  it('should stop loading when save fails', function (done) {
+  it('should stop loading when save fails', async function (done) {
     const onSubmit = vi.fn().mockReturnValueOnce(Promise.reject());
-    const wrapper = mount(<TaskForm task={task} onSubmit={onSubmit} />);
-    wrapper.find('.add-task').simulate('click');
+    const { getByRole } = render(<TaskForm task={task} onSubmit={onSubmit} />);
+
+    const button = getByRole('button');
+    fireEvent.click(button);
 
     Promise.resolve().then(() => {
-      wrapper.update();
-
-      expect(wrapper.find('.saving').exists()).toBe(false);
-      done();
+      expect(button).not.toHaveClass('saving');
     });
   });
 });
