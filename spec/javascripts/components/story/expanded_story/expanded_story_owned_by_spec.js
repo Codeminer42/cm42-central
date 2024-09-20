@@ -1,10 +1,10 @@
-import React from 'react';
-import { shallow } from 'enzyme';
 import ExpandedStoryOwnedBy from 'components/story/ExpandedStory/ExpandedStoryOwnedBy';
+import React from 'react';
+import { renderWithProviders } from '../../setupRedux';
 
 describe('<ExpandedStoryOwnedBy />', () => {
-  const setup = propOverrides => {
-    const defaultProps = () => ({
+  const renderComponent = props => {
+    const defaultProps = {
       users: [
         { id: 1, name: 'foo' },
         { id: 2, name: 'bar' },
@@ -12,17 +12,16 @@ describe('<ExpandedStoryOwnedBy />', () => {
       story: { _editing: { ownedById: '' } },
       onEdit: vi.fn(),
       disabled: false,
-      ...propOverrides,
-    });
+    };
 
-    const wrapper = shallow(<ExpandedStoryOwnedBy {...defaultProps()} />);
+    const mergedProps = { ...defaultProps, ...props };
 
-    return { wrapper };
+    return renderWithProviders(<ExpandedStoryOwnedBy {...mergedProps} />);
   };
 
   it('renders properly', () => {
-    const { wrapper } = setup();
+    const { container } = renderComponent();
 
-    expect(wrapper).toExist();
+    expect(container).toBeInTheDocument();
   });
 });
