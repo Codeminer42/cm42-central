@@ -1,66 +1,60 @@
-import React from 'react';
-import { shallow } from 'enzyme';
 import ExpandedStoryEstimate from 'components/story/ExpandedStory/ExpandedStoryEstimate';
+import React from 'react';
+import { renderWithProviders } from '../../setupRedux';
 
 describe('<ExpandedStoryEstimate />', () => {
-  const defaultProps = () => ({
-    story: {},
-    project: {},
-    onEdit: vi.fn(),
-    disabled: false,
-  });
+  const renderComponent = props => {
+    const defaultProps = {
+      story: {},
+      project: {},
+      onEdit: vi.fn(),
+      disabled: false,
+    };
+
+    const mergedProps = { ...defaultProps, ...props };
+
+    return renderWithProviders(<ExpandedStoryEstimate {...mergedProps} />);
+  };
 
   it("renders component with 'Fibonacci' point scale in select", () => {
-    const project = { pointValues: [1, 2, 3, 5, 8] };
-    const story = { estimate: null, _editing: { storyType: 'feature' } };
+    const props = {
+      story: { estimate: null, _editing: { storyType: 'feature' } },
+      project: { pointValues: [1, 2, 3, 5, 8] },
+    };
 
-    const wrapper = shallow(
-      <ExpandedStoryEstimate
-        {...defaultProps()}
-        project={project}
-        story={story}
-      />
-    );
-    const select = wrapper.find('select').text();
+    const { container } = renderComponent(props);
+    const select = container.querySelector('select');
 
-    project.pointValues.forEach(value => {
-      expect(select).toContain(value);
+    props.project.pointValues.forEach(value => {
+      expect(select).toHaveTextContent(value);
     });
   });
 
   it("renders component with 'Powers of two' point scale in select", () => {
-    const project = { pointValues: [1, 2, 4, 8] };
-    const story = { estimate: null, _editing: { storyType: 'feature' } };
+    const props = {
+      story: { estimate: null, _editing: { storyType: 'feature' } },
+      project: { pointValues: [1, 2, 4, 8] },
+    };
 
-    const wrapper = shallow(
-      <ExpandedStoryEstimate
-        {...defaultProps()}
-        project={project}
-        story={story}
-      />
-    );
-    const select = wrapper.find('select').text();
+    const { container } = renderComponent(props);
+    const select = container.querySelector('select');
 
-    project.pointValues.forEach(value => {
-      expect(select).toContain(value);
+    props.project.pointValues.forEach(value => {
+      expect(select).toHaveTextContent(value);
     });
   });
 
   it("renders component with 'Linear' point scale in select", () => {
-    const project = { pointValues: [1, 2, 3, 4, 5] };
-    const story = { estimate: null, _editing: { storyType: 'feature' } };
+    const props = {
+      story: { estimate: null, _editing: { storyType: 'feature' } },
+      project: { pointValues: [1, 2, 3, 4, 5] },
+    };
 
-    const wrapper = shallow(
-      <ExpandedStoryEstimate
-        {...defaultProps()}
-        project={project}
-        story={story}
-      />
-    );
-    const select = wrapper.find('select').text();
+    const { container } = renderComponent(props);
+    const select = container.querySelector('select');
 
-    project.pointValues.forEach(value => {
-      expect(select).toContain(value);
+    props.project.pointValues.forEach(value => {
+      expect(select).toHaveTextContent(value);
     });
   });
 
@@ -69,48 +63,40 @@ describe('<ExpandedStoryEstimate />', () => {
 
     pointValues.forEach(value => {
       it(`sets the select defaultValue as ${value}`, () => {
-        const project = { pointValues };
-        const story = {
-          _editing: {
-            storyType: 'feature',
-            estimate: value,
+        const props = {
+          project: { pointValues },
+          story: {
+            _editing: {
+              storyType: 'feature',
+              estimate: value,
+            },
           },
         };
 
-        const wrapper = shallow(
-          <ExpandedStoryEstimate
-            {...defaultProps()}
-            project={project}
-            story={story}
-          />
-        );
-        const select = wrapper.find('select');
+        const { container } = renderComponent(props);
+        const select = container.querySelector('select');
 
-        expect(select.prop('value')).toBe(value);
+        expect(select).toHaveValue(value.toString());
       });
     });
   });
 
   describe('When story.estimate is null', () => {
     it('sets the select defaultValue as null', () => {
-      const project = { pointValues: [1, 2, 3, 4, 5] };
-      const story = {
-        _editing: {
-          estimate: '',
-          storyType: 'bug',
+      const props = {
+        project: { pointValues: [1, 2, 3, 4, 5] },
+        story: {
+          _editing: {
+            estimate: '',
+            storyType: 'bug',
+          },
         },
       };
 
-      const wrapper = shallow(
-        <ExpandedStoryEstimate
-          {...defaultProps()}
-          project={project}
-          story={story}
-        />
-      );
-      const select = wrapper.find('select');
+      const { container } = renderComponent(props);
+      const select = container.querySelector('select');
 
-      expect(select.prop('value')).toBe('');
+      expect(select).toHaveValue('');
     });
   });
 
@@ -119,55 +105,40 @@ describe('<ExpandedStoryEstimate />', () => {
       const notFeatureTypes = ['bug', 'release', 'chore'];
 
       it('disables estimate select', () => {
-        const project = { pointValues: [1, 2, 3, 4, 5] };
-
         notFeatureTypes.forEach(type => {
-          const story = { _editing: { storyType: type } };
-          const wrapper = shallow(
-            <ExpandedStoryEstimate
-              {...defaultProps()}
-              project={project}
-              story={story}
-            />
-          );
+          const props = {
+            project: { pointValues: [1, 2, 3, 4, 5] },
+            story: { _editing: { storyType: type } },
+          };
 
-          const select = wrapper.find('select');
+          const { container } = renderComponent(props);
+          const select = container.querySelector('select');
 
-          expect(select.prop('disabled')).toBe(true);
+          expect(select).toBeDisabled();
         });
       });
     });
 
     describe('to a feature', () => {
-      const project = { pointValues: [1, 2, 3, 4, 5] };
-      const story = { _editing: { storyType: 'feature' } };
+      const props = {
+        project: { pointValues: [1, 2, 3, 4, 5] },
+        story: { _editing: { storyType: 'feature' } },
+        disabled: false,
+      };
 
       it("doesn't disable estimate select when disabled prop is false", () => {
-        const wrapper = shallow(
-          <ExpandedStoryEstimate
-            {...defaultProps()}
-            project={project}
-            story={story}
-            disabled={false}
-          />
-        );
-        const select = wrapper.find('select');
+        const { container } = renderComponent(props);
+        const select = container.querySelector('select');
 
-        expect(select.prop('disabled')).not.toBe(true);
+        expect(select).not.toBeDisabled();
       });
 
       describe('when component is disabled', () => {
         it('disables estimate select when disabled prop is true', () => {
-          const wrapper = shallow(
-            <ExpandedStoryEstimate
-              {...defaultProps()}
-              project={project}
-              story={story}
-              disabled={true}
-            />
-          );
-          const select = wrapper.find('select');
-          expect(select.prop('disabled')).toBe(true);
+          const { container } = renderComponent({ ...props, disabled: true });
+          const select = container.querySelector('select');
+
+          expect(select).toBeDisabled();
         });
       });
     });
