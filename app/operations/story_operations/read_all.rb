@@ -32,12 +32,12 @@ module StoryOperations
 
     def active_stories
       @active_stories ||= begin
-        project
-          .stories
-          .with_dependencies
-          .where("state != 'accepted' OR accepted_at >= ?", current_iteration_start)
-          .order('updated_at DESC')
-      end
+          project
+            .stories
+            .with_dependencies
+            .not_accepted_or_recently_accepted(current_iteration_start)
+            .order('updated_at DESC')
+        end
 
       Success(@active_stories)
     end

@@ -3,6 +3,8 @@ module Beta
     class Read
       include Operation
 
+      delegate :past_iterations, :current_iteration_start, to: :iterations
+
       def initialize(project_id:, current_user:, current_flow: nil, projects_scope: Project)
         @project_id = project_id
         @current_user = current_user
@@ -22,6 +24,14 @@ module Beta
 
       attr_reader :project_id, :current_user, :current_flow, :projects_scope
 
+      def iterations
+        @project_iterations ||= Iterations::ProjectIterations.new(project: project)
+      end
+
+      def project_iterations
+        Success(iterations)
+      end
+
       def create_project_board
         project_users = project.users
 
@@ -40,9 +50,25 @@ module Beta
       end
 
       def stories_and_past_iterations
-        read_all_result = yield ::StoryOperations::ReadAll.call(project: project)
-        read_all_result[:stories] = read_all_result.delete(:active_stories)
-        read_all_result
+        yield active_stories
+        yield project_iterations
+
+        yield Success(
+          stories: @active_stories,
+          past_iterations: past_iterations
+        )
+      end
+
+      def active_stories
+        @active_stories ||= begin
+            project
+              .stories
+              .not_accepted_or_recently_accepted(current_iteration_start)
+              .collapsed_story
+              .order('updated_at DESC')
+          end
+
+        Success(@active_stories)
       end
 
       def project_labels
@@ -55,7 +81,7 @@ module Beta
         @project ||= current_user
                      .projects
                      .friendly
-                     .preload(:users, stories: %i[notes tasks])
+                     .preload(:users)
                      .find(project_id)
       end
 

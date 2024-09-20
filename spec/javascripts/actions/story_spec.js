@@ -1,7 +1,11 @@
 import { sendDefaultErrorNotification } from 'actions/notifications';
 import * as Story from 'actions/story';
+import actionTypes from 'actions/actionTypes';
 import storyFactory from '../support/factories/storyFactory';
-
+import httpService from '../../../app/assets/javascripts/services/httpService';
+import { sendErrorNotification } from 'actions/notifications';
+jest.mock('actions/notifications');
+jest.mock('../../../app/assets/javascripts/services/httpService');
 jest.mock('../../../app/assets/javascripts/reducers/stories', () => ({
   storiesWithScope: jest.fn(),
 }));
@@ -44,7 +48,7 @@ describe('Story Actions', () => {
       );
     });
 
-    it('dispatch only toggleStory when _isDirty is false', async () => {
+    it('dispatches collapseStory when _isDirty is false', async () => {
       const editedStory = {
         ...story,
         _editing: {
@@ -71,7 +75,7 @@ describe('Story Actions', () => {
       );
 
       expect(fakeDispatch).toHaveBeenCalledWith(
-        Story.toggleStory(editedStory.id)
+        Story.collapseStory(editedStory.id)
       );
       expect(fakeDispatch).not.toHaveBeenCalledWith(
         Story.updateStorySuccess(story)
@@ -144,7 +148,7 @@ describe('Story Actions', () => {
         Story.updateStorySuccess(story)
       );
       expect(fakeDispatch).not.toHaveBeenCalledWith(
-        Story.toggleStory(editedStory.id)
+        Story.collapseStory(editedStory.id)
       );
     });
 
