@@ -31,7 +31,11 @@ export const StorySearch = ({ projectId, search, loading }) => {
       className="StorySearch"
     >
       {loading && (
-        <span className="StorySearch__spinner" data-id="spinner-loading">
+        <span
+          className="StorySearch__spinner"
+          data-id="spinner-loading"
+          data-testid="story-search-spinner"
+        >
           <i className="fa fa-spinner fa-spin"></i>
         </span>
       )}
