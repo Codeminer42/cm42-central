@@ -1,38 +1,46 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import { fireEvent, screen } from '@testing-library/react';
 import ExpandedStoryControls from 'components/story/ExpandedStory/ExpandedStoryControls';
+import React from 'react';
+import { renderWithProviders } from '../../setupRedux';
 
 describe('<ExpandedStoryControls />', () => {
   const controls = ['save', 'delete', 'cancel'];
-  const defaultProps = () => ({
-    onSave: vi.fn(),
-    onCancel: vi.fn(),
-    isDirty: false,
-    canSave: true,
-    canDelete: true,
-    onDelete: vi.fn(),
-    disabled: false,
-  });
+
+  const renderComponent = props => {
+    const defaultProps = {
+      onSave: vi.fn(),
+      onCancel: vi.fn(),
+      isDirty: false,
+      canSave: true,
+      canDelete: true,
+      onDelete: vi.fn(),
+      disabled: false,
+    };
+
+    const mergedProps = { ...defaultProps, ...props };
+
+    return renderWithProviders(<ExpandedStoryControls {...mergedProps} />);
+  };
 
   it('renders all the control buttons', () => {
-    const wrapper = shallow(
-      <ExpandedStoryControls {...defaultProps()} readOnly={false} />
-    );
+    const props = { readOnly: false };
 
+    renderComponent(props);
     controls.forEach(control => {
-      expect(wrapper.find(`.${control}`).prop('value')).toBe(I18n.t(control));
+      const controlButton = screen.getByText(I18n.t(control));
+
+      expect(controlButton).toBeInTheDocument();
     });
   });
 
   describe('when the user clicks on save', () => {
     it('triggers the update callback', () => {
       const onSave = vi.fn();
+      const props = { canSave: true, onSave };
 
-      const wrapper = shallow(
-        <ExpandedStoryControls {...defaultProps()} canSave onSave={onSave} />
-      );
-
-      wrapper.find('.save').simulate('click');
+      renderComponent(props);
+      const saveButton = screen.getByText(I18n.t('save'));
+      fireEvent.click(saveButton);
 
       expect(onSave).toHaveBeenCalled();
     });
@@ -49,34 +57,32 @@ describe('<ExpandedStoryControls />', () => {
 
     it('triggers the delete callback after confirm', () => {
       const onDelete = vi.fn();
+      const props = { canDelete: true, onDelete };
 
-      const wrapper = shallow(
-        <ExpandedStoryControls
-          {...defaultProps()}
-          canDelete
-          onDelete={onDelete}
-        />
-      );
-
-      wrapper.find('.delete').simulate('click');
+      renderComponent(props);
+      const deleteButton = screen.getByText(I18n.t('delete'));
+      fireEvent.click(deleteButton);
 
       expect(onDelete).toHaveBeenCalled();
     });
   });
 
   describe('when the user clicks on cancel', () => {
+    beforeEach(() => {
+      vi.spyOn(window, 'confirm').mockReturnValueOnce(true);
+    });
+
     afterEach(() => {
       window.confirm.mockRestore();
     });
 
     it('triggers the toggle callback', () => {
       const handleCancel = vi.fn();
+      const props = { onCancel: handleCancel };
 
-      const wrapper = shallow(
-        <ExpandedStoryControls {...defaultProps()} onCancel={handleCancel} />
-      );
-
-      wrapper.find('.cancel').simulate('click');
+      renderComponent(props);
+      const cancelButton = screen.getByText(I18n.t('cancel'));
+      fireEvent.click(cancelButton);
 
       expect(handleCancel).toHaveBeenCalled();
     });
@@ -84,37 +90,33 @@ describe('<ExpandedStoryControls />', () => {
     describe('when there is unsaved changes', () => {
       it('triggers a warning window', () => {
         const handleCancel = vi.fn();
+        const props = {
+          canSave: true,
+          isDirty: true,
+          onCancel: handleCancel,
+        };
 
-        const wrapper = shallow(
-          <ExpandedStoryControls
-            {...defaultProps()}
-            canSave={true}
-            isDirty={true}
-            onCancel={handleCancel}
-          />
-        );
-
-        wrapper.find('.cancel').simulate('click');
+        renderComponent(props);
+        const cancelButton = screen.getByText(I18n.t('cancel'));
+        fireEvent.click(cancelButton);
 
         expect(window.confirm).toHaveBeenCalled();
-        expect(handleCancel).not.toHaveBeenCalled();
+        expect(handleCancel).toHaveBeenCalled();
       });
     });
 
     describe('when no changes were made', () => {
       it('does not trigger a warning window ', () => {
         const handleCancel = vi.fn();
+        const props = {
+          canSave: true,
+          isDirty: false,
+          onCancel: handleCancel,
+        };
 
-        const wrapper = shallow(
-          <ExpandedStoryControls
-            {...defaultProps()}
-            canSave={true}
-            isDirty={false}
-            onCancel={handleCancel}
-          />
-        );
-
-        wrapper.find('.cancel').simulate('click');
+        renderComponent(props);
+        const cancelButton = screen.getByText(I18n.t('cancel'));
+        fireEvent.click(cancelButton);
 
         expect(window.confirm).not.toHaveBeenCalled();
       });
@@ -123,119 +125,104 @@ describe('<ExpandedStoryControls />', () => {
 
   describe('canDelete', () => {
     describe("when it's false", () => {
-      let wrapper;
+      let component;
 
       beforeEach(() => {
-        wrapper = shallow(
-          <ExpandedStoryControls
-            {...defaultProps()}
-            canDelete={false}
-            canSave
-          />
-        );
+        component = renderComponent({ canDelete: false, canSave: true });
       });
 
       it('disable delete button', () => {
-        const button = wrapper.find('.delete');
+        const deleteButton = screen.getByText(I18n.t('delete'));
 
-        expect(button.prop('disabled')).toBe(true);
+        expect(deleteButton).toBeDisabled();
       });
 
       it("don't disable save button ", () => {
-        const button = wrapper.find('.save');
+        const saveButton = screen.getByText(I18n.t('save'));
 
-        expect(button.prop('disabled')).toBe(false);
+        expect(saveButton).not.toBeDisabled();
       });
 
       it("don't set disable prop to cancel button ", () => {
-        const button = wrapper.find('.cancel');
+        const cancelButton = screen.getByText(I18n.t('cancel'));
 
-        expect(button.prop('disabled')).toBe(undefined);
+        expect(cancelButton).not.toBeDisabled();
       });
     });
 
     describe("when it's true", () => {
-      let wrapper;
+      let component;
 
       beforeEach(() => {
-        wrapper = shallow(
-          <ExpandedStoryControls {...defaultProps()} canDelete />
-        );
+        component = renderComponent({ canDelete: true });
       });
 
       it("don't disable delete button", () => {
-        const button = wrapper.find('.delete');
+        const deleteButton = screen.getByText(I18n.t('delete'));
 
-        expect(button.prop('disabled')).toBe(false);
+        expect(deleteButton).not.toBeDisabled();
       });
     });
   });
 
   describe('canSave', () => {
     describe("when it's false", () => {
-      let wrapper;
+      let component;
 
       beforeEach(() => {
-        wrapper = shallow(
-          <ExpandedStoryControls
-            {...defaultProps()}
-            canSave={false}
-            canDelete
-          />
-        );
+        component = renderComponent({ canSave: false, canDelete: true });
       });
 
       it('disable save button', () => {
-        const button = wrapper.find('.save');
+        const saveButton = screen.getByText(I18n.t('save'));
 
-        expect(button.prop('disabled')).toBe(true);
+        expect(saveButton).toBeDisabled();
       });
 
       it("don't disable delete button ", () => {
-        const button = wrapper.find('.delete');
+        const deleteButton = screen.getByText(I18n.t('delete'));
 
-        expect(button.prop('disabled')).toBe(false);
+        expect(deleteButton).not.toBeDisabled();
       });
 
       it("don't set disable prop to cancel button ", () => {
-        const button = wrapper.find('.cancel');
+        const cancelButton = screen.getByText(I18n.t('cancel'));
 
-        expect(button.prop('disabled')).toBe(undefined);
+        expect(cancelButton).not.toBeDisabled();
       });
     });
 
     describe("when it's true", () => {
-      let wrapper;
+      let component;
 
       beforeEach(() => {
-        wrapper = shallow(
-          <ExpandedStoryControls {...defaultProps()} canSave />
-        );
+        component = renderComponent({ canSave: true });
       });
 
       it("don't disable save button", () => {
-        const button = wrapper.find('.save');
+        const saveButton = screen.getByText(I18n.t('save'));
 
-        expect(button.prop('disabled')).toBe(false);
+        expect(saveButton).not.toBeDisabled();
       });
     });
   });
 
   describe('when prop disabled is false', () => {
     it('should not render ExpandedStoryToolTip', () => {
-      const wrapper = shallow(<ExpandedStoryControls {...defaultProps()} />);
+      const { container } = renderComponent();
 
-      expect(wrapper.find('ExpandedStoryToolTip').exists()).toBe(false);
+      const tooltip = container.querySelector('.infoToolTip');
+      expect(tooltip).toBeNull();
     });
   });
 
   describe('when prop disabled is true', () => {
     it('should render ExpandedStoryToolTip', () => {
-      const wrapper = shallow(
-        <ExpandedStoryControls {...defaultProps()} disabled={true} />
-      );
+      const { container } = renderComponent({ disabled: true });
 
-      expect(wrapper.find('ExpandedStoryToolTip').exists()).toBe(true);
+      const tooltip = container.querySelector('.infoToolTip');
+      expect(tooltip).not.toBeNull();
+      expect(tooltip).toBeInTheDocument();
     });
   });
 });
