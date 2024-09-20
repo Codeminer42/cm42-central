@@ -1,77 +1,198 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import { screen } from '@testing-library/react';
 import { ExpandedStoryDefault } from 'components/story/ExpandedStory/ExpandedStoryDefault';
-import storyFactory from '../../../../support/factories/storyFactory';
+import React from 'react';
+import { beforeAll } from 'vitest';
 import { createTemporaryId } from '../../../../../../app/assets/javascripts/models/beta/story';
+import storyFactory from '../../../../support/factories/storyFactory';
+import { renderWithProviders } from '../../../setupRedux';
+
+// this allows capture of elements without having to go through translations
+beforeAll(() => {
+  global.I18n = {
+    t: vi.fn().mockImplementation(arg => arg),
+  };
+});
 
 describe('<ExpandedStoryDefault />', () => {
-  const defaultProps = () => ({
-    story: {
-      ...storyFactory(),
-      _editing: storyFactory(),
-    },
-    onEdit: vi.fn(),
-    storyFailure: vi.fn(),
-    createTask: vi.fn(),
-    deleteTask: vi.fn(),
-    toggleTask: vi.fn(),
-    deleteNote: vi.fn(),
-    createNote: vi.fn(),
-    addLabel: vi.fn(),
-    removeLabel: vi.fn(),
-    setLoadingStory: vi.fn(),
-    users: [],
-    project: { labels: [] },
-    enabled: true,
-    onClone: vi.fn(),
-    showHistory: vi.fn(),
-    disabled: false,
-  });
+  vi.spyOn(window.md, 'makeHtml').mockReturnValue('<p>Test</p>');
+  vi.mock('react-clipboard.js', () => ({
+    default: vi
+      .fn()
+      .mockImplementation(({ children }) => <div>{children}</div>),
+  }));
 
-  it("renders all children components when isn't a new story", () => {
-    const story = {
-      ...storyFactory({ id: 42 }),
-      _editing: storyFactory({ id: 42 }),
+  const renderComponent = props => {
+    const defaultProps = {
+      story: {
+        ...storyFactory(),
+        _editing: storyFactory(),
+      },
+      onEdit: vi.fn(),
+      storyFailure: vi.fn(),
+      createTask: vi.fn(),
+      deleteTask: vi.fn(),
+      toggleTask: vi.fn(),
+      deleteNote: vi.fn(),
+      createNote: vi.fn(),
+      addLabel: vi.fn(),
+      removeLabel: vi.fn(),
+      setLoadingStory: vi.fn(),
+      users: [],
+      project: { pointValues: [], labels: [] },
+      enabled: true,
+      onClone: vi.fn(),
+      showHistory: vi.fn(),
+      disabled: false,
+    };
+    const mergedProps = { ...defaultProps, ...props };
+
+    return renderWithProviders(<ExpandedStoryDefault {...mergedProps} />);
+  };
+
+  it("renders all children components when story isn't new", () => {
+    vi.mock('');
+
+    const props = {
+      story: {
+        ...storyFactory({ id: 42 }),
+        _editing: storyFactory({ id: 42 }),
+      },
     };
 
-    const wrapper = shallow(
-      <ExpandedStoryDefault {...defaultProps()} story={story} />
-    );
+    const { container } = renderComponent(props);
 
-    expect(wrapper.find('ExpandedStoryHistoryLocation')).toExist();
-    expect(wrapper.find('ExpandedStoryTitle')).toExist();
-    expect(wrapper.find('ExpandedStoryEstimate')).toExist();
-    expect(wrapper.find('ExpandedStoryType')).toExist();
-    expect(wrapper.find('ExpandedStoryState')).toExist();
-    expect(wrapper.find('ExpandedStoryRequestedBy')).toExist();
-    expect(wrapper.find('ExpandedStoryOwnedBy')).toExist();
-    expect(wrapper.find('ExpandedStoryLabels')).toExist();
-    expect(wrapper.find('ExpandedStoryDescription')).toExist();
-    expect(wrapper.find('ExpandedStoryTask')).toExist();
-    expect(wrapper.find('ExpandedStoryNotes')).toExist();
+    // ExpandedStoryHistoryLocation
+    const expandedStoryHistoryLocation =
+      container.querySelector('#story-link-42');
+    expect(expandedStoryHistoryLocation).toBeInTheDocument();
+
+    // ExpandedStoryTitle
+    const expandedStoryTitle = screen.getByText(
+      'activerecord.attributes.story.title'
+    );
+    expect(expandedStoryTitle).toBeInTheDocument();
+
+    // ExpandedStoryEstimate
+    const expandedStoryEstimate = screen.getByText(
+      'activerecord.attributes.story.estimate'
+    );
+    expect(expandedStoryEstimate).toBeInTheDocument();
+
+    // ExpandedStoryType
+    const expandedStoryType = screen.getByText(
+      'activerecord.attributes.story.story_type'
+    );
+    expect(expandedStoryType).toBeInTheDocument();
+
+    // ExpandedStoryState
+    const expandedStoryState = screen.getByText(
+      'activerecord.attributes.story.state'
+    );
+    expect(expandedStoryState).toBeInTheDocument();
+
+    // ExpandedStoryRequestedBy
+    const expandedStoryRequestedBy = screen.getByText(
+      'activerecord.attributes.story.requested_by'
+    );
+    expect(expandedStoryRequestedBy).toBeInTheDocument();
+
+    // ExpandedStoryOwnedBy
+    const expandedStoryOwnedBy = screen.getByText(
+      'activerecord.attributes.story.owned_by'
+    );
+    expect(expandedStoryOwnedBy).toBeInTheDocument();
+
+    // ExpandedStoryLabels
+    const expandedStoryLabels = screen.getByText(
+      'activerecord.attributes.story.labels'
+    );
+    expect(expandedStoryLabels).toBeInTheDocument();
+
+    // ExpandedStoryDescription
+    const expandedStoryDescription = screen.getByText(
+      'activerecord.attributes.story.description'
+    );
+    expect(expandedStoryDescription).toBeInTheDocument();
+
+    // ExpandedStoryTask
+    const expandedStoryTask = screen.getByText('story.tasks');
+    expect(expandedStoryTask).toBeInTheDocument();
+
+    // ExpandedStoryNotes
+    const expandedStoryNotes = screen.getByText('add note');
+    expect(expandedStoryNotes).toBeInTheDocument();
   });
 
-  it('not renders some components when it is a new story', () => {
+  it('does not render some components when it is a new story', () => {
     const id = createTemporaryId();
-    const story = {
-      ...storyFactory({ id }),
-      _editing: storyFactory({ id }),
+    const props = {
+      story: {
+        ...storyFactory({ id }),
+        _editing: storyFactory({ id }),
+      },
     };
 
-    const wrapper = shallow(
-      <ExpandedStoryDefault {...defaultProps()} story={story} />
-    );
+    const { container } = renderComponent(props);
 
-    expect(wrapper.find('ExpandedStoryHistoryLocation')).not.toExist();
-    expect(wrapper.find('ExpandedStoryTitle')).toExist();
-    expect(wrapper.find('ExpandedStoryEstimate')).toExist();
-    expect(wrapper.find('ExpandedStoryType')).toExist();
-    expect(wrapper.find('ExpandedStoryState')).toExist();
-    expect(wrapper.find('ExpandedStoryRequestedBy')).toExist();
-    expect(wrapper.find('ExpandedStoryOwnedBy')).toExist();
-    expect(wrapper.find('ExpandedStoryLabels')).toExist();
-    expect(wrapper.find('ExpandedStoryDescription')).toExist();
-    expect(wrapper.find('ExpandedStoryTask')).not.toExist();
-    expect(wrapper.find('ExpandedStoryNotes')).not.toExist();
+    // ExpandedStoryHistoryLocation
+    const expandedStoryHistoryLocation =
+      container.querySelector('#story-link-42');
+    expect(expandedStoryHistoryLocation).toBeNull();
+
+    // ExpandedStoryTitle
+    const expandedStoryTitle = screen.getByText(
+      'activerecord.attributes.story.title'
+    );
+    expect(expandedStoryTitle).toBeInTheDocument();
+
+    // ExpandedStoryEstimate
+    const expandedStoryEstimate = screen.getByText(
+      'activerecord.attributes.story.estimate'
+    );
+    expect(expandedStoryEstimate).toBeInTheDocument();
+
+    // ExpandedStoryType
+    const expandedStoryType = screen.getByText(
+      'activerecord.attributes.story.story_type'
+    );
+    expect(expandedStoryType).toBeInTheDocument();
+
+    // ExpandedStoryState
+    const expandedStoryState = screen.getByText(
+      'activerecord.attributes.story.state'
+    );
+    expect(expandedStoryState).toBeInTheDocument();
+
+    // ExpandedStoryRequestedBy
+    const expandedStoryRequestedBy = screen.getByText(
+      'activerecord.attributes.story.requested_by'
+    );
+    expect(expandedStoryRequestedBy).toBeInTheDocument();
+
+    // ExpandedStoryOwnedBy
+    const expandedStoryOwnedBy = screen.getByText(
+      'activerecord.attributes.story.owned_by'
+    );
+    expect(expandedStoryOwnedBy).toBeInTheDocument();
+
+    // ExpandedStoryLabels
+    const expandedStoryLabels = screen.getByText(
+      'activerecord.attributes.story.labels'
+    );
+    expect(expandedStoryLabels).toBeInTheDocument();
+
+    // ExpandedStoryDescription
+    const expandedStoryDescription = screen.getByText(
+      'activerecord.attributes.story.description'
+    );
+    expect(expandedStoryDescription).toBeInTheDocument();
+
+    // ExpandedStoryTask
+    const expandedStoryTask = screen.queryByText('story.tasks');
+    expect(expandedStoryTask).toBeNull();
+
+    // ExpandedStoryNotes
+    const expandedStoryNotes = screen.queryByText('add note');
+    expect(expandedStoryNotes).toBeNull();
   });
 });
