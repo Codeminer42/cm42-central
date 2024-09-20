@@ -1,31 +1,27 @@
 import { render, screen } from '@testing-library/react';
 import CollapsedStoryStateActions from 'components/story/CollapsedStory/CollapsedStoryStateActions';
 import React from 'react';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
 import { describe, it } from 'vitest';
 import storyFactory from '../../../support/factories/storyFactory';
-
-const mockReducer = (state = {}, action) => state;
-const createMockStore = (initialState = {}) => {
-  return createStore(mockReducer, initialState);
-};
+import { renderWithProviders } from '../../setupRedux';
 
 describe('<CollapsedStoryStateActions />', () => {
+  const renderComponent = props => {
+    const defaultProps = { story: { estimate: null } };
+    const mergedProps = { ...defaultProps, ...props };
+
+    return renderWithProviders(<CollapsedStoryStateActions {...mergedProps} />);
+  };
+
   describe('When estimate is null', () => {
     it('renders <CollapsedStoryStateActions /> component', () => {
-      const props = storyFactory({ estimate: null });
-      const mockStore = createMockStore({
+      const props = {
         project: {
           pointValues: [1, 2, 3, 5, 8],
         },
-      });
+      };
 
-      const { container } = render(
-        <Provider store={mockStore}>
-          <CollapsedStoryStateActions story={props} />
-        </Provider>
-      );
+      const { container } = renderComponent(props);
 
       expect(container).toBeInTheDocument();
     });
@@ -44,17 +40,12 @@ describe('<CollapsedStoryStateActions />', () => {
     states.forEach(({ state, actions }) => {
       describe(`When state = ${state}`, () => {
         it('renders the <CollapsedStoryStateButton /> component', () => {
-          const props = storyFactory({ state });
-          const mockStore = createMockStore({
-            project: {
-              pointValues: [1, 2, 3, 5, 8],
-            },
-          });
-          render(
-            <Provider store={mockStore}>
-              <CollapsedStoryStateActions story={props} />
-            </Provider>
-          );
+          const props = {
+            story: storyFactory({ state }),
+            project: { pointValues: [1, 2, 3, 5, 8] },
+          };
+
+          renderComponent(props);
 
           actions.forEach(action => {
             const stateButtons = screen.getAllByText(action, { exact: false });
