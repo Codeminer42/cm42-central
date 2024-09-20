@@ -1,38 +1,41 @@
-import React from "react";
-import { shallow } from "enzyme";
-import HistoryItem from "../../../../../app/assets/javascripts/components/stories/History/HistoryItem";
+import React from 'react';
+import { render } from '@testing-library/react';
+import HistoryItem from '../../../../../app/assets/javascripts/components/stories/History/HistoryItem';
 
 describe('<HistoryItem />', () => {
-  const render = overrideProps => {
+  const renderComponent = overrideProps => {
     const defaultProps = {
       title: 'title',
       date: '2019/08/27 14:18:00 -0300',
       user: 'i am user',
-      changes: []
+      changes: ['test1', 'test2'],
     };
 
-    const wrapper = shallow(<HistoryItem {...defaultProps} {...overrideProps} />);
-    const header = wrapper.find('[data-id="history-header"]');
-    const changes = wrapper.find('[data-id="history-changes"]');
+    const { container: wrapper, debug } = render(
+      <HistoryItem {...defaultProps} {...overrideProps} />
+    );
+
+    const header = wrapper.querySelector('[data-id="history-header-title"]');
+    const changes = wrapper.querySelector('[data-id="history-change-title"]');
 
     return { wrapper, header, changes };
   };
 
   it('renders the component', () => {
-    const { wrapper } = render();
+    const { wrapper } = renderComponent();
 
-    expect(wrapper).toExist();
+    expect(wrapper).toBeInTheDocument();
   });
 
   it('renders header', () => {
-    const { header } = render();
+    const { header } = renderComponent();
 
-    expect(header).toExist();
+    expect(header).toBeInTheDocument();
   });
 
   it('renders changes', () => {
-    const { changes } = render();
-    
-    expect(changes).toExist();
+    const { changes } = renderComponent();
+
+    expect(changes).toBeInTheDocument();
   });
 });
