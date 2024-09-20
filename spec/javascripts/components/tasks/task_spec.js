@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 
 import Checkbox from 'components/forms/Checkbox';
 import TaskComponent from 'components/tasks/Task';
@@ -15,35 +15,48 @@ describe('<Task />', function () {
 
   it('should be able to call handleDelete', function () {
     const handleDelete = vi.fn();
-    const wrapper = mount(
-      <TaskComponent task={task} disabled={false} handleDelete={handleDelete} />
+    const { container } = render(
+      <TaskComponent
+        task={task}
+        disabled={false}
+        handleDelete={handleDelete}
+        handleUpdate={() => {}}
+      />
     );
 
-    wrapper.find('.delete-btn').simulate('click');
+    const button = container.querySelector('.delete-btn');
+    fireEvent.click(button);
+
     expect(handleDelete).toHaveBeenCalled();
   });
 
-  it('should be able to call handleUpdate', function () {
+  it('should be able to call handleUpdate', async function () {
     const handleUpdate = vi.fn();
-    const wrapper = mount(
+    const { getByRole } = render(
       <TaskComponent task={task} disabled={false} handleUpdate={handleUpdate} />
     );
 
-    wrapper.find('input').simulate('change', { target: { checked: true } });
+    const input = getByRole('checkbox');
+    fireEvent.click(input);
+
     expect(handleUpdate).toHaveBeenCalled();
   });
 
   describe('when not disabled', function () {
     it('should have an delete button', function () {
-      const wrapper = mount(<TaskComponent task={task} disabled={false} />);
-      expect(wrapper.find('.delete-btn')).toExist();
+      const { container } = render(
+        <TaskComponent task={task} disabled={false} />
+      );
+      expect(container.querySelector('.delete-btn')).toBeInTheDocument();
     });
   });
 
   describe('when disabled', function () {
     it('should not have a delete button', function () {
-      const wrapper = mount(<TaskComponent task={task} disabled={true} />);
-      expect(wrapper.find('.delete-btn')).not.toExist();
+      const { container } = render(
+        <TaskComponent task={task} disabled={true} />
+      );
+      expect(container.querySelector('.delete-btn')).not.toBeInTheDocument();
     });
   });
 });
