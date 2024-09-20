@@ -1,9 +1,14 @@
 import React from 'react';
-import { shallow } from 'enzyme';
 import Sprint from 'components/stories/Sprint';
+import { DragDropContext } from 'react-beautiful-dnd';
+import { renderWithProviders } from '../setupRedux';
+import { fireEvent } from '@testing-library/react';
 
 let sprint = {};
-let wrapper = {};
+
+vi.mock('react-clipboard.js', () => ({
+  default: ({ children, ...props }) => <button {...props}>{children}</button>,
+}));
 
 const createSprint = propOverrides => ({
   number: 1,
@@ -18,6 +23,9 @@ const createSprint = propOverrides => ({
       state: 'unstarted',
       estimate: 1,
       storyType: 'feature',
+      _editing: {},
+      notes: [],
+      tasks: [],
     },
     {
       id: 2,
@@ -25,6 +33,9 @@ const createSprint = propOverrides => ({
       state: 'unstarted',
       estimate: 1,
       storyType: 'feature',
+      _editing: {},
+      notes: [],
+      tasks: [],
     },
   ],
   isDropDisabled: false,
@@ -34,34 +45,97 @@ const createSprint = propOverrides => ({
 describe('<Sprint />', () => {
   beforeEach(() => {
     sprint = createSprint();
-    wrapper = shallow(<Sprint sprint={sprint} />);
   });
 
   it('renders a <div> with class ".Sprint"', () => {
-    expect(wrapper.find('div.Sprint').exists()).toBe(true);
+    const { container } = renderWithProviders(
+      <DragDropContext onDragEnd={vi.fn}>
+        <Sprint sprint={sprint} />
+      </DragDropContext>,
+      {
+        preloadedState: {
+          project: {
+            pointValues: [],
+          },
+        },
+      }
+    );
+
+    expect(container.querySelector('div.Sprint')).toBeInTheDocument();
   });
 
   it('renders a SprintHeader component"', () => {
-    expect(wrapper.find('SprintHeader').exists()).toBe(true);
+    const { container } = renderWithProviders(
+      <DragDropContext onDragEnd={vi.fn}>
+        <Sprint sprint={sprint} />
+      </DragDropContext>,
+      {
+        preloadedState: {
+          project: {
+            pointValues: [],
+          },
+        },
+      }
+    );
+
+    expect(container.querySelector('.Sprint__header')).toBeInTheDocument();
   });
 
   it('renders a div with class ".Sprint__body"', () => {
-    expect(wrapper.find('div.Sprint__body').exists()).toBe(true);
+    const { container } = renderWithProviders(
+      <DragDropContext onDragEnd={vi.fn}>
+        <Sprint sprint={sprint} />
+      </DragDropContext>,
+      {
+        preloadedState: {
+          project: {
+            pointValues: [],
+          },
+        },
+      }
+    );
+
+    expect(container.querySelector('div.Sprint__body')).toBeInTheDocument();
   });
 
   it('renders a <Stories> components', () => {
-    expect(wrapper.find('Stories').exists()).toBe(true);
+    const { getByTestId } = renderWithProviders(
+      <DragDropContext onDragEnd={vi.fn}>
+        <Sprint sprint={sprint} />
+      </DragDropContext>,
+      {
+        preloadedState: {
+          project: {
+            pointValues: [],
+          },
+        },
+      }
+    );
+
+    expect(getByTestId('stories-container')).toBeInTheDocument();
   });
 
   describe('when no stories are passed as sprint', () => {
     beforeEach(() => {
       sprint = createSprint();
       sprint.stories = null;
-      wrapper = shallow(<Sprint sprint={sprint} />);
     });
 
     it('does not render any <Stories> component', () => {
-      expect(wrapper.find('Stories').exists()).toBe(false);
+      const { queryByTestId } = renderWithProviders(
+        <DragDropContext onDragEnd={vi.fn}>
+          <Sprint sprint={sprint} />
+        </DragDropContext>,
+        {
+          preloadedState: {
+            project: {
+              pointValues: [],
+            },
+          },
+        }
+      );
+
+      expect(queryByTestId('stories-container')).not.toBeInTheDocument();
     });
   });
 
@@ -76,14 +150,26 @@ describe('<Sprint />', () => {
       });
       sprint.stories = null;
       fetchStories = vi.fn();
-      wrapper = shallow(<Sprint sprint={sprint} fetchStories={fetchStories} />);
     });
 
     it('calls fetchStories with iteration number, start and end date on user click', () => {
       const { number, startDate, endDate } = sprint;
-      const header = wrapper.find('SprintHeader');
+      const { container } = renderWithProviders(
+        <DragDropContext onDragEnd={vi.fn}>
+          <Sprint sprint={sprint} fetchStories={fetchStories} />
+        </DragDropContext>,
+        {
+          preloadedState: {
+            project: {
+              pointValues: [],
+            },
+          },
+        }
+      );
 
-      header.simulate('click');
+      const header = container.querySelector('.Sprint__header');
+
+      fireEvent.click(header);
 
       expect(fetchStories).toHaveBeenCalledWith(number, startDate, endDate);
     });
