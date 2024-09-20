@@ -1,7 +1,11 @@
 import React from 'react';
 
 const SearchTooltip = ({ aditionalClass = '' }) => (
-  <div className={`col-sm-12 ${aditionalClass}`} data-id="search-tooltip">
+  <div
+    className={`col-sm-12 ${aditionalClass}`}
+    data-id="search-tooltip"
+    data-testid="search-tooltip-component"
+  >
     <div className="tooltip-header">
       <h4>{I18n.t('projects.search_tooltip.title')}</h4>
       <ul>

@@ -1,22 +1,26 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
 import SearchTooltip from 'components/search/SearchTooltip';
+import { render } from '@testing-library/react';
 
 describe('<SearchTooltip />', () => {
   it('renders the component', () => {
-    const wrapper = shallow(<SearchTooltip />);
-    
-    expect(wrapper).toExist();
+    const { container } = render(<SearchTooltip />);
+
+    expect(container).toBeInTheDocument();
   });
 
-  const aditionalClasses = ['foo','bar'];
+  const aditionalClasses = ['foo', 'bar'];
 
   aditionalClasses.forEach(aditionalClass => {
     describe(`when aditionalClass is ${aditionalClass}`, () => {
       it(`render component with class ${aditionalClass}`, () => {
-        const wrapper = mount(<SearchTooltip aditionalClass={aditionalClass} />);
+        const { getByTestId } = render(
+          <SearchTooltip aditionalClass={aditionalClass} />
+        );
 
-        expect(wrapper.find('[data-id="search-tooltip"]').hasClass(aditionalClass)).toBeTruthy();
+        expect(getByTestId('search-tooltip-component')).toHaveClass(
+          aditionalClass
+        );
       });
     });
   });
