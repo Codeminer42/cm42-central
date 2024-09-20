@@ -3,6 +3,10 @@ import Search from 'components/search/Search';
 import { renderWithProviders } from '../setupRedux';
 import { DragDropContext } from 'react-beautiful-dnd';
 
+vi.mock('react-clipboard.js', () => ({
+  default: ({ children, ...props }) => <button {...props}>{children}</button>,
+}));
+
 describe('<Search />', () => {
   const renderComponent = props => {
     return renderWithProviders(
@@ -10,7 +14,11 @@ describe('<Search />', () => {
         <Search {...props} />
       </DragDropContext>,
       {
-        preloadedState: {},
+        preloadedState: {
+          project: {
+            pointValues: [],
+          },
+        },
       }
     );
   };
@@ -39,23 +47,32 @@ describe('<Search />', () => {
   const storiesAmount = [1, 10, 100];
 
   describe(`when have ${storiesAmount} stories`, () => {
-    const stories = Array(storiesAmount).fill({ estimate: 2 });
-    let wrapper;
-
-    beforeEach(() => {
-      wrapper = shallow(<Search stories={stories} />);
+    const stories = Array(storiesAmount).fill({
+      estimate: 2,
+      id: 1,
+      _editing: {},
+      notes: [],
+      tasks: [],
     });
 
     it('renders the component', () => {
-      expect(wrapper).toExist();
+      const { container } = renderComponent({
+        stories,
+      });
+
+      expect(container).toBeInTheDocument();
     });
 
     it('renders header', () => {
-      expect(wrapper.find('[data-id="search-header"]')).toBeTruthy();
+      const { getByTestId } = renderComponent();
+
+      expect(getByTestId('search-header-container')).toBeInTheDocument();
     });
 
     it('renders stories', () => {
-      expect(wrapper.find('[data-id="stories-search"]')).toBeTruthy();
+      const { getByTestId } = renderComponent();
+
+      expect(getByTestId('stories-search-container')).toBeInTheDocument();
     });
   });
 });
