@@ -1,21 +1,25 @@
-import React from 'react';
-import { shallow } from 'enzyme';
 import ExpandedStoryDescription from 'components/story/ExpandedStory/ExpandedStoryDescription/index';
+import React from 'react';
+import { renderWithProviders } from '../../../setupRedux';
 
 describe('<ExpandedStoryDescription />', () => {
-  const defaultProps = () => ({
-    story: {},
-    onEdit: vi.fn(),
-    disabled: false,
-  });
+  const renderComponent = props => {
+    const defaultProps = {
+      story: {},
+      onEdit: vi.fn(),
+      disabled: false,
+    };
+
+    const mergedProps = { ...defaultProps, ...props };
+
+    return renderWithProviders(<ExpandedStoryDescription {...mergedProps} />);
+  };
 
   it('renders component', () => {
-    const story = { description: '', _editing: { description: '' } };
+    const props = { story: { description: '', _editing: { description: '' } } };
 
-    const wrapper = shallow(
-      <ExpandedStoryDescription {...defaultProps()} story={story} />
-    );
+    const { container } = renderComponent(props);
 
-    expect(wrapper).toExist();
+    expect(container).toBeInTheDocument();
   });
 });
