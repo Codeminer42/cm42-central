@@ -15,6 +15,7 @@ const Stories = ({ stories, from, sprintIndex, columnId, isDropDisabled }) => (
         className="Column__body"
         ref={provided.innerRef}
         {...provided.droppableProps}
+        data-testid="stories-container"
       >
         {stories.map((story, index) => (
           <StoryItem
