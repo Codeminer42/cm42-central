@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { fireEvent, render } from '@testing-library/react';
 
 import StoryLink from 'components/stories/StoryLink';
 
@@ -41,13 +41,15 @@ describe('<StoryLink />', function () {
   });
 
   it('should have his id as content', function () {
-    const wrapper = shallow(<StoryLink story={story} />);
-    expect(wrapper.find('.story-link').text()).toContain('#2');
+    const { container } = render(<StoryLink story={story} />);
+    expect(container.querySelector('.story-link').innerHTML).toContain('#2');
   });
 
   it('should highlight on click', function () {
-    const wrapper = shallow(<StoryLink story={story} />);
-    wrapper.find('.story-link').simulate('click');
+    const { container } = render(<StoryLink story={story} />);
+    const storyLink = container.querySelector('.story-link');
+    fireEvent.click(storyLink);
+
     expect(story.views[0].highlight).toHaveBeenCalled();
   });
 
@@ -58,8 +60,9 @@ describe('<StoryLink />', function () {
           return 'unscheduled';
         }
       });
-      const wrapper = shallow(<StoryLink story={story} />);
-      expect(wrapper.find('.story-link-icon').length).toBe(0);
+      const { container } = render(<StoryLink story={story} />);
+
+      expect(container.querySelectorAll('.story-link-icon').length).toBe(0);
     });
 
     it('should have a material icon when state is not unscheduled', function () {
@@ -68,8 +71,10 @@ describe('<StoryLink />', function () {
           return 'accepted';
         }
       });
-      const wrapper = shallow(<StoryLink story={story} />);
-      expect(wrapper.find('.story-link-icon').text()).toContain('done');
+      const { container } = render(<StoryLink story={story} />);
+      expect(container.querySelector('.story-link-icon').innerHTML).toContain(
+        'done'
+      );
     });
   });
 });
