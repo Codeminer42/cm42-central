@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import { StorySearch } from 'components/search/StorySearch';
 
 describe('<StorySearch />', () => {
@@ -11,27 +11,21 @@ describe('<StorySearch />', () => {
   });
 
   it('renders the component', () => {
-    const wrapper = mount(
+    const { container } = render(
       <StorySearch projectId={1} search={vi.fn()} loading={false} />
     );
 
-    expect(wrapper).toExist();
+    expect(container).toBeInTheDocument();
   });
 
   describe('loading', () => {
     describe('when loading is true', () => {
-      let wrapper;
-
-      beforeEach(() => {
-        wrapper = mount(
+      it('renders the spinner', () => {
+        const { getByTestId } = render(
           <StorySearch projectId={1} search={vi.fn()} loading={true} />
         );
-      });
 
-      it('renders the spinner', () => {
-        const spinner = wrapper.find('[data-id="spinner-loading"]');
-
-        expect(spinner).toBeTruthy();
+        expect(getByTestId('story-search-spinner')).toBeInTheDocument();
       });
     });
   });
