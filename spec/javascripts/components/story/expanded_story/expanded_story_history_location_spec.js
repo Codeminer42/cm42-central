@@ -1,28 +1,44 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import { fireEvent } from '@testing-library/react';
 import ExpandedStoryHistoryLocation from 'components/story/ExpandedStory/ExpandedStoryHistoryLocation';
-import storyFactory from '../../../support/factories/storyFactory';
 import { storyTypes } from 'libs/beta/constants';
+import React from 'react';
+import storyFactory from '../../../support/factories/storyFactory';
+import { renderWithProviders } from '../../setupRedux';
 
 describe('<ExpandedStoryHistoryLocation />', () => {
-  const defaultProps = () => ({
-    onClone: vi.fn(),
-    showHistory: vi.fn(),
-    story: {
-      ...storyFactory(),
-      _editing: storyFactory(),
-    },
-  });
+  vi.spyOn(window.md, 'makeHtml').mockReturnValue('<p>Test</p>');
+  vi.mock('react-clipboard.js', () => ({
+    default: vi
+      .fn()
+      .mockImplementation(({ children, ...props }) => (
+        <div {...props}>{children}</div>
+      )),
+  }));
+
+  const renderComponent = props => {
+    const defaultProps = {
+      onClone: vi.fn(),
+      showHistory: vi.fn(),
+      story: {
+        ...storyFactory(),
+        _editing: storyFactory(),
+      },
+    };
+
+    const mergedProps = { ...defaultProps, ...props };
+
+    return renderWithProviders(
+      <ExpandedStoryHistoryLocation {...mergedProps} />
+    );
+  };
 
   describe('when user click on clone story', () => {
     it('calls onClone callback', () => {
       const onClone = vi.fn();
 
-      const wrapper = shallow(
-        <ExpandedStoryHistoryLocation {...defaultProps()} onClone={onClone} />
-      );
-
-      wrapper.find('.clone-story').simulate('click');
+      const { container } = renderComponent({ onClone });
+      const cloneButton = container.querySelector('.clone-story');
+      fireEvent.click(cloneButton);
 
       expect(onClone).toHaveBeenCalled();
     });
@@ -30,49 +46,51 @@ describe('<ExpandedStoryHistoryLocation />', () => {
 
   describe('story link', () => {
     it('renders an input with the right story link', () => {
-      const story = storyFactory({
-        id: 42,
-        _editing: storyFactory(),
-      });
+      const props = {
+        story: storyFactory({
+          id: 42,
+          _editing: storyFactory(),
+        }),
+      };
 
-      const wrapper = shallow(
-        <ExpandedStoryHistoryLocation {...defaultProps()} story={story} />
-      );
+      const { container } = renderComponent(props);
+      const storyInput = container.querySelector('input');
 
-      const storyInput = wrapper.find('input');
-
-      expect(storyInput.prop('value')).toContain(`#story-${story.id}`);
+      expect(storyInput.value).toMatch(/#story-42$/);
     });
   });
 
   describe('copy id to clipboard', () => {
     it('renders a clipboard component with the right story id', () => {
-      const story = storyFactory({ id: 42, _editing: storyFactory() });
+      const props = {
+        story: storyFactory({ id: 42, _editing: storyFactory() }),
+      };
 
-      const wrapper = shallow(
-        <ExpandedStoryHistoryLocation {...defaultProps()} story={story} />
+      const { container } = renderComponent(props);
+      // TODO: fix this
+      const copyIdButton = container.querySelector(
+        `[data-clipboard-text="#42"]`
       );
 
-      const copyIdButton = wrapper.find(`[data-clipboard-text="#${story.id}"]`);
-
-      expect(copyIdButton.exists()).toBe(true);
+      expect(copyIdButton).toBeInTheDocument();
     });
   });
 
   describe('when story is release', () => {
     it('doest not render history button', () => {
-      const story = storyFactory({
-        storyType: storyTypes.RELEASE,
-        _editing: storyFactory(),
-      });
+      const props = {
+        story: storyFactory({
+          storyType: storyTypes.RELEASE,
+          _editing: storyFactory(),
+        }),
+      };
 
-      const wrapper = shallow(
-        <ExpandedStoryHistoryLocation {...defaultProps()} story={story} />
+      const { container } = renderComponent(props);
+      const historyButton = container.querySelector(
+        '[data-id="history-button"]'
       );
 
-      const historyButton = wrapper.find('[data-id="history-button"]');
-
-      expect(historyButton).not.toExist();
+      expect(historyButton).toBeNull();
     });
   });
 
@@ -85,15 +103,16 @@ describe('<ExpandedStoryHistoryLocation />', () => {
   noReleasesTypes.forEach(storyType => {
     describe(`when story is ${storyType}`, () => {
       it('renders history button', () => {
-        const story = storyFactory({ storyType, _editing: storyFactory() });
+        const props = {
+          story: storyFactory({ storyType, _editing: storyFactory() }),
+        };
 
-        const wrapper = shallow(
-          <ExpandedStoryHistoryLocation {...defaultProps()} story={story} />
+        const { container } = renderComponent(props);
+        const historyButton = container.querySelector(
+          '[data-id="history-button"]'
         );
 
-        const historyButton = wrapper.find('[data-id="history-button"]');
-
-        expect(historyButton).toExist();
+        expect(historyButton).toBeInTheDocument();
       });
     });
   });
