@@ -1,44 +1,50 @@
-import React from 'react';
-import { shallow } from 'enzyme';
 import ExpandedStoryType from 'components/story/ExpandedStory/ExpandedStoryType';
 import { types } from 'models/beta/story';
+import React from 'react';
+import { renderWithProviders } from '../../setupRedux';
 
 describe('<ExpandedStoryType />', () => {
-  const setup = propOverrides => {
+  const renderComponent = props => {
     const defaultProps = {
       onEdit: vi.fn(),
       story: { _editing: { storyType: 'feature' } },
       disabled: false,
-      ...propOverrides,
     };
-    const wrapper = shallow(<ExpandedStoryType {...defaultProps} />);
-    const select = wrapper.find('select');
 
-    return { wrapper, select };
+    const mergedProps = { ...defaultProps, ...props };
+
+    return renderWithProviders(<ExpandedStoryType {...mergedProps} />);
   };
 
   types.forEach(type => {
     it(`sets defaultValue as ${type} in select`, () => {
-      const story = { _editing: { storyType: type } };
-      const { select } = setup({ story });
+      const props = {
+        story: { _editing: { storyType: type } },
+      };
 
-      expect(select.prop('value')).toBe(type);
+      const { container } = renderComponent(props);
+      const select = container.querySelector('select');
+
+      expect(select.value).toBe(type);
     });
   });
 
   describe('when component is not disabled', () => {
     it('select field is editable', () => {
-      const { select } = setup();
+      const { container } = renderComponent();
+      const select = container.querySelector('select');
 
-      expect(select.prop('disabled')).toBe(false);
+      expect(select).toBeInTheDocument();
+      expect(select).not.toBeDisabled();
     });
   });
 
   describe('when component is disabled', () => {
     it('select field is disabled', () => {
-      const { select } = setup({ disabled: true });
+      const { container } = renderComponent({ disabled: true });
+      const select = container.querySelector('select');
 
-      expect(select.prop('disabled')).toBe(true);
+      expect(select).toBeDisabled();
     });
   });
 });
