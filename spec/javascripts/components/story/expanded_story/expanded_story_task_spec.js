@@ -1,61 +1,65 @@
-import React from 'react';
-import { mount } from 'enzyme';
+import { fireEvent, screen } from '@testing-library/react';
 import ExpandedStoryTask from 'components/story/ExpandedStory/ExpandedStoryTask';
+import React from 'react';
 import storyFactory from '../../../support/factories/storyFactory';
+import { renderWithProviders } from '../../setupRedux';
 
 describe('<ExpandedStoryTask />', () => {
-  const setup = (propOverrides, tasks) => {
-    const defaultProps = () => ({
+  const renderComponent = props => {
+    const defaultProps = {
       story: {
         ...storyFactory({
-          tasks: tasks || [],
-          _editing: storyFactory({ tasks: tasks || [] }),
+          tasks: [],
+          _editing: storyFactory({ tasks: [] }),
         }),
       },
       onDelete: vi.fn(),
       onToggle: vi.fn(),
-      onSave: vi.fn(),
-      disabled: false,
-      ...propOverrides,
-    });
+    };
 
-    const wrapper = mount(<ExpandedStoryTask {...defaultProps()} />);
-    const button = wrapper.find('button');
-    const input = wrapper.find('input');
+    const mergedProps = { ...defaultProps, ...props };
 
-    return { wrapper, button, input };
+    return renderWithProviders(<ExpandedStoryTask {...mergedProps} />);
   };
 
   it('renders component title', () => {
-    const { wrapper } = setup();
+    renderComponent();
+    const title = screen.getByText(I18n.t('story.tasks'));
 
-    expect(wrapper.text()).toContain(I18n.t('story.tasks'));
+    expect(title).toBeInTheDocument();
   });
 
   describe('when component is enabled', () => {
     it('displays a task form', () => {
-      const { wrapper } = setup();
+      const { container } = renderComponent();
+      const taskForm = container.querySelector('.task-form');
 
-      expect(wrapper.exists('.task-form')).toBe(true);
+      expect(taskForm).toBeInTheDocument();
     });
 
     it('disables the add task button if text area is empty', () => {
-      const { input, button } = setup();
+      const { container } = renderComponent();
+      const input = container.querySelector('input');
+      const button = container.querySelector('button');
+      fireEvent.change(input, { target: { value: '' } });
 
-      input.simulate('change', { target: { value: '' } });
-      expect(button.prop('disabled')).toBe(true);
+      expect(button).toBeDisabled();
     });
 
     describe('onHandleSubmit', () => {
       it('calls onSave with a task', () => {
         const task = 'New Task';
         const onSaveSpy = vi.fn();
+        const props = { onSave: onSaveSpy };
         const event = { target: { value: task } };
-        const { input, button } = setup({ onSave: onSaveSpy });
 
-        input.simulate('change', event);
-        button.simulate('click');
+        const { container } = renderComponent(props);
+        const input = container.querySelector('input');
+        const button = container.querySelector('button');
+        fireEvent.change(input, event);
+        fireEvent.click(button);
 
+        expect(onSaveSpy).toHaveBeenCalledTimes(1);
         expect(onSaveSpy).toHaveBeenCalledWith(task);
       });
     });
@@ -72,16 +76,29 @@ describe('<ExpandedStoryTask />', () => {
     };
 
     it('does not display task form', () => {
-      const { wrapper } = setup({ disabled: true }, [task]);
+      const props = {
+        story: {
+          ...storyFactory({ tasks: [task] }),
+          _editing: storyFactory({ tasks: [task] }),
+        },
+        disabled: true,
+      };
 
-      expect(wrapper.exists('.task-form')).toBe(false);
+      const { container } = renderComponent(props);
+      const taskForm = container.querySelector('.task-form');
+
+      expect(taskForm).toBeNull();
     });
 
     describe('when there are no tasks', () => {
       it('renders nothing', () => {
-        const { wrapper } = setup({ disabled: true });
+        const props = {
+          disabled: true,
+        };
 
-        expect(wrapper.html()).toBeNull();
+        const { container } = renderComponent(props);
+
+        expect(container.innerHTML).toBe('');
       });
     });
   });
