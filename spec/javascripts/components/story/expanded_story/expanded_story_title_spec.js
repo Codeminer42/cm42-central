@@ -1,60 +1,75 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import { fireEvent } from '@testing-library/react';
 import ExpandedStoryTitle from 'components/story/ExpandedStory/ExpandedStoryTitle';
+import React from 'react';
+import { renderWithProviders } from '../../setupRedux';
 
 describe('<ExpandedStoryTitle />', () => {
-  const setup = propOverrides => {
-    const defaultProps = () => ({
+  const renderComponent = props => {
+    const defaultProps = {
       story: { _editing: { title: 'foo' } },
       onEdit: vi.fn(),
       disabled: false,
-      ...propOverrides,
-    });
+    };
+    const mergedProps = { ...defaultProps, ...props };
 
-    const wrapper = shallow(<ExpandedStoryTitle {...defaultProps()} />);
-    const input = wrapper.find('input');
-
-    return { wrapper, input };
+    return renderWithProviders(<ExpandedStoryTitle {...mergedProps} />);
   };
 
   it('renders properly', () => {
-    const { wrapper } = setup();
+    const { container } = renderComponent();
 
-    expect(wrapper).toExist();
+    expect(container).toBeInTheDocument();
   });
 
   describe('input element', () => {
     it('has value equals to story title', () => {
-      const story = { _editing: { title: 'bar' } };
+      const props = {
+        story: { _editing: { title: 'bar' } },
+      };
 
-      const { input } = setup({ story });
+      const { container } = renderComponent(props);
+      const input = container.querySelector('input');
 
-      expect(input.prop('value')).toBe(story._editing.title);
+      expect(input.value).toBe(props.story._editing.title);
     });
 
     it('calls onEdit with the right params', () => {
       const mockOnEdit = vi.fn();
       const eventValue = 'foobar';
-      const { input } = setup({ onEdit: mockOnEdit });
+      const props = {
+        onEdit: mockOnEdit,
+      };
 
-      input.simulate('change', { target: { value: eventValue } });
+      const { container } = renderComponent(props);
+      const input = container.querySelector('input');
+      fireEvent.change(input, { target: { value: eventValue } });
 
       expect(mockOnEdit).toHaveBeenCalledWith(eventValue);
     });
 
     describe('when the component is enabled', () => {
       it('should not be read-only', () => {
-        const { input } = setup({ disabled: false });
+        const props = {
+          disabled: false,
+        };
 
-        expect(input.prop('readOnly')).toBe(false);
+        const { container } = renderComponent(props);
+        const input = container.querySelector('input');
+
+        expect(input.readOnly).toBe(false);
       });
     });
 
     describe('when component is disabled', () => {
       it('should be read-only', () => {
-        const { input } = setup({ disabled: true });
+        const props = {
+          disabled: true,
+        };
 
-        expect(input.prop('readOnly')).toBe(true);
+        const { container } = renderComponent(props);
+        const input = container.querySelector('input');
+
+        expect(input.readOnly).toBe(true);
       });
     });
   });
