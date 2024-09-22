@@ -1,116 +1,141 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import { screen } from '@testing-library/react';
 import { ExpandedStory } from 'components/story/ExpandedStory/index';
+import React from 'react';
 import storyFactory from '../../../support/factories/storyFactory';
-import ExpandedStoryRelease from 'components/story/ExpandedStory/ExpandedStoryRelease';
-import ExpandedStoryDefault from 'components/story/ExpandedStory/ExpandedStoryDefault';
+import { renderWithProviders } from '../../setupRedux';
 
 describe('<ExpandedStory />', () => {
-  const defaultProps = () => ({
-    story: storyFactory(),
-    editStory: vi.fn(),
-    saveStory: vi.fn(),
-    deleteStory: vi.fn(),
-    project: { labels: [] },
-    disabled: false,
-    onToggle: vi.fn(),
-    cloneStory: vi.fn(),
-    showHistory: vi.fn(),
-    onClone: vi.fn(),
-  });
+  vi.spyOn(window.md, 'makeHtml').mockReturnValue('<p>Test</p>');
+  vi.mock('react-clipboard.js', () => ({
+    default: vi
+      .fn()
+      .mockImplementation(({ children }) => <div>{children}</div>),
+  }));
+
+  const renderComponent = props => {
+    const defaultProps = {
+      story: storyFactory(),
+      editStory: vi.fn(),
+      saveStory: vi.fn(),
+      deleteStory: vi.fn(),
+      project: { labels: [], pointValues: [] },
+      disabled: false,
+      onToggle: vi.fn(),
+      cloneStory: vi.fn(),
+      showHistory: vi.fn(),
+      onLabelClick: vi.fn(),
+      onClone: vi.fn(),
+    };
+
+    const mergedProps = { ...defaultProps, ...props };
+
+    return renderWithProviders(<ExpandedStory {...mergedProps} />);
+  };
 
   describe('when storyType is a release', () => {
     it('renders ExpandedStoryRelease component', () => {
-      const story = storyFactory({
-        _editing: {
-          ...storyFactory(),
-          storyType: 'release',
-        },
-      });
+      const props = {
+        story: storyFactory({
+          _editing: {
+            ...storyFactory(),
+            storyType: 'release',
+          },
+        }),
+      };
 
-      const wrapper = shallow(
-        <ExpandedStory {...defaultProps()} story={story} />,
-        { disableLifecycleMethods: true }
+      renderComponent(props);
+      const releaseTitle = screen.getByText(
+        I18n.t('activerecord.attributes.story.release_date')
       );
+      console.log(releaseTitle.innerHTML);
 
-      expect(wrapper.find(ExpandedStoryRelease)).toExist();
-      expect(wrapper.find(ExpandedStoryDefault)).not.toExist();
+      expect(releaseTitle).toBeInTheDocument();
     });
   });
 
   describe("when storyType isn't a release", () => {
     it('renders ExpandedStoryDefault component', () => {
-      const story = storyFactory({
-        _editing: {
-          ...storyFactory(),
-          storyType: 'feature',
-        },
-      });
+      const props = {
+        story: storyFactory({
+          _editing: {
+            ...storyFactory(),
+            storyType: 'feature',
+            title: 'this title appears everywhere',
+          },
+        }),
+      };
 
-      const wrapper = shallow(
-        <ExpandedStory {...defaultProps()} story={story} />,
-        { disableLifecycleMethods: true }
+      renderComponent(props);
+      const expandedStoryDefault = screen.getByDisplayValue(
+        'this title appears everywhere'
+      );
+      const releaseTitle = screen.queryByText(
+        I18n.t('activerecord.attributes.story.release_date')
       );
 
-      expect(wrapper.find(ExpandedStoryDefault)).toExist();
-      expect(wrapper.find(ExpandedStoryRelease)).not.toExist();
+      expect(expandedStoryDefault).toBeInTheDocument();
+      expect(releaseTitle).toBeNull();
     });
   });
 
   describe('when story is editable', () => {
-    const story = storyFactory({
-      _editing: {
-        ...storyFactory(),
-        storyType: 'feature',
-        state: 'unstarted',
-      },
-    });
+    const props = {
+      story: storyFactory({
+        _editing: {
+          ...storyFactory(),
+          storyType: 'feature',
+          state: 'unstarted',
+          title: 'this title appears everywhere',
+        },
+      }),
+    };
 
     it('passes disabled prop as false', () => {
-      const wrapper = shallow(
-        <ExpandedStory {...defaultProps()} story={story} />,
-        { disableLifecycleMethods: true }
+      renderComponent(props);
+      const expandedStoryDefault = screen.getByDisplayValue(
+        'this title appears everywhere'
       );
-      const expandedStoryDefault = wrapper.find(ExpandedStoryDefault);
 
-      expect(expandedStoryDefault.prop('disabled')).toBe(false);
+      expect(expandedStoryDefault).not.toHaveAttribute('readonly');
     });
   });
 
   describe('when story is not editable', () => {
-    const story = storyFactory({
-      _editing: {
-        ...storyFactory(),
+    const props = {
+      story: storyFactory({
+        _editing: {
+          ...storyFactory(),
+          storyType: 'feature',
+          state: 'accepted',
+          title: 'this title appears everywhere',
+        },
         storyType: 'feature',
         state: 'accepted',
-      },
-      storyType: 'feature',
-      state: 'accepted',
-    });
+      }),
+    };
 
     it('passes disabled prop as true', () => {
-      const wrapper = shallow(
-        <ExpandedStory {...defaultProps()} story={story} />,
-        { disableLifecycleMethods: true }
+      renderComponent(props);
+      const expandedStoryDefault = screen.getByDisplayValue(
+        'this title appears everywhere'
       );
-      const expandedStoryDefault = wrapper.find(ExpandedStoryDefault);
 
-      expect(expandedStoryDefault.prop('disabled')).toBe(true);
+      expect(expandedStoryDefault).toHaveAttribute('readonly');
     });
   });
 
   it('adds enable-loading className when updating a story', () => {
-    const story = storyFactory({
-      _editing: {
-        ...storyFactory({ loading: true }),
-      },
-    });
+    const props = {
+      story: storyFactory({
+        _editing: {
+          ...storyFactory({ loading: true }),
+        },
+      }),
+    };
 
-    const wrapper = shallow(
-      <ExpandedStory {...defaultProps()} story={story} className="" />,
-      { disableLifecycleMethods: true }
-    );
+    const { container } = renderComponent(props);
+    const storyLoading = container.querySelector('.Story__enable-loading');
 
-    expect(wrapper.find('.Story__enable-loading')).toExist();
+    expect(storyLoading).toBeInTheDocument();
   });
 });
