@@ -47,7 +47,6 @@ describe('<ExpandedStory />', () => {
       const releaseTitle = screen.getByText(
         I18n.t('activerecord.attributes.story.release_date')
       );
-      console.log(releaseTitle.innerHTML);
 
       expect(releaseTitle).toBeInTheDocument();
     });
