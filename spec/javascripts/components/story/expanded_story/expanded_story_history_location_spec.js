@@ -67,7 +67,6 @@ describe('<ExpandedStoryHistoryLocation />', () => {
       };
 
       const { container } = renderComponent(props);
-      // TODO: fix this
       const copyIdButton = container.querySelector(
         `[data-clipboard-text="#42"]`
       );
