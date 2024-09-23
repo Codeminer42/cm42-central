@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import NotePropTypes from '../../shapes/note';
 
 const Note = ({ note, onDelete, disabled }) => (
-  <div className="markdown-wrapper">
+  <div className="markdown-wrapper" data-testid="note-component">
     <Markdown source={note.note} />
 
     <div className="markdown-wrapper__text-right">
