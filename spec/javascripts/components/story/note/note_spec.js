@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { fireEvent, render } from '@testing-library/react';
 import Note from 'components/story/note/Note';
 
 describe('<Note/>', () => {
@@ -13,7 +13,7 @@ describe('<Note/>', () => {
   const setup = propOverrides => {
     const onDeleteSpy = vi.fn();
 
-    const wrapper = shallow(
+    const { container: wrapper } = render(
       <Note
         note={note}
         onDelete={onDeleteSpy}
@@ -22,23 +22,27 @@ describe('<Note/>', () => {
       />
     );
 
-    const deleteButton = wrapper.find('.delete-note-button');
+    const deleteButton = wrapper.querySelector('.delete-note-button');
 
     return { wrapper, deleteButton, onDeleteSpy };
   };
+
+  beforeAll(() => {
+    vi.spyOn(window.md, 'makeHtml').mockReturnValue('<p>Test</p>');
+  });
 
   describe('when component is enabled', () => {
     it('allows editing', () => {
       const { deleteButton } = setup();
 
-      expect(deleteButton.exists()).toBe(true);
+      expect(deleteButton).toBeInTheDocument();
     });
 
     describe('when user deletes a note', () => {
       it('triggers onDelete callback', () => {
         const { deleteButton, onDeleteSpy } = setup();
 
-        deleteButton.simulate('click');
+        fireEvent.click(deleteButton);
 
         expect(onDeleteSpy).toHaveBeenCalled();
       });
@@ -49,7 +53,7 @@ describe('<Note/>', () => {
     it('does not allow deleting', () => {
       const { deleteButton } = setup({ disabled: true });
 
-      expect(deleteButton.exists()).toBe(false);
+      expect(deleteButton).not.toBeInTheDocument();
     });
   });
 });
