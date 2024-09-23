@@ -162,7 +162,7 @@ describe('<ExpandedStoryState />', () => {
   });
 
   describe('when component is disabled', () => {
-    it('select field is editable', () => {
+    it('select field is disabled', () => {
       const onEditSpy = vi.fn();
       const props = {
         story: { state: 'started', _editing: { state: 'started' } },
@@ -178,7 +178,7 @@ describe('<ExpandedStoryState />', () => {
   });
 
   describe('when component is enabled', () => {
-    it('select field is enabled', () => {
+    it('select field is editable', () => {
       const onEditSpy = vi.fn();
       const props = {
         story: { state: 'started', _editing: { state: 'started' } },
