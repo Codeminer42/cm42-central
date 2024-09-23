@@ -95,8 +95,7 @@ describe('<ExpandedStoryLabels />', () => {
 
   describe('<ReactTags />', () => {
     it('renders with the right tags prop', () => {
-      const { wrapper, labels, reactTags } = setup();
-      screen.debug();
+      const { wrapper, labels } = setup();
       const renderedLabelElements = wrapper.querySelectorAll(
         '.react-tags__selected-tag-name'
       );
