@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render } from '@testing-library/react';
 import TasksList from 'components/story/task/TasksList';
 
 describe('<TasksList />', () => {
@@ -13,7 +13,7 @@ describe('<TasksList />', () => {
       ...propOverrides,
     });
 
-    const wrapper = shallow(<TasksList {...defaultProps()} />);
+    const { container: wrapper } = render(<TasksList {...defaultProps()} />);
 
     return { wrapper };
   };
@@ -21,6 +21,6 @@ describe('<TasksList />', () => {
   it('render all tasks in a <Task > component', () => {
     const { wrapper } = setup();
 
-    expect(wrapper.find('Task').length).toBe(tasksArray.length);
+    expect(wrapper.querySelectorAll('.task').length).toBe(tasksArray.length);
   });
 });
