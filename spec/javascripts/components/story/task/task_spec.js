@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { fireEvent, render } from '@testing-library/react';
 import Task from 'components/story/task/Task';
 
 describe('<Task />', () => {
@@ -17,10 +17,10 @@ describe('<Task />', () => {
       ...propOverrides,
     });
 
-    const wrapper = shallow(<Task {...defaultProps()} />);
-    const deleteLink = wrapper.find('.delete-btn');
-    const label = wrapper.find('label');
-    const checkbox = wrapper.find('input');
+    const { container: wrapper } = render(<Task {...defaultProps()} />);
+    const deleteLink = wrapper.querySelector('.delete-btn');
+    const label = wrapper.querySelector('label');
+    const checkbox = wrapper.querySelector('input');
 
     return { wrapper, deleteLink, label, checkbox };
   };
@@ -30,7 +30,7 @@ describe('<Task />', () => {
       const onDeleteSpy = vi.fn();
       const { deleteLink } = setup({ onDelete: onDeleteSpy });
 
-      deleteLink.simulate('click');
+      fireEvent.click(deleteLink);
 
       expect(onDeleteSpy).toHaveBeenCalled();
     });
@@ -41,7 +41,7 @@ describe('<Task />', () => {
       const onToggleCheckedBoxSpy = vi.fn();
       const { checkbox } = setup({ onToggle: onToggleCheckedBoxSpy });
 
-      checkbox.simulate('click');
+      fireEvent.click(checkbox);
 
       expect(onToggleCheckedBoxSpy).toHaveBeenCalled();
     });
@@ -51,7 +51,7 @@ describe('<Task />', () => {
     it('does not render a link to delete task', () => {
       const { deleteLink } = setup({ disabled: true });
 
-      expect(deleteLink.exists()).toBe(false);
+      expect(deleteLink).not.toBeInTheDocument();
     });
 
     describe('when user tries to update the task clicking on checkbox', () => {
@@ -59,7 +59,7 @@ describe('<Task />', () => {
         const onToggleCheckedBoxSpy = vi.fn();
         const { checkbox } = setup({ disabled: true });
 
-        checkbox.simulate('click');
+        fireEvent.click(checkbox);
 
         expect(onToggleCheckedBoxSpy).not.toHaveBeenCalled();
       });
