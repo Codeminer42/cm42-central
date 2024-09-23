@@ -70,16 +70,16 @@ describe('<ExpandedStoryNotes />', () => {
   });
 
   describe('when component is enabled', () => {
+    const onCreateSpy = vi.fn();
+    const props = {
+      onCreate: onCreateSpy,
+      onDelete,
+      disabled: false,
+    };
+    const change = 'newNote';
+
     describe('when user create a new note', () => {
       it('triggers the onCreate callback passing the note', () => {
-        const onCreateSpy = vi.fn();
-        const change = 'newNote';
-        const props = {
-          onCreate: onCreateSpy,
-          onDelete,
-          disabled: false,
-        };
-
         const { container } = renderComponent(props);
         const textArea = container.querySelector('.create-note-text');
         const button = container.querySelector('.create-note-button input');
@@ -93,12 +93,6 @@ describe('<ExpandedStoryNotes />', () => {
     });
 
     it('disables the add note button if text area is empty', () => {
-      const props = {
-        onCreate,
-        onDelete,
-        disabled: false,
-      };
-
       const { container } = renderComponent(props);
       const textArea = container.querySelector('.create-note-text');
       const button = container.querySelector('.create-note-button input');
@@ -109,16 +103,14 @@ describe('<ExpandedStoryNotes />', () => {
   });
 
   describe('when component is disabled', () => {
-    it('does not render a create note button', () => {
-      const notes = [{ id: 0, note: 'foo' }];
-      const story = newStory(notes);
-      const props = {
-        onCreate,
-        onDelete,
-        disabled: true,
-        story,
-      };
+    const props = {
+      onCreate,
+      onDelete,
+      disabled: true,
+      story: newStory([{ id: 0, note: 'foo' }]),
+    };
 
+    it('does not render a create note button', () => {
       const { container } = renderComponent(props);
       const createNoteButton = container.querySelector('.create-note-button');
 
@@ -126,15 +118,6 @@ describe('<ExpandedStoryNotes />', () => {
     });
 
     it('does not render a create note text area', () => {
-      const notes = [{ id: 0, note: 'foo' }];
-      const story = newStory(notes);
-      const props = {
-        onCreate,
-        onDelete,
-        disabled: true,
-        story,
-      };
-
       const { container } = renderComponent(props);
 
       expect(container.querySelector('.create-note-text')).toBeNull();
@@ -142,15 +125,7 @@ describe('<ExpandedStoryNotes />', () => {
 
     describe('when there are no notes', () => {
       it('renders nothing', () => {
-        const story = newStory();
-        const props = {
-          onCreate,
-          onDelete,
-          disabled: true,
-          story,
-        };
-
-        const { container } = renderComponent(props);
+        const { container } = renderComponent({ ...props, story: newStory() });
 
         expect(container.innerHTML).toBe('');
       });
