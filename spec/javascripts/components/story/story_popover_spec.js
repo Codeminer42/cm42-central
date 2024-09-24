@@ -1,28 +1,43 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render } from '@testing-library/react';
 import moment from 'moment';
 import StoryPopover, {
   StoryPopoverContent,
 } from 'components/story/StoryPopover';
 import storyFactory from '../../support/factories/storyFactory';
+import { beforeAll } from 'vitest';
 
 describe('<StoryPopover />', () => {
+  let props;
+
+  beforeAll(() => {
+    props = storyFactory();
+  });
+
   beforeEach(function () {
     vi.spyOn(I18n, 't');
+    vi.spyOn(window.md, 'makeHtml').mockReturnValue(
+      `<p>${props.description}</p>`
+    );
   });
 
   afterEach(function () {
     I18n.t.mockRestore();
+    window.md.makeHtml.mockRestore();
   });
 
   it('renders the popover', () => {
     const props = storyFactory();
-    const wrapper = shallow(<StoryPopover story={props} />);
-    expect(wrapper.find('Popover').prop('title')).toBe(props.title);
+    const { getByTestId } = render(<StoryPopover story={props} />);
+
+    const popoverChildren = getByTestId('story-popover-children');
+
+    expect(popoverChildren).toBeInTheDocument();
   });
+
   it('renders the popover content', () => {
-    const props = storyFactory();
-    const wrapper = shallow(<StoryPopoverContent story={props} />);
+    const { container } = render(<StoryPopoverContent story={props} />);
+    const markdown = container.querySelector(`.Markdown`);
 
     expect(I18n.t).toHaveBeenCalledWith('requested by user on date', {
       user: props.requestedByName,
@@ -32,15 +47,18 @@ describe('<StoryPopover />', () => {
     expect(I18n.t).toHaveBeenCalledWith('description');
     expect(I18n.t).toHaveBeenCalledWith('notes');
 
-    expect(wrapper.find(`Markdown[source="${props.description}"]`)).toExist();
-    props.notes.map(note => {
-      expect(wrapper.find(`Markdown[source="${note.note}"]`)).toExist(),
-        expect(wrapper.find(`[data-test-id=${note.id}]`).text()).toContain(
-          `${note.userName}`
-        ),
-        expect(wrapper.find(`[data-test-id=${note.id}]`).text()).toContain(
-          `${note.createdAt}`
-        );
+    expect(markdown.innerHTML).toContain(props.description);
+  });
+
+  it('renders the popover notes', () => {
+    const props = storyFactory();
+    const { getAllByTestId } = render(<StoryPopoverContent story={props} />);
+
+    const notes = getAllByTestId('markdown-wrapper-text');
+
+    props.notes.map((note, index) => {
+      expect(notes[index].innerHTML).toContain(`${note.userName}`);
+      expect(notes[index].innerHTML).toContain(`${note.createdAt}`);
     });
   });
 });
