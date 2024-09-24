@@ -36,7 +36,9 @@ export default class Popover extends Component {
   render() {
     return (
       <Fragment>
-        {this.props.children({ ref: this.saveChildRef })}
+        <div data-testid="story-popover-children">
+          {this.props.children({ ref: this.saveChildRef })}
+        </div>
         <div style={{ display: 'none' }}>
           {this.props.renderContent({ ref: this.saveContentRef })}
         </div>
