@@ -1,24 +1,59 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { renderWithProviders } from '../setupRedux';
 import { StoryItem } from 'components/story/StoryItem';
 import storyFactory from '../../support/factories/storyFactory';
-import ExpandedStory from 'components/story/ExpandedStory';
-import CollapsedStory from 'components/story/CollapsedStory';
 import moment from 'moment';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+
+vi.mock('react-clipboard.js', () => ({
+  default: ({ children, ...props }) => <button {...props}>{children}</button>,
+}));
 
 describe('<StoryItem />', () => {
-  it('renders the StoryItem component within a Collapsed Story', () => {
-    const story = storyFactory({ collapsed: true });
-    const wrapper = shallow(<StoryItem story={story} toggleStory={vi.fn()} />);
+  vi.spyOn(window.md, 'makeHtml').mockReturnValue('<p>Test</p>');
 
-    expect(wrapper.find(CollapsedStory)).toExist();
+  const renderComponent = props => {
+    const { container: wrapper } = renderWithProviders(
+      <DragDropContext onDragEnd={vi.fn}>
+        <Droppable>
+          {() => <StoryItem {...props} toggleStory={vi.fn()} />}
+        </Droppable>
+      </DragDropContext>,
+      {
+        preloadedState: {
+          project: {
+            pointValues: [],
+          },
+        },
+      }
+    );
+    const expandedStory = wrapper.querySelector('.Story--expanded');
+
+    return { wrapper, expandedStory };
+  };
+
+  it('renders the StoryItem component within a Collapsed Story', () => {
+    const story = storyFactory({
+      collapsed: true,
+      _editing: {
+        loading: false,
+      },
+    });
+    const { wrapper } = renderComponent({ story });
+
+    expect(wrapper.querySelector('.Story__icons-block')).toBeInTheDocument();
   });
 
   it('renders the StoryItem component within a Expanded Story', () => {
-    const story = storyFactory({ collapsed: false });
-    const wrapper = shallow(<StoryItem story={story} toggleStory={vi.fn()} />);
+    const story = storyFactory({
+      collapsed: false,
+      _editing: {
+        loading: false,
+      },
+    });
+    const { wrapper } = renderComponent({ story });
 
-    expect(wrapper.find(ExpandedStory)).toExist();
+    expect(wrapper.querySelector('.Story--expanded')).toBeInTheDocument();
   });
 
   describe('when the story is a release that is late', () => {
@@ -27,15 +62,17 @@ describe('<StoryItem />', () => {
         collapsed: false,
         storyType: 'release',
         releaseDate: moment().subtract(3, 'days'),
+        _editing: {
+          loading: false,
+        },
       });
       const className = 'Story--late-release';
 
-      const wrapper = shallow(
-        <StoryItem story={story} toggleStory={vi.fn()} />
-      );
-      const children = wrapper.find(ExpandedStory);
+      const { wrapper } = renderComponent({ story });
 
-      expect(children.prop('className')).toContain(className);
+      const children = wrapper.querySelector('.Story--expanded');
+
+      expect(children).toHaveClass(className);
     });
 
     it('put a late release message on childrens prop title', () => {
@@ -43,33 +80,37 @@ describe('<StoryItem />', () => {
         collapsed: false,
         storyType: 'release',
         releaseDate: moment().subtract(3, 'days'),
+        _editing: {
+          loading: false,
+        },
       });
       const title = I18n.t('story.warnings.backlogged_release');
 
-      const wrapper = shallow(
-        <StoryItem story={story} toggleStory={vi.fn()} />
-      );
-      const children = wrapper.find(ExpandedStory);
+      const { wrapper } = renderComponent({ story });
 
-      expect(children).toHaveProp('title', title);
+      const children = wrapper.querySelector('.Story--expanded');
+
+      expect(children.title).toBe(title);
     });
   });
 
   describe("when the story is a release that isn't late", () => {
     it('do not put a className on children components', () => {
+      const DEFAULT_CLASSES_QTY = 2;
       const story = storyFactory({
         collapsed: false,
         storyType: 'release',
         releaseDate: moment().add(3, 'days'),
+        _editing: {
+          loading: false,
+        },
       });
-      const className = '';
 
-      const wrapper = shallow(
-        <StoryItem story={story} toggleStory={vi.fn()} />
-      );
-      const children = wrapper.find(ExpandedStory);
+      const { wrapper } = renderComponent({ story });
 
-      expect(children).toHaveProp('className', className);
+      const children = wrapper.querySelector('.Story--expanded');
+
+      expect(children.classList.length).toBe(DEFAULT_CLASSES_QTY);
     });
 
     it('do not put a title on children components', () => {
@@ -77,45 +118,49 @@ describe('<StoryItem />', () => {
         collapsed: false,
         storyType: 'release',
         releaseDate: moment().add(3, 'days'),
+        _editing: {
+          loading: false,
+        },
       });
       const title = '';
 
-      const wrapper = shallow(
-        <StoryItem story={story} toggleStory={vi.fn()} />
-      );
-      const children = wrapper.find(ExpandedStory);
+      const { wrapper } = renderComponent({ story });
 
-      expect(children).toHaveProp('title', title);
+      const children = wrapper.querySelector('.Story--expanded');
+
+      expect(children.title).toBe(title);
     });
   });
 
-  const render = props => {
-    const wrapper = shallow(<StoryItem {...props} toggleStory={vi.fn()} />);
-    const expandedStory = wrapper.find('[data-id="expanded-story"]');
-    return { wrapper, expandedStory };
-  };
-
   describe('when the story is accepted', () => {
     it('puts .Story--accepted on childrens prop className', () => {
-      const { expandedStory } = render({
+      const { expandedStory } = renderComponent({
         story: storyFactory({
           collapsed: false,
           state: 'accepted',
+          _editing: {
+            loading: false,
+          },
         }),
       });
-      expect(expandedStory.prop('className')).toContain('Story--accepted');
+
+      expect(expandedStory).toHaveClass('Story--accepted');
     });
   });
 
   describe('when the story is not accepted', () => {
     it('does not put .Story--accepted on childrens prop className', () => {
-      const { expandedStory } = render({
+      const { expandedStory } = renderComponent({
         story: storyFactory({
           collapsed: false,
           state: 'unscheduled',
+          _editing: {
+            loading: false,
+          },
         }),
       });
-      expect(expandedStory.prop('className')).not.toContain('Story--accepted');
+
+      expect(expandedStory).not.toHaveClass('Story--accepted');
     });
   });
 });
