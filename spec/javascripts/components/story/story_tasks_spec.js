@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { render } from '@testing-library/react';
 
 import StoryTasks from 'components/story/StoryTasks';
 
@@ -25,13 +25,15 @@ describe('<StoryTasks />', function () {
       id: 1,
     };
 
-    const wrapper = mount(<StoryTasks tasks={[task]} disabled={false} />);
-    expect(wrapper.find('.task')).toExist();
+    const { container } = render(
+      <StoryTasks tasks={[task]} disabled={false} />
+    );
+    expect(container.querySelector('.task')).toBeInTheDocument();
   });
 
   describe('with an empty collection', function () {
     it('should still have a label', function () {
-      const wrapper = shallow(<StoryTasks tasks={[]} disabled={false} />);
+      render(<StoryTasks tasks={[]} disabled={false} />);
       expect(I18n.t).toHaveBeenCalledWith('story.tasks');
     });
   });
