@@ -115,16 +115,13 @@ describe('iteration', function () {
       expect(iteration.canTakeStory(story)).toBeFalsy();
     });
 
-    it('should accept a feature if there are enough free points', function () {
-      var availablePointsStub = vi.spyOn(iteration, 'availablePoints');
-      availablePointsStub.mockReturnValueOnce(3);
-      var pointsStub = vi.spyOn(iteration, 'points');
-      pointsStub.mockReturnValueOnce(1);
+    it('should accept a feature if there are enough free points', () => {
+      vi.spyOn(iteration, 'availablePoints').mockReturnValueOnce(3);
+      vi.spyOn(iteration, 'points').mockReturnValueOnce(1);
 
-      var stub = vi.fn();
-      var story = { get: stub };
+      var story = { get: vi.fn() };
 
-      stub.mockImplementation(arg => {
+      story.get.mockImplementationOnce(arg => {
         switch (arg) {
           case 'story_type':
             return 'feature';
@@ -134,11 +131,24 @@ describe('iteration', function () {
       });
 
       expect(iteration.canTakeStory(story)).toBeTruthy();
+    });
+
+    it('should not accept a feature if there are enough free points', function () {
+      vi.spyOn(iteration, 'availablePoints').mockReturnValueOnce(3);
+      vi.spyOn(iteration, 'points').mockReturnValueOnce(1);
+
+      var story = { get: vi.fn() };
 
       // Story is too big to fit in iteration
-      stub.mockImplementation(arg => {
-        if (arg === 'estimate') return 4;
+      story.get.mockImplementation(arg => {
+        switch (arg) {
+          case 'story_type':
+            return 'feature';
+          case 'estimate':
+            return 4;
+        }
       });
+
       expect(iteration.canTakeStory(story)).toBeFalsy();
     });
 
@@ -169,17 +179,14 @@ describe('iteration', function () {
     });
 
     it('should be set to true once canTakeStory has returned false', function () {
-      var stub = vi.fn();
-      var story = { get: stub };
+      var story = { get: vi.fn() };
 
-      iteration.availablePoints = vi.fn();
-      iteration.availablePoints.mockReturnValueOnce(0);
-      iteration.points = vi.fn();
-      iteration.points.mockReturnValueOnce(1);
+      vi.spyOn(iteration, 'availablePoints').mockReturnValueOnce(0);
+      vi.spyOn(iteration, 'points').mockReturnValueOnce(1);
 
-      stub.mockImplementation(arg => {
+      story.get.mockImplementation(arg => {
         switch (arg) {
-          case 'story_time':
+          case 'story_type':
             return 'feature';
           case 'estimate':
             return 1;
