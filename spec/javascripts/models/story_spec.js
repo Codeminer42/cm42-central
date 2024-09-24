@@ -257,13 +257,14 @@ describe('Story', function () {
       // If the story is accepted, but it's accepted_at date is within the
       // current iteration, it should be in the in_progress column, otherwise
       // it should be in the #done column
+      story.set({ state: 'accepted' });
       vi.spyOn(story, 'iterationNumber').mockReturnValueOnce(1);
       story.collection.project.currentIterationNumber = vi
         .fn()
         .mockReturnValueOnce(2);
-      story.set({ state: 'accepted' });
       expect(story.column).toEqual('#done');
       story.collection.project.currentIterationNumber.mockReturnValueOnce(1);
+      story.collection.project.currentIterationNumber();
       story.setColumn();
       expect(story.column).toEqual('#in_progress');
     });
@@ -376,7 +377,7 @@ describe('Story', function () {
 
   describe('iterations', function () {
     it('should return the iteration number for an accepted story', function () {
-      story.collection.project.getIterationNumberForDate = vi
+      story.collection.project.iterationNumber = vi
         .fn()
         .mockReturnValueOnce(999);
       story.set({ accepted_at: '2011/07/25', state: 'accepted' });
