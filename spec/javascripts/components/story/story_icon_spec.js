@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render } from '@testing-library/react';
 import StoryIcon from 'components/story/StoryIcon';
 
 describe('<StoryIcon />', () => {
@@ -7,15 +7,19 @@ describe('<StoryIcon />', () => {
     { storyType: 'feature', icon: 'start', className: 'star' },
     { storyType: 'bug', icon: 'bug_report', className: 'bug' },
     { storyType: 'chore', icon: 'settings', className: 'dark' },
-    { storyType: 'release', icon: 'bookmark', className: 'bookmark' }
+    { storyType: 'release', icon: 'bookmark', className: 'bookmark' },
   ];
   iconRules.forEach(({ storyType, icon, className }) => {
-    describe(`when storyType = ${storyType}`,() => {
+    describe(`when storyType = ${storyType}`, () => {
       it('renders the story icon', () => {
-        const wrapper = shallow(<StoryIcon storyType={storyType} />);
+        const { container } = render(<StoryIcon storyType={storyType} />);
 
-        expect(wrapper.find('i')).toHaveClassName(`mi md-${className} md-16`);
-        expect(wrapper.find('.Story__icon').text()).toContain(icon);
+        expect(container.querySelector('i')).toHaveClass(
+          `mi md-${className} md-16`
+        );
+        expect(container.querySelector('.Story__icon').innerHTML).toContain(
+          icon
+        );
       });
     });
   });
