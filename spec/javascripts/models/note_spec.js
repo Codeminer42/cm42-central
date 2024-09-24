@@ -44,7 +44,7 @@ describe('Note', function () {
 
   describe('humanAttributeName', function () {
     beforeEach(function () {
-      vi.spyOn(I18n, 'foo_bar').mockImplementation(arg => {
+      vi.spyOn(I18n, 't').mockImplementation(arg => {
         if (arg === 'foo_bar') return 'Foo bar';
       });
     });
