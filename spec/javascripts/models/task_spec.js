@@ -1,4 +1,5 @@
 import Task from 'models/task';
+import { afterEach } from 'vitest';
 
 describe('Task', function () {
   let task;
@@ -43,12 +44,12 @@ describe('Task', function () {
 
   describe('humanAttributeName', function () {
     beforeEach(function () {
-      vi.spyOn(I18n, 'foo_bar').mockImplementation(arg => {
+      vi.spyOn(I18n, 't').mockImplementation(arg => {
         if (arg === 'foo_bar') return 'Foo bar';
       });
     });
 
-    afterEach(function () {
+    afterEach(() => {
       I18n.t.mockRestore();
     });
 
