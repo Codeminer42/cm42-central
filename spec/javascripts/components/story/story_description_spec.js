@@ -1,14 +1,13 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 
 import StoryDescription from 'components/story/StoryDescription';
-import StoryLink from 'components/stories/StoryLink';
 
 describe('<StoryDescription />', function () {
   let story;
 
   beforeEach(function () {
-    vi.spy(window.md, 'makeHtml');
+    vi.spyOn(window.md, 'makeHtml');
     story = { id: 5, description: 'Description' };
   });
 
@@ -18,7 +17,7 @@ describe('<StoryDescription />', function () {
 
   it('should ignore when there are no valid ids', function () {
     window.md.makeHtml.mockReturnValueOnce('<p>Description</p>');
-    const wrapper = mount(
+    const { container } = render(
       <StoryDescription
         name="description"
         linkedStories={{}}
@@ -29,23 +28,31 @@ describe('<StoryDescription />', function () {
         value={''}
       />
     );
+
     expect(window.md.makeHtml).toHaveBeenCalledWith('Description');
-    expect(wrapper.find('.description').text()).toContain('Description');
+    expect(container.querySelector('.description').innerHTML).toContain(
+      'Description'
+    );
   });
 
   it('should turn a valid id into a StoryLink', function () {
     const linkedStory = {
       id: 9,
-      get: vi.fn().mockReturnValueOnce('unscheduled'),
+      get: vi.fn().mockImplementation(attr => {
+        if (attr === 'id') return 9;
+        else return 'unscheduled';
+      }),
       created_at: vi.fn(),
       humanAttributeName: vi.fn(),
       escape: vi.fn(),
       hasNotes: vi.fn(),
     };
+
     window.md.makeHtml.mockReturnValueOnce(
       "<p>Description <a data-story-id='9'></a></p>"
     );
-    const wrapper = mount(
+
+    const { container } = render(
       <StoryDescription
         name="description"
         linkedStories={{ 9: linkedStory }}
@@ -56,15 +63,18 @@ describe('<StoryDescription />', function () {
         value={''}
       />
     );
+
     expect(window.md.makeHtml).toHaveBeenCalledWith(
       'Description <a data-story-id="9"></a>'
     );
-    expect(wrapper.find(StoryLink).prop('story')).toBe(linkedStory);
+    expect(
+      container.querySelector(`#story-link-${linkedStory.id}`)
+    ).toBeInTheDocument();
   });
 
   it('should render markdown transformed as html', function () {
     window.md.makeHtml.mockReturnValueOnce('<h1>Header test</h1>');
-    const wrapper = mount(
+    const { container } = render(
       <StoryDescription
         name="description"
         linkedStories={{}}
@@ -76,7 +86,7 @@ describe('<StoryDescription />', function () {
       />
     );
     expect(window.md.makeHtml).toHaveBeenCalledWith('# Header test');
-    expect(wrapper.find('h1')).toExist();
-    expect(wrapper.find('h1').text()).toContain('Header test');
+    expect(container.querySelector('h1')).toBeInTheDocument();
+    expect(container.querySelector('h1').innerHTML).toContain('Header test');
   });
 });
