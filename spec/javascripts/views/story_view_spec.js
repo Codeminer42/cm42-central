@@ -602,23 +602,27 @@ describe('StoryView', function () {
     });
 
     it("is text when story isn't new and description isn't empty", function () {
+      view.model.once('change', () => {
+        expect(window.md.makeHtml).toHaveBeenCalledWith('foo');
+        expect(view.$('textarea[name="description"]').length).toEqual(0);
+        expect(view.$('.description').text()).toContain(innerText);
+      });
       window.md.makeHtml.mockReturnValueOnce('<p>foo</p>');
       view.model.isNew = vi.fn().mockReturnValueOnce(false);
       const innerText = 'foo';
       view.model.set({ description: innerText });
       view.render();
-      expect(window.md.makeHtml).toHaveBeenCalledWith('foo');
-      expect(view.$('textarea[name="description"]').length).toEqual(0);
-      expect(view.$('.description').text()).toContain(innerText);
     });
 
     it("is a button when story isn't new and description is empty", function () {
+      view.model.once('change', () => {
+        expect(
+          view.$('input[name="edit-description"][type="button"]').length
+        ).toEqual(1);
+      });
       view.model.isNew = vi.fn().mockReturnValueOnce(false);
       view.model.set({ description: '' });
       view.render();
-      expect(
-        view.$('input[name="edit-description"][type="button"]').length
-      ).toEqual(1);
     });
 
     it('is a text area after .edit-description is clicked', function () {
@@ -859,12 +863,13 @@ describe('StoryView', function () {
 
       it('does not show save or delete buttons', function () {
         var $storyControls;
+        view.model.once('change', () => {
+          $storyControls = view.$el[0];
+          expect($storyControls.classList).not.toContain('submit'); 
+        });
         view.canEdit = vi.fn().mockReturnValueOnce(true);
         view.render();
         story.set({ state: 'accepted' });
-        $storyControls = view.$el[0];
-
-        expect($storyControls).not.toContain('.submit');
       });
     });
   });
