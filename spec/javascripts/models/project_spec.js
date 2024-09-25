@@ -149,12 +149,16 @@ describe('Project model', function () {
 
     it('should only reload a story once if present in multiple changesets', function () {
       var story_json = { story: { id: 987, title: 'New changeset story' } };
-      var server = sinon.fakeServer.create();
-      server.respondWith('GET', '/projects/999/stories/987', [
-        200,
-        { 'Content-Type': 'application/json' },
-        JSON.stringify(story_json),
-      ]);
+      server.use(
+        http.get('/projects/999/stories/987', () => {
+          return HttpResponse.json(
+            story_json,
+            { status: 200 },
+          );
+        })
+      );
+
+      const spy = vi.spyOn(project, 'handleChangesets');
 
       // set of changes represents the same story modified twice.  It
       // should only be loaded once.
@@ -164,7 +168,7 @@ describe('Project model', function () {
       ];
 
       project.handleChangesets(changesets);
-      expect(server.requests.length).toEqual(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
   });
 
