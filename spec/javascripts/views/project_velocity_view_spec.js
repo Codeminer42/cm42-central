@@ -14,21 +14,17 @@ describe('ProjectVelocityView', function () {
 
     overrideView = {};
 
-    ProjectVelocityOverrideViewStub = () => overrideView;
+    vi.spyOn(ProjectVelocityOverrideView.prototype, 'template').mockImplementation(() => {});
 
-    ProjectVelocityOverrideViewStub.prototype.template = vi.fn();
+    ProjectVelocityOverrideViewStub = () => overrideView;
 
     ProjectVelocityOverrideView.mockImplementation(
       () => ProjectVelocityOverrideViewStub
     );
 
-    vi.spyOn(ProjectVelocityView.prototype, 'listenTo');
+    vi.spyOn(ProjectVelocityView.prototype, 'listenTo').mockImplementation(() => {});
 
-    subject = new ProjectVelocityView({ model: model });
-  });
-
-  afterEach(() => {
-    ProjectVelocityView.prototype.listenTo.mockRestore();
+    subject = new ProjectVelocityView({ model });
   });
 
   it('should have a top level element', function () {
@@ -67,7 +63,7 @@ describe('ProjectVelocityView', function () {
       subject.template = vi.fn().mockImplementation(arg => {
         const object = { project: model };
 
-        if (arg == object) return template;
+        if (JSON.stringify(arg) == JSON.stringify(object)) return template;
       });
     });
 
