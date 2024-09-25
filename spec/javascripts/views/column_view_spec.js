@@ -84,14 +84,14 @@ describe('ColumnView', function () {
     });
 
     it('returns true if the column is hidden', function () {
-      view.spyOn($el, 'is').mockImplementation(arg => {
+      vi.spyOn(view.$el, 'is').mockImplementation(arg => {
         if (arg === ':hidden') return true;
       });
       expect(view.hidden()).toEqual(true);
     });
 
     it('returns false if the column is visible', function () {
-      view.spyOn($el, 'is').mockImplementation(arg => {
+      vi.spyOn(view.$el, 'is').mockImplementation(arg => {
         if (arg === ':hidden') return false;
       });
       expect(view.hidden()).toEqual(false);
