@@ -2,7 +2,7 @@ import StoryView from 'views/story_view';
 import React from 'react';
 import template from 'templates/story.ejs';
 import OriginalStory from 'models/story';
-import { server } from './mocks/server';
+import { server } from '../mocks/server';
 import { afterAll, afterEach, beforeAll } from 'vitest';
 import { http, HttpResponse } from 'msw';
 

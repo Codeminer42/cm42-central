@@ -1,10 +1,22 @@
 import Cookies from 'js-cookie';
 import Project from 'models/project';
 import Iteration from 'models/iteration';
+import { server } from '../mocks/server';
+import { http, HttpResponse } from 'msw';
 
 describe('Project model', function () {
   let story;
   let project;
+
+  beforeAll(() => {
+    server.listen({
+      onUnhandledRequest: 'error',
+    });
+  });
+
+  afterAll(() => {
+    server.close();
+  });
 
   beforeEach(function () {
     Cookies.set('current_flow', 'progress_to_left', { expires: 365 });
@@ -31,6 +43,10 @@ describe('Project model', function () {
     });
 
     project.projectBoard.stories.add(story);
+  });
+
+  afterEach(() => {
+    server.resetHandlers();
   });
 
   describe('when instantiated', function () {
@@ -69,27 +85,25 @@ describe('Project model', function () {
 
   describe('changesets', function () {
     it('should load changesets when last_changeset_id is changed', function () {
-      var server = sinon.fakeServer.create();
-      var spy = vi.spyOn(project, 'handleChangesets');
       var changesets = [
-        { changeset: { id: 2, story_id: 456, project_id: 789 } },
+        { changeset: { id: 2, story_id: 456, project_id: 789 }},
       ];
-      server.respondWith('GET', '/projects/999/changesets?from=0&to=2', [
-        200,
-        { 'Content-Type': 'application/json' },
-        JSON.stringify(changesets),
-      ]);
+
+      vi.spyOn(project, 'handleChangesets').mockImplementation((arg) => {
+        expect(arg).toStrictEqual(changesets);
+      });
+
+      server.use(
+        http.get('/projects/999/changesets', () => {
+          return HttpResponse.json(
+            changesets,
+            { status: 200 },
+          );
+        })
+      );
 
       expect(project.get('last_changeset_id')).toBeNull();
       project.set({ last_changeset_id: 2 });
-
-      expect(server.requests.length).toEqual(1);
-
-      server.respond();
-
-      expect(spy).toHaveBeenCalledWith(changesets);
-
-      server.mockRestore();
     });
 
     it('should reload changed stories from changesets', function () {
