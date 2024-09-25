@@ -241,6 +241,14 @@ describe('StoryView', function () {
     });
 
     it('should reload after cancel if there were existing errors', function () {
+      server.use(
+        http.get(url, () => {
+          return HttpResponse.json(
+            {},
+            { status: 422 }
+          );
+        })
+      );
       story.set({ errors: true });
       expect(story.get('errors')).toEqual(true);
       vi.spyOn(story, 'hasErrors').mockReturnValueOnce(true);
@@ -360,6 +368,15 @@ describe('StoryView', function () {
     });
 
     it('should call setAcceptedAt on the story', function () {
+      server.use(
+        http.put(url, () => {
+          return HttpResponse.json(
+            {},
+            { status: 200 }
+          );
+        })
+      );
+      
       view.saveEdit(e);
       expect(story.setAcceptedAt).toHaveBeenCalledOnce();
     });
@@ -586,7 +603,6 @@ describe('StoryView', function () {
   describe('description', function () {
     beforeEach(function () {
       view.model.set({ editing: true });
-      view.canEdit = vi.fn().mockReturnValueOnce(true);
     });
 
     afterEach(function () {
@@ -595,7 +611,6 @@ describe('StoryView', function () {
 
     it('is text area when story is new', function () {
       view.model.isNew = vi.fn().mockReturnValueOnce(true);
-      view.canEdit = vi.fn().mockReturnValueOnce(true);
       view.render();
       expect(view.$('textarea[name="description"]').length).toEqual(1);
       expect(view.$('.description').length).toEqual(0);
@@ -867,7 +882,6 @@ describe('StoryView', function () {
           $storyControls = view.$el[0];
           expect($storyControls.classList).not.toContain('submit'); 
         });
-        view.canEdit = vi.fn().mockReturnValueOnce(true);
         view.render();
         story.set({ state: 'accepted' });
       });
