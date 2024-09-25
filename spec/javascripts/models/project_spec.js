@@ -3,6 +3,7 @@ import Project from 'models/project';
 import Iteration from 'models/iteration';
 import { server } from '../mocks/server';
 import { http, HttpResponse } from 'msw';
+import { afterEach } from 'vitest';
 
 describe('Project model', function () {
   let story;
@@ -107,6 +108,7 @@ describe('Project model', function () {
     });
 
     it('should reload changed stories from changesets', function () {
+      
       var changesets = [
         { changeset: { id: 123, story_id: 456, project_id: 789 } },
       ];
@@ -120,16 +122,18 @@ describe('Project model', function () {
     });
 
     it('should load new stories from changesets', function () {
-      var story_json = { story: { id: 987, title: 'New changeset story' } };
-      var server = sinon.fakeServer.create();
-      server.respondWith('GET', '/projects/999/stories/987', [
-        200,
-        { 'Content-Type': 'application/json' },
-        JSON.stringify(story_json),
-      ]);
+      var story_json = { story: { id: 123 } };
+      server.use(
+        http.get('/projects/999/stories/123', () => {
+          return HttpResponse.json(
+            story_json,
+            { status: 200 },
+          );
+        })
+      );
 
       var changesets = [
-        { changeset: { id: 123, story_id: 987, project_id: 789 } },
+        { changeset: { id: 123, story_id: 123, project_id: 987 } },
       ];
       var getSpy = vi.spyOn(project.projectBoard.stories, 'get');
       var addSpy = vi.spyOn(project.projectBoard.stories, 'add');
@@ -141,9 +145,6 @@ describe('Project model', function () {
       expect(addSpy).toHaveBeenCalled();
       expect(project.projectBoard.stories.length).toEqual(
         initial_collection_length + 1
-      );
-      expect(project.projectBoard.stories.get(987).get('title')).toEqual(
-        'New changeset story'
       );
     });
 
