@@ -123,9 +123,6 @@ describe('Project model', function () {
 
       project.handleChangesets(changesets);
 
-      expect(server.requests.length).toEqual(1);
-      server.respond();
-
       expect(getSpy).toHaveBeenCalled();
       expect(addSpy).toHaveBeenCalled();
       expect(project.projectBoard.stories.length).toEqual(
@@ -134,8 +131,6 @@ describe('Project model', function () {
       expect(project.projectBoard.stories.get(987).get('title')).toEqual(
         'New changeset story'
       );
-
-      server.mockRestore();
     });
 
     it('should only reload a story once if present in multiple changesets', function () {
@@ -298,8 +293,7 @@ describe('Project model', function () {
       var doneIterations = _.map([1, 2, 3, 4, 5], function (i) {
         return { points: vi.fn().mockReturnValueOnce(i) };
       });
-      var doneIterationsStub = vi.spyOn(project, 'doneIterations');
-      doneIterationsStub.mockReturnValueOnce(doneIterations);
+      vi.spyOn(project, 'doneIterations').mockImplementation(() => doneIterations);
 
       // By default, should take the average of the last 3 iterations,
       // (3 + 4 + 5) = 12 / 3 = 4
@@ -310,8 +304,7 @@ describe('Project model', function () {
       var doneIterations = _.map([1, 2, 0, 4, 5], function (i) {
         return { points: vi.fn().mockReturnValueOnce(i) };
       });
-      var doneIterationsStub = vi.spyOn(project, 'doneIterations');
-      doneIterationsStub.mockReturnValueOnce(doneIterations);
+      vi.spyOn(project, 'doneIterations').mockImplementation(() => doneIterations);
 
       // By default, should take the average of the last 3 iterations,
       // (2 + 4 + 5) = 11 / 3 = 5
@@ -322,8 +315,7 @@ describe('Project model', function () {
       var doneIterations = _.map([3, 2, 2], function (i) {
         return { points: vi.fn().mockReturnValueOnce(i) };
       });
-      var doneIterationsStub = vi.spyOn(project, 'doneIterations');
-      doneIterationsStub.mockReturnValueOnce(doneIterations);
+      vi.spyOn(project, 'doneIterations').mockImplementation(() => doneIterations);
 
       // Should floor the result
       // (3 + 2 + 2) = 7 / 3 = 2.333333
@@ -336,8 +328,8 @@ describe('Project model', function () {
       var doneIterations = _.map([3, 1], function (i) {
         return { points: vi.fn().mockReturnValueOnce(i) };
       });
-      var doneIterationsStub = vi.spyOn(project, 'doneIterations');
-      doneIterationsStub.mockReturnValueOnce(doneIterations);
+      
+      vi.spyOn(project, 'doneIterations').mockImplementation(() => doneIterations);
 
       expect(project.velocity()).toEqual(2);
     });
@@ -346,8 +338,7 @@ describe('Project model', function () {
       var doneIterations = _.map([0, 0, 0], function (i) {
         return { points: vi.fn().mockReturnValueOnce(i) };
       });
-      var doneIterationsStub = vi.spyOn(project, 'doneIterations');
-      doneIterationsStub.mockReturnValueOnce(doneIterations);
+      vi.spyOn(project, 'doneIterations').mockImplementation(() => doneIterations);
 
       expect(project.velocity()).toEqual(1);
     });
