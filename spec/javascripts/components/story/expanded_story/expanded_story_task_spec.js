@@ -15,6 +15,8 @@ describe('<ExpandedStoryTask />', () => {
       },
       onDelete: vi.fn(),
       onToggle: vi.fn(),
+      onSave: vi.fn(),
+      disabled: false,
     };
 
     const mergedProps = { ...defaultProps, ...props };
