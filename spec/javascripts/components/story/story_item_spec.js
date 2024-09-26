@@ -15,7 +15,7 @@ describe('<StoryItem />', () => {
   const renderComponent = props => {
     const { container: wrapper } = renderWithProviders(
       <DragDropContext onDragEnd={vi.fn}>
-        <Droppable droppableId="story-item-test">
+        <Droppable droppableId="story-item-test" key={50}>
           {provided => (
             <div ref={provided.innerRef}>
               <StoryItem {...props} toggleStory={vi.fn()} />
@@ -27,6 +27,7 @@ describe('<StoryItem />', () => {
         preloadedState: {
           project: {
             pointValues: [],
+            labels: [],
           },
         },
       }
@@ -43,7 +44,7 @@ describe('<StoryItem />', () => {
         loading: false,
       },
     });
-    const { wrapper } = renderComponent({ story });
+    const { wrapper } = renderComponent({ story, index: 1 });
 
     expect(wrapper.querySelector('.Story__icons-block')).toBeInTheDocument();
   });
