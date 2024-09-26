@@ -120,12 +120,15 @@ describe('StoryView', function () {
 
     window.projectView.usernames = vi.fn();
 
-    afterEach(function () {
-      window.md.makeHtml.mockRestore();
-    });
+    server.use(
+      http.put(url, () => {
+        return HttpResponse.json({}, { status: 200 });
+      })
+    );
   });
 
   afterEach(() => {
+    window.md.makeHtml.mockRestore();
     server.resetHandlers();
   });
 
@@ -243,10 +246,7 @@ describe('StoryView', function () {
     it('should reload after cancel if there were existing errors', function () {
       server.use(
         http.get(url, () => {
-          return HttpResponse.json(
-            {},
-            { status: 422 }
-          );
+          return HttpResponse.json({}, { status: 422 });
         })
       );
       story.set({ errors: true });
@@ -370,13 +370,10 @@ describe('StoryView', function () {
     it('should call setAcceptedAt on the story', function () {
       server.use(
         http.put(url, () => {
-          return HttpResponse.json(
-            {},
-            { status: 200 }
-          );
+          return HttpResponse.json({}, { status: 200 });
         })
       );
-      
+
       view.saveEdit(e);
       expect(story.setAcceptedAt).toHaveBeenCalledOnce();
     });
@@ -880,7 +877,7 @@ describe('StoryView', function () {
         var $storyControls;
         view.model.once('change', () => {
           $storyControls = view.$el[0];
-          expect($storyControls.classList).not.toContain('submit'); 
+          expect($storyControls.classList).not.toContain('submit');
         });
         view.render();
         story.set({ state: 'accepted' });
