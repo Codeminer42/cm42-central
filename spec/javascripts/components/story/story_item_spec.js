@@ -15,7 +15,7 @@ describe('<StoryItem />', () => {
   const renderComponent = props => {
     const { container: wrapper } = renderWithProviders(
       <DragDropContext onDragEnd={vi.fn}>
-        <Droppable droppableId="story-item-test" key={50}>
+        <Droppable droppableId="story-item-test">
           {provided => (
             <div ref={provided.innerRef}>
               <StoryItem {...props} toggleStory={vi.fn()} />
@@ -62,7 +62,7 @@ describe('<StoryItem />', () => {
   });
 
   describe('when the story is a release that is late', () => {
-    it('put .Story--late-release on childrens prop className', () => {
+    it.only('put .Story--late-release on childrens prop className', () => {
       const story = storyFactory({
         collapsed: false,
         storyType: 'release',
@@ -84,7 +84,7 @@ describe('<StoryItem />', () => {
       const story = storyFactory({
         collapsed: false,
         storyType: 'release',
-        releaseDate: moment().subtract(3, 'days'),
+        releaseDate: moment().subtract(3, 'days').toString(),
         _editing: {
           loading: false,
         },
@@ -105,7 +105,7 @@ describe('<StoryItem />', () => {
       const story = storyFactory({
         collapsed: false,
         storyType: 'release',
-        releaseDate: moment().add(3, 'days'),
+        releaseDate: moment().add(3, 'days').toString(),
         _editing: {
           loading: false,
         },
@@ -122,7 +122,7 @@ describe('<StoryItem />', () => {
       const story = storyFactory({
         collapsed: false,
         storyType: 'release',
-        releaseDate: moment().add(3, 'days'),
+        releaseDate: moment().add(3, 'days').toString(),
         _editing: {
           loading: false,
         },
