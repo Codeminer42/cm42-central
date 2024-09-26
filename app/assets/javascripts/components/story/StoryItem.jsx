@@ -35,7 +35,10 @@ export const StoryItem = ({
   };
 
   const childProps = {
-    story,
+    story: {
+      ...story,
+      releaseDate: story.releaseDate?.toString() || '',
+    },
     onToggle: () => toggleStory(story.id, from),
     className,
     title,
