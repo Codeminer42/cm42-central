@@ -15,8 +15,12 @@ describe('<StoryItem />', () => {
   const renderComponent = props => {
     const { container: wrapper } = renderWithProviders(
       <DragDropContext onDragEnd={vi.fn}>
-        <Droppable>
-          {() => <StoryItem {...props} toggleStory={vi.fn()} />}
+        <Droppable droppableId="story-item-test">
+          {provided => (
+            <div ref={provided.innerRef}>
+              <StoryItem {...props} toggleStory={vi.fn()} />
+            </div>
+          )}
         </Droppable>
       </DragDropContext>,
       {
