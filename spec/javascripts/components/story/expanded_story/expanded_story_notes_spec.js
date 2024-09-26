@@ -50,9 +50,9 @@ describe('<ExpandedStoryNotes />', () => {
       onCreate,
       onDelete,
       story: {
-        ...storyFactory({ notes: [{ username: 'foo' }] }),
+        ...storyFactory({ notes: [{ username: 'foo', id: 1 }] }),
         _editing: {
-          ...storyFactory({ notes: [{ username: 'foo' }] }),
+          ...storyFactory({ notes: [{ username: 'foo', id: 2 }] }),
         },
       },
     };
