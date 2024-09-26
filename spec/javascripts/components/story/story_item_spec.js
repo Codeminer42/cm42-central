@@ -62,7 +62,7 @@ describe('<StoryItem />', () => {
   });
 
   describe('when the story is a release that is late', () => {
-    it.only('put .Story--late-release on childrens prop className', () => {
+    it('put .Story--late-release on childrens prop className', () => {
       const story = storyFactory({
         collapsed: false,
         storyType: 'release',
@@ -84,7 +84,7 @@ describe('<StoryItem />', () => {
       const story = storyFactory({
         collapsed: false,
         storyType: 'release',
-        releaseDate: moment().subtract(3, 'days').toString(),
+        releaseDate: moment().subtract(3, 'days'),
         _editing: {
           loading: false,
         },
@@ -105,7 +105,7 @@ describe('<StoryItem />', () => {
       const story = storyFactory({
         collapsed: false,
         storyType: 'release',
-        releaseDate: moment().add(3, 'days').toString(),
+        releaseDate: moment().add(3, 'days'),
         _editing: {
           loading: false,
         },
@@ -122,7 +122,7 @@ describe('<StoryItem />', () => {
       const story = storyFactory({
         collapsed: false,
         storyType: 'release',
-        releaseDate: moment().add(3, 'days').toString(),
+        releaseDate: moment().add(3, 'days'),
         _editing: {
           loading: false,
         },
