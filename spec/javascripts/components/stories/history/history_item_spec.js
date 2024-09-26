@@ -8,10 +8,13 @@ describe('<HistoryItem />', () => {
       title: 'title',
       date: '2019/08/27 14:18:00 -0300',
       user: 'i am user',
-      changes: ['test1', 'test2'],
+      changes: [
+        { key: 1, newValue: 'dhasu', oldValue: 'dhusayhdguas' },
+        { key: 2, newValue: 'dhasu', oldValue: 'dhusayhdguas' },
+      ],
     };
 
-    const { container: wrapper, debug } = render(
+    const { container: wrapper } = render(
       <HistoryItem {...defaultProps} {...overrideProps} />
     );
 
