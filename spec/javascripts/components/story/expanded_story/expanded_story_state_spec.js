@@ -24,14 +24,7 @@ describe('<ExpandedStoryState />', () => {
   };
 
   it('renders component title', () => {
-    const onEditSpy = vi.fn();
-    const props = {
-      story: { state: 'started', _editing: { state: 'started' } },
-      onEdit: onEditSpy,
-      disabled: false,
-    };
-
-    renderComponent(props);
+    renderComponent();
     const title = screen.getByText(
       I18n.t('activerecord.attributes.story.state')
     );
@@ -40,12 +33,6 @@ describe('<ExpandedStoryState />', () => {
   });
 
   describe('states at select', () => {
-    let onEditSpy;
-
-    beforeEach(() => {
-      onEditSpy = vi.fn();
-    });
-
     const noFeatureTypes = types.filter(type => type !== storyTypes.FEATURE);
 
     noFeatureTypes.forEach(noFeatureType => {
@@ -63,7 +50,6 @@ describe('<ExpandedStoryState />', () => {
                 estimate: 1,
                 storyType: noFeatureType,
               },
-              onEdit: onEditSpy,
               disabled: false,
             };
 
@@ -87,12 +73,7 @@ describe('<ExpandedStoryState />', () => {
     });
 
     describe('when is unestimated feature', () => {
-      let onEditSpy;
-
-      beforeEach(() => {
-        onEditSpy = vi.fn();
-      });
-
+      let wrapper;
       const props = {
         story: {
           _editing: {
@@ -100,11 +81,8 @@ describe('<ExpandedStoryState />', () => {
             estimate: null,
             storyType: storyTypes.FEATURE,
           },
-          onEdit: onEditSpy,
-          disabled: false,
         },
       };
-      let wrapper;
 
       beforeEach(() => {
         const { container } = renderComponent(props);
@@ -128,8 +106,6 @@ describe('<ExpandedStoryState />', () => {
           story: {
             _editing: { state },
           },
-          onEdit: onEditSpy,
-          disabled: false,
         };
 
         const { container } = renderComponent(props);
@@ -150,7 +126,6 @@ describe('<ExpandedStoryState />', () => {
           _editing: { state },
         },
         onEdit: onEditSpy,
-        disabled: false,
       };
 
       const { container } = renderComponent(props);
@@ -163,10 +138,8 @@ describe('<ExpandedStoryState />', () => {
 
   describe('when component is disabled', () => {
     it('select field is disabled', () => {
-      const onEditSpy = vi.fn();
       const props = {
         story: { state: 'started', _editing: { state: 'started' } },
-        onEdit: onEditSpy,
         disabled: true,
       };
 
@@ -179,10 +152,8 @@ describe('<ExpandedStoryState />', () => {
 
   describe('when component is enabled', () => {
     it('select field is editable', () => {
-      const onEditSpy = vi.fn();
       const props = {
         story: { state: 'started', _editing: { state: 'started' } },
-        onEdit: onEditSpy,
         disabled: false,
       };
 
@@ -196,7 +167,6 @@ describe('<ExpandedStoryState />', () => {
   describe('When change estimate', () => {
     describe('to no estimate', () => {
       it('disables state select', () => {
-        const onEditSpy = vi.fn();
         const props = {
           story: {
             _editing: {
@@ -204,8 +174,6 @@ describe('<ExpandedStoryState />', () => {
               storyType: 'feature',
               state: 'unscheduled',
             },
-            onEdit: onEditSpy,
-            disabled: false,
           },
         };
 
@@ -218,15 +186,10 @@ describe('<ExpandedStoryState />', () => {
 
     describe('to a number', () => {
       it("doesn't disable state select when estimate is a number", () => {
-        const onEditSpy = vi.fn();
         const props = {
           story: {
             _editing: { estimate: 1, storyType: 'feature', state: 'unstarted' },
-            onEdit: onEditSpy,
-            disabled: false,
           },
-          onEdit: onEditSpy,
-          disabled: false,
         };
 
         const { container } = renderComponent(props);
