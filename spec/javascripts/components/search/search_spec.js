@@ -17,6 +17,7 @@ describe('<Search />', () => {
         preloadedState: {
           project: {
             pointValues: [],
+            labels: [],
           },
         },
       }
