@@ -64,7 +64,7 @@ const ExpandedStoryHistoryLocation = ({ story, onClone, showHistory }) => (
 ExpandedStoryHistoryLocation.propTypes = {
   story: editingStoryPropTypesShape.isRequired,
   onClone: PropTypes.func.isRequired,
-  showHistory: PropTypes.func.isRequired,
+  showHistory: PropTypes.func,
 };
 
 export default ExpandedStoryHistoryLocation;
