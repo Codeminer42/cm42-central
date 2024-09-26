@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import store from 'store';
 import { ProjectBoard } from 'components/projects/ProjectBoard';
 import storyFactory from '../../support/factories/storyFactory';
 import { renderWithProviders } from '../setupRedux';
@@ -69,7 +68,11 @@ describe('<ProjectBoard />', () => {
     };
 
     return renderWithProviders(<ProjectBoard {...mergedProps} />, {
-      store,
+      preloadedState: {
+        project: {
+          id: 1,
+        },
+      },
     });
   };
 
@@ -94,7 +97,10 @@ describe('<ProjectBoard />', () => {
   describe('when projectBoard.isFetched is true and projectBoard.isInitialLoading is false', () => {
     it('does not renders <ProjectLoading />', () => {
       const { queryByTestId } = renderComponent({
-        projectBoard: { isFetched: true, isInitialLoading: false },
+        projectBoard: {
+          isFetched: true,
+          isInitialLoading: false,
+        },
       });
 
       expect(
