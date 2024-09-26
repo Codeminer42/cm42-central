@@ -69,15 +69,12 @@ const createProps = () => ({
       ],
     },
   ],
+  isDropDisabled: false,
 });
 
 describe('<Sprints />', () => {
-  beforeEach(() => {
-    props = createProps();
-  });
-
-  it('renders one <Sprint> components', () => {
-    const { container } = renderWithProviders(
+  const renderComponent = props => {
+    return renderWithProviders(
       <DragDropContext onDragEnd={vi.fn}>
         <Sprints {...props} />
       </DragDropContext>,
@@ -85,10 +82,19 @@ describe('<Sprints />', () => {
         preloadedState: {
           project: {
             pointValues: [],
+            labels: [],
           },
         },
       }
     );
+  };
+
+  beforeEach(() => {
+    props = createProps();
+  });
+
+  it('renders one <Sprint> components', () => {
+    const { container } = renderComponent();
 
     expect(container.querySelector('.Sprints')).toBeInTheDocument();
   });
@@ -100,18 +106,7 @@ describe('<Sprints />', () => {
     });
 
     it('does not render any <Sprint> component', () => {
-      const { container } = renderWithProviders(
-        <DragDropContext onDragEnd={vi.fn}>
-          <Sprints {...props} />
-        </DragDropContext>,
-        {
-          preloadedState: {
-            project: {
-              pointValues: [],
-            },
-          },
-        }
-      );
+      const { container } = renderComponent();
 
       expect(container.querySelector('.Sprint')).not.toBeInTheDocument();
     });
