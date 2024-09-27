@@ -1,15 +1,10 @@
 import React from 'react';
-import Clipboard from 'react-clipboard.js';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const StoryCopyIdClipboard = ({ id }) => (
-  <Clipboard
-    data-clipboard-text={`#${id}`}
-    component="button"
-    className="story-id"
-    title={I18n.t('story.events.copy_id')}
-  >
-    #{id}
-  </Clipboard>
+  <CopyToClipboard text={I18n.t('story.events.copy_id')}>
+    <p>#{id}</p>
+  </CopyToClipboard>
 );
 
 export default StoryCopyIdClipboard;
