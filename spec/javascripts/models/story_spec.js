@@ -5,7 +5,6 @@ describe('Story', function () {
   let story;
   let new_story;
   let ro_story;
-  let server;
 
   beforeEach(function () {
     var Project = Backbone.Model.extend({
@@ -46,8 +45,6 @@ describe('Story', function () {
     // the readonly flag is called in the initialize, but the state change depends on the collection, which in spec is set after the instance, so has to set manually here
     ro_story.set({ state: 'accepted', accepted_at: new Date() });
     ro_story.setReadonly();
-
-    server = sinon.fakeServer.create();
   });
 
   describe('when instantiated', function () {

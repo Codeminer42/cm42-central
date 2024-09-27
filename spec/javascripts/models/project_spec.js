@@ -87,19 +87,16 @@ describe('Project model', function () {
   describe('changesets', function () {
     it('should load changesets when last_changeset_id is changed', function () {
       var changesets = [
-        { changeset: { id: 2, story_id: 456, project_id: 789 }},
+        { changeset: { id: 2, story_id: 456, project_id: 789 } },
       ];
 
-      vi.spyOn(project, 'handleChangesets').mockImplementation((arg) => {
+      vi.spyOn(project, 'handleChangesets').mockImplementation(arg => {
         expect(arg).toStrictEqual(changesets);
       });
 
       server.use(
         http.get('/projects/999/changesets', () => {
-          return HttpResponse.json(
-            changesets,
-            { status: 200 },
-          );
+          return HttpResponse.json(changesets, { status: 200 });
         })
       );
 
@@ -108,7 +105,6 @@ describe('Project model', function () {
     });
 
     it('should reload changed stories from changesets', function () {
-      
       var changesets = [
         { changeset: { id: 123, story_id: 456, project_id: 789 } },
       ];
@@ -125,10 +121,7 @@ describe('Project model', function () {
       var story_json = { story: { id: 123 } };
       server.use(
         http.get('/projects/999/stories/123', () => {
-          return HttpResponse.json(
-            story_json,
-            { status: 200 },
-          );
+          return HttpResponse.json(story_json, { status: 200 });
         })
       );
 
@@ -152,10 +145,7 @@ describe('Project model', function () {
       var story_json = { story: { id: 987, title: 'New changeset story' } };
       server.use(
         http.get('/projects/999/stories/987', () => {
-          return HttpResponse.json(
-            story_json,
-            { status: 200 },
-          );
+          return HttpResponse.json(story_json, { status: 200 });
         })
       );
 
@@ -312,7 +302,9 @@ describe('Project model', function () {
       var doneIterations = _.map([1, 2, 3, 4, 5], function (i) {
         return { points: vi.fn().mockReturnValueOnce(i) };
       });
-      vi.spyOn(project, 'doneIterations').mockImplementation(() => doneIterations);
+      vi.spyOn(project, 'doneIterations').mockImplementation(
+        () => doneIterations
+      );
 
       // By default, should take the average of the last 3 iterations,
       // (3 + 4 + 5) = 12 / 3 = 4
@@ -323,7 +315,9 @@ describe('Project model', function () {
       var doneIterations = _.map([1, 2, 0, 4, 5], function (i) {
         return { points: vi.fn().mockReturnValueOnce(i) };
       });
-      vi.spyOn(project, 'doneIterations').mockImplementation(() => doneIterations);
+      vi.spyOn(project, 'doneIterations').mockImplementation(
+        () => doneIterations
+      );
 
       // By default, should take the average of the last 3 iterations,
       // (2 + 4 + 5) = 11 / 3 = 5
@@ -334,7 +328,9 @@ describe('Project model', function () {
       var doneIterations = _.map([3, 2, 2], function (i) {
         return { points: vi.fn().mockReturnValueOnce(i) };
       });
-      vi.spyOn(project, 'doneIterations').mockImplementation(() => doneIterations);
+      vi.spyOn(project, 'doneIterations').mockImplementation(
+        () => doneIterations
+      );
 
       // Should floor the result
       // (3 + 2 + 2) = 7 / 3 = 2.333333
@@ -347,8 +343,10 @@ describe('Project model', function () {
       var doneIterations = _.map([3, 1], function (i) {
         return { points: vi.fn().mockReturnValueOnce(i) };
       });
-      
-      vi.spyOn(project, 'doneIterations').mockImplementation(() => doneIterations);
+
+      vi.spyOn(project, 'doneIterations').mockImplementation(
+        () => doneIterations
+      );
 
       expect(project.velocity()).toEqual(2);
     });
@@ -357,7 +355,9 @@ describe('Project model', function () {
       var doneIterations = _.map([0, 0, 0], function (i) {
         return { points: vi.fn().mockReturnValueOnce(i) };
       });
-      vi.spyOn(project, 'doneIterations').mockImplementation(() => doneIterations);
+      vi.spyOn(project, 'doneIterations').mockImplementation(
+        () => doneIterations
+      );
 
       expect(project.velocity()).toEqual(1);
     });
