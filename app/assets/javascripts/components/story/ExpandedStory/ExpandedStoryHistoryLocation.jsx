@@ -1,6 +1,6 @@
 import React from 'react';
-import Clipboard from 'react-clipboard.js';
 import { storyUrl } from '../StoryUrl';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import {
   editingStoryPropTypesShape,
   hasHistory,
@@ -17,27 +17,21 @@ const ExpandedStoryHistoryLocation = ({ story, onClone, showHistory }) => (
     />
 
     <span className="input-group-btn">
-      <Clipboard
-        data-clipboard-text={storyUrl(story)}
-        component="button"
-        className="btn btn-default btn-clipboard"
-        button-title={I18n.t('story.events.copy_url')}
-      >
-        <img
-          src="/clippy.svg"
-          alt={I18n.t('story.events.copy_url')}
-          className="clipboard-icon"
-        />
-      </Clipboard>
+      <CopyToClipboard text={I18n.t('story.events.copy_url')}>
+        <a href={storyUrl(story)} className="btn btn-default btn-clipboard">
+          <img
+            src="/clippy.svg"
+            alt={I18n.t('story.events.copy_url')}
+            className="clipboard-icon"
+          />
+        </a>
+      </CopyToClipboard>
 
-      <Clipboard
-        data-clipboard-text={`#${story.id.toString()}`}
-        component="button"
-        className="btn btn-default btn-clipboard-id btn-clipboard"
-        button-title={I18n.t('story.events.copy_id')}
-      >
-        ID
-      </Clipboard>
+      <CopyToClipboard text={I18n.t('story.events.copy_id')}>
+        <p className="btn btn-default btn-clipboard-id btn-clipboard">
+          ID {`#${story.id.toString()}`}
+        </p>
+      </CopyToClipboard>
 
       {hasHistory(story) && (
         <button
