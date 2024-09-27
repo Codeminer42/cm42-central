@@ -66,7 +66,7 @@ describe('<ExpandedStoryHistoryLocation />', () => {
         story: storyFactory({ id: 42, _editing: storyFactory() }),
       };
 
-      const { getByText, debug } = renderComponent(props);
+      const { getByText } = renderComponent(props);
       const copyIdButton = getByText('ID #42');
 
       expect(copyIdButton).toBeInTheDocument();
