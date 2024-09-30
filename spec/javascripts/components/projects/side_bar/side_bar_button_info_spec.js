@@ -11,10 +11,10 @@ describe('<SideBarButtonInfo />', () => {
 
   it('contain the description', () => {
     const description = 'description';
-    const { getByTestId } = render(
+    const { container } = render(
       <SideBarButtonInfo description={description} />
     );
-    const span = getByTestId('sidebar-button-description');
+    const span = container.querySelector('.SideBar__info');
 
     expect(span.innerHTML).toEqual(description);
   });

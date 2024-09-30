@@ -22,9 +22,11 @@ describe('<SideBarButton />', () => {
 
   it('render children', () => {
     const children = 'I am children!';
-    const { getByTestId } = renderComponent({ children });
+    const { container } = renderComponent({ children });
 
-    expect(getByTestId('sidebar-button-container').innerHTML).toEqual(children);
+    expect(container.querySelector('.SideBar__link').innerHTML).toEqual(
+      children
+    );
   });
 
   it('does not render <SideBarButtonInfo />', () => {
@@ -36,9 +38,9 @@ describe('<SideBarButton />', () => {
   describe('when click in <SideBarButton />', () => {
     it('call onClick', () => {
       const onClick = vi.fn();
-      const { getByTestId } = renderComponent({ onClick });
+      const { container } = renderComponent({ onClick });
 
-      const button = getByTestId('sidebar-button-container');
+      const button = container.querySelector('.SideBar__link');
       fireEvent.click(button);
       expect(onClick).toHaveBeenCalled();
     });
@@ -46,19 +48,19 @@ describe('<SideBarButton />', () => {
 
   describe('when mouse over', () => {
     it('renders <SideBarButtonInfo />', async () => {
-      const { getByTestId, rerender } = renderComponent();
+      const { container } = renderComponent();
 
-      const button = getByTestId('sidebar-button-container');
+      const button = container.querySelector('.SideBar__link');
       fireEvent.mouseOver(button);
 
-      expect(getByTestId('sidebar-button-description')).toBeInTheDocument();
+      expect(container.querySelector('.SideBar__info')).toBeInTheDocument();
     });
   });
 
   describe('when isVisible is true', () => {
     it('renders <SideBar /> with SideBar__link--is-visible class', () => {
-      const { getByTestId } = renderComponent({ isVisible: true });
-      const button = getByTestId('sidebar-button-container');
+      const { container } = renderComponent({ isVisible: true });
+      const button = container.querySelector('.SideBar__link');
 
       expect(button).toHaveClass('SideBar__link--is-visible');
     });
@@ -66,8 +68,8 @@ describe('<SideBarButton />', () => {
 
   describe('when isVisible is false', () => {
     it('render <SideBar /> without SideBar__link--is-visible class', () => {
-      const { getByTestId } = renderComponent();
-      const button = getByTestId('sidebar-button-container');
+      const { container } = renderComponent();
+      const button = container.querySelector('.SideBar__link');
 
       expect(button).not.toHaveClass('SideBar__link--is-visible');
     });
