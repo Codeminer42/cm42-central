@@ -1,13 +1,7 @@
 import React from 'react';
-import {
-  fireEvent,
-  getAllByTestId,
-  render,
-  waitFor,
-} from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
 import ProjectSearch from 'components/projects/ProjectSearch';
-import ProjectList from 'components/projects/ProjectList';
 import ProjectCollection from 'collections/project_collection';
 import User from 'models/user';
 
