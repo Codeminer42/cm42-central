@@ -20,7 +20,7 @@ describe('<StorySearch />', () => {
   describe('loading', () => {
     describe('when loading is true', () => {
       it('renders the spinner', () => {
-        const { container, debug } = render(
+        const { container } = render(
           <StorySearch projectId={1} search={vi.fn()} loading={true} />
         );
 
