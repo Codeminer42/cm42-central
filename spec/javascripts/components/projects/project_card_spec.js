@@ -128,9 +128,9 @@ describe('<ProjectCard />', () => {
     describe('#panelBody', () => {
       describe('not archived', () => {
         it('should contain users avatar', () => {
-          const { getByTestId } = render(<ProjectCard {...defaultProps} />);
+          const { container } = render(<ProjectCard {...defaultProps} />);
 
-          expect(getByTestId('user-avatar')).toBeInTheDocument();
+          expect(container.querySelector('.member')).toBeInTheDocument();
         });
       });
 

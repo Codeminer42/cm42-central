@@ -157,7 +157,7 @@ export default class ProjectCard extends React.Component {
 
     if (joined) {
       return project.get('users_avatar').map(avatar_url => (
-        <li key={avatar_url} className="member" data-testid="user-avatar">
+        <li key={avatar_url} className="member">
           <img src={avatar_url} alt="User avatar" className="identicon" />
         </li>
       ));
