@@ -80,7 +80,6 @@ export default class ProjectCard extends React.Component {
               <ul
                 className="dropdown-menu dropdown-menu-right"
                 aria-labelledby="dLabel"
-                data-testid="dropdown-menu-container"
               >
                 <li className="dropdown-header">{I18n.t('options')}</li>
 

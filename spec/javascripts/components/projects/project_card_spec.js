@@ -104,9 +104,9 @@ describe('<ProjectCard />', () => {
 
       describe('.dropdown-menu', () => {
         it('should contain dropdown-menu', () => {
-          const { getByTestId } = render(<ProjectCard {...defaultProps} />);
+          const { container } = render(<ProjectCard {...defaultProps} />);
 
-          expect(getByTestId('dropdown-menu-container')).toHaveClass(
+          expect(container.querySelector('.dropdown-menu')).toHaveClass(
             'dropdown-menu'
           );
         });
@@ -186,10 +186,10 @@ describe('<ProjectCard />', () => {
       describe('.dropdown-menu', () => {
         it('should not contain dropdown-menu', () => {
           defaultProps.joined = false;
-          const { queryByTestId } = render(<ProjectCard {...defaultProps} />);
+          const { container } = render(<ProjectCard {...defaultProps} />);
 
           expect(
-            queryByTestId('dropdown-menu-container')
+            container.querySelector('.dropdown-menu')
           ).not.toBeInTheDocument();
         });
       });
