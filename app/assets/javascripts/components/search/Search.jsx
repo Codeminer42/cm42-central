@@ -4,11 +4,7 @@ import Stories from '../stories/Stories';
 import * as Story from '../../models/beta/story';
 
 export const SearchHeader = ({ stories }) => (
-  <div
-    className="Sprint__header"
-    data-id="search-header"
-    data-testid="search-header-container"
-  >
+  <div className="Sprint__header" data-id="search-header">
     {I18n.t('stories_found')}: {stories.length}
     <div>
       <span className="done-points">
@@ -19,13 +15,9 @@ export const SearchHeader = ({ stories }) => (
 );
 
 const Search = ({ stories }) => (
-  <div className="Sprint" data-testid="sprint-container">
+  <div className="Sprint">
     <SearchHeader stories={stories} />
-    <div
-      className="Sprint__body"
-      data-id="stories-search"
-      data-testid="stories-search-container"
-    >
+    <div className="Sprint__body" data-id="stories-search">
       <Stories
         columnId="search"
         stories={stories}

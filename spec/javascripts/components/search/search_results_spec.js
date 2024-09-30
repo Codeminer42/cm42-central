@@ -54,17 +54,17 @@ describe('<SearchResults />', () => {
 
   describe('when isEnabled is false', () => {
     it('does not render the component', () => {
-      const { queryByTestId } = renderComponent();
+      const { container } = renderComponent();
 
-      expect(queryByTestId('sprint-container')).not.toBeInTheDocument();
+      expect(container.querySelector('.Sprint')).not.toBeInTheDocument();
     });
   });
 
   describe('when isEnabled is true', () => {
     it('renders the component', () => {
-      const { getByTestId } = renderComponent({ isEnabled: true });
+      const { container } = renderComponent({ isEnabled: true });
 
-      expect(getByTestId('sprint-container')).toBeInTheDocument();
+      expect(container.querySelector('.Sprint')).toBeInTheDocument();
     });
   });
 });

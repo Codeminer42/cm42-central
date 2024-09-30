@@ -32,16 +32,16 @@ describe('<Search />', () => {
     });
 
     it('renders header', () => {
-      const { getByTestId } = renderComponent();
+      const { container } = renderComponent();
 
-      expect(getByTestId('search-header-container')).toBeInTheDocument();
+      expect(container.querySelector('.Sprint__header')).toBeInTheDocument();
     });
 
     it('renders stories', () => {
-      const { getByTestId } = renderComponent();
+      const { container } = renderComponent();
 
-      expect(getByTestId('search-header-container')).toBeInTheDocument();
-      expect(getByTestId('stories-search-container')).toBeInTheDocument();
+      expect(container.querySelector('.Sprint__header')).toBeInTheDocument();
+      expect(container.querySelector('.Sprint__body')).toBeInTheDocument();
     });
   });
 
@@ -65,15 +65,15 @@ describe('<Search />', () => {
     });
 
     it('renders header', () => {
-      const { getByTestId } = renderComponent();
+      const { container } = renderComponent();
 
-      expect(getByTestId('search-header-container')).toBeInTheDocument();
+      expect(container.querySelector('.Sprint__header')).toBeInTheDocument();
     });
 
     it('renders stories', () => {
-      const { getByTestId } = renderComponent();
+      const { container } = renderComponent();
 
-      expect(getByTestId('stories-search-container')).toBeInTheDocument();
+      expect(container.querySelector('.Sprint__body')).toBeInTheDocument();
     });
   });
 });
