@@ -11,19 +11,9 @@ export const Column = ({
   canClose,
   providedProps,
 }) => (
-  <div
-    className="Column"
-    data-cy="column"
-    data-id="column"
-    data-testid="column-container"
-    {...providedProps}
-  >
+  <div className="Column" data-cy="column" data-id="column" {...providedProps}>
     <div className="Column__header">
-      <h3
-        className="Column__name"
-        data-id="column-title"
-        data-testid="column-header-title"
-      >
+      <h3 className="Column__name" data-id="column-title">
         {title}
       </h3>
       <div className="Column__actions">
@@ -32,7 +22,6 @@ export const Column = ({
           <button
             type="button"
             data-id="column-button"
-            data-testid="column-action-button"
             className="Column__btn-close"
             onClick={onClose}
           >
@@ -41,11 +30,7 @@ export const Column = ({
         )}
       </div>
     </div>
-    <div
-      data-id="column-children"
-      data-testid="column-children-content"
-      className="Column__body"
-    >
+    <div data-id="column-children" className="Column__body">
       {children}
     </div>
   </div>

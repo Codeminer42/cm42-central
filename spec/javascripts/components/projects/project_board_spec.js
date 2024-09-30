@@ -147,7 +147,7 @@ describe('<ProjectBoard />', () => {
     });
 
     it('render <Columns />', () => {
-      const { getAllByTestId } = renderComponent({
+      const { container } = renderComponent({
         projectBoard: {
           isFetched: true,
           search: {
@@ -162,7 +162,7 @@ describe('<ProjectBoard />', () => {
         },
       });
 
-      expect(getAllByTestId('column-container').length).toBe(
+      expect(container.querySelectorAll('.Column').length).toBe(
         COLUMNS_QUANTITY_STD
       );
     });
@@ -230,9 +230,9 @@ describe('<ProjectBoard />', () => {
     };
 
     it('renders history column', () => {
-      const { getAllByTestId } = renderComponent(props);
+      const { container } = renderComponent(props);
 
-      expect(getAllByTestId('column-container').length).toBe(
+      expect(container.querySelectorAll('.Column').length).toBe(
         COLUMNS_QUANTITY_STD + 1
       );
     });
@@ -274,9 +274,9 @@ describe('<ProjectBoard />', () => {
     };
 
     it('does not render history column', () => {
-      const { getAllByTestId } = renderComponent(props);
+      const { container } = renderComponent(props);
 
-      expect(getAllByTestId('column-container').length).toBe(
+      expect(container.querySelectorAll('.Column').length).toBe(
         COLUMNS_QUANTITY_STD
       );
     });
@@ -318,9 +318,9 @@ describe('<ProjectBoard />', () => {
     };
 
     it('renders history column', () => {
-      const { getAllByTestId } = renderComponent(props);
+      const { container } = renderComponent(props);
 
-      expect(getAllByTestId('column-container').length).toBe(
+      expect(container.querySelectorAll('.Column').length).toBe(
         COLUMNS_QUANTITY_STD + 1
       );
     });
@@ -360,9 +360,9 @@ describe('<ProjectBoard />', () => {
         },
       };
 
-      const { getAllByTestId } = renderComponent(props);
+      const { container } = renderComponent(props);
 
-      expect(getAllByTestId('column-container').length).toBe(
+      expect(container.querySelectorAll('.Column').length).toBe(
         COLUMNS_QUANTITY_STD + 1
       );
     });
@@ -385,9 +385,9 @@ describe('<ProjectBoard />', () => {
           },
         },
       };
-      const { getAllByTestId } = renderComponent(props);
+      const { container } = renderComponent(props);
 
-      expect(getAllByTestId('column-container').length).toBe(
+      expect(container.querySelectorAll('.Column').length).toBe(
         COLUMNS_QUANTITY_STD
       );
     });

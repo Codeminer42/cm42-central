@@ -14,13 +14,13 @@ describe('<Column />', () => {
       placeholder: '',
     };
 
-    const { getByTestId, queryByTestId } = render(
+    const { container } = render(
       <Column {...defaultProps} {...overrideProps} />
     );
-    const column = getByTestId('column-container');
-    const title = getByTestId('column-header-title');
-    const button = queryByTestId('column-action-button');
-    const children = getByTestId('column-children-content');
+    const column = container.querySelector('.Column');
+    const title = container.querySelector('.Column__name');
+    const button = container.querySelector('.Column__btn-close');
+    const children = container.querySelector('.Column__body');
 
     return { title, button, children, column };
   };
