@@ -22,10 +22,8 @@ describe('<NoteForm />', function () {
 
   it('should have an onSubmit callback', function () {
     const onSubmit = vi.fn().mockReturnValueOnce($.Deferred());
-    const { getByTestId } = render(
-      <NoteForm note={note} onSubmit={onSubmit} />
-    );
-    const addNoteButton = getByTestId('add-note-button');
+    const { container } = render(<NoteForm note={note} onSubmit={onSubmit} />);
+    const addNoteButton = container.querySelector('.add-note');
     fireEvent.click(addNoteButton);
 
     expect(onSubmit).toHaveBeenCalled();
