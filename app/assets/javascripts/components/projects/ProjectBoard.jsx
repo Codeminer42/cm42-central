@@ -168,7 +168,6 @@ export const ProjectBoard = ({
 
         <SideBar
           data-id="side-bar"
-          data-testid="sidebar-component"
           reverse={projectBoard.reverse}
           visibleColumns={projectBoard.visibleColumns}
           toggleColumn={toggleColumn}
@@ -179,7 +178,6 @@ export const ProjectBoard = ({
           notifications={notifications}
           onRemove={removeNotification}
           data-id="notifications"
-          data-testid="notifications-component"
         />
 
         <Columns
@@ -209,11 +207,7 @@ export const ProjectBoard = ({
             canClose
           >
             {history.status === historyStatus.LOADED ? (
-              <History
-                history={history.activities}
-                data-id="history"
-                data-testid="history-component"
-              />
+              <History history={history.activities} data-id="history" />
             ) : (
               <ProjectLoading data-id="project-loading" />
             )}

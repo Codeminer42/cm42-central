@@ -111,7 +111,7 @@ describe('<ProjectBoard />', () => {
     });
 
     it('renders <SideBar />', () => {
-      const { getByTestId } = renderComponent({
+      const { container } = renderComponent({
         projectBoard: {
           isFetched: true,
           search: {
@@ -126,11 +126,11 @@ describe('<ProjectBoard />', () => {
         },
       });
 
-      expect(getByTestId('sidebar-component')).toBeInTheDocument();
+      expect(container.querySelector('.SideBar')).toBeInTheDocument();
     });
 
     it('render <Notifications />', () => {
-      const { getByTestId } = renderComponent({
+      const { container } = renderComponent({
         projectBoard: {
           isFetched: true,
           search: {
@@ -145,7 +145,7 @@ describe('<ProjectBoard />', () => {
         },
       });
 
-      expect(getByTestId('notifications-component')).toBeInTheDocument();
+      expect(container.querySelector('.Notifications')).toBeInTheDocument();
     });
 
     it('render <Columns />', () => {
@@ -198,9 +198,9 @@ describe('<ProjectBoard />', () => {
     });
 
     it('does not render history', () => {
-      const { queryByTestId } = renderComponent(props);
+      const { container } = renderComponent(props);
 
-      expect(queryByTestId('history-component')).not.toBeInTheDocument();
+      expect(container.querySelector('.History')).not.toBeInTheDocument();
     });
 
     it('renders loading', () => {
@@ -242,9 +242,9 @@ describe('<ProjectBoard />', () => {
     });
 
     it('renders history', () => {
-      const { getByTestId } = renderComponent(props);
+      const { container } = renderComponent(props);
 
-      expect(getByTestId('history-component')).toBeInTheDocument();
+      expect(container.querySelector('.History')).toBeInTheDocument();
     });
 
     it('does not render loading', () => {
@@ -286,9 +286,9 @@ describe('<ProjectBoard />', () => {
     });
 
     it('does not render history', () => {
-      const { queryByTestId } = renderComponent(props);
+      const { container } = renderComponent(props);
 
-      expect(queryByTestId('history-component')).not.toBeInTheDocument();
+      expect(container.querySelector('.History')).not.toBeInTheDocument();
     });
 
     it('does not render loading', () => {
@@ -330,9 +330,9 @@ describe('<ProjectBoard />', () => {
     });
 
     it('does not render history', () => {
-      const { queryByTestId } = renderComponent(props);
+      const { container } = renderComponent(props);
 
-      expect(queryByTestId('history-component')).not.toBeInTheDocument();
+      expect(container.querySelector('.History')).not.toBeInTheDocument();
     });
 
     it('renders loading', () => {
