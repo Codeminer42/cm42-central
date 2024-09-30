@@ -33,11 +33,11 @@ describe('<Message />', () => {
   it('calls onRemove when click on the remove button', () => {
     const onRemove = vi.fn();
 
-    const { getByTestId } = render(
+    const { container } = render(
       <Message {...defaultProps()} onRemove={onRemove} />
     );
 
-    const closeButton = getByTestId('message-close-button');
+    const closeButton = container.querySelector('.Message__content__button');
     fireEvent.click(closeButton);
 
     expect(onRemove).toHaveBeenCalled();

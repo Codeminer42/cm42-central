@@ -13,7 +13,6 @@ const Message = ({ type, className, message, onRemove }) => {
         {message}
         <button
           id="close-button"
-          data-testid="message-close-button"
           className="Message__content__button"
           onClick={onRemove}
         >
