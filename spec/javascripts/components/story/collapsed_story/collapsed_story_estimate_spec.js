@@ -1,12 +1,16 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import CollapsedStoryEstimate from 'components/story/CollapsedStory/CollapsedStoryEstimate';
+import React from 'react';
+import { describe, expect, it } from 'vitest';
 
 describe('<CollapsedStoryEstimate />', () => {
   it('renders the estimate of the story', () => {
-    const estimate = "1";
-    const wrapper = shallow(<CollapsedStoryEstimate estimate={estimate} />);
+    const estimate = '1';
+    render(<CollapsedStoryEstimate estimate={estimate} />);
 
-    expect(wrapper.find('.Story__estimated-value').text()).toContain(estimate);
+    const estimateElement = screen.getByText(estimate, {
+      selector: '.Story__estimated-value',
+    });
+    expect(estimateElement).toBeInTheDocument();
   });
 });

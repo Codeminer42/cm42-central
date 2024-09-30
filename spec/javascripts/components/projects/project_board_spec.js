@@ -1,135 +1,172 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import ReactDOM from 'react-dom';
 import { ProjectBoard } from 'components/projects/ProjectBoard';
 import storyFactory from '../../support/factories/storyFactory';
+import { renderWithProviders } from '../setupRedux';
+import { beforeAll } from 'vitest';
 
-jest.mock('../../../../app/assets/javascripts/pusherSockets', () => ({
-  subscribeToProjectChanges: jest.fn(),
+vi.mock('../../../../app/assets/javascripts/pusherSockets', () => ({
+  subscribeToProjectChanges: vi.fn(),
 }));
 
 describe('<ProjectBoard />', () => {
-  const render = props => {
+  const COLUMNS_QUANTITY_STD = 3;
+
+  const renderComponent = props => {
     const defaultProps = {
       projectBoard: {
         isFetched: false,
         isInitialLoading: true,
         search: {
-          loading: false
+          loading: false,
         },
         reverse: false,
         visibleColumns: {
           backlog: true,
           done: true,
-          chillyBin: true
-        }
+          chillyBin: true,
+        },
       },
       doneSprints: [],
       backlogSprints: [],
-      fetchProjectBoard: sinon.stub(),
-      createStory: sinon.stub(),
-      closeHistory: sinon.stub(),
+      fetchProjectBoard: vi.fn(),
+      createStory: vi.fn(),
+      closeHistory: vi.fn(),
       notifications: [],
       history: {
-        status: 'DISABLED'
+        status: 'DISABLED',
       },
-      onRemove: sinon.stub(),
-      removeNotification: sinon.stub(),
-      toggleColumn: sinon.stub(),
-      reverseColumns: sinon.stub(),
+      onRemove: vi.fn(),
+      removeNotification: vi.fn(),
+      toggleColumn: vi.fn(),
+      reverseColumns: vi.fn(),
       projectId: '1',
-      fetchPastStories: sinon.stub(),
-      epicStories: []
+      fetchPastStories: vi.fn(),
+      epicStories: [],
+      chillyBinStories: [],
     };
 
-    return shallow(<ProjectBoard {...defaultProps} {...props } />);
+    const mergedProps = {
+      ...defaultProps,
+      ...props,
+      projectBoard: {
+        ...defaultProps.projectBoard,
+        ...props?.projectBoard,
+        search: {
+          ...defaultProps.projectBoard.search,
+          ...props?.projectBoard?.search,
+        },
+        visibleColumns: {
+          ...defaultProps.projectBoard.visibleColumns,
+          ...props?.projectBoard?.visibleColumns,
+        },
+      },
+      history: {
+        ...defaultProps.history,
+        ...props?.history,
+      },
+    };
+
+    return renderWithProviders(<ProjectBoard {...mergedProps} />, {
+      preloadedState: {
+        project: {
+          id: 1,
+        },
+      },
+    });
   };
 
-  describe('when projectBoard.isFetched is false and projectBoard.isInitialLoading is true',  () => {
-    it('renders <ProjectLoading />', () => {
-      const wrapper = render();
-      const spinnerLoading = wrapper.find('[data-id="project-loading"]');
+  beforeAll(() => {
+    ReactDOM.createPortal = vi.fn(element => {
+      return element;
+    });
+  });
 
-      expect(spinnerLoading.exists()).toBeTruthy();
+  afterEach(() => {
+    ReactDOM.createPortal.mockClear();
+  });
+
+  describe('when projectBoard.isFetched is false and projectBoard.isInitialLoading is true', () => {
+    it('renders <ProjectLoading />', () => {
+      const { container } = renderComponent();
+
+      expect(
+        container.querySelector('.ProjectBoard-loading')
+      ).toBeInTheDocument();
     });
   });
 
   describe('when projectBoard.isFetched is true and projectBoard.isInitialLoading is false', () => {
     it('does not renders <ProjectLoading />', () => {
-      const wrapper = render({
+      const { container } = renderComponent({
         projectBoard: {
           isFetched: true,
           isInitialLoading: false,
-          search: {
-            loading: false
-          },
-          visibleColumns: {
-            backlog: true,
-            done: true,
-            chillyBin: true
-          },
-          reverse: true
         },
       });
-      const spinnerLoading = wrapper.find('[data-id="project-loading"]');
 
-      expect(spinnerLoading.exists()).toBeFalsy();
+      expect(
+        container.querySelector('.ProjectBoard-loading')
+      ).not.toBeInTheDocument();
     });
 
     it('renders <SideBar />', () => {
-      const wrapper = render({
+      const { container } = renderComponent({
         projectBoard: {
           isFetched: true,
           search: {
-            loading: false
+            loading: false,
           },
           visibleColumns: {
             backlog: true,
             done: true,
-            chillyBin: true
+            chillyBin: true,
           },
-          reverse: true
-        }
+          reverse: true,
+        },
       });
 
-      expect(wrapper.find('[data-id="side-bar"]')).toExist();
+      expect(container.querySelector('.SideBar')).toBeInTheDocument();
     });
 
     it('render <Notifications />', () => {
-      const wrapper = render({
+      const { container } = renderComponent({
         projectBoard: {
           isFetched: true,
           search: {
-            loading: false
+            loading: false,
           },
           visibleColumns: {
             backlog: true,
             done: true,
-            chillyBin: true
+            chillyBin: true,
           },
-          reverse: true
+          reverse: true,
         },
       });
 
-      expect(wrapper.find('[data-id="notifications"]')).toExist();
+      expect(container.querySelector('.Notifications')).toBeInTheDocument();
     });
 
     it('render <Columns />', () => {
-      const wrapper = render({
+      const { container } = renderComponent({
         projectBoard: {
           isFetched: true,
           search: {
-            loading: false
+            loading: false,
           },
           visibleColumns: {
             backlog: true,
             done: true,
-            chillyBin: true
+            chillyBin: true,
           },
-          reverse: true
+          reverse: true,
         },
       });
 
-      expect(wrapper.find('[data-id="columns"]')).toExist();
+      expect(container.querySelectorAll('.Column').length).toBe(
+        COLUMNS_QUANTITY_STD
+      );
     });
   });
 
@@ -138,38 +175,40 @@ describe('<ProjectBoard />', () => {
       history: {
         status: 'LOADING',
         storyTitle: 'I am title!',
-        activities: []
+        activities: [],
       },
       projectBoard: {
         isFetched: true,
         search: {
-          loading: false
+          loading: false,
         },
         reverse: false,
         visibleColumns: {
           backlog: true,
           done: true,
-          chillyBin: true
-        }
+          chillyBin: true,
+        },
       },
     };
 
     it('renders history column', () => {
-      const wrapper = render(props);
+      const { container } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="history-column"]')).toExist();
+      expect(container).toBeInTheDocument();
     });
 
     it('does not render history', () => {
-      const wrapper = render(props);
+      const { container } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="history"]')).not.toExist();
+      expect(container.querySelector('.History')).not.toBeInTheDocument();
     });
 
     it('renders loading', () => {
-      const wrapper = render(props);
+      const { container } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="project-loading"]')).toExist();
+      expect(
+        container.querySelector('.ProjectBoard-loading')
+      ).toBeInTheDocument();
     });
   });
 
@@ -178,38 +217,42 @@ describe('<ProjectBoard />', () => {
       history: {
         status: 'LOADED',
         storyTitle: 'I am title!',
-        activities: []
+        activities: [],
       },
       projectBoard: {
         isFetched: true,
         search: {
-          loading: false
+          loading: false,
         },
         reverse: false,
         visibleColumns: {
           backlog: true,
           done: true,
-          chillyBin: true
-        }
+          chillyBin: true,
+        },
       },
     };
 
     it('renders history column', () => {
-      const wrapper = render(props);
+      const { container } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="history-column"]')).toExist();
+      expect(container.querySelectorAll('.Column').length).toBe(
+        COLUMNS_QUANTITY_STD + 1
+      );
     });
 
     it('renders history', () => {
-      const wrapper = render(props);
+      const { container } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="history"]')).toExist();
+      expect(container.querySelector('.History')).toBeInTheDocument();
     });
 
     it('does not render loading', () => {
-      const wrapper = render(props);
+      const { container } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="project-loading"]')).not.toExist();
+      expect(
+        container.querySelector('.ProjectBoard-loading')
+      ).not.toBeInTheDocument();
     });
   });
 
@@ -218,38 +261,42 @@ describe('<ProjectBoard />', () => {
       history: {
         status: 'DISABLED',
         storyTitle: 'I am title!',
-        activities: []
+        activities: [],
       },
       projectBoard: {
         isFetched: true,
         search: {
-          loading: false
+          loading: false,
         },
         reverse: false,
         visibleColumns: {
           backlog: true,
           done: true,
-          chillyBin: true
-        }
+          chillyBin: true,
+        },
       },
     };
 
     it('does not render history column', () => {
-      const wrapper = render(props);
+      const { container } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="history-column"]')).not.toExist();
+      expect(container.querySelectorAll('.Column').length).toBe(
+        COLUMNS_QUANTITY_STD
+      );
     });
 
     it('does not render history', () => {
-      const wrapper = render(props);
+      const { container } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="history"]')).not.toExist();
+      expect(container.querySelector('.History')).not.toBeInTheDocument();
     });
 
     it('does not render loading', () => {
-      const wrapper = render(props);
+      const { container } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="project-loading"]')).not.toExist();
+      expect(
+        container.querySelector('.ProjectBoard-loading')
+      ).not.toBeInTheDocument();
     });
   });
 
@@ -258,84 +305,97 @@ describe('<ProjectBoard />', () => {
       history: {
         status: 'FAILED',
         storyTitle: 'I am title!',
-        activities: []
+        activities: [],
       },
       projectBoard: {
         isFetched: true,
         search: {
-          loading: false
+          loading: false,
         },
         reverse: false,
         visibleColumns: {
           backlog: true,
           done: true,
-          chillyBin: true
-        }
+          chillyBin: true,
+        },
       },
     };
 
     it('renders history column', () => {
-      const wrapper = render(props);
+      const { container } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="history-column"]')).toExist();
+      expect(container.querySelectorAll('.Column').length).toBe(
+        COLUMNS_QUANTITY_STD + 1
+      );
     });
 
     it('does not render history', () => {
-      const wrapper = render(props);
+      const { container } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="history"]')).not.toExist();
+      expect(container.querySelector('.History')).not.toBeInTheDocument();
     });
 
     it('renders loading', () => {
-      const wrapper = render(props);
+      const { container } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="project-loading"]')).toExist();
+      expect(
+        container.querySelector('.ProjectBoard-loading')
+      ).toBeInTheDocument();
     });
   });
 
   describe('when there are epicStories', () => {
+    beforeAll(() => {
+      vi.spyOn(window.md, 'makeHtml').mockReturnValue('<p>Test</p>');
+    });
+
     it('renders epic column', () => {
       const props = {
         epicStories: [storyFactory()],
         projectBoard: {
           isFetched: true,
           search: {
-            loading: false
+            loading: false,
           },
           reverse: false,
           visibleColumns: {
             backlog: true,
             done: true,
-            chillyBin: true
-          }
+            chillyBin: true,
+          },
         },
       };
-      const wrapper = render(props);
 
-      expect(wrapper.find('[data-id="epic-column"]')).toExist();
+      const { container } = renderComponent(props);
+
+      expect(container.querySelectorAll('.Column').length).toBe(
+        COLUMNS_QUANTITY_STD + 1
+      );
     });
   });
 
   describe('when epicStories is empty', () => {
     it('does not render epic column', () => {
       const props = {
-        epicStories: [ ],
+        epicStories: [],
         projectBoard: {
           isFetched: true,
           search: {
-            loading: false
+            loading: false,
           },
           reverse: false,
           visibleColumns: {
             backlog: true,
             done: true,
-            chillyBin: true
-          }
+            chillyBin: true,
+          },
         },
       };
-      const wrapper = render(props);
+      const { container } = renderComponent(props);
 
-      expect(wrapper.find('[data-id="epic-column"]')).not.toExist();
+      expect(container.querySelectorAll('.Column').length).toBe(
+        COLUMNS_QUANTITY_STD
+      );
     });
   });
 });

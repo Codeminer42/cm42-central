@@ -1,77 +1,165 @@
-import React from "react";
-import { shallow } from "enzyme";
-import { ExpandedStoryDefault } from "components/story/ExpandedStory/ExpandedStoryDefault";
-import storyFactory from "../../../../support/factories/storyFactory";
-import { createTemporaryId } from "../../../../../../app/assets/javascripts/models/beta/story";
+import { ExpandedStoryDefault } from 'components/story/ExpandedStory/ExpandedStoryDefault';
+import React from 'react';
+import { createTemporaryId } from '../../../../../../app/assets/javascripts/models/beta/story';
+import storyFactory from '../../../../support/factories/storyFactory';
+import { renderWithProviders } from '../../../setupRedux';
 
-describe("<ExpandedStoryDefault />", () => {
-  const defaultProps = () => ({
-    story: {
-      ...storyFactory(),
-      _editing: storyFactory(),
-    },
-    onEdit: sinon.spy(),
-    storyFailure: sinon.spy(),
-    createTask: sinon.spy(),
-    deleteTask: sinon.spy(),
-    toggleTask: sinon.spy(),
-    deleteNote: sinon.spy(),
-    createNote: sinon.spy(),
-    addLabel: sinon.spy(),
-    removeLabel: sinon.spy(),
-    setLoadingStory: sinon.spy(),
-    users: [],
-    project: { labels: [] },
-    enabled: true,
-    onClone: sinon.spy(),
-    showHistory: sinon.spy(),
-    disabled: false,
+describe('<ExpandedStoryDefault />', () => {
+  beforeEach(function () {
+    vi.spyOn(I18n, 't');
   });
 
-  it("renders all children components when isn't a new story", () => {
-    const story = {
-      ...storyFactory({ id: 42 }),
-      _editing: storyFactory({ id: 42 }),
+  afterEach(function () {
+    I18n.t.mockRestore();
+  });
+
+  vi.spyOn(window.md, 'makeHtml').mockReturnValue('<p>Test</p>');
+  vi.mock('react-clipboard.js', () => ({
+    default: vi
+      .fn()
+      .mockImplementation(({ children }) => <div>{children}</div>),
+  }));
+
+  const renderComponent = props => {
+    const defaultProps = {
+      story: {
+        ...storyFactory(),
+        _editing: storyFactory(),
+      },
+      onEdit: vi.fn(),
+      storyFailure: vi.fn(),
+      createTask: vi.fn(),
+      deleteTask: vi.fn(),
+      toggleTask: vi.fn(),
+      deleteNote: vi.fn(),
+      createNote: vi.fn(),
+      addLabel: vi.fn(),
+      removeLabel: vi.fn(),
+      setLoadingStory: vi.fn(),
+      users: [],
+      project: { pointValues: [], labels: [] },
+      enabled: true,
+      onClone: vi.fn(),
+      showHistory: vi.fn(),
+      disabled: false,
+    };
+    const mergedProps = { ...defaultProps, ...props };
+
+    return renderWithProviders(<ExpandedStoryDefault {...mergedProps} />);
+  };
+
+  it("renders all children components when story isn't new", () => {
+    const props = {
+      story: {
+        ...storyFactory({ id: 42 }),
+        _editing: storyFactory({ id: 42 }),
+      },
     };
 
-    const wrapper = shallow(
-      <ExpandedStoryDefault {...defaultProps()} story={story} />
+    const { container } = renderComponent(props);
+
+    // ExpandedStoryHistoryLocation
+    const expandedStoryHistoryLocation =
+      container.querySelector('#story-link-42');
+    expect(expandedStoryHistoryLocation).toBeInTheDocument();
+
+    // ExpandedStoryTitle
+    expect(I18n.t).toHaveBeenCalledWith('activerecord.attributes.story.title');
+
+    // ExpandedStoryEstimate
+
+    expect(I18n.t).toHaveBeenCalledWith(
+      'activerecord.attributes.story.estimate'
     );
 
-    expect(wrapper.find("ExpandedStoryHistoryLocation")).toExist();
-    expect(wrapper.find("ExpandedStoryTitle")).toExist();
-    expect(wrapper.find("ExpandedStoryEstimate")).toExist();
-    expect(wrapper.find("ExpandedStoryType")).toExist();
-    expect(wrapper.find("ExpandedStoryState")).toExist();
-    expect(wrapper.find("ExpandedStoryRequestedBy")).toExist();
-    expect(wrapper.find("ExpandedStoryOwnedBy")).toExist();
-    expect(wrapper.find("ExpandedStoryLabels")).toExist();
-    expect(wrapper.find("ExpandedStoryDescription")).toExist();
-    expect(wrapper.find("ExpandedStoryTask")).toExist();
-    expect(wrapper.find("ExpandedStoryNotes")).toExist();
+    // ExpandedStoryType
+    expect(I18n.t).toHaveBeenCalledWith(
+      'activerecord.attributes.story.story_type'
+    );
+
+    // ExpandedStoryState
+    expect(I18n.t).toHaveBeenCalledWith('activerecord.attributes.story.state');
+
+    // ExpandedStoryRequestedBy
+    expect(I18n.t).toHaveBeenCalledWith(
+      'activerecord.attributes.story.requested_by'
+    );
+
+    // ExpandedStoryOwnedBy
+    expect(I18n.t).toHaveBeenCalledWith(
+      'activerecord.attributes.story.owned_by'
+    );
+
+    // ExpandedStoryLabels
+    expect(I18n.t).toHaveBeenCalledWith('activerecord.attributes.story.labels');
+
+    // ExpandedStoryDescription
+    expect(I18n.t).toHaveBeenCalledWith(
+      'activerecord.attributes.story.description'
+    );
+
+    // ExpandedStoryTask
+    expect(I18n.t).toHaveBeenCalledWith('story.tasks');
+
+    // ExpandedStoryNotes
+    expect(I18n.t).toHaveBeenCalledWith('add note');
   });
 
-  it("not renders some components when it is a new story", () => {
+  it('does not render some components when it is a new story', () => {
     const id = createTemporaryId();
-    const story = {
-      ...storyFactory({ id }),
-      _editing: storyFactory({ id }),
+    const props = {
+      story: {
+        ...storyFactory({ id }),
+        _editing: storyFactory({ id }),
+      },
     };
 
-    const wrapper = shallow(
-      <ExpandedStoryDefault {...defaultProps()} story={story} />
+    const { container } = renderComponent(props);
+
+    // ExpandedStoryHistoryLocation
+    const expandedStoryHistoryLocation =
+      container.querySelector('#story-link-42');
+    expect(expandedStoryHistoryLocation).toBeNull();
+
+    // ExpandedStoryTitle
+    expect(I18n.t).toHaveBeenCalledWith('activerecord.attributes.story.title');
+
+    // ExpandedStoryEstimate
+
+    expect(I18n.t).toHaveBeenCalledWith(
+      'activerecord.attributes.story.estimate'
     );
 
-    expect(wrapper.find("ExpandedStoryHistoryLocation")).not.toExist();
-    expect(wrapper.find("ExpandedStoryTitle")).toExist();
-    expect(wrapper.find("ExpandedStoryEstimate")).toExist();
-    expect(wrapper.find("ExpandedStoryType")).toExist();
-    expect(wrapper.find("ExpandedStoryState")).toExist();
-    expect(wrapper.find("ExpandedStoryRequestedBy")).toExist();
-    expect(wrapper.find("ExpandedStoryOwnedBy")).toExist();
-    expect(wrapper.find("ExpandedStoryLabels")).toExist();
-    expect(wrapper.find("ExpandedStoryDescription")).toExist();
-    expect(wrapper.find("ExpandedStoryTask")).not.toExist();
-    expect(wrapper.find("ExpandedStoryNotes")).not.toExist();
+    // ExpandedStoryType
+    expect(I18n.t).toHaveBeenCalledWith(
+      'activerecord.attributes.story.story_type'
+    );
+
+    // ExpandedStoryState
+    expect(I18n.t).toHaveBeenCalledWith('activerecord.attributes.story.state');
+
+    // ExpandedStoryRequestedBy
+    expect(I18n.t).toHaveBeenCalledWith(
+      'activerecord.attributes.story.requested_by'
+    );
+
+    // ExpandedStoryOwnedBy
+    expect(I18n.t).toHaveBeenCalledWith(
+      'activerecord.attributes.story.owned_by'
+    );
+
+    // ExpandedStoryLabels
+    expect(I18n.t).toHaveBeenCalledWith('activerecord.attributes.story.labels');
+
+    // ExpandedStoryDescription
+    expect(I18n.t).toHaveBeenCalledWith(
+      'activerecord.attributes.story.description'
+    );
+
+    // ExpandedStoryTask
+    expect(I18n.t).not.toHaveBeenCalledWith('story.tasks');
+
+    // ExpandedStoryNotes
+    expect(I18n.t).not.toHaveBeenCalledWith('add note');
   });
 });

@@ -1,34 +1,35 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { render } from '@testing-library/react';
 
 import ProjectCard from 'components/projects/ProjectCard';
 import User from 'models/user';
 import Project from 'models/project';
+import { expect } from 'vitest';
 
-const user = new User({ 'user': { 'id': 1 } });
+const user = new User({ user: { id: 1 } });
 
-const projectFactory = (tag_name) => {
+const projectFactory = tag_name => {
   const defaultObj = {
-    'name': 'Foobar',
-    'slug': 'foobar',
-    'path_to': {
-      'project': "/projects/foobar",
-      'projectReports': "/projects/foobar/reports",
-      'projectUsers': "/projects/foobar/users",
-      'projectSettings': "/projects/foobar/edit",
-      'projectJoin': "/projects/foobar/join",
-      'projectUnjoin': "/projects/foobar/users/"
+    name: 'Foobar',
+    slug: 'foobar',
+    path_to: {
+      project: '/projects/foobar',
+      projectReports: '/projects/foobar/reports',
+      projectUsers: '/projects/foobar/users',
+      projectSettings: '/projects/foobar/edit',
+      projectJoin: '/projects/foobar/join',
+      projectUnjoin: '/projects/foobar/users/',
     },
-    'archived_at': null,
-    'velocity': '10',
-    'volatility': "0%",
-    'tag_name': tag_name,
-    'tag_bg_color': "#2075F3",
-    'tag_fore_color': "#FFFFFF",
-    'users_avatar': ["https://secure.gravatar.com/avatar/foobar.png"]
-  }
-  return new Project(defaultObj)
-}
+    archived_at: null,
+    velocity: '10',
+    volatility: '0%',
+    tag_name: tag_name,
+    tag_bg_color: '#2075F3',
+    tag_fore_color: '#FFFFFF',
+    users_avatar: ['https://secure.gravatar.com/avatar/foobar.png'],
+  };
+  return new Project(defaultObj);
+};
 
 describe('<ProjectCard />', () => {
   let defaultProps;
@@ -39,118 +40,87 @@ describe('<ProjectCard />', () => {
       project: projectFactory(),
       user: user,
       joined: true,
-      key: 1
+      key: 1,
     };
 
     propsWithTag = {
       project: projectFactory('tag-foo'),
       user: user,
       joined: true,
-      key: 1
+      key: 1,
     };
   });
 
   describe('joined', () => {
-    it('should have project, user and joined props', () => {
-      const wrapper = mount(<ProjectCard {...defaultProps} />);
-      expect(wrapper.prop('project')).toBe(defaultProps.project);
-      expect(wrapper.prop('user')).toBe(defaultProps.user);
-      expect(wrapper.prop('joined')).toBe(true);
-    });
-
     it('should contain the Project name', () => {
-      const wrapper = shallow(<ProjectCard {...defaultProps} />);
-      expect(wrapper.find('.card-title').text()).toContain('Foobar');
+      const { getByText } = render(<ProjectCard {...defaultProps} />);
+      expect(getByText('Foobar')).toBeInTheDocument();
     });
 
     describe('#panelHeading', () => {
       describe('.icons', () => {
         it('should have report icon', () => {
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(wrapper.contains(
-            <a href="/projects/foobar/reports" className="unstyled-link"
-              data-toggle="tooltip"
-              data-placement="top"
-              data-title={I18n.t('reports')}
-            >
-              <i className="mi md-20 heading-icon">insert_chart</i>
-            </a>
-          )).toBe(true);
+          const { getByTestId } = render(<ProjectCard {...defaultProps} />);
+          expect(getByTestId('report-icon-anchor')).toBeInTheDocument();
         });
 
         it('should have group icon', () => {
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(wrapper.contains(
-            <a href="/projects/foobar/users" className="unstyled-link"
-              data-toggle="tooltip"
-              data-placement="top"
-            >
-              <i className="mi md-20 heading-icon">group</i>
-            </a>
-          )).toBe(true);
+          const { getByTestId } = render(<ProjectCard {...defaultProps} />);
+          expect(getByTestId('user-icon-anchor')).toBeInTheDocument();
         });
 
         it('should have settings icon', () => {
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(wrapper.contains(
-            <a className="unstyled-link" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i className="mi md-20 heading-icon">settings</i>
-            </a>
-          )).toBe(true);
+          const { getByTestId } = render(<ProjectCard {...defaultProps} />);
+          expect(getByTestId('settings-icon-anchor')).toBeInTheDocument();
         });
       });
 
       describe('.card-tag', () => {
         describe('When there is a tag', () => {
-          let wrapper;
-
-          beforeEach(() => {
-            wrapper = mount(<ProjectCard {...propsWithTag} />);
-          });
-
           it('has the tag name', () => {
-            expect(wrapper.find('.card-tag')).toHaveText(defaultProps.project.get("tag_name"));
+            const { getByText } = render(<ProjectCard {...propsWithTag} />);
+
+            expect(
+              getByText(propsWithTag.project.get('tag_name'))
+            ).toBeInTheDocument();
           });
 
           it('has the background and foreground defined', () => {
-            expect(wrapper.find('.card-tag')).toHaveStyle({ backgroundColor: '#2075F3', color: '#FFFFFF' });
+            const { container } = render(<ProjectCard {...propsWithTag} />);
+            const component = container.querySelector('.card-tag');
+
+            expect(component.style.backgroundColor).toBe('rgb(32, 117, 243)');
+            expect(component.style.color).toBe('rgb(255, 255, 255)');
           });
         });
 
         it('does not have the tag', () => {
-          const wrapper = mount(<ProjectCard {...propsWithTag} />);
-          expect(wrapper.contains(
-            <small className='card-tag'>{defaultProps.project.get("tag_name")}</small>
-          )).toBe(false);
+          propsWithTag.project.set('tag_name', null);
+          const { container } = render(<ProjectCard {...propsWithTag} />);
+
+          expect(container.querySelector('.card-tag')).not.toBeInTheDocument();
         });
       });
 
       describe('.dropdown-menu', () => {
         it('should contain dropdown-menu', () => {
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(wrapper.find('ul.dropdown-menu')).toHaveClassName('dropdown-menu');
+          const { container } = render(<ProjectCard {...defaultProps} />);
+
+          expect(container.querySelector('.dropdown-menu')).toHaveClass(
+            'dropdown-menu'
+          );
         });
 
         it('should contain settings link', () => {
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(wrapper.contains(
-            <a href="/projects/foobar/edit"
-              data-toggle="tooltip"
-              data-placement="top"
-              data-title={I18n.t('settings')}
-            >
-              {I18n.t('settings')}
-            </a>
-          )).toBe(true);
+          const { getByText } = render(<ProjectCard {...defaultProps} />);
+
+          expect(getByText(I18n.t('settings'))).toBeInTheDocument();
         });
 
         it('should contain unjoin project link', () => {
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(wrapper.contains(
-            <a href="/projects/foobar/users/1" data-method="delete">
-              {I18n.t('projects.unjoin')}
-            </a>
-          )).toBe(true);
+          const { getByText } = render(<ProjectCard {...defaultProps} />);
+
+          expect(getByText(I18n.t('projects.unjoin'))).toBeInTheDocument();
         });
       });
     });
@@ -158,27 +128,18 @@ describe('<ProjectCard />', () => {
     describe('#panelBody', () => {
       describe('not archived', () => {
         it('should contain users avatar', () => {
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(wrapper.contains(
-            <div className="col-md-12 members">
-              <ul className="member-list">
-                <li className="member">
-                  <img src="https://secure.gravatar.com/avatar/foobar.png" alt="User avatar" className="identicon" />
-                </li>
-              </ul>
-            </div>
-          )).toBe(true);
+          const { container } = render(<ProjectCard {...defaultProps} />);
+
+          expect(container.querySelector('.member')).toBeInTheDocument();
         });
       });
 
       describe('archived', () => {
         it('should not contain unable to join message', () => {
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(wrapper.contains(
-            <div className="panel-body">
-              <span className="col-md-12 text-center">{I18n.t('projects.unable_to_join')}</span>
-            </div>
-          )).toBe(false);
+          const { queryByText } = render(<ProjectCard {...defaultProps} />);
+          expect(
+            queryByText(I18n.t('projects.unable_to_join'))
+          ).not.toBeInTheDocument();
         });
       });
     });
@@ -186,68 +147,50 @@ describe('<ProjectCard />', () => {
     describe('#cardLink', () => {
       describe('unarchived', () => {
         it('should contain SELECT PROJECT button', () => {
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(wrapper.contains(
-            <a href="/projects/foobar" className="card-footer panel-footer">{I18n.t('projects.select')}</a>
-          )).toBe(true);
+          const { getByText } = render(<ProjectCard {...defaultProps} />);
+          expect(getByText(I18n.t('projects.select'))).toBeInTheDocument();
         });
       });
 
       describe('archived', () => {
         it('should contain ARCHIVED AT date', () => {
           defaultProps.project.set('archived_at', '2015/08/28 16:21:57 -0300');
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(wrapper.contains(
-            <span className="card-footer panel-footer">{I18n.t('archived_at')} {"2015/08/28 16:21:57 -0300"}</span>
-          )).toBe(true);
+          const { getByText } = render(<ProjectCard {...defaultProps} />);
+
+          expect(
+            getByText(`${I18n.t('archived_at')} 2015/08/28 16:21:57 -0300`)
+          ).toBeInTheDocument();
         });
       });
     });
   });
 
   describe('unjoined', () => {
-    it('should have project, user and joined props', () => {
-      defaultProps.joined = false;
-
-      const wrapper = mount(<ProjectCard {...defaultProps} />);
-      expect(wrapper.props()).toEqual({ project: defaultProps.project, user: defaultProps.user, joined: false });
-    });
-
     it('should contain the Project name', () => {
       defaultProps.joined = false;
 
-      const wrapper = shallow(<ProjectCard {...defaultProps} />);
-      expect(wrapper.contains(
-        <div className="panel-heading card-heading">
-          <span className="card-title">Foobar</span>
-        </div>
-      )).toBe(true);
+      const { getByText } = render(<ProjectCard {...defaultProps} />);
+      expect(getByText('Foobar')).toBeInTheDocument();
     });
 
     describe('#panelHeading', () => {
       describe('.icons', () => {
         it('should not have report icon', () => {
           defaultProps.joined = false;
+          const { queryByTestId } = render(<ProjectCard {...defaultProps} />);
 
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(wrapper.contains(
-            <a href="/projects/foobar/reports" className="unstyled-link"
-              data-toggle="tooltip"
-              data-placement="top"
-              data-title={I18n.t('reports')}
-            >
-              <i className="mi md-20 heading-icon">insert_chart</i>
-            </a>
-          )).toBe(false);
+          expect(queryByTestId('report-icon-anchor')).not.toBeInTheDocument();
         });
       });
 
       describe('.dropdown-menu', () => {
         it('should not contain dropdown-menu', () => {
           defaultProps.joined = false;
+          const { container } = render(<ProjectCard {...defaultProps} />);
 
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(wrapper.find('ul.dropdown-menu')).not.toHaveClassName('dropdown-menu');
+          expect(
+            container.querySelector('.dropdown-menu')
+          ).not.toBeInTheDocument();
         });
       });
     });
@@ -257,13 +200,11 @@ describe('<ProjectCard />', () => {
         it('should contain "to view more join" message', () => {
           defaultProps.joined = false;
           defaultProps.project.set('archived_at', null);
+          const { getByText } = render(<ProjectCard {...defaultProps} />);
 
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(wrapper.contains(
-            <div className="panel-body">
-              <span className="col-md-12 text-center">{I18n.t('projects.to_view_more_join')}</span>
-            </div>
-          )).toBe(true);
+          expect(
+            getByText(I18n.t('projects.to_view_more_join'))
+          ).toBeInTheDocument();
         });
       });
 
@@ -271,13 +212,11 @@ describe('<ProjectCard />', () => {
         it('should contain "unable to join" message', () => {
           defaultProps.joined = false;
           defaultProps.project.set('archived_at', '9999/99/99 99:99:99 -9999');
+          const { getByText } = render(<ProjectCard {...defaultProps} />);
 
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(wrapper.contains(
-            <div className="panel-body">
-              <span className="col-md-12 text-center">{I18n.t('projects.unable_to_join')}</span>
-            </div>
-          )).toBe(true);
+          expect(
+            getByText(I18n.t('projects.unable_to_join'))
+          ).toBeInTheDocument();
         });
       });
     });
@@ -287,11 +226,9 @@ describe('<ProjectCard />', () => {
         it('should contain Join Project button', () => {
           defaultProps.joined = false;
           defaultProps.project.set('archived_at', null);
+          const { getByText } = render(<ProjectCard {...defaultProps} />);
 
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(wrapper.contains(
-            <a href="/projects/foobar/join" className="card-footer panel-footer">{I18n.t('projects.join')}</a>
-          )).toBe(true);
+          expect(getByText(I18n.t('projects.join'))).toBeInTheDocument();
         });
       });
 
@@ -299,11 +236,11 @@ describe('<ProjectCard />', () => {
         it('should contain ARCHIVED AT date', () => {
           defaultProps.joined = false;
           defaultProps.project.set('archived_at', '9999/99/99 99:99:99 -9999');
+          const { getByText } = render(<ProjectCard {...defaultProps} />);
 
-          const wrapper = shallow(<ProjectCard {...defaultProps} />);
-          expect(wrapper.contains(
-            <span className="card-footer panel-footer">{I18n.t('archived_at')} {'9999/99/99 99:99:99 -9999'}</span>
-          )).toBe(true);
+          expect(
+            getByText(`${I18n.t('archived_at')} 9999/99/99 99:99:99 -9999`)
+          ).toBeInTheDocument();
         });
       });
     });

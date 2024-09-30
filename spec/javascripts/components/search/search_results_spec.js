@@ -1,33 +1,70 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import SearchResults from 'components/search/Search';
+import { SearchResults } from 'components/search/SearchResults';
+import { renderWithProviders } from '../setupRedux';
+import { DragDropContext } from 'react-beautiful-dnd';
+
+const emptyStory = {
+  title: '',
+  description: null,
+  estimate: '',
+  storyType: 'feature',
+  state: 'unscheduled',
+  acceptedAt: null,
+  requestedById: null,
+  ownedById: null,
+  projectId: null,
+  createdAt: '',
+  updatedAt: '',
+  position: '',
+  newPosition: null,
+  labels: [],
+  requestedByName: '',
+  ownedByName: null,
+  ownedByInitials: null,
+  releaseDate: null,
+  deliveredAt: null,
+  errors: {},
+  notes: [],
+  tasks: [],
+};
 
 describe('<SearchResults />', () => {
+  const renderComponent = props => {
+    const defaultProps = {
+      isEnabled: false,
+      searchResults: [],
+      closeSearch: vi.fn(),
+      projectBoard: {
+        search: {},
+      },
+    };
+
+    const mergeProps = {
+      ...defaultProps,
+      ...props,
+    };
+
+    return renderWithProviders(
+      <DragDropContext onDragEnd={vi.fn()} onDragUpdate={vi.fn()}>
+        <SearchResults {...mergeProps} />
+      </DragDropContext>,
+      {}
+    );
+  };
+
   describe('when isEnabled is false', () => {
     it('does not render the component', () => {
-      const wrapper = shallow(
-        <SearchResults 
-          isEnabled={false}
-          searchResults={[]}
-          closeSearch={sinon.stub()}
-        />
-      );
-  
-      expect(wrapper.instance()).toBeNull();
+      const { container } = renderComponent();
+
+      expect(container.querySelector('.Sprint')).not.toBeInTheDocument();
     });
   });
 
   describe('when isEnabled is true', () => {
     it('renders the component', () => {
-      const wrapper = shallow(
-        <SearchResults 
-          isEnabled={true}
-          searchResults={[]}
-          closeSearch={sinon.stub()}
-        />
-      );
-  
-      expect(wrapper).toExist();
+      const { container } = renderComponent({ isEnabled: true });
+
+      expect(container.querySelector('.Sprint')).toBeInTheDocument();
     });
   });
 });

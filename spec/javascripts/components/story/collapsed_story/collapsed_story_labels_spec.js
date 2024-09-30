@@ -1,33 +1,36 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import CollapsedStoryLabels from 'components/story/CollapsedStory/CollapsedStoryLabels';
+import React from 'react';
+import { describe, expect, it, vi } from 'vitest';
 import storyFactory from '../../../support/factories/storyFactory';
 
 describe('<CollapsedStoryLabels />', () => {
   it('renders <CollapsedStoryLabels /> when labels', () => {
     const labels = [
       { id: 0, name: 'front' },
-      { id: 1, name: 'back' }
+      { id: 1, name: 'back' },
     ];
 
     const story = storyFactory({ labels });
+    const { container } = render(
+      <CollapsedStoryLabels story={story} onLabelClick={vi.fn()} />
+    );
 
-    const wrapper = shallow(<CollapsedStoryLabels story={story} onLabelClick={sinon.stub()} />);
-    expect(wrapper).toHaveClassName('Story__labels');
+    expect(container.firstChild).toHaveClass('Story__labels');
   });
 
   it('render all <StoryLabel />', () => {
     const labels = [
       { id: 0, name: 'front' },
-      { id: 1, name: 'back' }
+      { id: 1, name: 'back' },
     ];
 
     const story = storyFactory({ labels });
 
-    const wrapper = shallow(<CollapsedStoryLabels story={story} onLabelClick={sinon.stub()} />);
+    render(<CollapsedStoryLabels story={story} onLabelClick={vi.fn()} />);
 
-    labels.forEach((label) => {
-      expect(wrapper.find(`StoryLabel[label="${label.name}"]`)).toExist();
-    })
+    labels.forEach(label => {
+      expect(screen.getByText(label.name)).toBeInTheDocument();
+    });
   });
 });

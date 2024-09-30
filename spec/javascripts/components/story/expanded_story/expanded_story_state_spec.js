@@ -1,120 +1,117 @@
-import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { fireEvent, screen } from '@testing-library/dom';
 import ExpandedStoryState from 'components/story/ExpandedStory/ExpandedStoryState';
-import { states, types } from '../../../../../app/assets/javascripts/models/beta/story';
-import { storyTypes } from '../../../../../app/assets/javascripts/libs/beta/constants'
+import React from 'react';
+import { storyTypes } from '../../../../../app/assets/javascripts/libs/beta/constants';
+import {
+  states,
+  types,
+} from '../../../../../app/assets/javascripts/models/beta/story';
+import { renderWithProviders } from '../../setupRedux';
 
 describe('<ExpandedStoryState />', () => {
+  const renderComponent = props => {
+    const defaultProps = {
+      story: {
+        _editing: { state: 'started' },
+      },
+      onEdit: vi.fn(),
+      disabled: false,
+    };
+
+    const mergedProps = { ...defaultProps, ...props };
+
+    return renderWithProviders(<ExpandedStoryState {...mergedProps} />);
+  };
+
   it('renders component title', () => {
-    const onEditSpy = sinon.spy();
-
-    const story = { state: 'started', _editing: { state: 'started' } };
-
-    const wrapper = mount(
-      <ExpandedStoryState
-        story={story}
-        onEdit={onEditSpy}
-        disabled={false}
-      />
+    renderComponent();
+    const title = screen.getByText(
+      I18n.t('activerecord.attributes.story.state')
     );
 
-    expect(wrapper.text()).toContain(I18n.t('activerecord.attributes.story.state'));
+    expect(title).toBeInTheDocument();
   });
 
-  describe("states at select", () => {
-    let onEditSpy;
-
-    beforeEach(() => {
-      onEditSpy = sinon.spy();
-    })
-
+  describe('states at select', () => {
     const noFeatureTypes = types.filter(type => type !== storyTypes.FEATURE);
 
     noFeatureTypes.forEach(noFeatureType => {
       describe(`when is no ${noFeatureType}`, () => {
         states.forEach(state => {
           describe(`and state is ${state}`, () => {
-            const story = {
-              _editing: { 
+            const props = {
+              story: {
+                _editing: {
+                  state,
+                  estimate: 1,
+                  storyType: noFeatureType,
+                },
                 state,
                 estimate: 1,
                 storyType: noFeatureType,
-              }
+              },
+              disabled: false,
             };
-  
+
             let wrapper;
-  
+
             beforeEach(() => {
-              wrapper = shallow(
-                <ExpandedStoryState
-                  story={story}
-                  onEdit={onEditSpy}
-                  disabled={false}
-                />
-              );
+              const { container } = renderComponent(props);
+              wrapper = container;
             });
-  
+
             it('renders all states', () => {
-              expect(wrapper.find('option').length).toEqual(7);
+              expect(wrapper.querySelectorAll('option').length).toEqual(7);
             });
-  
+
             it(`has to be ${state}`, () => {
-              expect(wrapper.find('select').prop('value')).toBe(state);
+              expect(wrapper.querySelector('select').value).toBe(state);
             });
           });
         });
-      })
-    })
+      });
+    });
 
     describe('when is unestimated feature', () => {
-      let onEditSpy;
-
-      beforeEach(() => {
-        onEditSpy = sinon.spy();
-      })
-
-      const story = {
-        _editing: { state: states[0], estimate: null, storyType: storyTypes.FEATURE }
-      };
       let wrapper;
+      const props = {
+        story: {
+          _editing: {
+            state: states[0],
+            estimate: null,
+            storyType: storyTypes.FEATURE,
+          },
+        },
+      };
 
       beforeEach(() => {
-        wrapper = shallow(
-          <ExpandedStoryState
-            story={story}
-            onEdit={onEditSpy}
-            disabled={false}
-          />
-        );
-      })
-      
+        const { container } = renderComponent(props);
+        wrapper = container;
+      });
+
       it('renders just one state', () => {
-        expect(wrapper.find('option').length).toEqual(1);
+        expect(wrapper.querySelectorAll('option').length).toEqual(1);
       });
 
       it('has to be unscheduled', () => {
-        expect(wrapper.find('select').prop('value')).toBe(states[0]);
+        expect(wrapper.querySelector('select').value).toBe(states[0]);
       });
     });
 
     states.forEach(state => {
       it(`sets select value as ${state}`, () => {
-        const onEditSpy = sinon.spy();
+        const onEditSpy = vi.fn();
 
-        const story = {
-          _editing: { state }
+        const props = {
+          story: {
+            _editing: { state },
+          },
         };
 
-        const wrapper = shallow(
-          <ExpandedStoryState
-            story={story}
-            onEdit={onEditSpy}
-            disabled={false}
-          />
-        );
-        const select = wrapper.find('select');
+        const { container } = renderComponent(props);
+        const select = container.querySelector('select');
 
-        expect(select.prop('value')).toBe(state);
+        expect(select.value).toBe(state);
       });
     });
   });
@@ -123,93 +120,82 @@ describe('<ExpandedStoryState />', () => {
     it('triggers the edit callback passing the story state', () => {
       const state = states[0];
       const change = states[1];
-
-      const story = {
-        _editing: { state }
+      const onEditSpy = vi.fn();
+      const props = {
+        story: {
+          _editing: { state },
+        },
+        onEdit: onEditSpy,
       };
 
-      const onEdit = sinon.spy();
+      const { container } = renderComponent(props);
+      const select = container.querySelector('select');
+      fireEvent.change(select, { target: { value: change } });
 
-      const wrapper = shallow(
-        <ExpandedStoryState
-          story={story}
-          onEdit={onEdit}
-          disabled={false}
-        />
-      );
-      const select = wrapper.find('select');
-
-      select.simulate('change', { target: { value: change } });
-
-      expect(onEdit).toHaveBeenCalledWith(change);
+      expect(onEditSpy).toHaveBeenCalledWith(change);
     });
   });
 
   describe('when component is disabled', () => {
-    it('select field is editable', () => {
-      const onEditSpy = sinon.spy();
-      const story = { state: 'started', _editing: { state: 'started' } };
-      const wrapper = mount(
-        <ExpandedStoryState
-          story={story}
-          onEdit={onEditSpy}
-          disabled={true}
-        />
-      );
-      const select = wrapper.find('select');
-      expect(select.prop('disabled')).toBe(true);
+    it('select field is disabled', () => {
+      const props = {
+        story: { state: 'started', _editing: { state: 'started' } },
+        disabled: true,
+      };
+
+      const { container } = renderComponent(props);
+      const select = container.querySelector('select');
+
+      expect(select).toBeDisabled();
     });
   });
 
   describe('when component is enabled', () => {
-    it('select field is enabled', () => {
-      const onEditSpy = sinon.spy();
-      const story = { state: 'started', _editing: { state: 'started' } };
-      const wrapper = mount(
-        <ExpandedStoryState
-          story={story}
-          onEdit={onEditSpy}
-          disabled={false}
-        />
-      );
-      const select = wrapper.find('select');
-      expect(select.prop('disabled')).toBe(false);
+    it('select field is editable', () => {
+      const props = {
+        story: { state: 'started', _editing: { state: 'started' } },
+        disabled: false,
+      };
+
+      const { container } = renderComponent(props);
+      const select = container.querySelector('select');
+
+      expect(select).not.toBeDisabled();
     });
   });
 
-  describe("When change estimate", () => {
-    describe("to no estimate", () => {
-      it("disables state select", () => {
-          const story = { _editing: { estimate: '', storyType: 'feature', state: 'unscheduled' } };
-          const onEditSpy = sinon.spy();
-          const wrapper = shallow(
-            <ExpandedStoryState
-              story={story}
-              onEdit={onEditSpy}
-              disabled={false}
-            />
-          );
+  describe('When change estimate', () => {
+    describe('to no estimate', () => {
+      it('disables state select', () => {
+        const props = {
+          story: {
+            _editing: {
+              estimate: '',
+              storyType: 'feature',
+              state: 'unscheduled',
+            },
+          },
+        };
 
-          const select = wrapper.find('select');
+        const { container } = renderComponent(props);
+        const select = container.querySelector('select');
 
-          expect(select.prop('disabled')).toBe(true);
+        expect(select).toBeDisabled();
       });
     });
 
-    describe("to a number", () => {
+    describe('to a number', () => {
       it("doesn't disable state select when estimate is a number", () => {
-        const story = { _editing: { estimate: 1, storyType: 'feature', state: 'unstarted' } };
-        const onEditSpy = sinon.stub();
-        const wrapper = shallow(
-          <ExpandedStoryState
-              story={story}
-              onEdit={onEditSpy}
-              disabled={false}
-          />
-        );
-        const select = wrapper.find('select');
+        const props = {
+          story: {
+            _editing: { estimate: 1, storyType: 'feature', state: 'unstarted' },
+          },
+        };
 
-        expect(select.prop('disabled')).toBe(false);
+        const { container } = renderComponent(props);
+        const select = container.querySelector('select');
+
+        expect(select).not.toBeDisabled();
       });
     });
   });

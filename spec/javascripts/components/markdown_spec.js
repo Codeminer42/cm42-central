@@ -1,23 +1,23 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render } from '@testing-library/react';
 import Markdown from 'components/Markdown';
 
 describe('<Markdown />', () => {
   const source = 'some text';
 
   beforeEach(() => {
-    sinon.stub(window.md, 'makeHtml').returns(source);
+    vi.spyOn(window.md, 'makeHtml').mockReturnValueOnce(source);
   });
 
   afterEach(() => {
-    window.md.makeHtml.restore();
+    window.md.makeHtml.mockRestore();
   });
 
   describe('When source isnt null', () => {
     it('renders the source text with markdown', () => {
-      const wrapper = shallow(<Markdown source={source} />);
+      const { container } = render(<Markdown source={source} />);
 
-      expect(wrapper.text()).toContain(source);
+      expect(container.innerHTML).toContain(source);
     });
   });
 });

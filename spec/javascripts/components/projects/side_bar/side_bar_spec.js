@@ -1,9 +1,9 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render } from '@testing-library/react';
 import SideBar from 'components/projects/SideBar';
 
 describe('<SideBar />', () => {
-  const render = props => {
+  const renderComponent = props => {
     const defaultProps = {
       reverse: false,
       visibleColumns: {
@@ -11,16 +11,16 @@ describe('<SideBar />', () => {
         backlog: true,
         done: true,
       },
-      toggleColumn: sinon.stub(),
-      reverseColumns: sinon.stub()
+      toggleColumn: vi.fn(),
+      reverseColumns: vi.fn(),
     };
 
-    return shallow(<SideBar {...defaultProps} {...props } />);
+    return render(<SideBar {...defaultProps} {...props} />);
   };
 
   it('renders the component', () => {
-    const wrapper = render();
+    const { container } = renderComponent();
 
-    expect(wrapper).toExist();
+    expect(container).toBeInTheDocument();
   });
 });

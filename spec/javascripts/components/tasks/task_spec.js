@@ -1,72 +1,60 @@
-
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { fireEvent, render } from '@testing-library/react';
 
-import Checkbox from 'components/forms/Checkbox';
 import TaskComponent from 'components/tasks/Task';
-import TaskForm from 'components/tasks/TaskForm';
 import Task from 'models/task';
 
-describe('<Task />', function() {
+describe('<Task />', function () {
   let task;
 
-  beforeEach(function() {
-    sinon.stub(I18n, 't');
-    task = new Task({name: 'Test Task', id: 5});
+  beforeEach(function () {
+    task = new Task({ name: 'Test Task', id: 5 });
   });
 
-  afterEach(function() {
-    I18n.t.restore();
-  });
-
-  it("should be able to call handleDelete", function() {
-    const handleDelete = sinon.stub();
-    const wrapper = mount(
+  it('should be able to call handleDelete', function () {
+    const handleDelete = vi.fn();
+    const { container } = render(
       <TaskComponent
         task={task}
         disabled={false}
         handleDelete={handleDelete}
+        handleUpdate={() => {}}
       />
     );
 
-    wrapper.find('.delete-btn').simulate('click');
+    const button = container.querySelector('.delete-btn');
+    fireEvent.click(button);
+
     expect(handleDelete).toHaveBeenCalled();
   });
 
-  it("should be able to call handleUpdate", function() {
-    const handleUpdate = sinon.stub();
-    const wrapper = mount(
-      <TaskComponent
-        task={task}
-        disabled={false}
-        handleUpdate={handleUpdate}
-      />
+  it('should be able to call handleUpdate', async function () {
+    const handleUpdate = vi.fn();
+    const { getByRole } = render(
+      <TaskComponent task={task} disabled={false} handleUpdate={handleUpdate} />
     );
 
-    wrapper.find('input').simulate('change', { target: { checked: true } });
+    const input = getByRole('checkbox');
+    fireEvent.click(input);
+
     expect(handleUpdate).toHaveBeenCalled();
   });
 
-  describe("when not disabled", function() {
-
-    it("should have an delete button", function() {
-      const wrapper = mount(
+  describe('when not disabled', function () {
+    it('should have an delete button', function () {
+      const { container } = render(
         <TaskComponent task={task} disabled={false} />
       );
-      expect(wrapper.find('.delete-btn')).toExist();
+      expect(container.querySelector('.delete-btn')).toBeInTheDocument();
     });
-
   });
 
-  describe("when disabled", function() {
-
-    it("should not have a delete button", function() {
-      const wrapper = mount(
+  describe('when disabled', function () {
+    it('should not have a delete button', function () {
+      const { container } = render(
         <TaskComponent task={task} disabled={true} />
       );
-      expect(wrapper.find('.delete-btn')).not.toExist();
+      expect(container.querySelector('.delete-btn')).not.toBeInTheDocument();
     });
-
   });
-
 });

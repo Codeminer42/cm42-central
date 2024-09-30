@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { fireEvent, render } from '@testing-library/react';
 import SelectUser from 'components/story/select_user/SelectUser';
 
 describe('<SelectUser />', () => {
@@ -7,16 +7,16 @@ describe('<SelectUser />', () => {
     const defaultProps = () => ({
       users: [
         { id: 1, name: 'foo' },
-        { id: 2, name: 'bar' }
+        { id: 2, name: 'bar' },
       ],
       selectedUserId: 1,
-      onEdit: sinon.spy(),
+      onEdit: vi.fn(),
       disabled: false,
-      ...propOverrides
+      ...propOverrides,
     });
 
-    const wrapper = shallow(<SelectUser {...defaultProps()} />);
-    const select = wrapper.find('select');
+    const { container: wrapper } = render(<SelectUser {...defaultProps()} />);
+    const select = wrapper.querySelector('select');
 
     return { wrapper, select };
   };
@@ -24,17 +24,17 @@ describe('<SelectUser />', () => {
   it('renders properly', () => {
     const { wrapper } = setup();
 
-    expect(wrapper).toExist();
+    expect(wrapper).toBeInTheDocument();
   });
 
   it('calls onEdit with the right params', () => {
-    const mockOnEdit = sinon.spy();
+    const mockOnEdit = vi.fn();
     const value = 1;
     const { select } = setup({ onEdit: mockOnEdit });
 
-    select.simulate('change', { target: { value } });
+    fireEvent.change(select, { target: { value } });
 
-    expect(mockOnEdit).toHaveBeenCalledWith(value);
+    expect(mockOnEdit).toHaveBeenCalledWith(value.toString());
   });
 
   describe('Select value', () => {
@@ -42,18 +42,18 @@ describe('<SelectUser />', () => {
       const selectedUserId = 1;
       const { select } = setup({ selectedUserId });
 
-      select.simulate('change', { target: { value: selectedUserId } });
+      fireEvent.change(select, { target: { value: selectedUserId } });
 
-      expect(select.props().value).toEqual(selectedUserId);
+      expect(select.value).toEqual(selectedUserId.toString());
     });
 
     it(`sets the select value as '' when selectedUserId is not present`, () => {
       const selectedUserId = null;
       const { select } = setup({ selectedUserId });
 
-      select.simulate('change', { target: { value: selectedUserId } });
+      fireEvent.change(select, { target: { value: selectedUserId } });
 
-      expect(select.props().value).toEqual('');
+      expect(select.value).toEqual('');
     });
   });
 
@@ -61,15 +61,15 @@ describe('<SelectUser />', () => {
     it('select field is editable', () => {
       const { select } = setup();
 
-      expect(select.prop('disabled')).toBe(false);
+      expect(select.disabled).toBe(false);
     });
   });
 
   describe('when component is disabled', () => {
     it('select field is disabled', () => {
-      const { select } = setup({disabled: true});
+      const { select } = setup({ disabled: true });
 
-      expect(select.prop('disabled')).toBe(true);
+      expect(select.disabled).toBe(true);
     });
   });
 });

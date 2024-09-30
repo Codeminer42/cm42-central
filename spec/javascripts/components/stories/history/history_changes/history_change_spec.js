@@ -1,44 +1,47 @@
-import React from "react";
-import { shallow } from "enzyme";
-import HistoryChange from "components/stories/History/HistoryChanges/HistoryChange";
+import React from 'react';
+import { render } from '@testing-library/react';
+import HistoryChange from 'components/stories/History/HistoryChanges/HistoryChange';
 
 describe('<HistoryChange />', () => {
-  const render = overrideProps => {
+  const renderComponent = overrideProps => {
     const defaultProps = {
       oldValue: 'oldValue',
       newValue: 'newValue',
-      title: 'title'
+      title: 'title',
     };
 
-    const wrapper = shallow(<HistoryChange {...defaultProps} {...overrideProps} />);
-    const oldValue = wrapper.find('[data-id="history-old-value"]');
-    const newValue = wrapper.find('[data-id="history-new-value"]');
-    const title = wrapper.find('[data-id="history-change-title"]');
+    const { container: wrapper } = render(
+      <HistoryChange {...defaultProps} {...overrideProps} />
+    );
+
+    const oldValue = wrapper.querySelector('[data-id="history-old-value"]');
+    const newValue = wrapper.querySelector('[data-id="history-new-value"]');
+    const title = wrapper.querySelector('[data-id="history-change-title"]');
 
     return { wrapper, oldValue, newValue, title };
   };
 
   it('renders the component', () => {
-    const { wrapper } = render();
+    const { wrapper } = renderComponent();
 
-    expect(wrapper).toExist();
+    expect(wrapper).toBeInTheDocument();
   });
 
   it('renders old value', () => {
-    const { oldValue } = render();
+    const { oldValue } = renderComponent();
 
-    expect(oldValue).toExist();
+    expect(oldValue).toBeInTheDocument();
   });
 
   it('renders new value', () => {
-    const { newValue } = render();
+    const { newValue } = renderComponent();
 
-    expect(newValue).toExist();
+    expect(newValue).toBeInTheDocument();
   });
 
   it('renders the title', () => {
-    const { title } = render();
+    const { title } = renderComponent();
 
-    expect(title).toExist();
+    expect(title).toBeInTheDocument();
   });
 });

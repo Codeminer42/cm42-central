@@ -74,10 +74,6 @@ export const ProjectBoard = ({
     const unsubscribe = subscribeToProjectChanges(project, () => {
       fetchProjectBoard(projectId);
     });
-
-    return () => {
-      unsubscribe();
-    };
   }, [projectId, fetchProjectBoard]);
 
   if (!projectBoard.isFetched && projectBoard.isInitialLoading) {

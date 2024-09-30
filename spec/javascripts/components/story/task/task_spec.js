@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { fireEvent, render } from '@testing-library/react';
 import Task from 'components/story/task/Task';
 
 describe('<Task />', () => {
@@ -9,28 +9,28 @@ describe('<Task />', () => {
         id: 1,
         name: 'Foo',
         done: false,
-        createdAt: '20/06/2018'
+        createdAt: '20/06/2018',
       },
-      onDelete: sinon.spy(),
-      onToggle: sinon.spy(),
+      onDelete: vi.fn(),
+      onToggle: vi.fn(),
       disabled: false,
-      ...propOverrides
+      ...propOverrides,
     });
 
-    const wrapper = shallow(<Task {...defaultProps()} />);
-    const deleteLink = wrapper.find('.delete-btn');
-    const label = wrapper.find('label');
-    const checkbox = wrapper.find('input');
+    const { container: wrapper } = render(<Task {...defaultProps()} />);
+    const deleteLink = wrapper.querySelector('.delete-btn');
+    const label = wrapper.querySelector('label');
+    const checkbox = wrapper.querySelector('input');
 
     return { wrapper, deleteLink, label, checkbox };
   };
 
   describe('when user deletes a task', () => {
     it('triggers onDelete callback', () => {
-      const onDeleteSpy = sinon.spy();
-      const { deleteLink } = setup({ onDelete: onDeleteSpy })
+      const onDeleteSpy = vi.fn();
+      const { deleteLink } = setup({ onDelete: onDeleteSpy });
 
-      deleteLink.simulate('click');
+      fireEvent.click(deleteLink);
 
       expect(onDeleteSpy).toHaveBeenCalled();
     });
@@ -38,10 +38,10 @@ describe('<Task />', () => {
 
   describe('when user update status of the task clicking on checkbox', () => {
     it('triggers onToggle callback', () => {
-      const onToggleCheckedBoxSpy = sinon.spy();
+      const onToggleCheckedBoxSpy = vi.fn();
       const { checkbox } = setup({ onToggle: onToggleCheckedBoxSpy });
 
-      checkbox.simulate('click');
+      fireEvent.click(checkbox);
 
       expect(onToggleCheckedBoxSpy).toHaveBeenCalled();
     });
@@ -51,19 +51,18 @@ describe('<Task />', () => {
     it('does not render a link to delete task', () => {
       const { deleteLink } = setup({ disabled: true });
 
-      expect(deleteLink.exists()).toBe(false);
+      expect(deleteLink).not.toBeInTheDocument();
     });
 
     describe('when user tries to update the task clicking on checkbox', () => {
       it('does not trigger onToggle callback', () => {
-        const onToggleCheckedBoxSpy = sinon.spy();
+        const onToggleCheckedBoxSpy = vi.fn();
         const { checkbox } = setup({ disabled: true });
 
-        checkbox.simulate('click');
+        fireEvent.click(checkbox);
 
         expect(onToggleCheckedBoxSpy).not.toHaveBeenCalled();
       });
     });
   });
 });
-
