@@ -36,11 +36,7 @@ export const StoryPopoverContent = ({ story }) => (
         {story.notes.map(({ note, id, userName, createdAt }) => (
           <div className="markdown-wrapper" key={id}>
             <Markdown source={note} />
-            <div
-              className="markdown-wrapper__text-right"
-              data-test-id={id}
-              data-testid="markdown-wrapper-text"
-            >
+            <div className="markdown-wrapper__text-right" data-test-id={id}>
               {`${userName} - ${createdAt}`}
             </div>
           </div>

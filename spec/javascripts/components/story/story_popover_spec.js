@@ -52,9 +52,9 @@ describe('<StoryPopover />', () => {
 
   it('renders the popover notes', () => {
     const props = storyFactory();
-    const { getAllByTestId } = render(<StoryPopoverContent story={props} />);
+    const { container } = render(<StoryPopoverContent story={props} />);
 
-    const notes = getAllByTestId('markdown-wrapper-text');
+    const notes = container.querySelectorAll('.markdown-wrapper__text-right');
 
     props.notes.map((note, index) => {
       expect(notes[index].innerHTML).toContain(`${note.userName}`);
