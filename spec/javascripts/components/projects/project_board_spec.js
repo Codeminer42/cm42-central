@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { ProjectBoard } from 'components/projects/ProjectBoard';
 import storyFactory from '../../support/factories/storyFactory';
 import { renderWithProviders } from '../setupRedux';
-import { beforeAll, beforeEach } from 'vitest';
+import { beforeAll } from 'vitest';
 
 vi.mock('../../../../app/assets/javascripts/pusherSockets', () => ({
   subscribeToProjectChanges: vi.fn(),
