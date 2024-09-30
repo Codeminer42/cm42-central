@@ -86,8 +86,8 @@ describe('<ProjectCard />', () => {
           });
 
           it('has the background and foreground defined', () => {
-            const { getByTestId } = render(<ProjectCard {...propsWithTag} />);
-            const component = getByTestId('project-card-tag');
+            const { container } = render(<ProjectCard {...propsWithTag} />);
+            const component = container.querySelector('.card-tag');
 
             expect(component.style.backgroundColor).toBe('rgb(32, 117, 243)');
             expect(component.style.color).toBe('rgb(255, 255, 255)');
@@ -96,9 +96,9 @@ describe('<ProjectCard />', () => {
 
         it('does not have the tag', () => {
           propsWithTag.project.set('tag_name', null);
-          const { queryByTestId } = render(<ProjectCard {...propsWithTag} />);
+          const { container } = render(<ProjectCard {...propsWithTag} />);
 
-          expect(queryByTestId('project-card-tag')).not.toBeInTheDocument();
+          expect(container.querySelector('.card-tag')).not.toBeInTheDocument();
         });
       });
 

@@ -18,7 +18,7 @@ export default class ProjectCard extends React.Component {
     };
 
     return (
-      <small className="card-tag" style={style} data-testid="project-card-tag">
+      <small className="card-tag" style={style}>
         {project.get('tag_name')}
       </small>
     );
