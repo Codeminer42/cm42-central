@@ -1,9 +1,7 @@
 import React from 'react';
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
-import Checkbox from 'components/forms/Checkbox';
 import TaskComponent from 'components/tasks/Task';
-import TaskForm from 'components/tasks/TaskForm';
 import Task from 'models/task';
 
 describe('<Task />', function () {
