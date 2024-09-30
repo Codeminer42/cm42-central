@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import HistoryItem from './HistoryItem';
 
-const History = ({ history, ...props }) => (
-  <div className="History" {...props}>
+const History = ({ history }) => (
+  <div className="History">
     {history.map(item => (
       <HistoryItem
         key={item.activity.id}
