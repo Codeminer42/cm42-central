@@ -3,13 +3,7 @@ import SideBarButton from './SideBarButton';
 import PropTypes from 'prop-types';
 import classname from 'classnames';
 
-const SideBar = ({
-  reverse,
-  visibleColumns,
-  toggleColumn,
-  reverseColumns,
-  ...props
-}) => {
+const SideBar = ({ reverse, visibleColumns, toggleColumn, reverseColumns }) => {
   const buttons = useMemo(
     () => [
       {
@@ -45,7 +39,7 @@ const SideBar = ({
   );
 
   return (
-    <div className="SideBar" {...props}>
+    <div className="SideBar">
       <ul>
         {buttons.map(button => {
           const iconStyle = classname(
