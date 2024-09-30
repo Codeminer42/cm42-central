@@ -88,15 +88,17 @@ describe('<ProjectBoard />', () => {
 
   describe('when projectBoard.isFetched is false and projectBoard.isInitialLoading is true', () => {
     it('renders <ProjectLoading />', () => {
-      const { getByTestId } = renderComponent();
+      const { container } = renderComponent();
 
-      expect(getByTestId('project-loading-component')).toBeInTheDocument();
+      expect(
+        container.querySelector('.ProjectBoard-loading')
+      ).toBeInTheDocument();
     });
   });
 
   describe('when projectBoard.isFetched is true and projectBoard.isInitialLoading is false', () => {
     it('does not renders <ProjectLoading />', () => {
-      const { queryByTestId } = renderComponent({
+      const { container } = renderComponent({
         projectBoard: {
           isFetched: true,
           isInitialLoading: false,
@@ -104,7 +106,7 @@ describe('<ProjectBoard />', () => {
       });
 
       expect(
-        queryByTestId('project-loading-component')
+        container.querySelector('.ProjectBoard-loading')
       ).not.toBeInTheDocument();
     });
 
@@ -202,9 +204,11 @@ describe('<ProjectBoard />', () => {
     });
 
     it('renders loading', () => {
-      const { getByTestId } = renderComponent(props);
+      const { container } = renderComponent(props);
 
-      expect(getByTestId('project-loading-component')).toBeInTheDocument();
+      expect(
+        container.querySelector('.ProjectBoard-loading')
+      ).toBeInTheDocument();
     });
   });
 
@@ -244,10 +248,10 @@ describe('<ProjectBoard />', () => {
     });
 
     it('does not render loading', () => {
-      const { queryByTestId } = renderComponent(props);
+      const { container } = renderComponent(props);
 
       expect(
-        queryByTestId('project-loading-component')
+        container.querySelector('.ProjectBoard-loading')
       ).not.toBeInTheDocument();
     });
   });
@@ -288,10 +292,10 @@ describe('<ProjectBoard />', () => {
     });
 
     it('does not render loading', () => {
-      const { queryByTestId } = renderComponent(props);
+      const { container } = renderComponent(props);
 
       expect(
-        queryByTestId('project-loading-component')
+        container.querySelector('.ProjectBoard-loading')
       ).not.toBeInTheDocument();
     });
   });
@@ -332,9 +336,11 @@ describe('<ProjectBoard />', () => {
     });
 
     it('renders loading', () => {
-      const { getByTestId } = renderComponent(props);
+      const { container } = renderComponent(props);
 
-      expect(getByTestId('project-loading-component')).toBeInTheDocument();
+      expect(
+        container.querySelector('.ProjectBoard-loading')
+      ).toBeInTheDocument();
     });
   });
 

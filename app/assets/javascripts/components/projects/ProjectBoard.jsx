@@ -77,12 +77,7 @@ export const ProjectBoard = ({
   }, [projectId, fetchProjectBoard]);
 
   if (!projectBoard.isFetched && projectBoard.isInitialLoading) {
-    return (
-      <ProjectLoading
-        data-id="project-loading"
-        data-testid="project-loading-component"
-      />
-    );
+    return <ProjectLoading data-id="project-loading" />;
   }
 
   const onDragEnd = ({ source, destination }) => {
@@ -220,10 +215,7 @@ export const ProjectBoard = ({
                 data-testid="history-component"
               />
             ) : (
-              <ProjectLoading
-                data-id="project-loading"
-                data-testid="project-loading-component"
-              />
+              <ProjectLoading data-id="project-loading" />
             )}
           </Column>
         )}
