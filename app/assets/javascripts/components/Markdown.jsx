@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Parser from 'html-react-parser';
-import memoize from 'memoizee';
 import PropTypes from 'prop-types';
 
 const Markdown = ({ source }) => {
@@ -18,6 +17,6 @@ Markdown.propTypes = {
   source: PropTypes.string,
 };
 
-const MemoizedMarkdown = memoize(Markdown);
+const MemoizedMarkdown = memo(Markdown);
 MemoizedMarkdown.displayName = 'Markdown';
 export default MemoizedMarkdown;
