@@ -1,7 +1,5 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Parser from 'html-react-parser';
-import memoize from 'memoizee';
-
 import StoryLink from 'components/stories/StoryLink';
 
 const editButton = isReadonly => {
@@ -43,4 +41,4 @@ const DescriptionContent = ({
   );
 };
 
-export default memoize(DescriptionContent);
+export default memo(DescriptionContent);
