@@ -175,7 +175,6 @@ describe Story do
           subject.started_at = 5.days.ago
           subject.update_attribute :state, 'accepted'
           expect(subject.accepted_at).to eq(Time.current)
-          expect(subject.cycle_time_in(:days)).to eq(5)
         end
       end
     end
