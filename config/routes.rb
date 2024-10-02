@@ -108,7 +108,6 @@ Rails.application.routes.draw do
   end
 
   if Rails.env.development?
-    get 'testcard' => 'static#testcard'
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
 
