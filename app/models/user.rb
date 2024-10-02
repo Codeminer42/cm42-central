@@ -43,10 +43,6 @@ class User < ApplicationRecord
          reset_password_keys: AUTHENTICATION_KEYS
   # unlock_keys: AUTHENTICATION_KEYS
 
-  scope :recently_created, lambda { |created_at|
-    where('users.created_at > ?', created_at) if created_at
-  }
-
   def password_required?
     # Password is required if it is being set, but not for new records
     if !persisted?
