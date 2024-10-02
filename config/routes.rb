@@ -118,8 +118,6 @@ Rails.application.routes.draw do
 
   root 'projects#index'
 
-  mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
-
   namespace :gitlab do
     namespace :projects do
       resources :events, only: :create
