@@ -200,11 +200,6 @@ class Story < ApplicationRecord
     project.start_date = accepted_at
   end
 
-  def cycle_time_in(unit = :days)
-    raise 'wrong unit' unless %i[days weeks months years].include?(unit)
-    (cycle_time / 1.send(unit)).round
-  end
-
   def release_date=(val)
     return if val.blank?
 

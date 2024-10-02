@@ -108,7 +108,6 @@ Rails.application.routes.draw do
   end
 
   if Rails.env.development?
-    get 'testcard' => 'static#testcard'
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
 
@@ -117,8 +116,6 @@ Rails.application.routes.draw do
   end
 
   root 'projects#index'
-
-  mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
 
   namespace :gitlab do
     namespace :projects do
