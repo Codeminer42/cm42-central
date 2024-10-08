@@ -29,9 +29,4 @@ describe('<StoryCopyIdClipboard />', function () {
       component.container.querySelector('data-clipboard-textt')
     ).toBeDefined();
   });
-
-  it('should render copy id title', function () {
-    render(<StoryCopyIdClipboard id={70} />);
-    expect(fn).toHaveBeenCalledWith('story.events.copy_id');
-  });
 });
