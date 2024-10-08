@@ -17,17 +17,15 @@ const ExpandedStoryHistoryLocation = ({ story, onClone, showHistory }) => (
     />
 
     <span className="input-group-btn">
-      <CopyToClipboard text={I18n.t('story.events.copy_url')}>
-        <a href={storyUrl(story)} className="btn btn-default btn-clipboard">
-          <img
-            src="/clippy.svg"
-            alt={I18n.t('story.events.copy_url')}
-            className="clipboard-icon"
-          />
-        </a>
+      <CopyToClipboard text={storyUrl(story)}>
+        <img
+          src="/clippy.svg"
+          alt={I18n.t('story.events.copy_url')}
+          className="clipboard-icon"
+        />
       </CopyToClipboard>
 
-      <CopyToClipboard text={I18n.t('story.events.copy_id')}>
+      <CopyToClipboard text={`#${story.id}`}>
         <p className="btn btn-default btn-clipboard-id btn-clipboard">
           ID {`#${story.id.toString()}`}
         </p>
