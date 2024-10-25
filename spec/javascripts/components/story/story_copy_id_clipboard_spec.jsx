@@ -1,6 +1,6 @@
 import React from 'react';
 import StoryCopyIdClipboard from 'components/story/StoryCopyIdClipboard';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
 vi.mock('react-clipboard.js', () => ({
   default: ({ children, ...props }) => <button {...props}>{children}</button>,
@@ -18,5 +18,19 @@ describe('<StoryCopyIdClipboard />', function () {
     expect(
       component.container.querySelector('data-clipboard-textt')
     ).toBeDefined();
+  });
+
+  it('should copy correct id', async () => {
+    const onCopy = vi.fn();
+
+    const { container } = render(
+      <StoryCopyIdClipboard id={70} onCopy={onCopy} />
+    );
+
+    const paragraph = container.querySelector('p');
+
+    fireEvent.click(paragraph);
+
+    expect(onCopy).toHaveBeenCalledWith('#70', false);
   });
 });
