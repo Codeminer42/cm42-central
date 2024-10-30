@@ -1,87 +1,20 @@
+inherit_from: .rubocop_todo.yml
+
+require:
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-rspec_rails
+  - rubocop-capybara
+  - rubocop-factory_bot
+
 AllCops:
-  TargetRubyVersion: 2.3
+  NewCops: enable
   Exclude:
-    - 'db/schema.rb'
-    - 'db/migrate/*.rb'
-    - 'config/**/*'
-    - 'script/**/*'
-    - 'bin/**/*'
     - 'node_modules/**/*'
-    - 'Gemfile'
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'bin/*'
+    - 'vendor/**/*'
 
-Rails:
-  Enabled: true
-
-Rails/TimeZone:
-  Enabled: false
-
-Rails/Date:
-  Enabled: false
-
-Rails/HttpPositionalArguments:
-  Enabled: false
-
-Rails/SkipsModelValidations:
-  Enabled: false
-
-Documentation:
-  Enabled: false
-
-Lint/AmbiguousBlockAssociation:
-  Exclude:
-    - 'spec/**/*.rb'
-
-Style/Semicolon:
-  AllowAsExpressionSeparator: true
-
-Style/ClassAndModuleChildren:
-  Enabled: false
-
-Style/EachWithObject:
-  Enabled: false
-
-Style/FrozenStringLiteralComment:
-  Enabled: false
-
-Style/StructInheritance:
-  Enabled: false
-
-Layout/AlignParameters:
-  Enabled: false
-
-Layout/ClosingParenthesisIndentation:
-  Enabled: false
-
-Metrics/LineLength:
-  Max: 100
-
-Metrics/MethodLength:
-  CountComments: false
-  Max: 25
-
-Metrics/AbcSize:
-  Enabled: true
-  Max: 25
-  Exclude:
-    - 'app/controllers/stories_controller.rb'
-    - 'app/controllers/projects_controller.rb'
-    - 'app/presenters/activity_presenter.rb'
-
-Metrics/ClassLength:
-  Enabled: true
-  Max: 110
-  Exclude:
-   - 'app/controllers/projects_controller.rb'
-   - 'app/controllers/teams_controller.rb'
-
-Metrics/PerceivedComplexity:
-  Enabled: true
-  Max: 8
-
-Metrics/CyclomaticComplexity:
-  Enabled: true
-  Exclude:
-    - 'spec/support/integration_helpers.rb'
-
-Metrics/BlockLength:
+Style/Documentation:
   Enabled: false

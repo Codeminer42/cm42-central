@@ -105,6 +105,10 @@ group :development, :test do
   gem 'pry-remote'
   gem 'cypress-on-rails', '~> 1.0'
   gem "pusher-fake", '~> 3.0.1'
-  gem 'rubocop', '0.63.1'
-  gem 'rubocop-rspec'
+  gem 'rubocop', '~> 1.67'
+  gem 'rubocop-rails', '~> 2.27'
+  gem 'rubocop-rspec', '~> 3.2'
+  gem 'rubocop-rspec_rails', '~> 2.30'
+  gem 'rubocop-capybara', '~> 2.21'
+  gem 'rubocop-factory_bot', '~> 2.26', '>= 2.26.1'
 end
