@@ -102,10 +102,10 @@ class Story < ApplicationRecord
   enumerize :story_type, in: STORY_TYPES, predicates: true, scope: true
   validates :project, presence: true
   validates :title, presence: true
-  validates :requested_by_id, user_belongs_to_project: true
-  validates :owned_by_id, user_belongs_to_project: true
+  validates :requested_by_id, belongs_to_project: true
+  validates :owned_by_id, belongs_to_project: true
   validates :story_type, presence: true
-  validates :estimate, central_estimate: true, allow_nil: true
+  validates :estimate, estimate: true, allow_nil: true
   validate :validate_non_estimable_story
 
   def self.csv_headers

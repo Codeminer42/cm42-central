@@ -6,7 +6,7 @@ class Activity < ApplicationRecord
   validates :action, presence: true, inclusion: { in: %w[create update destroy] }
   validates :project, presence: true
   validates :user, presence: true
-  validates :subject, presence: true, subject_changed: true
+  validates :subject, presence: true, changed: true
 
   serialize :subject_changes, Hash
 
