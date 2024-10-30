@@ -509,9 +509,6 @@ GEM
       rubocop-ast (>= 1.31.1, < 2.0)
     rubocop-rspec (3.2.0)
       rubocop (~> 1.61)
-    rubocop-rspec_rails (2.30.0)
-      rubocop (~> 1.61)
-      rubocop-rspec (~> 3, >= 3.0.1)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
@@ -682,7 +679,6 @@ DEPENDENCIES
   rubocop-factory_bot (~> 2.26, >= 2.26.1)
   rubocop-rails (~> 2.27)
   rubocop-rspec (~> 3.2)
-  rubocop-rspec_rails (~> 2.30)
   sass-rails
   selenium-webdriver
   shoulda-matchers
