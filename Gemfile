@@ -105,10 +105,10 @@ group :development, :test do
   gem 'pry-remote'
   gem 'cypress-on-rails', '~> 1.0'
   gem "pusher-fake", '~> 3.0.1'
-  gem 'rubocop', '~> 1.67'
-  gem 'rubocop-rails', '~> 2.27'
-  gem 'rubocop-rspec', '~> 3.2'
-  gem 'rubocop-rspec_rails', '~> 2.30'
-  gem 'rubocop-capybara', '~> 2.21'
-  gem 'rubocop-factory_bot', '~> 2.26', '>= 2.26.1'
+  gem 'rubocop', '~> 1.67', require: false
+  gem 'rubocop-rails', '~> 2.27', require: false
+  gem 'rubocop-rspec', '~> 3.2', require: false
+  gem 'rubocop-rspec_rails', '~> 2.30', require: false
+  gem 'rubocop-capybara', '~> 2.21', require: false
+  gem 'rubocop-factory_bot', '~> 2.26', '>= 2.26.1', require: false
 end
