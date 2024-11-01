@@ -66,10 +66,8 @@ describe('<ExpandedStoryHistoryLocation />', () => {
         story: storyFactory({ id: 42, _editing: storyFactory() }),
       };
 
-      const { container } = renderComponent(props);
-      const copyIdButton = container.querySelector(
-        `[data-clipboard-text="#42"]`
-      );
+      const { getByText, debug } = renderComponent(props);
+      const copyIdButton = getByText('ID #42');
 
       expect(copyIdButton).toBeInTheDocument();
     });
