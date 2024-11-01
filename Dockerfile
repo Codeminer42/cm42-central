@@ -81,14 +81,4 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | b
 ENV NODE_PATH ${NVM_DIR}/versions/node/v${NODE_VERSION}/lib/node_modules
 ENV PATH ${NVM_DIR}/versions/node/v${NODE_VERSION}/bin:${PATH}
 
-# Set up Pusher Fake
-ENV PUSHER_PORT 8888
-ENV PUSHER_WS_PORT 45449
-
-ADD pusher-fake-entrypoint.sh /tmp/pusher-fake-entrypoint.sh
-
-EXPOSE $PUSHER_WS_PORT $PUSHER_PORT
-
-CMD ["/tmp/pusher-fake-entrypoint.sh"]
-
 WORKDIR /var/app
