@@ -136,7 +136,10 @@ Or using docker:
     # Prepare container
     $ docker compose build
     $ docker compose run --rm web yarn install
-    $ docker compose run --rm web bundle exec rake db:setup
+    $ docker compose run --rm web bundle install
+    $ docker compose run --rm web bundle exec rake db:create
+    $ docker compose run --rm web bundle exec rake db:migrate
+    $ docker compose run --rm web bundle exec rake db:seed
 
     # Prepare husky
     $ npm install (to install husky locally)
