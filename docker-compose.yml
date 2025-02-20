@@ -26,7 +26,5 @@ services:
       - 11211:11211
 
 volumes:
-  bundle_cache:
   db:
-  node_modules:
   redis:
