@@ -1,37 +1,32 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
-class AtWhoInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.saveTextareaRef = textarea => {
-      this.textarea = textarea;
-    };
-  }
+const AtWhoInput = ({ usernames, name, value, onChange }) => {
+  const textareaRef = useRef(null);
 
-  componentDidMount() {
-    this.loadAtWho();
-  }
+  useEffect(() => {
+    loadAtWho();
+  }, [value]);
 
-  loadAtWho() {
-    $(this.textarea)
-      .atwho({
-        at: '@',
-        data: this.props.usernames,
-      })
-      .on('inserted.atwho', this.props.onChange);
-  }
+  const loadAtWho = () => {
+    if (textareaRef.current) {
+      $(textareaRef.current)
+        .atwho({
+          at: '@',
+          data: usernames,
+        })
+        .on('inserted.atwho', onChange);
+    }
+  };
 
-  render() {
-    return (
-      <textarea
-        ref={this.saveTextareaRef}
-        name={this.props.name}
-        className={`form-control ${this.props.name}-textarea`}
-        defaultValue={this.props.value}
-        onChange={this.props.onChange}
-      />
-    );
-  }
-}
+  return (
+    <textarea
+      ref={textareaRef}
+      name={name}
+      className={`form-control ${name}-textarea`}
+      defaultValue={value}
+      onChange={onChange}
+    />
+  );
+};
 
 export default AtWhoInput;
