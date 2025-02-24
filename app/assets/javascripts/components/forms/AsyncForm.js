@@ -1,26 +1,20 @@
-import React from 'react';
+import { useState } from 'react';
 
-class AsyncForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { loading: false };
-    this._handleSubmit = this._handleSubmit.bind(this);
-  }
+const AsyncForm = ({ onSubmit, getFormData, children }) => {
+  const [loading, setLoading] = useState(false);
 
-  _handleSubmit(ev) {
+  const handleSubmit = async ev => {
     ev.preventDefault();
-    this.setState({ loading: true });
-    this.props
-      .onSubmit(this.props.getFormData())
-      .catch(() => this.setState({ loading: false }));
-  }
+    setLoading(true);
+    try {
+      await onSubmit(getFormData());
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
 
-  render() {
-    return this.props.children({
-      loading: this.state.loading,
-      handleSubmit: this._handleSubmit,
-    });
-  }
-}
+  return children({ loading, handleSubmit });
+};
 
 export default AsyncForm;
