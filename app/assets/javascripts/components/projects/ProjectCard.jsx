@@ -1,13 +1,13 @@
 import React from 'react';
 
-export default class ProjectCard extends React.Component {
-  decodeHTML(html) {
-    const txt = document.createElement('textarea');
-    txt.innerHTML = html;
-    return txt.value;
-  }
+const ProjectCard = ({ project, joined, user }) => {
+  const decodeHTML = html => {
+    const textArea = document.createElement('textarea');
+    textArea.innerHTML = html;
+    return textArea.value;
+  };
 
-  renderTag(project) {
+  const renderTag = () => {
     if (!project.get('tag_name')) {
       return;
     }
@@ -22,15 +22,11 @@ export default class ProjectCard extends React.Component {
         {project.get('tag_name')}
       </small>
     );
-  }
+  };
 
-  projectName() {
-    return this.decodeHTML(this.props.project.get('name'));
-  }
+  const projectName = () => decodeHTML(project.get('name'));
 
-  panelHeading() {
-    const { project, joined } = this.props;
-
+  const panelHeading = () => {
     if (joined) {
       return (
         <div className="panel-heading card-heading">
@@ -39,9 +35,9 @@ export default class ProjectCard extends React.Component {
               href={project.get('path_to').project}
               className="card-title project-title"
             >
-              {this.projectName()}
+              {projectName()}
             </a>
-            {this.renderTag(project)}
+            {renderTag()}
           </div>
           <div className="icons pull-right">
             <a
@@ -98,9 +94,7 @@ export default class ProjectCard extends React.Component {
 
                 <li>
                   <a
-                    href={`${project.get('path_to').projectUnjoin}${
-                      this.props.user.id
-                    }`}
+                    href={`${project.get('path_to').projectUnjoin}${user.id}`}
                     data-method="delete"
                   >
                     {I18n.t('projects.unjoin')}
@@ -115,19 +109,17 @@ export default class ProjectCard extends React.Component {
 
     return (
       <div className="panel-heading card-heading">
-        <span className="card-title">{this.projectName()}</span>
+        <span className="card-title">{projectName()}</span>
       </div>
     );
-  }
+  };
 
-  panelBody() {
-    const { project, joined } = this.props;
-
+  const panelBody = () => {
     if (joined) {
       return (
         <div className="panel-body">
           <div className="col-md-12 members">
-            <ul className="member-list">{this.renderUsersAvatar()}</ul>
+            <ul className="member-list">{renderUsersAvatar()}</ul>
           </div>
         </div>
       );
@@ -150,11 +142,9 @@ export default class ProjectCard extends React.Component {
         </span>
       </div>
     );
-  }
+  };
 
-  renderUsersAvatar() {
-    const { project, joined } = this.props;
-
+  const renderUsersAvatar = () => {
     if (joined) {
       return project.get('users_avatar').map(avatar_url => (
         <li key={avatar_url} className="member">
@@ -162,11 +152,9 @@ export default class ProjectCard extends React.Component {
         </li>
       ));
     }
-  }
+  };
 
-  cardLink() {
-    const { project, joined } = this.props;
-
+  const cardLink = () => {
     if (project.get('archived_at')) {
       return (
         <span className="card-footer panel-footer">
@@ -194,17 +182,17 @@ export default class ProjectCard extends React.Component {
         {I18n.t('projects.join')}
       </a>
     );
-  }
+  };
 
-  render() {
-    return (
-      <div className="col-md-6">
-        <div className="panel panel-default card project-item animated scale-in">
-          {this.panelHeading()}
-          {this.panelBody()}
-          {this.cardLink()}
-        </div>
+  return (
+    <div className="col-md-6">
+      <div className="panel panel-default card project-item animated scale-in">
+        {panelHeading()}
+        {panelBody()}
+        {cardLink()}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
+export default ProjectCard;
