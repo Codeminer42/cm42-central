@@ -1,48 +1,47 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import AtWhoInput from 'components/jquery_wrappers/AtWhoInput';
 import DescriptionContent from 'components/description/DescriptionContent';
 
-class StoryDescription extends React.Component {
-  editDescription() {
-    const { usernames, name, value, onChange } = this.props;
-    return (
-      <AtWhoInput
-        usernames={usernames}
-        name={name}
-        value={value}
-        onChange={onChange}
-      />
-    );
-  }
+const StoryDescription = ({
+  usernames,
+  name,
+  value,
+  onChange,
+  linkedStories,
+  isReadonly,
+  description,
+  onClick,
+  isNew,
+  editingDescription,
+}) => {
+  const editDescription = () => (
+    <AtWhoInput
+      usernames={usernames}
+      name={name}
+      value={value}
+      onChange={onChange}
+    />
+  );
 
-  descriptionContent() {
-    const { linkedStories, isReadonly, description, onClick, value } =
-      this.props;
-    return (
-      <DescriptionContent
-        linkedStories={linkedStories}
-        isReadonly={isReadonly}
-        description={description}
-        onClick={onClick}
-        value={value}
-      />
-    );
-  }
+  const descriptionContent = () => (
+    <DescriptionContent
+      linkedStories={linkedStories}
+      isReadonly={isReadonly}
+      description={description}
+      onClick={onClick}
+      value={value}
+    />
+  );
 
-  render() {
-    const { name, isNew, editingDescription } = this.props;
-    return (
-      <Fragment>
-        <label htmlFor={name}>
-          {I18n.t('activerecord.attributes.story.description')}
-        </label>
-        <br />
-        {isNew || editingDescription
-          ? this.editDescription()
-          : this.descriptionContent()}
-      </Fragment>
-    );
-  }
-}
+  return (
+    <>
+      <label htmlFor={name}>
+        {I18n.t('activerecord.attributes.story.description')}
+      </label>
+      <br />
+      {isNew || editingDescription ? editDescription() : descriptionContent()}
+    </>
+  );
+};
 
 export default StoryDescription;
