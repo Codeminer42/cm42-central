@@ -1,58 +1,46 @@
-import React, { Component, Fragment } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-export default class Popover extends Component {
-  constructor(props) {
-    super(props);
+const Popover = ({ title, trigger, delay = 0, children, renderContent }) => {
+  const childRef = useRef(null);
+  const contentRef = useRef(null);
 
-    this.saveChildRef = this.saveChildRef.bind(this);
-    this.saveContentRef = this.saveContentRef.bind(this);
-  }
+  useEffect(() => {
+    if (childRef.current) {
+      $(childRef.current).popover({
+        delay,
+        trigger,
+        title,
+        html: true,
+        content: contentRef.current,
+      });
+    }
 
-  componentDidMount() {
-    const { delay, trigger, title } = this.props;
+    return () => {
+      if (childRef.current) {
+        $(childRef.current).popover('destroy');
+      }
+    };
+  }, [delay, trigger, title]);
 
-    $(this.childRef).popover({
-      delay,
-      trigger,
-      title,
-      html: true,
-      content: this.contentRef,
-    });
-  }
-
-  componentWillUnmount() {
-    $(this.childRef).popover('destroy');
-  }
-
-  saveChildRef(ref) {
-    this.childRef = ref;
-  }
-
-  saveContentRef(ref) {
-    this.contentRef = ref;
-  }
-
-  render() {
-    return (
-      <Fragment>
-        <div data-testid="story-popover-children">
-          {this.props.children({ ref: this.saveChildRef })}
-        </div>
-        <div style={{ display: 'none' }}>
-          {this.props.renderContent({ ref: this.saveContentRef })}
-        </div>
-      </Fragment>
-    );
-  }
-}
+  return (
+    <>
+      <div data-testid="story-popover-children">
+        {children({ ref: childRef })}
+      </div>
+      <div style={{ display: 'none' }}>
+        {renderContent({ ref: contentRef })}
+      </div>
+    </>
+  );
+};
 
 Popover.propTypes = {
   title: PropTypes.string.isRequired,
   trigger: PropTypes.string.isRequired,
   delay: PropTypes.number,
+  children: PropTypes.func.isRequired,
+  renderContent: PropTypes.func.isRequired,
 };
 
-Popover.defaultProps = {
-  delay: 0,
-};
+export default Popover;
