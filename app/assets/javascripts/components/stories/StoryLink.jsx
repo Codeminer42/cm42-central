@@ -11,47 +11,37 @@ const STORY_STATE_ICONS = {
   accepted: 'done',
 };
 
-export default class StoryLink extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick() {
-    const { story } = this.props;
+const StoryLink = ({ story }) => {
+  const handleClick = () => {
     document.getElementById(`story-${story.get('id')}`).scrollIntoView();
     story && _.each(story.views, view => view.highlight());
-  }
+  };
 
-  renderIcon(storyState) {
-    return (
-      <i className={`mi story-link-icon ${storyState}`}>
-        {STORY_STATE_ICONS[storyState]}
-      </i>
-    );
-  }
+  const renderIcon = storyState => (
+    <i className={`mi story-link-icon ${storyState}`}>
+      {STORY_STATE_ICONS[storyState]}
+    </i>
+  );
 
-  render() {
-    const { story } = this.props;
-    const storyState = story.get('state');
-    const id = story.get('id');
-    const popoverContent = hoverTemplate({
-      story: story,
-      noteTemplate: noteTemplate,
-    });
+  const storyState = story.get('state');
+  const id = story.get('id');
+  const popoverContent = hoverTemplate({
+    story: story,
+    noteTemplate: noteTemplate,
+  });
 
-    return (
-      <a
-        className={`story-link popover-activate ${storyState}`}
-        data-content={popoverContent}
-        data-original-title={story.get('title')}
-        id={`story-link-${id}`}
-        onClick={this.handleClick}
-      >
-        {`#${id}`}
-        {storyState !== 'unscheduled' && this.renderIcon(storyState)}
-      </a>
-    );
-  }
-}
+  return (
+    <a
+      className={`story-link popover-activate ${storyState}`}
+      data-content={popoverContent}
+      data-original-title={story.get('title')}
+      id={`story-link-${id}`}
+      onClick={handleClick}
+    >
+      {`#${id}`}
+      {storyState !== 'unscheduled' && renderIcon(storyState)}
+    </a>
+  );
+};
+
+export default StoryLink;
