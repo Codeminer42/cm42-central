@@ -11,7 +11,7 @@ const Task = ({ task, handleUpdate, handleDelete, disabled }) => {
 
   const renderDelete = () => (
     <span
-      onClick={handleDeleteClick}
+      onClick={() => handleDelete(task)}
       title={I18n.t('delete')}
       className="delete-btn"
       key={task.get('id')}
