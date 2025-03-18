@@ -5,7 +5,8 @@ const ColorPick = ({ color: initialColor }) => {
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [color, setColor] = useState(initialColor);
 
-  const handleClick = () => setDisplayColorPicker(!displayColorPicker);
+  const handleClick = () =>
+    setDisplayColorPicker(oldDisplayColorPicker => !oldDisplayColorPicker);
   const handleClose = () => setDisplayColorPicker(false);
   const handleChange = color => setColor(color.hex);
 
