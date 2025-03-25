@@ -14,24 +14,7 @@ const StoryDescription = ({
   isNew,
   editingDescription,
 }) => {
-  const editDescription = () => (
-    <AtWhoInput
-      usernames={usernames}
-      name={name}
-      value={value}
-      onChange={onChange}
-    />
-  );
-
-  const descriptionContent = () => (
-    <DescriptionContent
-      linkedStories={linkedStories}
-      isReadonly={isReadonly}
-      description={description}
-      onClick={onClick}
-      value={value}
-    />
-  );
+  const showDescriptionInput = isNew || editingDescription;
 
   return (
     <>
@@ -39,7 +22,22 @@ const StoryDescription = ({
         {I18n.t('activerecord.attributes.story.description')}
       </label>
       <br />
-      {isNew || editingDescription ? editDescription() : descriptionContent()}
+      {showDescriptionInput ? (
+        <AtWhoInput
+          usernames={usernames}
+          name={name}
+          value={value}
+          onChange={onChange}
+        />
+      ) : (
+        <DescriptionContent
+          linkedStories={linkedStories}
+          isReadonly={isReadonly}
+          description={description}
+          onClick={onClick}
+          value={value}
+        />
+      )}
     </>
   );
 };
