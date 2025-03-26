@@ -8,14 +8,10 @@ const TaggedInput = ({ availableLabels, disabled, onChange, input }) => {
     readOnly: disabled,
   };
 
-  const loadTagit = () => {
+  useEffect(() => {
     if (inputRef.current) {
       $(inputRef.current).tagit(tagitProperties).on('change', onChange);
     }
-  };
-
-  useEffect(() => {
-    loadTagit();
 
     return () => {
       if (inputRef.current) {
