@@ -43,6 +43,16 @@ const ProjectSearch = ({ user, projects }) => {
     });
   };
 
+  const handleProjectSearchChange = e => {
+    setProjectsSearch(e.target.value);
+    handleSearch(e.target.value, projectsFilter);
+  };
+
+  const handleProjectFilterChange = e => {
+    setProjectsFilter(e.target.value);
+    handleSearch(projectsSearch, e.target.value);
+  };
+
   const filterOptions = () => {
     return Project.filters.map(filter => (
       <option key={filter} value={filter}>
@@ -75,10 +85,7 @@ const ProjectSearch = ({ user, projects }) => {
             <input
               id="projects_search"
               className="form-control"
-              onChange={e => {
-                setProjectsSearch(e.target.value);
-                handleSearch(e.target.value, projectsFilter);
-              }}
+              onChange={handleProjectSearchChange}
               value={projectsSearch}
               placeholder="Search projects"
             />
@@ -87,10 +94,7 @@ const ProjectSearch = ({ user, projects }) => {
                 id="project_type"
                 className="unstyled-input"
                 data-testid="select-project-filter"
-                onChange={e => {
-                  setProjectsFilter(e.target.value);
-                  handleSearch(projectsSearch, e.target.value);
-                }}
+                onChange={handleProjectFilterChange}
                 value={projectsFilter}
               >
                 {filterOptions()}
