@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
-const StoryDatePicker = ({ releaseDate, onChangeCallback }) => {
+const StoryDatePicker = ({ releaseDate, onChange }) => {
   moment.locale(I18n.locale);
   const initialDate = moment(releaseDate, ['YYYY-MM-DD']);
   const [startDate, setStartDate] = useState(
@@ -11,7 +11,7 @@ const StoryDatePicker = ({ releaseDate, onChangeCallback }) => {
 
   const handleChange = date => {
     setStartDate(date);
-    onChangeCallback();
+    onChange();
   };
 
   return (
