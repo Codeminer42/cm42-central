@@ -81,12 +81,16 @@ The principles that we believe in are:
 - Velocity is the the key managerial element.
 - Stakeholders must test and accept/reject stories within the same Iteration.
 
+## Warnings
+Whether you're using macos versions (m1, m2, mN). Please, add this into your bash file (.bashrc, .zshrc, etc):
+```export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES```
+
 ## Installation
 
 **WARNING**: It is **NOT** recommended to create the database using the db:migrate command during the installation process. Some migrations in the project have become outdated due to Rails updates during the application's development. Therefore, if you create the database from scratch using these outdated migrations instead of loading the current schema, the application will not function as intended, and some tests will fail. Be aware!
 
-First up, your system will need the
-[prerequisites for running Ruby on Rails installed](https://guides.rubyonrails.org/getting_started.html)
+First, make sure your system has the
+[prerequisites for running Ruby on Rails installed](https://guides.rubyonrails.org/getting_started.html) installed. You'll also need Node.js v20.17.0.
 Once you have these:
 
     # Checkout the project
@@ -123,7 +127,7 @@ Once you have these:
     # Start the local web server
     $ bundle exec foreman start -f Procfile.development
 
-Or using docker:
+**Using Docker**: You can run the project's infrastructure (Redis, Postgres, Memcached, and Adminer) and the application on your machine by following these steps:
 
     # Checkout the project
     $ git clone git://github.com/Codeminer42/cm42-central.git
@@ -133,22 +137,28 @@ Or using docker:
     $ cp .env.sample .env
     $ cp config/database.yml.example config/database.yml
 
-    # Prepare container
-    $ docker compose build
-    $ docker compose run --rm web yarn install
-    $ docker compose run --rm web bundle exec rake db:setup
+    # Install project dependencies
+    $ gem install bundler
+    $ bundle install
+    $ npm install (or yarn install)
+
+    # Init containers
+    $ docker compose up
 
     # Prepare husky
     $ npm install (to install husky locally)
     $ npm run prepare (or yarn prepare)
 
-    # Up container
-    $ docker compose up
+    # Set up the development database
+    $ bundle exec rake fulcrum:setup db:setup
 
-You should then be able to navigate to http://cm42-central.localhost/ in a web browser.
+    # Start the local web server
+    $ bundle exec foreman start -f Procfile.development
+
+You should then be able to navigate to http://localhost:3000 in a web browser.
 You can log in with the test username `foo@bar.com`, password `asdfasdf`.
 
-To manage the postgres database, you can access http://adminer.cm42-central.localhost, using the following credentials:
+To manage the postgres database, you can access http://localhost:8080, using the following credentials:
 
 - **server**: postgres
 - **username**: postgres
