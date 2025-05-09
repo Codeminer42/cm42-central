@@ -81,6 +81,10 @@ The principles that we believe in are:
 - Velocity is the the key managerial element.
 - Stakeholders must test and accept/reject stories within the same Iteration.
 
+## Warnings
+Whether you're using macos versions (m1, m2, mN). Please, add this into your bash file (.bashrc, .zshrc, etc):
+```export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES```
+
 ## Installation
 
 **WARNING**: It is **NOT** recommended to create the database using the db:migrate command during the installation process. Some migrations in the project have become outdated due to Rails updates during the application's development. Therefore, if you create the database from scratch using these outdated migrations instead of loading the current schema, the application will not function as intended, and some tests will fail. Be aware!
@@ -144,6 +148,9 @@ Once you have these:
     # Prepare husky
     $ npm install (to install husky locally)
     $ npm run prepare (or yarn prepare)
+
+    # Set up the development database
+    $ bundle exec rake fulcrum:setup db:setup
 
     # Start the local web server
     $ bundle exec foreman start -f Procfile.development
