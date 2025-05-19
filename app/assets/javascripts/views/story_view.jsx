@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { flushSync } from 'react-dom';
 import StoryControls from 'components/story/StoryControls';
 import StoryDescription from 'components/story/StoryDescription';
 import StoryHistoryLocation from 'components/story/StoryHistoryLocation';
@@ -20,6 +20,7 @@ import alertTemplate from 'templates/alert.ejs';
 import storyHoverTemplate from 'templates/story_hover.ejs';
 import noteTemplate from 'templates/note.ejs';
 import StoryCopyIdClipboard from '../components/story/StoryCopyIdClipboard';
+import { createRoot } from 'react-dom/client';
 
 const LOCAL_STORY_REGEXP = /(?!\s|\b)(#\d+)(?!\w)/g;
 
@@ -426,8 +427,10 @@ const StoryView = FormView.extend({
 
   render: function () {
     const storyControlsContainer = this.$('[data-story-controls]').get(0);
+
     if (storyControlsContainer) {
-      ReactDOM.unmountComponentAtNode(storyControlsContainer);
+      const storyControllRoot = createRoot(storyControlsContainer);
+      storyControllRoot.unmount();
     }
 
     var isGuest =
@@ -568,21 +571,22 @@ const StoryView = FormView.extend({
     );
 
     const stateButtons = this.$('[data-story-state-buttons]').get(0);
+
     if (stateButtons) {
-      ReactDOM.render(
-        <StoryStateButtons events={this.model.events()} />,
-        stateButtons
+      const stateButtonsRoot = createRoot(stateButtons);
+      stateButtonsRoot.render(
+        <StoryStateButtons events={this.model.events()} />
       );
     }
 
     const estimateButtons = this.$('[data-story-estimate-buttons]').get(0);
     if (estimateButtons) {
-      ReactDOM.render(
+      const estimateButtonsRoot = createRoot(estimateButtons);
+      estimateButtonsRoot.render(
         <StoryEstimateButtons
           points={this.model.point_values()}
           onClick={this.estimate}
-        />,
-        estimateButtons
+        />
       );
     }
 
@@ -590,9 +594,10 @@ const StoryView = FormView.extend({
       '[data-story-id-copy-clipboard]'
     ).get(0);
     if (copyStoryIdClipboardLink) {
-      ReactDOM.render(
-        <StoryCopyIdClipboard id={this.id} />,
-        copyStoryIdClipboardLink
+      const copyStoryIdClipboardLinkRoot = createRoot(copyStoryIdClipboardLink);
+
+      copyStoryIdClipboardLinkRoot.render(
+        <StoryCopyIdClipboard id={this.id} />
       );
     }
 
@@ -605,24 +610,31 @@ const StoryView = FormView.extend({
   },
 
   renderReactComponents: function () {
-    this.renderControls();
-    this.renderHistoryLocationContainer();
-    this.renderDescription();
-    this.renderTagsInput();
-    this.renderSelects();
-    this.renderTasks();
-    this.renderNotes();
+    flushSync(() => {
+      this.renderControls();
+      this.renderHistoryLocationContainer();
+      this.renderDescription();
+      this.renderTagsInput();
+      this.renderSelects();
+      this.renderTasks();
+      this.renderNotes();
+    });
   },
 
   renderControls: function () {
-    ReactDOM.render(
-      <StoryControls
-        onClickSave={this.clickSave}
-        onClickCancel={this.cancelEdit}
-        disableChanges={this.disabledChanges()}
-      />,
-      this.$('[data-story-controls]').get(0)
-    );
+    const storyControlContainer = this.$('[data-story-controls]').get(0);
+
+    const storyControllRoot = createRoot(storyControlContainer);
+
+    if (storyControlContainer) {
+      storyControllRoot.render(
+        <StoryControls
+          onClickSave={this.clickSave}
+          onClickCancel={this.cancelEdit}
+          disableChanges={this.disabledChanges()}
+        />
+      );
+    }
   },
 
   renderHistoryLocationContainer: function () {
@@ -630,12 +642,13 @@ const StoryView = FormView.extend({
       '[data-story-history-location]'
     ).get(0);
     if (historyLocationContainer) {
-      ReactDOM.render(
+      const historyLocationRoot = createRoot(historyLocationContainer);
+
+      historyLocationRoot.render(
         <StoryHistoryLocation
           id={this.id}
           url={`${this.getLocation()}#story-${this.id}`}
-        />,
-        historyLocationContainer
+        />
       );
       new Clipboard('.btn-clipboard');
     }
@@ -644,7 +657,9 @@ const StoryView = FormView.extend({
   renderDescription: function () {
     const description = this.$('.story-description')[0];
     if (description) {
-      ReactDOM.render(
+      const descriptionRoot = createRoot(description);
+
+      descriptionRoot.render(
         <StoryDescription
           name="description"
           linkedStories={this.linkedStories}
@@ -659,8 +674,7 @@ const StoryView = FormView.extend({
             this.onChangeModel(event.target.value, 'description')
           }
           onClick={this.editDescription}
-        />,
-        description
+        />
       );
     }
   },
@@ -668,7 +682,8 @@ const StoryView = FormView.extend({
   renderTagsInput: function () {
     const tagsInput = this.$('[data-tags]')[0];
     if (tagsInput) {
-      ReactDOM.render(
+      const tagsInputRoot = createRoot(tagsInput);
+      tagsInputRoot.render(
         <StoryLabels
           name="labels"
           className="labels"
@@ -676,8 +691,7 @@ const StoryView = FormView.extend({
           availableLabels={this.model.collection.labels}
           onChange={event => this.onChangeModel(event.target.value, 'labels')}
           disabled={this.isReadonly()}
-        />,
-        tagsInput
+        />
       );
     }
   },
@@ -688,7 +702,10 @@ const StoryView = FormView.extend({
       const storyEstimateOptions = this.model
         .point_values()
         .map(this.createStoryEstimateOptions);
-      ReactDOM.render(
+
+      const storyEstimateRoot = createRoot($storyEstimateSelect.get(0));
+
+      storyEstimateRoot.render(
         <StorySelect
           name="estimate"
           className="story_estimate"
@@ -696,8 +713,7 @@ const StoryView = FormView.extend({
           options={storyEstimateOptions}
           selected={this.model.get('estimate')}
           disabled={this.model.notEstimable() || this.isReadonly()}
-        />,
-        $storyEstimateSelect.get(0)
+        />
       );
 
       this.bindElementToAttribute(
@@ -710,15 +726,17 @@ const StoryView = FormView.extend({
     if ($storyTypeSelect.length) {
       const typeOptions = ['feature', 'chore', 'bug', 'release'];
       const storyTypeOptions = typeOptions.map(this.createStoryTypeOptions);
-      ReactDOM.render(
+
+      const storyTypeOptionsRoot = createRoot($storyTypeSelect.get(0));
+
+      storyTypeOptionsRoot.render(
         <StorySelect
           className="story_type"
           options={storyTypeOptions}
           name="story_type"
           selected={this.model.get('story_type')}
           disabled={this.isReadonly()}
-        />,
-        $storyTypeSelect.get(0)
+        />
       );
 
       this.bindElementToAttribute(
@@ -739,15 +757,17 @@ const StoryView = FormView.extend({
         'rejected',
       ];
       const storyStateOptions = stateOptions.map(this.createStoryStateOptions);
-      ReactDOM.render(
+
+      const storySelectRoot = createRoot($storyStateSelect.get(0));
+
+      storySelectRoot.render(
         <StorySelect
           name="state"
           className="story_state"
           options={storyStateOptions}
           selected={this.model.get('state')}
           disabled={this.isReadonly()}
-        />,
-        $storyStateSelect.get(0)
+        />
       );
 
       this.bindElementToAttribute(
@@ -760,7 +780,9 @@ const StoryView = FormView.extend({
     if ($storyRequestedBySelect.length) {
       const storyRequestedByOptions =
         this.model.collection.project.users.forSelect();
-      ReactDOM.render(
+
+      const storyRequestRoot = createRoot($storyRequestedBySelect.get(0));
+      storyRequestRoot.render(
         <StorySelect
           name="requested_by"
           blank="---"
@@ -768,8 +790,7 @@ const StoryView = FormView.extend({
           options={storyRequestedByOptions}
           selected={this.model.get('requested_by_id')}
           disabled={this.isReadonly()}
-        />,
-        $storyRequestedBySelect.get(0)
+        />
       );
 
       this.bindElementToAttribute(
@@ -782,7 +803,9 @@ const StoryView = FormView.extend({
     if ($storyOwnedBySelect.length) {
       const storyOwnedByOptions =
         this.model.collection.project.users.forSelect();
-      ReactDOM.render(
+
+      const storyOwnedBySelectRoot = createRoot($storyOwnedBySelect.get(0));
+      storyOwnedBySelectRoot.render(
         <StorySelect
           name="owned_by"
           className="owned_by_id"
@@ -790,8 +813,8 @@ const StoryView = FormView.extend({
           blank="---"
           selected={this.model.get('owned_by_id')}
           disabled={this.isReadonly()}
-        />,
-        $storyOwnedBySelect.get(0)
+        />
+        // $storyOwnedBySelect.get(0)
       );
 
       this.bindElementToAttribute(
@@ -807,13 +830,14 @@ const StoryView = FormView.extend({
       const isReadonly = this.isReadonly();
       const notes = this.model.notes;
 
-      ReactDOM.render(
+      const storyNotesRoot = createRoot($storyNotes.get(0));
+
+      storyNotesRoot.render(
         <StoryNotes
           notes={isReadonly ? notes : notes.slice(0, -1)}
           disabled={isReadonly}
           onDelete={this.handleNoteDelete}
-        />,
-        $storyNotes.get(0)
+        />
       );
 
       if (!isReadonly) {
@@ -827,16 +851,23 @@ const StoryView = FormView.extend({
     if ($noteForm.length) {
       this.addEmptyNote();
 
-      ReactDOM.render(
-        <NoteForm
-          note={this.model.notes.last()}
-          onSubmit={this.handleNoteSubmit}
-        />,
-        $noteForm.get(0)
-      );
+      const noteFormRoot = createRoot($noteForm.get(0));
+
+      // createRoot().render() is async, wee need to wrap it in flushAsync to make it synchronous
+      // React doc: In rare cases where effect timing matters, you can wrap root.render(...) in flushSync to
+      // ensure the initial render runs fully synchronously.
+      // https://react.dev/reference/react-dom/client/createRoot#root-render-caveats
+      flushSync(() => {
+        noteFormRoot.render(
+          <NoteForm
+            note={this.model.notes.last()}
+            onSubmit={this.handleNoteSubmit}
+          />
+        );
+      });
+
       const addNoteButton = $noteForm.find('button');
       const noteTextArea = $noteForm.find('textarea');
-
       addNoteButton.attr('disabled', 'disabled');
 
       noteTextArea.atwho({
@@ -873,14 +904,16 @@ const StoryView = FormView.extend({
       const isReadonly = this.isReadonly();
       const tasks = this.model.tasks;
 
-      ReactDOM.render(
+      const storyTasksRoot = createRoot($storyTasks.get(0));
+
+      storyTasksRoot.render(
         <StoryTasks
           tasks={isReadonly ? tasks : tasks.slice(0, -1)}
           disabled={isReadonly}
           handleUpdate={this.handleTaskUpdate}
           handleDelete={this.handleTaskDelete}
-        />,
-        $storyTasks.get(0)
+        />
+        // $storyTasks.get(0)
       );
 
       if (!isReadonly) {
@@ -894,13 +927,17 @@ const StoryView = FormView.extend({
     if ($taskForm.length) {
       this.addEmptyTask();
 
-      ReactDOM.render(
-        <TaskForm
-          onSubmit={this.handleTaskSubmit}
-          task={this.model.tasks.last()}
-        />,
-        $taskForm.get(0)
-      );
+      const taskFormRoot = createRoot($taskForm.get(0));
+
+      flushSync(() => {
+        taskFormRoot.render(
+          <TaskForm
+            onSubmit={this.handleTaskSubmit}
+            task={this.model.tasks.last()}
+          />
+        );
+      });
+
       const addTaskButton = $taskForm.find('button');
       const taskTextArea = $taskForm.find('input');
 
@@ -997,14 +1034,15 @@ const StoryView = FormView.extend({
     );
     this.$el.append($storyDate);
 
-    ReactDOM.render(
+    const storyDateRoot = createRoot($storyDate.get(0));
+
+    storyDateRoot.render(
       <StoryDatePicker
         releaseDate={this.model.get('release_date')}
         onChangeCallback={function () {
           $('input[name=release_date]').trigger('change');
         }}
-      />,
-      $storyDate.get(0)
+      />
     );
 
     const dateInput = this.$('input[name=release_date]');

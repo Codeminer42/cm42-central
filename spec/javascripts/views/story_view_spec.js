@@ -3,8 +3,10 @@ import React from 'react';
 import template from 'templates/story.ejs';
 import OriginalStory from 'models/story';
 import { server } from '../mocks/server';
-import { afterAll, afterEach, beforeAll } from 'vitest';
+import { afterAll, afterEach, beforeAll, expect } from 'vitest';
 import { http, HttpResponse } from 'msw';
+
+import { act, waitFor } from '@testing-library/react';
 
 const url = '/path/to/story';
 
@@ -36,6 +38,7 @@ describe('StoryView', function () {
       noticeSaveError: vi.fn(),
     };
     vi.spyOn(window.md, 'makeHtml').mockReturnValue('');
+    /* eslint-disable backbone/model-defaults */
     var Note = Backbone.Model.extend({
       name: 'note',
       humanAttributeName: vi.fn(),
@@ -44,6 +47,7 @@ describe('StoryView', function () {
       name: 'task',
       humanAttributeName: vi.fn(),
     });
+    /* eslint-enable backbone/model-defaults */
     var NotesCollection = Backbone.Collection.extend({ model: Note });
     var TasksCollection = Backbone.Collection.extend({ model: Task });
     var Story = Backbone.Model.extend({
@@ -491,10 +495,12 @@ describe('StoryView', function () {
   });
 
   describe('labels', function () {
-    it('should initialize tagit on edit', function () {
+    it('should initialize tagit on edit', async function () {
       var spy = vi.spyOn(jQuery.fn, 'tagit');
       new_story.set({ editing: true });
-      expect(spy).toHaveBeenCalled();
+      await waitFor(() => {
+        expect(spy).toHaveBeenCalled();
+      });
       spy.mockRestore();
     });
   });
@@ -509,9 +515,17 @@ describe('StoryView', function () {
     });
 
     describe('when the text area is empty', function () {
-      it('disables the add button', function () {
+      it('disables the add button', async function () {
         view.canEdit = vi.fn().mockReturnValueOnce(true);
-        view.render();
+
+        act(() => {
+          view.render();
+        });
+
+        const delay = (ms = 200) =>
+          new Promise(resolve => {
+            setTimeout(resolve, ms);
+          });
 
         expect(view.$('.add-note').is(':disabled')).toEqual(true);
       });
@@ -599,42 +613,77 @@ describe('StoryView', function () {
 
   describe('description', function () {
     beforeEach(function () {
-      view.model.set({ editing: true });
+      act(() => {
+        view.model.set({ editing: true });
+      });
     });
 
     afterEach(function () {
-      view.model.set({ editing: false });
+      act(() => {
+        view.model.set({ editing: false });
+      });
     });
 
     it('is text area when story is new', function () {
       view.model.isNew = vi.fn().mockReturnValueOnce(true);
-      view.render();
+      act(() => {
+        view.render();
+      });
       expect(view.$('textarea[name="description"]').length).toEqual(1);
       expect(view.$('.description').length).toEqual(0);
     });
 
-    it("is text when story isn't new and description isn't empty", function () {
-      view.model.once('change', () => {
-        expect(window.md.makeHtml).toHaveBeenCalledWith('foo');
-        expect(view.$('textarea[name="description"]').length).toEqual(0);
-        expect(view.$('.description').text()).toContain(innerText);
-      });
+    it("is text when story isn't new and description isn't empty", async function () {
+      let asyncAssertionFinished = false;
+
+      const asyncAssertion = async () => {
+        await waitFor(() => {
+          expect(window.md.makeHtml).toHaveBeenCalledWith('foo');
+          expect(view.$('textarea[name="description"]').length).toEqual(0);
+          expect(view.$('.description').text()).toContain(innerText);
+        });
+
+        asyncAssertionFinished = true;
+      };
+
+      view.model.once('change', asyncAssertion);
       window.md.makeHtml.mockReturnValueOnce('<p>foo</p>');
       view.model.isNew = vi.fn().mockReturnValueOnce(false);
       const innerText = 'foo';
       view.model.set({ description: innerText });
-      view.render();
+      act(() => {
+        view.render();
+      });
+
+      await waitFor(() => {
+        expect(asyncAssertionFinished).toBe(true);
+      });
     });
 
-    it("is a button when story isn't new and description is empty", function () {
-      view.model.once('change', () => {
-        expect(
-          view.$('input[name="edit-description"][type="button"]').length
-        ).toEqual(1);
+    it("is a button when story isn't new and description is empty", async function () {
+      let asyncAssertionFinished = false;
+
+      const asyncAssertion = async () => {
+        await waitFor(() => {
+          expect(
+            view.$('input[name="edit-description"][type="button"]').length
+          ).toEqual(1);
+        });
+
+        asyncAssertionFinished = true;
+      };
+
+      view.model.once('change', asyncAssertion);
+
+      act(() => {
+        view.model.isNew = vi.fn().mockReturnValueOnce(false);
+        view.model.set({ description: '' });
+        view.render();
       });
-      view.model.isNew = vi.fn().mockReturnValueOnce(false);
-      view.model.set({ description: '' });
-      view.render();
+
+      await waitFor(() => {
+        expect(asyncAssertionFinished).toBe(true);
+      });
     });
 
     it('is a text area after .edit-description is clicked', function () {
@@ -704,10 +753,12 @@ describe('StoryView', function () {
   });
 
   describe('disableEstimate', function () {
-    it('disables estimate field when story is not estimable', function () {
+    it('disables estimate field when story is not estimable', async function () {
       view.model.notEstimable = vi.fn().mockReturnValueOnce(true);
       view.canEdit = vi.fn().mockReturnValueOnce(true);
-      view.render();
+      act(() => {
+        view.render();
+      });
 
       expect(view.$('.story_estimate').is(':disabled')).toEqual(true);
     });
@@ -778,7 +829,9 @@ describe('StoryView', function () {
 
     beforeEach(function () {
       view.canEdit = vi.fn().mockReturnValueOnce(true);
-      view.render();
+      act(() => {
+        view.render();
+      });
     });
 
     describe('it render a enabled', function () {
@@ -812,9 +865,8 @@ describe('StoryView', function () {
         $storyControls = view.$el.find('.story-controls');
       });
 
-      it('submit button', function () {
+      it('submit button', async function () {
         var submit = $storyControls.find('.submit');
-
         expect(submit.prop('disabled')).toBeTruthy();
       });
 

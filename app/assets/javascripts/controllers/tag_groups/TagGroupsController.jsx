@@ -1,14 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import ColorPicker from 'components/tag_groups/ColorPicker';
+import { createRoot } from 'react-dom/client';
 
 export default () => {
   const bgColor = $('[name=bg-color]').data('current-color') || '#F17013';
 
-  ReactDOM.render(
-    <ColorPicker color={bgColor} />,
-    document.getElementById('tag_group_color')
-  );
+  const container = document.getElementById('tag_group_color');
+  const colorPickerRoot = createRoot(container);
+
+  colorPickerRoot.render(<ColorPicker color={bgColor} />);
 
   $(document).ajaxError(function (event, jqxhr, settings, thrownError) {
     $('#new_tag_group').renderFormErrors($.parseJSON(jqxhr.responseText));
