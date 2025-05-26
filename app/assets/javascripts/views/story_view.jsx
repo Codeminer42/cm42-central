@@ -429,8 +429,8 @@ const StoryView = FormView.extend({
     const storyControlsContainer = this.$('[data-story-controls]').get(0);
 
     if (storyControlsContainer) {
-      const storyControllRoot = createRoot(storyControlsContainer);
-      storyControllRoot.unmount();
+      const storyControlRoot = createRoot(storyControlsContainer);
+      storyControlRoot.unmount();
     }
 
     var isGuest =
@@ -624,10 +624,10 @@ const StoryView = FormView.extend({
   renderControls: function () {
     const storyControlContainer = this.$('[data-story-controls]').get(0);
 
-    const storyControllRoot = createRoot(storyControlContainer);
+    const storyControlRoot = createRoot(storyControlContainer);
 
     if (storyControlContainer) {
-      storyControllRoot.render(
+      storyControlRoot.render(
         <StoryControls
           onClickSave={this.clickSave}
           onClickCancel={this.cancelEdit}
@@ -814,7 +814,6 @@ const StoryView = FormView.extend({
           selected={this.model.get('owned_by_id')}
           disabled={this.isReadonly()}
         />
-        // $storyOwnedBySelect.get(0)
       );
 
       this.bindElementToAttribute(
@@ -853,7 +852,7 @@ const StoryView = FormView.extend({
 
       const noteFormRoot = createRoot($noteForm.get(0));
 
-      // createRoot().render() is async, wee need to wrap it in flushAsync to make it synchronous
+      // createRoot().render() is async, we need to wrap it in flushAsync to make it synchronous
       // React doc: In rare cases where effect timing matters, you can wrap root.render(...) in flushSync to
       // ensure the initial render runs fully synchronously.
       // https://react.dev/reference/react-dom/client/createRoot#root-render-caveats
@@ -913,7 +912,6 @@ const StoryView = FormView.extend({
           handleUpdate={this.handleTaskUpdate}
           handleDelete={this.handleTaskDelete}
         />
-        // $storyTasks.get(0)
       );
 
       if (!isReadonly) {

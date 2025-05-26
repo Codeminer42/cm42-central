@@ -522,11 +522,6 @@ describe('StoryView', function () {
           view.render();
         });
 
-        const delay = (ms = 200) =>
-          new Promise(resolve => {
-            setTimeout(resolve, ms);
-          });
-
         expect(view.$('.add-note').is(':disabled')).toEqual(true);
       });
     });
