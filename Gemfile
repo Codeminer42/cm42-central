@@ -76,6 +76,7 @@ end
 group :test do
   gem 'rails-controller-testing'
   gem 'capybara'
+  gem 'capybara-lockstep'
   gem 'capybara-screenshot'
   gem 'codeclimate-test-reporter', require: nil
   gem 'database_cleaner'

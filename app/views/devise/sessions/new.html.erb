@@ -2,6 +2,8 @@
   <span class="navbar-brand"><%= t('login') %></span>
 <% end %>
 
+<%= capybara_lockstep if defined?(Capybara::Lockstep) %>
+
 <div class="container">
   <div class="row">
 

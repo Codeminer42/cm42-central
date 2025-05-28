@@ -121,6 +121,11 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
+    capybara-lockstep (2.2.3)
+      activesupport (>= 4.2)
+      capybara (>= 3.0)
+      ruby2_keywords
+      selenium-webdriver (>= 4.0)
     capybara-screenshot (1.0.26)
       capybara (>= 1.0, < 4)
       launchy
@@ -602,6 +607,7 @@ DEPENDENCIES
   bootstrap-sass (~> 3.4.0)
   bullet
   capybara
+  capybara-lockstep
   capybara-screenshot
   chartkick
   chronic
