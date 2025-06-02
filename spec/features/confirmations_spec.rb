@@ -1,5 +1,4 @@
 require 'feature_helper'
-
 describe 'Confirmations' do
   let(:team) { create(:team) }
 
