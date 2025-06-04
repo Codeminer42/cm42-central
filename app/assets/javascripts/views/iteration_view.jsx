@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import { createRoot } from 'react-dom/client';
 import Iteration from 'components/stories/Iteration';
 
 const IterationView = Backbone.View.extend({
@@ -20,13 +22,14 @@ const IterationView = Backbone.View.extend({
   },
 
   render: function () {
-    ReactDOM.render(
+    const root = createRoot(this.$el[0]);
+
+    root.render(
       <Iteration
         number={this.model.get('number')}
         startDate={this.model.startDate().toDateString()}
         points={this.points()}
-      />,
-      this.$el[0]
+      />
     );
 
     return this;

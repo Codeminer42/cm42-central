@@ -1,10 +1,13 @@
 import IterationView from 'views/iteration_view';
 
+import { act } from '@testing-library/react';
+
 describe('IterationView', function () {
   let view;
   let iteration;
 
   beforeEach(function () {
+    // eslint-disable-next-line backbone/model-defaults
     var Iteration = Backbone.Model.extend({
       name: 'iteration',
       points: function () {
@@ -32,7 +35,9 @@ describe('IterationView', function () {
 
   describe('render', function () {
     it('renders the output of the template into the el', function () {
-      view.render();
+      act(() => {
+        view.render();
+      });
       expect(view.$el.html()).toContain('<span class="points">999</span>');
     });
   });

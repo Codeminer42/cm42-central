@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 
 import TaskForm from 'components/tasks/TaskForm';
 import Task from 'models/task';
@@ -26,9 +26,10 @@ describe('<TaskForm />', function () {
     const { getByRole } = render(<TaskForm task={task} onSubmit={onSubmit} />);
 
     const button = getByRole('button');
+
     fireEvent.click(button);
 
-    Promise.resolve().then(() => {
+    await waitFor(() => {
       expect(button).not.toHaveClass('saving');
     });
   });
