@@ -10,10 +10,6 @@ const propTypes = {
   columnId: PropTypes.string,
 };
 
-const defaultProps = {
-  sprints: [],
-};
-
 const renderSprints = (sprints, fetchStories, columnId) =>
   sprints.map((sprint, index) => (
     <Sprint
@@ -43,7 +39,7 @@ const droppableContainer = columnId => (
   </Droppable>
 );
 
-const Sprints = ({ sprints, fetchStories, columnId }) => (
+const Sprints = ({ sprints = [], fetchStories, columnId }) => (
   <div className="Sprints">
     {isEmpty(sprints)
       ? droppableContainer(columnId)
@@ -51,7 +47,6 @@ const Sprints = ({ sprints, fetchStories, columnId }) => (
   </div>
 );
 
-Sprint.propTypes = propTypes;
-Sprint.defaultProps = defaultProps;
+Sprints.propTypes = propTypes;
 
 export default Sprints;

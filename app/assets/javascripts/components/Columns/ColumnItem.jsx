@@ -5,11 +5,11 @@ import { isDone } from '../../models/beta/column';
 
 export const Column = ({
   title,
-  children,
-  renderAction,
+  children = '',
+  renderAction = () => null,
   onClose,
   canClose,
-  providedProps,
+  providedProps = {},
 }) => (
   <div className="Column" data-cy="column" data-id="column" {...providedProps}>
     <div className="Column__header">
@@ -75,13 +75,6 @@ Column.propTypes = {
   onClose: PropTypes.func.isRequired,
   canClose: PropTypes.bool.isRequired,
   providedProps: PropTypes.object,
-};
-
-Column.defaultProps = {
-  renderAction: () => null,
-  visible: true,
-  children: '',
-  providedProps: {},
 };
 
 export default DroppableColumn;

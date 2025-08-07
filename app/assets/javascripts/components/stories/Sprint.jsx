@@ -11,23 +11,17 @@ const propTypes = {
   sprint: PropTypes.oneOfType([SprintPropTypes, PastIterationPropTypes]),
 };
 
-const defaultProps = {
-  fetchStories: undefined,
-  sprint: {
+const Sprint = ({
+  fetchStories,
+  sprint = {
     number: 0,
     startDate: 0,
     points: 0,
     stories: [],
   },
-  isDropDisabled: false,
-};
-
-const Sprint = ({
-  fetchStories,
-  sprint,
   sprintIndex,
   columnId,
-  isDropDisabled,
+  isDropDisabled = false,
 }) => {
   const isDone = useMemo(() => sprint.hasOwnProperty('hasStories'), [sprint]);
 
@@ -83,6 +77,5 @@ const Sprint = ({
 };
 
 Sprint.propTypes = propTypes;
-Sprint.defaultProps = defaultProps;
 
 export default Sprint;
