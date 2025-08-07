@@ -1,6 +1,7 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import Task from 'components/story/task/Task';
+import { user } from '../../../support/setup';
 
 describe('<Task />', () => {
   const setup = propOverrides => {
@@ -26,22 +27,22 @@ describe('<Task />', () => {
   };
 
   describe('when user deletes a task', () => {
-    it('triggers onDelete callback', () => {
+    it('triggers onDelete callback', async () => {
       const onDeleteSpy = vi.fn();
       const { deleteLink } = setup({ onDelete: onDeleteSpy });
 
-      fireEvent.click(deleteLink);
+      await user.click(deleteLink);
 
       expect(onDeleteSpy).toHaveBeenCalled();
     });
   });
 
   describe('when user update status of the task clicking on checkbox', () => {
-    it('triggers onToggle callback', () => {
+    it('triggers onToggle callback', async () => {
       const onToggleCheckedBoxSpy = vi.fn();
       const { checkbox } = setup({ onToggle: onToggleCheckedBoxSpy });
 
-      fireEvent.click(checkbox);
+      await user.click(checkbox);
 
       expect(onToggleCheckedBoxSpy).toHaveBeenCalled();
     });
@@ -55,11 +56,11 @@ describe('<Task />', () => {
     });
 
     describe('when user tries to update the task clicking on checkbox', () => {
-      it('does not trigger onToggle callback', () => {
+      it('does not trigger onToggle callback', async () => {
         const onToggleCheckedBoxSpy = vi.fn();
         const { checkbox } = setup({ disabled: true });
 
-        fireEvent.click(checkbox);
+        await user.click(checkbox);
 
         expect(onToggleCheckedBoxSpy).not.toHaveBeenCalled();
       });

@@ -1,6 +1,7 @@
 import React from 'react';
 import StoryCopyIdClipboard from 'components/story/StoryCopyIdClipboard';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import { user } from '../../support/setup';
 
 vi.mock('react-clipboard.js', () => ({
   default: ({ children, ...props }) => <button {...props}>{children}</button>,
@@ -29,7 +30,7 @@ describe('<StoryCopyIdClipboard />', function () {
 
     const paragraph = container.querySelector('p');
 
-    fireEvent.click(paragraph);
+    await user.click(paragraph);
 
     expect(onCopy).toHaveBeenCalledWith('#70', false);
   });

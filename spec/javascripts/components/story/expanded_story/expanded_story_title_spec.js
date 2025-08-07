@@ -1,7 +1,7 @@
-import { fireEvent } from '@testing-library/react';
 import ExpandedStoryTitle from 'components/story/ExpandedStory/ExpandedStoryTitle';
 import React from 'react';
 import { renderWithProviders } from '../../setupRedux';
+import { user } from '../../../support/setup';
 
 describe('<ExpandedStoryTitle />', () => {
   const renderComponent = props => {
@@ -33,18 +33,24 @@ describe('<ExpandedStoryTitle />', () => {
       expect(input.value).toBe(props.story._editing.title);
     });
 
-    it('calls onEdit with the right params', () => {
+    it('calls onEdit with the right params', async () => {
       const mockOnEdit = vi.fn();
-      const eventValue = 'foobar';
+      const eventValue = '12345';
       const props = {
         onEdit: mockOnEdit,
       };
 
       const { container } = renderComponent(props);
       const input = container.querySelector('input');
-      fireEvent.change(input, { target: { value: eventValue } });
 
-      expect(mockOnEdit).toHaveBeenCalledWith(eventValue);
+      await user.type(input, eventValue);
+
+      const splitEventValues = eventValue.split('');
+      splitEventValues.forEach(value => {
+        expect(mockOnEdit).toHaveBeenCalledWith(`foo${value}`);
+      });
+
+      expect(mockOnEdit).toHaveBeenCalledTimes(5);
     });
 
     describe('when the component is enabled', () => {

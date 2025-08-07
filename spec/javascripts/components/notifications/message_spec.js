@@ -1,6 +1,7 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import Message from 'components/Notifications/Message';
+import { user } from '../../support/setup';
 
 describe('<Message />', () => {
   const defaultProps = () => ({
@@ -30,7 +31,7 @@ describe('<Message />', () => {
     expect(getByText(message)).toBeDefined();
   });
 
-  it('calls onRemove when click on the remove button', () => {
+  it('calls onRemove when click on the remove button', async () => {
     const onRemove = vi.fn();
 
     const { container } = render(
@@ -38,7 +39,7 @@ describe('<Message />', () => {
     );
 
     const closeButton = container.querySelector('.Message__content__button');
-    fireEvent.click(closeButton);
+    await user.click(closeButton);
 
     expect(onRemove).toHaveBeenCalled();
   });

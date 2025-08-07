@@ -1,6 +1,7 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import Note from 'components/story/note/Note';
+import { user } from '../../../support/setup';
 
 describe('<Note/>', () => {
   const note = {
@@ -39,10 +40,10 @@ describe('<Note/>', () => {
     });
 
     describe('when user deletes a note', () => {
-      it('triggers onDelete callback', () => {
+      it('triggers onDelete callback', async () => {
         const { deleteButton, onDeleteSpy } = setup();
 
-        fireEvent.click(deleteButton);
+        await user.click(deleteButton);
 
         expect(onDeleteSpy).toHaveBeenCalled();
       });

@@ -2,7 +2,7 @@ import React from 'react';
 import Sprint from 'components/stories/Sprint';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { renderWithProviders } from '../setupRedux';
-import { fireEvent } from '@testing-library/react';
+import { user } from '../../support/setup';
 
 vi.mock('react-clipboard.js', () => ({
   default: ({ children, ...props }) => <button {...props}>{children}</button>,
@@ -113,13 +113,13 @@ describe('<Sprint />', () => {
       fetchStories = vi.fn();
     });
 
-    it('calls fetchStories with iteration number, start and end date on user click', () => {
+    it('calls fetchStories with iteration number, start and end date on user click', async () => {
       const { number, startDate, endDate } = sprint;
       const { container } = renderComponent({ fetchStories });
 
       const header = container.querySelector('.Sprint__header');
 
-      fireEvent.click(header);
+      await user.click(header);
 
       expect(fetchStories).toHaveBeenCalledWith(number, startDate, endDate);
     });

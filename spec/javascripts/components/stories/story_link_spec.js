@@ -1,7 +1,8 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import StoryLink from 'components/stories/StoryLink';
+import { user } from '../../support/setup';
 
 const story = {
   title: 'Story 2',
@@ -45,10 +46,10 @@ describe('<StoryLink />', function () {
     expect(container.querySelector('.story-link').innerHTML).toContain('#2');
   });
 
-  it('should highlight on click', function () {
+  it('should highlight on click', async function () {
     const { container } = render(<StoryLink story={story} />);
     const storyLink = container.querySelector('.story-link');
-    fireEvent.click(storyLink);
+    await user.click(storyLink);
 
     expect(story.views[0].highlight).toHaveBeenCalled();
   });

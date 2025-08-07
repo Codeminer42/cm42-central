@@ -1,8 +1,8 @@
-import { fireEvent } from '@testing-library/react';
 import ExpandedStoryNotes from 'components/story/ExpandedStory/ExpandedStoryNotes';
 import React from 'react';
 import storyFactory from '../../../support/factories/storyFactory';
 import { renderWithProviders } from '../../setupRedux';
+import { user } from '../../../support/setup';
 
 describe('<ExpandedStoryNotes />', () => {
   vi.spyOn(window.md, 'makeHtml').mockReturnValue('<p>Test</p>');
@@ -79,24 +79,26 @@ describe('<ExpandedStoryNotes />', () => {
     const change = 'newNote';
 
     describe('when user create a new note', () => {
-      it('triggers the onCreate callback passing the note', () => {
+      it('triggers the onCreate callback passing the note', async () => {
         const { container } = renderComponent(props);
         const textArea = container.querySelector('.create-note-text');
         const button = container.querySelector('.create-note-button input');
 
-        fireEvent.change(textArea, { target: { value: change } });
-        fireEvent.click(button);
+        await user.type(textArea, change);
+        await user.click(button);
 
         expect(onCreateSpy).toHaveBeenCalledWith(change);
         expect(onCreateSpy).toHaveBeenCalledTimes(1);
       });
     });
 
-    it('disables the add note button if text area is empty', () => {
+    it('disables the add note button if text area is empty', async () => {
       const { container } = renderComponent(props);
       const textArea = container.querySelector('.create-note-text');
       const button = container.querySelector('.create-note-button input');
-      fireEvent.change(textArea, { target: { value: '' } });
+
+      await user.type(textArea, 'Some text');
+      await user.clear(textArea);
 
       expect(button).toBeDisabled();
     });

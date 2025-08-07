@@ -1,4 +1,4 @@
-import { fireEvent, screen } from '@testing-library/dom';
+import { screen } from '@testing-library/dom';
 import ExpandedStoryState from 'components/story/ExpandedStory/ExpandedStoryState';
 import React from 'react';
 import { storyTypes } from '../../../../../app/assets/javascripts/libs/beta/constants';
@@ -7,6 +7,7 @@ import {
   types,
 } from '../../../../../app/assets/javascripts/models/beta/story';
 import { renderWithProviders } from '../../setupRedux';
+import { user } from '../../../support/setup';
 
 describe('<ExpandedStoryState />', () => {
   const renderComponent = props => {
@@ -117,7 +118,7 @@ describe('<ExpandedStoryState />', () => {
   });
 
   describe('when the user selects a state', () => {
-    it('triggers the edit callback passing the story state', () => {
+    it('triggers the edit callback passing the story state', async () => {
       const state = states[0];
       const change = states[1];
       const onEditSpy = vi.fn();
@@ -130,7 +131,7 @@ describe('<ExpandedStoryState />', () => {
 
       const { container } = renderComponent(props);
       const select = container.querySelector('select');
-      fireEvent.change(select, { target: { value: change } });
+      await user.selectOptions(select, change);
 
       expect(onEditSpy).toHaveBeenCalledWith(change);
     });

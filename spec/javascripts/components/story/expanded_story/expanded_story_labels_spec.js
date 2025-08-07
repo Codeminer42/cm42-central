@@ -1,7 +1,8 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import ExpandedStoryLabels from 'components/story/ExpandedStory/ExpandedStoryLabels';
 import React from 'react';
 import { renderWithProviders } from '../../setupRedux';
+import { user } from '../../../support/setup';
 
 describe('<ExpandedStoryLabels />', () => {
   const defaultLabels = [
@@ -57,11 +58,11 @@ describe('<ExpandedStoryLabels />', () => {
       expect(addLabel).toBeNull();
     });
 
-    it('does not allow deleting labels', () => {
+    it('does not allow deleting labels', async () => {
       const { wrapper, onRemoveLabel } = setup({ disabled: true });
 
       const deleteButton = wrapper.querySelector('.react-tags__selected-tag');
-      fireEvent.click(deleteButton);
+      await user.click(deleteButton);
 
       expect(onRemoveLabel).not.toHaveBeenCalled();
     });
@@ -76,11 +77,11 @@ describe('<ExpandedStoryLabels />', () => {
   });
 
   describe('when component is enabled', () => {
-    it('allows deleting labels', () => {
+    it('allows deleting labels', async () => {
       const { wrapper, onRemoveLabel } = setup();
       const deleteButton = wrapper.querySelector('.react-tags__selected-tag');
 
-      fireEvent.click(deleteButton);
+      await user.click(deleteButton);
 
       expect(onRemoveLabel).toHaveBeenCalled();
     });
