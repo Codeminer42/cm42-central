@@ -35,11 +35,11 @@ class ProjectPresenter < SimpleDelegator
   def path_to
     {
       project: "/projects/#{slug}",
-      projectReports: "/projects/#{slug}/reports",
-      projectUsers: "/projects/#{slug}/users",
-      projectSettings: "/projects/#{slug}/edit",
-      projectJoin: "/projects/#{slug}/join",
-      projectUnjoin: "/projects/#{slug}/users/"
+      project_reports: "/projects/#{slug}/reports",
+      project_users: "/projects/#{slug}/users",
+      project_settings: "/projects/#{slug}/edit",
+      project_join: "/projects/#{slug}/join",
+      project_unjoin: "/projects/#{slug}/users/"
     }
   end
 
