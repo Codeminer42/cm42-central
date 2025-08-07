@@ -1,8 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import User from 'models/user';
 import ProjectSearch from 'components/projects/ProjectSearch';
 import ProjectCollection from 'collections/project_collection';
+import { createRoot } from 'react-dom/client';
 
 export default () => {
   const user = new User($('#projects-search').data('current_user'));
@@ -16,8 +16,8 @@ export default () => {
     ),
   };
 
-  ReactDOM.render(
-    <ProjectSearch projects={projects} user={user} />,
-    document.getElementById('projects-search')
-  );
+  const container = document.getElementById('projects-search');
+  const indexRoot = createRoot(container);
+
+  indexRoot.render(<ProjectSearch projects={projects} user={user} />);
 };
