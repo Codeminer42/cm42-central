@@ -22,7 +22,7 @@ export const EpicColumnHeader = ({ stories }) => (
   </div>
 );
 
-const EpicColumn = ({ stories, closeEpicColumn }) => (
+const EpicColumn = ({ stories = [], closeEpicColumn }) => (
   <Column
     onClose={closeEpicColumn}
     title={I18n.t('projects.show.epic')}
@@ -41,10 +41,6 @@ const EpicColumn = ({ stories, closeEpicColumn }) => (
 EpicColumn.propTypes = {
   closeEpicColumn: PropTypes.func.isRequired,
   stories: PropTypes.arrayOf(StoryPropTypes),
-};
-
-EpicColumn.defaultProps = {
-  stories: [],
 };
 
 const mapDispatchToProps = {

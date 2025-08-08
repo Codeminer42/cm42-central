@@ -2,7 +2,7 @@ import React from 'react';
 import ExpandedStoryDescriptionContent from './ExpandedStoryDescriptionContent';
 import PropTypes from 'prop-types';
 
-const ExpandedStoryContentArea = ({ onClick, description }) => (
+const ExpandedStoryContentArea = ({ onClick, description = '' }) => (
   <div
     onClick={onClick}
     className="story-description-content"
@@ -18,10 +18,6 @@ const ExpandedStoryContentArea = ({ onClick, description }) => (
 ExpandedStoryContentArea.propTypes = {
   onClick: PropTypes.func.isRequired,
   description: PropTypes.string,
-};
-
-ExpandedStoryContentArea.defaultProps = {
-  description: '',
 };
 
 export default ExpandedStoryContentArea;

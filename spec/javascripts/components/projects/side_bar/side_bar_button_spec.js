@@ -1,6 +1,7 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import SideBarButton from 'components/projects/SideBar/SideBarButton';
+import { user } from '../../../support/setup';
 
 describe('<SideBarButton />', () => {
   const renderComponent = props => {
@@ -36,12 +37,12 @@ describe('<SideBarButton />', () => {
   });
 
   describe('when click in <SideBarButton />', () => {
-    it('call onClick', () => {
+    it('call onClick', async () => {
       const onClick = vi.fn();
       const { container } = renderComponent({ onClick });
 
       const button = container.querySelector('.SideBar__link');
-      fireEvent.click(button);
+      await user.click(button);
       expect(onClick).toHaveBeenCalled();
     });
   });
@@ -51,7 +52,7 @@ describe('<SideBarButton />', () => {
       const { container } = renderComponent();
 
       const button = container.querySelector('.SideBar__link');
-      fireEvent.mouseOver(button);
+      await user.hover(button);
 
       expect(container.querySelector('.SideBar__info')).toBeInTheDocument();
     });

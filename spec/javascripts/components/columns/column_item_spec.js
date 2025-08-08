@@ -1,6 +1,7 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { Column } from 'components/Columns/ColumnItem';
+import { user } from '../../support/setup';
 
 describe('<Column />', () => {
   const renderComponent = overrideProps => {
@@ -69,10 +70,10 @@ describe('<Column />', () => {
       });
 
       describe('when button is clicked', () => {
-        it('calls onClose', () => {
+        it('calls onClose', async () => {
           const onClose = vi.fn();
           const { button } = renderComponent({ onClose });
-          fireEvent.click(button);
+          await user.click(button);
 
           expect(onClose).toHaveBeenCalled();
         });

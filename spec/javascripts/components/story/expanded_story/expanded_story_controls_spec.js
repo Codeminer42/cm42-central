@@ -1,7 +1,8 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import ExpandedStoryControls from 'components/story/ExpandedStory/ExpandedStoryControls';
 import React from 'react';
 import { renderWithProviders } from '../../setupRedux';
+import { user } from '../../../support/setup';
 
 describe('<ExpandedStoryControls />', () => {
   const controls = ['save', 'delete', 'cancel'];
@@ -34,13 +35,13 @@ describe('<ExpandedStoryControls />', () => {
   });
 
   describe('when the user clicks on save', () => {
-    it('triggers the update callback', () => {
+    it('triggers the update callback', async () => {
       const onSave = vi.fn();
       const props = { canSave: true, onSave };
 
       renderComponent(props);
       const saveButton = screen.getByText(I18n.t('save'));
-      fireEvent.click(saveButton);
+      await user.click(saveButton);
 
       expect(onSave).toHaveBeenCalled();
     });
@@ -55,13 +56,13 @@ describe('<ExpandedStoryControls />', () => {
       window.confirm.mockRestore();
     });
 
-    it('triggers the delete callback after confirm', () => {
+    it('triggers the delete callback after confirm', async () => {
       const onDelete = vi.fn();
       const props = { canDelete: true, onDelete };
 
       renderComponent(props);
       const deleteButton = screen.getByText(I18n.t('delete'));
-      fireEvent.click(deleteButton);
+      await user.click(deleteButton);
 
       expect(onDelete).toHaveBeenCalled();
     });
@@ -76,19 +77,19 @@ describe('<ExpandedStoryControls />', () => {
       window.confirm.mockRestore();
     });
 
-    it('triggers the toggle callback', () => {
+    it('triggers the toggle callback', async () => {
       const handleCancel = vi.fn();
       const props = { onCancel: handleCancel };
 
       renderComponent(props);
       const cancelButton = screen.getByText(I18n.t('cancel'));
-      fireEvent.click(cancelButton);
+      await user.click(cancelButton);
 
       expect(handleCancel).toHaveBeenCalled();
     });
 
     describe('when there is unsaved changes', () => {
-      it('triggers a warning window', () => {
+      it('triggers a warning window', async () => {
         const handleCancel = vi.fn();
         const props = {
           canSave: true,
@@ -98,7 +99,7 @@ describe('<ExpandedStoryControls />', () => {
 
         renderComponent(props);
         const cancelButton = screen.getByText(I18n.t('cancel'));
-        fireEvent.click(cancelButton);
+        await user.click(cancelButton);
 
         expect(window.confirm).toHaveBeenCalled();
         expect(handleCancel).toHaveBeenCalled();
@@ -106,7 +107,7 @@ describe('<ExpandedStoryControls />', () => {
     });
 
     describe('when no changes were made', () => {
-      it('does not trigger a warning window ', () => {
+      it('does not trigger a warning window ', async () => {
         const handleCancel = vi.fn();
         const props = {
           canSave: true,
@@ -116,7 +117,7 @@ describe('<ExpandedStoryControls />', () => {
 
         renderComponent(props);
         const cancelButton = screen.getByText(I18n.t('cancel'));
-        fireEvent.click(cancelButton);
+        await user.click(cancelButton);
 
         expect(window.confirm).not.toHaveBeenCalled();
       });

@@ -1,8 +1,9 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import NoteForm from 'components/notes/NoteForm';
 import Note from 'models/note.js';
+import { user } from '../../support/setup';
 
 describe('<NoteForm />', function () {
   let note;
@@ -20,11 +21,11 @@ describe('<NoteForm />', function () {
     note.save.mockRestore();
   });
 
-  it('should have an onSubmit callback', function () {
+  it('should have an onSubmit callback', async function () {
     const onSubmit = vi.fn().mockReturnValueOnce($.Deferred());
     const { container } = render(<NoteForm note={note} onSubmit={onSubmit} />);
     const addNoteButton = container.querySelector('.add-note');
-    fireEvent.click(addNoteButton);
+    await user.click(addNoteButton);
 
     expect(onSubmit).toHaveBeenCalled();
   });

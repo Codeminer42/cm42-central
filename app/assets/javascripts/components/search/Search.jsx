@@ -14,7 +14,7 @@ export const SearchHeader = ({ stories }) => (
   </div>
 );
 
-const Search = ({ stories }) => (
+const Search = ({ stories = [] }) => (
   <div className="Sprint">
     <SearchHeader stories={stories} />
     <div className="Sprint__body" data-id="stories-search">
@@ -32,11 +32,6 @@ const propTypes = {
   stories: PropTypes.array.isRequired,
 };
 
-const defaultProps = {
-  stories: [],
-};
-
 Search.propTypes = propTypes;
-Search.defaultProps = defaultProps;
 
 export default Search;

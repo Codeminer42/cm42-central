@@ -1,8 +1,9 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import TaskComponent from 'components/tasks/Task';
 import Task from 'models/task';
+import { user } from '../../support/setup';
 
 describe('<Task />', function () {
   let task;
@@ -11,7 +12,7 @@ describe('<Task />', function () {
     task = new Task({ name: 'Test Task', id: 5 });
   });
 
-  it('should be able to call handleDelete', function () {
+  it('should be able to call handleDelete', async function () {
     const handleDelete = vi.fn();
     const { container } = render(
       <TaskComponent
@@ -23,7 +24,7 @@ describe('<Task />', function () {
     );
 
     const button = container.querySelector('.delete-btn');
-    fireEvent.click(button);
+    await user.click(button);
 
     expect(handleDelete).toHaveBeenCalled();
   });
@@ -35,7 +36,7 @@ describe('<Task />', function () {
     );
 
     const input = getByRole('checkbox');
-    fireEvent.click(input);
+    await user.click(input);
 
     expect(handleUpdate).toHaveBeenCalled();
   });

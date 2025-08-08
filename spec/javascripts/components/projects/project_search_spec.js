@@ -1,9 +1,10 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import ProjectSearch from 'components/projects/ProjectSearch';
 import ProjectCollection from 'collections/project_collection';
 import User from 'models/user';
+import { user as testUser } from '../../support/setup.js';
 
 describe('<ProjectSearch />', () => {
   var defaultProps, projects, user, handleSearch;
@@ -67,17 +68,17 @@ describe('<ProjectSearch />', () => {
     visibleProjects = queryAllByTestId('view-module-title');
     expect(visibleProjects.length).toBe(2);
 
-    fireEvent.change(select, { target: { value: 'all_projects' } });
+    await testUser.selectOptions(select, 'all_projects');
 
     visibleProjects = queryAllByTestId('view-module-title');
     expect(visibleProjects.length).toBe(2);
 
-    fireEvent.change(select, { target: { value: 'archived' } });
+    await testUser.selectOptions(select, 'archived');
 
     visibleProjects = queryAllByTestId('view-module-title');
     expect(visibleProjects.length).toBe(0);
 
-    fireEvent.change(select, { target: { value: 'not_archived' } });
+    await testUser.selectOptions(select, 'not_archived');
 
     visibleProjects = queryAllByTestId('view-module-title');
     expect(visibleProjects.length).toBe(2);

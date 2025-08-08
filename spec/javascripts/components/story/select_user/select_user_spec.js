@@ -1,6 +1,7 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import SelectUser from 'components/story/select_user/SelectUser';
+import { user } from '../../../support/setup';
 
 describe('<SelectUser />', () => {
   const setup = propOverrides => {
@@ -27,14 +28,14 @@ describe('<SelectUser />', () => {
     expect(wrapper).toBeInTheDocument();
   });
 
-  it('calls onEdit with the right params', () => {
+  it('calls onEdit with the right params', async () => {
     const mockOnEdit = vi.fn();
-    const value = 1;
+    const value = '2';
     const { select } = setup({ onEdit: mockOnEdit });
 
-    fireEvent.change(select, { target: { value } });
+    await user.selectOptions(select, value);
 
-    expect(mockOnEdit).toHaveBeenCalledWith(value.toString());
+    expect(mockOnEdit).toHaveBeenCalledWith(value);
   });
 
   describe('Select value', () => {
@@ -42,16 +43,12 @@ describe('<SelectUser />', () => {
       const selectedUserId = 1;
       const { select } = setup({ selectedUserId });
 
-      fireEvent.change(select, { target: { value: selectedUserId } });
-
       expect(select.value).toEqual(selectedUserId.toString());
     });
 
     it(`sets the select value as '' when selectedUserId is not present`, () => {
       const selectedUserId = null;
       const { select } = setup({ selectedUserId });
-
-      fireEvent.change(select, { target: { value: selectedUserId } });
 
       expect(select.value).toEqual('');
     });

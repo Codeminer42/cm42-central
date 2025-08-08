@@ -1,8 +1,9 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import ExpandedStoryTask from 'components/story/ExpandedStory/ExpandedStoryTask';
 import React from 'react';
 import storyFactory from '../../../support/factories/storyFactory';
 import { renderWithProviders } from '../../setupRedux';
+import { user } from '../../../support/setup';
 
 describe('<ExpandedStoryTask />', () => {
   const renderComponent = props => {
@@ -39,17 +40,19 @@ describe('<ExpandedStoryTask />', () => {
       expect(taskForm).toBeInTheDocument();
     });
 
-    it('disables the add task button if text area is empty', () => {
+    it('disables the add task button if text area is empty', async () => {
       const { container } = renderComponent();
       const input = container.querySelector('input');
       const button = container.querySelector('button');
-      fireEvent.change(input, { target: { value: '' } });
+
+      await user.type(input, 'some text');
+      await user.clear(input);
 
       expect(button).toBeDisabled();
     });
 
     describe('onHandleSubmit', () => {
-      it('calls onSave with a task', () => {
+      it('calls onSave with a task', async () => {
         const task = 'New Task';
         const onSaveSpy = vi.fn();
         const props = { onSave: onSaveSpy };
@@ -58,8 +61,8 @@ describe('<ExpandedStoryTask />', () => {
         const { container } = renderComponent(props);
         const input = container.querySelector('input');
         const button = container.querySelector('button');
-        fireEvent.change(input, event);
-        fireEvent.click(button);
+        await user.type(input, task);
+        await user.click(button);
 
         expect(onSaveSpy).toHaveBeenCalledTimes(1);
         expect(onSaveSpy).toHaveBeenCalledWith(task);

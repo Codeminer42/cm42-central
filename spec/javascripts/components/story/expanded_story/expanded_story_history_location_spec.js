@@ -1,9 +1,9 @@
-import { fireEvent } from '@testing-library/react';
 import ExpandedStoryHistoryLocation from 'components/story/ExpandedStory/ExpandedStoryHistoryLocation';
 import { storyTypes } from 'libs/beta/constants';
 import React from 'react';
 import storyFactory from '../../../support/factories/storyFactory';
 import { renderWithProviders } from '../../setupRedux';
+import { user } from '../../../support/setup';
 
 describe('<ExpandedStoryHistoryLocation />', () => {
   vi.spyOn(window.md, 'makeHtml').mockReturnValue('<p>Test</p>');
@@ -33,12 +33,12 @@ describe('<ExpandedStoryHistoryLocation />', () => {
   };
 
   describe('when user click on clone story', () => {
-    it('calls onClone callback', () => {
+    it('calls onClone callback', async () => {
       const onClone = vi.fn();
 
       const { container } = renderComponent({ onClone });
       const cloneButton = container.querySelector('.clone-story');
-      fireEvent.click(cloneButton);
+      await user.click(cloneButton);
 
       expect(onClone).toHaveBeenCalled();
     });

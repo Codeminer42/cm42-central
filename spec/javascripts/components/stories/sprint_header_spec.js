@@ -1,6 +1,7 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import SprintHeader from 'components/stories/SprintHeader';
+import { user } from '../../support/setup';
 
 const defaultProps = {
   number: 42,
@@ -25,12 +26,12 @@ describe('<SprintHeader />', () => {
     expect(header).toBeInTheDocument();
   });
 
-  it('Calls onClick prop when div is clicked', () => {
+  it('Calls onClick prop when div is clicked', async () => {
     const onClick = vi.fn();
     const { container } = renderWrapper({ onClick });
     const header = container.querySelector('div.Sprint__header');
 
-    fireEvent.click(header);
+    await user.click(header);
 
     expect(onClick).toHaveBeenCalled();
   });

@@ -5,7 +5,7 @@ import ExpandedStorySection from '../ExpandedStorySection';
 import ExpandedStoryContentArea from './ExpandedStoryContentArea';
 import ExpandedStoryDescriptionTextArea from './ExpandedStoryDescriptionTextArea';
 
-const ExpandedStoryDescription = ({ disabled, onEdit, users, story }) => {
+const ExpandedStoryDescription = ({ disabled, onEdit, users = [], story }) => {
   if (disabled && !story.description) return null;
 
   const [editing, setEditing] = useState(false);
@@ -32,10 +32,6 @@ const ExpandedStoryDescription = ({ disabled, onEdit, users, story }) => {
       )}
     </ExpandedStorySection>
   );
-};
-
-ExpandedStoryDescription.defaultProps = {
-  users: [],
 };
 
 ExpandedStoryDescription.propTypes = {
