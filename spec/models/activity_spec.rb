@@ -65,7 +65,7 @@ describe Activity, type: :model do
     let(:today) { Time.current }
 
     before do
-      Timecop.freeze(Time.utc(2016, 10, 5, 12, 0, 0))
+      Timecop.freeze(Time.zone.parse('2016-10-05 12:00:00'))
       Activity.destroy_all
       create :activity, subject: story1, subject_changes: { estimate: [0, 1] }
       create :activity, subject: story1, subject_changes: { estimate: [1, 2] }
@@ -83,7 +83,7 @@ describe Activity, type: :model do
       Timecop.return
     end
 
-    it 'should return a proper grouped list of merged activities' do
+    it 'returns a proper grouped list of merged activities' do
       grouped = Activity.grouped_activities(Project.all, Time.current - 2.days)
       expect(grouped.first.first).to eq(yesterday.beginning_of_day)
       expect(grouped.last.first).to eq(today.beginning_of_day)
