@@ -32,16 +32,16 @@ class ProjectPresenter < SimpleDelegator
     I18n.l(archived_at, format: :note_date) if archived_at
   end
 
-  def path_to
-    {
-      project: "/projects/#{slug}",
-      project_reports: "/projects/#{slug}/reports",
-      project_users: "/projects/#{slug}/users",
-      project_settings: "/projects/#{slug}/edit",
-      project_join: "/projects/#{slug}/join",
-      project_unjoin: "/projects/#{slug}/users/"
-    }
-  end
+def path_to
+  {
+    project: project_path(self),
+    project_reports: reports_project_path(self),
+    project_users: project_users_path(self),
+    project_settings: edit_project_path(self),
+    project_join: join_project_path(self),
+    project_unjoin: "#{project_users_path(self)}/"
+  }
+end
 
   def self.from_collection(collection)
     collection.map { |item| new(item) }
