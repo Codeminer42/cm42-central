@@ -1,5 +1,5 @@
-import React from 'react';
-import AtWhoInput from 'components/jquery_wrappers/AtWhoInput';
+import React, { useMemo, useState, useCallback } from 'react';
+import { Mention } from 'primereact/mention';
 import DescriptionContent from 'components/description/DescriptionContent';
 
 const StoryDescription = ({
@@ -16,6 +16,26 @@ const StoryDescription = ({
 }) => {
   const showDescriptionInput = isNew || editingDescription;
 
+  const [suggestions, setSuggestions] = useState([]);
+  const source = useMemo(
+    () =>
+      Array.isArray(usernames) ? usernames.map(u => ({ name: String(u) })) : [],
+    [usernames]
+  );
+  const onSearch = useCallback(
+    e => {
+      if (e.trigger !== '@') {
+        setSuggestions([]);
+        return;
+      }
+      const q = (e.query || '').toLowerCase();
+      setSuggestions(
+        source.filter(item => item.name.toLowerCase().includes(q)).slice(0, 10)
+      );
+    },
+    [source]
+  );
+
   return (
     <>
       <label htmlFor={name}>
@@ -23,11 +43,16 @@ const StoryDescription = ({
       </label>
       <br />
       {showDescriptionInput ? (
-        <AtWhoInput
-          usernames={usernames}
-          name={name}
+        <Mention
+          inputId={name}
           value={value}
           onChange={onChange}
+          trigger={['@']}
+          suggestions={suggestions}
+          onSearch={onSearch}
+          field="name"
+          inputClassName="form-control"
+          autoResize={false}
         />
       ) : (
         <DescriptionContent
