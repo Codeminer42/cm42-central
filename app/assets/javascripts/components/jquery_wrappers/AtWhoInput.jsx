@@ -31,8 +31,7 @@ const AtWhoInput = ({ usernames, name, value, onChange }) => {
       value={internalValue}
       onChange={handleChange}
       name={name}
-      className={`${name}-textarea`}
-      classNames={{ input: `form-control ${name}-textarea` }}
+      className={`form-control ${name}-textarea`}
     >
       <Mention
         trigger="@"
