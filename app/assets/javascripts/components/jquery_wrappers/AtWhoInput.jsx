@@ -1,31 +1,47 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
+import { MentionsInput, Mention } from 'react-mentions';
 
 const AtWhoInput = ({ usernames, name, value, onChange }) => {
-  const textareaRef = useRef(null);
+  const [internalValue, setInternalValue] = useState(value || '');
 
   useEffect(() => {
-    loadAtWho();
+    setInternalValue(value || '');
   }, [value]);
 
-  const loadAtWho = () => {
-    if (textareaRef.current) {
-      $(textareaRef.current)
-        .atwho({
-          at: '@',
-          data: usernames,
-        })
-        .on('inserted.atwho', onChange);
-    }
+  const mentionableUsers = useMemo(
+    () =>
+      (usernames || []).map(u =>
+        typeof u === 'string'
+          ? { id: u, display: u }
+          : {
+              id: u.id ?? u.username ?? u.name ?? '',
+              display: u.username ?? u.name ?? u.id ?? '',
+            }
+      ),
+    [usernames]
+  );
+
+  const handleChange = (event, newValue) => {
+    setInternalValue(newValue);
+    onChange?.({ target: { name, value: newValue } });
   };
 
   return (
-    <textarea
-      ref={textareaRef}
+    <MentionsInput
+      value={internalValue}
+      onChange={handleChange}
       name={name}
-      className={`form-control ${name}-textarea`}
-      defaultValue={value}
-      onChange={onChange}
-    />
+      className={`${name}-textarea`}
+      classNames={{ input: `form-control ${name}-textarea` }}
+    >
+      <Mention
+        trigger="@"
+        data={mentionableUsers}
+        markup="@__id__"
+        displayTransform={(_, display) => `@${display}`}
+        appendSpaceOnAdd
+      />
+    </MentionsInput>
   );
 };
 
