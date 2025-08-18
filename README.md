@@ -68,7 +68,7 @@ We already have more features in development and you can follow what needs to be
 
 ## Goals
 
-CM42-Central starts as a clone of [Pivotal Tracker](http://pivotaltracker.com/).
+CM42-Central started as a clone of the now-discontinued Pivotal Tracker project management tool.
 
 We want to make it a drop-in replacement first, by having all of the main functionalities and to later surpass it,
 by making it not only smarter but also more user-friendly and easier to use than what we consider "incomplete"
@@ -82,8 +82,9 @@ The principles that we believe in are:
 - Stakeholders must test and accept/reject stories within the same Iteration.
 
 ## Warnings
+
 Whether you're using macos versions (m1, m2, mN). Please, add this into your bash file (.bashrc, .zshrc, etc):
-```export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES```
+`export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES`
 
 ## Installation
 
@@ -167,6 +168,10 @@ To manage the postgres database, you can access http://localhost:8080, using the
 If you need to cleanup your docker install, run:
 
     $ docker compose down -v
+
+In order to run the feature specs, you'll need to have Chrome and the respective ChromeDriver installed locally. You can find the [drivers here](https://googlechromelabs.github.io/chrome-for-testing/).
+
+After installing the driver, you'll need to extract it and then move the `chromedriver` file to a directory in your `$PATH`, such as `/usr/bin/`.
 
 ## Heroku setup
 
