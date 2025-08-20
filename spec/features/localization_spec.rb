@@ -29,6 +29,10 @@ describe 'localization' do
   def change_locale_to(new_locale)
     visit edit_user_registration_path
 
+    if page.has_css?('.cookies-banner--visible', wait: 1)
+      find('.cookies-banner__btn').click
+    end
+
     select new_locale, from: 'Locale'
     fill_in 'Current password', with: 'password'
 

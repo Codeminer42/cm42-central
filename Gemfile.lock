@@ -686,7 +686,7 @@ DEPENDENCIES
   webmock
 
 RUBY VERSION
-   ruby 2.7.8
+   ruby 3.0.7p220
 
 BUNDLED WITH
-   2.4.13
+   2.5.23

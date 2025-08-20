@@ -45,7 +45,7 @@ jobs:
       - name: Install Ruby and gems
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7.8
+          ruby-version: 3.0.7
       - name: Run bundle install
         run: bundle install
       # Add or replace database setup steps here
@@ -115,7 +115,7 @@ jobs:
       - name: Install Ruby and gems
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7.8
+          ruby-version: 3.0.7
       - name: Run bundle install
         run: bundle install
       - name: Install Node
