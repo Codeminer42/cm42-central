@@ -43,11 +43,11 @@ describe ProjectPresenter do
   describe '#path_to' do
     it 'should return all paths' do
       expect(project.path_to).to eq(project: '/projects/test-project-foobar',
-                                    projectReports: '/projects/test-project-foobar/reports',
-                                    projectUsers: '/projects/test-project-foobar/users',
-                                    projectSettings: '/projects/test-project-foobar/edit',
-                                    projectJoin: '/projects/test-project-foobar/join',
-                                    projectUnjoin: '/projects/test-project-foobar/users/')
+                                    project_reports: '/projects/test-project-foobar/reports',
+                                    project_users: '/projects/test-project-foobar/users',
+                                    project_settings: '/projects/test-project-foobar/edit',
+                                    project_join: '/projects/test-project-foobar/join',
+                                    project_unjoin: '/projects/test-project-foobar/users/')
     end
   end
 end

@@ -62,7 +62,7 @@ const PanelHeading = ({ project, joined, user }) => {
         </div>
         <div className="icons pull-right">
           <a
-            href={project.get('path_to').projectReports}
+            href={project.get('path_to').project_reports}
             className="unstyled-link"
             data-toggle="tooltip"
             data-placement="top"
@@ -73,7 +73,7 @@ const PanelHeading = ({ project, joined, user }) => {
           </a>
 
           <a
-            href={project.get('path_to').projectUsers}
+            href={project.get('path_to').project_users}
             className="unstyled-link"
             data-toggle="tooltip"
             data-placement="top"
@@ -102,7 +102,7 @@ const PanelHeading = ({ project, joined, user }) => {
 
               <li>
                 <a
-                  href={project.get('path_to').projectSettings}
+                  href={project.get('path_to').project_settings}
                   data-toggle="tooltip"
                   data-placement="top"
                   data-title={I18n.t('settings')}
@@ -115,7 +115,7 @@ const PanelHeading = ({ project, joined, user }) => {
 
               <li>
                 <a
-                  href={`${project.get('path_to').projectUnjoin}${user.id}`}
+                  href={`${project.get('path_to').project_unjoin}${user.id}`}
                   data-method="delete"
                 >
                   {I18n.t('projects.unjoin')}
@@ -189,7 +189,7 @@ const CardLink = ({ project, joined }) => {
 
   return (
     <a
-      href={project.get('path_to').projectJoin}
+      href={project.get('path_to').project_join}
       className="card-footer panel-footer"
     >
       {I18n.t('projects.join')}
