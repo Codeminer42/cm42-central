@@ -10,7 +10,7 @@ end
 gem 'rails', '~> 6.1.7'
 
 gem 'activeadmin'
-gem 'api-pagination'
+gem 'api-pagination', '~> 6.0.0'
 gem 'attachinary'
 gem 'autoprefixer-rails'
 gem 'bootstrap-sass', '~> 3.4.0'
