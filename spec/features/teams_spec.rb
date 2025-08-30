@@ -136,7 +136,6 @@ describe 'Teams', js: true do
 
       it 'successfully uncharving the team' do
         visit teams_path
-        sleep 0.5
 
         click_link 'Unarchive'
 
@@ -145,7 +144,6 @@ describe 'Teams', js: true do
 
       it 'moves the archived team to select team section' do
         visit teams_path
-        sleep 0.5
 
         click_link 'Unarchive'
 
