@@ -1,6 +1,4 @@
-if Rails.env.development? || Rails.env.test?
+if (Rails.env.development? || Rails.env.test?) && ENV['PUSHER_FAKE'] == '1'
   require "pusher-fake"
-  PusherFake.configure do |configuration|
-    configuration.verbose = true
-  end
+  PusherFake.configuration.verbose = true
 end
