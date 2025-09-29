@@ -348,7 +348,7 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     netrc (0.11.0)
-    newrelic_rpm (8.9.0)
+    newrelic_rpm (9.21.0)
     nio4r (2.5.8)
     nokogiri (1.15.2-x86_64-linux)
       racc (~> 1.4)
@@ -637,15 +637,15 @@ DEPENDENCIES
   i18n-js (~> 3.9.0)
   jquery-atwho-rails (~> 1.5, >= 1.5.4)
   jquery-ui-rails (~> 8.0)
-  kaminari
+  kaminari (~> 1.2, >= 1.2.2)
   kgio
   letsencrypt-rails-heroku
   letter_opener
   letter_opener_web
   material_icons (~> 2.2)
-  newrelic_rpm
-  pg
-  pg_search
+  newrelic_rpm (~> 9.21)
+  pg (~> 1.6, >= 1.6.2)
+  pg_search (~> 2.3, >= 2.3.7)
   platform-api
   pry-rails
   pry-remote

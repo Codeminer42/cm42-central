@@ -67,7 +67,7 @@ end
 group :production do
   gem 'kgio'
   gem 'letsencrypt-rails-heroku'
-  gem 'newrelic_rpm'
+  gem 'newrelic_rpm', '~> 9.21'
   gem 'rack-cache'
   gem 'rack-timeout'
   gem 'rails_12factor'
