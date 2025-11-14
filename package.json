@@ -45,7 +45,7 @@
     "jquery.caret": "^0.3.1",
     "jquery.scrollto": "^2.1.2",
     "js-cookie": "^2.2.1",
-    "js-yaml": "^3.13.1",
+    "js-yaml": "^4.1.1",
     "keymirror": "^0.1.1",
     "moment": "^2.29.4",
     "node-sass": "^7.0.3",
