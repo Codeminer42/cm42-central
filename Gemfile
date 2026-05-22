@@ -58,7 +58,8 @@ gem 'virtus'
 gem 'pusher'
 gem 'dry-monads'
 gem 'dry-matcher'
-gem 'react_on_rails'
+gem 'react_on_rails', '16.7.0.rc.0'
+gem 'shakapacker', '10.1.0.rc.1'
 gem 'vite_rails'
 
 source 'http://insecure.rails-assets.org/' do

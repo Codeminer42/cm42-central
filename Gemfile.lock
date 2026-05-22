@@ -449,7 +449,7 @@ GEM
     rb-fsevent (0.11.1)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    react_on_rails (16.6.0)
+    react_on_rails (16.7.0.rc.0)
       addressable
       connection_pool
       execjs (~> 2.5)
@@ -526,7 +526,7 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2)
     semantic_range (3.1.1)
-    shakapacker (10.0.0)
+    shakapacker (10.1.0.rc.1)
       activesupport (>= 5.2)
       package_json
       rack-proxy (>= 0.6.1)
@@ -675,7 +675,7 @@ DEPENDENCIES
   rails-controller-testing
   rails-i18n
   rails_12factor
-  react_on_rails
+  react_on_rails (= 16.7.0.rc.0)
   recaptcha
   rgb_utils
   rollbar (~> 3.3)
@@ -687,6 +687,7 @@ DEPENDENCIES
   rubocop-rspec
   sass-rails
   selenium-webdriver
+  shakapacker (= 10.1.0.rc.1)
   shoulda-matchers
   sidekiq
   sidekiq_mailer
