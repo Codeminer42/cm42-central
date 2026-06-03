@@ -7665,10 +7665,10 @@ react-mentions@^3.1.1:
     prop-types "^15.5.8"
     substyle "^6.3.1"
 
-react-on-rails@16.7.0-rc.0:
-  version "16.7.0-rc.0"
-  resolved "https://registry.npmjs.org/react-on-rails/-/react-on-rails-16.7.0-rc.0.tgz#4fb47203ab9f65528605233c3b6cddba69536107"
-  integrity sha512-81Lu9ToSlunduiPQm+R+C+DJ9irdPDFEN3Jvq8dyI6r5uKc9kgfsTiJkyeULjk613RBAT0apkr08GOyhaSe94A==
+react-on-rails@17.0.0-rc.1:
+  version "17.0.0-rc.1"
+  resolved "https://registry.npmjs.org/react-on-rails/-/react-on-rails-17.0.0-rc.1.tgz#5c13081957612e3cb176674217efbc6785ecb362"
+  integrity sha512-TLR+LdpdefizXIDR7PUnXL3bUa38hex24AiuMxrrdY2w2ju8GGAKFNZM/6mTc+FatO1Y1MEoPnsRuabtXt8nVQ==
 
 react-property@1.0.1:
   version "1.0.1"
