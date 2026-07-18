@@ -58,7 +58,7 @@ gem 'virtus'
 gem 'pusher'
 gem 'dry-monads'
 gem 'dry-matcher'
-gem 'react_on_rails', '17.0.0.rc.1'
+gem 'react_on_rails', '17.0.0'
 gem 'shakapacker', '10.1.0'
 gem 'vite_rails'
 
