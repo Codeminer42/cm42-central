@@ -33,15 +33,12 @@
           <% end %>
         </div>
       <% end %>
-      <div
-        id="projects-search"
-        class="col-md-6 projects"
-        data-current_user="<%= current_user.to_json %>"
-        data-admin="<%= policy(User).update? %>"
-        data-projects_joined="<%= @projects[:joined].to_json %>"
-        data-projects_unjoined="<%= @projects[:unjoined].to_json %>"
-      >
-      </div>
+      <%= react_component(
+        "ProjectSearchPage",
+        props: project_search_props,
+        id: "projects-search",
+        html_options: { class: "col-md-6 projects" }
+      ) %>
     </div>
   </div>
 </div>

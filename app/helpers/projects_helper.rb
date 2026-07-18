@@ -104,6 +104,14 @@ module ProjectsHelper
     format('%3.2f', Math.sqrt(standard_deviation))
   end
 
+  def project_search_props
+    {
+      currentUser: current_user.as_json,
+      projectsJoined: @projects[:joined] || [],
+      projectsUnjoined: @projects[:unjoined] || []
+    }
+  end
+
   def inverse_story_flow
     'pressed' if @story_flow[:current].eql?(@story_flow[:default])
   end

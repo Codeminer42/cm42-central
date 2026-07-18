@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe ProjectsController do
+  render_views
+
   context 'when logged out' do
     %w[index new create archived].each do |action|
       specify do
@@ -49,6 +51,15 @@ describe ProjectsController do
           specify do
             get :index
             expect(response).to be_successful
+
+            document = Nokogiri::HTML(response.body)
+            mount = document.at_css('#projects-search.col-md-6.projects')
+            metadata = document.at_css(
+              'script.js-react-on-rails-component[data-component-name="ProjectSearchPage"][data-dom-id="projects-search"]'
+            )
+
+            expect(mount).not_to be_nil
+            expect(metadata).not_to be_nil
           end
         end
 
@@ -110,6 +121,15 @@ describe ProjectsController do
           specify do
             get :index
             expect(response).to be_successful
+
+            document = Nokogiri::HTML(response.body)
+            mount = document.at_css('#projects-search.col-md-6.projects')
+            metadata = document.at_css(
+              'script.js-react-on-rails-component[data-component-name="ProjectSearchPage"][data-dom-id="projects-search"]'
+            )
+
+            expect(mount).not_to be_nil
+            expect(metadata).not_to be_nil
           end
         end
 
